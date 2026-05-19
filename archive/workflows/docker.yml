@@ -1,0 +1,15 @@
+name: Build and Push Docker
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Login to GHCR
+        run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u hodlmateo --password-stdin
+      - name: Build and Push
+        run: |
+          docker build -t ghcr.io/hodlmateo/aubieeternal:v4 .
+          docker push ghcr.io/hodlmateo/aubieeternal:v4
