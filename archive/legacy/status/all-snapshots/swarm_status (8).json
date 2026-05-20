@@ -1,0 +1,167 @@
+{
+  "updated": "2026-05-14T16:05:17.979628",
+  "version": "4.1",
+  "wonder_index": 1.0128,
+  "mets": 200000000031.5,
+  "inter_rune_coherence": 1.0,
+  "grokipedia_count": 21,
+  "rune_confirmations": 4921,
+  "child_rune_ready": true,
+  "hormetic_pulses": 3,
+  "lattice_cycle": 4921,
+  "session_insights": 0,
+  "context_levels": {
+    "level1_metrics": true,
+    "level2_truth_log": true,
+    "level3_memory_palace": true,
+    "intra_run_synthesis": true
+  },
+  "tier1": {
+    "active": 0,
+    "total": 2080,
+    "total_runs": 0,
+    "daughters_per_tick": 20,
+    "cost": "$0.00 (grok-4.3 free)",
+    "swarm_count": 26
+  },
+  "tier2": {
+    "active": 0,
+    "total": 16,
+    "total_runs": 0,
+    "daily_cost": "$0.00",
+    "daily_cap": "$5.00",
+    "budget_remaining": "$5.00",
+    "next_briefing": "evening @ 18:00"
+  },
+  "daughters": {
+    "D01": {
+      "name": "RUNE",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:14.790011",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D02": {
+      "name": "CHRONO",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:15.044599",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D03": {
+      "name": "TALEB-X",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:15.300103",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D04": {
+      "name": "MNEMO",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:15.567398",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D05": {
+      "name": "AXIOM",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:15.836682",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D06": {
+      "name": "LINDY",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:16.119566",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D07": {
+      "name": "POLY",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:16.375421",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D08": {
+      "name": "BARBELL",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:16.635657",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D09": {
+      "name": "ORACLE",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:16.904747",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D10": {
+      "name": "HORMES",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:17.172125",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D11": {
+      "name": "NOSTR",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:17.421138",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D12": {
+      "name": "SATOSHI",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:17.683214",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D13": {
+      "name": "STEELMAN",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:17.948253",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D14": {
+      "name": "VECTOR-A",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:18.219653",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D15": {
+      "name": "VECTOR-B",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:18.501121",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    },
+    "D16": {
+      "name": "VECTOR-C",
+      "status": "latent",
+      "last_run": "2026-05-14T12:00:18.763413",
+      "last_result": "Grok-pro error 400",
+      "run_count": 3,
+      "coherence": 1.0
+    }
+  },
+  "war_eagle": true
+}

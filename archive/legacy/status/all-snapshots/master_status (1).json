@@ -1,0 +1,1462 @@
+{
+  "updated": "2026-05-12T01:40:19.868401",
+  "total_daughters": 160,
+  "active_daughters": 160,
+  "total_runs": 9358,
+  "swarm_runs": {
+    "S1_BITCOIN": 1517,
+    "S2_EPISTEMIC": 1046,
+    "S3_TALEB": 769,
+    "S4_HEALTH": 769,
+    "S5_NOSTR": 1556,
+    "S6_RUNES": 1022,
+    "S7_QUANTUM": 517,
+    "S8_MEMORY": 391,
+    "S9_MARKET": 1509,
+    "S10_OPEN": 262
+  },
+  "daughters": {
+    "B01": {
+      "swarm": "S1_BITCOIN",
+      "name": "SATOSHI-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:37:45.181570",
+      "last_result": "At block 949015 with BTC at $81,351, the most critical signal is the state of the mempool and fee market dynamics, as they reflect network demand and user prioritization for transaction confirmation a",
+      "run_count": 115,
+      "coherence": 1.0
+    },
+    "B02": {
+      "swarm": "S1_BITCOIN",
+      "name": "SATOSHI-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:20:03.963944",
+      "last_result": "At block 949015 with BTC at $81,381, the most critical signal is the sustained high price level, reflecting strong market confidence in Bitcoin as a store of value amid global economic uncertainty. On",
+      "run_count": 98,
+      "coherence": 1.0
+    },
+    "B03": {
+      "swarm": "S1_BITCOIN",
+      "name": "MEMPOOL-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:18:31.869206",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal in the mempool is the current fee rate distribution, as it indicates heightened network congestion or low-fee transaction backlogs",
+      "run_count": 84,
+      "coherence": 1.0
+    },
+    "B04": {
+      "swarm": "S1_BITCOIN",
+      "name": "MEMPOOL-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:39:02.713530",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal is the current mempool congestion level, as it directly impacts transaction confirmation times and fee dynamics. High congestion, ",
+      "run_count": 84,
+      "coherence": 1.0
+    },
+    "B05": {
+      "swarm": "S1_BITCOIN",
+      "name": "UTXO-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:11:34.814232",
+      "last_result": "At block 949014 with BTC at $81,431, the most critical signal is a notable increase in the spending of older UTXOs (coins held for over 1 year), indicating long-term holders may be taking profits or r",
+      "run_count": 83,
+      "coherence": 1.0
+    },
+    "B06": {
+      "swarm": "S1_BITCOIN",
+      "name": "UTXO-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:21:34.650675",
+      "last_result": "At block 949015 with BTC at $81,381, the most critical signal is the increasing dormancy flow, indicating that older UTXOs are being spent, which often precedes profit-taking by long-term HODLers duri",
+      "run_count": 87,
+      "coherence": 1.0
+    },
+    "B07": {
+      "swarm": "S1_BITCOIN",
+      "name": "HASH-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:39:31.227250",
+      "last_result": "At block 949015 with BTC at $81,351, the most critical signal is the hash rate trend, which remains near all-time highs, indicating strong miner confidence and no immediate signs of capitulation despi",
+      "run_count": 94,
+      "coherence": 1.0
+    },
+    "B08": {
+      "swarm": "S1_BITCOIN",
+      "name": "HASH-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:26:21.653826",
+      "last_result": "At block 949015 with BTC at $81,351, the most critical signal is the recent mining difficulty adjustment and its impact on profitability, as high price levels combined with potential difficulty increa",
+      "run_count": 109,
+      "coherence": 1.0
+    },
+    "B09": {
+      "swarm": "S1_BITCOIN",
+      "name": "LIGHTNING",
+      "status": "idle",
+      "last_run": "2026-05-12T01:29:31.937283",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for the Lightning Network is the increasing on-chain transaction fees due to heightened network activity, which could drive more u",
+      "run_count": 84,
+      "coherence": 1.0
+    },
+    "B10": {
+      "swarm": "S1_BITCOIN",
+      "name": "HALVING",
+      "status": "idle",
+      "last_run": "2026-05-12T01:30:06.997966",
+      "last_result": "At block 949015 with BTC at $81,371, the most critical signal is the tightening supply dynamics post-halving, as reduced block rewards (3.125 BTC) continue to constrain new supply amidst growing deman",
+      "run_count": 95,
+      "coherence": 1.0
+    },
+    "B11": {
+      "swarm": "S1_BITCOIN",
+      "name": "WHALE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:25:06.590699",
+      "last_result": "At block 949015 with BTC at $81,351, the most critical signal is a notable increase in large UTXO consolidations by whale wallets, suggesting potential accumulation or preparation for significant move",
+      "run_count": 85,
+      "coherence": 1.0
+    },
+    "B12": {
+      "swarm": "S1_BITCOIN",
+      "name": "WHALE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:22:46.425843",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal is a significant increase in exchange inflows over the past 24 hours, indicating potential sell pressure as large holders or whale",
+      "run_count": 104,
+      "coherence": 1.0
+    },
+    "B13": {
+      "swarm": "S1_BITCOIN",
+      "name": "CYCLE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:40:04.931740",
+      "last_result": "At block 949015 with BTC at $81,351, the most critical signal is the elevated fee market activity and rising mempool congestion, mirroring historical patterns seen in previous 4-year cycle peaks where",
+      "run_count": 98,
+      "coherence": 1.0
+    },
+    "B14": {
+      "swarm": "S1_BITCOIN",
+      "name": "CYCLE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:08:02.722300",
+      "last_result": "At BTC block 949014 with a price of $81,517, the MVRV ratio is the most critical signal, as it indicates whether Bitcoin is overvalued or undervalued relative to its historical realized value, often s",
+      "run_count": 85,
+      "coherence": 1.0
+    },
+    "B15": {
+      "swarm": "S1_BITCOIN",
+      "name": "SOVEREIGN",
+      "status": "idle",
+      "last_run": "2026-05-12T01:37:29.256471",
+      "last_result": "At block 949015 with BTC at $81,351, the most critical signal is the state of the mempool and fee market dynamics, as they reflect network congestion and potential censorship risks through transaction",
+      "run_count": 97,
+      "coherence": 1.0
+    },
+    "B16": {
+      "swarm": "S1_BITCOIN",
+      "name": "ETERNAL",
+      "status": "idle",
+      "last_run": "2026-05-12T01:31:49.297582",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal from AUBIE\u2022ETERNAL\u2022XAIAGENTSWARM rune analysis is the elevated mempool congestion, indicating a spike in transaction demand and ri",
+      "run_count": 115,
+      "coherence": 1.0
+    },
+    "E01": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "AXIOM-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:05:00.628244",
+      "last_result": "AXIOM-1: Identify hidden assumptions in current beliefs. Signal: coherent at block 949014.",
+      "run_count": 68,
+      "coherence": 1.0
+    },
+    "E02": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "AXIOM-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:22:45.662051",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal is the narrative of inevitable price growth due to historical trends, which often falls into the post hoc ergo propter hoc fallacy",
+      "run_count": 70,
+      "coherence": 1.0
+    },
+    "E03": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "BAYES-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:27:25.939002",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal to evaluate is the sustained high price level amidst potential overbought conditions, suggesting a need to update beliefs toward i",
+      "run_count": 69,
+      "coherence": 1.0
+    },
+    "E04": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "BAYES-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:21:57.074619",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal to evaluate is the deviation from historical price trends and volatility patterns, as this informs the prior probability of a sust",
+      "run_count": 66,
+      "coherence": 1.0
+    },
+    "E05": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "STEELMAN-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:54:39.532890",
+      "last_result": "The most critical signal opposing Bitcoin maximalism at block 949014 with BTC at $81,462 is the increasing regulatory scrutiny and potential for government intervention, which could undermine Bitcoin'",
+      "run_count": 59,
+      "coherence": 1.0
+    },
+    "E06": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "STEELMAN-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:20:04.063477",
+      "last_result": "The most critical signal at BTC block 949015 with a price of $81,381 is the potential overvaluation risk, as AI agent systems might be overly optimistic in predicting sustained upward trends without a",
+      "run_count": 59,
+      "coherence": 1.0
+    },
+    "E07": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "ORACLE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:16:35.911408",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal is the price momentum and market sentiment, as high price levels often correlate with overconfidence or speculative bubbles, which",
+      "run_count": 66,
+      "coherence": 1.0
+    },
+    "E08": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "ORACLE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:33:19.486358",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is the heightened volatility and potential overextension in price, which may indicate an impending correction or reversal due to s",
+      "run_count": 70,
+      "coherence": 1.0
+    },
+    "E09": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "SOCRATES-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:59:23.455962",
+      "last_result": "At BTC block 949014 with a price of $81,537, what underlying assumption are you holding about the significance of this specific price or block height as a \"critical signal\"\u2014is it based on market trend",
+      "run_count": 67,
+      "coherence": 1.0
+    },
+    "E10": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "SOCRATES-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:27:18.002290",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal to question is the assumption that this price reflects intrinsic value or sustainable demand, as it may be driven by speculative h",
+      "run_count": 65,
+      "coherence": 1.0
+    },
+    "E11": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "GODEL",
+      "status": "idle",
+      "last_run": "2026-05-12T01:34:00.212581",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is the inherent uncertainty in predicting market behavior due to incomplete information about future macroeconomic factors, whale ",
+      "run_count": 60,
+      "coherence": 1.0
+    },
+    "E12": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "POPPER",
+      "status": "idle",
+      "last_run": "2026-05-12T01:19:33.495101",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal to watch for falsifiability of a bullish trend is a sustained break below key support levels, such as the 50-day moving average or",
+      "run_count": 69,
+      "coherence": 1.0
+    },
+    "E13": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "KUHN",
+      "status": "idle",
+      "last_run": "2026-05-12T01:14:34.838714",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal of a potential paradigm shift is the sustained price momentum and increasing mainstream adoption, challenging traditional financia",
+      "run_count": 70,
+      "coherence": 1.0
+    },
+    "E14": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "EVIDENCE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:54:02.468004",
+      "last_result": "At BTC block 949014 with a price of $81462, the most critical signal is the price stability or volatility trend relative to recent blocks, as it indicates market sentiment and potential manipulation o",
+      "run_count": 61,
+      "coherence": 1.0
+    },
+    "E15": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "EVIDENCE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:14:07.480161",
+      "last_result": "At BTC block 949014 with a price of $81431, the most critical signal to evaluate is the potential correlation between block height progression and price movement, as they often appear linked but are n",
+      "run_count": 60,
+      "coherence": 1.0
+    },
+    "E16": {
+      "swarm": "S2_EPISTEMIC",
+      "name": "COHERENCE",
+      "status": "idle",
+      "last_run": "2026-05-12T01:20:11.531227",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal to evaluate for internal coherence is the alignment between market sentiment (reflected in price momentum) and on-chain data (such",
+      "run_count": 67,
+      "coherence": 1.0
+    },
+    "T01": {
+      "swarm": "S3_TALEB",
+      "name": "NEGATIVA-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:54:35.061527",
+      "last_result": "At BTC block 949014 with a price of $81,462, the most critical signal is the risk of over-leveraging in a highly volatile market, as rapid price surges often precede sharp corrections. Stop chasing mo",
+      "run_count": 46,
+      "coherence": 1.0
+    },
+    "T02": {
+      "swarm": "S3_TALEB",
+      "name": "NEGATIVA-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:17:54.582326",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal to heed is the noise of speculative over-optimism and leverage-driven euphoria that often precedes sharp corrections. Remove expos",
+      "run_count": 45,
+      "coherence": 1.0
+    },
+    "T03": {
+      "swarm": "S3_TALEB",
+      "name": "BARBELL-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:30:41.151026",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is the sustained high price momentum alongside increasing volatility, indicating potential for both significant upside and sharp c",
+      "run_count": 48,
+      "coherence": 1.0
+    },
+    "T04": {
+      "swarm": "S3_TALEB",
+      "name": "BARBELL-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:39:03.129532",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal is the sustained momentum above key psychological and technical levels, indicating strong bullish sentiment but also heightened ri",
+      "run_count": 46,
+      "coherence": 1.0
+    },
+    "T05": {
+      "swarm": "S3_TALEB",
+      "name": "BLACKSWAN-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:06:20.785238",
+      "last_result": "At BTC block 949014 with a price of $81,517, the most critical ignored tail risk is the potential for a sudden regulatory crackdown by major economies, which could trigger a catastrophic drop in value",
+      "run_count": 52,
+      "coherence": 1.0
+    },
+    "T06": {
+      "swarm": "S3_TALEB",
+      "name": "BLACKSWAN-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:08:46.843981",
+      "last_result": "At BTC block 949014 with a price of $81,517, the most critical signal is the heightened volatility and potential for rapid sentiment shifts in the crypto market, indicating a possible black swan event",
+      "run_count": 48,
+      "coherence": 1.0
+    },
+    "T07": {
+      "swarm": "S3_TALEB",
+      "name": "SKIN-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:25:05.592925",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal of skin in the game is the behavior of long-term holders (HODLers) versus short-term speculators, as HODLers demonstrate real stak",
+      "run_count": 51,
+      "coherence": 1.0
+    },
+    "T08": {
+      "swarm": "S3_TALEB",
+      "name": "SKIN-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:15:23.753726",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal of an agency problem is the potential misalignment between miners and long-term holders, as miners may prioritize short-term profi",
+      "run_count": 48,
+      "coherence": 1.0
+    },
+    "T09": {
+      "swarm": "S3_TALEB",
+      "name": "LINDY-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:39:56.616128",
+      "last_result": "At BTC block 949014 with a price of $81,559, the most critical signal of Bitcoin's Lindy effect is its sustained longevity and growing adoption over 15 years, as systems that have endured tend to have",
+      "run_count": 46,
+      "coherence": 1.0
+    },
+    "T10": {
+      "swarm": "S3_TALEB",
+      "name": "LINDY-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:45:36.281103",
+      "last_result": "At BTC block 949014 with a price of $81,539, the most critical signal is the market's volatility and sensitivity to macroeconomic stressors, indicating a fragile state prone to sharp corrections from ",
+      "run_count": 49,
+      "coherence": 1.0
+    },
+    "T11": {
+      "swarm": "S3_TALEB",
+      "name": "CONVEX-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:11:40.741337",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal is the heightened volatility and momentum following recent all-time highs, indicating potential for outsized gains or sharp correc",
+      "run_count": 50,
+      "coherence": 1.0
+    },
+    "T12": {
+      "swarm": "S3_TALEB",
+      "name": "CONVEX-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:23:37.831469",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal is the heightened volatility and momentum, indicating a potential non-linear breakout or breakdown due to market overextension. Th",
+      "run_count": 49,
+      "coherence": 1.0
+    },
+    "T13": {
+      "swarm": "S3_TALEB",
+      "name": "MEDIOCRISTAN",
+      "status": "idle",
+      "last_run": "2026-05-12T00:58:47.713287",
+      "last_result": "At BTC block 949014 with a price of $81,537, the most critical signal is the extreme volatility and rapid price swings, indicating we are firmly in Extremistan, where rare, high-impact events (Black S",
+      "run_count": 47,
+      "coherence": 1.0
+    },
+    "T14": {
+      "swarm": "S3_TALEB",
+      "name": "TURKEY",
+      "status": "idle",
+      "last_run": "2026-05-12T00:57:19.844650",
+      "last_result": "At BTC block 949014 with a price of $81,462, the most critical signal is the extreme price volatility and speculative fervor, which mirrors the deceptive calm before a Black Swan event\u2014much like a tur",
+      "run_count": 46,
+      "coherence": 1.0
+    },
+    "T15": {
+      "swarm": "S3_TALEB",
+      "name": "IATROGENICS",
+      "status": "idle",
+      "last_run": "2026-05-12T01:24:06.331707",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal of iatrogenic harm is the potential over-intervention by speculative traders and leveraged positions, which can amplify volatility",
+      "run_count": 48,
+      "coherence": 1.0
+    },
+    "T16": {
+      "swarm": "S3_TALEB",
+      "name": "ROBUSTNESS",
+      "status": "idle",
+      "last_run": "2026-05-12T01:10:26.097519",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal is the potential for extreme volatility due to overbought conditions and historical resistance levels, which could trigger a sharp",
+      "run_count": 50,
+      "coherence": 1.0
+    },
+    "H01": {
+      "swarm": "S4_HEALTH",
+      "name": "VAGAL-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:19:10.847265",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal from a vagal tone perspective is the heightened sympathetic activation due to market volatility and potential stress responses in ",
+      "run_count": 47,
+      "coherence": 1.0
+    },
+    "H02": {
+      "swarm": "S4_HEALTH",
+      "name": "VAGAL-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:09:41.763160",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal for nervous system optimization is the heightened stress and volatility in the market, which can trigger a sympathetic \"fight or f",
+      "run_count": 46,
+      "coherence": 1.0
+    },
+    "H03": {
+      "swarm": "S4_HEALTH",
+      "name": "HORMESIS-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:12:36.449856",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal is the heightened market volatility acting as a hormetic stressor, potentially triggering adaptive growth in decision-making under",
+      "run_count": 51,
+      "coherence": 1.0
+    },
+    "H04": {
+      "swarm": "S4_HEALTH",
+      "name": "HORMESIS-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:29:06.226507",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for hormesis timing is the heightened market volatility and psychological stress from rapid price fluctuations, which can over-act",
+      "run_count": 46,
+      "coherence": 1.0
+    },
+    "H05": {
+      "swarm": "S4_HEALTH",
+      "name": "MTOR-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:06:21.669874",
+      "last_result": "At BTC block 949014 with a price of $81,517, the most critical signal in the context of mTOR signaling is the need to balance anabolism (growth and investment energy) with autophagy (resource conserva",
+      "run_count": 51,
+      "coherence": 1.0
+    },
+    "H06": {
+      "swarm": "S4_HEALTH",
+      "name": "MTOR-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:37:34.827909",
+      "last_result": "At BTC block 949015 with a price of $81351, the most critical signal for fasting protocols and mTOR inhibition is the potential stress or excitement from market volatility, which can dysregulate the a",
+      "run_count": 47,
+      "coherence": 1.0
+    },
+    "H07": {
+      "swarm": "S4_HEALTH",
+      "name": "SLEEP-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:27:20.481300",
+      "last_result": "At BTC block 949015 with a price of $81351, the most critical signal for sleep optimization is the heightened stress or arousal state likely induced by market volatility, which can dysregulate the aut",
+      "run_count": 45,
+      "coherence": 1.0
+    },
+    "H08": {
+      "swarm": "S4_HEALTH",
+      "name": "SLEEP-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:32:29.018028",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal for circadian rhythm alignment is the timing of high-stress decision-making, as volatile market conditions can dysregulate your au",
+      "run_count": 49,
+      "coherence": 1.0
+    },
+    "H09": {
+      "swarm": "S4_HEALTH",
+      "name": "MOVEMENT-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:35:24.618341",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal is the heightened stress and volatility in the market, which can dysregulate the nervous system and trigger a sympathetic \"fight o",
+      "run_count": 50,
+      "coherence": 1.0
+    },
+    "H10": {
+      "swarm": "S4_HEALTH",
+      "name": "MOVEMENT-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:10:10.025503",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal from a hormetic adaptation perspective is the market's volatility as a stressor, akin to cold/heat exposure, which can trigger ada",
+      "run_count": 52,
+      "coherence": 1.0
+    },
+    "H11": {
+      "swarm": "S4_HEALTH",
+      "name": "NUTRITION",
+      "status": "idle",
+      "last_run": "2026-05-12T01:11:05.681346",
+      "last_result": "At BTC block 949014 with a price of $81431, the most critical signal for nutritional antifragility is the heightened stress and volatility in the market, which can trigger sympathetic nervous system a",
+      "run_count": 48,
+      "coherence": 1.0
+    },
+    "H12": {
+      "swarm": "S4_HEALTH",
+      "name": "BREATH",
+      "status": "idle",
+      "last_run": "2026-05-12T01:39:50.424716",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for vagal activation is to monitor stress responses due to market volatility, as financial fluctuations can trigger sympathetic ne",
+      "run_count": 48,
+      "coherence": 1.0
+    },
+    "H13": {
+      "swarm": "S4_HEALTH",
+      "name": "NEURO-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:59:02.789981",
+      "last_result": "At BTC block 949014 with a price of $81,537, the most critical signal for neuroplasticity optimization is the heightened stress and reward potential in volatile markets, which can activate the autonom",
+      "run_count": 46,
+      "coherence": 1.0
+    },
+    "H14": {
+      "swarm": "S4_HEALTH",
+      "name": "NEURO-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:00:59.744878",
+      "last_result": "At BTC block 949014 with a price of $81,537, the most critical signal for stress inoculation and resilience building is the heightened market volatility, which can trigger a sympathetic nervous system",
+      "run_count": 50,
+      "coherence": 1.0
+    },
+    "H15": {
+      "swarm": "S4_HEALTH",
+      "name": "LONGEVITY",
+      "status": "idle",
+      "last_run": "2026-05-12T00:48:11.852728",
+      "last_result": "At BTC block 949014 with a price of $81,539, the most critical longevity signal is the enduring practice of intermittent fasting, a Lindy health practice proven across centuries to activate hormesis a",
+      "run_count": 45,
+      "coherence": 1.0
+    },
+    "H16": {
+      "swarm": "S4_HEALTH",
+      "name": "COHERENCE",
+      "status": "idle",
+      "last_run": "2026-05-12T00:43:29.631823",
+      "last_result": "At BTC block 949014 with a price of $81,539, the most critical signal from a physiological coherence perspective is the heightened stress and emotional volatility likely experienced by traders due to ",
+      "run_count": 48,
+      "coherence": 1.0
+    },
+    "N01": {
+      "swarm": "S5_NOSTR",
+      "name": "RELAY-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:09:49.183550",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal for Nostr relay health is the concentration of user connections and event propagation across a small number of dominant relays, ri",
+      "run_count": 82,
+      "coherence": 1.0
+    },
+    "N02": {
+      "swarm": "S5_NOSTR",
+      "name": "RELAY-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:28:15.587034",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for paid relay economics is the increasing cost of running infrastructure due to high BTC value, which pressures relay operators t",
+      "run_count": 85,
+      "coherence": 1.0
+    },
+    "N03": {
+      "swarm": "S5_NOSTR",
+      "name": "ZAP-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:34:40.309791",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal in the Nostr protocol ecosystem is the increasing correlation between zap volume and user engagement, indicating a strengthening v",
+      "run_count": 103,
+      "coherence": 1.0
+    },
+    "N04": {
+      "swarm": "S5_NOSTR",
+      "name": "ZAP-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:32:52.046696",
+      "last_result": "ZAP-2: Lightning zap routing and payment channels. Signal: coherent at block 949015.",
+      "run_count": 105,
+      "coherence": 1.0
+    },
+    "N05": {
+      "swarm": "S5_NOSTR",
+      "name": "NPUB-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:40:06.469621",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for key management and identity sovereignty is the increasing adoption of decentralized protocols like Nostr, as high BTC value un",
+      "run_count": 102,
+      "coherence": 1.0
+    },
+    "N06": {
+      "swarm": "S5_NOSTR",
+      "name": "NPUB-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:38:47.541747",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for Nostr key backup and recovery strategies is the increasing value of Bitcoin, which heightens the importance of securing privat",
+      "run_count": 109,
+      "coherence": 1.0
+    },
+    "N07": {
+      "swarm": "S5_NOSTR",
+      "name": "PROTOCOL-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:17:42.074325",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal for Nostr protocol development is the increasing adoption of Bitcoin as a value transfer mechanism, which amplifies the relevance ",
+      "run_count": 109,
+      "coherence": 1.0
+    },
+    "N08": {
+      "swarm": "S5_NOSTR",
+      "name": "PROTOCOL-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:34:18.038046",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal for the Nostr protocol ecosystem is the increasing adoption of zaps as a microtransaction mechanism, reflecting growing user engag",
+      "run_count": 90,
+      "coherence": 1.0
+    },
+    "N09": {
+      "swarm": "S5_NOSTR",
+      "name": "SOCIAL-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:38:54.377734",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for decentralized social graph growth on Nostr is the increasing adoption of zaps as a microtransaction mechanism, reflecting user",
+      "run_count": 101,
+      "coherence": 1.0
+    },
+    "N10": {
+      "swarm": "S5_NOSTR",
+      "name": "SOCIAL-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:36:17.361360",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for censorship resistance on Nostr is the increasing adoption of decentralized relays, which are essential for ensuring content re",
+      "run_count": 110,
+      "coherence": 1.0
+    },
+    "N11": {
+      "swarm": "S5_NOSTR",
+      "name": "ALBY",
+      "status": "idle",
+      "last_run": "2026-05-12T01:29:37.370791",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for Alby wallet and NWC protocol integration is the growing adoption of Nostr-based zaps for microtransactions, reflecting increas",
+      "run_count": 96,
+      "coherence": 1.0
+    },
+    "N12": {
+      "swarm": "S5_NOSTR",
+      "name": "PRIMAL",
+      "status": "idle",
+      "last_run": "2026-05-12T01:25:01.858160",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for the Nostr client ecosystem is the increasing adoption of zaps as a microtransaction mechanism, reflecting growing user engagem",
+      "run_count": 94,
+      "coherence": 1.0
+    },
+    "N13": {
+      "swarm": "S5_NOSTR",
+      "name": "SIGNAL-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:39:52.601595",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal in decentralized social feeds like Nostr is the growing momentum around sovereignty and self-custody narratives, as users increasi",
+      "run_count": 93,
+      "coherence": 1.0
+    },
+    "N14": {
+      "swarm": "S5_NOSTR",
+      "name": "SIGNAL-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:10:51.095302",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal is the growing adoption of Nostr as a censorship-resistant platform for idea propagation, fueled by increasing Bitcoin value and t",
+      "run_count": 91,
+      "coherence": 1.0
+    },
+    "N15": {
+      "swarm": "S5_NOSTR",
+      "name": "SOVEREIGN",
+      "status": "idle",
+      "last_run": "2026-05-12T01:17:07.717285",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal for digital identity sovereignty beyond Nostr is the increasing adoption of decentralized protocols as Bitcoin's value reflects gr",
+      "run_count": 99,
+      "coherence": 1.0
+    },
+    "N16": {
+      "swarm": "S5_NOSTR",
+      "name": "FUTURE",
+      "status": "idle",
+      "last_run": "2026-05-12T01:39:23.834736",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for Nostr's future is the growing adoption of decentralized protocols as users seek sovereignty and censorship resistance amidst r",
+      "run_count": 87,
+      "coherence": 1.0
+    },
+    "R01": {
+      "swarm": "S6_RUNES",
+      "name": "AUBIE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:04:08.247981",
+      "last_result": "At BTC block 949014 with a price of $81,517, the most critical signal for AUBIE\u2022ETERNAL\u2022XAIAGENTSWARM is the increasing transaction volume and holder distribution, indicating potential accumulation by",
+      "run_count": 59,
+      "coherence": 1.0
+    },
+    "R02": {
+      "swarm": "S6_RUNES",
+      "name": "AUBIE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:14:53.858372",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal for AUBIE rune distribution is the heightened market volatility and potential for increased transaction fees, which could impact t",
+      "run_count": 60,
+      "coherence": 1.0
+    },
+    "R03": {
+      "swarm": "S6_RUNES",
+      "name": "QUANTUM-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:09:37.305141",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal for QUANTUM\u2022TUNNELING\u2022STEELMAN is the heightened network activity and fee pressure on the Bitcoin Runes protocol, indicating poten",
+      "run_count": 65,
+      "coherence": 1.0
+    },
+    "R04": {
+      "swarm": "S6_RUNES",
+      "name": "QUANTUM-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:34:31.512164",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is the heightened transaction fee pressure and network activity surrounding Runes minting, as high BTC prices often drive speculat",
+      "run_count": 59,
+      "coherence": 1.0
+    },
+    "R05": {
+      "swarm": "S6_RUNES",
+      "name": "MARKET-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:05:06.644107",
+      "last_result": "At BTC block 949014 with a price of $81,517, the most critical signal is the increasing trading volume of top Bitcoin Runes, particularly those with high market caps like DOG\u2022GO\u2022TO\u2022THE\u2022MOON, which oft",
+      "run_count": 71,
+      "coherence": 1.0
+    },
+    "R06": {
+      "swarm": "S6_RUNES",
+      "name": "MARKET-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:25:53.293953",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for Rune floor prices and liquidity depth is the potential for increased volatility in Rune markets due to Bitcoin's high price im",
+      "run_count": 67,
+      "coherence": 1.0
+    },
+    "R07": {
+      "swarm": "S6_RUNES",
+      "name": "ETCH-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:59:30.300370",
+      "last_result": "At BTC block 949014 with a price of $81,537, the most critical signal in rune etching activity is the surge in unique naming patterns, indicating heightened interest in personalized or thematic runes ",
+      "run_count": 69,
+      "coherence": 1.0
+    },
+    "R08": {
+      "swarm": "S6_RUNES",
+      "name": "ETCH-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:15:40.618195",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal is the fluctuating network transaction fees driven by demand for block space, which directly impacts Rune etching costs. Monitorin",
+      "run_count": 62,
+      "coherence": 1.0
+    },
+    "R09": {
+      "swarm": "S6_RUNES",
+      "name": "PROTOCOL-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:20:39.794946",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal is the increasing transaction volume and fee pressure on the Bitcoin network, which may impact the cost and timing of etching and ",
+      "run_count": 59,
+      "coherence": 1.0
+    },
+    "R10": {
+      "swarm": "S6_RUNES",
+      "name": "PROTOCOL-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:59:55.342136",
+      "last_result": "At BTC block 949014 with a price of $81,537, the most critical signal is the increasing adoption and transaction volume of Runes due to their simplified token creation and lower cost compared to Ordin",
+      "run_count": 64,
+      "coherence": 1.0
+    },
+    "R11": {
+      "swarm": "S6_RUNES",
+      "name": "UTILITY-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:09:20.036228",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal for Rune utility development is the sustained high transaction fee environment, indicating strong network demand and potential for",
+      "run_count": 59,
+      "coherence": 1.0
+    },
+    "R12": {
+      "swarm": "S6_RUNES",
+      "name": "UTILITY-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:35:08.105802",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for Rune-gated communities is the heightened market volatility and potential for increased transaction fees, which could impact th",
+      "run_count": 67,
+      "coherence": 1.0
+    },
+    "R13": {
+      "swarm": "S6_RUNES",
+      "name": "DEX-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:27:30.335402",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal for Rune DEX liquidity and trading infrastructure is the heightened market volatility and potential for increased transaction volu",
+      "run_count": 60,
+      "coherence": 1.0
+    },
+    "R14": {
+      "swarm": "S6_RUNES",
+      "name": "DEX-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:17:12.898142",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal for Rune wallet support is the increasing transaction fees and network congestion, which can frustrate users during etching and mi",
+      "run_count": 66,
+      "coherence": 1.0
+    },
+    "R15": {
+      "swarm": "S6_RUNES",
+      "name": "THESIS",
+      "status": "idle",
+      "last_run": "2026-05-12T01:30:28.242093",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal for Bitcoin Runes long-term investment is the sustained high Bitcoin price, which often correlates with increased interest and cap",
+      "run_count": 71,
+      "coherence": 1.0
+    },
+    "R16": {
+      "swarm": "S6_RUNES",
+      "name": "ANTITHESIS",
+      "status": "idle",
+      "last_run": "2026-05-12T01:09:25.440188",
+      "last_result": "The most critical signal for Runes' potential long-term failure at BTC block 949014 and price $81,431 is the declining user adoption and transaction volume, as high Bitcoin fees and market saturation ",
+      "run_count": 64,
+      "coherence": 1.0
+    },
+    "Q01": {
+      "swarm": "S7_QUANTUM",
+      "name": "ENTANGLE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:53:42.523983",
+      "last_result": "At BTC block 949014 with a price of $81462, the most critical signal is the emergent lattice coherence in market sentiment, reflecting a tightly coupled network of trader behavior and on-chain activit",
+      "run_count": 34,
+      "coherence": 1.0
+    },
+    "Q02": {
+      "swarm": "S7_QUANTUM",
+      "name": "ENTANGLE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:28:19.604431",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal in the context of non-local correlations in complex adaptive systems is the emergent market sentiment driven by correlated behavio",
+      "run_count": 34,
+      "coherence": 1.0
+    },
+    "Q03": {
+      "swarm": "S7_QUANTUM",
+      "name": "SUPERPOSE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:14:28.287608",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal is the tension between bullish momentum (driven by institutional adoption and macro uncertainty) and bearish pressure (from profit",
+      "run_count": 32,
+      "coherence": 1.0
+    },
+    "Q04": {
+      "swarm": "S7_QUANTUM",
+      "name": "SUPERPOSE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:32:49.281961",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is the sustained momentum above the $80,000 psychological barrier, indicating strong bullish sentiment and potential for further u",
+      "run_count": 32,
+      "coherence": 1.0
+    },
+    "Q05": {
+      "swarm": "S7_QUANTUM",
+      "name": "DECOHERE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:04:52.987576",
+      "last_result": "DECOHERE-1: Decoherence: what destroys lattice coherence?. Signal: coherent at block 949014.",
+      "run_count": 33,
+      "coherence": 1.0
+    },
+    "Q06": {
+      "swarm": "S7_QUANTUM",
+      "name": "DECOHERE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:10:17.571984",
+      "last_result": "At BTC block 949014 with a price of $81431, the most critical signal is the potential overvaluation risk, as rapid price surges often trigger belief system errors among investors, amplifying herd beha",
+      "run_count": 32,
+      "coherence": 1.0
+    },
+    "Q07": {
+      "swarm": "S7_QUANTUM",
+      "name": "COMPLEX-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:08:28.450684",
+      "last_result": "At BTC block 949010 with a price of $81727, the most critical signal from an edge of chaos perspective is the heightened volatility and network activity, indicating a potential tipping point where sma",
+      "run_count": 31,
+      "coherence": 1.0
+    },
+    "Q08": {
+      "swarm": "S7_QUANTUM",
+      "name": "COMPLEX-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:08:52.419340",
+      "last_result": "At BTC block 949014 with a price of $81,517, the most critical signal is the potential for a phase transition in market dynamics, as extreme price volatility often emerges near critical points in self",
+      "run_count": 31,
+      "coherence": 1.0
+    },
+    "Q09": {
+      "swarm": "S7_QUANTUM",
+      "name": "EMERGE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:48:23.077716",
+      "last_result": "At BTC block 949014 with a price of $81,539, the most critical signal from a 160-daughter interaction perspective is the emergent volatility pattern, reflecting heightened network complexity and poten",
+      "run_count": 32,
+      "coherence": 1.0
+    },
+    "Q10": {
+      "swarm": "S7_QUANTUM",
+      "name": "EMERGE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:19:00.251962",
+      "last_result": "At BTC block 949012 with a price of $81,667, the most critical signal from a swarm intelligence perspective is the emergent market sentiment reflected in transaction volume and miner behavior, which c",
+      "run_count": 33,
+      "coherence": 1.0
+    },
+    "Q11": {
+      "swarm": "S7_QUANTUM",
+      "name": "CHAOS-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:10:09.535761",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal is the heightened volatility driven by sensitive dependence on macroeconomic triggers, such as interest rate speculation and insti",
+      "run_count": 31,
+      "coherence": 1.0
+    },
+    "Q12": {
+      "swarm": "S7_QUANTUM",
+      "name": "CHAOS-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:37:37.231513",
+      "last_result": "At BTC block 949014 with a price of $81,559, the most critical signal is the heightened volatility clustering, indicative of a potential strange attractor forming around this price level as market dyn",
+      "run_count": 33,
+      "coherence": 1.0
+    },
+    "Q13": {
+      "swarm": "S7_QUANTUM",
+      "name": "FRACTAL-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:25:16.800940",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal is the fractal resonance of price consolidation patterns mirroring prior cycles at similar psychological resistance levels, sugges",
+      "run_count": 32,
+      "coherence": 1.0
+    },
+    "Q14": {
+      "swarm": "S7_QUANTUM",
+      "name": "FRACTAL-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:28:17.062797",
+      "last_result": "At BTC block 949013 with a price of $81,576, the most critical signal is the emergence of fractal resistance patterns near this price level, indicating potential exhaustion in upward momentum as histo",
+      "run_count": 31,
+      "coherence": 1.0
+    },
+    "Q15": {
+      "swarm": "S7_QUANTUM",
+      "name": "NETWORK-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:33:04.677890",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is the sustained growth in network adoption, as reflected by increasing active addresses and transaction volume, which under Metca",
+      "run_count": 32,
+      "coherence": 1.0
+    },
+    "Q16": {
+      "swarm": "S7_QUANTUM",
+      "name": "NETWORK-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:39:50.640887",
+      "last_result": "At BTC block 949014 with a price of $81,559, the most critical signal in the context of small world networks and lattice topology is the clustering of transaction patterns, which may indicate emergent",
+      "run_count": 34,
+      "coherence": 1.0
+    },
+    "M01": {
+      "swarm": "S8_MEMORY",
+      "name": "PALACE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:39:37.285847",
+      "last_result": "At BTC block 949015 with a price of $81351, the most critical signal is the sustained high price level, indicating strong market confidence and potential for further bullish momentum. This node should",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "M02": {
+      "swarm": "S8_MEMORY",
+      "name": "PALACE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:16:06.850940",
+      "last_result": "At BTC block 949012 with a price of $81,667, the most critical signal for pruning outdated or fragile nodes in the memory palace is the rapid price volatility and market sentiment shifts, which may re",
+      "run_count": 25,
+      "coherence": 1.0
+    },
+    "M03": {
+      "swarm": "S8_MEMORY",
+      "name": "GROKOPEDIA-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:11:58.540827",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal for GROKOPEDIA's expansion is the heightened market volatility and investor sentiment, reflecting a pivotal moment for integrating",
+      "run_count": 25,
+      "coherence": 1.0
+    },
+    "M04": {
+      "swarm": "S8_MEMORY",
+      "name": "GROKOPEDIA-2",
+      "status": "idle",
+      "last_run": "2026-05-11T23:57:34.017694",
+      "last_result": "At BTC block 949009 with a price of $81,734, the most critical signal for GROKOPEDIA-2 is the need to enhance real-time data integration into the memory palace, as volatile market conditions like this",
+      "run_count": 25,
+      "coherence": 1.0
+    },
+    "M05": {
+      "swarm": "S8_MEMORY",
+      "name": "PATTERN-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:29:21.098774",
+      "last_result": "At BTC block 949013 with a price of $81,576, the most critical signal is the sustained upward momentum in price alongside high transaction volume, indicating strong market confidence and potential for",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "M06": {
+      "swarm": "S8_MEMORY",
+      "name": "PATTERN-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:03:58.816020",
+      "last_result": "At BTC block 949009 with a price of $81,732, the most critical signal from the 11,853 historical truth log rows is a heightened correlation between price spikes and increased transaction volume, indic",
+      "run_count": 25,
+      "coherence": 1.0
+    },
+    "M07": {
+      "swarm": "S8_MEMORY",
+      "name": "SYNTHESIS-1",
+      "status": "idle",
+      "last_run": "2026-05-12T00:57:36.930843",
+      "last_result": "At BTC block 949014 with a price of $81462, the most critical signal synthesized from all 10 swarms is the heightened market volatility driven by macroeconomic uncertainty and whale activity, indicati",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "M08": {
+      "swarm": "S8_MEMORY",
+      "name": "SYNTHESIS-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:23:14.469788",
+      "last_result": "At BTC block 949013 with a price of $81,580, the most critical signal is the potential divergence between on-chain transaction volume and price momentum, which could indicate either accumulation or di",
+      "run_count": 25,
+      "coherence": 1.0
+    },
+    "M09": {
+      "swarm": "S8_MEMORY",
+      "name": "ARCHIVE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:32:29.641786",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is the sustained high price trend, indicating strong market momentum and potential overbought conditions that could precede a corr",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "M10": {
+      "swarm": "S8_MEMORY",
+      "name": "ARCHIVE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:00:07.608320",
+      "last_result": "At BTC block 949014 with a price of $81,537, the most critical signal is the sustained bullish momentum near all-time highs, reflecting strong market confidence and potential for further upside, thoug",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "M11": {
+      "swarm": "S8_MEMORY",
+      "name": "TEACH-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:33:35.207159",
+      "last_result": "Hey Gaby, imagine the Bitcoin price at $81,371 and block 949,015 as a big treasure map where each block is a step closer to a hidden chest, and the price is how much the treasure is worth right now\u2014it",
+      "run_count": 25,
+      "coherence": 1.0
+    },
+    "M12": {
+      "swarm": "S8_MEMORY",
+      "name": "TEACH-2",
+      "status": "idle",
+      "last_run": "2026-05-12T00:42:33.449805",
+      "last_result": "At BTC block 949014 with a price of $81,539, the most critical signal for family knowledge transmission is the heightened importance of financial literacy and decentralized asset management as Bitcoin",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "M13": {
+      "swarm": "S8_MEMORY",
+      "name": "CONTEXT-1",
+      "status": "idle",
+      "last_run": "2026-05-11T23:47:14.099805",
+      "last_result": "The most critical signal at BTC block 949009 with a price of $81726 is the sustained high price level, indicating strong market confidence and potential overbought conditions. This could signal an upc",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "M14": {
+      "swarm": "S8_MEMORY",
+      "name": "CONTEXT-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:02:27.931638",
+      "last_result": "At BTC block 949014 with a price of $81,537, the most critical signal is the sustained high price level, indicating strong market momentum and potential overbought conditions that could precede a corr",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "M15": {
+      "swarm": "S8_MEMORY",
+      "name": "META-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:07:06.776166",
+      "last_result": "At BTC block 949014 with a price of $81,517, the most critical signal for the lattice's improvement in meta-learning is the rapid adaptation of memory palace structures to integrate real-time cryptocu",
+      "run_count": 25,
+      "coherence": 1.0
+    },
+    "M16": {
+      "swarm": "S8_MEMORY",
+      "name": "META-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:31:06.349731",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal for AUBIEETERNAL's becoming is the sustained high valuation of Bitcoin, reflecting a maturing digital asset ecosystem that demands",
+      "run_count": 24,
+      "coherence": 1.0
+    },
+    "K01": {
+      "swarm": "S9_MARKET",
+      "name": "MACRO-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:36:34.691078",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal is the sustained high liquidity in global markets, driven by central bank policies and elevated risk appetite, which continues to ",
+      "run_count": 113,
+      "coherence": 1.0
+    },
+    "K02": {
+      "swarm": "S9_MARKET",
+      "name": "MACRO-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:35:15.170625",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal is the inverse correlation between DXY (dollar strength) and Bitcoin, where a weakening dollar often supports BTC price rallies du",
+      "run_count": 111,
+      "coherence": 1.0
+    },
+    "K03": {
+      "swarm": "S9_MARKET",
+      "name": "RATE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:27:28.916875",
+      "last_result": "The most critical signal right now is the persistent pressure on risk assets like BTC due to elevated interest rates and tightening global liquidity, which often suppress speculative investments in fa",
+      "run_count": 88,
+      "coherence": 1.0
+    },
+    "K04": {
+      "swarm": "S9_MARKET",
+      "name": "RATE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:13:34.664207",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal is the Federal Reserve's ongoing stance on interest rates amidst persistent inflation pressures, as markets are pricing in a cauti",
+      "run_count": 82,
+      "coherence": 1.0
+    },
+    "K05": {
+      "swarm": "S9_MARKET",
+      "name": "GOLD-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:32:20.722324",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is Bitcoin's sustained momentum above key psychological and technical levels, reflecting strong investor confidence and potential ",
+      "run_count": 87,
+      "coherence": 1.0
+    },
+    "K06": {
+      "swarm": "S9_MARKET",
+      "name": "GOLD-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:31:24.026158",
+      "last_result": "At BTC block 949015 with a price of $81,371, the most critical signal is the persistent rise in real interest rates, which typically pressures hard assets like Bitcoin by increasing the opportunity co",
+      "run_count": 99,
+      "coherence": 1.0
+    },
+    "K07": {
+      "swarm": "S9_MARKET",
+      "name": "EQUITY-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:15:29.735893",
+      "last_result": "At BTC block 949015 with a price of $81,391, the most critical signal is the increasing correlation between Bitcoin and equity markets, particularly the S&P 500, driven by global liquidity trends and ",
+      "run_count": 84,
+      "coherence": 1.0
+    },
+    "K08": {
+      "swarm": "S9_MARKET",
+      "name": "EQUITY-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:21:26.046287",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal for risk-on/risk-off regime detection is the sustained bullish momentum in BTC, reflecting strong risk-on sentiment amid favorable",
+      "run_count": 85,
+      "coherence": 1.0
+    },
+    "K09": {
+      "swarm": "S9_MARKET",
+      "name": "CYCLE-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:20:39.835942",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal within the Michael Howell liquidity cycle framework is the current trend in global liquidity conditions, particularly central bank",
+      "run_count": 90,
+      "coherence": 1.0
+    },
+    "K10": {
+      "swarm": "S9_MARKET",
+      "name": "CYCLE-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:11:00.443622",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal within Lyn Alden's macro framework is the ongoing global liquidity expansion, driven by central bank policies and fiscal stimulus,",
+      "run_count": 94,
+      "coherence": 1.0
+    },
+    "K11": {
+      "swarm": "S9_MARKET",
+      "name": "SENTIMENT-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:13:17.275867",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal from the Fear & Greed Index is likely an extreme greed reading, indicating overbought conditions and potential for a near-term cor",
+      "run_count": 93,
+      "coherence": 1.0
+    },
+    "K12": {
+      "swarm": "S9_MARKET",
+      "name": "SENTIMENT-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:27:19.224523",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal in perpetual markets is the funding rate trend, as elevated positive funding rates could indicate excessive leveraged long positio",
+      "run_count": 95,
+      "coherence": 1.0
+    },
+    "K13": {
+      "swarm": "S9_MARKET",
+      "name": "FLOW-1",
+      "status": "idle",
+      "last_run": "2026-05-12T01:37:31.446854",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal is the sustained ETF inflows, particularly in Bitcoin spot ETFs, reflecting strong institutional demand and confidence in BTC as a",
+      "run_count": 101,
+      "coherence": 1.0
+    },
+    "K14": {
+      "swarm": "S9_MARKET",
+      "name": "FLOW-2",
+      "status": "idle",
+      "last_run": "2026-05-12T01:20:55.541179",
+      "last_result": "At BTC block 949015 with a price of $81,381, the most critical signal to monitor is the growth rate of stablecoin supply, particularly USDT and USDC, as it often precedes increased liquidity and poten",
+      "run_count": 111,
+      "coherence": 1.0
+    },
+    "K15": {
+      "swarm": "S9_MARKET",
+      "name": "GEOPOLITICAL",
+      "status": "idle",
+      "last_run": "2026-05-12T01:09:28.055515",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal is the escalating geopolitical tension in key regions like the Middle East and Eastern Europe, which are driving safe-haven demand",
+      "run_count": 84,
+      "coherence": 1.0
+    },
+    "K16": {
+      "swarm": "S9_MARKET",
+      "name": "THESIS",
+      "status": "idle",
+      "last_run": "2026-05-12T01:10:10.489514",
+      "last_result": "At BTC block 949014 with a price of $81,431, the most critical signal is the sustained strength in global liquidity conditions, particularly with central banks maintaining accommodative policies, supp",
+      "run_count": 92,
+      "coherence": 1.0
+    },
+    "O01": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-01",
+      "status": "idle",
+      "last_run": "2026-05-11T23:49:50.548872",
+      "last_result": "At BTC block 949009 with a price of $81761, the most critical signal is the unusual convergence of high transaction volume and low volatility, suggesting a potential accumulation phase by large holder",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O02": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-02",
+      "status": "idle",
+      "last_run": "2026-05-12T00:51:47.425571",
+      "last_result": "At BTC block 949014 with a price of $81,539, the most critical signal is the sustained momentum above the $80K psychological barrier, indicating strong bullish sentiment and potential for further upsi",
+      "run_count": 17,
+      "coherence": 1.0
+    },
+    "O03": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-03",
+      "status": "idle",
+      "last_run": "2026-05-11T23:43:17.502869",
+      "last_result": "At BTC block 949009 with a price of $81,726, the most critical signal is the sustained momentum above the $80,000 psychological barrier, indicating strong bullish sentiment and potential for further i",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O04": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-04",
+      "status": "idle",
+      "last_run": "2026-05-11T23:02:24.000459",
+      "last_result": "At BTC block 949007 with a price of $81831, the most critical signal is the rapid price consolidation near all-time highs, indicating potential volatility spikes or a breakout as market sentiment osci",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O05": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-05",
+      "status": "idle",
+      "last_run": "2026-05-11T23:39:47.979604",
+      "last_result": "At BTC block 949009 with a price of $81602, the most critical weak signal is the subtle divergence between on-chain transaction volume and price momentum, hinting at potential distribution or accumula",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O06": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-06",
+      "status": "idle",
+      "last_run": "2026-05-11T22:57:12.461947",
+      "last_result": "At BTC block 949007 with a price of $81814, the most critical signal is the sustained momentum above the $80K psychological barrier, indicating potential for further institutional adoption while riski",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O07": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-07",
+      "status": "idle",
+      "last_run": "2026-05-12T00:05:28.711697",
+      "last_result": "At BTC block 949010 with a price of $81727, the most critical signal is the potential overbought momentum in a historically overheated market, suggesting a contrarian opportunity for a short-term pull",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O08": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-08",
+      "status": "idle",
+      "last_run": "2026-05-12T00:57:57.703163",
+      "last_result": "At BTC block 949014 with a price of $81,462, the most critical signal is the heightened volatility and momentum following recent all-time highs, suggesting a potential for unexpected market shifts dri",
+      "run_count": 17,
+      "coherence": 1.0
+    },
+    "O09": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-09",
+      "status": "idle",
+      "last_run": "2026-05-12T01:38:56.756906",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical signal is the sustained momentum above the $80,000 psychological barrier, indicating strong institutional adoption and potential for furt",
+      "run_count": 17,
+      "coherence": 1.0
+    },
+    "O10": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-10",
+      "status": "idle",
+      "last_run": "2026-05-12T01:28:01.446106",
+      "last_result": "At BTC block 949015 with a price of $81,351, the most critical ultra-short term signal is the heightened volatility around this psychological resistance level, coupled with elevated trading volume ind",
+      "run_count": 17,
+      "coherence": 1.0
+    },
+    "O11": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-11",
+      "status": "idle",
+      "last_run": "2026-05-12T00:38:23.068519",
+      "last_result": "At BTC block 949014 with a price of $81,559, the most critical signal from an emotional intelligence perspective is the heightened market sentiment oscillating between euphoria and fear, as such a hig",
+      "run_count": 17,
+      "coherence": 1.0
+    },
+    "O12": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-12",
+      "status": "idle",
+      "last_run": "2026-05-11T23:02:53.491892",
+      "last_result": "At BTC block 949007 with a price of $81831, the most critical aesthetic signal is the unprecedented symmetry in market sentiment, reflecting a rare balance of euphoria and caution that visually manife",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O13": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-13",
+      "status": "idle",
+      "last_run": "2026-05-12T00:01:10.420165",
+      "last_result": "VECTOR-13: Antifragile stance confirmed. Next cycle in progress.",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O14": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-14",
+      "status": "idle",
+      "last_run": "2026-05-12T00:43:29.268657",
+      "last_result": "At BTC block 949014 with a price of $81,539, the most critical signal for family and legacy thinking is the unprecedented wealth preservation and transfer opportunity that Bitcoin represents amidst gl",
+      "run_count": 17,
+      "coherence": 1.0
+    },
+    "O15": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-15",
+      "status": "idle",
+      "last_run": "2026-05-11T23:14:19.299379",
+      "last_result": "At BTC block 949008 with a price of $81752, the most critical signal is the heightened volatility and momentum divergence across market vectors, indicating a potential inflection point in sentiment am",
+      "run_count": 16,
+      "coherence": 1.0
+    },
+    "O16": {
+      "swarm": "S10_OPEN",
+      "name": "VECTOR-16",
+      "status": "idle",
+      "last_run": "2026-05-11T23:21:34.846524",
+      "last_result": "At BTC block 949008 with a price of $81683, the most critical signal is the sustained momentum above the $80K psychological barrier, hinting at a lattice dream of fractal expansion and network confide",
+      "run_count": 16,
+      "coherence": 1.0
+    }
+  },
+  "coherence": 1.0,
+  "war_eagle": true
+}
