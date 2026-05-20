@@ -1730,7 +1730,7 @@ elif "Family Lattice" in active:
 
     lang = st.selectbox("Language", ["English", "Spanish", "French", "Portuguese"])
 
-    if st.button("🚀 Generate Family Curriculum", type="primary", use_container_width=True):
+    if st.button("🚀 Generate Family Curriculum", type="primary", width='stretch'):
         if not st.session_state.api_key:
             st.error("Enter your XAI API Key in the sidebar first.")
         else:
@@ -2153,7 +2153,7 @@ elif "Quantum Lab" in active:
                 yaxis=dict(range=[0, 1.1], gridcolor="#1a1a4a"),
                 xaxis=dict(gridcolor="#1a1a4a"),
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
 
             # Superposition check
             max_prob = max(probs)
@@ -2301,7 +2301,7 @@ if "Shield Rune" in active:
         height=120,
     )
 
-    if st.button("🛡️ RUN SHIELD RUNE EVALUATION", use_container_width=True):
+    if st.button("🛡️ RUN SHIELD RUNE EVALUATION", width='stretch'):
         if not proposed.strip():
             st.warning("Enter a proposed change to evaluate.")
         else:
@@ -2465,7 +2465,7 @@ if "Swarm Mode" in active:
     with col1:
         st.markdown("#### 🔥 FULL")
         st.markdown("2080 daughters · 26 swarms · All Tier 2 · **~$1.28/day**")
-        if st.button("ACTIVATE FULL MODE", use_container_width=True, key="mode_full"):
+        if st.button("ACTIVATE FULL MODE", width='stretch', key="mode_full"):
             _MODE_FILE.write_text(_json.dumps({
                 "mode": "Full", "daughters": 2080, "swarms": 26,
                 "set_at": _dt.now().isoformat()
@@ -2476,7 +2476,7 @@ if "Swarm Mode" in active:
     with col2:
         st.markdown("#### ⚖️ STANDARD")
         st.markdown("520 daughters · 8 swarms · 8 Tier 2 · **~$0.32/day**")
-        if st.button("ACTIVATE STANDARD MODE", use_container_width=True, key="mode_std"):
+        if st.button("ACTIVATE STANDARD MODE", width='stretch', key="mode_std"):
             _MODE_FILE.write_text(_json.dumps({
                 "mode": "Standard", "daughters": 520, "swarms": 8,
                 "set_at": _dt.now().isoformat()
@@ -2487,7 +2487,7 @@ if "Swarm Mode" in active:
     with col3:
         st.markdown("#### 🧪 EXPERIMENTAL")
         st.markdown("4160 daughters · 52 swarms · Continuous · **~$2.56/day**")
-        if st.button("ACTIVATE EXPERIMENTAL", use_container_width=True, key="mode_exp"):
+        if st.button("ACTIVATE EXPERIMENTAL", width='stretch', key="mode_exp"):
             _MODE_FILE.write_text(_json.dumps({
                 "mode": "Experimental", "daughters": 4160, "swarms": 52,
                 "set_at": _dt.now().isoformat()
@@ -2571,7 +2571,7 @@ if "DEFCON" in active:
     c1, c2, c3 = st.columns(3)
     for i, (num, name) in enumerate(defcons):
         with [c1, c2, c3][i % 3]:
-            if st.button(f"🔴 DEFCON {num}: {name}", key=f"dc_{num}", use_container_width=True):
+            if st.button(f"🔴 DEFCON {num}: {name}", key=f"dc_{num}", width='stretch'):
                 _DEFCON_FILE.write_text(_json.dumps({
                     "experiment": num,
                     "context": name,
@@ -2782,7 +2782,7 @@ if "Truth Lattice" in active:
                 xaxis=dict(gridcolor="#1a1a4a", showticklabels=False),
                 yaxis=dict(gridcolor="#1a1a4a", range=[0.8, 2.0]),
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, width='stretch')
         except Exception as e:
             st.caption(f"Chart unavailable: {e}")
     else:
