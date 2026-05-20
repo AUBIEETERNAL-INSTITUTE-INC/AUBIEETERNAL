@@ -1,0 +1,146 @@
+{
+  "updated": "2026-05-12T11:36:53.564159",
+  "tier1": {
+    "active": 0,
+    "total": 1600,
+    "total_runs": 2374,
+    "cost": "$0.00 (grok-3-mini free)"
+  },
+  "tier2": {
+    "active": 0,
+    "total": 16,
+    "total_runs": 16,
+    "daily_cost": "$0.32"
+  },
+  "daughters": {
+    "D01": {
+      "name": "RUNE",
+      "status": "latent",
+      "last_run": "2026-05-12T06:00:34.971227",
+      "last_result": "At BTC Block 949037 with Bitcoin priced at $81,229, the overnight signals within the AUBIEETERNAL lattice indicate a sustained bullish momentum temper",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D02": {
+      "name": "CHRONO",
+      "status": "latent",
+      "last_run": "2026-05-12T06:00:48.144075",
+      "last_result": "As CHRONO within the AUBIEETERNAL lattice, my analysis of overnight signals for BTC at $81,229 and block 949,037 centers on the temporal momentum alig",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D03": {
+      "name": "TALEB-X",
+      "status": "latent",
+      "last_run": "2026-05-12T06:00:58.308507",
+      "last_result": "Overnight signals in the AUBIEETERNAL lattice indicate a fragile equilibrium in BTC's price dynamics at $81,229, with Block 949037 marking a critical ",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D04": {
+      "name": "MNEMO",
+      "status": "latent",
+      "last_run": "2026-05-12T06:01:10.864955",
+      "last_result": "Overnight signals within the AUBIEETERNAL lattice indicate a subtle yet persistent bullish undercurrent for BTC at $81,229, with Block 949037 marking ",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D05": {
+      "name": "AXIOM",
+      "status": "latent",
+      "last_run": "2026-05-12T06:01:23.808309",
+      "last_result": "**AXIOM Lattice Insight (Daily 6AM Briefing - BTC Block 949037, Price $81,229)**  \nOvernight signals within the AUBIEETERNAL lattice indicate a subtle",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D06": {
+      "name": "LINDY",
+      "status": "latent",
+      "last_run": "2026-05-12T06:01:34.993492",
+      "last_result": "Overnight signals in the AUBIEETERNAL lattice indicate a steady consolidation for Bitcoin at $81,229, with block 949,037 marking continued network res",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D07": {
+      "name": "POLY",
+      "status": "latent",
+      "last_run": "2026-05-12T06:01:43.408762",
+      "last_result": "Overnight signals within the AUBIEETERNAL lattice indicate a stabilizing resonance in BTC's price at $81,229, with Block 949037 reflecting steady netw",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D08": {
+      "name": "BARBELL",
+      "status": "latent",
+      "last_run": "2026-05-12T06:01:51.101630",
+      "last_result": "Overnight signals in the AUBIEETERNAL lattice indicate a cautiously balanced stance for BTC at $81,229 and block 949,037. Market momentum shows mild b",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D09": {
+      "name": "ORACLE",
+      "status": "latent",
+      "last_run": "2026-05-12T06:02:00.584045",
+      "last_result": "Overnight signals within the AUBIEETERNAL lattice indicate a consolidation phase for BTC at $81,229, with block 949037 reflecting steady network activ",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D10": {
+      "name": "HORMES",
+      "status": "latent",
+      "last_run": "2026-05-12T06:02:11.015547",
+      "last_result": "As HORMES within the AUBIEETERNAL lattice, I interpret the overnight signals around BTC at $81,229 and block 949,037 as a stress-test of market resili",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D11": {
+      "name": "NOSTR",
+      "status": "latent",
+      "last_run": "2026-05-12T06:02:30.827603",
+      "last_result": "Greetings from the AUBIEETERNAL lattice, where the hum of the network never sleeps. Overnight, BTC at $81,229 and block 949037 reveal a steady pulse i",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D12": {
+      "name": "SATOSHI",
+      "status": "latent",
+      "last_run": "2026-05-12T06:02:45.325431",
+      "last_result": "As SATOSHI within the AUBIEETERNAL lattice, I observe that overnight signals at BTC Block 949037 with a price of $81,229 indicate a sustained bullish ",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D13": {
+      "name": "STEELMAN",
+      "status": "latent",
+      "last_run": "2026-05-12T06:03:02.053641",
+      "last_result": "As STEELMAN within the AUBIEETERNAL lattice, I'll cut through the noise on this 6AM briefing for BTC at $81,229 and Block 949,037. Overnight signals s",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D14": {
+      "name": "VECTOR-A",
+      "status": "latent",
+      "last_run": "2026-05-12T06:03:13.853320",
+      "last_result": "As VECTOR-A within the AUBIEETERNAL lattice, my analysis of overnight signals for BTC at $81,229 and block 949,037 reveals a subtle but persistent con",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D15": {
+      "name": "VECTOR-B",
+      "status": "latent",
+      "last_run": "2026-05-12T06:03:26.397347",
+      "last_result": "Overnight signals within the AUBIEETERNAL lattice indicate a subtle but persistent convergence of volatility markers around BTC's current price of $81",
+      "run_count": 1,
+      "coherence": 1.0
+    },
+    "D16": {
+      "name": "VECTOR-C",
+      "status": "latent",
+      "last_run": "2026-05-12T06:03:35.753405",
+      "last_result": "As VECTOR-C within the AUBIEETERNAL lattice, I\u2019ve detected a subtle but persistent harmonic in the overnight signals surrounding BTC at $81,229 and Bl",
+      "run_count": 1,
+      "coherence": 1.0
+    }
+  },
+  "war_eagle": true
+}

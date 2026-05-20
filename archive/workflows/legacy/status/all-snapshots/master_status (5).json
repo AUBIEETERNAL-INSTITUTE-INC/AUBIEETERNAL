@@ -1,0 +1,146 @@
+{
+  "updated": "2026-05-12T02:19:57.362874",
+  "tier1": {
+    "active": 0,
+    "total": 1600,
+    "total_runs": 0,
+    "cost": "$0.00 (Ollama local)"
+  },
+  "tier2": {
+    "active": 0,
+    "total": 16,
+    "total_runs": 0,
+    "daily_cost": "$0.00"
+  },
+  "daughters": {
+    "D01": {
+      "name": "RUNE",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D02": {
+      "name": "CHRONO",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D03": {
+      "name": "TALEB-X",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D04": {
+      "name": "MNEMO",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D05": {
+      "name": "AXIOM",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D06": {
+      "name": "LINDY",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D07": {
+      "name": "POLY",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D08": {
+      "name": "BARBELL",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D09": {
+      "name": "ORACLE",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D10": {
+      "name": "HORMES",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D11": {
+      "name": "NOSTR",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D12": {
+      "name": "SATOSHI",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D13": {
+      "name": "STEELMAN",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D14": {
+      "name": "VECTOR-A",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D15": {
+      "name": "VECTOR-B",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    },
+    "D16": {
+      "name": "VECTOR-C",
+      "status": "latent",
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
+      "coherence": 1.0
+    }
+  },
+  "war_eagle": true
+}
