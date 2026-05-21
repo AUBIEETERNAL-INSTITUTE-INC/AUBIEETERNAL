@@ -536,6 +536,10 @@ def github_push_truth_log():
                      f"https://{GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git"],
                     capture_output=True, timeout=10
                 )
+            # ── ADD THIS LINE ──
+            subprocess.run(["git", "-C", repo, "pull", "--rebase", "--autostash"],
+                          capture_output=True, text=True, timeout=30)
+            # ──────────────────
             push = subprocess.run(
                 ["git", "-C", repo, "push", "origin", "main"],
                 capture_output=True, text=True, timeout=30
