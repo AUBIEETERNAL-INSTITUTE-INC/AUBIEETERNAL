@@ -11,5 +11,5 @@ jobs:
         run: echo "${{ secrets.GHCR_TOKEN }}" | docker login ghcr.io -u hodlmateo --password-stdin
       - name: Build and Push
         run: |
-          docker build -t ghcr.io/hodlmateo/aubieeternal:v6 .
-          docker push ghcr.io/hodlmateo/aubieeternal:v6
+          docker build -t ghcr.io/hodlmateo/aubieeternal:v7 .
+          docker push ghcr.io/hodlmateo/aubieeternal:v7
