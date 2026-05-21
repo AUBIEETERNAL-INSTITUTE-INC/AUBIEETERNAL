@@ -12,7 +12,7 @@ if [ ! -d /mnt/main/repo ]; then
     git clone https://github.com/hodlmateo/AUBIEETERNAL /mnt/main/repo 2>&1
 else
     echo "🔄 Pulling latest code..."
-    cd /mnt/main/repo && git pull --rebase --autostash 2>&1
+    cd /mnt/main/repo && git fetch origin 2>&1 && git reset --hard origin/main 2>&1
 fi
 
 # ── Configure git for pushing swarm outputs back to GitHub ────────────────────
