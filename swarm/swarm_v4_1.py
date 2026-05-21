@@ -497,7 +497,6 @@ def run_hormetic_pulse(context):
 # ══════════════════════════════════════════════════════════════════════════════
 
 def github_push_truth_log():
-    """Push swarm outputs to GitHub. Token loaded from environment."""
     try:
         repo = str(GITHUB_REPO)
         files = [
@@ -505,26 +504,32 @@ def github_push_truth_log():
             "truth_lattice_log.jsonl", "swarm_status.json",
             "context_cache.json",
         ]
-        # Only push files that exist
         existing = [f for f in files if (Path(repo) / f).exists()]
+        print(f"  📁 Push attempt | Files found: {existing}")
         if not existing:
+            print(f"  ⚠️ No output files found at {repo}")
             return
 
-        subprocess.run(
+        # Fix git safe directory (Docker user mismatch)
+        subprocess.run(["git", "config", "--global",
+                       "--add", "safe.directory", repo],
+                       capture_output=True)
+
+        add = subprocess.run(
             ["git", "-C", repo, "add"] + existing,
-            capture_output=True, timeout=15
-        )
-        msg = (f"🦅 v4.1 auto-push | "
-               f"Wonder:{wonder_index:.4f} | "
-               f"Coherence:{inter_rune_coherence:.6f} | "
-               f"Grokipedia:{grokipedia_count} | "
-               f"METS:{mets_counter:.0f}")
-        result = subprocess.run(
-            ["git", "-C", repo, "commit", "-m", msg],
             capture_output=True, text=True, timeout=15
         )
+        print(f"  git add: {add.returncode} | {add.stderr[:80]}")
+
+        result = subprocess.run(
+            ["git", "-C", repo, "commit", "-m",
+             f"🦅 v4.1 auto-push | Wonder:{wonder_index:.4f} | "
+             f"Coherence:{inter_rune_coherence:.6f}"],
+            capture_output=True, text=True, timeout=15
+        )
+        print(f"  git commit: {result.returncode} | {(result.stdout+result.stderr)[:100]}")
+
         if "nothing to commit" not in (result.stdout + result.stderr):
-            # Set token in remote URL if available
             if GITHUB_TOKEN:
                 subprocess.run(
                     ["git", "-C", repo, "remote", "set-url", "origin",
@@ -535,15 +540,10 @@ def github_push_truth_log():
                 ["git", "-C", repo, "push", "origin", "main"],
                 capture_output=True, text=True, timeout=30
             )
-            if push.returncode == 0:
-                print(f"  ✅ GitHub pushed | Wonder:{wonder_index:.4f}")
-            else:
-                print(f"  ⚠️  Push failed: {push.stderr[:100]}")
-        else:
-            print(f"  ℹ️  Nothing new to push")
+            print(f"  git push: {push.returncode} | {push.stderr[:100]}")
     except Exception as e:
-        print(f"  GitHub push note: {e}")
-
+        print(f"  Push error: {e}")
+      
 # ══════════════════════════════════════════════════════════════════════════════
 # BTC DATA
 # ══════════════════════════════════════════════════════════════════════════════
