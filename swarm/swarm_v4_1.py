@@ -1057,7 +1057,7 @@ def launch_swarm():
             cache_context()
 
             github_tick += 1
-            if github_tick >= 50:
+            if github_tick >= 3:
                 github_push_truth_log()
                 github_tick = 0
 
