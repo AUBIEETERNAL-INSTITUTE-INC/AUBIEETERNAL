@@ -32,7 +32,8 @@ fi
 SWARM_PATH="/mnt/main/repo/swarm/swarm_v4_1.py"
 if [ -f "$SWARM_PATH" ]; then
     echo "🦅 Launching swarm from $SWARM_PATH..."
-    nohup python3 "$SWARM_PATH" > /tmp/swarm.log 2>&1 &
+    nohup python3 "$SWARM_PATH" > /mnt/main/swarm.log 2>&1 &
+    tail -f /mnt/main/swarm.log &
     echo "✅ Swarm PID: $!"
 else
     echo "⚠️  Swarm file not found at $SWARM_PATH — skipping swarm launch"
