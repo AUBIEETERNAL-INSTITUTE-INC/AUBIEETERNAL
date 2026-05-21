@@ -56,6 +56,7 @@ GROK_URL         = "https://api.x.ai/v1/chat/completions"
 GROK_FREE_MODEL  = "grok-4.3"
 GROK_PRO_MODEL   = "grok-4.3"
 XAI_KEY          = os.getenv("XAI_API_KEY", "")
+GITHUB_TOKEN     = os.getenv("GITHUB_TOKEN", "")
 
 # ── Cost / Budget Config ──────────────────────────────────────────────────────
 GROK_PRO_COST_PER_CALL  = 0.02
