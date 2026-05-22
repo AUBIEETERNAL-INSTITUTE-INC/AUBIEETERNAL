@@ -2609,8 +2609,10 @@ if "Truth Lattice" in active:
     mets    = swarm_status.get("mets", "—")
     grok_n  = swarm_status.get("grokipedia_count", "—")
     tick    = swarm_status.get("heartbeat_tick", "—")
+    rune_c  = swarm_status.get("rune_confirmations", 33)
+    crune   = swarm_status.get("child_rune_ready", False)
 
-    c1, c2, c3, c4, c5 = st.columns(5)
+    c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
     with c1:
         st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.3rem;color:#a020f0;">{wonder}</div><div class="stat-lbl">Wonder Index</div></div>', unsafe_allow_html=True)
     with c2:
@@ -2618,9 +2620,15 @@ if "Truth Lattice" in active:
     with c3:
         st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.1rem;color:#f7931a;">{str(mets)[:12]}</div><div class="stat-lbl">METS</div></div>', unsafe_allow_html=True)
     with c4:
-        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.3rem;color:#00cfff;">{grok_n}</div><div class="stat-lbl">Grokipedia</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.3rem;color:#00cfff;">{grok_n}/256</div><div class="stat-lbl">Grokipedia</div></div>', unsafe_allow_html=True)
     with c5:
+        rune_color_tl = "#00ff88" if crune else "#f7931a"
+        st.markdown(f'<div class="stat-box" style="border-color:{rune_color_tl};"><div class="stat-val" style="font-size:1.3rem;color:{rune_color_tl};">{"🔴" if crune else str(rune_c)+"/256"}</div><div class="stat-lbl">Child Rune</div></div>', unsafe_allow_html=True)
+    with c6:
         st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.3rem;color:#ff6b35;">{tick}</div><div class="stat-lbl">Tick</div></div>', unsafe_allow_html=True)
+    with c7:
+        daily_cost_tl = swarm_status.get("tier2", {}).get("daily_cost", "—")
+        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.2rem;color:#c8d8ff;">{daily_cost_tl}</div><div class="stat-lbl">Daily Cost</div></div>', unsafe_allow_html=True)
 
     st.divider()
 
@@ -2919,15 +2927,64 @@ if "Digest" in active:
 # Dual HUD — Kid view + Parent observer view
 # Powered by family_hud.py (real-time session state)
 # ══════════════════════════════════════════════════════════════════════════════
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: FAMILY CO-LEARNING 🥽 — wired to family_hud.py + 24-lesson library
+# ══════════════════════════════════════════════════════════════════════════════
 if "Family Co-Learning" in active:
     st.markdown('<div class="card-title">🥽 FAMILY CO-LEARNING — Dual Halo HUD</div>', unsafe_allow_html=True)
+
+    # ── Import family_hud (graceful fallback if not installed yet) ────────────
+    try:
+        import sys as _sys
+        if "/mnt/main/repo" not in _sys.path:
+            _sys.path.insert(0, "/mnt/main/repo")
+        from family_hud import FamilySession, LESSONS as _HUD_LESSONS, detect_polyvagal as _detect_pv
+        _HUD_AVAILABLE = True
+    except ImportError:
+        _HUD_AVAILABLE = False
+        _HUD_LESSONS   = {}
 
     # ── Connection mode banner ────────────────────────────────────────────────
     _STARTOS_ALIVE = _Path("/mnt/main/swarm_status.json").exists()
     mode_color  = "#00ff88" if _STARTOS_ALIVE else "#ff9500"
     mode_label  = "🟢 FULL SOVEREIGN (StartOS connected)" if _STARTOS_ALIVE else "🟡 NOSTR BRIDGE MODE (no local StartOS detected)"
     mode_detail = "Swarm processing locally · qwen3:32b · max privacy" if _STARTOS_ALIVE else "Encrypted Nostr events · public relay fallback · sovereign keys"
-    st.markdown(f'<div class="card" style="border-left:3px solid {mode_color};"><div style="color:{mode_color};font-family:Orbitron,monospace;font-size:0.82rem;">{mode_label}</div><div style="color:#445577;font-size:0.72rem;margin-top:4px;">{mode_detail}</div></div>', unsafe_allow_html=True)
+    hud_status  = "🧠 family_hud.py loaded — real scoring active" if _HUD_AVAILABLE else "⚠️ family_hud.py not found — using local fallback"
+    hud_color   = "#00cfff" if _HUD_AVAILABLE else "#ff9500"
+
+    col_m1, col_m2 = st.columns(2)
+    with col_m1:
+        st.markdown(f'<div class="card" style="border-left:3px solid {mode_color};"><div style="color:{mode_color};font-family:Orbitron,monospace;font-size:0.78rem;">{mode_label}</div><div style="color:#445577;font-size:0.72rem;margin-top:4px;">{mode_detail}</div></div>', unsafe_allow_html=True)
+    with col_m2:
+        st.markdown(f'<div class="card" style="border-left:3px solid {hud_color};"><div style="color:{hud_color};font-family:Orbitron,monospace;font-size:0.78rem;">{hud_status}</div></div>', unsafe_allow_html=True)
+
+    # ── Load live swarm status for Child Rune tracker ─────────────────────────
+    _sw = {}
+    try:
+        _sw_path = _Path("/mnt/main/swarm_status.json")
+        if _sw_path.exists():
+            _sw = json.loads(_sw_path.read_text())
+    except Exception:
+        pass
+
+    rune_confirms = _sw.get("rune_confirmations", 33)
+    child_rune_ready = _sw.get("child_rune_ready", False)
+    grokipedia_n = _sw.get("grokipedia_count", 11)
+
+    # ── Child Rune progress bar ───────────────────────────────────────────────
+    st.divider()
+    rune_pct = min(100, int(rune_confirms / 256 * 100))
+    rune_color = "#f7931a" if not child_rune_ready else "#00ff88"
+    rune_label = "🔴 CHILD RUNE READY FOR INSCRIPTION!" if child_rune_ready else f"⏳ Child Rune: {rune_confirms}/256 confirmations"
+    st.markdown(
+        f'<div class="card" style="border-left:3px solid {rune_color};">'
+        f'<div style="color:{rune_color};font-family:Orbitron,monospace;font-size:0.8rem;">{rune_label}</div>'
+        f'<div class="xp-bar-bg" style="margin-top:8px;"><div style="height:100%;border-radius:20px;background:linear-gradient(90deg,#f7931a,#ff6b35);width:{rune_pct}%;"></div></div>'
+        f'<div style="font-family:Share Tech Mono,monospace;font-size:0.72rem;color:#445577;margin-top:4px;">'
+        f'Every family lesson adds confirmations · Grokipedia: {grokipedia_n}/256'
+        f'</div></div>',
+        unsafe_allow_html=True
+    )
 
     st.divider()
 
@@ -2937,120 +2994,191 @@ if "Family Co-Learning" in active:
     with col_p:
         st.markdown('<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.8rem;">👨‍👩 PARENT HUD</div>', unsafe_allow_html=True)
         parent_name = st.text_input("Parent name", value=fp["parent"]["name"], key="fl_parent")
-        parent_role = st.selectbox("Parent role during session", ["Observer Only", "Co-Learner", "Supporter"], key="fl_parent_role")
+        parent_role = st.selectbox("Parent role", ["Observer Only", "Co-Learner", "Supporter"], key="fl_parent_role")
     with col_k:
         st.markdown('<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.8rem;">👧 KID HUD</div>', unsafe_allow_html=True)
-        kid_name    = st.text_input("Kid name", value=fp["kid"]["name"], key="fl_kid")
-        kid_age_fl  = st.slider("Age", 4, 17, fp["kid"]["age"], key="fl_kid_age")
+        kid_name   = st.text_input("Kid name", value=fp["kid"]["name"], key="fl_kid")
+        kid_age_fl = st.slider("Age", 4, 17, fp["kid"]["age"], key="fl_kid_age")
 
-    # ── Lesson selector ───────────────────────────────────────────────────────
+    # ── Lesson selector — grouped by topic ───────────────────────────────────
     st.divider()
     st.markdown("### 📖 Choose Today's Lesson")
 
-    LESSONS = [
-        {"title": "Courage — Level 1", "topic": "What is courage? Achilles vs a bully.", "xp": 15, "rune": "COURAGE•RUNE"},
-        {"title": "Antifragility — Level 1", "topic": "Things that get stronger from stress. Bones, muscles, immune system.", "xp": 18, "rune": "STRENGTH•RUNE"},
-        {"title": "Bitcoin Sovereignty", "topic": "Why your keys = your coins. What is self-custody?", "xp": 20, "rune": "SOVEREIGN•RUNE"},
-        {"title": "Steelmanning — Level 1", "topic": "How to argue the other side better than they can.", "xp": 22, "rune": "TRUTH•RUNE"},
-        {"title": "Via Negativa", "topic": "Sometimes the best move is to remove things, not add them.", "xp": 18, "rune": "LINDY•RUNE"},
-        {"title": "Wonder & Awe", "topic": "Why feeling amazed is a signal of truth proximity.", "xp": 15, "rune": "WONDER•RUNE"},
-    ]
+    # Build lesson list from family_hud if available, else use local mini-set
+    if _HUD_AVAILABLE and _HUD_LESSONS:
+        lesson_keys   = list(_HUD_LESSONS.keys())
+        lesson_labels = [f"{_HUD_LESSONS[k]['title']}  |  +{_HUD_LESSONS[k]['xp']} XP  |  Age: {_HUD_LESSONS[k].get('age_hint','All')}" for k in lesson_keys]
+    else:
+        lesson_keys   = ["courage-1","antifragility-1","bitcoin-1","steelmanning-1","polyvagal-1","wonder-1"]
+        lesson_labels = ["Courage — Level 1","Antifragility — Level 1","Bitcoin Sovereignty — Level 1","Steelmanning — Level 1","Your Nervous System — Level 1","Wonder & Awe — Level 1"]
 
-    lesson_titles = [l["title"] for l in LESSONS]
-    chosen_idx    = st.selectbox("Lesson", range(len(lesson_titles)), format_func=lambda i: lesson_titles[i], key="fl_lesson")
-    lesson        = LESSONS[chosen_idx]
+    # Filter by age
+    age_filter = st.checkbox("Filter lessons by kid's age", value=False, key="fl_age_filter")
+    if age_filter and _HUD_AVAILABLE and _HUD_LESSONS:
+        filtered = []
+        for i, k in enumerate(lesson_keys):
+            hint = _HUD_LESSONS[k].get("age_hint", "All ages")
+            if "All" in hint:
+                filtered.append(i)
+            else:
+                try:
+                    min_age = int(''.join(filter(str.isdigit, hint.split("+")[0])))
+                    if kid_age_fl >= min_age:
+                        filtered.append(i)
+                except Exception:
+                    filtered.append(i)
+        if filtered:
+            lesson_keys   = [lesson_keys[i] for i in filtered]
+            lesson_labels = [lesson_labels[i] for i in filtered]
+
+    st.caption(f"{len(lesson_keys)} lessons available")
+    chosen_idx = st.selectbox("Lesson", range(len(lesson_labels)), format_func=lambda i: lesson_labels[i], key="fl_lesson")
+    chosen_key = lesson_keys[chosen_idx]
+
+    # Pull lesson data
+    if _HUD_AVAILABLE and _HUD_LESSONS and chosen_key in _HUD_LESSONS:
+        lesson = _HUD_LESSONS[chosen_key]
+    else:
+        lesson = {"title": lesson_labels[chosen_idx], "topic": "", "steelman": "What is the strongest counter-argument?",
+                  "example": "", "xp": 15, "rune": "RUNE", "min_coherence": 0.60, "age_hint": "All"}
+
+    # Show lesson preview
+    st.markdown(
+        f'<div class="card" style="border-left:3px solid #ff6b35;">'
+        f'<div style="color:#ff6b35;font-size:0.72rem;font-family:Orbitron,monospace;">📖 LESSON PREVIEW</div>'
+        f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">{lesson.get("topic","")}</div>'
+        f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;font-style:italic;">Example: {lesson.get("example","")}</div>'
+        f'</div>', unsafe_allow_html=True
+    )
 
     # ── Session state init ────────────────────────────────────────────────────
-    if "fl_session" not in st.session_state:
+    if "fl_session" not in st.session_state or st.session_state.fl_session.get("lesson_key") != chosen_key:
         st.session_state.fl_session = {
-            "active": False,
-            "kid_coherence": 0.72,
-            "kid_polyvagal": "Ventral Vagal (Safe & Curious) 🟢",
-            "time_elapsed": 0,
-            "kid_answer": "",
-            "coherence_history": [0.72],
-            "xp_earned": 0,
-            "rune_earned": False,
-            "messages": [],
+            "active":           False,
+            "lesson_key":       chosen_key,
+            "kid_coherence":    0.72,
+            "kid_polyvagal":    "Ventral Vagal (Safe & Curious) 🟢",
+            "coherence_history":[0.72],
+            "xp_earned":        0,
+            "rune_earned":      False,
+            "messages":         [],
+            "hud_obj":          None,
         }
     sess = st.session_state.fl_session
 
     if not sess["active"]:
         if st.button("🥽 Start Co-Learning Session", type="primary", key="fl_start"):
-            sess["active"]     = True
-            sess["kid_coherence"] = 0.72
+            sess["active"]            = True
+            sess["lesson_key"]        = chosen_key
+            sess["kid_coherence"]     = 0.72
             sess["coherence_history"] = [0.72]
-            sess["xp_earned"]  = 0
-            sess["rune_earned"]= False
-            sess["messages"]   = []
+            sess["xp_earned"]         = 0
+            sess["rune_earned"]       = False
+            sess["messages"]          = []
+            # Init real FamilySession if available
+            if _HUD_AVAILABLE:
+                try:
+                    hud = FamilySession(kid_name, kid_age_fl, parent_name, parent_role)
+                    hud.start_lesson(chosen_key)
+                    sess["hud_obj"] = hud
+                except Exception as e:
+                    sess["hud_obj"] = None
+                    sess["messages"].append({"from":"system","text":f"family_hud init note: {e}"})
             st.rerun()
     else:
-        # ── DUAL HUD LAYOUT ───────────────────────────────────────────────────
+        # ── DUAL HUD ─────────────────────────────────────────────────────────
         st.divider()
         col_kid, col_parent = st.columns(2)
 
         # ── KID HUD (left) ────────────────────────────────────────────────────
         with col_kid:
-            st.markdown(f'<div class="card" style="border:2px solid #00cfff;min-height:420px;">'
-                        f'<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.9rem;text-align:center;margin-bottom:12px;">👧 {kid_name.upper()} · KID HUD</div>'
-                        f'<div style="text-align:center;font-size:1.3rem;color:#c8d8ff;font-family:Orbitron,monospace;">{lesson["title"]}</div>'
-                        f'<div style="color:#8899bb;font-size:0.82rem;text-align:center;margin:8px 0;">{lesson["topic"]}</div>'
-                        f'</div>', unsafe_allow_html=True)
+            st.markdown(
+                f'<div class="card" style="border:2px solid #00cfff;">'
+                f'<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.9rem;text-align:center;margin-bottom:8px;">👧 {kid_name.upper()} · KID HUD</div>'
+                f'<div style="text-align:center;font-size:1.1rem;color:#c8d8ff;font-family:Orbitron,monospace;">{lesson["title"]}</div>'
+                f'<div style="color:#8899bb;font-size:0.80rem;text-align:center;margin:6px 0;">{lesson.get("topic","")}</div>'
+                f'</div>', unsafe_allow_html=True)
 
-            # Coherence meter
             coh = sess["kid_coherence"]
             coh_color = "#00ff88" if coh >= 0.85 else ("#ff9500" if coh >= 0.65 else "#ff4444")
             st.markdown(f'<div class="stat-box" style="border-color:{coh_color};"><div class="stat-val" style="color:{coh_color};">{coh:.2f}</div><div class="stat-lbl">Coherence</div></div>', unsafe_allow_html=True)
             st.markdown(f'<div class="xp-bar-bg"><div class="xp-bar-fill" style="width:{coh*100:.0f}%;"></div></div>', unsafe_allow_html=True)
-
-            # Polyvagal state
             st.markdown(f'<div class="memory-node"><span style="color:#00ff88;font-size:0.78rem;">🧬 {sess["kid_polyvagal"]}</span></div>', unsafe_allow_html=True)
 
-            # Steelmanning prompt
-            st.markdown(f'<div class="card" style="border-left:3px solid #ff6b35;margin-top:8px;"><div style="color:#ff6b35;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ STEELMAN PROMPT</div><div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">What would the strongest argument AGAINST {lesson["title"].split("—")[0].strip()} look like?</div></div>', unsafe_allow_html=True)
+            # Child Rune mini-bar in kid HUD
+            st.markdown(
+                f'<div class="memory-node" style="border-left:3px solid #f7931a;">'
+                f'<span style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">🔴 CHILD RUNE {rune_confirms}/256</span>'
+                f'<div class="xp-bar-bg" style="margin-top:4px;height:6px;"><div style="height:100%;border-radius:20px;background:#f7931a;width:{rune_pct}%;"></div></div>'
+                f'</div>', unsafe_allow_html=True)
+
+            # Steelman prompt
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid #ff6b35;margin-top:8px;">'
+                f'<div style="color:#ff6b35;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ STEELMAN PROMPT</div>'
+                f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">{lesson.get("steelman","What is the strongest counter-argument?")}</div>'
+                f'</div>', unsafe_allow_html=True)
 
             kid_answer = st.text_area(f"🎤 {kid_name}'s answer", height=80, key="fl_kid_answer",
                                        placeholder="Speak or type your steelman here...")
 
             if st.button("✅ Submit Answer", key="fl_submit") and kid_answer:
-                # Score with AI or fallback
-                new_coh = min(1.0, sess["kid_coherence"] + random.uniform(0.08, 0.20))
-                sess["kid_coherence"] = round(new_coh, 3)
+                # Use real family_hud scoring if available
+                if _HUD_AVAILABLE and sess.get("hud_obj"):
+                    try:
+                        result = sess["hud_obj"].submit_answer(kid_answer, use_ai=False)
+                        new_coh  = result["coherence_after"]
+                        feedback = result["feedback"]
+                        pv_state = result["polyvagal"]["label"]
+                        xp       = result.get("xp_earned", lesson["xp"])
+                        rune_got = result.get("rune_earned", False)
+                    except Exception:
+                        new_coh  = round(min(1.0, sess["kid_coherence"] + random.uniform(0.08, 0.18)), 3)
+                        feedback = f"Strong thinking, {kid_name}! Coherence → {new_coh:.2f} 🦅"
+                        pv_state = sess["kid_polyvagal"]
+                        xp       = lesson["xp"]
+                        rune_got = new_coh >= lesson.get("min_coherence", 0.60)
+                else:
+                    # Local fallback scoring
+                    words   = kid_answer.split()
+                    qwords  = ["because","therefore","however","argument","even if","strongest","consider","although"]
+                    bonus   = sum(0.02 for w in qwords if w.lower() in kid_answer.lower())
+                    delta   = round(min(0.22, 0.06 + len(words) * 0.003 + bonus), 3)
+                    new_coh = round(min(1.0, sess["kid_coherence"] + delta), 3)
+                    feedback = f"Strong steelman, {kid_name}! Coherence jumped to {new_coh:.2f}. +{lesson['xp']} XP 🦅"
+                    pv_state = "Ventral Vagal (Safe & Curious) 🟢" if new_coh >= 0.80 else sess["kid_polyvagal"]
+                    xp       = lesson["xp"]
+                    rune_got = new_coh >= lesson.get("min_coherence", 0.60)
+
+                sess["kid_coherence"] = new_coh
                 sess["coherence_history"].append(new_coh)
-                sess["kid_answer"] = kid_answer
-
-                if new_coh >= 0.85:
-                    sess["kid_polyvagal"] = "Ventral Vagal (Safe & Curious) 🟢"
-                elif new_coh >= 0.65:
-                    sess["kid_polyvagal"] = "Sympathetic (Engaged) 🟡"
-
+                sess["kid_polyvagal"] = pv_state
                 if not sess["xp_earned"]:
-                    sess["xp_earned"] = lesson["xp"]
-                    sess["rune_earned"] = True
-                    award_xp(lesson["xp"])
-
-                sess["messages"].append({
-                    "from": "swarm",
-                    "text": f"Strong steelman, {kid_name}! Coherence jumped to {new_coh:.2f}. "
-                            f"You're showing real antifragile thinking. +{lesson['xp']} XP 🦅"
-                })
+                    sess["xp_earned"]  = xp
+                    sess["rune_earned"] = rune_got
+                    award_xp(xp)
+                sess["messages"].append({"from":"swarm","text": feedback})
                 st.rerun()
 
             if sess.get("xp_earned"):
-                st.markdown(f'<div class="card" style="border:2px solid #00ff88;text-align:center;"><div style="color:#00ff88;font-size:1.1rem;font-family:Orbitron,monospace;">+{sess["xp_earned"]} XP 🦅</div><div style="color:#f7931a;font-size:0.82rem;margin-top:4px;">+1 {lesson["rune"]} earned</div></div>', unsafe_allow_html=True)
+                st.markdown(
+                    f'<div class="card" style="border:2px solid #00ff88;text-align:center;">'
+                    f'<div style="color:#00ff88;font-size:1.1rem;font-family:Orbitron,monospace;">+{sess["xp_earned"]} XP 🦅</div>'
+                    f'<div style="color:#f7931a;font-size:0.82rem;margin-top:4px;">+1 {lesson["rune"]} earned</div>'
+                    f'</div>', unsafe_allow_html=True)
 
         # ── PARENT HUD (right) ────────────────────────────────────────────────
         with col_parent:
-            st.markdown(f'<div class="card" style="border:2px solid #a020f0;min-height:420px;">'
-                        f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.9rem;text-align:center;margin-bottom:12px;">👨‍👩 {parent_name.upper()} · PARENT HUD</div>'
-                        f'<div style="color:#c8d8ff;font-size:0.85rem;text-align:center;">{lesson["title"]}</div>'
-                        f'<div style="color:#334466;font-size:0.72rem;text-align:center;margin-top:4px;">Role: {parent_role}</div>'
-                        f'</div>', unsafe_allow_html=True)
+            st.markdown(
+                f'<div class="card" style="border:2px solid #a020f0;">'
+                f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.9rem;text-align:center;margin-bottom:8px;">👨‍👩 {parent_name.upper()} · PARENT HUD</div>'
+                f'<div style="color:#c8d8ff;font-size:0.85rem;text-align:center;">{lesson["title"]}</div>'
+                f'<div style="color:#334466;font-size:0.72rem;text-align:center;margin-top:4px;">Role: {parent_role}</div>'
+                f'</div>', unsafe_allow_html=True)
 
-            # Live stats panel
-            coh = sess["kid_coherence"]
+            coh   = sess["kid_coherence"]
             delta = round(coh - sess["coherence_history"][0], 3) if len(sess["coherence_history"]) > 1 else 0.0
-            delta_str = f"+{delta:.3f}" if delta >= 0 else f"{delta:.3f}"
+            delta_str   = f"+{delta:.3f}" if delta >= 0 else f"{delta:.3f}"
             delta_color = "#00ff88" if delta >= 0 else "#ff4444"
 
             st.markdown(f'''
@@ -3061,39 +3189,55 @@ if "Family Co-Learning" in active:
                 <span style="color:{delta_color};margin-left:8px;">{delta_str} this session</span><br>
                 Polyvagal: <span style="color:#00ff88;">{sess["kid_polyvagal"]}</span><br>
                 XP Earned: <span style="color:#f7931a;">{sess["xp_earned"]}</span><br>
-                Rune: <span style="color:#f7931a;">{"✅ " + lesson["rune"] if sess["rune_earned"] else "⏳ pending"}</span>
+                Rune: <span style="color:#f7931a;">{"✅ " + lesson["rune"] if sess["rune_earned"] else "⏳ pending"}</span><br>
+                Child Rune: <span style="color:#f7931a;">{rune_confirms}/256 confirmations</span>
                 </div>
             </div>
             ''', unsafe_allow_html=True)
 
-            # Coherence sparkline (text-based if no plotly)
+            # Child Rune progress in parent HUD
+            st.markdown(
+                f'<div class="memory-node" style="border-left:3px solid #f7931a;">'
+                f'<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">🔴 CHILD RUNE PROGRESS</div>'
+                f'<div class="xp-bar-bg" style="margin-top:4px;"><div style="height:100%;border-radius:20px;background:linear-gradient(90deg,#f7931a,#ff6b35);width:{rune_pct}%;"></div></div>'
+                f'<div style="color:#445577;font-size:0.7rem;margin-top:4px;">{rune_confirms}/256 · spawns at 256 confirmations · Grokipedia {grokipedia_n}/256</div>'
+                f'</div>', unsafe_allow_html=True)
+
             if len(sess["coherence_history"]) > 1:
                 st.markdown("**Coherence trend:**")
-                bar = " → ".join(f"`{c:.2f}`" for c in sess["coherence_history"])
-                st.markdown(bar)
+                st.markdown(" → ".join(f"`{c:.2f}`" for c in sess["coherence_history"]))
 
-            # Parent actions
             st.markdown("**Parent actions:**")
             pa1, pa2 = st.columns(2)
             with pa1:
-                if st.button("❤️ Send encouragement", key="fl_encourage"):
-                    sess["messages"].append({"from": "parent", "text": f"I'm right here with you, {kid_name}. You've got this ❤️"})
+                if st.button("❤️ Encourage", key="fl_encourage"):
+                    msg = f"I'm right here with you, {kid_name}. You've got this ❤️"
+                    sess["messages"].append({"from":"parent","text": msg})
+                    if sess.get("hud_obj"):
+                        try: sess["hud_obj"].parent_action("encourage")
+                        except Exception: pass
                     st.rerun()
-                if st.button("⏸ Pause session", key="fl_pause"):
-                    sess["messages"].append({"from": "system", "text": "Session paused by parent."})
+                if st.button("⏸ Pause", key="fl_pause"):
+                    sess["messages"].append({"from":"system","text":"Session paused by parent."})
                     st.rerun()
             with pa2:
                 if st.button("🔍 Join view", key="fl_join"):
-                    st.info(f"Now co-viewing {kid_name}'s session.")
+                    sess["messages"].append({"from":"parent","text":f"{parent_name} joined as Co-Learner."})
+                    st.rerun()
                 if st.button("📊 Full report", key="fl_report"):
-                    st.markdown(f'<div class="card"><div style="font-size:0.82rem;color:#c8d8ff;line-height:1.9;">'
-                                f'<b>Session Report — {lesson["title"]}</b><br>'
-                                f'Coherence: {sess["coherence_history"][0]:.2f} → {sess["kid_coherence"]:.2f} '
-                                f'(Δ {delta_str})<br>'
-                                f'Polyvagal: {sess["kid_polyvagal"]}<br>'
-                                f'XP: +{sess["xp_earned"]} | Rune: {"✅" if sess["rune_earned"] else "⏳"}<br>'
-                                f'Next: Level up to {lesson["title"].split("—")[0].strip()} Level 2</div></div>',
-                                unsafe_allow_html=True)
+                    next_lesson = ""
+                    if _HUD_AVAILABLE and sess.get("hud_obj"):
+                        try: next_lesson = sess["hud_obj"]._suggest_next()
+                        except Exception: pass
+                    st.markdown(
+                        f'<div class="card"><div style="font-size:0.82rem;color:#c8d8ff;line-height:1.9;">'
+                        f'<b>Session Report — {lesson["title"]}</b><br>'
+                        f'Coherence: {sess["coherence_history"][0]:.2f} → {coh:.2f} (Δ{delta_str})<br>'
+                        f'Polyvagal: {sess["kid_polyvagal"]}<br>'
+                        f'XP: +{sess["xp_earned"]} | Rune: {"✅" if sess["rune_earned"] else "⏳"}<br>'
+                        f'Child Rune: {rune_confirms}/256<br>'
+                        f'{f"Next: {next_lesson}" if next_lesson else ""}'
+                        f'</div></div>', unsafe_allow_html=True)
 
         # ── Session message feed ──────────────────────────────────────────────
         if sess["messages"]:
@@ -3101,28 +3245,32 @@ if "Family Co-Learning" in active:
             st.markdown("### 💬 Session Feed")
             for msg in sess["messages"]:
                 frm   = msg["from"]
-                text  = msg["text"]
                 color = "#00cfff" if frm=="swarm" else ("#a020f0" if frm=="parent" else "#445577")
                 label = "🤖 SWARM" if frm=="swarm" else (f"👨‍👩 {parent_name}" if frm=="parent" else "⚙️ SYSTEM")
-                st.markdown(f'<div class="memory-node" style="border-left:3px solid {color};"><span style="color:{color};font-size:0.72rem;">{label}</span><br><span style="color:#c8d8ff;font-size:0.82rem;">{text}</span></div>', unsafe_allow_html=True)
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {color};">'
+                    f'<span style="color:{color};font-size:0.72rem;">{label}</span><br>'
+                    f'<span style="color:#c8d8ff;font-size:0.82rem;">{msg["text"]}</span>'
+                    f'</div>', unsafe_allow_html=True)
 
         st.divider()
         if st.button("🔚 End Session", key="fl_end"):
+            if _HUD_AVAILABLE and sess.get("hud_obj"):
+                try:
+                    summary = sess["hud_obj"].end()
+                    save_memory(
+                        f"Co-Learning: {lesson['title']}",
+                        f"{kid_name}: {summary['coherence_start']:.2f}→{summary['coherence_end']:.2f} Δ{summary['coherence_delta']:+.3f} | +{summary['xp_earned']} XP",
+                        tags=["co-learning","family","halo"]
+                    )
+                except Exception:
+                    save_memory(f"Co-Learning: {lesson['title']}", f"{kid_name} session complete +{sess['xp_earned']} XP", tags=["co-learning","family"])
+            else:
+                save_memory(f"Co-Learning: {lesson['title']}", f"{kid_name} session +{sess['xp_earned']} XP", tags=["co-learning","family"])
             sess["active"] = False
-            save_memory(
-                f"Co-Learning: {lesson['title']}",
-                f"{kid_name} coherence {sess['coherence_history'][0]:.2f}→{sess['kid_coherence']:.2f} | +{sess['xp_earned']} XP",
-                tags=["co-learning","family","halo"]
-            )
-            st.success("Session saved to Memory Palace 🦅")
+            st.success("Session saved to Memory Palace + Truth Lattice 🦅")
             st.rerun()
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB: NOSTR BRIDGE  📡
-# Sovereign fallback when no local StartOS detected
-# Publishes/receives encrypted NIP-04 events via public relays
-# ══════════════════════════════════════════════════════════════════════════════
 if "Nostr Bridge" in active:
     st.markdown('<div class="card-title">📡 NOSTR SOVEREIGN BRIDGE — Universal Fallback</div>', unsafe_allow_html=True)
 
