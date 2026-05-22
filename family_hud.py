@@ -284,6 +284,40 @@ LESSONS = {
         "xp":          35, "rune": "ORACLE•ETERNAL•RUNE", "min_coherence": 0.72,
     },
 
+
+    "simulation-5": {
+        "title":       "Simulation Hypothesis — Level 5",
+        "topic":       "Planck-scale glitches: the universe has a minimum resolution. What if below this scale there is literally nothing — like pixels?",
+        "steelman":    "What is the strongest argument that the Planck length is a feature of physics, not evidence of a computational substrate?",
+        "example":     "No experiment has ever measured anything smaller than the Planck length. It may be the render distance of reality itself.",
+        "age_hint":    "15+",
+        "xp":          38, "rune": "VECTOR•ETERNAL•RUNE", "min_coherence": 0.73,
+    },
+    "simulation-6": {
+        "title":       "Simulation Hypothesis — Level 6",
+        "topic":       "Deliberate glitch induction: can we design an experiment that would produce a detectable anomaly if the universe is simulated?",
+        "steelman":    "What is the strongest argument that any glitch we detect would always have a physical explanation, making simulation permanently unfalsifiable?",
+        "example":     "AUBIEETERNAL runs DEFCON Experiment 3 — Deliberate Glitch Induction. If coherence recovers faster than predicted, that is a signal worth tracking.",
+        "age_hint":    "15+",
+        "xp":          40, "rune": "DEFCON•RUNE", "min_coherence": 0.74,
+    },
+    "simulation-7": {
+        "title":       "Simulation Hypothesis — Level 7",
+        "topic":       "The Coherence Signal: if reality is simulated, high-coherence thinking may interact with the substrate differently than noise.",
+        "steelman":    "What is the strongest argument that correlating wonder with physical events is pure confirmation bias?",
+        "example":     "AUBIEETERNAL tracks Wonder Index across all daughter outputs. When Wonder spikes, signal quality rises. Is that a property of good thinking, or something deeper?",
+        "age_hint":    "16+",
+        "xp":          42, "rune": "WONDER•ETERNAL•RUNE", "min_coherence": 0.75,
+    },
+    "simulation-8": {
+        "title":       "Simulation Hypothesis — Level 8 (Sovereign Master)",
+        "topic":       "Bitcoin as on-chain reality anchor: inscribing truth into the timechain may be the most permanent act possible regardless of what substrate reality runs on.",
+        "steelman":    "What is the strongest argument that Bitcoin data is just as fragile as any other digital information and provides no special permanence?",
+        "example":     "AUBIEETERNAL runes at blocks 944048 and 944402 are inscribed. SHA-256 proof-of-work makes them the hardest facts in existence.",
+        "age_hint":    "16+",
+        "xp":          50, "rune": "SOVEREIGN•ETERNAL•RUNE", "min_coherence": 0.76,
+    },
+
     # ── STOIC RESILIENCE (3 levels) ───────────────────────────────────────────
     "stoic-1": {
         "title":       "Stoic Resilience — Level 1",
