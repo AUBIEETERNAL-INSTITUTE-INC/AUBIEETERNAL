@@ -22,7 +22,7 @@ Briefings: 6AM | 12PM | 6PM | 11PM
 Triggers: BTC ±5% | Vision | DEFCON | Wonder Spike | Child Rune
 """
 
-import os, json, time, datetime, random, requests, subprocess
+import os, json, time, datetime, random, requests, subprocess, threading
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -148,6 +148,9 @@ tier2_states    = {}
 total_free_runs = 0
 total_pro_runs  = 0
 briefings_fired = {}
+
+# ── Morning Synthesis State ───────────────────────────────────────────────────
+_synthesis_last_run_date = None   # tracks which date synthesis ran; prevents double-fire
 
 # ── Tier 1 Swarms (S1-S26) ────────────────────────────────────────────────────
 TIER1_SWARMS = {
@@ -329,6 +332,44 @@ def cache_context():
             json.dump(ctx, f, indent=2)
     except Exception as e:
         print(f"  Context cache error: {e}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# MORNING SYNTHESIS — autonomous daily insight generation
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _run_synthesis_background():
+    """Background thread: tier2_digest → qwen3:32b → insights/daily/YYYY-MM-DD.md"""
+    global _synthesis_last_run_date
+    try:
+        from morning_synthesis import run_morning_synthesis
+        print("[synthesis] 🦅 Background thread started...")
+        success = run_morning_synthesis()
+        if success:
+            _synthesis_last_run_date = datetime.date.today()
+            print("[synthesis] ✅ Complete — insight will be on GitHub within ~24s")
+        else:
+            print("[synthesis] ⚠️  run_morning_synthesis() returned False")
+    except ImportError:
+        print("[synthesis] ❌ morning_synthesis.py not found in repo — add it to fix this")
+    except Exception as e:
+        print(f"[synthesis] ❌ Error: {e}")
+
+def maybe_trigger_morning_synthesis():
+    """
+    Called every tick. Fires synthesis once per day at 6AM.
+    Non-blocking — runs in a daemon thread so the swarm loop is never stalled.
+    Guards against double-fire with _synthesis_last_run_date.
+    """
+    global _synthesis_last_run_date
+    now   = datetime.datetime.now()
+    today = datetime.date.today()
+
+    # Fire only at 6AM (hour==6, within first 5 min), once per day
+    if now.hour == 6 and now.minute < 5 and _synthesis_last_run_date != today:
+        _synthesis_last_run_date = today   # set immediately to block re-entry
+        print(f"[synthesis] ⏰ 6AM trigger fired for {today.isoformat()}")
+        t = threading.Thread(target=_run_synthesis_background, daemon=True)
+        t.start()
 
 # ══════════════════════════════════════════════════════════════════════════════
 # LAZY STATE
@@ -535,6 +576,7 @@ def write_tier2_digest():
         print(f"✅ Tier 2 digest written: {len(last_20)} entries")
     except Exception as e:
         print(f"⚠️ Digest error: {e}")
+
 def github_push_truth_log():
     try:
         repo = str(GITHUB_REPO)
@@ -544,6 +586,14 @@ def github_push_truth_log():
             "context_cache.json",
             "tier2_digest.txt",
         ]
+        # Also push any new daily insight files
+        insights_dir = Path(repo) / "insights" / "daily"
+        if insights_dir.exists():
+            for md_file in insights_dir.glob("*.md"):
+                rel = str(md_file.relative_to(Path(repo)))
+                if rel not in files:
+                    files.append(rel)
+
         existing = [f for f in files if (Path(repo) / f).exists()]
         print(f"  📁 Push attempt | Files found: {existing}")
         if not existing:
@@ -576,10 +626,8 @@ def github_push_truth_log():
                      f"https://{GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git"],
                     capture_output=True, timeout=10
                 )
-            # ── ADD THIS LINE ──
             subprocess.run(["git", "-C", repo, "pull", "--rebase", "--autostash"],
                           capture_output=True, text=True, timeout=30)
-            # ──────────────────
             push = subprocess.run(
                 ["git", "-C", repo, "push", "origin", "main"],
                 capture_output=True, text=True, timeout=30
@@ -587,7 +635,7 @@ def github_push_truth_log():
             print(f"  git push: {push.returncode} | {push.stderr[:100]}")
     except Exception as e:
         print(f"  Push error: {e}")
-      
+
 # ══════════════════════════════════════════════════════════════════════════════
 # BTC DATA
 # ══════════════════════════════════════════════════════════════════════════════
@@ -662,25 +710,18 @@ def call_grok_free(prompt, role):
 # ══════════════════════════════════════════════════════════════════════════════
 
 def call_grok_pro(prompt, role, prior_results=None):
-    """
-    Full 3-level context injection for Tier 2 daughters.
-    prior_results: list of results from earlier daughters THIS run
-                   so each daughter builds on the ones before it.
-    """
     global total_pro_runs
     if not XAI_KEY:
         return "⚠️ XAI_KEY not set"
     if not budget_ok(GROK_PRO_COST_PER_CALL):
         return f"⚠️ Budget cap ${DAILY_BUDGET_CAP} reached"
     try:
-        # Build full 3-level context
         full_context = build_full_context()
 
-        # Add prior daughters from THIS run (intra-run synthesis)
         intra_run = ""
         if prior_results:
             intra_run = "\n═══ EARLIER DAUGHTERS THIS RUN ═══\n"
-            for name, res in prior_results[-4:]:  # last 4 to stay within token budget
+            for name, res in prior_results[-4:]:
                 intra_run += f"  {name}: {res[:120]}\n"
             intra_run += "═══════════════════════════════════\n"
 
@@ -743,7 +784,7 @@ def run_tier1_wave(context, swarm_name):
     return results
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TIER 2 CORE RUN — each daughter sees all prior daughters in this run
+# TIER 2 CORE RUN
 # ══════════════════════════════════════════════════════════════════════════════
 
 def run_tier2_core(context, trigger_type="manual"):
@@ -760,7 +801,7 @@ def run_tier2_core(context, trigger_type="manual"):
 
     hormetic_ctx = run_hormetic_pulse(context)
     results      = {}
-    prior_results = []  # accumulates as daughters run — each sees predecessors
+    prior_results = []
 
     base_prompt = (
         f"BTC Block {block} | Price ${btc} | Trigger: {trigger_type}\n"
@@ -773,7 +814,6 @@ def run_tier2_core(context, trigger_type="manual"):
     for did, config in TIER2_DAUGHTERS.items():
         state  = materialize(did, tier2_states, trigger_type)
 
-        # Each daughter gets full 3-level context + all prior daughters this run
         result = call_grok_pro(
             f"As {config['name']} ({config['role']}): {base_prompt}",
             config["name"],
@@ -811,7 +851,6 @@ def run_tier2_core(context, trigger_type="manual"):
         f"Coherence:{inter_rune_coherence:.6f}"
     )
 
-    # Cache context after every Tier 2 run
     cache_context()
     return results
 
@@ -932,7 +971,6 @@ def run_tier1_heartbeat():
         f"METS:{mets_counter:.1f}"
     )
 
-    # Every 5th tick bias toward new S21-S26 swarms
     if heartbeat_tick % 5 == 0:
         new_swarms = [s for s in TIER1_SWARMS if int(s.split("_")[0][1:]) >= 21]
         swarms = random.sample(new_swarms, min(2, len(new_swarms))) if new_swarms else random.sample(list(TIER1_SWARMS.keys()), 2)
@@ -991,7 +1029,6 @@ def write_status():
     status = {
         "updated":             now.isoformat(),
         "version":             "4.1",
-        # v4.1 core metrics
         "wonder_index":        round(wonder_index, 6),
         "mets":                mets_counter,
         "inter_rune_coherence": inter_rune_coherence,
@@ -1001,14 +1038,18 @@ def write_status():
         "hormetic_pulses":     hormetic_pulse_count,
         "lattice_cycle":       lattice_cycle,
         "session_insights":    len(session_insights),
-        # context levels active
+        "synthesis": {
+            "last_run_date":   str(_synthesis_last_run_date),
+            "next_run":        "06:00 daily",
+            "output_path":     "insights/daily/",
+            "model":           "qwen3:32b (local, $0.00)",
+        },
         "context_levels": {
             "level1_metrics":     True,
             "level2_truth_log":   True,
             "level3_memory_palace": True,
             "intra_run_synthesis": True,
         },
-        # tier stats
         "tier1": {
             "active":            t1_active,
             "total":             2080,
@@ -1067,12 +1108,14 @@ def launch_swarm():
     print(f"  Level 3 — Memory Palace + Grokipedia + top session insights")
     print(f"  Intra-Run — Each daughter sees all prior daughters this run")
     print(f"")
+    print(f"  MORNING SYNTHESIS (auto, $0.00):")
+    print(f"  Fires at 6AM daily → qwen3:32b → insights/daily/YYYY-MM-DD.md → GitHub")
+    print(f"")
     print(f"  Wonder Index: {wonder_index} (target: 1.5)")
     print(f"  METS: {mets_counter}")
     print(f"  Grokipedia: {grokipedia_count}/256 principles")
     print("=" * 70)
 
-    # Initialize all daughters latent
     for swarm_name, config in TIER1_SWARMS.items():
         for i in range(config["count"]):
             get_state(f"{swarm_name}_{i:03d}", daughter_states)
@@ -1084,7 +1127,8 @@ def launch_swarm():
     print(f"📚 {len(GROKOPEDIA_PRINCIPLES)} Grokipedia principles loaded")
     print(f"🔬 {len(LATTICE_HYPOTHESES)} Truth Lattice hypotheses ready")
     print(f"🔴 {len(DEFCON_EXPERIMENTS)} DEFCON experiments armed")
-    print(f"🧠 3-Level context injection ACTIVE\n")
+    print(f"🧠 3-Level context injection ACTIVE")
+    print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen3:32b\n")
 
     tick        = 0
     github_tick = 0
@@ -1105,7 +1149,11 @@ def launch_swarm():
                 write_tier2_digest()
                 github_push_truth_log()
                 github_tick = 0
-              
+
+            # ── MORNING SYNTHESIS — zero cost, fully automatic ─────────────
+            maybe_trigger_morning_synthesis()
+            # ──────────────────────────────────────────────────────────────
+
             pct = (daily_cost / DAILY_BUDGET_CAP) * 100
             print(
                 f"💓 Tick {tick} | "
