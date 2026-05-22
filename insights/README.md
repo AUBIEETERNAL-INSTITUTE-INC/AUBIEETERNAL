@@ -12,21 +12,13 @@ Every morning (or as needed), a strong local model (such as `qwen3:32b` or `llam
 
 - 3–5 key philosophical or practical insights
 - Clean, structured, and readable format
-- Content suitable for publishing (X, Nostr, blog, or internal reference)
+- Content suitable for publishing (X, Nostr, GitHub, or internal reference)
 
-## Why This Matters
+## Latest Syntheses
 
-- **Signal over noise**: Raw swarm logs are rich but chaotic. Daily synthesis creates clarity.
-- **Zero marginal cost**: All synthesis is done locally with no API fees.
-- **Knowledge compression**: Complex ideas are turned into digestible, actionable understanding.
-- **Public record**: These insights form a living archive of the project’s evolving philosophy.
-
-## Naming Convention
-
-Files are named using the format:
-`YYYY-MM-DD-short-description.md`
-
-Example: `2026-05-21-thermodynamic-security-barbell-equilibrium.md`
+| Date       | Title                                                                 | Link |
+|------------|-----------------------------------------------------------------------|------|
+| 2026-05-21 | Thermodynamic Security, Barbell Equilibrium & Epistemic Emergence     | [View](daily/2026-05-21-thermodynamic-security-barbell-equilibrium.md) |
 
 ---
 
