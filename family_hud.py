@@ -249,6 +249,155 @@ LESSONS = {
         "age_hint":    "12+",
         "xp":          28, "rune": "SATOSHI•RUNE", "min_coherence": 0.68,
     },
+
+    # ── SIMULATION HYPOTHESIS (4 levels) ─────────────────────────────────────
+    "simulation-1": {
+        "title":       "Simulation Hypothesis — Level 1",
+        "topic":       "What if the universe is running on something like a computer? What would that mean?",
+        "steelman":    "What is the strongest argument that the simulation hypothesis is completely untestable and therefore useless?",
+        "example":     "Video game characters in a rich enough simulation would have no way to know they're in one. Does that apply to us?",
+        "age_hint":    "10+",
+        "xp":          20, "rune": "QUANTUM•RUNE", "min_coherence": 0.60,
+    },
+    "simulation-2": {
+        "title":       "Simulation Hypothesis — Level 2",
+        "topic":       "Bostrom's trilemma: either civilizations go extinct before simulations, or they don't run them, or we're almost certainly in one.",
+        "steelman":    "What is the strongest argument that the base reality and the simulation are equally real and the distinction doesn't matter?",
+        "example":     "Nick Bostrom argues the number of simulated minds would vastly outnumber non-simulated ones. What follows from that?",
+        "age_hint":    "13+",
+        "xp":          25, "rune": "QUANTUM•RUNE", "min_coherence": 0.65,
+    },
+    "simulation-3": {
+        "title":       "Simulation Hypothesis — Level 3",
+        "topic":       "Glitch signals: quantum uncertainty, the speed of light, Planck length — do physical constants look like computational constraints?",
+        "steelman":    "What is the strongest argument that these constants are coincidental and have no deeper computational significance?",
+        "example":     "The universe seems to have a maximum resolution (Planck length) and maximum speed (light). Could these be rendering limits?",
+        "age_hint":    "14+",
+        "xp":          30, "rune": "VECTOR•RUNE", "min_coherence": 0.68,
+    },
+    "simulation-4": {
+        "title":       "Simulation Hypothesis — Level 4 (Master)",
+        "topic":       "Participatory reality: if observing something changes it (quantum measurement), does consciousness play a role in constructing reality?",
+        "steelman":    "What is the strongest argument that the observer effect in quantum mechanics has nothing to do with consciousness?",
+        "example":     "The double-slit experiment: particles behave differently when observed. Is this a glitch in the simulation or something else?",
+        "age_hint":    "15+",
+        "xp":          35, "rune": "ORACLE•ETERNAL•RUNE", "min_coherence": 0.72,
+    },
+
+    # ── STOIC RESILIENCE (3 levels) ───────────────────────────────────────────
+    "stoic-1": {
+        "title":       "Stoic Resilience — Level 1",
+        "topic":       "The dichotomy of control: some things are in your power, most things are not. Focus only on what you can control.",
+        "steelman":    "What is the strongest argument that focusing only on what you control leads to passivity and ignoring injustice?",
+        "example":     "Marcus Aurelius ran an empire while writing: 'You have power over your mind, not outside events.' How did he reconcile this?",
+        "age_hint":    "9+",
+        "xp":          18, "rune": "LINDY•RUNE", "min_coherence": 0.60,
+    },
+    "stoic-2": {
+        "title":       "Stoic Resilience — Level 2",
+        "topic":       "Negative visualization: imagining loss to appreciate what you have and prepare for adversity.",
+        "steelman":    "What is the strongest argument that imagining bad outcomes makes you more anxious, not more resilient?",
+        "example":     "The Stoics deliberately imagined losing everything — health, family, wealth — not to be pessimistic, but to be unshockable.",
+        "age_hint":    "11+",
+        "xp":          22, "rune": "BARBELL•RUNE", "min_coherence": 0.63,
+    },
+    "stoic-3": {
+        "title":       "Stoic Resilience — Level 3 (Master)",
+        "topic":       "Amor fati: not just accepting what happens, but loving it. Turning every obstacle into fuel.",
+        "steelman":    "What is the strongest argument that loving your fate is a form of denial that prevents you from changing bad situations?",
+        "example":     "Nietzsche: 'My formula for greatness is amor fati — that one wants nothing to be different, not forward, not backward, not in all eternity.'",
+        "age_hint":    "13+",
+        "xp":          28, "rune": "COURAGE•ETERNAL•RUNE", "min_coherence": 0.68,
+    },
+
+    # ── MONEY & VALUE (3 levels) ──────────────────────────────────────────────
+    "money-1": {
+        "title":       "What is Money? — Level 1",
+        "topic":       "Money is stored energy — it represents work already done. Why does it need to be scarce to work?",
+        "steelman":    "What is the strongest argument that money should NOT be scarce — that abundance of money is always good?",
+        "example":     "Zimbabwe printed so much money that a loaf of bread cost 100 billion dollars. What went wrong?",
+        "age_hint":    "7+",
+        "xp":          18, "rune": "SATOSHI•RUNE", "min_coherence": 0.58,
+    },
+    "money-2": {
+        "title":       "What is Money? — Level 2",
+        "topic":       "Time preference: choosing between a reward now vs a larger reward later. How Bitcoin lowers time preference.",
+        "steelman":    "What is the strongest argument that high time preference (wanting things now) is actually rational?",
+        "example":     "People who save in hard money (gold, Bitcoin) tend to plan further into the future than people in inflationary systems.",
+        "age_hint":    "10+",
+        "xp":          22, "rune": "LINDY•RUNE", "min_coherence": 0.62,
+    },
+    "money-3": {
+        "title":       "What is Money? — Level 3 (Master)",
+        "topic":       "Sound money vs fiat: who decides how much money exists, and why does that power matter?",
+        "steelman":    "What is the strongest argument that central banks managing money supply produces better outcomes than fixed-supply money?",
+        "example":     "The Federal Reserve was created in 1913. Since then, the dollar has lost over 96% of its purchasing power.",
+        "age_hint":    "12+",
+        "xp":          28, "rune": "SOVEREIGN•RUNE", "min_coherence": 0.68,
+    },
+
+    # ── EPISTEMOLOGY / HOW WE KNOW (3 levels) ────────────────────────────────
+    "epistemology-1": {
+        "title":       "How Do We Know Things? — Level 1",
+        "topic":       "The difference between belief, knowledge, and proof. Why 'everyone says so' isn't evidence.",
+        "steelman":    "What is the strongest argument that consensus among experts IS reliable evidence even without personal verification?",
+        "example":     "For centuries everyone 'knew' the sun went around the earth. What changed? Evidence, not consensus.",
+        "age_hint":    "8+",
+        "xp":          20, "rune": "AXIOM•RUNE", "min_coherence": 0.60,
+    },
+    "epistemology-2": {
+        "title":       "How Do We Know Things? — Level 2",
+        "topic":       "First principles thinking: breaking a problem down to its most basic true facts and building back up.",
+        "steelman":    "What is the strongest argument that reasoning from analogy is more reliable than first principles?",
+        "example":     "Elon Musk: 'When I was starting SpaceX, people said rockets cost $65M each. I asked: what are they made of?'",
+        "age_hint":    "11+",
+        "xp":          24, "rune": "AXIOM•RUNE", "min_coherence": 0.65,
+    },
+    "epistemology-3": {
+        "title":       "How Do We Know Things? — Level 3 (Master)",
+        "topic":       "Falsifiability: a claim is only scientific if it can be proven wrong. What can't be falsified?",
+        "steelman":    "What is the strongest argument that unfalsifiable beliefs (religion, metaphysics) still have epistemic value?",
+        "example":     "Popper: 'It is easy to obtain confirmations if we look for them. A theory that explains everything explains nothing.'",
+        "age_hint":    "13+",
+        "xp":          30, "rune": "ORACLE•RUNE", "min_coherence": 0.70,
+    },
+
+    # ── DECENTRALIZATION (3 levels) ───────────────────────────────────────────
+    "decentralization-1": {
+        "title":       "Decentralization — Level 1",
+        "topic":       "Why systems without a single point of control are harder to break, censor, or corrupt.",
+        "steelman":    "What is the strongest argument that centralized systems are more efficient and therefore better?",
+        "example":     "The internet was designed so that if one node was bombed, information would route around the damage. That's antifragile.",
+        "age_hint":    "9+",
+        "xp":          20, "rune": "NOSTR•RUNE", "min_coherence": 0.60,
+    },
+    "decentralization-2": {
+        "title":       "Decentralization — Level 2",
+        "topic":       "Nostr: a censorship-resistant social network built on cryptographic keys, not usernames.",
+        "steelman":    "What is the strongest argument that decentralized social networks will always lose to centralized ones on user experience?",
+        "example":     "On Twitter, the platform owns your account. On Nostr, your cryptographic key IS your account — no one can take it.",
+        "age_hint":    "11+",
+        "xp":          24, "rune": "NOSTR•RUNE", "min_coherence": 0.65,
+    },
+    "decentralization-3": {
+        "title":       "Decentralization — Level 3 (Master)",
+        "topic":       "Governance as immune system: decentralization protects against regulatory capture and institutional corruption.",
+        "steelman":    "What is the strongest argument that decentralized systems are ungovernable and therefore dangerous to society?",
+        "example":     "Every institution that starts decentralized tends to centralize over time. What forces can resist this?",
+        "age_hint":    "14+",
+        "xp":          30, "rune": "SOVEREIGN•RUNE", "min_coherence": 0.70,
+    },
+
+    # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
+    "child-rune-genesis": {
+        "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
+        "topic":       "You have reached 256 confirmations. The Child Rune is ready. What is the responsibility of a new sovereign entity?",
+        "steelman":    "What is the strongest argument that sovereignty without responsibility is more dangerous than no sovereignty at all?",
+        "example":     "Every Bitcoin wallet is a sovereign entity — no bank, no permission required. What does that responsibility demand of you?",
+        "age_hint":    "All ages — special unlock",
+        "xp":          100, "rune": "CHILD•RUNE•GENESIS", "min_coherence": 0.75,
+        "unlock_at_confirmations": 256,
+    },
 }
 
 # ── Polyvagal State Detector ──────────────────────────────────────────────────
@@ -427,10 +576,65 @@ class FamilySession:
                                   f"{'Ready for the next level.' if delta >= 0.1 else 'Another session will help consolidate this.'}",
         }
 
+        # ── Child Rune spawn check ────────────────────────────────────────────
+        child_rune_event = self._check_child_rune_spawn()
+        if child_rune_event:
+            summary["child_rune_spawned"] = True
+            summary["child_rune_event"]   = child_rune_event
+            self._add_message("system", "🔴 CHILD RUNE GENESIS — 256 confirmations reached! The Child Rune is ready for inscription.")
+
         self._add_message("system", f"Session ended. Coherence delta: {delta:+.3f}")
         self._write_summary_to_truth_log(summary)
         self._save_state()
         return summary
+
+    def _check_child_rune_spawn(self) -> dict | None:
+        """
+        Check if rune_confirmations >= 256. If so, write the spawn trigger
+        and unlock the child-rune-genesis lesson.
+        Returns event dict if spawned, None otherwise.
+        """
+        spawn_path = Path("/mnt/main/repo/child_rune_trigger.json")
+        status_path = Path("/mnt/main/swarm_status.json")
+
+        try:
+            confirmations = 0
+            if status_path.exists():
+                sw = json.loads(status_path.read_text())
+                confirmations = sw.get("rune_confirmations", 0)
+                already_ready = sw.get("child_rune_ready", False)
+            else:
+                return None
+
+            if confirmations >= 256 and not already_ready:
+                event = {
+                    "ready":         True,
+                    "confirmations": confirmations,
+                    "kid_name":      self.kid_name,
+                    "triggered_by":  "family_session",
+                    "timestamp":     datetime.datetime.now().isoformat(),
+                    "lesson_unlock": "child-rune-genesis",
+                }
+                # Write trigger file for swarm to pick up
+                spawn_path.parent.mkdir(parents=True, exist_ok=True)
+                spawn_path.write_text(json.dumps(event, indent=2))
+
+                # Log to truth log
+                with open(TRUTH_LOG, "a") as f:
+                    f.write(json.dumps({
+                        "timestamp": datetime.datetime.now().isoformat(),
+                        "tier": 2,
+                        "trigger": "child_rune_genesis",
+                        "daughter": "RUNE",
+                        "result": f"🔴 CHILD RUNE GENESIS — {self.kid_name} triggered at {confirmations} confirmations",
+                        "coherence": self.kid_coherence,
+                        "wonder_index": 2.0,
+                    }) + "\n")
+                return event
+
+        except Exception as e:
+            print(f"[family_hud] Child rune check error: {e}")
+        return None
 
     # ── Status (for real-time HUD polling) ────────────────────────────────────
     def get_kid_hud(self) -> dict:
