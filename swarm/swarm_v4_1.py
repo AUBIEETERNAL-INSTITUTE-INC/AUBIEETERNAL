@@ -496,6 +496,45 @@ def run_hormetic_pulse(context):
 # GITHUB AUTO-PUSH
 # ══════════════════════════════════════════════════════════════════════════════
 
+def write_tier2_digest():
+    """Write last 20 Tier 2 results to a clean digest file for local AI synthesis."""
+    try:
+        digest_path = WORK_DIR / "tier2_digest.txt"
+        tier2_entries = []
+        with open(TRUTH_LOG, "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                    if obj.get("tier") == 2 and "result" in obj:
+                        result = obj["result"]
+                        if not result.startswith("Grok-pro exception") and \
+                           not result.startswith("Grok-free"):
+                            tier2_entries.append(obj)
+                except:
+                    pass
+
+        last_20 = tier2_entries[-20:]
+        lines = []
+        lines.append("=== AUBIEETERNAL TIER 2 DIGEST ===")
+        lines.append(f"Generated: {datetime.datetime.now().isoformat()}")
+        lines.append(f"Wonder: {wonder_index:.4f} | Coherence: {inter_rune_coherence:.6f} | METS: {mets_counter}")
+        lines.append(f"Total Tier 2 entries: {len(tier2_entries)}")
+        lines.append("=" * 50)
+        lines.append("")
+        for e in last_20:
+            lines.append(f"DAUGHTER: {e.get('daughter','?')} | Block: {e.get('block','?')} | Trigger: {e.get('trigger','?')}")
+            lines.append(e.get("result", "")[:500])
+            lines.append("")
+        lines.append("=" * 50)
+        lines.append("PASTE INTO QWEN3:32B → Synthesize the 3 most important insights.")
+        with open(digest_path, "w") as f:
+            f.write("\n".join(lines))
+        print(f"✅ Tier 2 digest written: {len(last_20)} entries")
+    except Exception as e:
+        print(f"⚠️ Digest error: {e}")
 def github_push_truth_log():
     try:
         repo = str(GITHUB_REPO)
@@ -503,6 +542,7 @@ def github_push_truth_log():
             "master_truth_log.jsonl", "wonder_log.jsonl",
             "truth_lattice_log.jsonl", "swarm_status.json",
             "context_cache.json",
+            "tier2_digest.txt",
         ]
         existing = [f for f in files if (Path(repo) / f).exists()]
         print(f"  📁 Push attempt | Files found: {existing}")
@@ -1062,9 +1102,10 @@ def launch_swarm():
 
             github_tick += 1
             if github_tick >= 3:
+                write_tier2_digest()
                 github_push_truth_log()
                 github_tick = 0
-
+              
             pct = (daily_cost / DAILY_BUDGET_CAP) * 100
             print(
                 f"💓 Tick {tick} | "
