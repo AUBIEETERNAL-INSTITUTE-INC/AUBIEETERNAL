@@ -3067,6 +3067,26 @@ if "Family Co-Learning" in active:
     sess = st.session_state.fl_session
 
     if not sess["active"]:
+        # ── Child Rune celebration (shown on idle screen if ready) ────────────
+        if child_rune_ready:
+            st.balloons()
+            st.markdown("""
+            <div class="card" style="border:3px solid #f7931a;text-align:center;padding:2rem;">
+                <div style="font-family:Orbitron,monospace;font-size:1.4rem;color:#f7931a;margin-bottom:8px;">
+                    🔴 CHILD RUNE GENESIS
+                </div>
+                <div style="color:#c8d8ff;font-size:0.9rem;line-height:1.9;">
+                    256 confirmations reached.<br>
+                    The Child Rune is ready for inscription on-chain.<br>
+                    <b style="color:#f7931a;">Start the Genesis Lesson below to complete the ceremony.</b>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            # Auto-select the genesis lesson
+            if "child-rune-genesis" in lesson_keys:
+                genesis_idx = lesson_keys.index("child-rune-genesis")
+                st.info(f"🔴 Genesis lesson unlocked — scroll lesson selector to 'CHILD RUNE GENESIS'")
+
         if st.button("🥽 Start Co-Learning Session", type="primary", key="fl_start"):
             sess["active"]            = True
             sess["lesson_key"]        = chosen_key
@@ -3075,6 +3095,7 @@ if "Family Co-Learning" in active:
             sess["xp_earned"]         = 0
             sess["rune_earned"]       = False
             sess["messages"]          = []
+            sess["last_refresh"]      = time.time()
             # Init real FamilySession if available
             if _HUD_AVAILABLE:
                 try:
@@ -3086,6 +3107,46 @@ if "Family Co-Learning" in active:
                     sess["messages"].append({"from":"system","text":f"family_hud init note: {e}"})
             st.rerun()
     else:
+        # ── AUTO-REFRESH for parent HUD (every 5 seconds during active session) ──
+        if "last_refresh" not in sess:
+            sess["last_refresh"] = time.time()
+        time_since = time.time() - sess.get("last_refresh", 0)
+        if time_since > 5:
+            sess["last_refresh"] = time.time()
+            st.rerun()
+
+        # Show refresh indicator + manual refresh
+        col_ref1, col_ref2 = st.columns([3,1])
+        with col_ref1:
+            next_refresh = max(0, int(5 - time_since))
+            st.markdown(
+                f'<div style="font-family:Share Tech Mono,monospace;font-size:0.72rem;color:#334466;">'
+                f'🔄 Parent HUD auto-refreshes · next in {next_refresh}s'
+                f'</div>', unsafe_allow_html=True)
+        with col_ref2:
+            if st.button("⟳ Refresh Now", key="fl_manual_refresh"):
+                sess["last_refresh"] = time.time()
+                st.rerun()
+
+        # ── Child Rune celebration during active session ─────────────────────
+        if child_rune_ready and not sess.get("genesis_celebrated"):
+            sess["genesis_celebrated"] = True
+            st.balloons()
+            st.markdown("""
+            <div class="card" style="border:3px solid #f7931a;text-align:center;">
+                <div style="font-family:Orbitron,monospace;font-size:1.1rem;color:#f7931a;">
+                    🔴 CHILD RUNE GENESIS UNLOCKED DURING THIS SESSION!
+                </div>
+                <div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">
+                    256 confirmations reached. The Child Rune is ready for inscription.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            sess["messages"].append({
+                "from": "system",
+                "text": "🔴 CHILD RUNE GENESIS — 256 confirmations reached during this session! The Child Rune is ready for on-chain inscription."
+            })
+
         # ── DUAL HUD ─────────────────────────────────────────────────────────
         st.divider()
         col_kid, col_parent = st.columns(2)
