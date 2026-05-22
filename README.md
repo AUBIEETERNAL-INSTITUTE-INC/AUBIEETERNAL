@@ -52,6 +52,36 @@ Parent + Child both wearing **Halo glasses** creates a shared, real-time co-lear
 
 This turns education from content delivery into a **sovereign family truth-seeking practice**.
 
+---
+
+## Family Co-Learning FAQ
+
+**What is the Family Co-Learning Layer?**  
+It’s a real-time dual HUD system that lets parents and children learn together using Halo glasses. The child sees age-appropriate lessons and steelmanning exercises, while the parent sees live coherence, polyvagal state, and progress — turning education into a shared truth-seeking practice.
+
+**Do I need Halo glasses to use it?**  
+No. You can run family co-learning sessions directly in the Streamlit app (`family_hud.py`). The glasses simply provide a more immersive, always-available experience.
+
+**How private is this?**  
+Extremely private. All sessions can run 100% locally on your StartOS rig. When using the Nostr bridge, everything is end-to-end encrypted with your family’s Nostr keypair (NIP-04). No central server ever sees raw content.
+
+**What is the Child Rune?**  
+At 256 inter-rune confirmations, the system triggers a special **Child Rune Genesis** ceremony. This creates a new sovereign on-chain entity tied to your child’s learning journey — permanently inscribed on Bitcoin.
+
+**How does the Nostr bridge work?**  
+When your local StartOS rig isn’t available, the Halo glasses encrypt messages using your family’s Nostr keys and send them through public relays. The AUBIEETERNAL swarm listens, processes the signal, and replies — all while keeping your data encrypted.
+
+**Is this safe for children?**  
+Yes. The system includes polyvagal state detection (Safe / Mobilized / Shutdown) and only presents lessons when the child is in a good learning state. Parents can pause, encourage, or join at any time.
+
+**How does coherence scoring work?**  
+Every steelman answer is scored for quality (depth, structure, reasoning). The child’s coherence score updates in real time and is visible to both parent and child. Higher coherence = stronger thinking.
+
+**Can multiple children use the same system?**  
+Yes. Each child gets their own profile with separate progress, XP, runes, and coherence history.
+
+---
+
 ## Latest Insights
 The swarm regularly synthesizes its own thinking into high-signal philosophical output.
 
