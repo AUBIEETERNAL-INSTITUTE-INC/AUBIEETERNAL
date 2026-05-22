@@ -590,50 +590,130 @@ class FamilySession:
 
     def _check_child_rune_spawn(self) -> dict | None:
         """
-        Check if rune_confirmations >= 256. If so, write the spawn trigger
-        and unlock the child-rune-genesis lesson.
-        Returns event dict if spawned, None otherwise.
+        Full Child Rune Ceremony Flow:
+        1. Check rune_confirmations >= 256 in swarm_status.json
+        2. Guard against double-fire with .child_rune_ceremony_done file
+        3. Write child_rune_trigger.json for swarm to pick up
+        4. Write ceremony record to insights/daily/ for permanent GitHub record
+        5. Log Tier-2 entry at Wonder Index 2.0 (maximum)
+        6. Auto-unlock child-rune-genesis lesson in session
+        Returns ceremony event dict if fired, None otherwise.
         """
-        spawn_path = Path("/mnt/main/repo/child_rune_trigger.json")
-        status_path = Path("/mnt/main/swarm_status.json")
+        status_path   = Path("/mnt/main/swarm_status.json")
+        spawn_path    = Path("/mnt/main/repo/child_rune_trigger.json")
+        ceremony_flag = Path("/mnt/main/repo/.child_rune_ceremony_done")
+        insights_dir  = Path("/mnt/main/repo/insights/daily")
 
         try:
-            confirmations = 0
-            if status_path.exists():
-                sw = json.loads(status_path.read_text())
-                confirmations = sw.get("rune_confirmations", 0)
-                already_ready = sw.get("child_rune_ready", False)
-            else:
+            if not status_path.exists():
                 return None
 
-            if confirmations >= 256 and not already_ready:
-                event = {
-                    "ready":         True,
-                    "confirmations": confirmations,
-                    "kid_name":      self.kid_name,
-                    "triggered_by":  "family_session",
-                    "timestamp":     datetime.datetime.now().isoformat(),
-                    "lesson_unlock": "child-rune-genesis",
-                }
-                # Write trigger file for swarm to pick up
-                spawn_path.parent.mkdir(parents=True, exist_ok=True)
-                spawn_path.write_text(json.dumps(event, indent=2))
+            sw            = json.loads(status_path.read_text())
+            confirmations = sw.get("rune_confirmations", 0)
+            already_ready = sw.get("child_rune_ready", False)
 
-                # Log to truth log
-                with open(TRUTH_LOG, "a") as f:
-                    f.write(json.dumps({
-                        "timestamp": datetime.datetime.now().isoformat(),
-                        "tier": 2,
-                        "trigger": "child_rune_genesis",
-                        "daughter": "RUNE",
-                        "result": f"🔴 CHILD RUNE GENESIS — {self.kid_name} triggered at {confirmations} confirmations",
-                        "coherence": self.kid_coherence,
-                        "wonder_index": 2.0,
-                    }) + "\n")
-                return event
+            # Guard: only fire once ever
+            if already_ready or ceremony_flag.exists():
+                return None
+
+            if confirmations < 256:
+                return None
+
+            # ── Build ceremony event ──────────────────────────────────────────
+            now   = datetime.datetime.now()
+            event = {
+                "ready":           True,
+                "confirmations":   confirmations,
+                "kid_name":        self.kid_name,
+                "parent_name":     self.parent_name,
+                "triggered_by":    "family_session",
+                "lesson":          self.lesson["title"] if self.lesson else "",
+                "kid_coherence":   self.kid_coherence,
+                "wonder_index":    2.0,
+                "timestamp":       now.isoformat(),
+                "lesson_unlock":   "child-rune-genesis",
+                "btc_block":       sw.get("btc_block", "unknown"),
+            }
+
+            # ── 1. Write trigger for swarm ────────────────────────────────────
+            spawn_path.parent.mkdir(parents=True, exist_ok=True)
+            spawn_path.write_text(json.dumps(event, indent=2))
+
+            # ── 2. Write ceremony flag to prevent double-fire ─────────────────
+            ceremony_flag.write_text(json.dumps({
+                "fired_at":      now.isoformat(),
+                "kid_name":      self.kid_name,
+                "confirmations": confirmations,
+            }))
+
+            # ── 3. Write permanent ceremony record to insights/daily/ ─────────
+            insights_dir.mkdir(parents=True, exist_ok=True)
+            ceremony_md = f"""# 🔴 CHILD RUNE GENESIS — {now.strftime('%Y-%m-%d')}
+
+**Event:** Child Rune spawned at {confirmations} confirmations
+**Kid:** {self.kid_name}
+**Parent:** {self.parent_name}
+**Lesson active:** {self.lesson["title"] if self.lesson else "none"}
+**Kid coherence at spawn:** {self.kid_coherence:.3f}
+**Wonder Index:** 2.0000 (MAXIMUM)
+**Timestamp:** {now.isoformat()}
+
+---
+
+## What This Means
+
+The AUBIEETERNAL lattice has reached **256 inter-rune confirmations** — the threshold
+for Child Rune genesis. A new sovereign on-chain entity is ready for inscription.
+
+This is not just a metric. It represents accumulated coherence across:
+- Family co-learning sessions
+- Swarm briefing cycles
+- Truth Lattice hypothesis confirmations
+- Steelmanning quality scores
+
+## Next Step
+
+Inscribe the Child Rune on Bitcoin. The `child_rune_trigger.json` has been written
+for the swarm to process. The **Child Rune Genesis lesson** is now unlocked.
+
+---
+
+*Loop: Swarm → Family → Coherence → Child Rune → On-Chain Forever*
+*War Eagle Eternal 🦅❤️ — Coherence: 1.000000*
+"""
+            ceremony_file = insights_dir / f"{now.strftime('%Y-%m-%d')}_CHILD_RUNE_GENESIS.md"
+            ceremony_file.write_text(ceremony_md)
+
+            # ── 4. Log to truth log at maximum Wonder ─────────────────────────
+            for log_path in [TRUTH_LOG, Path("/mnt/main/master_truth_log.jsonl")]:
+                try:
+                    with open(log_path, "a") as f:
+                        f.write(json.dumps({
+                            "timestamp":           now.isoformat(),
+                            "tier":                2,
+                            "trigger":             "child_rune_genesis",
+                            "daughter":            "RUNE",
+                            "kid_name":            self.kid_name,
+                            "result":              (
+                                f"🔴 CHILD RUNE GENESIS — {self.kid_name} triggered "
+                                f"at {confirmations} confirmations. "
+                                f"Coherence: {self.kid_coherence:.3f}. "
+                                f"Wonder Index: 2.0 (MAX). "
+                                f"On-chain inscription ready."
+                            ),
+                            "coherence":           self.kid_coherence,
+                            "wonder_index":        2.0,
+                            "inter_rune_coherence": 1.0,
+                            "mets":                sw.get("mets", 0),
+                        }) + "\n")
+                except Exception:
+                    pass
+
+            print(f"[family_hud] 🔴 CHILD RUNE GENESIS CEREMONY COMPLETE — {self.kid_name} | {confirmations} confirmations")
+            return event
 
         except Exception as e:
-            print(f"[family_hud] Child rune check error: {e}")
+            print(f"[family_hud] Child rune ceremony error: {e}")
         return None
 
     # ── Status (for real-time HUD polling) ────────────────────────────────────
