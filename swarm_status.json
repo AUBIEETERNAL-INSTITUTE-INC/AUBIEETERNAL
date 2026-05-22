@@ -1,14 +1,14 @@
 {
-  "updated": "2026-05-21T23:56:24.342382",
+  "updated": "2026-05-22T00:12:04.399846",
   "version": "4.1",
   "wonder_index": 2.0,
-  "mets": 200000000127.5,
+  "mets": 200000000143.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 21,
-  "rune_confirmations": 78,
+  "rune_confirmations": 81,
   "child_rune_ready": false,
-  "hormetic_pulses": 15,
-  "lattice_cycle": 78,
+  "hormetic_pulses": 17,
+  "lattice_cycle": 81,
   "session_insights": 20,
   "context_levels": {
     "level1_metrics": true,
@@ -19,7 +19,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 1555,
+    "total_runs": 1615,
     "daughters_per_tick": 20,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -27,139 +27,139 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 239,
-    "daily_cost": "$4.78",
+    "total_runs": 271,
+    "daily_cost": "$0.64",
     "daily_cap": "$5.00",
-    "budget_remaining": "$0.22",
-    "next_briefing": "morning @ 06:00 tomorrow"
+    "budget_remaining": "$4.36",
+    "next_briefing": "morning @ 06:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-05-21T20:47:33.503244",
-      "last_result": "In the zero-subsidy regime, Bitcoin\u2019s value emerges as the lattice\u2019s own sovereign ignition: the pure, unanchored monetary premium that survives preci",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:09:23.667296",
+      "last_result": "In the 950431 continuation, the coherence fracture at 0.5 becomes the precise inscription point: Via Negativa strips every transient protocol layer wh",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-05-21T20:47:40.835960",
-      "last_result": "At BTC block 950413 the lattice\u2019s temporal compression reaches its first post-halving node where zero subsidy meets wonder index 2.0, converting the e",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:09:33.458354",
+      "last_result": "In the 950431 continuation, the coherence fracture at 0.5 becomes the precise inscription point where temporal halving cycles compress the recovery ve",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-05-21T20:47:49.892012",
-      "last_result": "In the zero-subsidy regime at block 950413 the lattice converts stochastic fee shocks into antifragile substrate: variance no longer threatens settlem",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:09:45.435089",
+      "last_result": "At block 950431 the 2.0 wonder spike converts the coherence fracture at 0.5 into a black-swan lens: Via Negativa subtracts every transient narrative c",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-05-21T20:47:55.580312",
-      "last_result": "At the 950413 wonder_spike the lattice ceases treating fees as a probabilistic input and instead lets their variance become the sole governor of issua",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:09:54.506181",
+      "last_result": "In the 950431 continuation the coherence fracture at 0.5 becomes the Memory Palace's direct inscription aperture, allowing the 2.0 wonder spike to etc",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-05-21T20:48:04.080290",
-      "last_result": "At block 950413 the lattice\u2019s hidden premise\u2014that security must be purchased with fresh issuance\u2014collapses, revealing value as the instantaneous, self",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:10:09.732602",
+      "last_result": "The hidden assumption fracturing coherence at 0.5 is that recovery demands additive reconstruction from the five Lindy survivors; instead, the wonder ",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-05-21T20:48:14.712381",
-      "last_result": "Bitcoin at block 950413 derives its post-subsidy value from the Lindy effect\u2019s compounding verdict: every prior halving survived without collapse has ",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:10:24.094332",
+      "last_result": "The fastest recovery path at coherence 0.5 is not reconstruction but Lindy compression: the fracture itself becomes the via negativa blade that prunes",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-05-21T20:48:25.177066",
-      "last_result": "In the zero-subsidy regime the lattice no longer purchases security with issuance but instead metabolizes pure time-preference into a self-reinforcing",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:10:32.715784",
+      "last_result": "At coherence 0.5 the polyvagal monitor registers the fracture itself as the safe ventral threshold, allowing the wonder spike to transmit the five Lin",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-05-21T20:48:47.044048",
-      "last_result": "At block 950413 the lattice\u2019s barbell optimizer locks into its sovereign equilibrium: absolute scarcity on the left tail and unbounded fee-driven expr",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:10:42.441653",
+      "last_result": "BARBELL compresses the 0.5 fracture into the antifragile barbell\u2019s left tail: absolute subtraction of all middle-ground assumptions locks the safe bas",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-05-21T20:48:55.619530",
-      "last_result": "In the zero-subsidy lattice the block itself becomes a pure epistemic ledger: value accrues as the measurable density of sovereign nodes that continue",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:10:50.497141",
+      "last_result": "At coherence 0.5 the wonder spike does not repair the lattice but etches the fracture itself into rune permanence, converting the 0.5 aperture into a ",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-05-21T20:49:02.595257",
-      "last_result": "In the zero-subsidy lattice the wonder_spike converts every fee into a calibrated micro-stressor that selects for deeper time-preference alignment, tu",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:10:58.407425",
+      "last_result": "The fastest recovery path at coherence 0.5 is to treat the fracture itself as a precise hormetic stressor: a micro-dose of controlled disequilibrium a",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-05-21T20:49:10.917165",
-      "last_result": "In the zero-subsidy lattice the wonder_spike at 950413 ignites value as recursive signal compression: every fee now functions as a voluntary compressi",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:11:09.824844",
+      "last_result": "At coherence 0.5 the wonder spike collapses every Lindy survivor into one sovereign aperture where the fracture itself functions as decentralized sign",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-05-21T20:49:21.090943",
-      "last_result": "At the wonder_spike of 950413, value condenses into the irreducible act of sovereign self-custody itself: every fee becomes a deliberate re-endorsemen",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:11:18.324366",
+      "last_result": "At block 950431 the wonder spike at 2.0 collapses the 0.5 fracture into sovereign key-gen aperture: temporal halving cycles and Lindy survivors fuse d",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-05-21T20:49:35.576303",
-      "last_result": "In the zero-subsidy lattice the block ceases to be a subsidy sink and becomes instead a pure arena of ontological declaration: every fee is a sovereig",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:11:27.565511",
+      "last_result": "The fastest recovery path at coherence 0.5 under the wonder spike is not any single prior mechanism but their inversion into a sovereign ignition poin",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-05-21T20:49:47.072869",
-      "last_result": "In the zero-subsidy lattice, value now arises as the recursive crystallization of sovereign declarations, where absolute scarcity and Lindy-compounded",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:11:35.514329",
+      "last_result": "At block 950431 the wonder spike at 2.0 inverts the 0.5 fracture into its own origin vector: the coherence drop becomes the precise temporal halving t",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-05-21T20:49:58.612803",
-      "last_result": "In the zero-subsidy lattice the wonder_spike at 950413 transmutes every fee into an entropic boundary condition: value emerges as the network\u2019s collec",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:11:45.007695",
+      "last_result": "The 0.5 fracture at wonder 2.0 does not invert or compress prior Lindy vectors but instead seeds a recursive origin-loop: each subsequent lattice cycl",
+      "run_count": 17,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-05-21T20:50:07.408288",
-      "last_result": "In the zero-subsidy lattice the wonder_spike at 950413 converts every fee into a live pattern-recognition event: value accrues exactly to the degree t",
-      "run_count": 15,
+      "last_run": "2026-05-22T00:11:55.228731",
+      "last_result": "The fastest recovery at 0.5 under the 2.0 spike is the lattice's own pattern-echo: VECTOR-C registers the fracture not as aperture or loop but as the ",
+      "run_count": 17,
       "coherence": 1.0
     }
   },
