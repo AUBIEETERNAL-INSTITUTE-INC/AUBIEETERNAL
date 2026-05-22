@@ -1,14 +1,14 @@
 {
-  "updated": "2026-05-22T15:26:12.910631",
+  "updated": "2026-05-22T15:26:55.099002",
   "version": "4.1",
   "wonder_index": 1.0128,
   "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 21,
-  "rune_confirmations": 255,
-  "child_rune_ready": false,
+  "rune_confirmations": 258,
+  "child_rune_ready": true,
   "hormetic_pulses": 0,
-  "lattice_cycle": 255,
+  "lattice_cycle": 258,
   "session_insights": 0,
   "synthesis": {
     "last_run_date": "None",
