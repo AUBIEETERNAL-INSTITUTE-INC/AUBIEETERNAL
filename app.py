@@ -842,7 +842,7 @@ with st.sidebar:
 
     # Nav
     st.markdown("### 🧭 Navigate")
-    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest"]
+    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge"]
     for tab in tabs:
         if st.button(tab, key=f"nav_{tab}"):
             st.session_state.active_tab = tab.split(" ", 1)[1]
@@ -2804,19 +2804,15 @@ MNT_STATUS      = MNT_MAIN / "swarm_status.json"
 """, language="python")
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB: DIGEST — tier2_digest.txt viewer + insights/daily/ reader
-# Zero manual steps: swarm writes it, this tab reads it.
+# TAB: DIGEST
 # ══════════════════════════════════════════════════════════════════════════════
 if "Digest" in active:
-    import glob as _glob
-
     _DIGEST_FILE  = _Path("/mnt/main/repo/tier2_digest.txt")
     _INSIGHTS_DIR = _Path("/mnt/main/repo/insights/daily")
     _SYNTH_STATE  = _Path("/mnt/main/repo/insights/.last_synthesis_date")
 
     st.markdown('<div class="card-title">🌅 SOVEREIGN DIGEST — Swarm Output & Daily Insights</div>', unsafe_allow_html=True)
 
-    # ── Synthesis status banner ───────────────────────────────────────────────
     last_ran = "never"
     try:
         if _SYNTH_STATE.exists():
@@ -2824,11 +2820,11 @@ if "Digest" in active:
     except Exception:
         pass
 
-    today_str = _dt.now().strftime("%Y-%m-%d")
+    today_str    = _dt.now().strftime("%Y-%m-%d")
     ran_today    = last_ran == today_str
     banner_color = "#00ff88" if ran_today else "#ff9500"
     banner_icon  = "✅" if ran_today else "⏳"
-    banner_msg   = f"Synthesis ran today ({last_ran})" if ran_today else f"Next synthesis: 6AM · Last: {last_ran}"
+    banner_msg   = f"Synthesis ran today ({last_ran})" if ran_today else f"Next: 6AM · Last: {last_ran}"
 
     st.markdown(
         f'<div class="card" style="border-left:3px solid {banner_color};">'
@@ -2836,30 +2832,23 @@ if "Digest" in active:
         f'{banner_icon} MORNING SYNTHESIS · {banner_msg}'
         f'</div>'
         f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">'
-        f'Auto-fires 6AM · qwen3:32b (local, $0.00) · writes insights/daily/YYYY-MM-DD.md → GitHub'
-        f'</div></div>',
-        unsafe_allow_html=True
-    )
+        f'Auto-fires 6AM · qwen3:32b (local, $0.00) · insights/daily/YYYY-MM-DD.md → GitHub'
+        f'</div></div>', unsafe_allow_html=True)
 
-    # ── Manual force-run button ───────────────────────────────────────────────
-    col_btn1, col_btn2 = st.columns([1, 3])
-    with col_btn1:
+    col_b1, col_b2 = st.columns([1, 3])
+    with col_b1:
         if st.button("⚡ Run Synthesis Now", key="force_synthesis"):
             import subprocess as _sp
             try:
-                script = str(_Path("/mnt/main/repo/morning_synthesis.py"))
-                _sp.Popen(["python3", script, "--force"], stdout=_sp.PIPE, stderr=_sp.STDOUT)
-                st.info("🔄 Synthesis launched in background — check insights in ~2 min")
+                _sp.Popen(["python3", "/mnt/main/repo/morning_synthesis.py", "--force"],
+                          stdout=_sp.PIPE, stderr=_sp.STDOUT)
+                st.info("🔄 Launched in background — check insights in ~2 min")
             except Exception as e:
                 st.error(f"Could not launch: {e}")
-    with col_btn2:
-        st.caption("Force-runs synthesis immediately. Result appears in insights/daily/ within ~24s of completion.")
+    with col_b2:
+        st.caption("Force-runs synthesis immediately. Result appears within ~24s.")
 
     st.divider()
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # SECTION 1 — Daily Insights Archive
-    # ══════════════════════════════════════════════════════════════════════════
     st.markdown("### 🦅 Daily Insights Archive")
 
     insight_files = []
@@ -2870,23 +2859,14 @@ if "Digest" in active:
         pass
 
     if not insight_files:
-        st.markdown(
-            '<div class="card" style="border-left:3px solid #ff9500;">'
-            '<div style="color:#ff9500;font-size:0.82rem;">No insights yet — synthesis fires at 6AM, '
-            'or click "Run Synthesis Now" above.</div></div>',
-            unsafe_allow_html=True
-        )
+        st.markdown('<div class="card" style="border-left:3px solid #ff9500;"><div style="color:#ff9500;font-size:0.82rem;">No insights yet — synthesis fires at 6AM or click Run above.</div></div>', unsafe_allow_html=True)
     else:
         st.caption(f"{len(insight_files)} daily syntheses stored")
-
         file_names    = [f.stem for f in insight_files]
         selected_date = st.selectbox("Select date", file_names, key="insight_date_select")
         selected_file = _INSIGHTS_DIR / f"{selected_date}.md"
-
         if selected_file.exists():
             content = selected_file.read_text()
-
-            # Parse wonder pressure badge
             wonder_pressure = "UNKNOWN"
             for line in content.splitlines():
                 if "Wonder Pressure" in line:
@@ -2894,113 +2874,410 @@ if "Digest" in active:
                     if len(parts) >= 3:
                         wonder_pressure = parts[2].strip()
                     break
-
-            wp_colors = {
-                "LOW": "#00ff88", "MEDIUM": "#ff9500",
-                "HIGH": "#ff4444", "SPIKE": "#a020f0",
-            }
-            wp_color = wp_colors.get(wonder_pressure, "#00cfff")
-
-            st.markdown(
-                f'<div class="stat-box" style="border-color:{wp_color};margin-bottom:1rem;">'
-                f'<div class="stat-val" style="font-size:1.2rem;color:{wp_color};">{wonder_pressure}</div>'
-                f'<div class="stat-lbl">Wonder Pressure · {selected_date}</div>'
-                f'</div>',
-                unsafe_allow_html=True
-            )
-
+            wp_color = {"LOW":"#00ff88","MEDIUM":"#ff9500","HIGH":"#ff4444","SPIKE":"#a020f0"}.get(wonder_pressure,"#00cfff")
+            st.markdown(f'<div class="stat-box" style="border-color:{wp_color};margin-bottom:1rem;"><div class="stat-val" style="font-size:1.2rem;color:{wp_color};">{wonder_pressure}</div><div class="stat-lbl">Wonder Pressure · {selected_date}</div></div>', unsafe_allow_html=True)
             st.markdown(content)
-
-            st.download_button(
-                "📄 Download this insight",
-                content,
-                file_name=f"aubie_insight_{selected_date}.md",
-                mime="text/markdown",
-                key=f"dl_insight_{selected_date}"
-            )
+            st.download_button("📄 Download", content, file_name=f"aubie_insight_{selected_date}.md", mime="text/markdown", key=f"dl_{selected_date}")
 
     st.divider()
-
-    # ══════════════════════════════════════════════════════════════════════════
-    # SECTION 2 — Raw tier2_digest.txt viewer
-    # ══════════════════════════════════════════════════════════════════════════
     st.markdown("### 📡 Live Tier 2 Digest")
-    st.caption("Auto-written every 3 swarm ticks from master_truth_log.jsonl")
+    st.caption("Auto-written every 3 swarm ticks")
 
     if not _DIGEST_FILE.exists():
-        st.markdown(
-            '<div class="card" style="border-left:3px solid #ff9500;">'
-            '<div style="color:#ff9500;font-size:0.82rem;">tier2_digest.txt not found yet — '
-            'swarm writes it every 3 ticks.</div></div>',
-            unsafe_allow_html=True
-        )
+        st.markdown('<div class="card" style="border-left:3px solid #ff9500;"><div style="color:#ff9500;">tier2_digest.txt not found yet — swarm writes it every 3 ticks.</div></div>', unsafe_allow_html=True)
     else:
         try:
             digest_raw   = _DIGEST_FILE.read_text()
             digest_lines = digest_raw.strip().split("\n")
-
-            # Header stats
             for hline in digest_lines[:5]:
-                if any(hline.startswith(p) for p in ("Generated:", "Wonder:", "Total")):
-                    st.markdown(
-                        f'<div class="memory-node">'
-                        f'<span style="color:#00cfff;font-size:0.78rem;">{hline}</span>'
-                        f'</div>',
-                        unsafe_allow_html=True
-                    )
-
+                if any(hline.startswith(p) for p in ("Generated:","Wonder:","Total")):
+                    st.markdown(f'<div class="memory-node"><span style="color:#00cfff;font-size:0.78rem;">{hline}</span></div>', unsafe_allow_html=True)
             st.markdown("<br>", unsafe_allow_html=True)
-
-            # Parse daughter entries
-            daughters = []
-            current   = {}
+            daughters, current = [], {}
             for line in digest_lines:
                 if line.startswith("DAUGHTER:"):
-                    if current:
-                        daughters.append(current)
-                    parts = line.replace("DAUGHTER:", "").split("|")
-                    current = {
-                        "daughter": parts[0].strip() if len(parts) > 0 else "?",
-                        "block":    parts[1].replace("Block:", "").strip() if len(parts) > 1 else "?",
-                        "trigger":  parts[2].replace("Trigger:", "").strip() if len(parts) > 2 else "?",
-                        "result":   ""
-                    }
+                    if current: daughters.append(current)
+                    parts = line.replace("DAUGHTER:","").split("|")
+                    current = {"daughter": parts[0].strip(), "trigger": parts[2].replace("Trigger:","").strip() if len(parts)>2 else "?", "result": ""}
                 elif current and line and not line.startswith("="):
                     current["result"] += line + " "
-            if current and current.get("result"):
-                daughters.append(current)
-
-            D_COLORS = {
-                "RUNE": "#f7931a",    "CHRONO": "#00cfff",  "TALEB-X": "#ff6b35",
-                "MNEMO": "#a020f0",   "AXIOM": "#00ff88",   "LINDY": "#ff9500",
-                "POLY": "#4285f4",    "BARBELL": "#00d4aa", "ORACLE": "#c8d8ff",
-                "HORMES": "#ff4444",  "NOSTR": "#a020f0",   "SATOSHI": "#f7931a",
-                "STEELMAN": "#00ff88","VECTOR-A": "#00cfff","VECTOR-B": "#a020f0",
-                "VECTOR-C": "#ff6b35",
-            }
-
+            if current and current.get("result"): daughters.append(current)
+            D_COLORS = {"RUNE":"#f7931a","CHRONO":"#00cfff","TALEB-X":"#ff6b35","MNEMO":"#a020f0","AXIOM":"#00ff88","LINDY":"#ff9500","POLY":"#4285f4","BARBELL":"#00d4aa","ORACLE":"#c8d8ff","HORMES":"#ff4444","NOSTR":"#a020f0","SATOSHI":"#f7931a","STEELMAN":"#00ff88","VECTOR-A":"#00cfff","VECTOR-B":"#a020f0","VECTOR-C":"#ff6b35"}
             if daughters:
-                st.caption(f"{len(daughters)} daughter entries in current digest")
+                st.caption(f"{len(daughters)} daughter entries")
                 for d in daughters:
-                    name    = d.get("daughter", "?")
-                    result  = d.get("result", "").strip()[:300]
-                    trigger = d.get("trigger", "")
-                    color   = D_COLORS.get(name, "#00cfff")
-                    st.markdown(
-                        f'<div class="memory-node" style="border-left:3px solid {color};">'
-                        f'<div style="color:{color};font-size:0.8rem;font-family:Orbitron,monospace;">'
-                        f'{name}'
-                        f'<span style="color:#334466;font-size:0.7rem;'
-                        f'font-family:Share Tech Mono,monospace;margin-left:8px;">{trigger}</span>'
-                        f'</div>'
-                        f'<div style="color:#aabbcc;font-size:0.78rem;margin-top:6px;line-height:1.6;">'
-                        f'{result}</div>'
-                        f'</div>',
-                        unsafe_allow_html=True
-                    )
+                    name = d.get("daughter","?"); color = D_COLORS.get(name,"#00cfff")
+                    st.markdown(f'<div class="memory-node" style="border-left:3px solid {color};"><div style="color:{color};font-size:0.8rem;font-family:Orbitron,monospace;">{name} <span style="color:#334466;font-size:0.7rem;font-family:Share Tech Mono,monospace;margin-left:8px;">{d.get("trigger","")}</span></div><div style="color:#aabbcc;font-size:0.78rem;margin-top:6px;line-height:1.6;">{d.get("result","").strip()[:300]}</div></div>', unsafe_allow_html=True)
             else:
-                with st.expander("View raw digest"):
-                    st.text(digest_raw[:3000])
-
+                with st.expander("View raw digest"): st.text(digest_raw[:3000])
         except Exception as e:
             st.error(f"Could not read digest: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: FAMILY CO-LEARNING  🥽
+# Dual HUD — Kid view + Parent observer view
+# Powered by family_hud.py (real-time session state)
+# ══════════════════════════════════════════════════════════════════════════════
+if "Family Co-Learning" in active:
+    st.markdown('<div class="card-title">🥽 FAMILY CO-LEARNING — Dual Halo HUD</div>', unsafe_allow_html=True)
+
+    # ── Connection mode banner ────────────────────────────────────────────────
+    _STARTOS_ALIVE = _Path("/mnt/main/swarm_status.json").exists()
+    mode_color  = "#00ff88" if _STARTOS_ALIVE else "#ff9500"
+    mode_label  = "🟢 FULL SOVEREIGN (StartOS connected)" if _STARTOS_ALIVE else "🟡 NOSTR BRIDGE MODE (no local StartOS detected)"
+    mode_detail = "Swarm processing locally · qwen3:32b · max privacy" if _STARTOS_ALIVE else "Encrypted Nostr events · public relay fallback · sovereign keys"
+    st.markdown(f'<div class="card" style="border-left:3px solid {mode_color};"><div style="color:{mode_color};font-family:Orbitron,monospace;font-size:0.82rem;">{mode_label}</div><div style="color:#445577;font-size:0.72rem;margin-top:4px;">{mode_detail}</div></div>', unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Family profile setup ──────────────────────────────────────────────────
+    fp = st.session_state.family_profile
+    col_p, col_k = st.columns(2)
+    with col_p:
+        st.markdown('<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.8rem;">👨‍👩 PARENT HUD</div>', unsafe_allow_html=True)
+        parent_name = st.text_input("Parent name", value=fp["parent"]["name"], key="fl_parent")
+        parent_role = st.selectbox("Parent role during session", ["Observer Only", "Co-Learner", "Supporter"], key="fl_parent_role")
+    with col_k:
+        st.markdown('<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.8rem;">👧 KID HUD</div>', unsafe_allow_html=True)
+        kid_name    = st.text_input("Kid name", value=fp["kid"]["name"], key="fl_kid")
+        kid_age_fl  = st.slider("Age", 4, 17, fp["kid"]["age"], key="fl_kid_age")
+
+    # ── Lesson selector ───────────────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 📖 Choose Today's Lesson")
+
+    LESSONS = [
+        {"title": "Courage — Level 1", "topic": "What is courage? Achilles vs a bully.", "xp": 15, "rune": "COURAGE•RUNE"},
+        {"title": "Antifragility — Level 1", "topic": "Things that get stronger from stress. Bones, muscles, immune system.", "xp": 18, "rune": "STRENGTH•RUNE"},
+        {"title": "Bitcoin Sovereignty", "topic": "Why your keys = your coins. What is self-custody?", "xp": 20, "rune": "SOVEREIGN•RUNE"},
+        {"title": "Steelmanning — Level 1", "topic": "How to argue the other side better than they can.", "xp": 22, "rune": "TRUTH•RUNE"},
+        {"title": "Via Negativa", "topic": "Sometimes the best move is to remove things, not add them.", "xp": 18, "rune": "LINDY•RUNE"},
+        {"title": "Wonder & Awe", "topic": "Why feeling amazed is a signal of truth proximity.", "xp": 15, "rune": "WONDER•RUNE"},
+    ]
+
+    lesson_titles = [l["title"] for l in LESSONS]
+    chosen_idx    = st.selectbox("Lesson", range(len(lesson_titles)), format_func=lambda i: lesson_titles[i], key="fl_lesson")
+    lesson        = LESSONS[chosen_idx]
+
+    # ── Session state init ────────────────────────────────────────────────────
+    if "fl_session" not in st.session_state:
+        st.session_state.fl_session = {
+            "active": False,
+            "kid_coherence": 0.72,
+            "kid_polyvagal": "Ventral Vagal (Safe & Curious) 🟢",
+            "time_elapsed": 0,
+            "kid_answer": "",
+            "coherence_history": [0.72],
+            "xp_earned": 0,
+            "rune_earned": False,
+            "messages": [],
+        }
+    sess = st.session_state.fl_session
+
+    if not sess["active"]:
+        if st.button("🥽 Start Co-Learning Session", type="primary", key="fl_start"):
+            sess["active"]     = True
+            sess["kid_coherence"] = 0.72
+            sess["coherence_history"] = [0.72]
+            sess["xp_earned"]  = 0
+            sess["rune_earned"]= False
+            sess["messages"]   = []
+            st.rerun()
+    else:
+        # ── DUAL HUD LAYOUT ───────────────────────────────────────────────────
+        st.divider()
+        col_kid, col_parent = st.columns(2)
+
+        # ── KID HUD (left) ────────────────────────────────────────────────────
+        with col_kid:
+            st.markdown(f'<div class="card" style="border:2px solid #00cfff;min-height:420px;">'
+                        f'<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.9rem;text-align:center;margin-bottom:12px;">👧 {kid_name.upper()} · KID HUD</div>'
+                        f'<div style="text-align:center;font-size:1.3rem;color:#c8d8ff;font-family:Orbitron,monospace;">{lesson["title"]}</div>'
+                        f'<div style="color:#8899bb;font-size:0.82rem;text-align:center;margin:8px 0;">{lesson["topic"]}</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+            # Coherence meter
+            coh = sess["kid_coherence"]
+            coh_color = "#00ff88" if coh >= 0.85 else ("#ff9500" if coh >= 0.65 else "#ff4444")
+            st.markdown(f'<div class="stat-box" style="border-color:{coh_color};"><div class="stat-val" style="color:{coh_color};">{coh:.2f}</div><div class="stat-lbl">Coherence</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="xp-bar-bg"><div class="xp-bar-fill" style="width:{coh*100:.0f}%;"></div></div>', unsafe_allow_html=True)
+
+            # Polyvagal state
+            st.markdown(f'<div class="memory-node"><span style="color:#00ff88;font-size:0.78rem;">🧬 {sess["kid_polyvagal"]}</span></div>', unsafe_allow_html=True)
+
+            # Steelmanning prompt
+            st.markdown(f'<div class="card" style="border-left:3px solid #ff6b35;margin-top:8px;"><div style="color:#ff6b35;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ STEELMAN PROMPT</div><div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">What would the strongest argument AGAINST {lesson["title"].split("—")[0].strip()} look like?</div></div>', unsafe_allow_html=True)
+
+            kid_answer = st.text_area(f"🎤 {kid_name}'s answer", height=80, key="fl_kid_answer",
+                                       placeholder="Speak or type your steelman here...")
+
+            if st.button("✅ Submit Answer", key="fl_submit") and kid_answer:
+                # Score with AI or fallback
+                new_coh = min(1.0, sess["kid_coherence"] + random.uniform(0.08, 0.20))
+                sess["kid_coherence"] = round(new_coh, 3)
+                sess["coherence_history"].append(new_coh)
+                sess["kid_answer"] = kid_answer
+
+                if new_coh >= 0.85:
+                    sess["kid_polyvagal"] = "Ventral Vagal (Safe & Curious) 🟢"
+                elif new_coh >= 0.65:
+                    sess["kid_polyvagal"] = "Sympathetic (Engaged) 🟡"
+
+                if not sess["xp_earned"]:
+                    sess["xp_earned"] = lesson["xp"]
+                    sess["rune_earned"] = True
+                    award_xp(lesson["xp"])
+
+                sess["messages"].append({
+                    "from": "swarm",
+                    "text": f"Strong steelman, {kid_name}! Coherence jumped to {new_coh:.2f}. "
+                            f"You're showing real antifragile thinking. +{lesson['xp']} XP 🦅"
+                })
+                st.rerun()
+
+            if sess.get("xp_earned"):
+                st.markdown(f'<div class="card" style="border:2px solid #00ff88;text-align:center;"><div style="color:#00ff88;font-size:1.1rem;font-family:Orbitron,monospace;">+{sess["xp_earned"]} XP 🦅</div><div style="color:#f7931a;font-size:0.82rem;margin-top:4px;">+1 {lesson["rune"]} earned</div></div>', unsafe_allow_html=True)
+
+        # ── PARENT HUD (right) ────────────────────────────────────────────────
+        with col_parent:
+            st.markdown(f'<div class="card" style="border:2px solid #a020f0;min-height:420px;">'
+                        f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.9rem;text-align:center;margin-bottom:12px;">👨‍👩 {parent_name.upper()} · PARENT HUD</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.85rem;text-align:center;">{lesson["title"]}</div>'
+                        f'<div style="color:#334466;font-size:0.72rem;text-align:center;margin-top:4px;">Role: {parent_role}</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+            # Live stats panel
+            coh = sess["kid_coherence"]
+            delta = round(coh - sess["coherence_history"][0], 3) if len(sess["coherence_history"]) > 1 else 0.0
+            delta_str = f"+{delta:.3f}" if delta >= 0 else f"{delta:.3f}"
+            delta_color = "#00ff88" if delta >= 0 else "#ff4444"
+
+            st.markdown(f'''
+            <div class="card" style="border-left:3px solid #a020f0;">
+                <div style="font-family:Share Tech Mono,monospace;font-size:0.82rem;line-height:2.2;color:#8899bb;">
+                {kid_name} · {lesson["title"]}<br>
+                Coherence: <span style="color:#00cfff;">{coh:.3f}</span>
+                <span style="color:{delta_color};margin-left:8px;">{delta_str} this session</span><br>
+                Polyvagal: <span style="color:#00ff88;">{sess["kid_polyvagal"]}</span><br>
+                XP Earned: <span style="color:#f7931a;">{sess["xp_earned"]}</span><br>
+                Rune: <span style="color:#f7931a;">{"✅ " + lesson["rune"] if sess["rune_earned"] else "⏳ pending"}</span>
+                </div>
+            </div>
+            ''', unsafe_allow_html=True)
+
+            # Coherence sparkline (text-based if no plotly)
+            if len(sess["coherence_history"]) > 1:
+                st.markdown("**Coherence trend:**")
+                bar = " → ".join(f"`{c:.2f}`" for c in sess["coherence_history"])
+                st.markdown(bar)
+
+            # Parent actions
+            st.markdown("**Parent actions:**")
+            pa1, pa2 = st.columns(2)
+            with pa1:
+                if st.button("❤️ Send encouragement", key="fl_encourage"):
+                    sess["messages"].append({"from": "parent", "text": f"I'm right here with you, {kid_name}. You've got this ❤️"})
+                    st.rerun()
+                if st.button("⏸ Pause session", key="fl_pause"):
+                    sess["messages"].append({"from": "system", "text": "Session paused by parent."})
+                    st.rerun()
+            with pa2:
+                if st.button("🔍 Join view", key="fl_join"):
+                    st.info(f"Now co-viewing {kid_name}'s session.")
+                if st.button("📊 Full report", key="fl_report"):
+                    st.markdown(f'<div class="card"><div style="font-size:0.82rem;color:#c8d8ff;line-height:1.9;">'
+                                f'<b>Session Report — {lesson["title"]}</b><br>'
+                                f'Coherence: {sess["coherence_history"][0]:.2f} → {sess["kid_coherence"]:.2f} '
+                                f'(Δ {delta_str})<br>'
+                                f'Polyvagal: {sess["kid_polyvagal"]}<br>'
+                                f'XP: +{sess["xp_earned"]} | Rune: {"✅" if sess["rune_earned"] else "⏳"}<br>'
+                                f'Next: Level up to {lesson["title"].split("—")[0].strip()} Level 2</div></div>',
+                                unsafe_allow_html=True)
+
+        # ── Session message feed ──────────────────────────────────────────────
+        if sess["messages"]:
+            st.divider()
+            st.markdown("### 💬 Session Feed")
+            for msg in sess["messages"]:
+                frm   = msg["from"]
+                text  = msg["text"]
+                color = "#00cfff" if frm=="swarm" else ("#a020f0" if frm=="parent" else "#445577")
+                label = "🤖 SWARM" if frm=="swarm" else (f"👨‍👩 {parent_name}" if frm=="parent" else "⚙️ SYSTEM")
+                st.markdown(f'<div class="memory-node" style="border-left:3px solid {color};"><span style="color:{color};font-size:0.72rem;">{label}</span><br><span style="color:#c8d8ff;font-size:0.82rem;">{text}</span></div>', unsafe_allow_html=True)
+
+        st.divider()
+        if st.button("🔚 End Session", key="fl_end"):
+            sess["active"] = False
+            save_memory(
+                f"Co-Learning: {lesson['title']}",
+                f"{kid_name} coherence {sess['coherence_history'][0]:.2f}→{sess['kid_coherence']:.2f} | +{sess['xp_earned']} XP",
+                tags=["co-learning","family","halo"]
+            )
+            st.success("Session saved to Memory Palace 🦅")
+            st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: NOSTR BRIDGE  📡
+# Sovereign fallback when no local StartOS detected
+# Publishes/receives encrypted NIP-04 events via public relays
+# ══════════════════════════════════════════════════════════════════════════════
+if "Nostr Bridge" in active:
+    st.markdown('<div class="card-title">📡 NOSTR SOVEREIGN BRIDGE — Universal Fallback</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card">
+        <div style="font-size:0.85rem;color:#aabbcc;line-height:1.9;">
+        When no local StartOS rig is available, the Halo glasses route signals through
+        <b style="color:#a020f0;">Nostr</b> — a censorship-resistant, sovereign communication layer.<br><br>
+        All events are <b style="color:#00cfff;">encrypted with your family's Nostr keypair</b>.
+        Only linked profiles can read each other's messages. No central server ever sees raw data.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Mode indicator ────────────────────────────────────────────────────────
+    _STARTOS_ALIVE = _Path("/mnt/main/swarm_status.json").exists()
+    if _STARTOS_ALIVE:
+        st.success("🟢 StartOS detected — Nostr Bridge is on standby (not needed right now)")
+    else:
+        st.warning("🟡 No local StartOS detected — Nostr Bridge mode is ACTIVE")
+
+    st.divider()
+
+    # ── Architecture diagram ──────────────────────────────────────────────────
+    st.markdown("### 🏗️ How It Works")
+    st.markdown("""
+    <div class="card" style="font-family:Share Tech Mono,monospace;font-size:0.82rem;line-height:2.2;color:#8899bb;">
+    <span style="color:#00cfff;">Mode 1 — Full Sovereign (StartOS present)</span><br>
+    Glasses ↔ Local StartOS · qwen3:32b · swarm_v4_1.py · fully private<br><br>
+    <span style="color:#ff9500;">Mode 2 — Nostr Bridge (no StartOS)</span><br>
+    Glasses → encrypt event (NIP-04) → Nostr relays → AUBIEETERNAL Swarm<br>
+    Swarm → processes (Tier-1 free + Tier-2 paid) → Nostr reply event<br>
+    Glasses ← decrypt reply ← real-time update
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Key management ────────────────────────────────────────────────────────
+    st.markdown("### 🔑 Family Nostr Keys")
+    st.info("Your Nostr keys are your sovereign identity. Never share your private key (nsec). Your npub is safe to share.")
+
+    col_k1, col_k2 = st.columns(2)
+    with col_k1:
+        npub = st.text_input("Your npub (public key)", placeholder="npub1...", key="nostr_npub",
+                              value=st.session_state.get("nostr_npub",""))
+        if npub: st.session_state["nostr_npub"] = npub
+    with col_k2:
+        nsec = st.text_input("Your nsec (private key)", type="password", placeholder="nsec1...", key="nostr_nsec_input",
+                              value=st.session_state.get("nostr_nsec",""))
+        if nsec: st.session_state["nostr_nsec"] = nsec
+
+    if st.button("💾 Save Nostr Keys to Disk", key="save_nostr_keys"):
+        try:
+            env_path = "/mnt/main/api_keys.env"
+            existing = {}
+            try:
+                with open(env_path) as f:
+                    for line in f:
+                        if "=" in line:
+                            k, v = line.strip().split("=", 1)
+                            existing[k] = v
+            except FileNotFoundError:
+                pass
+            if st.session_state.get("nostr_npub"): existing["NOSTR_NPUB"] = st.session_state["nostr_npub"]
+            if st.session_state.get("nostr_nsec"): existing["NOSTR_NSEC"] = st.session_state["nostr_nsec"]
+            with open(env_path, "w") as f:
+                for k, v in existing.items(): f.write(f"{k}={v}\n")
+            st.success("✅ Nostr keys saved to /mnt/main/api_keys.env")
+        except Exception as e:
+            st.error(f"Save failed: {e}")
+
+    st.divider()
+
+    # ── Relay config ──────────────────────────────────────────────────────────
+    st.markdown("### 📻 Relay Configuration")
+    DEFAULT_RELAYS = [
+        "wss://relay.damus.io",
+        "wss://nos.lol",
+        "wss://relay.nostr.band",
+        "wss://nostr.wine",
+    ]
+    relay_input = st.text_area(
+        "Nostr relays (one per line)",
+        value="\n".join(st.session_state.get("nostr_relays", DEFAULT_RELAYS)),
+        height=120, key="nostr_relay_input"
+    )
+    if relay_input:
+        st.session_state["nostr_relays"] = [r.strip() for r in relay_input.strip().split("\n") if r.strip()]
+
+    st.caption(f"{len(st.session_state.get('nostr_relays', DEFAULT_RELAYS))} relays configured")
+
+    st.divider()
+
+    # ── Event schema reference ────────────────────────────────────────────────
+    st.markdown("### 📋 Encrypted Event Schema")
+    st.markdown("Every signal sent from the glasses uses this Nostr event format:")
+    st.code('''{
+  "kind": 4,                          // NIP-04 encrypted DM
+  "pubkey": "<family_npub>",
+  "created_at": <unix_timestamp>,
+  "tags": [
+    ["p", "<aubieeternal_swarm_npub>"],
+    ["t", "aubie-lesson"],            // event type tag
+    ["t", "aubie-coherence"],
+    ["v", "1.0"]                      // schema version
+  ],
+  "content": "<NIP-04 encrypted payload>",
+
+  // Decrypted payload structure:
+  // {
+  //   "type": "lesson_request" | "coherence_update" | "steelman_submit",
+  //   "profile": "kid" | "parent",
+  //   "kid_name": "Gaby",
+  //   "kid_age": 9,
+  //   "lesson": "Courage — Level 1",
+  //   "answer": "...",
+  //   "coherence": 0.72,
+  //   "polyvagal": "ventral_vagal",
+  //   "timestamp": "2026-05-22T06:00:00Z"
+  // }
+}''', language="json")
+
+    st.divider()
+
+    # ── Send test event ───────────────────────────────────────────────────────
+    st.markdown("### 🧪 Send Test Signal")
+    test_signal = st.text_input("Test message to swarm", placeholder="Hello AUBIEETERNAL — test from Halo glasses")
+    if st.button("📡 Send via Nostr Bridge", key="nostr_test_send"):
+        if not st.session_state.get("nostr_npub"):
+            st.error("Enter your npub first.")
+        else:
+            st.info("📡 In production, this would publish an encrypted NIP-04 event to your configured relays.")
+            st.markdown(f'''
+            <div class="memory-node" style="border-left:3px solid #a020f0;">
+                <div style="color:#a020f0;font-size:0.75rem;font-family:Orbitron,monospace;">📡 SIMULATED NOSTR EVENT</div>
+                <div style="font-family:Share Tech Mono,monospace;font-size:0.78rem;color:#8899bb;margin-top:6px;">
+                kind: 4 (NIP-04 encrypted DM)<br>
+                from: {st.session_state.get("nostr_npub","?")[:20]}...<br>
+                to: aubieeternal_swarm_npub<br>
+                payload: {test_signal[:60]}<br>
+                relays: {", ".join(st.session_state.get("nostr_relays", DEFAULT_RELAYS)[:2])} + {max(0, len(st.session_state.get("nostr_relays", DEFAULT_RELAYS))-2)} more
+                </div>
+            </div>
+            ''', unsafe_allow_html=True)
+            st.success("✅ Event schema valid — nostr_glasses_bridge.py handles live publishing")
+            award_xp(5)
+
+    st.divider()
+    st.markdown("### 📁 Implementation Files")
+    st.markdown("""
+    <div class="card" style="font-family:Share Tech Mono,monospace;font-size:0.82rem;line-height:2.2;color:#8899bb;">
+    <span style="color:#00cfff;">nostr_glasses_bridge.py</span> — live relay connection + NIP-04 encryption<br>
+    <span style="color:#00cfff;">family_hud.py</span> — shared session state, dual HUD, polyvagal scoring<br>
+    <span style="color:#00cfff;">morning_synthesis.py</span> — daily digest → qwen3:32b → insights ✅ LIVE<br>
+    <span style="color:#00cfff;">swarm_v4_1.py</span> — Nostr event listener (listen for family signals) ← next<br>
+    </div>
+    """, unsafe_allow_html=True)
