@@ -18,6 +18,7 @@ Every morning (or as needed), a strong local model (such as `qwen3:32b` or `llam
 
 | Date       | Title                                                                 | Link |
 |------------|-----------------------------------------------------------------------|------|
+| 2026-05-22 | Antifragility Through Self-Referential Loops and Via-Negativa Filtering | [View](daily/2026-05-22-antifragility-self-referential-loops.md) |
 | 2026-05-22 | Sovereignty as Emergent Geometry of Lindy-Dense Nodes                 | [View](daily/2026-05-22-sovereignty-as-emergent-geometry.md) |
 | 2026-05-21 | Thermodynamic Security, Barbell Equilibrium & Epistemic Emergence     | [View](daily/2026-05-21-thermodynamic-security-barbell-equilibrium.md) |
 
