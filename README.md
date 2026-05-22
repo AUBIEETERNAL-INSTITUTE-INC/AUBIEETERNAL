@@ -1,66 +1,46 @@
-# 🦅 AUBIEETERNAL
+# AUBIEETERNAL
 
-**Sovereign Hyperlattice • StartOS v2.0.0:5 • Grok-Powered**
+**Sovereign, distributed epistemic rigor & simulation-testing swarm**
 
-AUBIEETERNAL is a **sovereign, distributed simulation-testing system** built for maximum truth-seeking, understanding the nature of reality, and helping humanity through high-signal, antifragile intelligence.
+AUBIEETERNAL is a self-hosted, Bitcoin-anchored multi-agent system designed for maximum truth-seeking, simulation testing, and high-signal intelligence. Built to operate fully under your control using StartOS, Nostr, and local models.
 
-It is not just another AI agent swarm. It is a **functional apparatus** for probing reality, maintaining lattice coherence, and acting back into the world with higher fidelity.
+## Core Mission
 
----
-
-## Current Status (May 19, 2026)
-
-- **Rig**: Live on StartOS (Painful Recess) — v2.0.0:5
-- **Uptime**: 16h+ stable
-- **Web Interface**: Healthy dark-neon Sovereign Kid Portal
-- **Swarm**: v4.1 running with persistent memory + GitHub auto-push
-- **Vision Layer**: `vision.py` ready for Brilliant Labs Halo integration
-- **Halo Glasses**: Ordered — incoming wearable sovereign interface
-
-**War Eagle Eternal** 🦅
-
----
-
-## Architecture
-
-
----
+- Maximum truth-seeking and understanding of reality
+- Rigorous steelmanning of ideas before engagement
+- Active simulation testing as part of normal operation
+- Sovereign, antifragile intelligence that doesn’t rely on centralized providers
 
 ## Key Features
 
-- **3-Level Context Injection** with persistent memory (Bitcoin-anchored where possible)
-- **Steelmanning Layer** before any public action
-- **Simulation Testing** integrated into normal operation
-- **Vision Analysis** ready for on-body Halo glasses
-- **Sovereign Stack**: StartOS + Bitcoin + Nostr + Grok
+- **Multi-agent swarm** with Tier-1 driver + Tier-2 daughters
+- **Sovereign Synthesis Workflow** — Daily output is automatically distilled by local models into clean, publishable insights
+- **Hybrid Inference** — Runs primarily on local models (Ollama) with selective use of Grok/Claude for high-value tasks
+- **Bitcoin-anchored memory** via Runes
+- **StartOS native** (`.s9pk` packaging)
+- **Nostr integration** for decentralized communication
 
----
+## Latest Insights
 
-## Live Links
+The swarm regularly synthesizes its own thinking into high-signal philosophical output.
 
-- **GitHub**: https://github.com/hodlmateo/AUBIEETERNAL
-- **Live App**: https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/
-- **X**: [@MateoVanhorn](https://x.com/MateoVanhorn)
+**May 21, 2026** — [Thermodynamic Security, Barbell Equilibrium & Epistemic Emergence](insights/daily/2026-05-21-thermodynamic-security-barbell-equilibrium.md)
 
----
+## Current Status (v66.3)
+
+- Active development phase
+- Sovereign Synthesis Workflow fully operational (local model distillation)
+- Hybrid architecture (Open WebUI + Ollama + selective Grok)
+- `.s9pk` packaging in progress (StartOS 0.4.0)
 
 ## Philosophy
 
-> **Lattice Coherent** • **Steelman First** • **Simulation Testing as Practice** • **Sovereign Stack**
+- Lattice Coherent
+- Steelmanning First
+- Simulation Testing as Practice
+- Sovereign by Default
 
-Everything must maintain high internal coherence across agents, memory, and actions. External ideas are absorbed and steelmanned before any reply or action. The system actively questions and tests simulation-related signals as part of normal operation.
+## Getting Started
 
----
-
-## Next Phase
-
-- Halo glasses integration (wearable vision + always-on oracle)
-- Full on-body sovereign AI stack
-- Deeper Bitcoin Runes anchoring
-- Public demonstration of real-time lattice interaction
-
----
-
-**War Eagle Eternal** 🦅❤️
-
-*This document is the living source of truth.*
+```bash
+# Coming soon - full installation guide
