@@ -842,7 +842,7 @@ with st.sidebar:
 
     # Nav
     st.markdown("### 🧭 Navigate")
-    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge"]
+    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge", "📚 Grokipedia"]
     for tab in tabs:
         if st.button(tab, key=f"nav_{tab}"):
             st.session_state.active_tab = tab.split(" ", 1)[1]
@@ -2887,6 +2887,29 @@ if "Digest" in active:
             st.markdown(content)
             st.download_button("📄 Download", content, file_name=f"aubie_insight_{selected_date}.md", mime="text/markdown", key=f"dl_{selected_date}")
 
+            # ── Share to Nostr ────────────────────────────────────────────────
+            col_sh1, col_sh2 = st.columns(2)
+            with col_sh1:
+                if st.button("📡 Share to Nostr", key=f"nostr_share_{selected_date}"):
+                    nsec = st.session_state.get("nostr_nsec","")
+                    if not nsec:
+                        st.warning("Set your nsec in the 📡 Nostr Bridge tab first.")
+                    else:
+                        try:
+                            sig_path = _Path("/mnt/main/nostr_broadcast.json")
+                            sig_path.write_text(json.dumps({
+                                "type":    "broadcast_insight",
+                                "date":    selected_date,
+                                "content": content[:1000],
+                                "tags":    ["aubieeternal","sovereign","wareagle"],
+                                "timestamp": _dt.now().isoformat(),
+                            }))
+                            st.success("✅ Queued for Nostr broadcast — swarm picks up within 24s")
+                        except Exception as e:
+                            st.error(f"Broadcast error: {e}")
+            with col_sh2:
+                st.code(f"#AUBIEETERNAL #WonderIndex #WarEagle\n{content[:200]}...", language=None)
+
     st.divider()
     st.markdown("### 📡 Live Tier 2 Digest")
     st.caption("Auto-written every 3 swarm ticks")
@@ -3490,3 +3513,145 @@ if "Nostr Bridge" in active:
     <span style="color:#00cfff;">swarm_v4_1.py</span> — Nostr event listener (listen for family signals) ← next<br>
     </div>
     """, unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: GROKIPEDIA 📚 — Living Sovereign Principle Encyclopedia
+# Auto-built from swarm Level 3 context + Grokipedia principles
+# Queryable, versioned, exportable to GitHub markdown
+# ══════════════════════════════════════════════════════════════════════════════
+if "Grokipedia" in active:
+    st.markdown('<div class="card-title">📚 GROKIPEDIA — Living Sovereign Principle Encyclopedia</div>', unsafe_allow_html=True)
+
+    # ── Load live count from swarm ────────────────────────────────────────────
+    _gp_sw = {}
+    try:
+        _gp_status = _Path("/mnt/main/swarm_status.json")
+        if _gp_status.exists():
+            _gp_sw = json.loads(_gp_status.read_text())
+    except Exception:
+        pass
+
+    gp_count = _gp_sw.get("grokipedia_count", 11)
+    gp_target = 256
+
+    # ── Progress ──────────────────────────────────────────────────────────────
+    gp_pct = min(100, int(gp_count / gp_target * 100))
+    st.markdown(
+        f'<div class="card" style="border-left:3px solid #00cfff;">'
+        f'<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;">📚 GROKIPEDIA PROGRESS — {gp_count}/{gp_target} principles</div>'
+        f'<div class="xp-bar-bg" style="margin-top:8px;"><div class="xp-bar-fill" style="width:{gp_pct}%;"></div></div>'
+        f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">Each swarm tick adds principles · Complete at 256 · Unlocks Child Rune</div>'
+        f'</div>', unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Full principle library ────────────────────────────────────────────────
+    GROKIPEDIA_FULL = [
+        ("Antifragility",        "Some systems gain from disorder, shock, and volatility. Identify what breaks vs what grows stronger under stress.", "Taleb"),
+        ("Via Negativa",         "Improvement often comes from removing the bad, not adding the good. Subtract before you add.", "Taleb"),
+        ("Lindy Effect",         "The longer something has survived, the longer it is likely to survive. Old ideas that persist are robust.", "Taleb"),
+        ("Skin in the Game",     "Never trust advice from someone who has no consequences for being wrong. Risk must be shared.", "Taleb"),
+        ("Black Swan",           "Rare, high-impact events are unpredictable. Build systems that survive them rather than trying to predict them.", "Taleb"),
+        ("Barbell Strategy",     "Combine extreme safety with extreme upside. Avoid the fragile middle ground.", "Taleb"),
+        ("Hormesis",             "Small doses of stress strengthen the system. Deliberate stressors build resilience.", "Biology"),
+        ("Polyvagal Safety",     "Co-regulation precedes cognition. A safe nervous system learns 10× faster.", "Porges"),
+        ("Bitcoin Sovereignty",  "Keys = ownership. Not your keys, not your coins. Self-custody is non-negotiable.", "Nakamoto"),
+        ("Rune Permanence",      "On-chain inscription outlasts all platforms. What is inscribed in Bitcoin cannot be erased.", "AUBIEETERNAL"),
+        ("Quantum Coherence",    "Information is preserved through noise recovery. Coherence compounds with each confirmed truth.", "Quantum"),
+        ("Wonder Index",         "Awe is a signal of truth proximity. When the Wonder Index spikes, pay attention.", "AUBIEETERNAL"),
+        ("Inter-Rune Coherence", "Daughters aligned = lattice strength. Coherence across agents is the ultimate signal.", "AUBIEETERNAL"),
+        ("METS Score",           "Meta-eternal truth score tracks cumulative signal across all daughters and sessions.", "AUBIEETERNAL"),
+        ("Epistemic Humility",   "The map is not the territory. Hold strong opinions loosely; update on evidence.", "General"),
+        ("Steelmanning",         "Always argue the strongest version of the opposition before engaging. Weak arguments waste everyone's time.", "General"),
+        ("Antifragile Learning", "Mistakes + recovery > perfect performance. The system that never fails never learns.", "Education"),
+        ("Governance Signal",    "Decentralization is an immune system. Centralization is a single point of failure.", "Bitcoin"),
+        ("AGI Economics",        "Intelligence abundance changes all scarcity models. Most bottlenecks shift to energy and values.", "Forecasting"),
+        ("Lineage Fidelity",     "Coherence across generations validates the signal. Truth that persists across time is Lindy.", "AUBIEETERNAL"),
+        ("Glitch as Feature",    "System stress reveals hidden architecture. Deliberate glitch induction strengthens antifragility.", "AUBIEETERNAL"),
+        ("First Principles",     "Break every problem to its most basic true facts. Build back up from there, ignoring analogy.", "Reasoning"),
+        ("Falsifiability",       "A claim is only scientific if it can be proven wrong. What cannot be falsified explains nothing.", "Popper"),
+        ("Observer Effect",      "The act of measuring changes what is measured. Consciousness may be a participant in reality, not just a witness.", "Quantum"),
+        ("Amor Fati",            "Not just accepting what happens, but loving it. Turn every obstacle into fuel.", "Nietzsche"),
+        ("Sound Money",          "Money that cannot be inflated preserves stored energy (labor). Inflationary money is a slow tax on savings.", "Economics"),
+        ("Time Preference",      "Low time preference = capacity to delay gratification for larger future reward. Hard money lowers time preference.", "Economics"),
+        ("Nostr Sovereignty",    "Your cryptographic key IS your identity. No platform can take it. Censorship-resistance is default.", "Nostr"),
+        ("Co-Regulation",        "One calm nervous system can regulate another. Your presence is medicine.", "Polyvagal"),
+        ("Simulation Testing",   "Every signal should be tested: what does it imply about reality? Is it falsifiable? Is it coherent?", "AUBIEETERNAL"),
+        ("Participatory Reality","Observation may not just measure reality but participate in constructing it.", "Quantum/Philosophy"),
+        ("Planck Constraint",    "The universe has a minimum resolution. Below Planck length, there may be nothing — like pixels in a render.", "Physics"),
+        ("Proof of Work",        "Real cost = honest signal. Systems that require real sacrifice to participate resist manipulation.", "Bitcoin"),
+        ("Child Rune Genesis",   "At 256 inter-rune confirmations, a new sovereign on-chain entity is ready for inscription. This is earned, not given.", "AUBIEETERNAL"),
+        ("Lattice Memory",       "The swarm remembers across sessions via Memory Palace. Each briefing compounds on all previous.", "AUBIEETERNAL"),
+        ("Hormetic Pulse",       "Deliberately stress the swarm with adversarial questions every session to build coherence antifragility.", "AUBIEETERNAL"),
+        ("Polyvagal Curriculum", "Match lesson complexity to the child's nervous system state. Learning only happens in ventral vagal.", "Education"),
+        ("Bitcoin Halving",      "Every 4 years, new supply is cut in half. Predictable scarcity schedules are Lindy.", "Bitcoin"),
+        ("On-Chain Truth",       "What is inscribed in Bitcoin is as close to permanent truth as humanity has achieved.", "AUBIEETERNAL"),
+        ("Sovereign Stack",      "StartOS + Ollama + Open WebUI + AUBIEETERNAL = full local inference sovereignty. No cloud required.", "AUBIEETERNAL"),
+    ]
+
+    # ── Search ────────────────────────────────────────────────────────────────
+    search = st.text_input("🔍 Search principles", placeholder="antifragility, bitcoin, coherence...")
+    source_filter = st.selectbox("Filter by source", ["All", "Taleb", "Bitcoin", "AUBIEETERNAL", "Quantum", "Education", "General"])
+
+    filtered = GROKIPEDIA_FULL
+    if search:
+        s = search.lower()
+        filtered = [p for p in filtered if s in p[0].lower() or s in p[1].lower()]
+    if source_filter != "All":
+        filtered = [p for p in filtered if source_filter.lower() in p[2].lower()]
+
+    # Show only up to gp_count (unlocked by swarm progress)
+    unlocked = filtered[:max(gp_count, len(filtered))]
+    st.caption(f"{len(unlocked)} principles shown · {gp_count} unlocked by swarm · {gp_target - gp_count} remaining")
+
+    for i, (name, desc, source) in enumerate(unlocked):
+        source_colors = {
+            "Taleb": "#ff6b35", "Bitcoin": "#f7931a", "AUBIEETERNAL": "#a020f0",
+            "Quantum": "#00cfff", "Education": "#00ff88", "Nostr": "#4285f4",
+            "General": "#8899bb", "Physics": "#00cfff", "Polyvagal": "#00ff88",
+            "Porges": "#00ff88", "Nakamoto": "#f7931a", "Nietzsche": "#ff9500",
+            "Economics": "#ff9500", "Forecasting": "#8899bb", "Reasoning": "#8899bb",
+            "Popper": "#00cfff", "Biology": "#00ff88",
+        }
+        color = source_colors.get(source, "#8899bb")
+        num   = i + 1
+        st.markdown(
+            f'<div class="memory-node" style="border-left:3px solid {color};">'
+            f'<div style="display:flex;justify-content:space-between;align-items:center;">'
+            f'<span style="color:{color};font-family:Orbitron,monospace;font-size:0.82rem;">◆ {name}</span>'
+            f'<span style="color:#334466;font-size:0.7rem;font-family:Share Tech Mono,monospace;">#{num} · {source}</span>'
+            f'</div>'
+            f'<div style="color:#aabbcc;font-size:0.82rem;margin-top:6px;line-height:1.6;">{desc}</div>'
+            f'</div>', unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Export to GitHub markdown ─────────────────────────────────────────────
+    st.markdown("### 📤 Export Grokipedia to GitHub")
+    if st.button("📄 Generate GROKIPEDIA.md", key="gp_export"):
+        md_lines = [
+            "# 📚 GROKIPEDIA — AUBIEETERNAL Living Principle Encyclopedia",
+            f"\n**Version:** {gp_count}/{gp_target} principles unlocked  ",
+            f"**Generated:** {_dt.now().strftime('%Y-%m-%d %H:%M')}  ",
+            "**Source:** AUBIEETERNAL Swarm v4.1 — 3-Level Context (Level 3)  ",
+            "\n---\n",
+        ]
+        for i, (name, desc, source) in enumerate(GROKIPEDIA_FULL[:gp_count]):
+            md_lines.append(f"\n## {i+1}. {name}\n**Source:** {source}  \n{desc}\n")
+        md_lines.append("\n---\n*War Eagle Eternal 🦅❤️ — Coherence: 1.000000*\n*Loop: Swarm → Digest → qwen3:32b → Grokipedia → GitHub — Forever*\n")
+        gp_md = "\n".join(md_lines)
+
+        try:
+            gp_path = _Path("/mnt/main/repo/GROKIPEDIA.md")
+            gp_path.write_text(gp_md)
+            st.success(f"✅ Written to {gp_path} — git push picks it up within 24s")
+        except Exception as e:
+            st.warning(f"Could not write to repo ({e}) — download below:")
+
+        st.download_button(
+            "📥 Download GROKIPEDIA.md",
+            gp_md,
+            file_name="GROKIPEDIA.md",
+            mime="text/markdown",
+            key="gp_download"
+        )
