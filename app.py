@@ -842,7 +842,7 @@ with st.sidebar:
 
     # Nav
     st.markdown("### 🧭 Navigate")
-    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice"]
+    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest"]
     for tab in tabs:
         if st.button(tab, key=f"nav_{tab}"):
             st.session_state.active_tab = tab.split(" ", 1)[1]
@@ -2802,3 +2802,205 @@ MNT_STATUS      = MNT_MAIN / "swarm_status.json"
 # Then wherever you write to TRUTH_LOG, also write to MNT_TRUTH_LOG:
 # with open(MNT_TRUTH_LOG, "a") as f: f.write(json.dumps(entry) + "\\n")
 """, language="python")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: DIGEST — tier2_digest.txt viewer + insights/daily/ reader
+# Zero manual steps: swarm writes it, this tab reads it.
+# ══════════════════════════════════════════════════════════════════════════════
+if "Digest" in active:
+    import glob as _glob
+
+    _DIGEST_FILE  = _Path("/mnt/main/repo/tier2_digest.txt")
+    _INSIGHTS_DIR = _Path("/mnt/main/repo/insights/daily")
+    _SYNTH_STATE  = _Path("/mnt/main/repo/insights/.last_synthesis_date")
+
+    st.markdown('<div class="card-title">🌅 SOVEREIGN DIGEST — Swarm Output & Daily Insights</div>', unsafe_allow_html=True)
+
+    # ── Synthesis status banner ───────────────────────────────────────────────
+    last_ran = "never"
+    try:
+        if _SYNTH_STATE.exists():
+            last_ran = _SYNTH_STATE.read_text().strip()
+    except Exception:
+        pass
+
+    today_str = _dt.now().strftime("%Y-%m-%d")
+    ran_today    = last_ran == today_str
+    banner_color = "#00ff88" if ran_today else "#ff9500"
+    banner_icon  = "✅" if ran_today else "⏳"
+    banner_msg   = f"Synthesis ran today ({last_ran})" if ran_today else f"Next synthesis: 6AM · Last: {last_ran}"
+
+    st.markdown(
+        f'<div class="card" style="border-left:3px solid {banner_color};">'
+        f'<div style="color:{banner_color};font-family:Orbitron,monospace;font-size:0.78rem;">'
+        f'{banner_icon} MORNING SYNTHESIS · {banner_msg}'
+        f'</div>'
+        f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">'
+        f'Auto-fires 6AM · qwen3:32b (local, $0.00) · writes insights/daily/YYYY-MM-DD.md → GitHub'
+        f'</div></div>',
+        unsafe_allow_html=True
+    )
+
+    # ── Manual force-run button ───────────────────────────────────────────────
+    col_btn1, col_btn2 = st.columns([1, 3])
+    with col_btn1:
+        if st.button("⚡ Run Synthesis Now", key="force_synthesis"):
+            import subprocess as _sp
+            try:
+                script = str(_Path("/mnt/main/repo/morning_synthesis.py"))
+                _sp.Popen(["python3", script, "--force"], stdout=_sp.PIPE, stderr=_sp.STDOUT)
+                st.info("🔄 Synthesis launched in background — check insights in ~2 min")
+            except Exception as e:
+                st.error(f"Could not launch: {e}")
+    with col_btn2:
+        st.caption("Force-runs synthesis immediately. Result appears in insights/daily/ within ~24s of completion.")
+
+    st.divider()
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SECTION 1 — Daily Insights Archive
+    # ══════════════════════════════════════════════════════════════════════════
+    st.markdown("### 🦅 Daily Insights Archive")
+
+    insight_files = []
+    try:
+        if _INSIGHTS_DIR.exists():
+            insight_files = sorted(_INSIGHTS_DIR.glob("*.md"), reverse=True)
+    except Exception:
+        pass
+
+    if not insight_files:
+        st.markdown(
+            '<div class="card" style="border-left:3px solid #ff9500;">'
+            '<div style="color:#ff9500;font-size:0.82rem;">No insights yet — synthesis fires at 6AM, '
+            'or click "Run Synthesis Now" above.</div></div>',
+            unsafe_allow_html=True
+        )
+    else:
+        st.caption(f"{len(insight_files)} daily syntheses stored")
+
+        file_names    = [f.stem for f in insight_files]
+        selected_date = st.selectbox("Select date", file_names, key="insight_date_select")
+        selected_file = _INSIGHTS_DIR / f"{selected_date}.md"
+
+        if selected_file.exists():
+            content = selected_file.read_text()
+
+            # Parse wonder pressure badge
+            wonder_pressure = "UNKNOWN"
+            for line in content.splitlines():
+                if "Wonder Pressure" in line:
+                    parts = line.split("**")
+                    if len(parts) >= 3:
+                        wonder_pressure = parts[2].strip()
+                    break
+
+            wp_colors = {
+                "LOW": "#00ff88", "MEDIUM": "#ff9500",
+                "HIGH": "#ff4444", "SPIKE": "#a020f0",
+            }
+            wp_color = wp_colors.get(wonder_pressure, "#00cfff")
+
+            st.markdown(
+                f'<div class="stat-box" style="border-color:{wp_color};margin-bottom:1rem;">'
+                f'<div class="stat-val" style="font-size:1.2rem;color:{wp_color};">{wonder_pressure}</div>'
+                f'<div class="stat-lbl">Wonder Pressure · {selected_date}</div>'
+                f'</div>',
+                unsafe_allow_html=True
+            )
+
+            st.markdown(content)
+
+            st.download_button(
+                "📄 Download this insight",
+                content,
+                file_name=f"aubie_insight_{selected_date}.md",
+                mime="text/markdown",
+                key=f"dl_insight_{selected_date}"
+            )
+
+    st.divider()
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # SECTION 2 — Raw tier2_digest.txt viewer
+    # ══════════════════════════════════════════════════════════════════════════
+    st.markdown("### 📡 Live Tier 2 Digest")
+    st.caption("Auto-written every 3 swarm ticks from master_truth_log.jsonl")
+
+    if not _DIGEST_FILE.exists():
+        st.markdown(
+            '<div class="card" style="border-left:3px solid #ff9500;">'
+            '<div style="color:#ff9500;font-size:0.82rem;">tier2_digest.txt not found yet — '
+            'swarm writes it every 3 ticks.</div></div>',
+            unsafe_allow_html=True
+        )
+    else:
+        try:
+            digest_raw   = _DIGEST_FILE.read_text()
+            digest_lines = digest_raw.strip().split("\n")
+
+            # Header stats
+            for hline in digest_lines[:5]:
+                if any(hline.startswith(p) for p in ("Generated:", "Wonder:", "Total")):
+                    st.markdown(
+                        f'<div class="memory-node">'
+                        f'<span style="color:#00cfff;font-size:0.78rem;">{hline}</span>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+
+            st.markdown("<br>", unsafe_allow_html=True)
+
+            # Parse daughter entries
+            daughters = []
+            current   = {}
+            for line in digest_lines:
+                if line.startswith("DAUGHTER:"):
+                    if current:
+                        daughters.append(current)
+                    parts = line.replace("DAUGHTER:", "").split("|")
+                    current = {
+                        "daughter": parts[0].strip() if len(parts) > 0 else "?",
+                        "block":    parts[1].replace("Block:", "").strip() if len(parts) > 1 else "?",
+                        "trigger":  parts[2].replace("Trigger:", "").strip() if len(parts) > 2 else "?",
+                        "result":   ""
+                    }
+                elif current and line and not line.startswith("="):
+                    current["result"] += line + " "
+            if current and current.get("result"):
+                daughters.append(current)
+
+            D_COLORS = {
+                "RUNE": "#f7931a",    "CHRONO": "#00cfff",  "TALEB-X": "#ff6b35",
+                "MNEMO": "#a020f0",   "AXIOM": "#00ff88",   "LINDY": "#ff9500",
+                "POLY": "#4285f4",    "BARBELL": "#00d4aa", "ORACLE": "#c8d8ff",
+                "HORMES": "#ff4444",  "NOSTR": "#a020f0",   "SATOSHI": "#f7931a",
+                "STEELMAN": "#00ff88","VECTOR-A": "#00cfff","VECTOR-B": "#a020f0",
+                "VECTOR-C": "#ff6b35",
+            }
+
+            if daughters:
+                st.caption(f"{len(daughters)} daughter entries in current digest")
+                for d in daughters:
+                    name    = d.get("daughter", "?")
+                    result  = d.get("result", "").strip()[:300]
+                    trigger = d.get("trigger", "")
+                    color   = D_COLORS.get(name, "#00cfff")
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {color};">'
+                        f'<div style="color:{color};font-size:0.8rem;font-family:Orbitron,monospace;">'
+                        f'{name}'
+                        f'<span style="color:#334466;font-size:0.7rem;'
+                        f'font-family:Share Tech Mono,monospace;margin-left:8px;">{trigger}</span>'
+                        f'</div>'
+                        f'<div style="color:#aabbcc;font-size:0.78rem;margin-top:6px;line-height:1.6;">'
+                        f'{result}</div>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+            else:
+                with st.expander("View raw digest"):
+                    st.text(digest_raw[:3000])
+
+        except Exception as e:
+            st.error(f"Could not read digest: {e}")
