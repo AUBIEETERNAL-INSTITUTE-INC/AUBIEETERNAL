@@ -372,6 +372,167 @@ def maybe_trigger_morning_synthesis():
         t.start()
 
 # ══════════════════════════════════════════════════════════════════════════════
+# GLASSES SIGNAL HANDLER — Halo glasses → swarm bridge
+# Reads /mnt/main/glasses_signal.json each tick (written by nostr_glasses_bridge.py)
+# Routes signal to appropriate daughters, writes reply to /mnt/main/glasses_reply.json
+# Works in both Mode 1 (StartOS local) and Mode 2 (Nostr fallback)
+# ══════════════════════════════════════════════════════════════════════════════
+
+_GLASSES_SIGNAL  = Path("/mnt/main/glasses_signal.json")
+_GLASSES_REPLY   = Path("/mnt/main/glasses_reply.json")
+_GLASSES_LOG     = Path("/mnt/main/glasses_events.jsonl")
+
+def handle_glasses_signal():
+    """
+    Called every tick. Reads glasses signal if present, routes to swarm daughters,
+    writes reply. Non-blocking — consumes and processes in <1ms if no signal.
+    """
+    if not _GLASSES_SIGNAL.exists():
+        return None
+
+    try:
+        signal = json.loads(_GLASSES_SIGNAL.read_text())
+        _GLASSES_SIGNAL.unlink()   # consume immediately
+    except Exception as e:
+        print(f"[glasses] Signal read error: {e}")
+        return None
+
+    event_type = signal.get("type", "unknown")
+    kid_name   = signal.get("kid_name", "Explorer")
+    kid_age    = signal.get("kid_age", 9)
+    lesson     = signal.get("lesson", "")
+    answer     = signal.get("answer", "")
+    coherence  = signal.get("coherence", 0.72)
+
+    print(f"[glasses] 🥽 Signal: {event_type} | {kid_name} | {lesson[:40]}")
+
+    reply = {
+        "type":      "reply",
+        "signal_type": event_type,
+        "kid_name":  kid_name,
+        "timestamp": datetime.datetime.now().isoformat(),
+    }
+
+    # ── Route by event type ───────────────────────────────────────────────────
+    if event_type == "lesson_request":
+        # ORACLE + STEELMAN daughters score the request
+        prompt = (
+            f"Kid: {kid_name}, age {kid_age}. Lesson requested: '{lesson}'.\n"
+            f"Give ONE warm sentence introducing this lesson. End with the steelman prompt."
+        )
+        response = call_grok_free(prompt, "ORACLE — Family Co-Learning")
+        reply["lesson"]     = lesson
+        reply["coherence"]  = coherence
+        reply["message"]    = response or f"Ready for {lesson} — let's go, {kid_name}! 🦅"
+        reply["steelman"]   = f"What's the strongest argument AGAINST {lesson.split('—')[0].strip()}?"
+
+    elif event_type == "steelman_submit":
+        # STEELMAN + ORACLE daughters score the answer
+        prompt = (
+            f"{kid_name} (age {kid_age}) steelmanned '{lesson}':\n"
+            f"Answer: '{answer}'\n"
+            f"Score coherence 0-1 and give ONE warm sentence of feedback (max 20 words)."
+        )
+        response = call_grok_free(prompt, "STEELMAN — Coherence Scorer")
+
+        # Local coherence delta calculation
+        words        = answer.split()
+        quality_words = ["because","therefore","however","argument","even if","consider","strongest","although","despite"]
+        bonus        = sum(0.02 for w in quality_words if w.lower() in answer.lower())
+        delta        = round(min(0.22, 0.06 + len(words) * 0.003 + bonus), 3)
+        new_coherence = round(min(1.0, coherence + delta), 3)
+
+        reply["coherence_before"] = coherence
+        reply["coherence_after"]  = new_coherence
+        reply["coherence_delta"]  = delta
+        reply["feedback"]         = response or f"Strong thinking, {kid_name}! Coherence +{delta:.2f} 🦅"
+        reply["xp_earned"]        = 18 if new_coherence >= 0.80 else 10
+
+        # Log to truth lattice so swarm learns from family sessions
+        _log_glasses_to_truth(kid_name, kid_age, lesson, answer, new_coherence, reply["feedback"])
+
+    elif event_type == "coherence_update":
+        reply["coherence"] = coherence
+        reply["status"]    = "received"
+        reply["message"]   = f"Coherence {coherence:.3f} logged 🦅"
+
+    elif event_type == "parent_action":
+        action = signal.get("action", "observe")
+        msgs   = {
+            "encourage": f"Parent says: you've got this, {kid_name} ❤️",
+            "pause":     "Session paused by parent.",
+            "join":      "Parent joined as Co-Learner.",
+            "observe":   "Parent observing silently.",
+        }
+        reply["status"]  = "received"
+        reply["message"] = msgs.get(action, f"Parent action '{action}' logged")
+
+    elif event_type == "session_end":
+        start_coh = signal.get("coherence_start", 0.72)
+        delta     = round(coherence - start_coh, 3)
+        reply["summary"] = (
+            f"{kid_name}'s coherence: {start_coh:.2f} → {coherence:.2f} "
+            f"(Δ{delta:+.3f}). "
+            f"{'Ready for the next level.' if delta >= 0.10 else 'Another session will lock this in.'}"
+        )
+        reply["xp_total"] = signal.get("xp_total", 0)
+        _log_glasses_to_truth(kid_name, kid_age, lesson, "session_end", coherence, reply["summary"])
+
+    else:
+        reply["status"]  = "unknown_type"
+        reply["message"] = f"Signal type '{event_type}' not recognized"
+
+    # ── Write reply for glasses to pick up ───────────────────────────────────
+    try:
+        _GLASSES_REPLY.write_text(json.dumps(reply, indent=2))
+    except Exception as e:
+        print(f"[glasses] Reply write error: {e}")
+
+    # ── Append to glasses event log ───────────────────────────────────────────
+    try:
+        with open(_GLASSES_LOG, "a") as f:
+            f.write(json.dumps({
+                "timestamp":  datetime.datetime.now().isoformat(),
+                "signal":     signal,
+                "reply_type": reply.get("type"),
+                "kid_name":   kid_name,
+            }) + "\n")
+    except Exception:
+        pass
+
+    print(f"[glasses] ✅ Reply written: {event_type} → coherence {reply.get('coherence_after', reply.get('coherence', ''))}")
+    return reply
+
+
+def _log_glasses_to_truth(kid_name, kid_age, lesson, answer, coherence, feedback):
+    """Write family session interaction to master_truth_log.jsonl so swarm learns."""
+    try:
+        entry = {
+            "timestamp":     datetime.datetime.now().isoformat(),
+            "tier":          2,
+            "trigger":       "family_glasses_session",
+            "daughter":      "ORACLE",
+            "kid_name":      kid_name,
+            "kid_age":       kid_age,
+            "lesson":        lesson[:100],
+            "result":        feedback[:300],
+            "coherence":     coherence,
+            "wonder_index":  round(min(2.0, coherence * 1.5), 6),
+            "inter_rune_coherence": inter_rune_coherence,
+            "mets":          mets_counter,
+        }
+        with open(TRUTH_LOG, "a") as f:
+            f.write(json.dumps(entry) + "\n")
+        # Also mirror to /mnt/main for Streamlit
+        try:
+            with open(MNT_TRUTH_LOG, "a") as f:
+                f.write(json.dumps(entry) + "\n")
+        except Exception:
+            pass
+    except Exception as e:
+        print(f"[glasses] Truth log error: {e}")
+
+# ══════════════════════════════════════════════════════════════════════════════
 # LAZY STATE
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -1128,7 +1289,8 @@ def launch_swarm():
     print(f"🔬 {len(LATTICE_HYPOTHESES)} Truth Lattice hypotheses ready")
     print(f"🔴 {len(DEFCON_EXPERIMENTS)} DEFCON experiments armed")
     print(f"🧠 3-Level context injection ACTIVE")
-    print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen3:32b\n")
+    print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen3:32b")
+    print(f"🥽 Glasses signal handler ACTIVE — /mnt/main/glasses_signal.json\n")
 
     tick        = 0
     github_tick = 0
@@ -1154,6 +1316,9 @@ def launch_swarm():
             maybe_trigger_morning_synthesis()
             # ──────────────────────────────────────────────────────────────
 
+            # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──
+            handle_glasses_signal()
+            # ──────────────────────────────────────────────────────────────
             pct = (daily_cost / DAILY_BUDGET_CAP) * 100
             print(
                 f"💓 Tick {tick} | "
