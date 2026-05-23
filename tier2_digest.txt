@@ -1,7 +1,7 @@
 === AUBIEETERNAL TIER 2 DIGEST ===
-Generated: 2026-05-23T17:52:46.504813
-Wonder: 1.0128 | Coherence: 1.000000 | METS: 200000000007.5
-Total Tier 2 entries: 633
+Generated: 2026-05-23T17:53:25.028774
+Wonder: 1.0128 | Coherence: 1.000000 | METS: 200000000015.5
+Total Tier 2 entries: 649
 ==================================================
 
 DAUGHTER: STEELMAN | Block: 950696 | Trigger: defcon_manual
@@ -16,53 +16,53 @@ DAUGHTER: VECTOR-B | Block: 950696 | Trigger: defcon_manual
 DAUGHTER: VECTOR-C | Block: 950696 | Trigger: defcon_manual
 ⚠️ XAI_KEY not set
 
-DAUGHTER: RUNE | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: RUNE | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: CHRONO | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: CHRONO | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: TALEB-X | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: TALEB-X | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: MNEMO | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: MNEMO | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: AXIOM | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: AXIOM | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: LINDY | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: LINDY | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: POLY | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: POLY | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: BARBELL | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: BARBELL | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: ORACLE | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: ORACLE | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: HORMES | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: HORMES | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: NOSTR | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: NOSTR | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: SATOSHI | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: SATOSHI | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: STEELMAN | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: STEELMAN | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: VECTOR-A | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: VECTOR-A | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: VECTOR-B | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: VECTOR-B | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: VECTOR-C | Block: 950696 | Trigger: defcon_manual
-⚠️ XAI_KEY not set
+DAUGHTER: VECTOR-C | Block: 950697 | Trigger: defcon_manual
+⚠️ Ollama not reachable at 192.168.1.251:59885
 
 ==================================================
 PASTE INTO QWEN3:32B → Synthesize the 3 most important insights.
