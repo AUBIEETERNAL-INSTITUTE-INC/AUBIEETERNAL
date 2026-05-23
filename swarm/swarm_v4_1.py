@@ -825,19 +825,23 @@ def get_btc_block():
 
 # ── Local Ollama (free, always-on fallback) ───────────────────────────────────
 # StartOS internal hostname — same URL Open WebUI uses successfully
-OLLAMA_URL   = "http://ollama.startos:11434/v1/chat/completions"
-OLLAMA_MODEL = "qwen3:32b"
-OLLAMA_TIMEOUT = 120
+OLLAMA_URL      = "http://ollama.startos:11434/v1/chat/completions"
+OLLAMA_MODEL_T1 = "qwen2.5:32b"   # Tier 1 swarm — faster than qwen3, still 32B
+OLLAMA_MODEL_T2 = "qwen3:32b"     # Tier 2 daughters — higher quality, slower ok
+OLLAMA_MODEL    = OLLAMA_MODEL_T1  # default alias
+OLLAMA_TIMEOUT  = 300              # 5 min — CPU inference is slow, be patient
 
-def _call_local(prompt: str, system: str = "", max_tokens: int = 150) -> str:
-    """Call qwen3:32b via local Ollama — $0.00, no API key needed."""
+def _call_local(prompt: str, system: str = "", max_tokens: int = 150,
+                model: str = "") -> str:
+    """Call local Ollama — $0.00, no API key needed."""
+    use_model = model or OLLAMA_MODEL_T1
     try:
         msgs = []
         if system: msgs.append({"role": "system", "content": system})
         msgs.append({"role": "user", "content": prompt})
         r = requests.post(
             OLLAMA_URL,
-            json={"model": OLLAMA_MODEL, "messages": msgs,
+            json={"model": use_model, "messages": msgs,
                   "temperature": 0.7, "stream": False},
             timeout=OLLAMA_TIMEOUT,
         )
@@ -845,7 +849,9 @@ def _call_local(prompt: str, system: str = "", max_tokens: int = 150) -> str:
             return r.json()["choices"][0]["message"]["content"].strip()
         return f"Ollama error {r.status_code}"
     except requests.exceptions.ConnectionError:
-        return "⚠️ Ollama not reachable at 192.168.1.251:59885"
+        return f"⚠️ Ollama not reachable at ollama.startos:11434"
+    except requests.exceptions.Timeout:
+        return f"⚠️ Ollama timeout ({OLLAMA_TIMEOUT}s) — model loading or CPU busy"
     except Exception as e:
         return f"Ollama exception: {str(e)[:80]}"
 
@@ -941,9 +947,10 @@ def call_grok_pro(prompt, role, prior_results=None):
         except Exception:
             pass
 
-    # ── Local Ollama fallback — Tier 2 with full context ─────────────────────
-    # qwen3:32b handles full 3-level context well — free, sovereign, always-on
-    result = _call_local(prompt, system_content, max_tokens=200)
+    # ── Local Ollama fallback — Tier 2 with full context, better model ───────
+    # qwen3:32b for T2 — worth the wait for briefing-quality output
+    result = _call_local(prompt, system_content, max_tokens=200,
+                         model=OLLAMA_MODEL_T2)
     if result and not result.startswith("⚠️") and not result.startswith("Ollama"):
         total_pro_runs += 1
         track_cost(0.0, "ollama-local-t2")
@@ -1358,7 +1365,7 @@ def launch_swarm():
                 f"Insights:{len(session_insights)}"
             )
             tick += 1
-            time.sleep(8)
+            time.sleep(30)
 
         except KeyboardInterrupt:
             print("\n🦅 Swarm stopped. War Eagle Eternal!")
@@ -1366,7 +1373,7 @@ def launch_swarm():
             break
         except Exception as e:
             print(f"Loop error: {e}")
-            time.sleep(8)
+            time.sleep(30)
 
 if __name__ == "__main__":
     launch_swarm()
