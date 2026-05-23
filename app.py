@@ -5597,3 +5597,330 @@ if "Swarm Evolution" in active:
     except ImportError as e:
         st.warning(f"swarm_evolution.py not found: {e}")
         st.caption("Add swarm_evolution.py to the repo root to enable self-evolution.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SUBMIT CURRICULUM 📥 — community track & lesson submissions
+# ══════════════════════════════════════════════════════════════════════════════
+if "Submit Curriculum" in active:
+    st.markdown('<div class="card-title">📥 SUBMIT CURRICULUM — Community Track & Lesson Submissions</div>', unsafe_allow_html=True)
+
+    try:
+        import sys as _csys
+        if "/mnt/main/repo" not in _csys.path: _csys.path.insert(0, "/mnt/main/repo")
+        from curriculum_proposals import CurriculumReviewer as _CR, seed_initial_proposals as _sip
+        try: _sip()
+        except Exception: pass
+        _reviewer = _CR()
+
+        sub_tabs = st.tabs(["📤 Submit New", "📋 All Proposals", "✅ Approved", "📖 Review Queue"])
+
+        # ── Submit ────────────────────────────────────────────────────────────
+        with sub_tabs[0]:
+            st.markdown("**Submit a new lesson or full curriculum track.**")
+            sub_type = st.radio("Submission type", ["Single Lesson", "Full Track"], horizontal=True, key="sub_type")
+            author   = st.text_input("Your name", placeholder="Tommy / Gabriela / Your name", key="sub_author")
+
+            if sub_type == "Single Lesson":
+                st.markdown("**Lesson details:**")
+                sc1, sc2 = st.columns(2)
+                with sc1:
+                    sub_key     = st.text_input("Lesson key (no spaces)", placeholder="building-6", key="sub_key")
+                    sub_title   = st.text_input("Title", placeholder="Building L6 — Advanced Roofing", key="sub_title")
+                    sub_topic   = st.text_area("Topic (one sentence)", height=60, key="sub_topic")
+                    sub_track   = st.text_input("Target track", placeholder="building", key="sub_track_l")
+                with sc2:
+                    sub_steel   = st.text_area("Steelman prompt", height=60, placeholder="What is the strongest argument against...", key="sub_steel")
+                    sub_example = st.text_area("Real-world example", height=60, key="sub_example")
+                    sub_age     = st.selectbox("Age hint", ["All ages","7+","8+","10+","12+","13+","14+","15+","16+"], key="sub_age")
+                    sub_xp      = st.slider("XP reward", 10, 50, 20, key="sub_xp")
+                sub_rationale = st.text_area("Why should this be in the curriculum?", height=80, key="sub_rationale")
+
+                if st.button("📤 Submit Lesson", key="submit_lesson_btn") and author and sub_key and sub_title:
+                    lesson = {
+                        "key": sub_key, "title": sub_title, "topic": sub_topic,
+                        "steelman": sub_steel, "example": sub_example,
+                        "age_hint": sub_age, "xp": sub_xp,
+                        "rune": f"{sub_track.upper().replace('-','•')}•RUNE",
+                        "min_coherence": 0.65,
+                    }
+                    prop = _reviewer.submit_lesson(author, lesson, sub_track, sub_rationale)
+                    st.success(f"✅ Lesson '{sub_title}' submitted! ID: {prop['id']}")
+                    st.rerun()
+
+            else:  # Full track
+                sub_track_name = st.text_input("Track name", placeholder="Tommy's Building & Hurricane Hardening", key="sub_track_name")
+                sub_track_desc = st.text_area("Track description", height=80, key="sub_track_desc")
+                sub_rationale2 = st.text_area("Why is this track needed?", height=80, key="sub_rationale2")
+                st.info("After submitting the track, you can add individual lessons via 'Single Lesson' submissions targeting this track.")
+
+                if st.button("📤 Submit Track", key="submit_track_btn") and author and sub_track_name:
+                    prop = _reviewer.submit_track(author, sub_track_name, sub_track_desc, [], sub_rationale2)
+                    st.success(f"✅ Track '{sub_track_name}' submitted! ID: {prop['id']}")
+                    st.rerun()
+
+        # ── All proposals ─────────────────────────────────────────────────────
+        with sub_tabs[1]:
+            all_props = _reviewer.get_all(50)
+            st.caption(f"{len(all_props)} total submissions")
+            for p in all_props:
+                status = p.get("status","pending")
+                icon   = {"approved":"✅","rejected":"❌","pending":"⏳"}.get(status,"⏳")
+                color  = {"approved":"#00ff88","rejected":"#ff4444","pending":"#ff9500"}.get(status,"#ff9500")
+                ptype  = p.get("type","?")
+                name   = p.get("track_name") or p.get("lesson",{}).get("title","?")
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {color};">'
+                    f'<span style="color:{color};">{icon} [{ptype}] {name}</span> '
+                    f'<span style="color:#445577;font-size:0.72rem;">by {p.get("author","?")} · {p.get("submitted_at","")[:10]}</span>'
+                    f'<br><span style="color:#8899bb;font-size:0.75rem;">{p.get("rationale","")[:80]}</span>'
+                    f'</div>', unsafe_allow_html=True)
+
+                # Add comment
+                with st.expander(f"💬 Comments ({len(p.get('comments',[]))})", expanded=False):
+                    for c in p.get("comments",[]):
+                        st.markdown(f'<div style="font-size:0.78rem;color:#8899bb;">{c["author"]}: {c["comment"]}</div>', unsafe_allow_html=True)
+                    cmt_author = st.text_input("Your name", key=f"cmt_a_{p['id']}")
+                    cmt_text   = st.text_area("Comment", height=60, key=f"cmt_t_{p['id']}")
+                    if st.button("Post comment", key=f"cmt_btn_{p['id']}") and cmt_text:
+                        _reviewer.add_comment(p["id"], cmt_author or "Anonymous", cmt_text)
+                        st.rerun()
+
+        # ── Approved ──────────────────────────────────────────────────────────
+        with sub_tabs[2]:
+            approved = [p for p in _reviewer.get_all() if p.get("status") == "approved"]
+            st.caption(f"{len(approved)} approved submissions")
+            for p in approved:
+                name  = p.get("track_name") or p.get("lesson",{}).get("title","?")
+                score = p.get("review",{}).get("coherence_score",0)
+                st.markdown(f'<div class="card" style="border-left:3px solid #00ff88;"><div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.8rem;">✅ {name}</div><div style="color:#8899bb;font-size:0.78rem;">by {p.get("author","?")} · Coherence score: {score:.2f} · {p.get("approved_at","")[:10]}</div></div>', unsafe_allow_html=True)
+
+        # ── Review queue (operator only) ──────────────────────────────────────
+        with sub_tabs[3]:
+            if _fid != "operator":
+                st.info("Review queue is for the operator only.")
+            else:
+                pending = _reviewer.get_pending()
+                st.markdown(f"### ⏳ {len(pending)} Proposals Awaiting Review")
+                for p in pending:
+                    name  = p.get("track_name") or p.get("lesson",{}).get("title","?")
+                    score = p.get("review",{}).get("coherence_score",0)
+                    with st.expander(f"⏳ {name} — by {p.get('author','?')}"):
+                        # Review form
+                        rt   = _reviewer.get_review_template()
+                        new_score = st.slider("Coherence score", 0.0, 1.0, float(score) or 0.75, key=f"rev_score_{p['id']}")
+                        rev_notes = st.text_area("Reviewer notes", key=f"rev_notes_{p['id']}")
+
+                        col_r1, col_r2 = st.columns(2)
+                        with col_r1:
+                            if st.button("✅ Approve", key=f"rev_approve_{p['id']}"):
+                                _reviewer.add_review(p["id"], {"coherence_score": new_score, "reviewer_notes": rev_notes})
+                                _reviewer.approve(p["id"])
+                                st.success("Approved!")
+                                st.rerun()
+                        with col_r2:
+                            rej_reason = st.text_input("Rejection reason", key=f"rev_rej_{p['id']}")
+                            if st.button("❌ Reject", key=f"rev_reject_{p['id']}"):
+                                _reviewer.reject(p["id"], rej_reason)
+                                st.rerun()
+
+    except ImportError as e:
+        st.warning(f"curriculum_proposals.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: LEGAL HUD ⚖️ — sovereign contract + insurance analysis
+# ══════════════════════════════════════════════════════════════════════════════
+if "Legal HUD" in active:
+    st.markdown('<div class="card-title">⚖️ SOVEREIGN LEGAL HUD — Contract Steelmanner + Insurance Analyzer</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">TRUTH TOOL — NOT LEGAL ADVICE</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;">
+        This tool helps you read contracts and insurance policies like a sovereign adult.
+        It runs extraction detection, steelmanning, and simulation tests on legal language.
+        Always consult a licensed attorney for actual legal decisions.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    legal_tabs = st.tabs(["📄 Contract Analyzer", "🏠 Insurance Policy", "⚖️ Reciprocal Charter", "🧠 Legal Literacy Progress"])
+
+    # ── Contract Analyzer ─────────────────────────────────────────────────────
+    with legal_tabs[0]:
+        st.markdown("**Paste any contract clause. The swarm will steelman it and flag extraction patterns.**")
+        contract_text = st.text_area("Paste contract clause or section", height=150,
+                                      placeholder="e.g. Any dispute arising from this agreement shall be resolved by binding arbitration...")
+
+        if st.button("⚖️ Analyze Clause", key="legal_analyze") and contract_text:
+            if not st.session_state.get("api_key"):
+                st.error("Enter your API key in the sidebar first.")
+            else:
+                with st.spinner("STEELMAN + ORACLE daughters analyzing..."):
+                    try:
+                        client, model, _, _ = get_ai_client()
+                        prompt = f"""You are a sovereign legal analysis tool for families.
+Analyze this contract clause and return ONLY valid JSON:
+{{
+  "plain_english": "Explain in one sentence what this clause means, 8th-grade level",
+  "who_it_benefits": "who_writing_party | who_signing_party | both",
+  "extraction_patterns": ["list of any extraction patterns detected"],
+  "extraction_severity": "none | low | medium | high | critical",
+  "steelman_for": "Strongest argument that this clause is fair and reasonable",
+  "steelman_against": "Strongest argument that this clause is extractive or harmful",
+  "questions_to_ask": ["3 questions you should ask before signing"],
+  "red_flags": ["specific red flags if any"],
+  "coherence_score": 0.0
+}}
+
+Clause: {contract_text}"""
+                        resp = client.chat.completions.create(
+                            model=model,
+                            messages=[{"role":"user","content":prompt}],
+                            max_tokens=600,
+                        )
+                        raw    = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
+                        result = json.loads(raw)
+
+                        severity = result.get("extraction_severity","none")
+                        sev_colors = {"none":"#00ff88","low":"#00ff88","medium":"#ff9500","high":"#ff4444","critical":"#ff0000"}
+                        sev_color  = sev_colors.get(severity,"#8899bb")
+
+                        st.markdown(
+                            f'<div class="card" style="border:2px solid {sev_color};">'
+                            f'<div style="color:{sev_color};font-family:Orbitron,monospace;font-size:0.82rem;">EXTRACTION LEVEL: {severity.upper()}</div>'
+                            f'<div style="color:#c8d8ff;font-size:0.88rem;margin-top:8px;"><b>Plain English:</b> {result.get("plain_english","")}</div>'
+                            f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;"><b>Benefits:</b> {result.get("who_it_benefits","")}</div>'
+                            f'</div>', unsafe_allow_html=True)
+
+                        if result.get("extraction_patterns"):
+                            st.markdown("**⚠️ Extraction patterns detected:**")
+                            for pattern in result["extraction_patterns"]:
+                                st.markdown(f"- {pattern}")
+
+                        col_l1, col_l2 = st.columns(2)
+                        with col_l1:
+                            st.markdown(f'<div class="card" style="border-left:3px solid #00ff88;"><div style="color:#00ff88;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ FOR</div><div style="font-size:0.82rem;color:#8899bb;margin-top:4px;">{result.get("steelman_for","")}</div></div>', unsafe_allow_html=True)
+                        with col_l2:
+                            st.markdown(f'<div class="card" style="border-left:3px solid #ff6b35;"><div style="color:#ff6b35;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ AGAINST</div><div style="font-size:0.82rem;color:#8899bb;margin-top:4px;">{result.get("steelman_against","")}</div></div>', unsafe_allow_html=True)
+
+                        if result.get("questions_to_ask"):
+                            st.markdown("**❓ Ask before signing:**")
+                            for q in result["questions_to_ask"]:
+                                st.markdown(f"- {q}")
+                        award_xp(15)
+                    except Exception as e:
+                        st.error(f"Analysis error: {e}")
+
+    # ── Insurance Policy Analyzer ─────────────────────────────────────────────
+    with legal_tabs[1]:
+        st.markdown("**Paste an insurance policy section. Identify extraction clauses, coverage gaps, and premium drivers.**")
+        policy_text = st.text_area("Insurance policy language", height=150,
+                                    placeholder="e.g. Coverage under this policy does not apply to loss caused directly or indirectly by flood, surface water...")
+
+        ins_type = st.selectbox("Policy type", ["Homeowners/Wind","Flood","Auto","Life","Health","Other"], key="ins_type")
+
+        if st.button("🏠 Analyze Insurance Clause", key="ins_analyze") and policy_text:
+            if not st.session_state.get("api_key"):
+                st.error("Enter your API key in the sidebar first.")
+            else:
+                with st.spinner("Analyzing with ORACLE + STEELMAN daughters..."):
+                    try:
+                        client, model, _, _ = get_ai_client()
+                        prompt = f"""You are a sovereign insurance literacy tool.
+Analyze this {ins_type} policy clause. Return ONLY valid JSON:
+{{
+  "plain_english": "What this clause actually means, 8th-grade level",
+  "coverage_impact": "what this covers | what this excludes | coverage_gap_detected",
+  "extraction_pattern": "clause type if extractive (anti-concurrent causation / sublimit / exclusion / arbitration / claims-made etc), else 'none'",
+  "extraction_severity": "none | low | medium | high | critical",
+  "premium_impact": "how this clause affects your premium calculation",
+  "steelman_insurer": "Strongest argument that this clause is actuarially necessary",
+  "steelman_policyholder": "Strongest argument that this clause unfairly shifts risk to you",
+  "what_to_ask_agent": ["2-3 specific questions to ask your agent about this clause"],
+  "how_reciprocal_differs": "How a policyholder-first reciprocal would handle this differently"
+}}
+
+Policy text: {policy_text}"""
+                        resp = client.chat.completions.create(
+                            model=model,
+                            messages=[{"role":"user","content":prompt}],
+                            max_tokens=700,
+                        )
+                        raw    = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
+                        result = json.loads(raw)
+
+                        severity  = result.get("extraction_severity","none")
+                        sev_color = {"none":"#00ff88","low":"#00ff88","medium":"#ff9500","high":"#ff4444","critical":"#ff0000"}.get(severity,"#8899bb")
+
+                        st.markdown(f'<div class="card" style="border:2px solid {sev_color};"><div style="color:{sev_color};font-family:Orbitron,monospace;font-size:0.82rem;">EXTRACTION: {severity.upper()} · {result.get("extraction_pattern","none")}</div><div style="color:#c8d8ff;font-size:0.88rem;margin-top:6px;">{result.get("plain_english","")}</div><div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{result.get("coverage_impact","")}</div></div>', unsafe_allow_html=True)
+
+                        st.markdown(f'<div class="card" style="border-left:3px solid #a020f0;"><div style="color:#a020f0;font-size:0.75rem;font-family:Orbitron,monospace;">🏛️ HOW A RECIPROCAL WOULD HANDLE THIS</div><div style="font-size:0.82rem;color:#c8d8ff;margin-top:4px;">{result.get("how_reciprocal_differs","")}</div></div>', unsafe_allow_html=True)
+
+                        if result.get("what_to_ask_agent"):
+                            st.markdown("**Ask your agent:**")
+                            for q in result["what_to_ask_agent"]:
+                                st.markdown(f"- {q}")
+                        award_xp(20)
+                    except Exception as e:
+                        st.error(f"Error: {e}")
+
+    # ── Reciprocal Charter viewer ─────────────────────────────────────────────
+    with legal_tabs[2]:
+        charter_path = _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER.md")
+        if charter_path.exists():
+            st.markdown(charter_path.read_text())
+        else:
+            st.markdown("""
+### 🦅 Policyholder-First Reciprocal Charter
+
+The full charter is in `governance/POLICYHOLDER_FIRST_CHARTER.md` in the repo.
+
+**Core principles:**
+- 80% of annual surplus returned to policyholders
+- Executive comp capped at 8× median annual premium
+- All financials on a real-time public dashboard  
+- Subscriber veto rights at 15% threshold
+- Plain-English policy language (8th-grade level)
+- No offshore reinsurance arbitrage
+- Bitcoin up to 5% of reserves for inflation protection
+
+Push `governance/POLICYHOLDER_FIRST_CHARTER.md` to your repo to display the full document here.
+            """)
+
+    # ── Legal literacy progress ───────────────────────────────────────────────
+    with legal_tabs[3]:
+        st.markdown("**Your legal literacy progress from the curriculum.**")
+        legal_lessons = ["legal-1","legal-2","legal-3","legal-4","legal-5"]
+        try:
+            from family_profiles import load_family_stats as _lfs_legal
+            stats_l = _lfs_legal(_fid)
+            completed_l = set(stats_l.get("lessons_completed",[]))
+        except ImportError:
+            completed_l = set()
+
+        for key in legal_lessons:
+            done  = key in completed_l
+            icon  = "✅" if done else "⭕"
+            titles = {
+                "legal-1": "Level 1 — How to Read a Contract",
+                "legal-2": "Level 2 — How Insurance Really Works",
+                "legal-3": "Level 3 — Spot Extraction Clauses",
+                "legal-4": "Level 4 — Reciprocal Insurance Basics",
+                "legal-5": "Level 5 — Build Sovereign Governance ★",
+            }
+            color = "#00ff88" if done else "#445577"
+            lc1, lc2 = st.columns([3,1])
+            with lc1:
+                st.markdown(f'<div style="color:{color};font-size:0.85rem;padding:4px 0;">{icon} {titles.get(key,"")}</div>', unsafe_allow_html=True)
+            with lc2:
+                if not done:
+                    if st.button("▶ Start", key=f"legal_start_{key}"):
+                        st.session_state["active_tab"] = "Family Co-Learning"
+                        st.session_state["fl_lesson_preset"] = key
+                        st.rerun()
+
+        legal_done = sum(1 for k in legal_lessons if k in completed_l)
+        st.markdown(f"\n**Legal literacy: {legal_done}/5 lessons** — {['Beginner','Developing','Intermediate','Advanced','Sovereign'][legal_done]}")
+        if legal_done == 5:
+            st.success("🦅 Full Legal Sovereignty achieved! You can read and steelman any contract.")
