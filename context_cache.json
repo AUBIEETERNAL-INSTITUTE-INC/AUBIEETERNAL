@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-05-23T17:38:31.047708",
-  "level1": "\u2550\u2550\u2550 AUBIEETERNAL LATTICE STATE \u2550\u2550\u2550\nMETS: 200000000007.5 | Wonder: 1.012800 | Coherence: 1.000000\nGrokipedia: 16/256 | Hormetic Pulses: 0\nLattice Cycle: 48 | Rune Confirmations: 48\nChild Rune Ready: False | BTC: $75378\nFree Runs: 0 | Pro Runs: 0 | Daily Cost: $0.00/$5.0\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
-  "level2": "\u2550\u2550\u2550 RECENT DAUGHTER INSIGHTS (last 10) \u2550\u2550\u2550\n[4.047] T1\u00b7S13_POLYVAGAL: \u26a0\ufe0f XAI_KEY not set\n[2.537] T1\u00b7S4_HEALTH: \u26a0\ufe0f XAI_KEY not set\n[2.537] T1\u00b7S8_MEMORY: \u26a0\ufe0f XAI_KEY not set\n[1.046] T1\u00b7S11_SIMULATION: \u26a0\ufe0f XAI_KEY not set\n[1.046] T1\u00b7S14_NARRATIVE: \u26a0\ufe0f XAI_KEY not set\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+  "timestamp": "2026-05-23T17:38:58.442881",
+  "level1": "\u2550\u2550\u2550 AUBIEETERNAL LATTICE STATE \u2550\u2550\u2550\nMETS: 200000000007.5 | Wonder: 1.012800 | Coherence: 1.000000\nGrokipedia: 17/256 | Hormetic Pulses: 0\nLattice Cycle: 51 | Rune Confirmations: 51\nChild Rune Ready: False | BTC: $unknown\nFree Runs: 0 | Pro Runs: 0 | Daily Cost: $0.00/$5.0\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+  "level2": "\u2550\u2550\u2550 RECENT DAUGHTER INSIGHTS (last 10) \u2550\u2550\u2550\n[1.472] T1\u00b7S16_VECTOR_A: \u26a0\ufe0f XAI_KEY not set\n[9.921] T1\u00b7S25_GLITCH: \u26a0\ufe0f XAI_KEY not set\n[9.921] T1\u00b7S21_WONDER: \u26a0\ufe0f XAI_KEY not set\n[8.441] T1\u00b7S12_ORCH_OR: \u26a0\ufe0f XAI_KEY not set\n[8.441] T1\u00b7S4_HEALTH: \u26a0\ufe0f XAI_KEY not set\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
   "level3": "MEMORY PALACE: Error: [Errno 2] No such file or directory: '/mnt/main/repo/memory_palace.jsonl'",
   "wonder_index": 1.0128,
   "mets": 200000000007.5,
   "coherence": 1.0,
-  "grokipedia": 16
+  "grokipedia": 17
 }
