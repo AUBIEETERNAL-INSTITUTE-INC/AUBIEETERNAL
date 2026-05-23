@@ -152,6 +152,52 @@ briefings_fired = {}
 # ── Morning Synthesis State ───────────────────────────────────────────────────
 _synthesis_last_run_date = None   # tracks which date synthesis ran; prevents double-fire
 
+# ── Evolution state ───────────────────────────────────────────────────────────
+_evolution_last_tick = -1         # last tick evolution ran on
+
+def _maybe_run_evolution(tick: int):
+    """
+    Runs evolution engine tasks on a schedule:
+      - Every 10,800 ticks (~24h at 8s/tick): weekly lesson proposals check + auto-evolution tick
+      - Every 1,350 ticks (~3h): dynamic quest regeneration for all families
+    Non-blocking — runs in background thread.
+    """
+    global _evolution_last_tick
+    if tick == _evolution_last_tick:
+        return
+
+    # Dynamic quests every ~3 hours
+    if tick % 1350 == 0 and tick > 0:
+        _evolution_last_tick = tick
+        def _bg_quests():
+            try:
+                import sys as _esys
+                if str(WORK_DIR) not in _esys.path:
+                    _esys.path.insert(0, str(WORK_DIR))
+                from swarm_evolution import EvolutionEngine
+                engine = EvolutionEngine(api_key=XAI_KEY)
+                engine.generate_dynamic_quests("all")
+                print("[evolution] ✅ Dynamic quests regenerated")
+            except Exception as e:
+                print(f"[evolution] Quest generation error: {e}")
+        threading.Thread(target=_bg_quests, daemon=True).start()
+
+    # Auto-evolution tick + weekly proposals every ~24 hours
+    if tick % 10800 == 0 and tick > 0:
+        def _bg_evolution():
+            try:
+                import sys as _esys
+                if str(WORK_DIR) not in _esys.path:
+                    _esys.path.insert(0, str(WORK_DIR))
+                from swarm_evolution import EvolutionEngine
+                engine = EvolutionEngine(api_key=XAI_KEY)
+                engine.run_auto_evolution_tick()
+                engine.run_weekly_lesson_proposals()
+                print("[evolution] ✅ Daily evolution tick complete")
+            except Exception as e:
+                print(f"[evolution] Daily tick error: {e}")
+        threading.Thread(target=_bg_evolution, daemon=True).start()
+
 # ── Tier 1 Swarms (S1-S26) ────────────────────────────────────────────────────
 TIER1_SWARMS = {
     "S1_BITCOIN":     {"count": 80, "role": "Bitcoin & On-chain Analysis"},
@@ -1318,6 +1364,10 @@ def launch_swarm():
 
             # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──
             handle_glasses_signal()
+            # ──────────────────────────────────────────────────────────────
+
+            # ── SWARM EVOLUTION — adaptive curriculum + dynamic quests ────
+            _maybe_run_evolution(tick)
             # ──────────────────────────────────────────────────────────────
             pct = (daily_cost / DAILY_BUDGET_CAP) * 100
             print(
