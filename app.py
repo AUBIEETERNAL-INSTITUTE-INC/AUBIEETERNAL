@@ -330,7 +330,7 @@ def init_state():
         "key_mistral": "",
         "key_groq": "",
         "key_deepseek": "",
-        "active_provider": "xAI Grok (Free Fallback)",
+        "active_provider": "Local Ollama (FREE — qwen3:32b)",
         # v65/v66 features
         "truth_log": [],
         "calibration_history": [],
@@ -371,6 +371,16 @@ def get_client():
 
 # ── Multi-AI Provider Config ──────────────────────────────────────────────────
 AI_PROVIDERS = {
+    "Local Ollama (FREE — qwen3:32b)": {
+        "icon": "🏠", "color": "#00ff88",
+        "models": ["qwen3:32b", "qwen2.5:32b", "llama3.3:70b"],
+        "base_url": "http://ollama.startos:11434/v1",
+        "key_field": "key_ollama",
+        "placeholder": "no key needed",
+        "free": True,
+        "note": "100% local · sovereign · $0.00 · qwen3:32b on your rig",
+        "get_url": "http://painful-recess.local:62222",
+    },
     "xAI Grok (Free Fallback)": {
         "icon": "⚡", "color": "#00cfff",
         "models": ["grok-3", "grok-3-fast", "grok-2-1212"],
@@ -444,27 +454,31 @@ AI_PROVIDERS = {
 }
 
 def get_ai_client(provider_name=None):
-    """Returns (client, model, provider_info) for the selected provider, with Grok fallback."""
+    """Returns (client, model, provider_info) for the selected provider.
+    Priority: Local Ollama (free) → Grok (if key) → fallback demo."""
     if provider_name is None:
-        provider_name = st.session_state.get("active_provider", "xAI Grok (Free Fallback)")
+        provider_name = st.session_state.get("active_provider", "Local Ollama (FREE — qwen3:32b)")
 
-    provider = AI_PROVIDERS.get(provider_name, AI_PROVIDERS["xAI Grok (Free Fallback)"])
+    provider = AI_PROVIDERS.get(provider_name, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
     key_field = provider["key_field"]
-    api_key = st.session_state.get(key_field, "") or st.session_state.get("key_xai", "")
+    api_key   = st.session_state.get(key_field, "") or st.session_state.get("key_xai", "")
 
-    # Fallback to Grok if no key
-    if not api_key and not provider["free"]:
-        provider = AI_PROVIDERS["xAI Grok (Free Fallback)"]
-        api_key = st.session_state.get("key_xai", "")
-        provider_name = "xAI Grok (Free Fallback)"
+    # Local Ollama needs no key — use placeholder
+    if provider_name == "Local Ollama (FREE — qwen3:32b)":
+        api_key = "ollama"  # OpenAI client requires non-empty string; Ollama ignores it
 
-    if not api_key and provider["free"]:
-        # Grok allows limited use without key (demo mode)
+    # If paid provider has no key, fall back to Local Ollama
+    elif not api_key and not provider["free"]:
+        provider      = AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"]
+        provider_name = "Local Ollama (FREE — qwen3:32b)"
+        api_key       = "ollama"
+
+    # xAI free fallback with no key — demo mode
+    elif not api_key and provider["free"]:
         api_key = "demo"
 
-    # Anthropic uses a different SDK — wrap via OpenAI-compatible endpoint
     client = OpenAI(api_key=api_key, base_url=provider["base_url"])
-    model = st.session_state.get("active_model", provider["models"][0])
+    model  = st.session_state.get("active_model", provider["models"][0])
     return client, model, provider, provider_name
 
 # ══════════════════════════════════════════════════════════════════════════════
