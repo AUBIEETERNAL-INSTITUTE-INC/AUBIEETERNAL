@@ -5428,3 +5428,172 @@ if "Lattice Feed" in active:
 
     except ImportError as e:
         st.warning(f"family_connect.py not found: {e}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SWARM EVOLUTION 🧬 — self-evolving curriculum engine
+# ══════════════════════════════════════════════════════════════════════════════
+if "Swarm Evolution" in active:
+    st.markdown('<div class="card-title">🧬 SWARM EVOLUTION — Self-Evolving Curriculum Engine</div>', unsafe_allow_html=True)
+
+    try:
+        import sys as _esys
+        if "/mnt/main/repo" not in _esys.path: _esys.path.insert(0,"/mnt/main/repo")
+        from swarm_evolution import EvolutionEngine as _EE, _load_state as _els, QUESTS_CACHE as _QC
+        _engine    = _EE(api_key=st.session_state.get("key_xai",""))
+        _ev_state  = _els()
+
+        # ── Mode status row ───────────────────────────────────────────────────
+        ec1,ec2,ec3,ec4 = st.columns(4)
+        with ec1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:#a020f0;">A ✅</div><div class="stat-lbl">Lesson Proposals</div></div>', unsafe_allow_html=True)
+        with ec2: st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:#00ff88;">B ✅</div><div class="stat-lbl">Dynamic Quests</div></div>', unsafe_allow_html=True)
+        with ec3: st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:#00cfff;">C ✅</div><div class="stat-lbl">Auto-Evolution</div></div>', unsafe_allow_html=True)
+        with ec4: st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:#ff6b35;">{_ev_state.get("evolution_cycles",0)}</div><div class="stat-lbl">Cycles Run</div></div>', unsafe_allow_html=True)
+
+        st.caption(
+            f"Proposals pending: {_ev_state.get('proposals_pending',0)} · "
+            f"Approved: {_ev_state.get('proposals_approved',0)} · "
+            f"Lessons auto-added: {_ev_state.get('lessons_auto_added',0)} · "
+            f"Quests generated: {_ev_state.get('quests_generated',0)}"
+        )
+
+        evo_tabs = st.tabs(["📚 Lesson Proposals (A)", "🎮 Dynamic Quests (B)", "🧬 Auto-Config (C)", "⚙️ Manual Controls"])
+
+        # ── A: Lesson proposals ───────────────────────────────────────────────
+        with evo_tabs[0]:
+            st.markdown("**Swarm proposes new lessons weekly. You approve or reject before they're added.**")
+
+            pending = _engine.get_pending_proposals()
+            all_props = _engine.get_all_proposals(20)
+
+            if pending:
+                st.markdown(f"### ⏳ {len(pending)} Pending Proposals")
+                for prop in pending:
+                    lesson  = prop.get("lesson",{})
+                    score   = prop.get("coherence_score",0)
+                    sc_color = "#00ff88" if score >= 0.80 else ("#ff9500" if score >= 0.70 else "#ff4444")
+                    with st.expander(f"📖 {lesson.get('title','?')} — Score: {score:.2f}", expanded=True):
+                        st.markdown(f'<div class="card" style="border-left:3px solid {sc_color};">'
+                                    f'<div style="color:{sc_color};font-size:0.78rem;font-family:Orbitron,monospace;">COHERENCE SCORE: {score:.2f}</div>'
+                                    f'<div style="font-size:0.82rem;color:#8899bb;margin-top:6px;line-height:1.8;">'
+                                    f'<b>Topic:</b> {lesson.get("topic","")}<br>'
+                                    f'<b>Steelman:</b> {lesson.get("steelman","")}<br>'
+                                    f'<b>Example:</b> {lesson.get("example","")}<br>'
+                                    f'<b>Age:</b> {lesson.get("age_hint","All")} · <b>XP:</b> {lesson.get("xp",20)} · <b>Rune:</b> {lesson.get("rune","")}'
+                                    f'</div>'
+                                    f'<div style="color:#a020f0;font-size:0.78rem;margin-top:6px;"><b>Rationale:</b> {prop.get("rationale","")}</div>'
+                                    f'</div>', unsafe_allow_html=True)
+
+                        col_a1, col_a2 = st.columns(2)
+                        with col_a1:
+                            if st.button(f"✅ Approve — Add to curriculum", key=f"approve_{prop['id']}"):
+                                if _engine.approve_lesson(prop["id"]):
+                                    st.success(f"✅ '{lesson.get('title','')}' added to family_hud.py!")
+                                    st.rerun()
+                                else:
+                                    st.error("Could not add lesson — check that family_hud.py is in /mnt/main/repo/")
+                        with col_a2:
+                            reject_reason = st.text_input("Rejection reason (optional)", key=f"rej_reason_{prop['id']}")
+                            if st.button(f"❌ Reject", key=f"reject_{prop['id']}"):
+                                _engine.reject_lesson(prop["id"], reject_reason)
+                                st.rerun()
+            else:
+                st.info("No pending proposals. Run 'Generate New Proposals' below.")
+
+            st.divider()
+            st.markdown("### 📋 All Proposals")
+            for p in all_props[:10]:
+                status = p.get("status","pending")
+                icon   = "✅" if status=="approved" else ("❌" if status=="rejected" else "⏳")
+                color  = "#00ff88" if status=="approved" else ("#ff4444" if status=="rejected" else "#ff9500")
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {color};">'
+                    f'<span style="color:{color};">{icon} {p.get("lesson",{}).get("title","?")}</span> '
+                    f'<span style="color:#445577;font-size:0.72rem;">{p.get("proposed_at","")[:10]} · score {p.get("coherence_score",0):.2f}</span>'
+                    f'</div>', unsafe_allow_html=True)
+
+        # ── B: Dynamic quests ─────────────────────────────────────────────────
+        with evo_tabs[1]:
+            st.markdown("**Auto-generated quests personalized to each family's coherence + streak + level.**")
+            st.caption("Runs automatically every ~3 hours in the swarm loop. No approval needed.")
+
+            if _QC.exists():
+                try:
+                    dq = json.loads(_QC.read_text())
+                    st.caption(f"Cache: {list(dq.keys())} · Generated: {next(iter(dq.values()),{}).get('generated_at','?')[:16]}")
+                    for fid_q, data_q in dq.items():
+                        level_q = data_q.get("family_level",1)
+                        coh_q   = data_q.get("avg_coherence",0.72)
+                        st.markdown(f"**{fid_q}** — Level {level_q} · Coherence {coh_q:.2f}")
+                        for q in data_q.get("quests",[]):
+                            qtype  = q.get("type","")
+                            qcolor = {"adaptive":"#00cfff","streak":"#ff9500","swarm":"#a020f0","streak_milestone":"#ff6b35"}.get(qtype,"#8899bb")
+                            st.markdown(
+                                f'<div class="memory-node" style="border-left:3px solid {qcolor};">'
+                                f'<span style="color:{qcolor};font-size:0.75rem;">[{qtype}]</span> '
+                                f'{q["title"]} — +{q["xp"]} XP<br>'
+                                f'<span style="color:#445577;font-size:0.72rem;font-style:italic;">{q.get("hint","")}</span>'
+                                f'</div>', unsafe_allow_html=True)
+                        st.divider()
+                except Exception as e:
+                    st.caption(f"Cache read error: {e}")
+            else:
+                st.caption("No cached quests yet — will generate on next swarm tick or click below.")
+
+        # ── C: Auto-config ────────────────────────────────────────────────────
+        with evo_tabs[2]:
+            st.markdown("**Swarm continuously adapts difficulty, XP multipliers, and featured content.**")
+            st.caption("Runs every ~24h. Does NOT modify source files — writes evolution_config.json.")
+
+            cfg_path = _Path("/mnt/main/evolution_config.json")
+            if cfg_path.exists():
+                try:
+                    cfg = json.loads(cfg_path.read_text())
+                    st.markdown(f"**Last updated:** {cfg.get('updated_at','?')[:16]}")
+
+                    ccols = st.columns(3)
+                    with ccols[0]:
+                        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:#00cfff;">{cfg.get("avg_coherence","—")}</div><div class="stat-lbl">Avg Coherence</div></div>', unsafe_allow_html=True)
+                    with ccols[1]:
+                        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:#ff9500;">{cfg.get("quest_xp_multiplier","1.0")}×</div><div class="stat-lbl">XP Multiplier</div></div>', unsafe_allow_html=True)
+                    with ccols[2]:
+                        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:#a020f0;">{cfg.get("featured_track","courage")}</div><div class="stat-lbl">Featured Track</div></div>', unsafe_allow_html=True)
+
+                    st.markdown("**Recent adaptations:**")
+                    for change in cfg.get("changes",[]):
+                        st.markdown(f"→ {change}")
+                    st.markdown(f"**Next suggested track:** {cfg.get('suggest_next_track','antifragility')}")
+                    st.markdown(f"**Simulation mode:** {cfg.get('simulation_mode','standard')}")
+                except Exception as e:
+                    st.caption(f"Config error: {e}")
+            else:
+                st.caption("No evolution config yet — runs on first swarm evolution tick.")
+
+        # ── Manual controls ───────────────────────────────────────────────────
+        with evo_tabs[3]:
+            st.markdown("**Trigger evolution tasks manually.**")
+            mc1, mc2, mc3 = st.columns(3)
+            with mc1:
+                if st.button("📚 Generate Lesson Proposals", key="ev_proposals"):
+                    with st.spinner("Generating proposals via swarm..."):
+                        proposals = _engine.run_weekly_lesson_proposals(force=True)
+                    if proposals:
+                        st.success(f"✅ {len(proposals)} proposals generated!")
+                        st.rerun()
+                    else:
+                        st.warning("No proposals generated — check API key or Ollama connection")
+            with mc2:
+                if st.button("🎮 Regenerate Dynamic Quests", key="ev_quests"):
+                    with st.spinner("Generating quests..."):
+                        _engine.generate_dynamic_quests("all")
+                    st.success("✅ Dynamic quests regenerated!")
+                    st.rerun()
+            with mc3:
+                if st.button("🧬 Run Evolution Tick", key="ev_tick"):
+                    with st.spinner("Running auto-evolution..."):
+                        cfg = _engine.run_auto_evolution_tick()
+                    st.success(f"✅ Done! {len(cfg.get('changes',[]))} adaptations")
+                    st.rerun()
+
+    except ImportError as e:
+        st.warning(f"swarm_evolution.py not found: {e}")
+        st.caption("Add swarm_evolution.py to the repo root to enable self-evolution.")
