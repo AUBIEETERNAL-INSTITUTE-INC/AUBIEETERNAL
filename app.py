@@ -842,7 +842,7 @@ with st.sidebar:
 
     # Nav
     st.markdown("### 🧭 Navigate")
-    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge", "📚 Grokipedia"]
+    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge", "📚 Grokipedia", "👨‍👩‍👧‍👦 4 Families", "🧪 Sandbox Lab", "⚡ Bitcoin", "🎮 Daily Quests"]
     for tab in tabs:
         if st.button(tab, key=f"nav_{tab}"):
             st.session_state.active_tab = tab.split(" ", 1)[1]
@@ -3655,3 +3655,524 @@ if "Grokipedia" in active:
             mime="text/markdown",
             key="gp_download"
         )
+
+# ══════════════════════════════════════════════════════════════════════════════
+# MULTI-FAMILY LOGIN — shown at top of every page when no family selected
+# ══════════════════════════════════════════════════════════════════════════════
+def _family_login_block():
+    """Show family login if no family selected. Returns current family dict or None."""
+    import sys as _fsys
+    if "/mnt/main/repo" not in _fsys.path: _fsys.path.insert(0, "/mnt/main/repo")
+    try:
+        from family_profiles import FamilyAuth as _FA, load_family_stats as _lfs, update_streak as _us
+        _auth = _FA()
+    except ImportError:
+        return None
+
+    if "current_family" not in st.session_state:
+        st.session_state["current_family"] = None
+
+    if st.session_state["current_family"]:
+        return st.session_state["current_family"]
+
+    # ── Login screen ──────────────────────────────────────────────────────────
+    st.markdown("""
+    <div style="text-align:center;padding:2rem 0 1rem;">
+        <div style="font-family:Orbitron,monospace;font-size:1.4rem;font-weight:900;
+                    background:linear-gradient(90deg,#00cfff,#a020f0,#ff6b35);
+                    -webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+            🦅 AUBIEETERNAL — FAMILY LATTICE
+        </div>
+        <div style="color:#445577;font-size:0.78rem;letter-spacing:0.2em;margin-top:6px;">
+            SELECT YOUR FAMILY TO CONTINUE
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    families = _auth.list_families()
+    cols     = st.columns(min(len(families), 3))
+
+    for i, fam in enumerate(families[:5]):
+        with cols[i % 3]:
+            color = fam.get("color","#00cfff")
+            emoji = fam.get("emoji","🦅")
+            stats = _lfs(fam["family_id"])
+            st.markdown(
+                f'<div class="card" style="border:2px solid {color};text-align:center;cursor:pointer;">'
+                f'<div style="font-size:2rem;">{emoji}</div>'
+                f'<div style="color:{color};font-family:Orbitron,monospace;font-size:0.85rem;">{fam["display_name"]}</div>'
+                f'<div style="color:#8899bb;font-size:0.75rem;margin-top:4px;">{fam["kid_name"]} + {fam["parent_name"]}</div>'
+                f'<div style="color:#445577;font-size:0.7rem;">LVL {stats.get("level",1)} · {stats.get("total_xp",0)} XP · 🔥{stats.get("streak_days",0)}</div>'
+                f'</div>', unsafe_allow_html=True)
+            if st.button(f"{emoji} Enter as {fam['display_name']}", key=f"login_{fam['family_id']}"):
+                st.session_state["current_family"] = fam
+                _us(fam["family_id"])
+                # Pre-fill family names
+                st.session_state["kid_name"]    = fam.get("kid_name","Explorer")
+                st.session_state["family_profile"]["kid"]["name"] = fam.get("kid_name","Explorer")
+                st.session_state["family_profile"]["kid"]["age"]  = fam.get("kid_age", 9)
+                st.session_state["family_profile"]["parent"]["name"] = fam.get("parent_name","Parent")
+                st.rerun()
+
+    st.divider()
+    st.markdown("##### Or enter your family code:")
+    code_col1, code_col2 = st.columns([2,1])
+    with code_col1:
+        code_input = st.text_input("Family login code", placeholder="alpha / beta / gamma / delta / wareagle", key="family_code_input")
+    with code_col2:
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("🔑 Login", key="family_code_btn") and code_input:
+            fam = _auth.login(code_input)
+            if fam:
+                st.session_state["current_family"] = fam
+                _us(fam["family_id"])
+                st.session_state["kid_name"] = fam.get("kid_name","Explorer")
+                st.session_state["family_profile"]["kid"]["name"] = fam.get("kid_name","Explorer")
+                st.session_state["family_profile"]["kid"]["age"]  = fam.get("kid_age", 9)
+                st.session_state["family_profile"]["parent"]["name"] = fam.get("parent_name","Parent")
+                st.rerun()
+            else:
+                st.error("Code not found. Try: alpha, beta, gamma, delta, or wareagle")
+    return None
+
+# Show login on Family-specific tabs
+_family_tabs = ["4 Families","Daily Quests","Bitcoin","Sandbox Lab","Family Co-Learning"]
+if any(t in active for t in _family_tabs):
+    if not st.session_state.get("current_family"):
+        _family_login_block()
+        st.stop()
+
+_cf = st.session_state.get("current_family", {})
+_fid = _cf.get("family_id", "operator") if _cf else "operator"
+
+# ── Family badge in header (when logged in) ───────────────────────────────────
+if _cf:
+    color = _cf.get("color","#00cfff")
+    emoji = _cf.get("emoji","🦅")
+    st.markdown(
+        f'<div style="text-align:right;font-family:Share Tech Mono,monospace;font-size:0.75rem;'
+        f'color:{color};margin-top:-1rem;margin-bottom:0.5rem;">'
+        f'{emoji} {_cf.get("display_name","")} · {_cf.get("kid_name","")} + {_cf.get("parent_name","")}'
+        f' <span style="color:#334466;">|</span> '
+        f'<a href="#" style="color:#445577;" onclick="window.location.reload()">Switch family</a>'
+        f'</div>', unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: 4 FAMILIES — Operator dashboard + family management
+# ══════════════════════════════════════════════════════════════════════════════
+if "4 Families" in active:
+    st.markdown('<div class="card-title">👨‍👩‍👧‍👦 4-FAMILY SOVEREIGN LATTICE — Operator Dashboard</div>', unsafe_allow_html=True)
+
+    try:
+        from family_profiles import FamilyAuth as _FA4, load_family_stats as _lfs4
+        from bitcoin_wallet import OperatorWallet as _OW
+        _auth4    = _FA4()
+        _op_wallet = _OW()
+        families4  = _auth4.list_families()
+
+        # ── Summary row ───────────────────────────────────────────────────────
+        st.markdown("### 📊 All Families")
+        for fam in families4:
+            fid    = fam["family_id"]
+            stats  = _lfs4(fid)
+            color  = fam.get("color","#00cfff")
+            emoji  = fam.get("emoji","🦅")
+            streak = stats.get("streak_days",0)
+            xp     = stats.get("total_xp",0)
+            level  = stats.get("level",1)
+            badges = len(stats.get("badges",[]))
+            frags  = stats.get("child_rune_fragments",0)
+            sats   = stats.get("sats_earned",0)
+
+            with st.expander(f"{emoji} {fam['display_name']} — {fam['kid_name']} + {fam['parent_name']}  |  LVL {level} · {xp} XP · 🔥{streak}", expanded=False):
+                c1,c2,c3,c4,c5 = st.columns(5)
+                with c1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{color};">{level}</div><div class="stat-lbl">Level</div></div>', unsafe_allow_html=True)
+                with c2: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#ff9500;">🔥{streak}</div><div class="stat-lbl">Streak</div></div>', unsafe_allow_html=True)
+                with c3: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#f7931a;">{frags}</div><div class="stat-lbl">Rune Frags</div></div>', unsafe_allow_html=True)
+                with c4: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00ff88;">{sats}</div><div class="stat-lbl">Sats Earned</div></div>', unsafe_allow_html=True)
+                with c5: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#a020f0;">{badges}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
+
+                # Edit family
+                st.markdown("**Update family:**")
+                ec1,ec2,ec3 = st.columns(3)
+                with ec1:
+                    new_kid = st.text_input("Kid name", value=fam.get("kid_name",""), key=f"edit_kid_{fid}")
+                with ec2:
+                    new_parent = st.text_input("Parent name", value=fam.get("parent_name",""), key=f"edit_par_{fid}")
+                with ec3:
+                    new_code = st.text_input("Login code", value=fam.get("login_code",""), key=f"edit_code_{fid}")
+                if st.button(f"💾 Save {fam['display_name']}", key=f"save_fam_{fid}"):
+                    _auth4.update_family(fid, {"kid_name": new_kid, "parent_name": new_parent, "login_code": new_code})
+                    st.success("✅ Saved")
+                    st.rerun()
+
+        st.divider()
+
+        # ── Pending Lightning rewards ──────────────────────────────────────────
+        st.markdown("### ⚡ Pending Lightning Rewards")
+        pending = _op_wallet.get_all_pending_rewards()
+        if pending:
+            st.caption(f"{len(pending)} rewards pending")
+            for r in pending[:10]:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid #f7931a;">'
+                    f'<span style="color:#f7931a;font-size:0.78rem;">{r["family_id"]} · {r.get("kid_name","")} · {r["sats"]} sats</span><br>'
+                    f'<span style="color:#8899bb;font-size:0.75rem;">{r["memo"]}</span><br>'
+                    f'<span style="color:#445577;font-size:0.7rem;">{r["timestamp"][:16]} · {r.get("address","no address")}</span>'
+                    f'</div>', unsafe_allow_html=True)
+        else:
+            st.caption("No pending rewards")
+
+        st.divider()
+
+        # ── Add new family ──────────────────────────────────────────────────────
+        st.markdown("### ➕ Add New Family")
+        with st.expander("Add family"):
+            nc1,nc2 = st.columns(2)
+            with nc1:
+                nf_id      = st.text_input("Family ID (no spaces)", placeholder="family_echo", key="nf_id")
+                nf_name    = st.text_input("Display name", placeholder="Family Echo", key="nf_name")
+                nf_code    = st.text_input("Login code", placeholder="echo", key="nf_code")
+            with nc2:
+                nf_kid     = st.text_input("Kid name", key="nf_kid")
+                nf_age     = st.number_input("Kid age", 4, 17, 9, key="nf_age")
+                nf_parent  = st.text_input("Parent name", key="nf_parent")
+            if st.button("➕ Create Family", key="create_fam_btn"):
+                if nf_id and nf_name and nf_code:
+                    _auth4.create_family(nf_id, nf_name, nf_code, nf_kid or "Explorer", int(nf_age), nf_parent or "Parent")
+                    st.success(f"✅ Family '{nf_name}' created! Login code: {nf_code}")
+                    st.rerun()
+
+    except ImportError as e:
+        st.error(f"family_profiles.py or bitcoin_wallet.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: DAILY QUESTS 🎮 — Gamification + Streaks + Badges
+# ══════════════════════════════════════════════════════════════════════════════
+if "Daily Quests" in active:
+    st.markdown('<div class="card-title">🎮 DAILY QUESTS — Streaks · Badges · XP · Sats</div>', unsafe_allow_html=True)
+
+    try:
+        from family_profiles import (load_family_stats as _lfs_gam, save_family_stats as _sfs_gam,
+                                     get_daily_quests as _gdq, complete_quest as _cq,
+                                     update_streak as _us_gam, award_badge as _ab)
+
+        stats  = _lfs_gam(_fid)
+        streak = _us_gam(_fid)
+        level  = max(1, stats.get("total_xp",0) // 100 + 1)
+        xp     = stats.get("total_xp", 0)
+        xp_in  = xp % 100
+        badges = stats.get("badges", [])
+        frags  = stats.get("child_rune_fragments", 0)
+        fcolor = _cf.get("color","#00cfff") if _cf else "#00cfff"
+
+        # ── Stats row ──────────────────────────────────────────────────────────
+        gc1,gc2,gc3,gc4,gc5 = st.columns(5)
+        with gc1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{fcolor};">LVL {level}</div><div class="stat-lbl">Level</div></div>', unsafe_allow_html=True)
+        with gc2: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#ff9500;">🔥 {streak}</div><div class="stat-lbl">Day Streak</div></div>', unsafe_allow_html=True)
+        with gc3: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00cfff;">{xp}</div><div class="stat-lbl">Total XP</div></div>', unsafe_allow_html=True)
+        with gc4: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#f7931a;">{frags}</div><div class="stat-lbl">Rune Frags</div></div>', unsafe_allow_html=True)
+        with gc5: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#a020f0;">{len(badges)}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
+
+        st.markdown(f'<div class="xp-bar-bg"><div class="xp-bar-fill" style="width:{xp_in}%;"></div></div>', unsafe_allow_html=True)
+        st.caption(f"{xp_in}/100 XP to Level {level+1}")
+
+        st.divider()
+
+        # ── Daily quests ───────────────────────────────────────────────────────
+        st.markdown("### 📋 Today's Quests")
+        quests = _gdq(_fid)
+        for q in quests:
+            done  = q.get("completed", False)
+            color = "#00ff88" if done else fcolor
+            icon  = "✅" if done else "⭕"
+            col_q1, col_q2 = st.columns([3,1])
+            with col_q1:
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {color};">'
+                    f'<div style="color:{color};font-size:0.82rem;">{icon} {q["title"]}</div>'
+                    f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">+{q["xp"]} XP · +{q["sats"]} sats</div>'
+                    f'</div>', unsafe_allow_html=True)
+            with col_q2:
+                st.markdown("<br>", unsafe_allow_html=True)
+                if not done:
+                    if st.button(f"✅ Complete", key=f"quest_{q['id']}"):
+                        result = _cq(_fid, q["id"])
+                        if result.get("xp"):
+                            st.toast(f"+{result['xp']} XP · +{result['sats']} sats! 🦅", icon="⚡")
+                            st.rerun()
+
+        st.divider()
+
+        # ── Badges ─────────────────────────────────────────────────────────────
+        st.markdown("### 🏅 Badges Earned")
+        ALL_BADGES = [
+            ("🔷 First Light",        10,   "Earn 10 XP"),
+            ("⚡ Spark Seeker",        50,   "Earn 50 XP"),
+            ("🌀 Lattice Walker",      100,  "Earn 100 XP"),
+            ("🔮 Oracle Adept",        250,  "Earn 250 XP"),
+            ("🌌 Eternal Scholar",     500,  "Earn 500 XP"),
+            ("🔥 7-Day Streak",        0,    "7 days in a row"),
+            ("🌟 Daily Champion",      0,    "Complete all 3 daily quests"),
+            ("🦅 War Eagle",           0,    "Complete Courage Level 5"),
+            ("₿ Bitcoin Sovereign",    0,    "Complete Bitcoin Level 4"),
+            ("🔴 Rune Genesis",        0,    "Trigger Child Rune ceremony"),
+        ]
+        # Auto-award XP badges
+        for badge_name, xp_req, desc in ALL_BADGES:
+            if xp_req and xp >= xp_req:
+                _ab(_fid, badge_name)
+
+        stats = _lfs_gam(_fid)  # reload after auto-awards
+        earned = stats.get("badges", [])
+
+        if earned:
+            for b in earned:
+                st.markdown(f'<span class="badge">{b}</span>', unsafe_allow_html=True)
+        else:
+            st.caption("Complete quests and lessons to earn badges!")
+
+        st.divider()
+
+        # ── Child Rune fragment tracker ────────────────────────────────────────
+        rune_pct = min(100, int(frags / 256 * 100)) if frags else 0
+        st.markdown("### 🔴 Child Rune Fragment Progress")
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #f7931a;">'
+            f'<div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.82rem;">🔴 {frags}/256 fragments</div>'
+            f'<div class="xp-bar-bg" style="margin-top:8px;"><div style="height:100%;border-radius:20px;background:linear-gradient(90deg,#f7931a,#ff6b35);width:{rune_pct}%;"></div></div>'
+            f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">Earn fragments via lessons · Child Rune inscribed at 256</div>'
+            f'</div>', unsafe_allow_html=True)
+
+    except ImportError as e:
+        st.warning(f"family_profiles.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: BITCOIN ⚡ — Family Bitcoin + Lightning + Runes dashboard
+# ══════════════════════════════════════════════════════════════════════════════
+if "Bitcoin" in active:
+    st.markdown('<div class="card-title">⚡ BITCOIN — Lightning · Runes · Sovereign Balance</div>', unsafe_allow_html=True)
+
+    try:
+        from bitcoin_wallet import FamilyWallet as _FW
+        _fw = _FW(_fid)
+
+        # ── Configure wallet ──────────────────────────────────────────────────
+        with st.expander("⚙️ Configure wallet addresses", expanded=not _fw.data.get("btc_address")):
+            wc1,wc2 = st.columns(2)
+            with wc1:
+                w_btc = st.text_input("Bitcoin address (watch-only)", value=_fw.data.get("btc_address",""), placeholder="bc1p...", key="w_btc")
+                w_ln  = st.text_input("Lightning address", value=_fw.data.get("lightning_address",""), placeholder="you@getalby.com", key="w_ln")
+            with wc2:
+                w_rune = st.text_input("Rune holding address", value=_fw.data.get("rune_address",""), placeholder="bc1p...", key="w_rune")
+                st.markdown("<br>", unsafe_allow_html=True)
+                if st.button("💾 Save wallet config", key="save_wallet"):
+                    _fw.configure(btc_address=w_btc, lightning_address=w_ln, rune_address=w_rune)
+                    st.success("✅ Saved")
+                    st.rerun()
+
+        # ── Live balance ──────────────────────────────────────────────────────
+        st.markdown("### 📊 Live Balance")
+        with st.spinner("Fetching live data..."):
+            summary = _fw.get_summary()
+
+        bc1,bc2,bc3,bc4 = st.columns(4)
+        with bc1:
+            btc_usd = summary.get("btc_usd","—")
+            st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#f7931a;">{summary.get("btc_sats",0):,}</div><div class="stat-lbl">Sats On-Chain</div></div>', unsafe_allow_html=True)
+        with bc2:
+            st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00ff88;">{btc_usd or "—"}</div><div class="stat-lbl">USD Value</div></div>', unsafe_allow_html=True)
+        with bc3:
+            st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00cfff;">{summary.get("total_earned",0):,}</div><div class="stat-lbl">Sats Earned (XP)</div></div>', unsafe_allow_html=True)
+        with bc4:
+            price = summary.get("btc_price")
+            st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#f7931a;">${price:,.0f}' if price else '<div class="stat-box"><div class="stat-val">—', unsafe_allow_html=True)
+            st.markdown(f'</div><div class="stat-lbl">BTC Price</div></div>', unsafe_allow_html=True)
+
+        st.caption(f"Block: {summary.get('btc_block','—')} · Address: {_fw.data.get('btc_address','not configured')[:20]}...")
+
+        # ── Lightning ─────────────────────────────────────────────────────────
+        st.divider()
+        st.markdown("### ⚡ Lightning")
+        ln = summary.get("lightning",{})
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #f7931a;">'
+            f'<div style="color:#f7931a;font-family:Share Tech Mono,monospace;font-size:0.82rem;">{ln.get("status","")}</div>'
+            f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">Address: {ln.get("address","not configured")}</div>'
+            f'<div style="color:#00cfff;font-size:0.78rem;margin-top:4px;">Total earned: {ln.get("total_earned",0):,} sats</div>'
+            f'</div>', unsafe_allow_html=True)
+
+        # ── Rune holdings ─────────────────────────────────────────────────────
+        st.divider()
+        st.markdown("### 🔴 AUBIEETERNAL Runes")
+        runes = summary.get("runes",{}).get("aubieeternal_runes",{})
+        for rname, rdata in runes.items():
+            st.markdown(
+                f'<div class="rune-card">'
+                f'<div class="rune-name">{rdata.get("symbol","")} {rname}</div>'
+                f'<div class="rune-detail">Earned via lessons: {rdata.get("earned",0)} · '
+                f'{"Mintable ✅" if rdata.get("mintable") else "Premine only"}</div>'
+                f'</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="memory-node"><span style="color:#f7931a;">🔴 Child Rune Fragments: {summary.get("child_rune_fragments",0)}/256</span></div>', unsafe_allow_html=True)
+
+        # ── Reward history ────────────────────────────────────────────────────
+        st.divider()
+        st.markdown("### 📋 Reward History")
+        history = _fw.get_reward_history(10)
+        if history:
+            for r in history:
+                st.markdown(
+                    f'<div class="memory-node"><span style="color:#f7931a;font-size:0.75rem;">+{r["sats"]} sats</span>'
+                    f' <span style="color:#445577;font-size:0.72rem;">{r["timestamp"][:16]}</span><br>'
+                    f'<span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>',
+                    unsafe_allow_html=True)
+        else:
+            st.caption("No rewards yet — complete lessons to earn sats!")
+
+    except ImportError as e:
+        st.warning(f"bitcoin_wallet.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SANDBOX LAB 🧪 — Custom experiments + hypothesis tester
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sandbox Lab" in active:
+    st.markdown('<div class="card-title">🧪 SANDBOX LAB — Custom Lessons · Hypothesis Tester · Experiments</div>', unsafe_allow_html=True)
+
+    # ── Per-family experiment log ─────────────────────────────────────────────
+    exp_log = _Path(f"/mnt/main/families/{_fid}/experiments.jsonl")
+    exp_log.parent.mkdir(parents=True, exist_ok=True)
+
+    tabs_sb = st.tabs(["⚔️ Steelman Playground", "🔬 Hypothesis Tester", "🧬 Simulation Runner", "📋 Experiment Log"])
+
+    # ── Steelman Playground ───────────────────────────────────────────────────
+    with tabs_sb[0]:
+        st.markdown("**Build and test your own steelman prompts.**")
+        custom_topic    = st.text_input("Topic / claim", placeholder="Bitcoin will replace the US dollar within 20 years")
+        custom_steelman = st.text_area("Your steelman (strongest argument FOR this claim)", height=100, placeholder="The strongest argument for this is...")
+        custom_counter  = st.text_area("Counter-steelman (strongest argument AGAINST)", height=100, placeholder="The strongest argument against this is...")
+
+        if st.button("⚔️ Run Steelman Battle", key="sb_steelman") and custom_topic:
+            if not st.session_state.get("api_key"):
+                st.error("Enter your API key in the sidebar first.")
+            else:
+                with st.spinner("STEELMAN + ORACLE daughters scoring..."):
+                    try:
+                        client, model, _, _ = get_ai_client()
+                        prompt = (
+                            f"Topic: {custom_topic}\n\n"
+                            f"Steelman FOR: {custom_steelman}\n\n"
+                            f"Steelman AGAINST: {custom_counter}\n\n"
+                            f"Score each steelman 0.0-1.0 for: logical rigor, falsifiability, epistemic humility. "
+                            f"Respond ONLY with JSON: {{\"for_score\": 0.0, \"against_score\": 0.0, \"verdict\": \"...\", \"insight\": \"...\"}}"
+                        )
+                        resp = client.chat.completions.create(
+                            model=model,
+                            messages=[{"role":"system","content":"You are STEELMAN — sovereign epistemic scoring daughter."},
+                                      {"role":"user","content":prompt}],
+                            max_tokens=300,
+                        )
+                        raw = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
+                        result = json.loads(raw)
+                        for_s  = result.get("for_score",0.5)
+                        aga_s  = result.get("against_score",0.5)
+                        winner = "FOR" if for_s > aga_s else "AGAINST"
+                        wcolor = "#00ff88" if winner == "FOR" else "#ff6b35"
+                        st.markdown(
+                            f'<div class="card" style="border:2px solid {wcolor};">'
+                            f'<div style="color:{wcolor};font-family:Orbitron,monospace;">⚔️ WINNER: {winner}</div>'
+                            f'<div style="font-size:0.82rem;color:#8899bb;margin-top:8px;">'
+                            f'FOR score: {for_s:.2f} · AGAINST score: {aga_s:.2f}<br>'
+                            f'Verdict: {result.get("verdict","")}<br>'
+                            f'Insight: {result.get("insight","")}</div></div>',
+                            unsafe_allow_html=True)
+                        # Log experiment
+                        with open(exp_log, "a") as f:
+                            f.write(json.dumps({
+                                "timestamp": _dt.now().isoformat(),
+                                "type": "steelman_battle",
+                                "topic": custom_topic,
+                                "for_score": for_s,
+                                "against_score": aga_s,
+                                "family_id": _fid,
+                            }) + "\n")
+                        award_xp(10)
+                    except Exception as e:
+                        st.error(f"Error: {e}")
+
+    # ── Hypothesis Tester ─────────────────────────────────────────────────────
+    with tabs_sb[1]:
+        st.markdown("**Run the 4 simulation questions on any hypothesis.**")
+        hyp_input = st.text_area("Your hypothesis", height=80,
+                                  placeholder="The universe is a simulation running on quantum computational substrate.")
+        if st.button("🔬 Run 4 Simulation Questions", key="sb_hyp") and hyp_input:
+            if not st.session_state.get("api_key"):
+                st.error("Enter your API key in the sidebar first.")
+            else:
+                with st.spinner("Running simulation tests..."):
+                    result = run_signal_simulation(hyp_input)
+                    impact = result.get("coherence_impact", 0)
+                    color  = "#00ff88" if impact >= 0 else "#ff4444"
+                    st.markdown(f'<div class="card" style="border-left:3px solid {color};"><div style="color:{color};font-size:0.78rem;font-family:Orbitron,monospace;">🔬 SIMULATION RESULT · Coherence Impact: {impact:+.2f} · Action: {result.get("recommended_action","process").upper()}</div></div>', unsafe_allow_html=True)
+                    for q in result.get("questions",[]):
+                        icon = "✅" if q.get("pass") else "⚠️"
+                        st.markdown(f"**{icon} {q['q']}**  \n→ _{q['a']}_")
+                    with open(exp_log, "a") as f:
+                        f.write(json.dumps({"timestamp": _dt.now().isoformat(), "type": "hypothesis_test", "hypothesis": hyp_input[:100], "impact": impact, "family_id": _fid}) + "\n")
+                    award_xp(15)
+
+    # ── Simulation Runner ─────────────────────────────────────────────────────
+    with tabs_sb[2]:
+        st.markdown("**Design and run DEFCON-style experiments.**")
+        sim_name = st.text_input("Experiment name", placeholder="Glitch Induction Test #1")
+        sim_desc = st.text_area("What are you testing?", height=80,
+                                 placeholder="Hypothesis: deliberate contradictions in steelmanning recover coherence faster than expected...")
+        sim_method = st.text_area("Method", height=60,
+                                   placeholder="Run 3 steelman prompts with deliberate errors, measure coherence recovery time...")
+        share_with_lattice = st.checkbox("Share result with the AUBIEETERNAL lattice", value=False)
+
+        if st.button("🧬 Run Experiment", key="sb_sim") and sim_name:
+            entry = {
+                "timestamp":   _dt.now().isoformat(),
+                "type":        "sandbox_experiment",
+                "name":        sim_name,
+                "description": sim_desc,
+                "method":      sim_method,
+                "family_id":   _fid,
+                "shared":      share_with_lattice,
+                "status":      "logged",
+            }
+            with open(exp_log, "a") as f:
+                f.write(json.dumps(entry) + "\n")
+            if share_with_lattice:
+                shared_log = _Path("/mnt/main/repo/insights/experiments.jsonl")
+                with open(shared_log, "a") as f:
+                    f.write(json.dumps(entry) + "\n")
+            st.success(f"✅ Experiment '{sim_name}' logged! {'Shared with lattice.' if share_with_lattice else 'Private.'}")
+            award_xp(20)
+
+    # ── Experiment Log ────────────────────────────────────────────────────────
+    with tabs_sb[3]:
+        st.markdown(f"**{_fid}'s experiment history:**")
+        if exp_log.exists():
+            lines = exp_log.read_text().strip().split("\n")
+            entries = []
+            for line in reversed(lines[-30:]):
+                try: entries.append(json.loads(line))
+                except: pass
+            st.caption(f"{len(entries)} experiments logged")
+            for e in entries[:15]:
+                etype = e.get("type","?")
+                ts    = e.get("timestamp","")[:16]
+                color = {"steelman_battle":"#00cfff","hypothesis_test":"#a020f0","sandbox_experiment":"#00ff88"}.get(etype,"#8899bb")
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {color};">'
+                    f'<span style="color:{color};font-size:0.72rem;">{etype}</span> '
+                    f'<span style="color:#445577;font-size:0.7rem;">{ts}</span><br>'
+                    f'<span style="color:#aabbcc;font-size:0.78rem;">{e.get("name",e.get("topic",e.get("hypothesis",""),""))[:80]}</span>'
+                    f'</div>', unsafe_allow_html=True)
+        else:
+            st.caption("No experiments yet — run your first one above!")
