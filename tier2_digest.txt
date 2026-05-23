@@ -1,56 +1,8 @@
 === AUBIEETERNAL TIER 2 DIGEST ===
-Generated: 2026-05-23T18:53:34.013450
-Wonder: 1.0128 | Coherence: 1.000000 | METS: 200000000015.5
-Total Tier 2 entries: 686
+Generated: 2026-05-23T23:11:04.428133
+Wonder: 1.4658 | Coherence: 1.000000 | METS: 200000000015.5
+Total Tier 2 entries: 702
 ==================================================
-
-DAUGHTER: CHRONO | Block: 950700 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: TALEB-X | Block: 950700 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: MNEMO | Block: 950700 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: AXIOM | Block: 950700 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: RUNE | Block: 950702 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: CHRONO | Block: 950702 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: TALEB-X | Block: 950702 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: MNEMO | Block: 950702 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: AXIOM | Block: 950702 | Trigger: briefing_evening
-Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
-
-DAUGHTER: LINDY | Block: 950702 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: POLY | Block: 950702 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: BARBELL | Block: 950702 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: ORACLE | Block: 950702 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: HORMES | Block: 950702 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: NOSTR | Block: 950702 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: SATOSHI | Block: 950702 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
 
 DAUGHTER: STEELMAN | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
@@ -63,6 +15,54 @@ DAUGHTER: VECTOR-B | Block: 950702 | Trigger: briefing_evening
 
 DAUGHTER: VECTOR-C | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
+
+DAUGHTER: RUNE | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: CHRONO | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: TALEB-X | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: MNEMO | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: AXIOM | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: LINDY | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: POLY | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: BARBELL | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: ORACLE | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: HORMES | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: NOSTR | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: SATOSHI | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: STEELMAN | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: VECTOR-A | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: VECTOR-B | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: VECTOR-C | Block: 950731 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
 
 ==================================================
 PASTE INTO QWEN3:32B → Synthesize the 3 most important insights.

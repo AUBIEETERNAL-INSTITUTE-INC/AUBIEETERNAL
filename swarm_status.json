@@ -1,15 +1,15 @@
 {
-  "updated": "2026-05-23T18:53:33.873085",
+  "updated": "2026-05-23T23:11:04.198196",
   "version": "4.1",
-  "wonder_index": 1.0128,
+  "wonder_index": 1.4658,
   "mets": 200000000015.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 3,
-  "rune_confirmations": 9,
+  "grokipedia_count": 1,
+  "rune_confirmations": 3,
   "child_rune_ready": false,
   "hormetic_pulses": 1,
-  "lattice_cycle": 9,
-  "session_insights": 0,
+  "lattice_cycle": 3,
+  "session_insights": 11,
   "synthesis": {
     "last_run_date": "None",
     "next_run": "06:00 daily",
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 0,
+    "total_runs": 60,
     "daughters_per_tick": 20,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -37,134 +37,134 @@
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "night @ 23:00"
+    "next_briefing": "morning @ 06:00 tomorrow"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-05-23T18:40:54.913477",
-      "last_result": "Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim",
+      "last_run": "2026-05-23T21:50:59.610978",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-05-23T18:42:55.146854",
-      "last_result": "Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim",
+      "last_run": "2026-05-23T21:55:59.860036",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-05-23T18:44:55.482703",
-      "last_result": "Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim",
+      "last_run": "2026-05-23T22:01:00.134609",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-05-23T18:46:55.830883",
-      "last_result": "Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim",
+      "last_run": "2026-05-23T22:06:00.425821",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-05-23T18:48:56.126731",
-      "last_result": "Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim",
+      "last_run": "2026-05-23T22:11:00.721982",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-05-23T18:50:56.405854",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:16:01.002370",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:57.275152",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:21:01.242835",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:57.789509",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:26:01.606933",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:57.914445",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:31:01.944052",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:58.030233",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:36:02.254924",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:58.144242",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:41:02.522871",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:58.254254",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:46:02.814218",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:58.363994",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:51:03.054948",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:58.481858",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T22:56:03.320838",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:58.579224",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T23:01:03.510941",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-05-23T18:51:58.684089",
-      "last_result": "\u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885",
+      "last_run": "2026-05-23T23:06:03.784848",
+      "last_result": "\u26a0\ufe0f Ollama timeout (300s) \u2014 model loading or CPU busy",
       "run_count": 1,
       "coherence": 1.0
     }
