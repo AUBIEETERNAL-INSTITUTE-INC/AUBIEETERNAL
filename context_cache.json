@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-05-23T17:59:45.274152",
-  "level1": "\u2550\u2550\u2550 AUBIEETERNAL LATTICE STATE \u2550\u2550\u2550\nMETS: 200000000007.5 | Wonder: 1.012800 | Coherence: 1.000000\nGrokipedia: 2/256 | Hormetic Pulses: 0\nLattice Cycle: 6 | Rune Confirmations: 6\nChild Rune Ready: False | BTC: $unknown\nFree Runs: 0 | Pro Runs: 0 | Daily Cost: $0.00/$5.0\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
-  "level2": "\u2550\u2550\u2550 RECENT DAUGHTER INSIGHTS (last 10) \u2550\u2550\u2550\n[3.649] T1\u00b7S17_VECTOR_B: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[3.149] T1\u00b7S26_GROKOPEDIA: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[4.220] T1\u00b7S21_WONDER: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[4.021] T1\u00b7S25_GLITCH: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[5.272] T1\u00b7S7_QUANTUM: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+  "timestamp": "2026-05-23T18:00:09.553851",
+  "level1": "\u2550\u2550\u2550 AUBIEETERNAL LATTICE STATE \u2550\u2550\u2550\nMETS: 200000000015.5 | Wonder: 1.012800 | Coherence: 1.000000\nGrokipedia: 0/256 | Hormetic Pulses: 1\nLattice Cycle: 1 | Rune Confirmations: 1\nChild Rune Ready: False | BTC: $unknown\nFree Runs: 0 | Pro Runs: 0 | Daily Cost: $0.00/$5.0\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+  "level2": "\u2550\u2550\u2550 RECENT DAUGHTER INSIGHTS (last 10) \u2550\u2550\u2550\n[9.045] T2\u00b7SATOSHI (W:1.0128): \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[9.164] T2\u00b7STEELMAN (W:1.0128): \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[9.276] T2\u00b7VECTOR-A (W:1.0128): \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[9.411] T2\u00b7VECTOR-B (W:1.0128): \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[9.553] T2\u00b7VECTOR-C (W:1.0128): \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
   "level3": "MEMORY PALACE: Error: [Errno 2] No such file or directory: '/mnt/main/repo/memory_palace.jsonl'",
   "wonder_index": 1.0128,
-  "mets": 200000000007.5,
+  "mets": 200000000015.5,
   "coherence": 1.0,
-  "grokipedia": 2
+  "grokipedia": 0
 }
