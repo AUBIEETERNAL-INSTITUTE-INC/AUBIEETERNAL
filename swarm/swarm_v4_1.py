@@ -824,9 +824,8 @@ def get_btc_block():
 # ══════════════════════════════════════════════════════════════════════════════
 
 # ── Local Ollama (free, always-on fallback) ───────────────────────────────────
-# Ollama runs on the StartOS internal network at 10.0.3.251:11434
-# The AUBIEETERNAL container reaches it via this internal IP
-OLLAMA_URL   = "http://10.0.3.251:11434/v1/chat/completions"
+# StartOS internal hostname — same URL Open WebUI uses successfully
+OLLAMA_URL   = "http://ollama.startos:11434/v1/chat/completions"
 OLLAMA_MODEL = "qwen3:32b"
 OLLAMA_TIMEOUT = 120
 
