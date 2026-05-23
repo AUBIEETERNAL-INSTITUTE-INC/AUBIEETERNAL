@@ -17,7 +17,7 @@ INSIGHTS_DIR   = REPO_DIR / "insights" / "daily"
 STATE_FILE     = REPO_DIR / "insights" / ".last_synthesis_date"
 
 # ── Ollama (OpenAI-compatible endpoint, host IP from inside container) ────────
-OLLAMA_URL     = "http://10.0.3.251:11434/v1/chat/completions"
+OLLAMA_URL     = "http://ollama.startos:11434/v1/chat/completions"
 OLLAMA_MODEL   = "qwen3:32b"
 OLLAMA_TIMEOUT = 300   # 5 min — 32B can be slow on first token
 
