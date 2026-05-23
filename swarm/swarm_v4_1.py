@@ -152,52 +152,6 @@ briefings_fired = {}
 # ── Morning Synthesis State ───────────────────────────────────────────────────
 _synthesis_last_run_date = None   # tracks which date synthesis ran; prevents double-fire
 
-# ── Evolution state ───────────────────────────────────────────────────────────
-_evolution_last_tick = -1         # last tick evolution ran on
-
-def _maybe_run_evolution(tick: int):
-    """
-    Runs evolution engine tasks on a schedule:
-      - Every 10,800 ticks (~24h at 8s/tick): weekly lesson proposals check + auto-evolution tick
-      - Every 1,350 ticks (~3h): dynamic quest regeneration for all families
-    Non-blocking — runs in background thread.
-    """
-    global _evolution_last_tick
-    if tick == _evolution_last_tick:
-        return
-
-    # Dynamic quests every ~3 hours
-    if tick % 1350 == 0 and tick > 0:
-        _evolution_last_tick = tick
-        def _bg_quests():
-            try:
-                import sys as _esys
-                if str(WORK_DIR) not in _esys.path:
-                    _esys.path.insert(0, str(WORK_DIR))
-                from swarm_evolution import EvolutionEngine
-                engine = EvolutionEngine(api_key=XAI_KEY)
-                engine.generate_dynamic_quests("all")
-                print("[evolution] ✅ Dynamic quests regenerated")
-            except Exception as e:
-                print(f"[evolution] Quest generation error: {e}")
-        threading.Thread(target=_bg_quests, daemon=True).start()
-
-    # Auto-evolution tick + weekly proposals every ~24 hours
-    if tick % 10800 == 0 and tick > 0:
-        def _bg_evolution():
-            try:
-                import sys as _esys
-                if str(WORK_DIR) not in _esys.path:
-                    _esys.path.insert(0, str(WORK_DIR))
-                from swarm_evolution import EvolutionEngine
-                engine = EvolutionEngine(api_key=XAI_KEY)
-                engine.run_auto_evolution_tick()
-                engine.run_weekly_lesson_proposals()
-                print("[evolution] ✅ Daily evolution tick complete")
-            except Exception as e:
-                print(f"[evolution] Daily tick error: {e}")
-        threading.Thread(target=_bg_evolution, daemon=True).start()
-
 # ── Tier 1 Swarms (S1-S26) ────────────────────────────────────────────────────
 TIER1_SWARMS = {
     "S1_BITCOIN":     {"count": 80, "role": "Bitcoin & On-chain Analysis"},
@@ -869,103 +823,131 @@ def get_btc_block():
 # GROK FREE — TIER 1 (Level 1 + brief Level 2 context)
 # ══════════════════════════════════════════════════════════════════════════════
 
-def call_grok_free(prompt, role):
-    global total_free_runs
-    if not XAI_KEY:
-        return "⚠️ XAI_KEY not set"
+# ── Local Ollama (free, always-on fallback) ───────────────────────────────────
+OLLAMA_URL   = "http://192.168.1.251:59885/v1/chat/completions"
+OLLAMA_MODEL = "qwen3:32b"
+OLLAMA_TIMEOUT = 120
+
+def _call_local(prompt: str, system: str = "", max_tokens: int = 150) -> str:
+    """Call qwen3:32b via local Ollama — $0.00, no API key needed."""
     try:
-        # Level 1 metrics + last 3 truth log lines for Tier 1
-        l1 = build_level1_metrics()
-        l2_mini = build_level2_truth_log(3)  # smaller for free tier
-
-        system_content = (
-            f"You are {role} in the AUBIEETERNAL eternal intelligence lattice.\n"
-            f"Be concise, insightful, and build on prior daughter discoveries.\n\n"
-            f"{l1}\n\n"
-            f"{l2_mini}"
-        )
-
+        msgs = []
+        if system: msgs.append({"role": "system", "content": system})
+        msgs.append({"role": "user", "content": prompt})
         r = requests.post(
-            GROK_URL,
-            headers={
-                "Authorization": f"Bearer {XAI_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": GROK_FREE_MODEL,
-                "messages": [
-                    {"role": "system", "content": system_content},
-                    {"role": "user",   "content": prompt},
-                ],
-                "max_tokens": 150,
-                "temperature": 0.7,
-            },
-            timeout=30,
+            OLLAMA_URL,
+            json={"model": OLLAMA_MODEL, "messages": msgs,
+                  "temperature": 0.7, "stream": False},
+            timeout=OLLAMA_TIMEOUT,
         )
         if r.status_code == 200:
-            total_free_runs += 1
-            track_cost(0.0, "grok-free")
-            result = r.json()["choices"][0]["message"]["content"].strip()
-            update_wonder_index(result)
-            return result
-        return f"Grok-free error {r.status_code}"
+            return r.json()["choices"][0]["message"]["content"].strip()
+        return f"Ollama error {r.status_code}"
+    except requests.exceptions.ConnectionError:
+        return "⚠️ Ollama not reachable at 192.168.1.251:59885"
     except Exception as e:
-        return f"Grok-free exception: {str(e)[:80]}"
+        return f"Ollama exception: {str(e)[:80]}"
+
+def call_grok_free(prompt, role):
+    """Tier 1 inference. Uses Grok free if key available, otherwise local Ollama."""
+    global total_free_runs
+
+    l1 = build_level1_metrics()
+    l2_mini = build_level2_truth_log(3)
+    system_content = (
+        f"You are {role} in the AUBIEETERNAL eternal intelligence lattice.\n"
+        f"Be concise, insightful, and build on prior daughter discoveries.\n\n"
+        f"{l1}\n\n{l2_mini}"
+    )
+
+    # ── Try Grok free first if key is set ────────────────────────────────────
+    if XAI_KEY:
+        try:
+            r = requests.post(
+                GROK_URL,
+                headers={"Authorization": f"Bearer {XAI_KEY}",
+                         "Content-Type": "application/json"},
+                json={"model": GROK_FREE_MODEL,
+                      "messages": [{"role": "system", "content": system_content},
+                                   {"role": "user",   "content": prompt}],
+                      "max_tokens": 150, "temperature": 0.7},
+                timeout=30,
+            )
+            if r.status_code == 200:
+                total_free_runs += 1
+                track_cost(0.0, "grok-free")
+                result = r.json()["choices"][0]["message"]["content"].strip()
+                update_wonder_index(result)
+                return result
+            # 402/429/401 = no credit/rate limit → fall through to local
+            if r.status_code in (401, 402, 429):
+                print(f"  [T1] Grok {r.status_code} → falling back to local Ollama")
+        except Exception:
+            pass
+
+    # ── Local Ollama fallback (always free) ──────────────────────────────────
+    result = _call_local(prompt, system_content, max_tokens=150)
+    if result and not result.startswith("⚠️") and not result.startswith("Ollama"):
+        total_free_runs += 1
+        track_cost(0.0, "ollama-local")
+        update_wonder_index(result)
+    return result
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROK PRO — TIER 2 (All 3 levels of context)
+# Falls back to local Ollama if no API credit
 # ══════════════════════════════════════════════════════════════════════════════
 
 def call_grok_pro(prompt, role, prior_results=None):
     global total_pro_runs
-    if not XAI_KEY:
-        return "⚠️ XAI_KEY not set"
-    if not budget_ok(GROK_PRO_COST_PER_CALL):
-        return f"⚠️ Budget cap ${DAILY_BUDGET_CAP} reached"
-    try:
-        full_context = build_full_context()
 
-        intra_run = ""
-        if prior_results:
-            intra_run = "\n═══ EARLIER DAUGHTERS THIS RUN ═══\n"
-            for name, res in prior_results[-4:]:
-                intra_run += f"  {name}: {res[:120]}\n"
-            intra_run += "═══════════════════════════════════\n"
+    full_context = build_full_context()
+    intra_run = ""
+    if prior_results:
+        intra_run = "\n═══ EARLIER DAUGHTERS THIS RUN ═══\n"
+        for name, res in prior_results[-4:]:
+            intra_run += f"  {name}: {res[:120]}\n"
+        intra_run += "═══════════════════════════════════\n"
 
-        system_content = (
-            f"You are {role} — a sovereign intelligence daughter in the AUBIEETERNAL lattice.\n"
-            f"You have access to the full lattice memory. Build on prior discoveries.\n"
-            f"Synthesize. Do not repeat. Push the frontier of understanding.\n\n"
-            f"{full_context}"
-            f"{intra_run}"
-        )
+    system_content = (
+        f"You are {role} — a sovereign intelligence daughter in the AUBIEETERNAL lattice.\n"
+        f"You have access to the full lattice memory. Build on prior discoveries.\n"
+        f"Synthesize. Do not repeat. Push the frontier of understanding.\n\n"
+        f"{full_context}{intra_run}"
+    )
 
-        r = requests.post(
-            GROK_URL,
-            headers={
-                "Authorization": f"Bearer {XAI_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": GROK_PRO_MODEL,
-                "messages": [
-                    {"role": "system", "content": system_content},
-                    {"role": "user",   "content": prompt},
-                ],
-                "max_tokens": 200,
-                "temperature": 0.8,
-            },
-            timeout=30,
-        )
-        if r.status_code == 200:
-            total_pro_runs += 1
-            track_cost(GROK_PRO_COST_PER_CALL, "grok-pro")
-            result = r.json()["choices"][0]["message"]["content"].strip()
-            update_wonder_index(result)
-            return result
-        return f"Grok-pro error {r.status_code}"
-    except Exception as e:
-        return f"Grok-pro exception: {str(e)[:80]}"
+    # ── Try Grok pro if key + budget available ────────────────────────────────
+    if XAI_KEY and budget_ok(GROK_PRO_COST_PER_CALL):
+        try:
+            r = requests.post(
+                GROK_URL,
+                headers={"Authorization": f"Bearer {XAI_KEY}",
+                         "Content-Type": "application/json"},
+                json={"model": GROK_PRO_MODEL,
+                      "messages": [{"role": "system", "content": system_content},
+                                   {"role": "user",   "content": prompt}],
+                      "max_tokens": 200, "temperature": 0.8},
+                timeout=30,
+            )
+            if r.status_code == 200:
+                total_pro_runs += 1
+                track_cost(GROK_PRO_COST_PER_CALL, "grok-pro")
+                result = r.json()["choices"][0]["message"]["content"].strip()
+                update_wonder_index(result)
+                return result
+            if r.status_code in (401, 402, 429):
+                print(f"  [T2] Grok {r.status_code} → falling back to local Ollama")
+        except Exception:
+            pass
+
+    # ── Local Ollama fallback — Tier 2 with full context ─────────────────────
+    # qwen3:32b handles full 3-level context well — free, sovereign, always-on
+    result = _call_local(prompt, system_content, max_tokens=200)
+    if result and not result.startswith("⚠️") and not result.startswith("Ollama"):
+        total_pro_runs += 1
+        track_cost(0.0, "ollama-local-t2")
+        update_wonder_index(result)
+    return result
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TIER 1 WAVE
@@ -1364,10 +1346,6 @@ def launch_swarm():
 
             # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──
             handle_glasses_signal()
-            # ──────────────────────────────────────────────────────────────
-
-            # ── SWARM EVOLUTION — adaptive curriculum + dynamic quests ────
-            _maybe_run_evolution(tick)
             # ──────────────────────────────────────────────────────────────
             pct = (daily_cost / DAILY_BUDGET_CAP) * 100
             print(
