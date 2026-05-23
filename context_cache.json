@@ -1,10 +1,10 @@
 {
-  "timestamp": "2026-05-23T17:52:46.323725",
-  "level1": "\u2550\u2550\u2550 AUBIEETERNAL LATTICE STATE \u2550\u2550\u2550\nMETS: 200000000007.5 | Wonder: 1.012800 | Coherence: 1.000000\nGrokipedia: 4/256 | Hormetic Pulses: 0\nLattice Cycle: 12 | Rune Confirmations: 12\nChild Rune Ready: False | BTC: $unknown\nFree Runs: 0 | Pro Runs: 0 | Daily Cost: $0.00/$5.0\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
-  "level2": "\u2550\u2550\u2550 RECENT DAUGHTER INSIGHTS (last 10) \u2550\u2550\u2550\n[4.043] T1\u00b7S24_LINEAGE: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[3.721] T1\u00b7S8_MEMORY: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[4.873] T1\u00b7S14_NARRATIVE: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[4.906] T1\u00b7S10_OPEN: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[6.320] T1\u00b7S1_BITCOIN: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+  "timestamp": "2026-05-23T17:53:24.874519",
+  "level1": "\u2550\u2550\u2550 AUBIEETERNAL LATTICE STATE \u2550\u2550\u2550\nMETS: 200000000015.5 | Wonder: 1.012800 | Coherence: 1.000000\nGrokipedia: 5/256 | Hormetic Pulses: 1\nLattice Cycle: 15 | Rune Confirmations: 15\nChild Rune Ready: False | BTC: $unknown\nFree Runs: 0 | Pro Runs: 0 | Daily Cost: $0.00/$5.0\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+  "level2": "\u2550\u2550\u2550 RECENT DAUGHTER INSIGHTS (last 10) \u2550\u2550\u2550\n[1.765] T1\u00b7S4_HEALTH: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[1.360] T1\u00b7S13_POLYVAGAL: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[3.657] T1\u00b7S4_HEALTH: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[3.501] T1\u00b7S22_GOVERNANCE: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n[4.873] T1\u00b7S23_AGI_ECON: \u26a0\ufe0f Ollama not reachable at 192.168.1.251:59885\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
   "level3": "MEMORY PALACE: Error: [Errno 2] No such file or directory: '/mnt/main/repo/memory_palace.jsonl'",
   "wonder_index": 1.0128,
-  "mets": 200000000007.5,
+  "mets": 200000000015.5,
   "coherence": 1.0,
-  "grokipedia": 4
+  "grokipedia": 5
 }
