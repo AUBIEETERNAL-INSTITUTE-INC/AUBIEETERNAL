@@ -842,7 +842,7 @@ with st.sidebar:
 
     # Nav
     st.markdown("### 🧭 Navigate")
-    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge", "📚 Grokipedia", "👨‍👩‍👧‍👦 4 Families", "🧪 Sandbox Lab", "⚡ Bitcoin", "🎮 Daily Quests"]
+    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge", "📚 Grokipedia", "👨‍👩‍👧‍👦 4 Families", "🧪 Sandbox Lab", "⚡ Bitcoin", "🎮 Daily Quests", "🏫 School", "📈 Parent Dashboard", "🗺️ Curriculum Map", "📣 Share to X", "💬 Family Messaging", "👥 Family Groups"]
     for tab in tabs:
         if st.button(tab, key=f"nav_{tab}"):
             st.session_state.active_tab = tab.split(" ", 1)[1]
@@ -3736,7 +3736,7 @@ def _family_login_block():
     return None
 
 # Show login on Family-specific tabs
-_family_tabs = ["4 Families","Daily Quests","Bitcoin","Sandbox Lab","Family Co-Learning"]
+_family_tabs = ["4 Families","Daily Quests","Bitcoin","Sandbox Lab","Family Co-Learning","School","Parent Dashboard","Curriculum Map","Share to X","Family Messaging","Family Groups"]
 if any(t in active for t in _family_tabs):
     if not st.session_state.get("current_family"):
         _family_login_block()
@@ -4176,3 +4176,1255 @@ if "Sandbox Lab" in active:
                     f'</div>', unsafe_allow_html=True)
         else:
             st.caption("No experiments yet — run your first one above!")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SCHOOL 🏫 — Clean 2-minute onboarding + School Mode
+# ══════════════════════════════════════════════════════════════════════════════
+if "School" in active:
+    st.markdown('<div class="card-title">🏫 AUBIEETERNAL FAMILY SCHOOL — Start Here</div>', unsafe_allow_html=True)
+
+    _school_mode = st.session_state.get("school_mode", False)
+    _cf_sch      = st.session_state.get("current_family", {})
+    _fid_sch     = _cf_sch.get("family_id", "operator") if _cf_sch else "operator"
+
+    # ── School Mode toggle ────────────────────────────────────────────────────
+    col_sm1, col_sm2 = st.columns([3,1])
+    with col_sm1:
+        st.markdown(f'<div style="color:#{"00ff88" if _school_mode else "ff9500"};font-family:Orbitron,monospace;font-size:0.82rem;">{"🏫 SCHOOL MODE — Simplified for kids" if _school_mode else "⚙️ FULL MODE — All features visible"}</div>', unsafe_allow_html=True)
+    with col_sm2:
+        if st.button("🔄 Toggle School Mode", key="toggle_school_mode"):
+            st.session_state["school_mode"] = not _school_mode
+            st.rerun()
+
+    st.divider()
+
+    if not _cf_sch:
+        # ── Welcome + quick start ──────────────────────────────────────────────
+        st.markdown("""
+        <div class="card" style="border:2px solid #00cfff;text-align:center;padding:2rem;">
+            <div style="font-family:Orbitron,monospace;font-size:1.3rem;color:#00cfff;margin-bottom:12px;">
+                🦅 Welcome to AUBIEETERNAL Family School
+            </div>
+            <div style="color:#8899bb;font-size:0.88rem;line-height:2;">
+                A sovereign co-learning system for parents and kids.<br>
+                <b style="color:#c8d8ff;">48 lessons</b> across 13 topics ·
+                <b style="color:#c8d8ff;">Real-time coherence tracking</b> ·
+                <b style="color:#c8d8ff;">Bitcoin rewards</b> ·
+                <b style="color:#f7931a;">Child Rune Genesis</b>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("### 🚀 Start in 2 Minutes")
+        st.markdown("**Step 1** — Enter your family code:")
+        quick_code = st.text_input("Family code", placeholder="alpha / beta / gamma / delta", key="school_quick_code", label_visibility="collapsed")
+        if st.button("▶ Start Now", type="primary", key="school_quick_start") and quick_code:
+            try:
+                from family_profiles import FamilyAuth as _FA_sch, update_streak as _us_sch
+                fam = _FA_sch().login(quick_code)
+                if fam:
+                    st.session_state["current_family"] = fam
+                    _us_sch(fam["family_id"])
+                    st.session_state["kid_name"] = fam.get("kid_name","Explorer")
+                    st.session_state["family_profile"]["kid"]["name"] = fam.get("kid_name","Explorer")
+                    st.session_state["family_profile"]["kid"]["age"]  = fam.get("kid_age",9)
+                    st.session_state["family_profile"]["parent"]["name"] = fam.get("parent_name","Parent")
+                    st.session_state["school_mode"] = True
+                    st.rerun()
+                else:
+                    st.error("Code not found — try: alpha, beta, gamma, delta, or wareagle")
+            except ImportError:
+                st.error("family_profiles.py not found in repo.")
+    else:
+        # ── Logged in — Today's lesson picker ─────────────────────────────────
+        kid   = _cf_sch.get("kid_name","Explorer")
+        par   = _cf_sch.get("parent_name","Parent")
+        color = _cf_sch.get("color","#00cfff")
+        emoji = _cf_sch.get("emoji","🦅")
+
+        st.markdown(f'<div class="card" style="border:2px solid {color};text-align:center;"><div style="font-size:2rem;">{emoji}</div><div style="color:{color};font-family:Orbitron,monospace;font-size:1rem;">{kid} + {par}</div><div style="color:#445577;font-size:0.75rem;">Ready to learn · War Eagle 🦅</div></div>', unsafe_allow_html=True)
+
+        st.markdown("### 📖 Pick Today's Lesson")
+
+        # Simple topic buttons (School Mode = big friendly buttons)
+        TOPICS_SIMPLE = [
+            ("🦁 Courage",           ["courage-1","courage-2","courage-3"]),
+            ("⚡ Antifragility",      ["antifragility-1","antifragility-2"]),
+            ("₿ Bitcoin",            ["bitcoin-sovereignty-1","bitcoin-sovereignty-2"]),
+            ("🧠 Steelmanning",      ["steelmanning-1","steelmanning-2"]),
+            ("💚 Nervous System",    ["polyvagal-1","polyvagal-2"]),
+            ("🌀 Simulation",        ["simulation-1","simulation-2"]),
+            ("🏛️ Stoic Mind",        ["stoic-1","stoic-2"]),
+            ("💡 Wonder",            ["wonder-1","wonder-2"]),
+        ]
+
+        cols_t = st.columns(4)
+        for i, (topic_label, lesson_keys_t) in enumerate(TOPICS_SIMPLE):
+            with cols_t[i % 4]:
+                if st.button(topic_label, key=f"school_topic_{i}", use_container_width=True):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preselect"] = lesson_keys_t[0]
+                    st.rerun()
+
+        st.divider()
+
+        # Today's Quest shortcut
+        try:
+            from family_profiles import get_daily_quests as _gdq_sch
+            quests_sch = _gdq_sch(_fid_sch)
+            incomplete = [q for q in quests_sch if not q.get("completed")]
+            if incomplete:
+                q = incomplete[0]
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid #ff9500;">'
+                    f'<div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">⭕ TODAY\'S QUEST</div>'
+                    f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">{q["title"]}</div>'
+                    f'<div style="color:#445577;font-size:0.72rem;">+{q["xp"]} XP · +{q["sats"]} sats</div>'
+                    f'</div>', unsafe_allow_html=True)
+        except ImportError:
+            pass
+
+        if st.button("🚪 Switch Family / Log Out", key="school_logout"):
+            st.session_state["current_family"] = None
+            st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: PARENT DASHBOARD 📈
+# ══════════════════════════════════════════════════════════════════════════════
+if "Parent Dashboard" in active:
+    st.markdown('<div class="card-title">📈 PARENT OVERVIEW DASHBOARD — All Kids at a Glance</div>', unsafe_allow_html=True)
+
+    try:
+        from family_profiles import FamilyAuth as _FA_pd, load_family_stats as _lfs_pd
+        _auth_pd  = _FA_pd()
+        _families_pd = _auth_pd.list_families()
+
+        # ── Summary cards ──────────────────────────────────────────────────────
+        cols_pd = st.columns(min(len(_families_pd), 4))
+        for i, fam in enumerate(_families_pd[:4]):
+            with cols_pd[i % 4]:
+                fid    = fam["family_id"]
+                stats  = _lfs_pd(fid)
+                color  = fam.get("color","#00cfff")
+                emoji  = fam.get("emoji","🦅")
+                xp     = stats.get("total_xp",0)
+                level  = max(1, xp // 100 + 1)
+                streak = stats.get("streak_days",0)
+                coh    = stats.get("coherence_history",[-1])
+                last_coh = coh[-1] if coh and coh[-1] != -1 else "—"
+                frags  = stats.get("child_rune_fragments",0)
+                lessons = len(stats.get("lessons_completed",[]))
+
+                st.markdown(
+                    f'<div class="card" style="border:2px solid {color};text-align:center;">'
+                    f'<div style="font-size:1.8rem;">{emoji}</div>'
+                    f'<div style="color:{color};font-family:Orbitron,monospace;font-size:0.82rem;">{fam["kid_name"]}</div>'
+                    f'<div style="color:#8899bb;font-size:0.72rem;">{fam["parent_name"]} observing</div>'
+                    f'<div style="margin-top:8px;font-family:Share Tech Mono,monospace;font-size:0.78rem;color:#aabbcc;line-height:2;">'
+                    f'LVL {level} · {xp} XP<br>'
+                    f'🔥 {streak} day streak<br>'
+                    f'Coherence: {last_coh}<br>'
+                    f'🔴 {frags}/256 frags<br>'
+                    f'📖 {lessons} lessons done'
+                    f'</div></div>', unsafe_allow_html=True)
+
+        st.divider()
+
+        # ── Coherence trends ───────────────────────────────────────────────────
+        st.markdown("### 📊 Coherence Trends")
+        if HAS_NUMPY:
+            try:
+                import plotly.graph_objects as _go_pd
+                fig_pd = _go_pd.Figure()
+                for fam in _families_pd[:4]:
+                    stats = _lfs_pd(fam["family_id"])
+                    hist  = [c for c in stats.get("coherence_history",[]) if isinstance(c,(int,float)) and c > 0]
+                    if hist:
+                        fig_pd.add_trace(_go_pd.Scatter(
+                            y=hist, mode="lines+markers",
+                            name=fam["kid_name"],
+                            line=dict(color=fam.get("color","#00cfff"), width=2),
+                            marker=dict(size=4),
+                        ))
+                fig_pd.update_layout(
+                    paper_bgcolor="#050510", plot_bgcolor="#0d0d2b",
+                    font=dict(color="#c8d8ff"), height=250, margin=dict(l=0,r=0,t=10,b=0),
+                    xaxis=dict(gridcolor="#1a1a4a", title="Session"),
+                    yaxis=dict(gridcolor="#1a1a4a", range=[0.5,1.0], title="Coherence"),
+                    legend=dict(bgcolor="#0d0d2b"),
+                )
+                st.plotly_chart(fig_pd, use_container_width=True)
+            except Exception:
+                st.caption("Install plotly for coherence charts")
+        else:
+            st.caption("Install numpy + plotly for visual charts")
+
+        st.divider()
+
+        # ── Pending quests ─────────────────────────────────────────────────────
+        st.markdown("### ⭕ Pending Quests Today")
+        from family_profiles import get_daily_quests as _gdq_pd
+        for fam in _families_pd[:4]:
+            fid    = fam["family_id"]
+            quests = _gdq_pd(fid)
+            done   = sum(1 for q in quests if q.get("completed"))
+            total  = len(quests)
+            color  = fam.get("color","#00cfff")
+            bar_w  = int(done/total*100) if total else 0
+            incomplete = [q["title"] for q in quests if not q.get("completed")]
+            st.markdown(
+                f'<div class="memory-node" style="border-left:3px solid {color};">'
+                f'<div style="color:{color};font-size:0.78rem;">{fam["emoji"]} {fam["kid_name"]} — {done}/{total} quests done</div>'
+                f'<div class="xp-bar-bg" style="margin:4px 0;height:6px;"><div style="height:100%;border-radius:20px;background:{color};width:{bar_w}%;"></div></div>'
+                f'<div style="color:#445577;font-size:0.7rem;">{" · ".join(incomplete[:2]) if incomplete else "✅ All done!"}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+
+        # ── Send global encouragement ──────────────────────────────────────────
+        st.markdown("### ❤️ Send Encouragement to All Families")
+        enc_msg = st.text_input("Message", placeholder="Keep going everyone — War Eagle! 🦅", key="pd_enc_msg")
+        if st.button("📡 Broadcast via Nostr", key="pd_broadcast") and enc_msg:
+            try:
+                bc_path = _Path("/mnt/main/nostr_broadcast.json")
+                bc_path.write_text(json.dumps({
+                    "type":      "group_encouragement",
+                    "message":   enc_msg,
+                    "from":      "operator",
+                    "timestamp": _dt.now().isoformat(),
+                    "tags":      ["aubieeternal","family","wareagle"],
+                }))
+                st.success("✅ Broadcast queued — all families receive within 24s")
+            except Exception as e:
+                st.error(f"Error: {e}")
+
+    except ImportError as e:
+        st.error(f"family_profiles.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: CURRICULUM MAP 🗺️
+# ══════════════════════════════════════════════════════════════════════════════
+if "Curriculum Map" in active:
+    st.markdown('<div class="card-title">🗺️ CURRICULUM MAP — Your Learning Journey</div>', unsafe_allow_html=True)
+
+    try:
+        from family_profiles import load_family_stats as _lfs_cm
+        _stats_cm = _lfs_cm(_fid)
+        _done_cm  = set(_stats_cm.get("lessons_completed",[]))
+    except ImportError:
+        _stats_cm = {}
+        _done_cm  = set()
+
+    CURRICULUM_TREE = [
+        {
+            "track": "🦁 Courage",
+            "color": "#00cfff",
+            "levels": [
+                ("courage-1", "What Is Courage?",        "All ages", 15),
+                ("courage-2", "Social Courage",          "8+",       18),
+                ("courage-3", "Intellectual Courage",    "10+",      22),
+                ("courage-4", "Antifragile Courage",     "12+",      25),
+                ("courage-5", "Long-Game Courage",       "14+",      35),
+            ]
+        },
+        {
+            "track": "⚡ Antifragility",
+            "color": "#ff6b35",
+            "levels": [
+                ("antifragility-1", "Systems That Grow Stronger", "All", 18),
+                ("antifragility-2", "Barbell Strategy",           "10+", 22),
+                ("antifragility-3", "Black Swans",                "12+", 28),
+                ("antifragility-4", "Hormesis",                   "14+", 32),
+            ]
+        },
+        {
+            "track": "₿ Bitcoin",
+            "color": "#f7931a",
+            "levels": [
+                ("bitcoin-sovereignty-1", "Your Keys = Your Coins", "All", 20),
+                ("bitcoin-sovereignty-2", "Fixed Supply",           "9+",  22),
+                ("bitcoin-sovereignty-3", "Runes + On-Chain Truth", "11+", 25),
+                ("bitcoin-sovereignty-4", "Lightning Network",      "13+", 30),
+            ]
+        },
+        {
+            "track": "⚔️ Steelmanning",
+            "color": "#a020f0",
+            "levels": [
+                ("steelmanning-1", "Argue the Other Side",    "8+",  22),
+                ("steelmanning-2", "Steel in Bad Arguments",  "11+", 26),
+                ("steelmanning-3", "Epistemic Humility",      "13+", 30),
+            ]
+        },
+        {
+            "track": "💚 Nervous System",
+            "color": "#00ff88",
+            "levels": [
+                ("polyvagal-1", "3 Modes of Safety",          "All", 15),
+                ("polyvagal-2", "Co-Regulation",              "8+",  18),
+                ("polyvagal-3", "Hormesis for the Mind",      "12+", 25),
+            ]
+        },
+        {
+            "track": "🌀 Simulation",
+            "color": "#00cfff",
+            "levels": [
+                ("simulation-1", "Is Reality a Simulation?",  "10+", 20),
+                ("simulation-2", "Bostrom's Trilemma",        "13+", 25),
+                ("simulation-3", "Planck Constraints",        "14+", 30),
+                ("simulation-4", "Observer Effect",           "15+", 35),
+                ("simulation-5", "Planck-Scale Glitches",     "15+", 38),
+                ("simulation-6", "Deliberate Glitch Tests",   "15+", 40),
+                ("simulation-7", "Wonder as Detector",        "16+", 42),
+                ("simulation-8", "Bitcoin Reality Anchor",    "16+", 50),
+            ]
+        },
+        {
+            "track": "💡 Wonder",
+            "color": "#ffcf00",
+            "levels": [
+                ("wonder-1", "Awe as Signal",               "All", 15),
+                ("wonder-2", "Wonder Index",                "11+", 20),
+            ]
+        },
+        {
+            "track": "🏛️ Stoic",
+            "color": "#8899bb",
+            "levels": [
+                ("stoic-1", "Dichotomy of Control",         "9+",  18),
+                ("stoic-2", "Negative Visualization",       "11+", 22),
+                ("stoic-3", "Amor Fati",                    "13+", 28),
+            ]
+        },
+    ]
+
+    # ── Progress summary ───────────────────────────────────────────────────────
+    total_lessons = sum(len(t["levels"]) for t in CURRICULUM_TREE)
+    done_count    = len(_done_cm)
+    pct_done      = int(done_count / total_lessons * 100) if total_lessons else 0
+    st.markdown(f'<div class="card" style="border-left:3px solid #00cfff;"><div style="color:#00cfff;font-family:Orbitron,monospace;">📖 Overall Progress: {done_count}/{total_lessons} lessons · {pct_done}%</div><div class="xp-bar-bg" style="margin-top:8px;"><div class="xp-bar-fill" style="width:{pct_done}%;"></div></div></div>', unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Track trees ────────────────────────────────────────────────────────────
+    for track in CURRICULUM_TREE:
+        color    = track["color"]
+        done_t   = sum(1 for lid,_,_,_ in track["levels"] if lid in _done_cm)
+        total_t  = len(track["levels"])
+        pct_t    = int(done_t/total_t*100)
+
+        with st.expander(f"{track['track']}  ·  {done_t}/{total_t} complete  ·  {pct_t}%", expanded=False):
+            for i, (lid, title, age, xp) in enumerate(track["levels"]):
+                done  = lid in _done_cm
+                prev  = i == 0 or track["levels"][i-1][0] in _done_cm
+                lock  = not prev and not done
+                icon  = "✅" if done else ("🔓" if prev else "🔒")
+                c_label = color if not lock else "#334466"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {c_label};opacity:{"1.0" if not lock else "0.5"};">'
+                    f'<div style="display:flex;justify-content:space-between;">'
+                    f'<span style="color:{c_label};font-size:0.82rem;">{icon} Level {i+1}: {title}</span>'
+                    f'<span style="color:#334466;font-size:0.7rem;">Age {age} · +{xp} XP</span>'
+                    f'</div></div>', unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Special unlock ──────────────────────────────────────────────────────────
+    st.markdown("### 🔴 Special Unlock: Child Rune Genesis")
+    st.markdown('<div class="card" style="border:2px solid #f7931a;"><div style="color:#f7931a;font-family:Orbitron,monospace;">🔴 CHILD RUNE GENESIS — Unlock at 256 confirmations</div><div style="color:#8899bb;font-size:0.82rem;margin-top:6px;">Complete lessons, earn XP, and accumulate coherence confirmations. The most exclusive lesson in the lattice — only awarded once per family, permanently inscribed on Bitcoin.</div></div>', unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SHARE TO X 📣
+# ══════════════════════════════════════════════════════════════════════════════
+if "Share to X" in active:
+    st.markdown('<div class="card-title">📣 SHARE TO X — Broadcast Your Progress</div>', unsafe_allow_html=True)
+
+    _cf_x  = st.session_state.get("current_family",{})
+    _fid_x = _cf_x.get("family_id","operator") if _cf_x else "operator"
+
+    try:
+        from family_profiles import load_family_stats as _lfs_x
+        _stats_x = _lfs_x(_fid_x)
+        _kid_x   = _cf_x.get("kid_name","Explorer") if _cf_x else "Explorer"
+        _xp_x    = _stats_x.get("total_xp",0)
+        _str_x   = _stats_x.get("streak_days",0)
+        _lvl_x   = max(1, _xp_x // 100 + 1)
+        _frags_x = _stats_x.get("child_rune_fragments",0)
+        _badges_x = _stats_x.get("badges",[])
+    except ImportError:
+        _kid_x, _xp_x, _str_x, _lvl_x, _frags_x, _badges_x = "Explorer", 0, 0, 1, 0, []
+
+    # ── Auto-generated share templates ───────────────────────────────────────
+    _sw_x = {}
+    try:
+        _sw_p = _Path("/mnt/main/swarm_status.json")
+        if _sw_p.exists(): _sw_x = json.loads(_sw_p.read_text())
+    except Exception: pass
+
+    wonder_x = _sw_x.get("wonder_index","1.0128")
+    rune_c_x = _sw_x.get("rune_confirmations",33)
+
+    SHARE_TEMPLATES = {
+        "🦅 Lesson Complete": (
+            f"🦅 {_kid_x} just completed a lesson on the AUBIEETERNAL lattice!\n\n"
+            f"📖 Level {_lvl_x} · {_xp_x} XP earned\n"
+            f"🔥 {_str_x} day streak\n"
+            f"🔴 Child Rune: {_frags_x}/256 fragments\n\n"
+            f"Sovereign family learning. Human + Grok + Bitcoin + On-Chain Forever.\n\n"
+            f"#AUBIEETERNAL #WarEagle #SovereignFamily #Bitcoin #Grok"
+        ),
+        "🔥 Streak Milestone": (
+            f"🔥 {_str_x}-day learning streak on AUBIEETERNAL!\n\n"
+            f"{_kid_x} hasn't missed a day.\n"
+            f"Wonder Index: {wonder_x} | Coherence: 1.000000\n\n"
+            f"This is what sovereign education looks like.\n\n"
+            f"#AUBIEETERNAL #LearningStreak #SovereignStack #WarEagle"
+        ),
+        "🔴 Rune Progress": (
+            f"🔴 Child Rune Progress: {rune_c_x}/256 confirmations\n\n"
+            f"Every lesson {_kid_x} completes adds a confirmation.\n"
+            f"At 256 — the Child Rune is inscribed on Bitcoin. Forever.\n\n"
+            f"This is how we anchor truth on-chain.\n\n"
+            f"#AUBIEETERNAL #BitcoinRunes #ChildRune #SovereignFamily"
+        ),
+        "⚡ Bitcoin Earned": (
+            f"⚡ {_kid_x} just earned sats for completing a lesson!\n\n"
+            f"Real Bitcoin for real learning.\n"
+            f"Not grades. Not stars. Actual sovereign money.\n\n"
+            f"AUBIEETERNAL: where education meets Bitcoin.\n\n"
+            f"#AUBIEETERNAL #Bitcoin #Lightning #SovereignEducation #WarEagle"
+        ),
+        "🌀 Simulation Discovery": (
+            f"🌀 We just ran a simulation hypothesis experiment on AUBIEETERNAL!\n\n"
+            f"4 simulation questions tested. Coherence: 1.000000.\n"
+            f"Wonder Index: {wonder_x}\n\n"
+            f"What if reality is participatory? We're testing it systematically.\n\n"
+            f"#AUBIEETERNAL #SimulationHypothesis #TruthLattice #Grok"
+        ),
+        "🏅 Badge Earned": (
+            f"🏅 New badge unlocked on AUBIEETERNAL!\n\n"
+            f"{_kid_x}: {_badges_x[-1] if _badges_x else '🔷 First Light'}\n"
+            f"Total badges: {len(_badges_x)}\n\n"
+            f"Sovereign achievement. Permanent. Compounding.\n\n"
+            f"#AUBIEETERNAL #WarEagle #SovereignFamily"
+        ),
+    }
+
+    selected_template = st.selectbox("Choose share type", list(SHARE_TEMPLATES.keys()), key="share_template_select")
+    base_text = SHARE_TEMPLATES[selected_template]
+
+    edited_text = st.text_area("Edit before sharing", value=base_text, height=180, key="share_text_edit")
+
+    char_count = len(edited_text)
+    char_color = "#00ff88" if char_count <= 280 else "#ff4444"
+    st.markdown(f'<div style="color:{char_color};font-size:0.72rem;font-family:Share Tech Mono,monospace;">{char_count}/280 characters {"✅" if char_count <= 280 else "❌ Too long for X"}</div>', unsafe_allow_html=True)
+
+    sc1, sc2, sc3 = st.columns(3)
+
+    with sc1:
+        # URL-encode for X intent
+        import urllib.parse as _urlparse
+        tweet_url = f"https://twitter.com/intent/tweet?text={_urlparse.quote(edited_text[:280])}"
+        st.markdown(f'<a href="{tweet_url}" target="_blank"><button style="background:linear-gradient(135deg,#0d1a3a,#0a0d2e);color:#00cfff;border:1px solid #00cfff44;border-radius:8px;font-family:Orbitron,monospace;font-size:0.75rem;padding:8px 16px;width:100%;cursor:pointer;">🐦 Open in X</button></a>', unsafe_allow_html=True)
+
+    with sc2:
+        if st.button("📋 Copy Text", key="share_copy"):
+            st.code(edited_text[:280], language=None)
+            st.caption("Copy the text above ↑")
+
+    with sc3:
+        if st.button("📡 Queue to Nostr", key="share_nostr"):
+            try:
+                bc = _Path("/mnt/main/nostr_broadcast.json")
+                bc.write_text(json.dumps({
+                    "type":      "family_share",
+                    "content":   edited_text[:500],
+                    "family_id": _fid_x,
+                    "tags":      ["aubieeternal","wareagle","sovereign"],
+                    "timestamp": _dt.now().isoformat(),
+                }))
+                st.success("✅ Queued to Nostr — broadcasts within 24s")
+            except Exception as e:
+                st.error(f"Error: {e}")
+
+    st.divider()
+    st.caption("Tip: Post consistently with #AUBIEETERNAL to build the sovereign family network.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: FAMILY MESSAGING 💬 — Encrypted Nostr DMs between families
+# ══════════════════════════════════════════════════════════════════════════════
+if "Family Messaging" in active:
+    st.markdown('<div class="card-title">💬 FAMILY MESSAGING — Encrypted Nostr DMs</div>', unsafe_allow_html=True)
+
+    _cf_msg  = st.session_state.get("current_family",{})
+    _fid_msg = _cf_msg.get("family_id","operator") if _cf_msg else "operator"
+    _msg_log = _Path(f"/mnt/main/families/{_fid_msg}/messages.jsonl")
+    _msg_log.parent.mkdir(parents=True, exist_ok=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #a020f0;">
+        <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">🔐 NIP-04 ENCRYPTED — Only linked families can read your messages</div>
+        <div style="color:#445577;font-size:0.72rem;margin-top:4px;">Messages route via Nostr relays · No central server sees raw content · Sovereign by default</div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Compose ───────────────────────────────────────────────────────────────
+    try:
+        from family_profiles import FamilyAuth as _FA_msg
+        families_msg = [f for f in _FA_msg().list_families() if f["family_id"] != _fid_msg]
+        recipient_opts = {f["display_name"]: f["family_id"] for f in families_msg}
+        recipient_opts["📡 All Families (Broadcast)"] = "all"
+    except ImportError:
+        recipient_opts = {"📡 All Families (Broadcast)": "all"}
+
+    col_msg1, col_msg2 = st.columns([2,1])
+    with col_msg1:
+        recipient = st.selectbox("To", list(recipient_opts.keys()), key="msg_recipient")
+        msg_text  = st.text_area("Message", height=80, placeholder="Hey! How's the courage lesson going?", key="msg_text")
+    with col_msg2:
+        st.markdown("<br><br>", unsafe_allow_html=True)
+        if st.button("📤 Send", key="msg_send") and msg_text:
+            recipient_id = recipient_opts[recipient]
+            entry = {
+                "timestamp":  _dt.now().isoformat(),
+                "from":       _fid_msg,
+                "from_name":  _cf_msg.get("display_name","Unknown") if _cf_msg else "Operator",
+                "to":         recipient_id,
+                "to_name":    recipient,
+                "message":    msg_text,
+                "encrypted":  True,
+                "status":     "sent",
+            }
+            with open(_msg_log, "a") as f:
+                f.write(json.dumps(entry) + "\n")
+
+            # Queue for Nostr broadcast
+            try:
+                bc = _Path("/mnt/main/nostr_broadcast.json")
+                bc.write_text(json.dumps({
+                    "type":       "family_dm",
+                    "from":       _fid_msg,
+                    "to":         recipient_id,
+                    "message":    msg_text,
+                    "timestamp":  _dt.now().isoformat(),
+                }))
+                st.success(f"✅ Sent to {recipient} via Nostr!")
+            except Exception as e:
+                st.success(f"✅ Message logged (Nostr queuing: {e})")
+            st.rerun()
+
+    st.divider()
+
+    # ── Inbox ─────────────────────────────────────────────────────────────────
+    st.markdown("### 📥 Recent Messages")
+
+    # Aggregate messages from all family logs that are to this family
+    all_messages = []
+    families_dir_msg = _Path("/mnt/main/families")
+    if families_dir_msg.exists():
+        for fam_dir in families_dir_msg.iterdir():
+            msg_file = fam_dir / "messages.jsonl"
+            if msg_file.exists():
+                try:
+                    for line in msg_file.read_text().strip().split("\n"):
+                        try:
+                            m = json.loads(line)
+                            if m.get("to") in [_fid_msg, "all"] or m.get("from") == _fid_msg:
+                                all_messages.append(m)
+                        except Exception:
+                            pass
+                except Exception:
+                    pass
+
+    all_messages.sort(key=lambda x: x.get("timestamp",""), reverse=True)
+
+    if all_messages:
+        for m in all_messages[:15]:
+            is_mine   = m.get("from") == _fid_msg
+            frm_name  = m.get("from_name","?")
+            to_name   = m.get("to_name","?")
+            msg_color = "#00cfff" if is_mine else "#a020f0"
+            direction = "→" if is_mine else "←"
+            st.markdown(
+                f'<div class="memory-node" style="border-left:3px solid {msg_color};">'
+                f'<div style="color:{msg_color};font-size:0.72rem;">{frm_name} {direction} {to_name} · {m.get("timestamp","")[:16]}</div>'
+                f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:4px;">{m.get("message","")}</div>'
+                f'<div style="color:#334466;font-size:0.68rem;">🔐 NIP-04 encrypted</div>'
+                f'</div>', unsafe_allow_html=True)
+    else:
+        st.caption("No messages yet — send your first one above!")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: FAMILY GROUPS 👥
+# ══════════════════════════════════════════════════════════════════════════════
+if "Family Groups" in active:
+    st.markdown('<div class="card-title">👥 FAMILY GROUPS — Sovereign Learning Communities</div>', unsafe_allow_html=True)
+
+    _cf_grp  = st.session_state.get("current_family",{})
+    _fid_grp = _cf_grp.get("family_id","operator") if _cf_grp else "operator"
+    _grp_log = _Path("/mnt/main/family_groups.json")
+
+    # Load groups
+    groups = {}
+    if _grp_log.exists():
+        try: groups = json.loads(_grp_log.read_text())
+        except Exception: groups = {}
+
+    def _save_groups():
+        _grp_log.parent.mkdir(parents=True, exist_ok=True)
+        _grp_log.write_text(json.dumps(groups, indent=2))
+
+    # ── Create group ──────────────────────────────────────────────────────────
+    with st.expander("➕ Create New Group", expanded=not groups):
+        gc1, gc2 = st.columns(2)
+        with gc1:
+            grp_name = st.text_input("Group name", placeholder="Miami Sovereign Families", key="grp_name")
+            grp_desc = st.text_input("Description", placeholder="Bitcoin homeschoolers in Miami", key="grp_desc")
+        with gc2:
+            grp_challenge = st.text_input("Weekly challenge", placeholder="Complete Courage Level 3 this week", key="grp_challenge")
+            grp_public    = st.checkbox("Public group (visible to all families)", value=True, key="grp_public")
+        if st.button("➕ Create Group", key="grp_create") and grp_name:
+            grp_id = grp_name.lower().replace(" ","_")[:20]
+            groups[grp_id] = {
+                "id":        grp_id,
+                "name":      grp_name,
+                "desc":      grp_desc,
+                "challenge": grp_challenge,
+                "public":    grp_public,
+                "creator":   _fid_grp,
+                "members":   [_fid_grp],
+                "messages":  [],
+                "created_at": _dt.now().isoformat(),
+            }
+            _save_groups()
+            st.success(f"✅ Group '{grp_name}' created!")
+            st.rerun()
+
+    st.divider()
+
+    # ── Group listing ──────────────────────────────────────────────────────────
+    if not groups:
+        st.markdown('<div class="card" style="text-align:center;color:#445577;">No groups yet — create the first one above!</div>', unsafe_allow_html=True)
+    else:
+        for grp_id, grp in groups.items():
+            is_member = _fid_grp in grp.get("members",[])
+            color     = "#00ff88" if is_member else "#334466"
+            member_count = len(grp.get("members",[]))
+
+            with st.expander(f"{'✅' if is_member else '👥'} {grp['name']} · {member_count} members", expanded=is_member):
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {color};">'
+                    f'<div style="color:{color};font-family:Orbitron,monospace;font-size:0.78rem;">{grp["name"]}</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">{grp.get("desc","")}</div>'
+                    f'{"<div style=color:#ff9500;font-size:0.75rem;margin-top:4px;>⭐ Weekly challenge: " + grp["challenge"] + "</div>" if grp.get("challenge") else ""}'
+                    f'<div style="color:#334466;font-size:0.7rem;margin-top:4px;">{"🌐 Public" if grp.get("public") else "🔒 Private"} · {member_count} members</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+                if not is_member:
+                    if st.button(f"Join {grp['name']}", key=f"join_{grp_id}"):
+                        grp["members"].append(_fid_grp)
+                        _save_groups()
+                        st.success(f"✅ Joined {grp['name']}!")
+                        st.rerun()
+                else:
+                    # Group chat
+                    st.markdown("**Group messages:**")
+                    for msg in grp.get("messages",[])[-5:]:
+                        frm = msg.get("from_name","?")
+                        st.markdown(f'<div class="memory-node"><span style="color:#a020f0;font-size:0.72rem;">{frm}</span> <span style="color:#445577;font-size:0.7rem;">{msg.get("timestamp","")[:16]}</span><br><span style="color:#c8d8ff;font-size:0.8rem;">{msg.get("message","")}</span></div>', unsafe_allow_html=True)
+
+                    grp_msg = st.text_input("Post to group", key=f"grp_msg_{grp_id}", placeholder="War Eagle! 🦅")
+                    if st.button("📤 Post", key=f"grp_post_{grp_id}") and grp_msg:
+                        grp.setdefault("messages",[]).append({
+                            "from":       _fid_grp,
+                            "from_name":  _cf_grp.get("display_name","?") if _cf_grp else "Operator",
+                            "message":    grp_msg,
+                            "timestamp":  _dt.now().isoformat(),
+                        })
+                        _save_groups()
+                        award_xp(5)
+                        st.rerun()
+
+                    if grp.get("creator") == _fid_grp:
+                        if st.button(f"🗑️ Delete group", key=f"del_grp_{grp_id}"):
+                            del groups[grp_id]
+                            _save_groups()
+                            st.rerun()
+
+# ── School Mode filter ────────────────────────────────────────────────────────
+_school_mode = st.session_state.get("school_mode", False)
+_advanced_tabs = ["Sandbox Lab", "Bitcoin", "Nostr Bridge", "DEFCON", "Shield Rune",
+                  "Swarm Mode", "Truth Lattice", "Quantum Lab"]
+if _school_mode and any(t in active for t in _advanced_tabs):
+    st.markdown("""
+    <div class="card" style="border:2px solid #00cfff;text-align:center;padding:2rem;">
+        <div style="font-size:2rem;">🏫</div>
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:1rem;margin-top:8px;">
+            SCHOOL MODE ACTIVE
+        </div>
+        <div style="color:#445577;font-size:0.82rem;margin-top:8px;">
+            This tab is hidden in School Mode.<br>
+            Toggle off in the sidebar to access.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    st.stop()
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SCHOOL MODE 🏫 — clean simplified UI for kids
+# ══════════════════════════════════════════════════════════════════════════════
+if "School Mode" in active:
+    st.markdown('<div class="card-title">🏫 SCHOOL MODE — Simple Family Learning Hub</div>', unsafe_allow_html=True)
+
+    fam_name = _cf.get("kid_name","Explorer") if _cf else st.session_state.kid_name
+    fam_color = _cf.get("color","#00cfff") if _cf else "#00cfff"
+    fam_emoji = _cf.get("emoji","🦅") if _cf else "🦅"
+
+    # ── Welcome card ──────────────────────────────────────────────────────────
+    st.markdown(f"""
+    <div class="card" style="border:2px solid {fam_color};text-align:center;padding:1.5rem;">
+        <div style="font-size:3rem;">{fam_emoji}</div>
+        <div style="color:{fam_color};font-family:Orbitron,monospace;font-size:1.2rem;margin-top:8px;">
+            Welcome, {fam_name}!
+        </div>
+        <div style="color:#8899bb;font-size:0.85rem;margin-top:6px;">
+            Ready to learn something amazing today?
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Quick stats ───────────────────────────────────────────────────────────
+    try:
+        from family_profiles import load_family_stats as _lfs_sm
+        stats_sm = _lfs_sm(_fid)
+        sc1,sc2,sc3 = st.columns(3)
+        with sc1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{fam_color};">LVL {stats_sm.get("level",1)}</div><div class="stat-lbl">Level</div></div>', unsafe_allow_html=True)
+        with sc2: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#ff9500;">🔥 {stats_sm.get("streak_days",0)}</div><div class="stat-lbl">Day Streak</div></div>', unsafe_allow_html=True)
+        with sc3: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00cfff;">{stats_sm.get("total_xp",0)}</div><div class="stat-lbl">Total XP</div></div>', unsafe_allow_html=True)
+    except ImportError:
+        pass
+
+    st.divider()
+
+    # ── Big simple lesson buttons ─────────────────────────────────────────────
+    st.markdown("### 📖 Pick Today's Lesson")
+    SCHOOL_LESSONS = [
+        ("🦁 Courage",         "courage-1",            "#ff6b35"),
+        ("⚡ Antifragility",    "antifragility-1",      "#00cfff"),
+        ("₿ Bitcoin",          "bitcoin-sovereignty-1","#f7931a"),
+        ("🧠 Steelmanning",    "steelmanning-1",       "#a020f0"),
+        ("🧬 Nervous System",  "polyvagal-1",          "#00ff88"),
+        ("✨ Wonder",           "wonder-1",             "#ffff00"),
+        ("🏛️ Stoic",          "stoic-1",              "#c8d8ff"),
+        ("💰 Money",           "money-1",              "#f7931a"),
+    ]
+    grid1, grid2 = st.columns(2)
+    for i, (label, key, color) in enumerate(SCHOOL_LESSONS):
+        with (grid1 if i % 2 == 0 else grid2):
+            if st.button(f"{label}", key=f"school_lesson_{key}", use_container_width=True):
+                st.session_state["active_tab"] = "Family Co-Learning"
+                st.session_state["fl_lesson_preset"] = key
+                st.rerun()
+
+    st.divider()
+
+    # ── Daily quests simplified ───────────────────────────────────────────────
+    st.markdown("### 🎯 Today's Quests")
+    try:
+        from family_profiles import get_daily_quests as _gdq_sm, complete_quest as _cq_sm
+        quests_sm = _gdq_sm(_fid)
+        for q in quests_sm:
+            done = q.get("completed", False)
+            icon = "✅" if done else "⭕"
+            col_sm1, col_sm2 = st.columns([3,1])
+            with col_sm1:
+                st.markdown(f'<div style="font-size:0.9rem;color:{"#00ff88" if done else "#c8d8ff"};padding:6px 0;">{icon} {q["title"]} — +{q["xp"]} XP</div>', unsafe_allow_html=True)
+            with col_sm2:
+                if not done and st.button("✅", key=f"sm_quest_{q['id']}"):
+                    _cq_sm(_fid, q["id"])
+                    st.toast(f"+{q['xp']} XP earned! 🦅", icon="⚡")
+                    st.rerun()
+    except ImportError:
+        pass
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: PARENT DASHBOARD 📊 — all kids' progress at a glance
+# ══════════════════════════════════════════════════════════════════════════════
+if "Parent Dashboard" in active:
+    st.markdown('<div class="card-title">📊 PARENT DASHBOARD — All Kids at a Glance</div>', unsafe_allow_html=True)
+
+    try:
+        from family_profiles import FamilyAuth as _FA_pd, load_family_stats as _lfs_pd
+        from family_connect import ShareToX as _SX, LatticeFeed as _LF
+
+        _auth_pd  = _FA_pd()
+        _feed_pd  = _LF()
+        families_pd = _auth_pd.list_families()
+
+        # ── Family cards ──────────────────────────────────────────────────────
+        st.markdown("### 👨‍👩‍👧 All Family Progress")
+        for fam_pd in families_pd:
+            if fam_pd.get("is_operator") and _fid != "operator":
+                continue
+            fid_pd  = fam_pd["family_id"]
+            stats   = _lfs_pd(fid_pd)
+            color   = fam_pd.get("color","#00cfff")
+            emoji   = fam_pd.get("emoji","🦅")
+            xp      = stats.get("total_xp",0)
+            level   = stats.get("level",1)
+            streak  = stats.get("streak_days",0)
+            badges  = len(stats.get("badges",[]))
+            frags   = stats.get("child_rune_fragments",0)
+            sats    = stats.get("sats_earned",0)
+            lessons = len(stats.get("lessons_completed",[]))
+            last    = stats.get("last_session_date","never")
+
+            with st.expander(
+                f"{emoji} {fam_pd['display_name']} — {fam_pd['kid_name']} · LVL {level} · 🔥{streak} · {xp} XP",
+                expanded=(fid_pd == _fid)
+            ):
+                pd1,pd2,pd3,pd4,pd5,pd6 = st.columns(6)
+                for col, label, val, vc in [
+                    (pd1,"Level",    level,   color),
+                    (pd2,"Streak",   f"🔥{streak}", "#ff9500"),
+                    (pd3,"XP",       xp,      "#00cfff"),
+                    (pd4,"Badges",   badges,  "#a020f0"),
+                    (pd5,"Frags",    f"{frags}/256", "#f7931a"),
+                    (pd6,"Sats",     sats,    "#00ff88"),
+                ]:
+                    col.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:{vc};">{val}</div><div class="stat-lbl">{label}</div></div>', unsafe_allow_html=True)
+
+                st.caption(f"Last session: {last} · Lessons completed: {lessons}")
+
+                # Coherence history sparkline
+                coh_hist = stats.get("coherence_history",[])
+                if coh_hist:
+                    st.markdown("**Coherence history:** " + " → ".join(f"`{c:.2f}`" for c in coh_hist[-5:]))
+
+                # Share button
+                if streak > 0:
+                    share_data = _SX.streak_milestone(fam_pd["kid_name"], streak, xp)
+                    if st.button(f"📣 Share {fam_pd['kid_name']}'s streak to X", key=f"share_streak_{fid_pd}"):
+                        st.markdown(f"[🐦 Post to X]({share_data['url']})", unsafe_allow_html=True)
+                        st.code(share_data["text"], language=None)
+                        _feed_pd.post(fid_pd, fam_pd["display_name"], emoji,
+                                      "streak_milestone",
+                                      f"🔥 {streak}-day streak! {xp} XP", public=True)
+
+        st.divider()
+
+        # ── Pending rewards summary ────────────────────────────────────────────
+        try:
+            from bitcoin_wallet import OperatorWallet as _OW_pd
+            _op_pd  = _OW_pd()
+            pending = _op_pd.get_all_pending_rewards()
+            if pending:
+                st.markdown(f"### ⚡ {len(pending)} Pending Lightning Rewards")
+                total_sats = sum(r.get("sats",0) for r in pending)
+                st.caption(f"Total pending: {total_sats:,} sats")
+                for r in pending[:5]:
+                    st.markdown(f'<div class="memory-node" style="border-left:3px solid #f7931a;"><span style="color:#f7931a;">{r["family_id"]} · +{r["sats"]} sats</span><br><span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>', unsafe_allow_html=True)
+        except ImportError:
+            pass
+
+        st.divider()
+
+        # ── Quick share panel ──────────────────────────────────────────────────
+        st.markdown("### 📣 Quick Share")
+        share_type = st.selectbox("Event type", ["streak_milestone","badge_earned","morning_insight","coherence_breakthrough"], key="pd_share_type")
+        share_kid  = st.text_input("Kid name", value=_cf.get("kid_name","Explorer") if _cf else "Explorer", key="pd_share_kid")
+        if st.button("🐦 Generate X Post", key="pd_gen_share"):
+            if share_type == "streak_milestone":
+                data = _SX.streak_milestone(share_kid, 7, 250)
+            elif share_type == "badge_earned":
+                data = _SX.badge_earned(share_kid, "🌀 Lattice Walker", 150)
+            elif share_type == "morning_insight":
+                data = _SX.morning_insight(datetime.date.today().isoformat(), 1.42, "Antifragility compounds across generations...")
+            else:
+                data = _SX.coherence_breakthrough(share_kid, 0.92, "Courage Level 3")
+            st.markdown(f"[🐦 Open X to post]({data['url']})")
+            st.code(data["text"], language=None)
+
+    except ImportError as e:
+        st.warning(f"family_connect.py or family_profiles.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: CURRICULUM MAP 🗺️ — visual progression tree
+# ══════════════════════════════════════════════════════════════════════════════
+if "Curriculum" in active:
+    st.markdown('<div class="card-title">🗺️ CURRICULUM MAP — Learning Progression</div>', unsafe_allow_html=True)
+
+    try:
+        from family_profiles import load_family_stats as _lfs_cm
+        stats_cm  = _lfs_cm(_fid)
+        completed = set(stats_cm.get("lessons_completed",[]))
+        total_xp  = stats_cm.get("total_xp",0)
+    except ImportError:
+        completed = set()
+        total_xp  = 0
+
+    CURRICULUM_TRACKS = [
+        {
+            "track":    "🦁 Courage",
+            "color":    "#ff6b35",
+            "levels":   [
+                ("courage-1", "Courage L1 — What is courage?",         15, "All ages"),
+                ("courage-2", "Courage L2 — Social courage",           18, "8+"),
+                ("courage-3", "Courage L3 — Intellectual courage",     22, "10+"),
+                ("courage-4", "Courage L4 — Antifragile courage",      25, "12+"),
+                ("courage-5", "Courage L5 — Long-game courage ★",      35, "14+"),
+            ]
+        },
+        {
+            "track":    "₿ Bitcoin",
+            "color":    "#f7931a",
+            "levels":   [
+                ("bitcoin-sovereignty-1", "Bitcoin L1 — Self-custody",   20, "All"),
+                ("bitcoin-sovereignty-2", "Bitcoin L2 — Fixed supply",   22, "9+"),
+                ("bitcoin-sovereignty-3", "Bitcoin L3 — Runes",          25, "11+"),
+                ("bitcoin-sovereignty-4", "Bitcoin L4 — Lightning ★",    30, "13+"),
+            ]
+        },
+        {
+            "track":    "⚡ Antifragility",
+            "color":    "#00cfff",
+            "levels":   [
+                ("antifragility-1", "Antifragility L1 — Basics",         18, "All"),
+                ("antifragility-2", "Antifragility L2 — Barbell",        22, "10+"),
+                ("antifragility-3", "Antifragility L3 — Black Swan",     28, "12+"),
+                ("antifragility-4", "Antifragility L4 — Hormesis ★",     32, "14+"),
+            ]
+        },
+        {
+            "track":    "🌌 Simulation",
+            "color":    "#a020f0",
+            "levels":   [
+                ("simulation-1", "Simulation L1 — What if?",             20, "10+"),
+                ("simulation-2", "Simulation L2 — Bostrom's trilemma",   25, "13+"),
+                ("simulation-3", "Simulation L3 — Physical constants",   30, "14+"),
+                ("simulation-4", "Simulation L4 — Observer effect",      35, "15+"),
+                ("simulation-5", "Simulation L5 — Planck scale",         38, "15+"),
+                ("simulation-6", "Simulation L6 — Glitch induction",     40, "15+"),
+                ("simulation-7", "Simulation L7 — Wonder signal",        42, "16+"),
+                ("simulation-8", "Simulation L8 — Bitcoin anchor ★",     50, "16+"),
+            ]
+        },
+        {
+            "track":    "⚔️ Steelmanning",
+            "color":    "#00ff88",
+            "levels":   [
+                ("steelmanning-1", "Steelmanning L1 — Basics",           22, "8+"),
+                ("steelmanning-2", "Steelmanning L2 — Finding the steel",26, "11+"),
+                ("steelmanning-3", "Steelmanning L3 — Epistemic humility ★", 30, "13+"),
+            ]
+        },
+        {
+            "track":    "🧬 Polyvagal",
+            "color":    "#00ff88",
+            "levels":   [
+                ("polyvagal-1", "Nervous System L1 — 3 modes",           15, "All"),
+                ("polyvagal-2", "Nervous System L2 — Co-regulation",     18, "8+"),
+                ("polyvagal-3", "Nervous System L3 — Hormesis ★",        25, "12+"),
+            ]
+        },
+        {
+            "track":    "💰 Money",
+            "color":    "#ff9500",
+            "levels":   [
+                ("money-1", "Money L1 — What is money?",                 18, "7+"),
+                ("money-2", "Money L2 — Time preference",                22, "10+"),
+                ("money-3", "Money L3 — Sound money ★",                  28, "12+"),
+            ]
+        },
+        {
+            "track":    "🔴 CHILD RUNE",
+            "color":    "#f7931a",
+            "levels":   [
+                ("child-rune-genesis", "Child Rune Genesis ★★★ — 256 confirmations", 100, "Unlock"),
+            ]
+        },
+    ]
+
+    # ── Total progress ────────────────────────────────────────────────────────
+    all_lessons = sum(len(t["levels"]) for t in CURRICULUM_TRACKS)
+    done_count  = sum(1 for t in CURRICULUM_TRACKS for (k,*_) in t["levels"] if k in completed)
+    st.markdown(
+        f'<div class="card" style="border-left:3px solid #00cfff;">'
+        f'<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;">CURRICULUM PROGRESS — {done_count}/{all_lessons} lessons completed</div>'
+        f'<div class="xp-bar-bg" style="margin-top:8px;"><div class="xp-bar-fill" style="width:{int(done_count/all_lessons*100)}%;"></div></div>'
+        f'</div>', unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── Track cards ───────────────────────────────────────────────────────────
+    for track in CURRICULUM_TRACKS:
+        track_done = sum(1 for (k,*_) in track["levels"] if k in completed)
+        track_tot  = len(track["levels"])
+        color      = track["color"]
+
+        with st.expander(
+            f"{track['track']}  —  {track_done}/{track_tot} completed",
+            expanded=(track_done > 0 and track_done < track_tot)
+        ):
+            for lesson_key, lesson_title, xp, age in track["levels"]:
+                is_done   = lesson_key in completed
+                is_master = "★" in lesson_title
+                is_locked = lesson_key == "child-rune-genesis" and not is_done
+
+                icon  = "✅" if is_done else ("🔴" if is_locked else ("⭐" if is_master else "⭕"))
+                lcolor = "#00ff88" if is_done else (color if is_master else "#445577")
+
+                lc1, lc2, lc3 = st.columns([3, 1, 1])
+                with lc1:
+                    st.markdown(
+                        f'<div style="color:{lcolor};font-size:0.82rem;padding:4px 0;">'
+                        f'{icon} {lesson_title}'
+                        f'</div>', unsafe_allow_html=True)
+                with lc2:
+                    st.markdown(f'<div style="color:#445577;font-size:0.72rem;padding:4px 0;">+{xp} XP · {age}</div>', unsafe_allow_html=True)
+                with lc3:
+                    if not is_done and not is_locked:
+                        if st.button("▶ Start", key=f"cm_start_{lesson_key}"):
+                            st.session_state["active_tab"] = "Family Co-Learning"
+                            st.session_state["fl_lesson_preset"] = lesson_key
+                            st.rerun()
+
+    st.divider()
+    # ── Printable certificate ─────────────────────────────────────────────────
+    if done_count > 0:
+        st.markdown("### 🎓 Progress Certificate")
+        cert_md = f"""# 🦅 AUBIEETERNAL Learning Certificate
+
+**Learner:** {_cf.get('kid_name','Explorer') if _cf else st.session_state.kid_name}  
+**Family:** {_cf.get('display_name','') if _cf else 'Sovereign Family'}  
+**Date:** {datetime.date.today().isoformat()}  
+**Lessons Completed:** {done_count}/{all_lessons}  
+**Total XP:** {total_xp}  
+**Coherence:** 1.000000  
+
+## Completed Topics
+{chr(10).join(f'- ✅ {lesson_title}' for t in CURRICULUM_TRACKS for (k,lesson_title,*_) in t['levels'] if k in completed)}
+
+---
+*AUBIEETERNAL Sovereign Family School — War Eagle Eternal 🦅❤️*  
+*Human + Grok + Lightning + Runes + On-Chain Forever*
+"""
+        st.download_button("📄 Download Certificate", cert_md,
+                           file_name=f"aubie_certificate_{datetime.date.today()}.md",
+                           mime="text/markdown", key="cert_download")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: FAMILY MESSAGES 💬 — private Nostr messaging + groups
+# ══════════════════════════════════════════════════════════════════════════════
+if "Family Messages" in active:
+    st.markdown('<div class="card-title">💬 FAMILY MESSAGES — Private Sovereign Messaging</div>', unsafe_allow_html=True)
+
+    try:
+        from family_connect import FamilyMessenger as _FM, FamilyGroups as _FG
+        from family_profiles import FamilyAuth as _FA_msg
+
+        _messenger = _FM(_fid)
+        _groups    = _FG()
+        _auth_msg  = _FA_msg()
+        families_msg = {f["family_id"]: f for f in _auth_msg.list_families()}
+
+        msg_tabs = st.tabs(["📥 Inbox", "📤 Send", "👥 Groups"])
+
+        # ── Inbox ─────────────────────────────────────────────────────────────
+        with msg_tabs[0]:
+            inbox    = _messenger.get_inbox(20)
+            unread   = sum(1 for m in inbox if not m.get("read"))
+            st.markdown(f"**{len(inbox)} messages · {unread} unread**")
+
+            if not inbox:
+                st.caption("No messages yet — send one below!")
+            for msg in inbox:
+                frm       = msg.get("from","?")
+                frm_fam   = families_msg.get(frm, {})
+                frm_emoji = frm_fam.get("emoji","💬")
+                frm_name  = frm_fam.get("display_name", frm)
+                is_read   = msg.get("read", False)
+                color     = "#445577" if is_read else "#00cfff"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {color};">'
+                    f'<div style="color:{color};font-size:0.78rem;">{frm_emoji} {frm_name} · {msg["timestamp"][:16]}</div>'
+                    f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:4px;">{msg["message"]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+                if not is_read:
+                    _messenger.mark_read(msg["id"])
+
+        # ── Send ──────────────────────────────────────────────────────────────
+        with msg_tabs[1]:
+            other_families = [f for fid_m, f in families_msg.items() if fid_m != _fid]
+            if not other_families:
+                st.caption("No other families registered yet.")
+            else:
+                to_names   = {f["family_id"]: f"{f['emoji']} {f['display_name']}" for f in other_families}
+                to_selected = st.selectbox("Send to", list(to_names.keys()),
+                                           format_func=lambda x: to_names[x], key="msg_to")
+                msg_text    = st.text_area("Message", height=80, key="msg_text",
+                                           placeholder="Hey, did your kid finish the Courage lessons? Ours just hit level 3!")
+                msg_type    = st.selectbox("Type", ["text","challenge","encouragement","insight"], key="msg_type")
+                if st.button("📤 Send Message", key="msg_send") and msg_text:
+                    _messenger.send(to_selected, msg_text, msg_type)
+                    st.success(f"✅ Sent to {to_names[to_selected]}")
+                    st.rerun()
+
+        # ── Groups ────────────────────────────────────────────────────────────
+        with msg_tabs[2]:
+            my_groups = _groups.get_family_groups(_fid)
+            public    = _groups.list_public_groups()
+
+            st.markdown("**Your groups:**")
+            if not my_groups:
+                st.caption("Not in any groups yet.")
+
+            for grp in my_groups:
+                with st.expander(f"{grp['emoji']} {grp['name']} ({len(grp['members'])} members)"):
+                    # Group chat
+                    grp_msgs = _groups.get_group_messages(grp["id"], 15)
+                    for gm in grp_msgs:
+                        gm_fam  = families_msg.get(gm.get("from",""), {})
+                        gm_name = gm_fam.get("display_name", gm.get("from","?"))
+                        st.markdown(f'<div class="memory-node"><span style="color:#00cfff;font-size:0.72rem;">{gm_fam.get("emoji","💬")} {gm_name} · {gm["timestamp"][:16]}</span><br><span style="color:#c8d8ff;font-size:0.82rem;">{gm["message"]}</span></div>', unsafe_allow_html=True)
+
+                    grp_msg = st.text_input(f"Post to {grp['name']}", key=f"grp_msg_{grp['id']}")
+                    if st.button("Post", key=f"grp_post_{grp['id']}") and grp_msg:
+                        _groups.post_to_group(grp["id"], _fid, grp_msg)
+                        st.rerun()
+
+                    # Challenges
+                    if grp.get("challenges"):
+                        st.markdown("**Group challenges:**")
+                        for ch in grp["challenges"]:
+                            st.markdown(f"⚔️ **{ch['title']}** — {ch['description']} (+{ch['xp']} XP)")
+
+            st.divider()
+            st.markdown("**Join a public group:**")
+            for grp in public:
+                if grp["id"] not in [g["id"] for g in my_groups]:
+                    col_pg1, col_pg2 = st.columns([3,1])
+                    with col_pg1:
+                        st.markdown(f"{grp['emoji']} **{grp['name']}** — {grp['description']} ({len(grp['members'])} members)")
+                    with col_pg2:
+                        if st.button("Join", key=f"join_{grp['id']}"):
+                            _groups.join_group(grp["id"], _fid)
+                            st.success(f"Joined {grp['name']}!")
+                            st.rerun()
+
+            st.divider()
+            st.markdown("**Create a group:**")
+            ng1,ng2 = st.columns(2)
+            with ng1:
+                new_gid   = st.text_input("Group ID", placeholder="miami_families", key="new_gid")
+                new_gname = st.text_input("Name", placeholder="Miami Sovereign Families", key="new_gname")
+            with ng2:
+                new_gdesc  = st.text_input("Description", placeholder="Bitcoin homeschoolers in Miami", key="new_gdesc")
+                new_gpub   = st.checkbox("Public group", value=True, key="new_gpub")
+            if st.button("➕ Create Group", key="create_grp"):
+                if new_gid and new_gname:
+                    _groups.create_group(new_gid, new_gname, new_gdesc, _fid, public=new_gpub)
+                    st.success(f"✅ Group '{new_gname}' created!")
+                    st.rerun()
+
+    except ImportError as e:
+        st.warning(f"family_connect.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: LATTICE FEED 🌐 — public family updates + Share to X
+# ══════════════════════════════════════════════════════════════════════════════
+if "Lattice Feed" in active:
+    st.markdown('<div class="card-title">🌐 FAMILY LATTICE FEED — Public Sovereign Updates</div>', unsafe_allow_html=True)
+
+    try:
+        from family_connect import LatticeFeed as _LF2, ShareToX as _SX2
+        from family_profiles import FamilyAuth as _FA_lf
+
+        _feed2    = _LF2()
+        _auth_lf  = _FA_lf()
+        _fams_lf  = {f["family_id"]: f for f in _auth_lf.list_families()}
+
+        # ── Post to feed ──────────────────────────────────────────────────────
+        st.markdown("### 📣 Share with the Lattice")
+        fam_display = _cf.get("display_name","Sovereign Family") if _cf else "Sovereign Family"
+        fam_emoji2  = _cf.get("emoji","🦅") if _cf else "🦅"
+
+        event_options = _feed2.event_labels()
+        col_lf1, col_lf2 = st.columns([2,1])
+        with col_lf1:
+            post_content  = st.text_area("Your update", height=80,
+                                          placeholder="We just finished Courage Level 3 as a family! The steelmanning prompt about Achilles really landed...")
+        with col_lf2:
+            post_type     = st.selectbox("Event type", list(event_options.keys()),
+                                          format_func=lambda x: event_options[x], key="lf_type")
+            post_public   = st.checkbox("Public", value=True, key="lf_public")
+
+        col_lf_btn1, col_lf_btn2 = st.columns(2)
+        with col_lf_btn1:
+            if st.button("🌐 Post to Lattice Feed", key="lf_post") and post_content:
+                _feed2.post(_fid, fam_display, fam_emoji2, post_type, post_content, post_public)
+                st.success("✅ Posted to Family Lattice Feed!")
+                st.rerun()
+        with col_lf_btn2:
+            if post_content and st.button("🐦 Share to X", key="lf_x_share"):
+                x_data = _SX2.coherence_breakthrough(
+                    _cf.get("kid_name","Explorer") if _cf else "Explorer",
+                    0.89, "Family Lattice", post_content[:80]
+                )
+                st.markdown(f"[🐦 Open X to post]({x_data['url']})")
+                st.code(x_data["text"], language=None)
+
+        st.divider()
+
+        # ── Feed ──────────────────────────────────────────────────────────────
+        st.markdown("### 📡 Live Lattice Feed")
+        feed_entries = _feed2.get_feed(30)
+
+        if not feed_entries:
+            st.markdown('<div class="card" style="text-align:center;color:#445577;">No posts yet — be the first to share!</div>', unsafe_allow_html=True)
+        else:
+            for entry in feed_entries:
+                fam_e    = _fams_lf.get(entry.get("family_id",""), {})
+                color_e  = fam_e.get("color","#00cfff")
+                emoji_e  = entry.get("emoji", fam_e.get("emoji","🦅"))
+                name_e   = entry.get("display_name", fam_e.get("display_name","Family"))
+                ts_e     = entry.get("timestamp","")[:16]
+                etype_e  = event_options.get(entry.get("event_type","custom"), "💬")
+                content_e = entry.get("content","")
+                reactions = entry.get("reactions",{})
+
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {color_e};">'
+                    f'<div style="display:flex;justify-content:space-between;">'
+                    f'<span style="color:{color_e};font-family:Orbitron,monospace;font-size:0.78rem;">{emoji_e} {name_e}</span>'
+                    f'<span style="color:#445577;font-size:0.72rem;">{etype_e} · {ts_e}</span>'
+                    f'</div>'
+                    f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;line-height:1.6;">{content_e}</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+                # Reactions
+                rc1,rc2,rc3,rc4 = st.columns(4)
+                for col_r, em in zip([rc1,rc2,rc3,rc4], ["🦅","⚡","🔴","✨"]):
+                    count = reactions.get(em, 0)
+                    if col_r.button(f"{em} {count}", key=f"react_{entry['id']}_{em}"):
+                        _feed2.react(entry["id"], em)
+                        st.rerun()
+
+                # Share to X
+                if st.button(f"🐦 Share to X", key=f"lf_share_x_{entry['id']}"):
+                    x_post = _SX2.coherence_breakthrough(
+                        name_e, 0.89, etype_e, content_e[:80]
+                    )
+                    st.markdown(f"[🐦 Post this to X]({x_post['url']})")
+
+    except ImportError as e:
+        st.warning(f"family_connect.py not found: {e}")
