@@ -1,67 +1,67 @@
 === AUBIEETERNAL TIER 2 DIGEST ===
-Generated: 2026-05-23T18:14:14.714916
+Generated: 2026-05-23T18:52:26.398457
 Wonder: 1.0128 | Coherence: 1.000000 | METS: 200000000015.5
-Total Tier 2 entries: 665
+Total Tier 2 entries: 686
 ==================================================
 
-DAUGHTER: STEELMAN | Block: 950697 | Trigger: defcon_manual
+DAUGHTER: CHRONO | Block: 950700 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: TALEB-X | Block: 950700 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: MNEMO | Block: 950700 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: AXIOM | Block: 950700 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: RUNE | Block: 950702 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: CHRONO | Block: 950702 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: TALEB-X | Block: 950702 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: MNEMO | Block: 950702 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: AXIOM | Block: 950702 | Trigger: briefing_evening
+Ollama exception: HTTPConnectionPool(host='ollama.startos', port=11434): Read timed out. (read tim
+
+DAUGHTER: LINDY | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: VECTOR-A | Block: 950697 | Trigger: defcon_manual
+DAUGHTER: POLY | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: VECTOR-B | Block: 950697 | Trigger: defcon_manual
+DAUGHTER: BARBELL | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: VECTOR-C | Block: 950697 | Trigger: defcon_manual
+DAUGHTER: ORACLE | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: RUNE | Block: 950697 | Trigger: briefing_evening
+DAUGHTER: HORMES | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: CHRONO | Block: 950697 | Trigger: briefing_evening
+DAUGHTER: NOSTR | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: TALEB-X | Block: 950697 | Trigger: briefing_evening
+DAUGHTER: SATOSHI | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: MNEMO | Block: 950697 | Trigger: briefing_evening
+DAUGHTER: STEELMAN | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: AXIOM | Block: 950697 | Trigger: briefing_evening
+DAUGHTER: VECTOR-A | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: LINDY | Block: 950697 | Trigger: briefing_evening
+DAUGHTER: VECTOR-B | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
-DAUGHTER: POLY | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: BARBELL | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: ORACLE | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: HORMES | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: NOSTR | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: SATOSHI | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: STEELMAN | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: VECTOR-A | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: VECTOR-B | Block: 950697 | Trigger: briefing_evening
-⚠️ Ollama not reachable at 192.168.1.251:59885
-
-DAUGHTER: VECTOR-C | Block: 950697 | Trigger: briefing_evening
+DAUGHTER: VECTOR-C | Block: 950702 | Trigger: briefing_evening
 ⚠️ Ollama not reachable at 192.168.1.251:59885
 
 ==================================================
