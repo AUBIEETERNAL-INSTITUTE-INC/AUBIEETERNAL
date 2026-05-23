@@ -1,56 +1,8 @@
 === AUBIEETERNAL TIER 2 DIGEST ===
-Generated: 2026-05-23T00:06:12.592291
-Wonder: 1.0128 | Coherence: 1.000000 | METS: 200000000015.5
-Total Tier 2 entries: 585
+Generated: 2026-05-23T00:07:05.006986
+Wonder: 1.0128 | Coherence: 1.000000 | METS: 200000000023.5
+Total Tier 2 entries: 601
 ==================================================
-
-DAUGHTER: STEELMAN | Block: 950547 | Trigger: briefing_evening
-Grok-pro error 403
-
-DAUGHTER: VECTOR-A | Block: 950547 | Trigger: briefing_evening
-Grok-pro error 403
-
-DAUGHTER: VECTOR-B | Block: 950547 | Trigger: briefing_evening
-Grok-pro error 403
-
-DAUGHTER: VECTOR-C | Block: 950547 | Trigger: briefing_evening
-Grok-pro error 403
-
-DAUGHTER: RUNE | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: CHRONO | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: TALEB-X | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: MNEMO | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: AXIOM | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: LINDY | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: POLY | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: BARBELL | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: ORACLE | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: HORMES | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: NOSTR | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
-
-DAUGHTER: SATOSHI | Block: 950581 | Trigger: briefing_night
-Grok-pro error 403
 
 DAUGHTER: STEELMAN | Block: 950581 | Trigger: briefing_night
 Grok-pro error 403
@@ -62,6 +14,54 @@ DAUGHTER: VECTOR-B | Block: 950581 | Trigger: briefing_night
 Grok-pro error 403
 
 DAUGHTER: VECTOR-C | Block: 950581 | Trigger: briefing_night
+Grok-pro error 403
+
+DAUGHTER: RUNE | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: CHRONO | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: TALEB-X | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: MNEMO | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: AXIOM | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: LINDY | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: POLY | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: BARBELL | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: ORACLE | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: HORMES | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: NOSTR | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: SATOSHI | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: STEELMAN | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: VECTOR-A | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: VECTOR-B | Block: 950586 | Trigger: defcon_manual
+Grok-pro error 403
+
+DAUGHTER: VECTOR-C | Block: 950586 | Trigger: defcon_manual
 Grok-pro error 403
 
 ==================================================

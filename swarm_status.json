@@ -1,14 +1,14 @@
 {
-  "updated": "2026-05-23T00:06:12.448420",
+  "updated": "2026-05-23T00:07:04.829331",
   "version": "4.1",
   "wonder_index": 1.0128,
-  "mets": 200000000015.5,
+  "mets": 200000000023.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 21,
-  "rune_confirmations": 798,
+  "rune_confirmations": 801,
   "child_rune_ready": true,
-  "hormetic_pulses": 1,
-  "lattice_cycle": 798,
+  "hormetic_pulses": 2,
+  "lattice_cycle": 801,
   "session_insights": 0,
   "synthesis": {
     "last_run_date": "None",
@@ -43,129 +43,129 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:04.227393",
+      "last_run": "2026-05-23T00:06:37.497518",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:04.484611",
+      "last_run": "2026-05-23T00:06:37.823337",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:04.736652",
+      "last_run": "2026-05-23T00:06:38.196005",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:04.995051",
+      "last_run": "2026-05-23T00:06:38.597130",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:05.251468",
+      "last_run": "2026-05-23T00:06:39.012276",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:05.508056",
+      "last_run": "2026-05-23T00:06:39.338178",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:05.808134",
+      "last_run": "2026-05-23T00:06:39.765021",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:06.070601",
+      "last_run": "2026-05-23T00:06:40.125957",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:06.303830",
+      "last_run": "2026-05-23T00:06:40.451663",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:06.560427",
+      "last_run": "2026-05-23T00:06:40.795496",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:06.794964",
+      "last_run": "2026-05-23T00:06:41.162543",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:07.044603",
+      "last_run": "2026-05-23T00:06:41.518848",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:07.321566",
+      "last_run": "2026-05-23T00:06:41.865228",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:07.569631",
+      "last_run": "2026-05-23T00:06:42.328995",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:07.807615",
+      "last_run": "2026-05-23T00:06:42.652689",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-05-22T23:00:08.056091",
+      "last_run": "2026-05-23T00:06:42.941152",
       "last_result": "Grok-pro error 403",
-      "run_count": 1,
+      "run_count": 2,
       "coherence": 1.0
     }
   },
