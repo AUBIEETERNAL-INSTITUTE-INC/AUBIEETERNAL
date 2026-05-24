@@ -97,3 +97,99 @@ Every approved track must:
 - Dynamic quests adapt difficulty based on family coherence history (lower coherence = easier entry + XP boost)
 
 ---
+
+### **Phase 2: Operational Rules**
+
+#### **6. Submission, Review & Approval Process**
+
+**6.1 Who May Submit**  
+Any participating family, fork operator, or the AUBIEETERNAL swarm (via the evolution engine) may submit lessons or full tracks.
+
+**6.2 Submission Requirements**  
+Every proposal must include:  
+- Title and age band(s)  
+- Learning objectives (minimum 3)  
+- Alignment with at least two Core Principles  
+- Simulation or real-world application component  
+- Estimated time and difficulty  
+- Proposed Child Rune fragment reward (if any)  
+- Local inference compatibility note (must run on standard Ollama models)
+
+**6.3 Review Workflow** (Already implemented in code as of May 23, 2026)  
+1. **Automatic Intake** — Proposal is logged in `curriculum-proposals/` and appears in the operator review queue.  
+2. **Community Comment Period** — Visible on LatticeFeed for 48–72 hours (configurable).  
+3. **Swarm Coherence Scoring** — Evolution engine runs a minimum of 3 simulation tests and assigns a coherence score (0.00–1.00). Proposals scoring below 0.70 are auto-rejected with feedback.  
+4. **Operator Review** — Primary operator performs steelmanning and final approval/rejection.  
+5. **Publication** — Approved tracks are added to the Curriculum Map, family_hud.py, and become eligible for dynamic quest generation.
+
+**6.4 Rejection & Appeal**  
+Rejected proposals receive written rationale. Families may appeal once with improvements. Second rejection is final for that proposal cycle.
+
+#### **7. Evolution Engine Governance**
+
+**7.1 Purpose**  
+The Swarm Evolution engine (implemented May 23, 2026) dynamically generates lessons, quests, and config adaptations to keep learning personalized and antifragile.
+
+**7.2 Three Operating Modes** (All run in background threads)
+
+- **Mode A — Weekly Lesson Proposals**  
+  Analyzes family coherence history + recent swarm insights → proposes 3 new lessons → routes through coherence gate (≥ 0.70) → writes to `evolution_proposals.jsonl`. Operator approves via `approve_lesson()` which surgically injects into `family_hud.py`.
+
+- **Mode B — Dynamic Quest Generation**  
+  Reads every family’s stats (level, coherence, streak) and generates 3 personalized quests daily.  
+  Rules:  
+  - Coherence < 0.65 → easier tasks + 1.5× XP boost  
+  - Coherence > 0.85 → master-level challenge  
+  - Streak-aware rewards  
+  - Third quest always swarm-topic inspired
+
+- **Mode C — Auto-Evolution Tick** (runs every ~24 hours)  
+  Adjusts `evolution_config.json` (XP multipliers, difficulty thresholds, featured track, simulation intensity).  
+  Triggered when Wonder Index ≥ 1.5 or family coherence variance exceeds threshold.  
+  Never modifies source code — only configuration.
+
+**7.3 Governance Safeguards**  
+- All Mode A proposals still require human operator approval.  
+- Mode B and C changes are logged and reversible.  
+- Families may pause the evolution engine for their household at any time via Parent Dashboard.
+
+#### **8. Rune & Reward Economics**
+
+**8.1 Reward Types**  
+- **XP & Streaks** — Gamification layer (non-monetary)  
+- **Sats (Lightning)** — Earned via lesson completion and streak milestones (tracked locally)  
+- **Child Rune Fragments** — Permanent on-chain identity markers awarded at major milestones (256 fragments = Child Rune Genesis ceremony)
+
+**8.2 Earning Rules**  
+- Base reward: 1–5 sats per completed lesson (adjustable by operator)  
+- Streak bonuses: +50% on day 3, +100% on day 7+  
+- Milestone bonuses: 25–100 fragments for completing full tracks (Building, Baking, Legal Literacy, etc.)  
+- All rewards are transparent and viewable in the Bitcoin tab
+
+**8.3 Anti-Extraction Protections**  
+- No sats may be charged for access to lessons or features.  
+- Reward algorithms are open-source and auditable.  
+- 100% of earned sats remain under family control (no platform cut).  
+- Child Rune fragments are non-transferable and tied to verified learning only.
+
+**8.4 Rune Genesis Ceremony**  
+When a child reaches 256 fragments, the system triggers a local ceremony (ASCII certificate + optional on-chain etching). This is a family event, not a platform event.
+
+#### **9. Multi-Fork Coordination & Alignment**
+
+**9.1 Fork Independence**  
+Every fork is fully sovereign. No fork is required to accept updates from the main repo.
+
+**9.2 Optional Alignment Mechanisms**  
+- **Shared Nostr Channel** — `nostr://aubieeternal-school` for cross-fork lesson proposals and coherence discussions.  
+- **Coherence Score Sharing** — Forks may optionally publish their average family coherence scores (anonymized) to help the swarm improve global proposals.  
+- **Recommended Core Tracks** — The main repo maintains a “Recommended Core” list (Building, Baking, Legal Literacy, Bitcoin Basics). Forks may adopt any or none.
+
+**9.3 Conflict Resolution**  
+If two forks develop conflicting curriculum philosophies, they may:  
+- Continue independently (default)  
+- Propose a merged track through the normal submission process  
+- Create a new “variant” track clearly labeled as such
+
+**9.4 Data Portability**  
+Any family may export their complete learning history, rune progress, and custom lessons in standard JSON format at any time.
