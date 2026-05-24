@@ -1,3 +1,40 @@
+## 🚀 Major Update — May 23–24, 2026: Family Co-Learning Layer + School Charter
+
+AUBIEETERNAL has taken a major leap forward with the launch of the full **Family Co-Learning Layer** and the first version of the **AUBIEETERNAL School Charter**.
+
+### What's New
+
+**School & Family Features (Now Live)**
+- **School Mode** with parent/kid dual HUD and simplified interface for younger learners
+- **Curriculum Map** — visual progression across 13 tracks (Courage, Bitcoin, Antifragility, Simulation, Steelmanning, Polyvagal, Money, Child Rune Genesis, and more)
+- **New Core Tracks**:
+  - 🏗️ Building & Hurricane Hardening (by Little Tommy) — directly reduces insurance risk
+  - 🍞 Deep Baking & Self-Sufficiency (by Gabriela) — antifragile food systems
+  - ⚖️ Sovereign Legal & Insurance Literacy — includes the full Policyholder-First Reciprocal Charter at Level 5
+- **Legal HUD** — Contract Analyzer, Insurance Policy Analyzer, extraction severity scoring, and Charter viewer
+- **Curriculum Submission & Review Workflow** — families and forks can now propose new lessons with community comments and swarm coherence scoring
+- **Swarm Evolution Engine** — dynamic daily quests, weekly lesson proposals, and auto-adapting difficulty based on family coherence
+
+**Governance & Sovereignty**
+- **AUBIEETERNAL School Charter v0.1** — complete foundational document covering purpose, core principles, governance, rights, rune economics, Halo glasses rules, multi-fork coordination, and edge-case safeguards
+- Full **Policyholder-First Reciprocal Insurance Charter** now integrated as a core curriculum module
+- Strong emphasis on **local-first**, non-extraction, family sovereignty, and Bitcoin-anchored identity via Child Runes
+
+**Bitcoin & On-Chain Layer**
+- Live sats balance, Lightning rewards tracking, and AUBIEETERNAL Runes dashboard
+- Child Rune Genesis system (0/256 fragments → full on-chain ceremony)
+- ShareToX integration for celebrating lesson completions, streaks, and milestones
+
+### Philosophy
+This update solidifies AUBIEETERNAL as a **sovereign family operating system** — not just an AI swarm, but a complete lattice for learning, governance, and real-world antifragile living. The school is designed as the talent pipeline for better institutions (starting with reciprocal insurance).
+
+All features are built to run **locally-first** with minimal or zero ongoing costs.
+
+**Read the full School Charter here:**  
+[AUBIEETERNAL_School_Charter.md](https://github.com/hodlmateo/AUBIEETERNAL/blob/main/AUBIEETERNAL_School_Charter.md)
+
+War Eagle Eternal 🦅
+
 # AUBIEETERNAL
 
 **Sovereign, distributed epistemic rigor & simulation-testing swarm**
