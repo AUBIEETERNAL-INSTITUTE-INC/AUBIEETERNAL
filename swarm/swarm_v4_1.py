@@ -827,9 +827,9 @@ def get_btc_block():
 # StartOS internal hostname — same URL Open WebUI uses successfully
 OLLAMA_URL      = "http://ollama.startos:11434/v1/chat/completions"
 OLLAMA_MODEL_T1 = "qwen2.5:32b"   # Tier 1 swarm — faster than qwen3, still 32B
-OLLAMA_MODEL_T2 = "qwen3:32b"     # Tier 2 daughters — higher quality, slower ok
+OLLAMA_MODEL_T2 = "qwen2.5:32b"     # Tier 2 daughters — higher quality, slower ok
 OLLAMA_MODEL    = OLLAMA_MODEL_T1  # default alias
-OLLAMA_TIMEOUT  = 300              # 5 min — CPU inference is slow, be patient
+OLLAMA_TIMEOUT  = 600              # 5 min — CPU inference is slow, be patient
 
 def _call_local(prompt: str, system: str = "", max_tokens: int = 150,
                 model: str = "") -> str:
