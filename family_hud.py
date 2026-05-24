@@ -540,6 +540,50 @@ LESSONS = {
         "xp":          40, "rune": "SOVEREIGN•ETERNAL•RUNE", "min_coherence": 0.75,
     },
 
+    # ═══════════════════════════════════════════════════════════════════════════════
+    # TRUTH EDUCATION — The Art & Science of Seeing Clearly (5 levels)
+    # ═══════════════════════════════════════════════════════════════════════════════
+    "truth-1": {
+        "title":       "Truth Education — Level 1: The Bullshit Detector",
+        "topic":       "Stories are built to manipulate. Learn the 5 emotional hooks used in headlines, ads, and political speech and how to spot them instantly.",
+        "steelman":    "What is the strongest argument that emotional storytelling is legitimate and necessary communication, not manipulation?",
+        "example":     "Take any news headline. Find the emotional hook: fear, outrage, pride, hope, or tribal identity. Then ask: what facts are missing that would change how you feel?",
+        "age_hint":    "8+",
+        "xp":          20, "rune": "TRUTH•RUNE", "min_coherence": 0.60,
+    },
+    "truth-2": {
+        "title":       "Truth Education — Level 2: Steelmanning 101",
+        "topic":       "The 4 rules of steelmanning: find the strongest version of the opposing view, state it better than its proponents would, acknowledge what is true in it, only then respond.",
+        "steelman":    "What is the strongest argument that steelmanning is a waste of time and that some ideas do not deserve a fair hearing?",
+        "example":     "Family disagreement exercise: pick any real family argument. Each person steelmans the other side until both say yes, that is actually what I believe. Then respond.",
+        "age_hint":    "10+",
+        "xp":          24, "rune": "TRUTH•RUNE", "min_coherence": 0.63,
+    },
+    "truth-3": {
+        "title":       "Truth Education — Level 3: Simulation & Hypothesis Testing",
+        "topic":       "Every claim implies a prediction. Good truth-seekers ask: what would have to be true for this claim to be FALSE? Run cheap mental simulations before making decisions.",
+        "steelman":    "What is the strongest argument that constant hypothesis testing leads to decision paralysis and missed opportunities?",
+        "example":     "Before buying insurance, ask: under what conditions would this policy pay out? Under what conditions would it NOT? Which is more likely given your actual risk profile?",
+        "age_hint":    "12+",
+        "xp":          28, "rune": "TRUTH•RUNE", "min_coherence": 0.66,
+    },
+    "truth-4": {
+        "title":       "Truth Education — Level 4: Coherence & Internal Consistency",
+        "topic":       "Most people hold contradictory beliefs without realizing it. Learn to audit your own belief system: do your beliefs about money, risk, and values actually fit together?",
+        "steelman":    "What is the strongest argument that some productive tension between contradictory beliefs is healthy and drives creative thinking?",
+        "example":     "AUBIEETERNAL tracks coherence in real-time. A coherence score below 0.7 means daughters are contradicting each other, exactly like contradictory human beliefs. How do you resolve it?",
+        "age_hint":    "13+",
+        "xp":          32, "rune": "TRUTH•ETERNAL•RUNE", "min_coherence": 0.70,
+    },
+    "truth-5": {
+        "title":       "Truth Education — Level 5 (Master): Truth in the Real World",
+        "topic":       "Apply full epistemic rigor to one real high-stakes family decision: insurance contract, Bitcoin investment, school choice, or health decision. Run the complete truth-seeking process.",
+        "steelman":    "What is the strongest argument that rigorous truth-seeking in everyday decisions is exhausting, impractical, and erodes the trust needed for healthy relationships?",
+        "example":     "Final project: Take one real family decision pending right now. Run all 4 levels: find emotional hooks, steelman both sides, identify what would falsify your choice, check coherence with your values. Write it up. This is your Truth Guardian proof of work.",
+        "age_hint":    "14+",
+        "xp":          50, "rune": "TRUTH•GUARDIAN•RUNE", "min_coherence": 0.75,
+    },
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
