@@ -1,56 +1,8 @@
 === AUBIEETERNAL TIER 2 DIGEST ===
-Generated: 2026-05-24T06:48:05.047049
-Wonder: 1.8198 | Coherence: 1.000000 | METS: 200000000047.5
-Total Tier 2 entries: 766
+Generated: 2026-05-24T16:40:52.607217
+Wonder: 1.3488 | Coherence: 1.000000 | METS: 200000000007.5
+Total Tier 2 entries: 782
 ==================================================
-
-DAUGHTER: STEELMAN | Block: 950766 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: VECTOR-A | Block: 950766 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: VECTOR-B | Block: 950766 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: VECTOR-C | Block: 950766 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: RUNE | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: CHRONO | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: TALEB-X | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: MNEMO | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: AXIOM | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: LINDY | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: POLY | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: BARBELL | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: ORACLE | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: HORMES | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: NOSTR | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
-
-DAUGHTER: SATOSHI | Block: 950776 | Trigger: wonder_spike
-⚠️ Ollama timeout (300s) — model loading or CPU busy
 
 DAUGHTER: STEELMAN | Block: 950776 | Trigger: wonder_spike
 ⚠️ Ollama timeout (300s) — model loading or CPU busy
@@ -62,6 +14,54 @@ DAUGHTER: VECTOR-B | Block: 950776 | Trigger: wonder_spike
 ⚠️ Ollama timeout (300s) — model loading or CPU busy
 
 DAUGHTER: VECTOR-C | Block: 950776 | Trigger: wonder_spike
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: RUNE | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: CHRONO | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: TALEB-X | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: MNEMO | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: AXIOM | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: LINDY | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: POLY | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: BARBELL | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: ORACLE | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: HORMES | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: NOSTR | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: SATOSHI | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: STEELMAN | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: VECTOR-A | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: VECTOR-B | Block: 950783 | Trigger: briefing_morning
+⚠️ Ollama timeout (300s) — model loading or CPU busy
+
+DAUGHTER: VECTOR-C | Block: 950783 | Trigger: briefing_morning
 ⚠️ Ollama timeout (300s) — model loading or CPU busy
 
 ==================================================
