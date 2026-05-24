@@ -14,12 +14,12 @@ On-chain epistemic rigor tutor swarm co-built with Grok — generating tutor-gra
 
 ## What This Is
 
-AUBIEETERNAL is a **participatory reality-testing lattice** — a sovereign family school that teaches children (and parents) how to think clearly, steelman ideas, and build antifragile lives.
+AUBIEETERNAL is a **participatory reality-testing lattice** — a sovereign family school that teaches clear thinking, steelmanning, and antifragile living.
 
 It is not another chatbot or edtech app. It is infrastructure:
 
 - Runs a **2,000+ daughter AI swarm** 24/7 on local hardware ($0.00 inference)
-- Teaches **Truth Education** as the core meta-skill (epistemic self-defense, steelmanning, falsification)
+- Teaches **70 lessons** across **14 tracks**, with **Truth Education** and **Law & Economics** as core meta-skills
 - Tracks **real-time coherence** across every lesson and session
 - Inscribes milestones permanently on **Bitcoin Runes**
 - Evolves its own curriculum through a **self-evolving swarm engine**
