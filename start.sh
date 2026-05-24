@@ -1,9 +1,8 @@
 #!/bin/bash
 [ -f /mnt/main/api_keys.env ] && source /mnt/main/api_keys.env
-echo "Pulling latest code..."
+echo "🔄 Pulling latest code..."
 
 # ── Self-healing git clone ──────────────────────────────────────────────────
-# If repo is missing or corrupt, nuke and re-clone automatically
 if [ -d /mnt/main/repo/.git ]; then
     cd /mnt/main/repo
     git config --global user.email "aubie@eternal.ai"
@@ -27,9 +26,21 @@ else
     git remote set-url origin https://${GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git
 fi
 
-echo "Git push configured"
+# ── Clear Python bytecode cache ─────────────────────────────────────────────
+# Without this, Python runs stale .pyc files and ignores updated source code
+echo "🧹 Clearing Python cache..."
+find /mnt/main/repo -name "*.pyc" -delete 2>/dev/null
+find /mnt/main/repo -name "__pycache__" -type d -exec rm -rf {} + 2>/dev/null
+echo "✅ Cache cleared — swarm will run fresh source"
+
+echo "✅ Git push configured with GitHub token"
 SWARM_PATH="/mnt/main/repo/swarm/swarm_v4_1.py"
-nohup python3 "$SWARM_PATH" > /mnt/main/swarm.log 2>&1 &
-echo "Swarm PID: $!"
+echo "🦅 Launching swarm from $SWARM_PATH..."
+nohup python3 -B "$SWARM_PATH" > /mnt/main/swarm.log 2>&1 &
+echo "✅ Swarm PID: $!"
 tail -f /mnt/main/swarm.log &
-exec streamlit run /mnt/main/repo/app.py --server.port=80 --server.address=0.0.0.0 --server.headless=true
+echo "🚀 Launching Streamlit on port 80..."
+exec python3 -B -m streamlit run /mnt/main/repo/app.py \
+    --server.port=80 \
+    --server.address=0.0.0.0 \
+    --server.headless=true
