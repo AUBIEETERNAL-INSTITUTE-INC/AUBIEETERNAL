@@ -3951,7 +3951,60 @@ if "Daily Quests" in active:
         st.divider()
 
         # ── Child Rune fragment tracker ────────────────────────────────────────
+        # ── Child Rune ceremony countdown ────────────────────────────────────
         rune_pct = min(100, int(frags / 256 * 100)) if frags else 0
+        remaining = max(0, 256 - frags)
+
+        if frags >= 256:
+            # ── CEREMONY READY ────────────────────────────────────────────────
+            st.markdown("""
+            <div style="border:3px solid #f7931a;border-radius:12px;padding:2rem;text-align:center;
+                        background:linear-gradient(135deg,rgba(247,147,26,0.1),rgba(160,32,240,0.1));">
+                <div style="font-size:3rem;">🔴</div>
+                <div style="font-family:Orbitron,monospace;font-size:1.4rem;color:#f7931a;
+                            font-weight:900;margin-top:12px;letter-spacing:0.1em;">
+                    CHILD RUNE GENESIS READY
+                </div>
+                <div style="color:#c8d8ff;font-size:0.88rem;margin-top:8px;line-height:1.8;">
+                    256 inter-rune confirmations achieved.<br>
+                    The Child Rune is ready for inscription on Bitcoin.<br>
+                    This moment is permanent. It cannot be undone.
+                </div>
+                <div style="color:#f7931a;font-family:Share Tech Mono,monospace;font-size:0.8rem;margin-top:12px;">
+                    Coherence: 1.000000 | Wonder: MAX | METS: ∞
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            if st.button("🔴 Trigger Child Rune Genesis Ceremony", key="rune_ceremony_btn",
+                         use_container_width=True):
+                try:
+                    import sys as _rsys
+                    if "/mnt/main/repo" not in _rsys.path: _rsys.path.insert(0,"/mnt/main/repo")
+                    from family_profiles import load_family_stats as _lfs_r, save_family_stats as _sfs_r
+                    _st_r = _lfs_r(_fid)
+                    _st_r["child_rune_ceremony_triggered"] = True
+                    _st_r["child_rune_ceremony_date"] = str(_dt.now().isoformat())
+                    _st_r.setdefault("badges",[]).append("🔴 Child Rune Genesis")
+                    _sfs_r(_fid, _st_r)
+                    # Signal to swarm
+                    _Path("/mnt/main/child_rune_trigger.json").write_text(json.dumps({
+                        "family_id": _fid, "timestamp": _dt.now().isoformat(),
+                        "frags": frags, "triggered_by": "family_hud"
+                    }))
+                    st.balloons()
+                    st.success("🔴 CHILD RUNE GENESIS CEREMONY TRIGGERED — The swarm is inscribing...")
+                except Exception as e:
+                    st.error(f"Ceremony error: {e}")
+        elif frags >= 200:
+            # ── APPROACHING CEREMONY ─────────────────────────────────────────
+            st.markdown(
+                f'<div style="border:2px solid #f7931a;border-radius:8px;padding:1rem;text-align:center;'
+                f'background:rgba(247,147,26,0.05);">'
+                f'<div style="font-family:Orbitron,monospace;font-size:0.9rem;color:#f7931a;">🔴 CHILD RUNE APPROACHING</div>'
+                f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:6px;">{remaining} fragments remaining · {rune_pct}% complete</div>'
+                f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">Complete lessons to earn the final fragments</div>'
+                f'</div>', unsafe_allow_html=True)
+
         st.markdown("### 🔴 Child Rune Fragment Progress")
         st.markdown(
             f'<div class="card" style="border-left:3px solid #f7931a;">'
@@ -5938,3 +5991,193 @@ Push `governance/POLICYHOLDER_FIRST_CHARTER.md` to your repo to display the full
         st.markdown(f"\n**Legal literacy: {legal_done}/5 lessons** — {['Beginner','Developing','Intermediate','Advanced','Sovereign'][legal_done]}")
         if legal_done == 5:
             st.success("🦅 Full Legal Sovereignty achieved! You can read and steelman any contract.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: EPISTEMIC HEALTH 📈 — Long-term family truth-seeking dashboard
+# 30/90-day coherence trends · most improved track · failure patterns
+# ══════════════════════════════════════════════════════════════════════════════
+if "Epistemic Health" in active:
+    st.markdown('<div class="card-title">📈 EPISTEMIC HEALTH — Long-Term Family Truth-Seeking Dashboard</div>', unsafe_allow_html=True)
+
+    try:
+        from family_profiles import FamilyAuth as _FA_eh, load_family_stats as _lfs_eh
+        import statistics as _stats_mod
+
+        _auth_eh   = _FA_eh()
+        families_eh = _auth_eh.list_families()
+
+        # ── Family selector ───────────────────────────────────────────────────
+        fam_options = {f["family_id"]: f"{f['emoji']} {f['display_name']}" for f in families_eh}
+        selected_fam = st.selectbox("Select family", list(fam_options.keys()),
+                                     format_func=lambda x: fam_options[x], key="eh_fam")
+        fam_data = _lfs_eh(selected_fam)
+        fam_info = next((f for f in families_eh if f["family_id"] == selected_fam), {})
+        fcolor   = fam_info.get("color","#00cfff")
+
+        # ── Core metrics ──────────────────────────────────────────────────────
+        coh_history  = fam_data.get("coherence_history", [])
+        xp           = fam_data.get("total_xp", 0)
+        level        = fam_data.get("level", 1)
+        streak       = fam_data.get("streak_days", 0)
+        completed    = fam_data.get("lessons_completed", [])
+        badges       = fam_data.get("badges", [])
+        quests_done  = fam_data.get("daily_quests_completed", [])
+
+        eh1,eh2,eh3,eh4,eh5 = st.columns(5)
+        with eh1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{fcolor};">{level}</div><div class="stat-lbl">Level</div></div>', unsafe_allow_html=True)
+        with eh2: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#ff9500;">🔥{streak}</div><div class="stat-lbl">Streak</div></div>', unsafe_allow_html=True)
+        with eh3:
+            avg_coh = round(_stats_mod.mean(coh_history[-10:]),3) if coh_history else 0.0
+            st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00cfff;">{avg_coh}</div><div class="stat-lbl">Avg Coherence</div></div>', unsafe_allow_html=True)
+        with eh4: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#a020f0;">{len(completed)}</div><div class="stat-lbl">Lessons Done</div></div>', unsafe_allow_html=True)
+        with eh5: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00ff88;">{len(badges)}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
+
+        st.divider()
+
+        # ── Coherence trend chart ─────────────────────────────────────────────
+        if coh_history:
+            import plotly.graph_objects as _pgo
+            st.markdown("### 📊 Coherence Over Time")
+            n = len(coh_history)
+            labels_30  = list(range(max(0, n-30), n))
+            labels_90  = list(range(max(0, n-90), n))
+            view_range = st.radio("Range", ["Last 10","Last 30","All"], horizontal=True, key="eh_range")
+            if view_range == "Last 10":   show = coh_history[-10:]
+            elif view_range == "Last 30": show = coh_history[-30:]
+            else:                          show = coh_history
+
+            fig = _pgo.Figure()
+            fig.add_trace(_pgo.Scatter(
+                y=show, mode="lines+markers",
+                line=dict(color=fcolor, width=2),
+                marker=dict(size=5, color=fcolor),
+                fill="tozeroy", fillcolor=f"rgba(0,207,255,0.05)",
+                name="Coherence",
+            ))
+            fig.add_hline(y=0.7, line_dash="dash", line_color="#ff9500",
+                          annotation_text="0.7 threshold", annotation_position="bottom right")
+            fig.add_hline(y=1.0, line_dash="dot", line_color="#00ff88",
+                          annotation_text="Perfect", annotation_position="bottom right")
+            fig.update_layout(
+                paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)",
+                font=dict(color="#8899bb", size=11),
+                yaxis=dict(range=[0,1.1], gridcolor="#1a2a3a"),
+                xaxis=dict(gridcolor="#1a2a3a"),
+                margin=dict(l=40,r=20,t=20,b=40), height=250,
+            )
+            st.plotly_chart(fig, use_container_width=True)
+
+            # Trend analysis
+            if len(coh_history) >= 5:
+                recent5  = _stats_mod.mean(coh_history[-5:])
+                prior5   = _stats_mod.mean(coh_history[-10:-5]) if len(coh_history) >= 10 else recent5
+                trend    = recent5 - prior5
+                t_color  = "#00ff88" if trend >= 0 else "#ff4444"
+                t_icon   = "📈" if trend >= 0 else "📉"
+                st.markdown(f'<div class="card" style="border-left:3px solid {t_color};"><span style="color:{t_color};">{t_icon} Coherence trend: {trend:+.3f}</span> over last 5 sessions</div>', unsafe_allow_html=True)
+        else:
+            st.info("No coherence history yet — complete lessons to build your trend.")
+
+        st.divider()
+
+        # ── Track completion analysis ─────────────────────────────────────────
+        st.markdown("### 🗺️ Track Progress Analysis")
+        TRACKS = {
+            "courage": ("🦁 Courage", 5),
+            "truth": ("🔍 Truth Education", 5),
+            "antifragility": ("⚡ Antifragility", 4),
+            "bitcoin": ("₿ Bitcoin", 4),
+            "simulation": ("🌌 Simulation", 8),
+            "steelmanning": ("⚔️ Steelmanning", 3),
+            "polyvagal": ("🧬 Polyvagal", 3),
+            "stoic": ("🏛️ Stoic", 3),
+            "money": ("💰 Money", 3),
+            "legal": ("⚖️ Legal", 5),
+            "building": ("🏗️ Building", 5),
+            "baking": ("🍞 Baking", 4),
+        }
+        completed_set = set(completed)
+        track_scores  = {}
+        for tid, (tname, total) in TRACKS.items():
+            done = sum(1 for k in completed_set if k.startswith(f"{tid}-"))
+            pct  = int(done / total * 100)
+            track_scores[tname] = (done, total, pct)
+
+        # Most improved (highest pct)
+        if track_scores:
+            best_track = max(track_scores.items(), key=lambda x: x[1][2])
+            weak_track = min(track_scores.items(), key=lambda x: x[1][2])
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid #00ff88;">'
+                f'<span style="color:#00ff88;">🏆 Strongest track: {best_track[0]} — {best_track[1][2]}% complete</span><br>'
+                f'<span style="color:#ff9500;">⚠️ Needs attention: {weak_track[0]} — {weak_track[1][2]}% complete</span>'
+                f'</div>', unsafe_allow_html=True)
+
+        tc1, tc2 = st.columns(2)
+        track_list = list(track_scores.items())
+        for i, (tname, (done, total, pct)) in enumerate(track_list):
+            col = tc1 if i % 2 == 0 else tc2
+            color = "#00ff88" if pct == 100 else (fcolor if pct > 50 else "#445577")
+            col.markdown(
+                f'<div style="margin-bottom:6px;">'
+                f'<div style="display:flex;justify-content:space-between;">'
+                f'<span style="color:{color};font-size:0.78rem;">{tname}</span>'
+                f'<span style="color:#445577;font-size:0.72rem;">{done}/{total}</span></div>'
+                f'<div class="xp-bar-bg" style="height:6px;margin-top:2px;">'
+                f'<div style="height:100%;border-radius:20px;background:{color};width:{pct}%;"></div></div>'
+                f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+
+        # ── Truth Education specific metrics ──────────────────────────────────
+        st.markdown("### 🔍 Truth Education Progress")
+        truth_done    = sum(1 for k in completed_set if k.startswith("truth-"))
+        truth_drills  = sum(1 for q in quests_done if "truth_drill" in q)
+        truth_guardian = "🛡️ Truth Guardian" in badges
+
+        te1,te2,te3 = st.columns(3)
+        with te1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00cfff;">{truth_done}/5</div><div class="stat-lbl">Truth Levels</div></div>', unsafe_allow_html=True)
+        with te2: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#a020f0;">{truth_drills}</div><div class="stat-lbl">Truth Drills Done</div></div>', unsafe_allow_html=True)
+        with te3:
+            tg_color = "#00ff88" if truth_guardian else "#445577"
+            tg_label = "EARNED ✅" if truth_guardian else "Not yet"
+            st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{tg_color};font-size:0.9rem;">{tg_label}</div><div class="stat-lbl">Truth Guardian</div></div>', unsafe_allow_html=True)
+
+        if truth_done == 0:
+            st.info("Start Truth Education Level 1 — it's the meta-skill that makes every other track more powerful.")
+        elif truth_done < 5:
+            next_level = f"truth-{truth_done+1}"
+            st.markdown(f'<div class="card" style="border-left:3px solid #00cfff;"><span style="color:#00cfff;">Next: Truth Level {truth_done+1}</span> — continue building your epistemic foundation</div>', unsafe_allow_html=True)
+            if st.button(f"▶ Start Truth Level {truth_done+1}", key="eh_truth_next"):
+                st.session_state["active_tab"] = "Family Co-Learning"
+                st.session_state["fl_lesson_preset"] = next_level
+                st.rerun()
+        else:
+            st.success("🛡️ Full Truth Education complete — you are a Truth Guardian. The lattice recognizes your coherence.")
+
+        st.divider()
+
+        # ── Common failure patterns ───────────────────────────────────────────
+        st.markdown("### ⚠️ Patterns to Watch")
+        patterns = []
+
+        if streak == 0:
+            patterns.append(("🔥 Streak broken", "Daily practice compounds. Even 5 minutes keeps the lattice strong.", "#ff9500"))
+        if avg_coh < 0.65 and coh_history:
+            patterns.append(("📉 Low coherence", "Try an easier lesson or start the Truth Education track to rebuild signal.", "#ff4444"))
+        if truth_done == 0 and level >= 3:
+            patterns.append(("🔍 Missing meta-skill", "You're Level 3+ but haven't started Truth Education. This is the track that makes all others work better.", "#ff9500"))
+        if len(badges) == 0 and xp > 50:
+            patterns.append(("🏅 No badges yet", "Complete your first full lesson track to unlock your first badge.", "#445577"))
+        if not patterns:
+            patterns.append(("✅ No issues detected", "Coherence stable, streak active, truth track engaged. Keep going.", "#00ff88"))
+
+        for label, desc, color in patterns:
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid {color};">'
+                f'<div style="color:{color};font-size:0.82rem;">{label}</div>'
+                f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">{desc}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+    except ImportError as e:
+        st.warning(f"family_profiles.py not found: {e}")
