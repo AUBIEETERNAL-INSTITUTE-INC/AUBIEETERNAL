@@ -217,7 +217,6 @@ Proposed amendments shall be published as Nostr kind 1 events tagged with `["t",
 
 ---
 
-
 ## Appendix C — Law & Economics: Where Truths Become Lies
 
 This Charter exists because legal and economic systems have been systematically captured by interests that profit from policyholder confusion. The following principles, drawn from the AUBIEETERNAL Law & Economics curriculum, inform every provision of this Charter.
@@ -244,16 +243,18 @@ Bitcoin's proof-of-work consensus mechanism is the most successful capture-resis
 
 **Law & Economics L5 final project:** Students are asked to design one rule for this Charter that prevents extraction. The best proposals will be reviewed for inclusion in future Charter amendments via the Subscriber vote process (Article IX).
 
+---
+
 ## Steelman This Charter
 
 **Strongest argument FOR:**  
-Structural rules (compensation caps, surplus formulas, veto rights) are the only reliable way to prevent extraction in insurance. Aspirational mission statements don't survive the first profitable year. Hard numbers do.
+Structural rules (compensation caps, surplus formulas, veto rights) are the only reliable way to prevent extraction in insurance. Aspirational mission statements don’t survive the first profitable year. Hard numbers and binding mechanisms do.
 
 **Strongest argument AGAINST:**  
-Rigid compensation caps may prevent the Exchange from hiring actuarial talent needed to price risk accurately — leading to underpricing, insolvency, and harming the very Subscribers it was designed to protect.
+Rigid compensation caps may prevent the Exchange from attracting top actuarial and risk talent, leading to underpricing and long-term harm to the very Subscribers the system was designed to protect.
 
 **Resolution:**  
-The compensation formula is pegged to median Subscriber premium — if talent costs rise, premiums can be adjusted with full transparency. The Subscriber veto right prevents runaway premium increases while maintaining the cap's integrity.
+The compensation cap is deliberately tied to **median Subscriber premium**. If talent costs rise, premiums can increase — but only with full transparency and Subscriber veto rights. This preserves the anti-extraction principle while remaining economically viable. The same principle that makes Bitcoin’s proof-of-work capture-resistant (cost of attack exceeds benefit) is applied here through structural incentives.
 
 ---
 
