@@ -239,11 +239,18 @@ No markdown, no preamble. JSON only."""
     def approve_lesson(self, proposal_id: str) -> bool:
         """
         Operator approves a proposal — automatically adds lesson to family_hud.py.
-        THIS is the only time the engine modifies a source file, and only with approval.
+        Hard gate: proposals with coherence_score < 0.70 are BLOCKED even with approval.
         """
         proposal = self._find_proposal(proposal_id)
         if not proposal:
             print(f"[evolution] Proposal {proposal_id} not found")
+            return False
+
+        # ── HARD COHERENCE GATE ───────────────────────────────────────────────
+        score = float(proposal.get("coherence_score", 0))
+        if score < 0.70:
+            print(f"[evolution] ❌ BLOCKED: proposal '{proposal.get('lesson',{}).get('title','')}' "
+                  f"has coherence {score:.2f} < 0.70 hard gate. Cannot approve.")
             return False
 
         lesson = proposal["lesson"]
@@ -623,14 +630,10 @@ No markdown, no preamble. JSON only."""
                 track_counts[track] = track_counts.get(track, 0) + 1
         return max(track_counts, key=track_counts.get) if track_counts else "courage"
 
-    @staticmethod
-    def _suggest_next_track(self_arg, current: str) -> str:
-        pass  # defined on instance below
-
     def _suggest_next_track(self, current: str) -> str:
         flow = {
-            "courage":       "truth",          # truth-seeking requires courage first
-            "truth":         "steelmanning",   # truth → steelmanning deepens it
+            "courage":       "truth",
+            "truth":         "steelmanning",
             "steelmanning":  "antifragility",
             "antifragility": "simulation",
             "simulation":    "epistemology",
@@ -646,31 +649,95 @@ No markdown, no preamble. JSON only."""
 
     def _get_truth_drill_quest(self, family_id: str) -> dict:
         """
-        Generate a daily Truth Drill quest based on swarm output.
-        The swarm's latest daughter insights become the truth-testing material.
+        Generate a daily Truth Drill quest pulling LIVE from swarm Tier-2 daughter output.
+        Families truth-test the actual swarm insights in real time.
         """
-        stats  = self._load_family_stats(family_id)
-        level  = stats.get("level", 1)
+        stats     = self._load_family_stats(family_id)
         completed = set(stats.get("lessons_completed", []))
-
-        # Match drill difficulty to family's truth track progress
         truth_level = sum(1 for k in completed if k.startswith("truth-"))
 
+        # Pull latest Tier-2 daughter insight from truth log
+        live_insight = self._get_latest_tier2_insight()
+        swarm_topic  = self._get_todays_swarm_topic()
+
         drills = [
-            # Level 0-1 drills (no truth track needed)
-            {"id": "truth_drill_headlines", "title": "Find the emotional hook in 3 news headlines today", "xp": 15, "sats": 30},
-            {"id": "truth_drill_steelman", "title": "Steelman one opinion you strongly disagree with", "xp": 20, "sats": 40},
-            # Level 2+ drills
-            {"id": "truth_drill_falsify", "title": "Write the falsification condition for one family belief", "xp": 25, "sats": 50},
-            {"id": "truth_drill_coherence", "title": "Check: do your top 3 beliefs point in the same direction?", "xp": 25, "sats": 50},
-            # Level 4+ drills (swarm-integrated)
-            {"id": "truth_drill_swarm", "title": f"Apply truth-seeking to today's swarm insight: {self._get_todays_swarm_topic()[:50]}", "xp": 30, "sats": 60},
-            {"id": "truth_drill_realworld", "title": "Run the full 4-level truth process on one real family decision", "xp": 40, "sats": 80},
+            # Level 0 — no truth track needed
+            {
+                "id":    "truth_drill_headlines",
+                "title": "Find the emotional hook in 3 news headlines today",
+                "xp": 15, "sats": 30,
+                "hint":  "Fear, outrage, pride, hope, or tribal identity — which one is it?",
+            },
+            # Level 1
+            {
+                "id":    "truth_drill_steelman",
+                "title": "Steelman one opinion you strongly disagree with",
+                "xp": 20, "sats": 40,
+                "hint":  "State it better than its proponents would. Then — and only then — respond.",
+            },
+            # Level 2
+            {
+                "id":    "truth_drill_falsify",
+                "title": "Write the falsification condition for one family belief",
+                "xp": 25, "sats": 50,
+                "hint":  "Complete: 'This belief is WRONG if ___.' If you can't complete it, the belief may not be falsifiable.",
+            },
+            # Level 3 — coherence check
+            {
+                "id":    "truth_drill_coherence",
+                "title": "Check: do your top 3 beliefs about money/risk point the same direction?",
+                "xp": 25, "sats": 50,
+                "hint":  "Contradictory beliefs = incoherence. Which one needs to update?",
+            },
+            # Level 4 — LIVE swarm insight truth-test
+            {
+                "id":    "truth_drill_swarm_live",
+                "title": f"Truth-test today's swarm insight: '{live_insight[:60]}...'",
+                "xp": 30, "sats": 60,
+                "hint":  "Run the 4-step process: emotional hook? steelman? falsification? coherent with your values?",
+                "live_insight": live_insight,
+            },
+            # Level 5 — full real-world process
+            {
+                "id":    "truth_drill_realworld",
+                "title": "Run the full truth-seeking process on one real pending family decision",
+                "xp": 40, "sats": 80,
+                "hint":  "This is your Truth Guardian proof-of-work. Write it up and share with the family.",
+            },
         ]
 
-        # Select appropriate drill based on truth level
         idx = min(truth_level, len(drills) - 1)
         return drills[idx]
+
+    def _get_latest_tier2_insight(self) -> str:
+        """Pull the most recent Tier-2 daughter output from the truth log."""
+        try:
+            if not TRUTH_LOG.exists():
+                return self._get_todays_swarm_topic()
+            lines = TRUTH_LOG.read_text().strip().split("\n")
+            # Find last Tier-2 entry
+            for line in reversed(lines[-100:]):
+                try:
+                    entry = json.loads(line)
+                    if entry.get("tier") == 2 and entry.get("result"):
+                        result = entry["result"]
+                        # Strip evolution prefix if present
+                        if result.startswith("[EVOLUTION]"):
+                            continue
+                        return result[:120]
+                except Exception:
+                    pass
+            # Fall back to last Tier-1
+            for line in reversed(lines[-50:]):
+                try:
+                    entry = json.loads(line)
+                    if entry.get("result") and not entry["result"].startswith("["):
+                        return entry["result"][:120]
+                except Exception:
+                    pass
+        except Exception:
+            pass
+        return self._get_todays_swarm_topic()
 
     def _get_current_wonder(self) -> float:
         try:
