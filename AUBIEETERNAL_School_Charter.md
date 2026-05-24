@@ -193,3 +193,71 @@ If two forks develop conflicting curriculum philosophies, they may:
 
 **9.4 Data Portability**  
 Any family may export their complete learning history, rune progress, and custom lessons in standard JSON format at any time.
+
+---
+
+### **Phase 3: Integration & Safeguards**
+
+#### **10. Integration with the Policyholder-First Reciprocal Insurance Company**
+
+**10.1 Purpose of Integration**  
+The AUBIEETERNAL School is the primary talent and knowledge pipeline for the future Policyholder-First Reciprocal insurance company. Families who complete relevant tracks (especially Building, Legal Literacy, and Bitcoin Basics) will be better prepared to participate in governance, reduce claims through resilience, and understand reciprocal economics.
+
+**10.2 Required Linkages**  
+- The **Sovereign Legal & Insurance Literacy** track (Level 5) must include the full text of the Policyholder-First Reciprocal Charter.  
+- Building track lessons must explicitly connect hurricane hardening and wind mitigation to potential insurance premium reduction (with real-world data examples).  
+- All families completing the Legal Literacy track receive a “Reciprocal Governance Ready” badge and 50 Child Rune fragments.  
+- The school evolution engine may propose insurance-related lessons when family coherence and Bitcoin understanding are high.
+
+**10.3 Data Sharing (Strictly Optional)**  
+Families may optionally share anonymized coherence and completion data with the insurance company for actuarial modeling. This data is never sold and requires explicit per-family consent.
+
+#### **11. Halo Glasses & HUD Usage Rules**
+
+**11.1 Primary Purpose**  
+Halo glasses (when paired) provide real-time polyvagal state detection, coherence metering, and family group review capability. They are a **learning support tool**, not a surveillance or performance monitoring device.
+
+**11.2 Mandatory Safeguards**  
+- Polyvagal state detection must be active before any high-stakes lesson or simulation begins. If the child is in “Mobilized” or “Shutdown” state, the system suggests a break or easier activity.  
+- All HUD data remains local to the family. No data is sent to any external server without explicit consent.  
+- Children have the right to turn off glasses tracking at any time.  
+- Parent Dashboard shows only aggregated family stats — individual child data is private unless the parent chooses to view it.
+
+**11.3 Family Consent**  
+Initial setup of Halo glasses requires a one-time family consent screen explaining exactly what data is collected and how it is used. Consent can be revoked at any time.
+
+#### **12. Amendment Process (Charter Evolution)**
+
+**12.1 How the Charter Itself Can Change**  
+This charter is a living document. Changes require the same high-rigor process used for curriculum:
+
+1. Proposal submitted via the curriculum submission form (marked as “Charter Amendment”)  
+2. Steelman round (minimum 3 strong arguments for and against)  
+3. Swarm coherence evaluation (minimum score 0.88 required)  
+4. 30-day community comment period on LatticeFeed  
+5. Operator approval + 15% family veto threshold (if 15%+ of active families formally object, the amendment is paused for further discussion)
+
+**12.2 Emergency Amendments**  
+In case of critical security, legal, or coherence issues, the operator may issue a temporary emergency patch. This must be reviewed through the normal process within 14 days or it automatically expires.
+
+#### **13. Edge Cases & Safeguards**
+
+**13.1 Fork Independence**  
+Any fork may run a completely different curriculum or even reject the Core Principles. Such forks are considered separate sovereign entities and may not use the “AUBIEETERNAL” name or branding without approval.
+
+**13.2 Low Coherence Intervention**  
+If a family’s average coherence drops below 0.50 for 14 consecutive days, the system offers (but does not force) simplified quests and extra support. No penalties are applied.
+
+**13.3 External Pressure Resistance**  
+The school will never modify content, remove tracks, or alter governance rules in response to external political, corporate, or regulatory pressure without going through the full amendment process and family veto.
+
+**13.4 Data Breach or Loss**  
+In the event of local data loss, families may restore from their last encrypted backup. The system encourages weekly local backups of the `family_data/` directory.
+
+**13.5 Child Rune Disputes**  
+If there is disagreement about whether a milestone qualifies for Child Rune fragments, the operator makes a final ruling after reviewing the lesson completion log and swarm coherence score. The decision is logged publicly in the charter’s amendment history.
+
+**13.6 Sunset Clause**  
+If the school has zero active families for 180 consecutive days, this charter automatically enters a dormant state. Any remaining families may reactivate it through a simple majority vote.
+
+---
