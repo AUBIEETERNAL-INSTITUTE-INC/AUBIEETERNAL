@@ -39,3 +39,12 @@ ollama pull qwen2.5:32b
 
 # Launch
 python3 -B -m streamlit run app.py --server.port=8501
+
+
+---
+
+## License
+
+This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
+
+You are free to fork, modify, and run your own version. Sovereign projects should be forkable.
