@@ -584,6 +584,53 @@ LESSONS = {
         "xp":          50, "rune": "TRUTH•GUARDIAN•RUNE", "min_coherence": 0.75,
     },
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # LAW & ECONOMICS — Where Truths Become Lies (5 levels)
+    # The fine print of civilization itself
+    # Prerequisites: truth-1, legal-1 recommended but not required
+    # ══════════════════════════════════════════════════════════════════════════
+    "law-econ-1": {
+        "title":       "Law & Economics — Level 1: The Noble Lie",
+        "topic":       "How societies and institutions deliberately create comforting myths that serve power. The gap between stated purpose and actual function is where extraction lives.",
+        "steelman":    "What is the strongest argument that some institutional lies are actually necessary for social cohesion, and that revealing them causes more harm than good?",
+        "example":     "'The Federal Reserve exists to maintain price stability.' Research what it actually does. Then ask: who benefits from the gap between the stated mission and the real function?",
+        "age_hint":    "13+",
+        "xp":          22, "rune": "LAWECO•RUNE", "min_coherence": 0.63,
+    },
+    "law-econ-2": {
+        "title":       "Law & Economics — Level 2: Regulatory Capture",
+        "topic":       "Industries write the rules that regulate them. Stigler's theory of regulatory capture: the regulated eventually control the regulator. This is not conspiracy — it is incentive economics.",
+        "steelman":    "What is the strongest argument that regulators are genuinely independent and that regulatory capture is the exception rather than the rule?",
+        "example":     "Insurance lobbyists helped write Florida homeowners insurance law. The result: anti-concurrent causation clauses, sublimits, and appraisal barriers that protect insurers at policyholders' expense. This is regulatory capture in your zip code.",
+        "age_hint":    "14+",
+        "xp":          26, "rune": "LAWECO•RUNE", "min_coherence": 0.66,
+    },
+    "law-econ-3": {
+        "title":       "Law & Economics — Level 3: Narrative Economics",
+        "topic":       "Stories, not data, drive economic behavior and policy. Robert Shiller: viral narratives spread like epidemics and cause boom-bust cycles. Taleb: the narrative fallacy makes us see patterns that aren't there.",
+        "steelman":    "What is the strongest argument that markets are fundamentally rational and that story-driven narratives are just noise that efficient markets quickly correct?",
+        "example":     "The 'housing always goes up' narrative ran for a decade before 2008. Millions of families made irreversible financial decisions based on a story. Find three current economic narratives being pushed in media. Who benefits if people believe them?",
+        "age_hint":    "14+",
+        "xp":          28, "rune": "LAWECO•RUNE", "min_coherence": 0.68,
+    },
+    "law-econ-4": {
+        "title":       "Law & Economics — Level 4: The Law as a Weapon",
+        "topic":       "Legal systems extract value and punish dissent while appearing neutral. SLAPP suits silence critics. Arbitration clauses eliminate court access. Civil asset forfeiture takes property without conviction. The law can be both shield and sword — knowing the difference is survival.",
+        "steelman":    "What is the strongest argument that the legal system is fundamentally fair, that abuses are rare exceptions, and that most people have meaningful access to justice?",
+        "example":     "An insurance company denies a $40,000 hurricane claim. The policy has an arbitration clause (page 14, clause 47B). You cannot sue. Your only option is a private arbitrator paid by the insurer. This is legal architecture designed as extraction. You learned to spot the clause in Legal Literacy L3. Now you know why it exists.",
+        "age_hint":    "15+",
+        "xp":          32, "rune": "LAWECO•ETERNAL•RUNE", "min_coherence": 0.70,
+    },
+    "law-econ-5": {
+        "title":       "Law & Economics — Level 5 (Master): Designing Better Systems",
+        "topic":       "How to build or reform legal and economic systems that resist capture and prioritize truth over power. Bitcoin as a case study in truth-preserving economic design. The Policyholder-First Charter as a case study in anti-extraction governance.",
+        "steelman":    "What is the strongest argument that meaningful institutional reform is impossible because power always corrupts any system over time, and that the only rational response is exit rather than reform?",
+        "example":     "Final project (lite version): Redesign one specific clause from a real insurance policy you own to remove the extraction mechanism. Then (full version): design a broader governance rule for the Policyholder-First Reciprocal Charter. Connect both to Bitcoin's proof-of-work: what makes it capture-resistant? Apply that design principle.",
+        "age_hint":    "15+",
+        "xp":          50, "rune": "LAWECO•GUARDIAN•RUNE", "min_coherence": 0.75,
+    },
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
