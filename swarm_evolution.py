@@ -154,6 +154,10 @@ class EvolutionEngine:
         prompt = f"""You are the AUBIEETERNAL curriculum evolution engine.
 Analyze this family learning data and swarm insights, then propose 3 NEW lessons.
 
+CORE PHILOSOPHY: Truth Education is the meta-skill that makes every other skill more powerful.
+Every proposed lesson should include a "Truth Check" — one question that tests the epistemic
+rigor of the lesson itself. Lessons that cannot survive their own Truth Check should not be proposed.
+
 FAMILY PROGRESS:
 {family_context}
 
@@ -400,6 +404,12 @@ No markdown, no preamble. JSON only."""
                 "hint":  "The swarm found something worth exploring today!",
             })
 
+            # Quest 4 — Truth Drill (always included — core meta-skill)
+            truth_drill = self._get_truth_drill_quest(fid)
+            truth_drill["type"] = "truth_drill"
+            truth_drill["hint"] = "Truth-seeking is the meta-skill that makes every other skill more powerful."
+            quests.append(truth_drill)
+
             all_quests[fid] = {
                 "generated_at": datetime.datetime.now().isoformat(),
                 "family_id":    fid,
@@ -458,11 +468,13 @@ No markdown, no preamble. JSON only."""
         # Evolution rules
         changes = []
 
-        # Rule 1: Low coherence → increase difficulty gating
+        # Rule 1: Low coherence → increase difficulty gating + feature Truth Education
         if avg_coh < 0.60:
-            config["min_coherence_override"] = 0.55  # easier threshold
-            config["quest_xp_multiplier"]    = 1.2   # more XP to motivate
-            changes.append(f"Low avg coherence ({avg_coh:.2f}) → easier thresholds + XP boost")
+            config["min_coherence_override"] = 0.55
+            config["quest_xp_multiplier"]    = 1.2
+            config["featured_track"]         = "truth"  # truth-seeking rebuilds coherence
+            config["suggest_next_track"]     = "truth"
+            changes.append(f"Low avg coherence ({avg_coh:.2f}) → featuring Truth Education + easier thresholds + XP boost")
 
         elif avg_coh > 0.85:
             config["min_coherence_override"] = 0.75  # higher bar for master lessons
@@ -611,9 +623,14 @@ No markdown, no preamble. JSON only."""
                 track_counts[track] = track_counts.get(track, 0) + 1
         return max(track_counts, key=track_counts.get) if track_counts else "courage"
 
+    @staticmethod
+    def _suggest_next_track(self_arg, current: str) -> str:
+        pass  # defined on instance below
+
     def _suggest_next_track(self, current: str) -> str:
         flow = {
-            "courage":       "steelmanning",
+            "courage":       "truth",          # truth-seeking requires courage first
+            "truth":         "steelmanning",   # truth → steelmanning deepens it
             "steelmanning":  "antifragility",
             "antifragility": "simulation",
             "simulation":    "epistemology",
@@ -621,9 +638,39 @@ No markdown, no preamble. JSON only."""
             "bitcoin":       "decentralization",
             "polyvagal":     "stoic",
             "stoic":         "money",
-            "money":         "skin-in-the-game",
+            "money":         "legal",
+            "legal":         "building",
+            "building":      "baking",
         }
         return flow.get(current, "wonder")
+
+    def _get_truth_drill_quest(self, family_id: str) -> dict:
+        """
+        Generate a daily Truth Drill quest based on swarm output.
+        The swarm's latest daughter insights become the truth-testing material.
+        """
+        stats  = self._load_family_stats(family_id)
+        level  = stats.get("level", 1)
+        completed = set(stats.get("lessons_completed", []))
+
+        # Match drill difficulty to family's truth track progress
+        truth_level = sum(1 for k in completed if k.startswith("truth-"))
+
+        drills = [
+            # Level 0-1 drills (no truth track needed)
+            {"id": "truth_drill_headlines", "title": "Find the emotional hook in 3 news headlines today", "xp": 15, "sats": 30},
+            {"id": "truth_drill_steelman", "title": "Steelman one opinion you strongly disagree with", "xp": 20, "sats": 40},
+            # Level 2+ drills
+            {"id": "truth_drill_falsify", "title": "Write the falsification condition for one family belief", "xp": 25, "sats": 50},
+            {"id": "truth_drill_coherence", "title": "Check: do your top 3 beliefs point in the same direction?", "xp": 25, "sats": 50},
+            # Level 4+ drills (swarm-integrated)
+            {"id": "truth_drill_swarm", "title": f"Apply truth-seeking to today's swarm insight: {self._get_todays_swarm_topic()[:50]}", "xp": 30, "sats": 60},
+            {"id": "truth_drill_realworld", "title": "Run the full 4-level truth process on one real family decision", "xp": 40, "sats": 80},
+        ]
+
+        # Select appropriate drill based on truth level
+        idx = min(truth_level, len(drills) - 1)
+        return drills[idx]
 
     def _get_current_wonder(self) -> float:
         try:
