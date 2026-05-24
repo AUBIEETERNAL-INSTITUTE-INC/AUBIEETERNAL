@@ -166,6 +166,10 @@ This Charter is also a **teachable document**. The following curriculum modules 
 | Legal Literacy L3 — Spot Extraction Clauses | 14+ | Anti-concurrent causation, sublimits, arbitration |
 | Legal Literacy L4 — Reciprocal Insurance Basics | 15+ | Subscriber rights, surplus distribution |
 | Legal Literacy L5 — Build Sovereign Governance | 16+ | This Charter as a design template |
+| Law & Economics L2 — Regulatory Capture | 14+ | How insurance lobbyists wrote the law governing your claim |
+| Law & Economics L3 — Narrative Economics | 14+ | Why "housing always goes up" and other stories drive policy |
+| Law & Economics L4 — The Law as a Weapon | 15+ | SLAPP suits, arbitration clauses, civil asset forfeiture |
+| Law & Economics L5 — Designing Better Systems | 15+ | Redesign extraction mechanisms; connect to Bitcoin's proof-of-work |
 | Building L4 — Insurance & Building Codes | 15+ | Wind mitigation reports, premium impact |
 
 **Teaching principle:** Every provision of this Charter should be explainable to a 13-year-old. If it cannot be explained simply, it is probably hiding something.
@@ -212,6 +216,33 @@ This Charter shall be published as a Nostr event (kind 30023 — long-form conte
 Proposed amendments shall be published as Nostr kind 1 events tagged with `["t", "aubieeternal-charter"]` to enable community comment and coordination across forks.
 
 ---
+
+
+## Appendix C — Law & Economics: Where Truths Become Lies
+
+This Charter exists because legal and economic systems have been systematically captured by interests that profit from policyholder confusion. The following principles, drawn from the AUBIEETERNAL Law & Economics curriculum, inform every provision of this Charter.
+
+### C.1 The Noble Lie Problem
+Many insurance industry practices are justified by comforting myths: "we deny claims to protect all policyholders," "complex language is legally necessary," "regulators protect consumers." Each of these contains partial truth and deliberate distortion. This Charter rejects noble lies and requires plain-English transparency.
+
+### C.2 Regulatory Capture Prevention
+George Stigler's theory of regulatory capture predicts that regulated industries eventually control their regulators. The insurance industry in Florida and other coastal states is a textbook example: industry lobbyists helped draft the anti-concurrent causation clauses, sublimits, and appraisal barriers now embedded in state law.
+
+**This Charter's response:** Subscriber veto rights (Article IV.1), mandatory public compensation disclosure (Article VI), and a ban on related-party transactions (Article VII.1) are direct countermeasures against regulatory capture at the company level.
+
+### C.3 Narrative Economics Awareness
+Robert Shiller demonstrated that economic narratives spread virally and cause real harm. The "insurance protects you" narrative allows extractive products to persist. This Charter fights narrative with transparency: real-time public dashboards (Article VI) make the actual combined ratio visible to every Subscriber every day.
+
+### C.4 The Law as a Tool — Used Both Ways
+Legal mechanisms can extract or protect. The same arbitration clause that traps a policyholder can protect a cooperative from frivolous litigation. This Charter uses legal architecture defensively:
+- Subscriber veto rights as a legal shield against management overreach
+- Plain-English requirements as a legal obligation on the Exchange
+- Independent audit rights as a legal guarantee of transparency
+
+### C.5 Bitcoin as Design Model
+Bitcoin's proof-of-work consensus mechanism is the most successful capture-resistant economic system ever built. The cost of attack exceeds the benefit. This Charter applies the same principle: making extraction more expensive than honest operation through compensation caps, surplus formulas, and real-time public accountability.
+
+**Law & Economics L5 final project:** Students are asked to design one rule for this Charter that prevents extraction. The best proposals will be reviewed for inclusion in future Charter amendments via the Subscriber vote process (Article IX).
 
 ## Steelman This Charter
 
