@@ -6181,3 +6181,176 @@ if "Epistemic Health" in active:
 
     except ImportError as e:
         st.warning(f"family_profiles.py not found: {e}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: HUMANITY IMPACT 🌍
+# ══════════════════════════════════════════════════════════════════════════════
+if "Humanity Impact" in active:
+    st.markdown('<div class="card-title">🌍 HUMANITY IMPACT — Private Truth-Seeking → Public Good</div>', unsafe_allow_html=True)
+
+    try:
+        import sys as _hsys
+        if "/mnt/main/repo" not in _hsys.path: _hsys.path.insert(0, "/mnt/main/repo")
+        from humanity_impact import HumanityImpactMapper as _HIM, HUMANITY_DOMAINS as _HD, IMPACT_LEVELS as _IL
+        _mapper = _HIM(api_key=st.session_state.get("key_xai",""))
+
+        # ── Today's report ────────────────────────────────────────────────────
+        st.markdown("### 📊 Today's Humanity Impact")
+        today_path = _Path(f"/mnt/main/repo/insights/humanity/{_dt.now().strftime('%Y-%m-%d')}.md")
+        if today_path.exists():
+            with st.expander("📄 View today's full impact report", expanded=True):
+                st.markdown(today_path.read_text())
+        else:
+            st.info("No impact report yet today. Reports generate automatically once per day, or click below.")
+
+        if st.button("🌍 Generate Humanity Impact Report Now", key="humanity_gen"):
+            with st.spinner("Mapping swarm insights to humanity problems..."):
+                result = _mapper.run_mapping_cycle(force=True)
+            if result:
+                st.success(f"✅ Mapped {result.get('mappings',0)} insights to humanity domains!")
+                st.rerun()
+            else:
+                st.warning("Not enough swarm insights yet. Let the swarm run longer.")
+
+        st.divider()
+
+        # ── 30-day summary ────────────────────────────────────────────────────
+        st.markdown("### 📈 30-Day Impact Summary")
+        summary = _mapper.get_impact_summary(30)
+        total   = summary.get("total_mappings", 0)
+
+        if total > 0:
+            hc1,hc2,hc3 = st.columns(3)
+            with hc1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00cfff;">{total}</div><div class="stat-lbl">Insights Mapped</div></div>', unsafe_allow_html=True)
+            with hc2:
+                top = summary.get("top_domain","none")
+                top_label = list(_HD.get(top,"General").split(" —"))[0]
+                st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#a020f0;font-size:0.85rem;">{top_label[:15]}</div><div class="stat-lbl">Top Domain</div></div>', unsafe_allow_html=True)
+            with hc3:
+                global_count = summary.get("impact_levels",{}).get("global",0)
+                st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00ff88;">{global_count}</div><div class="stat-lbl">Global Insights</div></div>', unsafe_allow_html=True)
+
+            st.markdown("**Domain breakdown:**")
+            for domain, label in _HD.items():
+                count = summary.get("domains",{}).get(domain,0)
+                if count > 0:
+                    pct = int(count / total * 100)
+                    st.markdown(
+                        f'<div style="margin-bottom:4px;">'
+                        f'<span style="color:#8899bb;font-size:0.78rem;">{label.split(" —")[0]}</span>'
+                        f'<div class="xp-bar-bg" style="height:6px;margin-top:2px;">'
+                        f'<div style="height:100%;border-radius:20px;background:#a020f0;width:{pct}%;"></div></div>'
+                        f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+        st.markdown("### 🌐 Scale of Impact")
+        families = max(1, total // 5)
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #00cfff;">'
+            f'<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;">COMPOUNDING REACH</div>'
+            f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:8px;line-height:2;">'
+            f'Your family: {total} insights mapped<br>'
+            f'At 100 families: {total * 100:,} insights · {total * 100 * 10:,} people reached<br>'
+            f'At 10,000 families: {total * 10000:,} insights · {total * 10000 * 10:,} people reached<br>'
+            f'This is how private truth-seeking becomes public good.'
+            f'</div></div>', unsafe_allow_html=True)
+
+    except ImportError as e:
+        st.warning(f"humanity_impact.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: CERTIFICATIONS 🎓 — Sovereign Epistemic Credentials
+# ══════════════════════════════════════════════════════════════════════════════
+if "Certifications" in active:
+    st.markdown('<div class="card-title">🎓 SOVEREIGN EPISTEMIC CERTIFICATIONS — Earned, Not Tested</div>', unsafe_allow_html=True)
+
+    try:
+        from sovereign_certification import CertificationEngine as _CE
+        _cert_engine = _CE()
+
+        # Check for new certs on page load
+        newly_earned = _cert_engine.check_and_award(_fid)
+        if newly_earned:
+            for cert in newly_earned:
+                st.balloons()
+                st.success(f"🎓 NEW CERTIFICATION: {cert['emoji']} {cert['title']} — +{cert['xp_bonus']} XP!")
+
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #a020f0;">
+            <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">ABOUT SOVEREIGN CERTS</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.6;">
+            These credentials are earned through demonstrated epistemic rigor — not tests or grades.
+            Each certification is publishable to Nostr and permanently linked to your family's proof-of-work.
+            They are portable, uncensorable, and owned entirely by you.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.divider()
+
+        # ── All certifications progress ───────────────────────────────────────
+        st.markdown("### 🏆 All Certifications")
+        all_progress = _cert_engine.get_all_progress(_fid)
+
+        for item in all_progress:
+            cert     = item["cert"]
+            earned   = item["earned"]
+            progress = item["progress"]
+            color    = "#00ff88" if earned else ("#a020f0" if progress > 50 else "#445577")
+
+            with st.expander(
+                f"{cert['emoji']} {cert['title']} {'✅' if earned else f'({progress}%)'} — +{cert['xp_bonus']} XP",
+                expanded=earned
+            ):
+                st.markdown(f'<div style="color:{color};font-size:0.82rem;">{cert["description"]}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">On-chain rune: {cert["rune"]}</div>', unsafe_allow_html=True)
+
+                if not earned:
+                    st.markdown(f'<div class="xp-bar-bg" style="margin-top:8px;"><div class="xp-bar-fill" style="width:{progress}%;"></div></div>', unsafe_allow_html=True)
+                    st.caption(f"{progress}% complete")
+
+                if earned:
+                    # Nostr credential export
+                    if st.button(f"📡 Export to Nostr", key=f"cert_nostr_{cert['id']}"):
+                        nostr_event = _cert_engine.generate_nostr_credential(_fid, cert)
+                        st.code(json.dumps(nostr_event, indent=2), language="json")
+                        st.caption("Copy this event and publish via your Nostr client or the Nostr Bridge tab.")
+
+        st.divider()
+
+        # ── Next certification ────────────────────────────────────────────────
+        st.markdown("### 🎯 Next Certification")
+        next_cert = _cert_engine.get_next_certification(_fid)
+        if next_cert:
+            cert  = next_cert["cert"]
+            prog  = int(next_cert["progress"] * 100)
+            st.markdown(
+                f'<div class="card" style="border:2px solid #a020f0;">'
+                f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.88rem;">'
+                f'{cert["emoji"]} {cert["title"]} — {prog}% complete</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:6px;">{cert["description"]}</div>'
+                f'<div class="xp-bar-bg" style="margin-top:8px;">'
+                f'<div class="xp-bar-fill" style="width:{prog}%;"></div></div>'
+                f'</div>', unsafe_allow_html=True)
+
+        # ── Global certification stats ────────────────────────────────────────
+        st.divider()
+        st.markdown("### 🌐 Global Certification Vision")
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #00ff88;">
+            <div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.78rem;">THE SOVEREIGN STANDARD</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            🦅 Sovereign Thinker = 10 tracks + 128 Rune fragments<br>
+            🌍 Humanity Steward = 18 tracks + humanity contribution<br>
+            📡 All certs publishable to Nostr — portable and uncensorable<br>
+            ₿ Eventually: Rune inscription for highest tier certifications<br>
+            <br>
+            <em>This is the new credential. Not a diploma. Not a test score.<br>
+            Proof of epistemic work, anchored in Bitcoin and verifiable by anyone.</em>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    except ImportError as e:
+        st.warning(f"sovereign_certification.py not found: {e}")
