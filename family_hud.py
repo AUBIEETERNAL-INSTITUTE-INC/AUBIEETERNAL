@@ -811,6 +811,141 @@ LESSONS = {
         "xp":          50, "rune": "AI•GUARDIAN•RUNE", "min_coherence": 0.72,
     },
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # HEALTH SOVEREIGNTY (5 levels) — Medical literacy for families
+    # ══════════════════════════════════════════════════════════════════════════
+    "health-1": {
+        "title":       "Health Sovereignty — Level 1: How to Read a Study",
+        "topic":       "Most health headlines are wrong. Learn to read the actual study: sample size, control groups, funding source, effect size, correlation vs causation.",
+        "steelman":    "What is the strongest argument that most people should just trust medical consensus rather than trying to interpret studies themselves?",
+        "example":     "'Red wine is good for your heart' was based on studies funded by wine industry groups with tiny samples and confounding variables. The headline survived. The evidence didn't. Learn to check the funding source before the conclusion.",
+        "age_hint":    "13+",
+        "xp":          22, "rune": "HEALTH•RUNE", "min_coherence": 0.62,
+    },
+    "health-2": {
+        "title":       "Health Sovereignty — Level 2: The Pharmaceutical Incentive Structure",
+        "topic":       "Drug companies profit from ongoing treatment, not cures. Understanding this incentive structure changes how you evaluate medical advice and pharmaceutical marketing.",
+        "steelman":    "What is the strongest argument that pharmaceutical companies, despite profit incentives, still produce genuinely life-saving medicines and that their incentive structure is mostly aligned with patient health?",
+        "example":     "Statins became the most prescribed drug in history. Later meta-analyses showed they provided marginal benefit for low-risk patients while having real side effects. The FDA, funded partly by drug companies, approved them for expanded use. Follow the incentive.",
+        "age_hint":    "14+",
+        "xp":          26, "rune": "HEALTH•RUNE", "min_coherence": 0.65,
+    },
+    "health-3": {
+        "title":       "Health Sovereignty — Level 3: Food as Information",
+        "topic":       "Food is not just fuel. Every meal is a set of instructions to your cells. Learn the basics of nutritional science and how food industry lobbying corrupted the dietary guidelines families follow.",
+        "steelman":    "What is the strongest argument that the USDA dietary guidelines are scientifically sound and that concerns about food industry influence are overblown conspiracy thinking?",
+        "example":     "The food pyramid was designed with significant input from the grain and sugar industries. The low-fat diet craze was based on flawed studies. Ancel Keys' Seven Countries Study cherry-picked data. Your family's food choices were shaped by captured science.",
+        "age_hint":    "13+",
+        "xp":          26, "rune": "HEALTH•RUNE", "min_coherence": 0.65,
+    },
+    "health-4": {
+        "title":       "Health Sovereignty — Level 4: Mental Health & Medicalization",
+        "topic":       "The line between normal human struggle and clinical disorder keeps moving. Learn to distinguish genuine mental health treatment from the medicalization of ordinary life experiences.",
+        "steelman":    "What is the strongest argument that expanding mental health diagnoses and pharmaceutical treatment helps more people than it harms, and that skepticism discourages people from seeking needed help?",
+        "example":     "The DSM has grown from 106 diagnoses in 1952 to 374 today. Each new diagnosis creates a market. This does not mean mental illness is not real — it means the diagnostic framework is influenced by the same capture dynamics as every other regulated industry.",
+        "age_hint":    "14+",
+        "xp":          28, "rune": "HEALTH•RUNE", "min_coherence": 0.68,
+    },
+    "health-5": {
+        "title":       "Health Sovereignty — Level 5 (Master): Your Family Health Protocol",
+        "topic":       "Build a sovereign family health framework: evidence-based, incentive-aware, locally adapted. Know when to trust the system and when to question it.",
+        "steelman":    "What is the strongest argument that building a custom family health protocol based on your own research is dangerous and irresponsible without medical training?",
+        "example":     "Final project: Choose one family health decision currently pending (diet change, medication, screening, supplement). Apply the full sovereign process: find the original studies, check funding sources, steelman both sides, identify what would change your mind. Document your reasoning.",
+        "age_hint":    "15+",
+        "xp":          50, "rune": "HEALTH•GUARDIAN•RUNE", "min_coherence": 0.72,
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # CLIMATE & ENVIRONMENTAL LITERACY (5 levels)
+    # Science-based, incentive-aware, neither denial nor panic
+    # ══════════════════════════════════════════════════════════════════════════
+    "climate-1": {
+        "title":       "Climate & Environment — Level 1: What the Science Actually Says",
+        "topic":       "Separate the scientific consensus from the political and media narrative. The climate science is real. The policy responses are contested. Learn to distinguish them.",
+        "steelman":    "What is the strongest argument that treating climate science and climate policy as separate questions is a rhetorical trick used to delay necessary action?",
+        "example":     "The IPCC reports contain a wide range of scenarios from manageable to catastrophic. Most media coverage focuses only on worst-case scenarios. Most political action focuses on solutions that benefit specific industries. The science deserves better than either.",
+        "age_hint":    "12+",
+        "xp":          22, "rune": "CLIMATE•RUNE", "min_coherence": 0.62,
+    },
+    "climate-2": {
+        "title":       "Climate & Environment — Level 2: Energy Physics & Trade-offs",
+        "topic":       "Every energy source has physics constraints, environmental costs, and geopolitical implications. There are no free solutions. Learn to evaluate energy claims with real numbers.",
+        "steelman":    "What is the strongest argument that renewable energy is now unambiguously superior on cost and environmental impact and that all trade-off analysis is industry-funded delay tactics?",
+        "example":     "Solar panels require mining. Wind turbines require rare earth metals from China. Nuclear produces almost no carbon but faces regulatory capture. Natural gas is cleaner than coal but still burns. Every choice has real costs. Energy numeracy is a sovereignty skill.",
+        "age_hint":    "13+",
+        "xp":          26, "rune": "CLIMATE•RUNE", "min_coherence": 0.65,
+    },
+    "climate-3": {
+        "title":       "Climate & Environment — Level 3: Local Resilience Over Global Panic",
+        "topic":       "The most effective response to environmental risk is local antifragility: hurricane hardening, food sovereignty, water security, energy independence. Via Negativa applied to environmental risk.",
+        "steelman":    "What is the strongest argument that focusing on local resilience distracts from the collective action needed at national and international scales?",
+        "example":     "Your family in a coastal area faces real flood and wind risk. The Paris Agreement does nothing about next hurricane season. A fortified roof, backup water supply, and local food network do. Global coordination and local resilience are not opposites — but one is in your control.",
+        "age_hint":    "12+",
+        "xp":          26, "rune": "CLIMATE•RUNE", "min_coherence": 0.65,
+    },
+    "climate-4": {
+        "title":       "Climate & Environment — Level 4: Environmental Regulatory Capture",
+        "topic":       "Environmental policy is subject to the same capture dynamics as insurance and healthcare. Carbon markets, ESG ratings, and green certifications often serve corporate interests more than environmental health.",
+        "steelman":    "What is the strongest argument that carbon markets and ESG frameworks, despite imperfections, represent the best available mechanisms for reducing environmental harm at scale?",
+        "example":     "Carbon offset markets allow companies to buy credits for forests that were never at risk of being cut down. ESG scores are produced by companies paid by the corporations they rate. The incentive structure shapes the outcome. Apply Stigler's theory.",
+        "age_hint":    "14+",
+        "xp":          28, "rune": "CLIMATE•RUNE", "min_coherence": 0.68,
+    },
+    "climate-5": {
+        "title":       "Climate & Environment — Level 5 (Master): Sovereign Environmental Stewardship",
+        "topic":       "How to be a genuine environmental steward without being captured by either denial or narrative panic. Measure your actual impact. Build real local resilience. Act with skin in the game.",
+        "steelman":    "What is the strongest argument that individual and family-level environmental action is statistically meaningless and that only systemic political change matters?",
+        "example":     "Final project: Conduct a real audit of your family's most significant environmental risks (flood zone, air quality, food supply chain, water source). For each: what is the actual scientific risk level? What local action reduces it? What is outside your control? Build a 1-year antifragility plan.",
+        "age_hint":    "15+",
+        "xp":          50, "rune": "CLIMATE•GUARDIAN•RUNE", "min_coherence": 0.72,
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # FINANCIAL INDEPENDENCE (5 levels)
+    # Beyond Bitcoin — full family financial sovereignty
+    # ══════════════════════════════════════════════════════════════════════════
+    "finance-1": {
+        "title":       "Financial Independence — Level 1: The Wealth Equation",
+        "topic":       "Wealth is not income. Wealth is the difference between what you earn, what you spend, and how you deploy the difference. Most people never learn this distinction.",
+        "steelman":    "What is the strongest argument that focusing on wealth-building is selfish and that a just society would redistribute wealth rather than teaching individuals to accumulate it?",
+        "example":     "A family earning $200,000 and spending $195,000 is less wealthy than a family earning $60,000 and spending $40,000 over time. The wealth gap is not just about income — it is about the gap between income and consumption, and whether the surplus is deployed productively.",
+        "age_hint":    "12+",
+        "xp":          22, "rune": "FINANCE•RUNE", "min_coherence": 0.62,
+    },
+    "finance-2": {
+        "title":       "Financial Independence — Level 2: Inflation & Time",
+        "topic":       "Every dollar saved in a bank account loses purchasing power. Learn what inflation actually is, who it benefits, and how to think about preserving value across time.",
+        "steelman":    "What is the strongest argument that moderate inflation is actually beneficial for economic growth and that concerns about inflation are primarily a wealthy-class complaint?",
+        "example":     "The Federal Reserve targets 2% inflation annually. Over 30 years that reduces purchasing power by more than 45%. A family that saved $100,000 in 1994 has $55,000 of real purchasing power today. Bitcoin's fixed supply is a direct response to this mechanism.",
+        "age_hint":    "13+",
+        "xp":          24, "rune": "FINANCE•RUNE", "min_coherence": 0.63,
+    },
+    "finance-3": {
+        "title":       "Financial Independence — Level 3: The Debt Trap",
+        "topic":       "Consumer debt is the most effective wealth transfer mechanism ever designed. Learn how interest compounds against you, how credit scoring benefits lenders, and how to escape.",
+        "steelman":    "What is the strongest argument that debt, including consumer debt and mortgages, is a legitimate tool that enables families to improve their lives faster than saving would allow?",
+        "example":     "A $30,000 car financed at 7% over 5 years costs $35,600. A $400,000 mortgage at 6.5% over 30 years costs $909,000. Credit card debt at 24% doubles every 3 years. The financial system is designed to extract. Know the math before you sign.",
+        "age_hint":    "13+",
+        "xp":          26, "rune": "FINANCE•RUNE", "min_coherence": 0.65,
+    },
+    "finance-4": {
+        "title":       "Financial Independence — Level 4: Building Multiple Income Streams",
+        "topic":       "A single income stream is a single point of failure. Antifragile family finances require diversification: earned income, skills income, asset income, and ideally one income source that scales without your time.",
+        "steelman":    "What is the strongest argument that most people do not have the capital or skills to build multiple income streams and that encouraging it creates false hope and distraction from political solutions?",
+        "example":     "The AUBIEETERNAL curriculum itself is an asset. Skills in building, baking, legal literacy, and media analysis can generate income. Bitcoin held in self-custody generates no yield but cannot be inflated. A 4-income-stream family is antifragile. A 1-income family is fragile.",
+        "age_hint":    "14+",
+        "xp":          28, "rune": "FINANCE•RUNE", "min_coherence": 0.68,
+    },
+    "finance-5": {
+        "title":       "Financial Independence — Level 5 (Master): The Sovereign Family Balance Sheet",
+        "topic":       "Build a real family balance sheet: assets, liabilities, income streams, insurance coverage, Bitcoin holdings, and a 10-year sovereignty plan. This is the financial equivalent of the Truth Education master project.",
+        "steelman":    "What is the strongest argument that personal financial planning is a distraction from systemic economic injustice that can only be solved through collective political action?",
+        "example":     "Final project: Build your family's complete sovereign balance sheet. Assets (home equity, savings, Bitcoin, skills, relationships). Liabilities (mortgage, debt, insurance gaps). Income streams (count and rate each one). Identify the single biggest financial vulnerability and design one specific action to reduce it this year.",
+        "age_hint":    "15+",
+        "xp":          50, "rune": "FINANCE•GUARDIAN•RUNE", "min_coherence": 0.72,
+    },
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
