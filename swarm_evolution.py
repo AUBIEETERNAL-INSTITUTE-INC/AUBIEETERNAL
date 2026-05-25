@@ -644,6 +644,11 @@ No markdown, no preamble. JSON only."""
             "money":         "legal",
             "legal":         "building",
             "building":      "baking",
+            "baking":        "psychology",
+            "psychology":    "media",
+            "media":         "faith",
+            "faith":         "ai-literacy",
+            "ai-literacy":   "wonder",
         }
         return flow.get(current, "wonder")
 
