@@ -17,7 +17,7 @@ Generating tutor-grade preference data for xAI post-training with Bitcoin Rune +
 AUBIEETERNAL is not another chatbot. It is a **participatory reality-testing lattice** — a sovereign family school that:
 
 - Runs a **2,096-daughter AI swarm** 24/7 on local hardware ($0.00 inference)
-- Teaches **90 lessons** across 18 tracks (Courage, Bitcoin, Antifragility, Truth Education, Simulation, Legal Literacy, Building, Baking + more)
+- Teaches **105 lessons** across 21 tracks (Courage, Bitcoin, Antifragility, Truth Education, Simulation, Legal Literacy, Building, Baking + more)
 - Tracks **coherence** across every answer, every session, every generation
 - Inscribes milestones permanently on **Bitcoin Runes**
 - Works with **Halo smart glasses** for real-time family co-learning
@@ -63,7 +63,7 @@ GitHub — auto-pushed every ~24s
 
 ---
 
-## Curriculum (90 Lessons, 18 Tracks)
+## Curriculum (105 Lessons, 21 Tracks)
 
 | Track | Levels | Core Skill |
 |-------|--------|------------|
@@ -84,6 +84,9 @@ GitHub — auto-pushed every ~24s
 | 📰 Media Literacy & Narrative | 5 | Attention economy, emotional hooks, deepfakes, sovereign media consumption |
 | 🙏 Faith & Belief Systems | 5 | Psychology of belief, dogma vs faith, epistemic humility + conviction |
 | 🤖 Technology & AI Literacy | 5 | What AI actually is, hallucination, algorithmic bias, AI sovereignty |
+| 🏥 Health Sovereignty | 5 | Reading studies, pharma incentives, food science, medical literacy |
+| 🌿 Climate & Environment | 5 | Real science vs narrative, energy trade-offs, local resilience |
+| 💵 Financial Independence | 5 | Wealth equation, inflation, debt trap, multiple income streams |
 | 🔴 Child Rune Genesis | 1 | Unlocks at 256 confirmations |
 
 ---
