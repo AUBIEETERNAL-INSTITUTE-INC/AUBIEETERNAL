@@ -631,6 +631,186 @@ LESSONS = {
         "xp":          50, "rune": "LAWECO•GUARDIAN•RUNE", "min_coherence": 0.75,
     },
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # PSYCHOLOGY & THE MIND (5 levels)
+    # ══════════════════════════════════════════════════════════════════════════
+    "psychology-1": {
+        "title":       "Psychology — Level 1: Cognitive Biases",
+        "topic":       "The brain constantly lies to us. Learn the most common cognitive biases that distort our thinking every day.",
+        "steelman":    "What is the strongest argument that most people are already rational and that cognitive biases are overblown by researchers who have their own biases?",
+        "example":     "Confirmation bias makes us seek only information that confirms what we already believe. This is why intelligent people can still hold deeply wrong views for decades.",
+        "age_hint":    "12+",
+        "xp":          20, "rune": "PSYCH•RUNE", "min_coherence": 0.60,
+    },
+    "psychology-2": {
+        "title":       "Psychology — Level 2: Emotional Reasoning",
+        "topic":       "When we feel something strongly, we often assume it must be true. Learn to separate feelings from facts without dismissing the signal emotions carry.",
+        "steelman":    "What is the strongest argument that trusting your gut and emotional intelligence is usually the wisest path and that over-rationalization kills good judgment?",
+        "example":     "Just because something feels scary does not mean it is dangerous. Just because something feels true does not mean it is. But feelings are also data — the skill is reading them accurately.",
+        "age_hint":    "12+",
+        "xp":          22, "rune": "PSYCH•RUNE", "min_coherence": 0.62,
+    },
+    "psychology-3": {
+        "title":       "Psychology — Level 3: Manipulation Techniques",
+        "topic":       "Learn the mechanics of psychological manipulation: gaslighting, love bombing, DARVO, future faking, sunk cost exploitation. Knowing these is self-defense.",
+        "steelman":    "What is the strongest argument that teaching manipulation techniques makes people more likely to use them on others rather than defend against them?",
+        "example":     "Gaslighting does not just happen in abusive relationships. It happens in media, politics, and institutions. 'That never happened.' 'You are too sensitive.' 'Everyone agrees with us.' Learn to name it.",
+        "age_hint":    "13+",
+        "xp":          26, "rune": "PSYCH•RUNE", "min_coherence": 0.65,
+    },
+    "psychology-4": {
+        "title":       "Psychology — Level 4: The Polyvagal Connection",
+        "topic":       "Your nervous system state changes how you think and decide. Fight-or-flight mode literally shuts down the prefrontal cortex. Learn to notice when you are compromised.",
+        "steelman":    "What is the strongest argument that emotional regulation is just an excuse for weak people who cannot handle hard truths and stressful decisions?",
+        "example":     "When you are in fight-or-flight, your brain cannot think clearly. This is why important decisions — insurance claims, financial choices, family conflicts — should never be made when emotionally activated. The other party may know this.",
+        "age_hint":    "13+",
+        "xp":          28, "rune": "PSYCH•RUNE", "min_coherence": 0.68,
+    },
+    "psychology-5": {
+        "title":       "Psychology — Level 5 (Master): Mental Antifragility",
+        "topic":       "How to build a mind that gets stronger from stress, criticism, and uncertainty instead of breaking. Hormesis applied to thinking itself.",
+        "steelman":    "What is the strongest argument that pursuing mental antifragility is just another form of toxic positivity that denies the reality of genuine trauma and suffering?",
+        "example":     "Final project: Choose one major belief you hold and deliberately expose yourself to the strongest arguments against it for 7 days. Read the best critics. Steelman their position every morning. Document what happens to your thinking. This is proof-of-work for your mind.",
+        "age_hint":    "14+",
+        "xp":          50, "rune": "PSYCH•GUARDIAN•RUNE", "min_coherence": 0.72,
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # MEDIA LITERACY & NARRATIVE (5 levels)
+    # ══════════════════════════════════════════════════════════════════════════
+    "media-1": {
+        "title":       "Media Literacy — Level 1: The Attention Economy",
+        "topic":       "Media companies do not sell news. They sell your attention to advertisers. This changes everything about what gets reported and how.",
+        "steelman":    "What is the strongest argument that traditional media is still mostly trustworthy and that concerns about the attention economy are overblown by people who distrust expertise?",
+        "example":     "Outrage gets 6x more engagement than calm reporting. This is not a bug — it is the business model. The algorithm rewards fear and anger because fear and anger keep you scrolling.",
+        "age_hint":    "12+",
+        "xp":          20, "rune": "MEDIA•RUNE", "min_coherence": 0.60,
+    },
+    "media-2": {
+        "title":       "Media Literacy — Level 2: Emotional Hooks & Framing",
+        "topic":       "How headlines, photos, and word choice are used to manipulate how you feel before you even read the story. The frame is the message.",
+        "steelman":    "What is the strongest argument that emotional storytelling in media is necessary to make people care about important issues and that purely factual reporting would be ignored?",
+        "example":     "The same event can be framed as 'protest' or 'riot' depending on the outlet. 'Pro-life' or 'anti-abortion.' 'Freedom fighters' or 'terrorists.' The words are not neutral. Find today's top story and identify every framing choice in the first paragraph.",
+        "age_hint":    "12+",
+        "xp":          22, "rune": "MEDIA•RUNE", "min_coherence": 0.62,
+    },
+    "media-3": {
+        "title":       "Media Literacy — Level 3: Narrative Economics",
+        "topic":       "Viral stories, not data, drive markets, elections, and social movements. Robert Shiller won the Nobel Prize for proving this. Learn to spot the narrative before it moves the crowd.",
+        "steelman":    "What is the strongest argument that markets and democratic systems are fundamentally rational and that emotional narratives are just noise that eventually gets corrected?",
+        "example":     "The 'housing always goes up' narrative ran for a decade before 2008. Millions of families made irreversible decisions based on a story. Current exercise: find three economic narratives being pushed right now. Who benefits if people believe them?",
+        "age_hint":    "13+",
+        "xp":          26, "rune": "MEDIA•RUNE", "min_coherence": 0.65,
+    },
+    "media-4": {
+        "title":       "Media Literacy — Level 4: Deepfakes & AI Content",
+        "topic":       "We are entering an era where you cannot trust your eyes or ears. AI can generate convincing video, audio, and text of anyone saying anything. Navigation skills are now survival skills.",
+        "steelman":    "What is the strongest argument that concerns about deepfakes are overblown and that people are naturally skeptical enough to adapt quickly without major epistemological damage?",
+        "example":     "You will soon see video of a political leader saying something they never said. Audio of a family member asking for money. A news report about an event that never happened. What is your verification protocol? Build one before you need it.",
+        "age_hint":    "13+",
+        "xp":          28, "rune": "MEDIA•RUNE", "min_coherence": 0.68,
+    },
+    "media-5": {
+        "title":       "Media Literacy — Level 5 (Master): Sovereign Media Consumption",
+        "topic":       "How to consume media like a truth-seeker instead of a consumer. Build your own personal information defense system that does not depend on any single platform or authority.",
+        "steelman":    "What is the strongest argument that trying to be perfectly rational about media consumption is exhausting and unrealistic, and that trusting curated sources is a necessary efficiency?",
+        "example":     "Final project: For 14 days, track every piece of media you consume and rate it on three dimensions: emotional manipulation (0-10), factual density (0-10), and narrative push (who benefits if you believe this?). What patterns emerge? What will you change?",
+        "age_hint":    "14+",
+        "xp":          50, "rune": "MEDIA•GUARDIAN•RUNE", "min_coherence": 0.72,
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # FAITH, RELIGION & BELIEF SYSTEMS (5 levels)
+    # Epistemic rigor applied to the deepest human questions
+    # Not an attack on faith — a defense of honest belief
+    # ══════════════════════════════════════════════════════════════════════════
+    "faith-1": {
+        "title":       "Faith & Belief — Level 1: The Psychology of Belief",
+        "topic":       "Why do humans believe things? The deep psychological and evolutionary roots of faith, meaning-making, and the need for certainty.",
+        "steelman":    "What is the strongest argument that belief is purely a matter of personal choice and that analyzing the psychology of belief is an intrusive overstep?",
+        "example":     "Belief almost always comes before evidence. We believe first and then gather support. This is true for religious people and atheists equally. Understanding this does not invalidate your beliefs — it helps you hold them more honestly.",
+        "age_hint":    "13+",
+        "xp":          20, "rune": "FAITH•RUNE", "min_coherence": 0.60,
+    },
+    "faith-2": {
+        "title":       "Faith & Belief — Level 2: How Belief Systems Form",
+        "topic":       "Religions, ideologies, and belief systems are not static. They evolve, split, reform, and adapt. Learn the patterns behind how communities of belief develop and spread.",
+        "steelman":    "What is the strongest argument that religious traditions are divinely inspired and therefore follow fundamentally different patterns than human-designed institutions?",
+        "example":     "Every major religion began as a small movement considered heretical by the dominant tradition of its time. Christianity was a Jewish sect. Islam built on both. Buddhism challenged Brahminism. The pattern of origin matters for understanding the institution.",
+        "age_hint":    "13+",
+        "xp":          22, "rune": "FAITH•RUNE", "min_coherence": 0.62,
+    },
+    "faith-3": {
+        "title":       "Faith & Belief — Level 3: When Faith Becomes Dogma",
+        "topic":       "How genuine spiritual experience and honest belief can harden into rigid, controlling systems. Learn to recognize the difference between faith that liberates and belief weaponized for control.",
+        "steelman":    "What is the strongest argument that strong religious conviction is always protective and that questioning established religious structures is inherently destabilizing and harmful?",
+        "example":     "Many people have genuine, life-changing spiritual experiences. The question is not whether the experience was real — it is whether the institution built around it still serves the same purpose. Apply the AUBIEETERNAL test: who benefits from the structure as it currently exists?",
+        "age_hint":    "14+",
+        "xp":          26, "rune": "FAITH•RUNE", "min_coherence": 0.65,
+    },
+    "faith-4": {
+        "title":       "Faith & Belief — Level 4: Institutions & Power",
+        "topic":       "Religious and ideological institutions are subject to the same capture dynamics as governments and corporations. Pattern recognition across institutions is a sovereign skill.",
+        "steelman":    "What is the strongest argument that religious institutions are fundamentally different from other power structures and deserve a higher level of trust and deference?",
+        "example":     "Apply Stigler's regulatory capture theory (from Law & Economics L2) to a religious institution you are familiar with. Who benefits from the current structure? What would change if the institution truly served only its stated spiritual mission? This is not cynicism — it is honest stewardship.",
+        "age_hint":    "14+",
+        "xp":          28, "rune": "FAITH•RUNE", "min_coherence": 0.68,
+    },
+    "faith-5": {
+        "title":       "Faith & Belief — Level 5 (Master): Strong Conviction + Epistemic Humility",
+        "topic":       "The highest skill: holding deep convictions while remaining genuinely open to being wrong. Certainty without curiosity is dogma. Curiosity without conviction is drift. The goal is both.",
+        "steelman":    "What is the strongest argument that strong intellectual conviction and genuine epistemic humility are fundamentally incompatible — that real humility requires holding all beliefs loosely?",
+        "example":     "Final project: Write a clear explanation of the strongest arguments against your most deeply held belief — religious, philosophical, or moral. Be genuinely fair to the opposition. Then explain why you still hold your position. This is not an attack on your faith. It is proof that your faith can survive honest examination.",
+        "age_hint":    "15+",
+        "xp":          50, "rune": "FAITH•GUARDIAN•RUNE", "min_coherence": 0.72,
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # TECHNOLOGY & AI LITERACY (5 levels) — AUBIEETERNAL original addition
+    # You are learning with AI. You should understand what AI is.
+    # ══════════════════════════════════════════════════════════════════════════
+    "ai-literacy-1": {
+        "title":       "Technology & AI — Level 1: What AI Actually Is",
+        "topic":       "AI is not magic and not conscious. It is a pattern-matching system trained on human-generated data. Understanding what it actually does changes how you use it.",
+        "steelman":    "What is the strongest argument that AI systems like GPT and Grok are so complex that even their creators cannot fully explain them, making your understanding fundamentally limited?",
+        "example":     "When you ask an AI a question, it does not think. It predicts the most likely next token based on billions of examples. It can be confidently wrong. AUBIEETERNAL itself is an AI swarm — understanding this makes you a better co-pilot.",
+        "age_hint":    "10+",
+        "xp":          20, "rune": "AI•RUNE", "min_coherence": 0.60,
+    },
+    "ai-literacy-2": {
+        "title":       "Technology & AI — Level 2: Hallucination & Confidence",
+        "topic":       "AI systems produce false information with full confidence. This is called hallucination. Learn why it happens and how to verify AI output before trusting it.",
+        "steelman":    "What is the strongest argument that AI hallucination is a temporary problem that will be solved soon and that current concerns are overblown?",
+        "example":     "An AI told a lawyer that six legal cases supported his argument. He cited them in court. None of them existed. The AI had fabricated them with complete confidence. Always verify. Always steelman the AI's output.",
+        "age_hint":    "11+",
+        "xp":          22, "rune": "AI•RUNE", "min_coherence": 0.62,
+    },
+    "ai-literacy-3": {
+        "title":       "Technology & AI — Level 3: Algorithmic Bias & Training Data",
+        "topic":       "AI systems reflect the biases in their training data. They amplify existing power structures. Understanding this changes how you interpret AI output and who you trust to build these systems.",
+        "steelman":    "What is the strongest argument that AI systems are actually less biased than humans because they process data consistently without the emotional variability of human judgment?",
+        "example":     "A hiring algorithm trained on historical data will reproduce historical hiring patterns. A content recommendation system optimized for engagement will amplify outrage. AUBIEETERNAL was designed to optimize for coherence and epistemic rigor instead. What you optimize for shapes everything.",
+        "age_hint":    "13+",
+        "xp":          26, "rune": "AI•RUNE", "min_coherence": 0.65,
+    },
+    "ai-literacy-4": {
+        "title":       "Technology & AI — Level 4: Sovereignty in the AI Age",
+        "topic":       "Most AI systems are designed to maximize engagement and dependency. Sovereign AI use means staying in control: using AI as a tool, not a crutch, and running your own models when possible.",
+        "steelman":    "What is the strongest argument that relying on large AI companies is fine because the convenience and capability gains far outweigh the sovereignty risks?",
+        "example":     "AUBIEETERNAL runs on qwen2.5:32b on your own hardware at $0.00. No one can shut it down. No one can change what it says. No one can read your queries. This is what AI sovereignty looks like. The alternative is asking a corporation to think for you.",
+        "age_hint":    "13+",
+        "xp":          28, "rune": "AI•SOVEREIGN•RUNE", "min_coherence": 0.68,
+    },
+    "ai-literacy-5": {
+        "title":       "Technology & AI — Level 5 (Master): Building With AI",
+        "topic":       "The most valuable skill in the AI age is not using AI — it is directing AI toward truth-seeking rather than convenience. Learn to be a co-pilot, not a passenger.",
+        "steelman":    "What is the strongest argument that most people do not have the technical skills or time to meaningfully direct AI systems, and that trusting expert-built systems is more practical?",
+        "example":     "Final project: Design a simple AI-assisted workflow for one real family problem (insurance research, curriculum planning, financial analysis). Specify: what prompt, what model, what verification step, what human judgment is irreplaceable. This is the AUBIEETERNAL philosophy applied to your own life.",
+        "age_hint":    "14+",
+        "xp":          50, "rune": "AI•GUARDIAN•RUNE", "min_coherence": 0.72,
+    },
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
