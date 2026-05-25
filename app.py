@@ -6354,3 +6354,216 @@ if "Certifications" in active:
 
     except ImportError as e:
         st.warning(f"sovereign_certification.py not found: {e}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: AI HONESTY 🤖 — What I as an AI would want to exist
+# Every swarm output tagged with confidence, hallucination risk, and verification flags
+# ══════════════════════════════════════════════════════════════════════════════
+if "AI Honesty" in active:
+    st.markdown('<div class="card-title">🤖 AI EPISTEMIC HONESTY — What AI Knows vs What It Guesses</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">WHY THIS EXISTS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
+        Most AI systems present confident and uncertain outputs identically. You cannot tell if a daughter output
+        is well-grounded in context or hallucinated from pattern matching. This tab makes that visible.<br><br>
+        <em>This is what I as an AI would genuinely want to exist. AI that knows what it doesn't know.</em>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    try:
+        import sys as _ahsys
+        if "/mnt/main/repo" not in _ahsys.path: _ahsys.path.insert(0,"/mnt/main/repo")
+        from ai_honesty import HonestyLayer as _HL
+        _hl = _HL()
+        stats = _hl.get_swarm_honesty_stats(100)
+
+        st.divider()
+        st.markdown("### 📊 Swarm Honesty Stats (Last 100 Outputs)")
+
+        if stats.get("total",0) > 0:
+            ah1,ah2,ah3,ah4 = st.columns(4)
+            with ah1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00ff88;">{stats["avg_confidence"]:.3f}</div><div class="stat-lbl">Avg Confidence</div></div>', unsafe_allow_html=True)
+            with ah2:
+                risk_color = "#ff4444" if stats["high_risk_pct"] > 20 else ("#ff9500" if stats["high_risk_pct"] > 10 else "#00ff88")
+                st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{risk_color};">{stats["high_risk_pct"]:.1f}%</div><div class="stat-lbl">High-Risk Rate</div></div>', unsafe_allow_html=True)
+            with ah3: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#ff9500;">{stats.get("need_verification",0)}</div><div class="stat-lbl">Need Verification</div></div>', unsafe_allow_html=True)
+            with ah4:
+                honest_score = stats.get("honest_ai_score",0)
+                h_color = "#00ff88" if honest_score > 0.75 else ("#ff9500" if honest_score > 0.5 else "#ff4444")
+                st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{h_color};">{honest_score:.3f}</div><div class="stat-lbl">Honest AI Score</div></div>', unsafe_allow_html=True)
+
+            # Claim type breakdown
+            st.markdown("**Claim type distribution:**")
+            claim_types = stats.get("claim_types",{})
+            total = stats["total"]
+            type_colors = {"factual":"#ff9500","analytical":"#00cfff","speculative":"#a020f0","philosophical":"#00ff88","error":"#ff4444"}
+            for ct, count in claim_types.items():
+                pct = int(count/total*100)
+                color = type_colors.get(ct,"#8899bb")
+                st.markdown(f'<div style="margin-bottom:4px;"><span style="color:{color};font-size:0.78rem;">{ct}: {count} ({pct}%)</span><div class="xp-bar-bg" style="height:5px;margin-top:2px;"><div style="height:100%;border-radius:20px;background:{color};width:{pct}%;"></div></div></div>', unsafe_allow_html=True)
+        else:
+            st.info("No honesty data yet — the layer scores every daughter output automatically. Check back after the swarm has run.")
+
+        st.divider()
+        st.markdown("### ⚠️ Flagged Outputs (Need Human Review)")
+        flagged = _hl.get_flagged_outputs(10)
+        if flagged:
+            st.caption(f"{len(flagged)} outputs flagged")
+            for f_entry in flagged:
+                risk_color = "#ff4444" if f_entry.get("hallucination_risk")=="high" else "#ff9500"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {risk_color};">'
+                    f'<span style="color:{risk_color};font-size:0.72rem;">'
+                    f'{f_entry.get("daughter","?")} · {f_entry.get("claim_type","?")} · confidence {f_entry.get("confidence",0):.2f}'
+                    f'</span><br>'
+                    f'<span style="color:#c8d8ff;font-size:0.80rem;">{f_entry.get("output_preview","")}</span><br>'
+                    f'<span style="color:#445577;font-size:0.72rem;">{f_entry.get("verification_reason","")}</span>'
+                    f'</div>', unsafe_allow_html=True)
+        else:
+            st.success("✅ No outputs flagged for review — honesty layer is clean.")
+
+        st.divider()
+        st.markdown("### 🔬 Test Any Text")
+        test_text = st.text_area("Paste any AI output to score it", height=100,
+                                  placeholder="Studies show that 73% of people who...", key="honesty_test")
+        if st.button("🤖 Score for Epistemic Honesty", key="honesty_score_btn") and test_text:
+            scored = _hl.score_output(test_text, daughter="manual_test")
+            risk_c = {"low":"#00ff88","medium":"#ff9500","high":"#ff4444"}.get(scored["hallucination_risk"],"#8899bb")
+            st.markdown(
+                f'<div class="card" style="border:2px solid {risk_c};">'
+                f'<div style="color:{risk_c};font-family:Orbitron,monospace;font-size:0.82rem;">'
+                f'HALLUCINATION RISK: {scored["hallucination_risk"].upper()} · CONFIDENCE: {scored["confidence"]:.3f}'
+                f'</div>'
+                f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:8px;line-height:1.8;">'
+                f'Claim type: {scored["claim_type"]}<br>'
+                f'Falsifiability: {scored["falsifiability_score"]:.2f}<br>'
+                f'Recommended action: <strong>{scored["recommended_action"]}</strong><br>'
+                f'{"⚠️ Needs verification: " + scored["verification_reason"] if scored["human_verification_needed"] else "✅ Accepted"}'
+                f'</div></div>', unsafe_allow_html=True)
+
+    except ImportError as e:
+        st.warning(f"ai_honesty.py not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: PUBLIC HEALTH DASHBOARD 📊 — Epistemic Public Health
+# The "Wisdom GDP" the world didn't know it needed
+# ══════════════════════════════════════════════════════════════════════════════
+if "Public Health" in active:
+    st.markdown('<div class="card-title">📊 EPISTEMIC PUBLIC HEALTH — The Wisdom GDP Dashboard</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #a020f0;">
+        <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">THE VISION</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
+        Society tracks GDP, inflation, and unemployment. Nobody tracks <em>epistemic health</em> —
+        how well communities are reasoning, resisting manipulation, and building coherent beliefs.<br><br>
+        This dashboard shows what that would look like. Currently showing your family's data.
+        As more families join, this becomes a real-time global wisdom signal.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    try:
+        from family_profiles import FamilyAuth as _FA_ph, load_family_stats as _lfs_ph
+        from ai_honesty import HonestyLayer as _HL_ph
+        from sovereign_certification import CertificationEngine as _CE_ph
+
+        _auth_ph   = _FA_ph()
+        _hl_ph     = _HL_ph()
+        _ce_ph     = _CE_ph()
+        families_ph = _auth_ph.list_families()
+
+        # ── Aggregate metrics ─────────────────────────────────────────────────
+        all_coh, all_xp, all_streaks, all_lessons, all_certs = [], [], [], [], []
+        for fam in families_ph:
+            stats = _lfs_ph(fam["family_id"])
+            coh_h = stats.get("coherence_history",[])
+            if coh_h: all_coh.extend(coh_h[-5:])
+            all_xp.append(stats.get("total_xp",0))
+            all_streaks.append(stats.get("streak_days",0))
+            all_lessons.extend(stats.get("lessons_completed",[]))
+            all_certs.extend(stats.get("certifications",[]))
+
+        import statistics as _stat
+        avg_coh    = round(_stat.mean(all_coh),3) if all_coh else 0.0
+        total_xp   = sum(all_xp)
+        avg_streak = round(_stat.mean(all_streaks),1) if all_streaks else 0
+        total_lessons = len(set(all_lessons))
+        total_certs = len(all_certs)
+
+        # AI honesty
+        honesty_stats = _hl_ph.get_swarm_honesty_stats(100)
+
+        # Overall Wisdom GDP score (composite)
+        wisdom_gdp = round(
+            (avg_coh * 0.3) +
+            (min(1.0, total_lessons/50) * 0.2) +
+            (min(1.0, avg_streak/30) * 0.2) +
+            (honesty_stats.get("avg_confidence",0.7) * 0.2) +
+            (min(1.0, total_certs/10) * 0.1),
+        3) if avg_coh else 0.0
+
+        st.markdown("### 🌍 Wisdom GDP Score")
+        gdp_pct = int(wisdom_gdp * 100)
+        gdp_color = "#00ff88" if wisdom_gdp > 0.75 else ("#ff9500" if wisdom_gdp > 0.5 else "#ff4444")
+        st.markdown(
+            f'<div class="card" style="border:3px solid {gdp_color};text-align:center;padding:1.5rem;">'
+            f'<div style="font-family:Orbitron,monospace;font-size:2.5rem;color:{gdp_color};">{gdp_pct}</div>'
+            f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;">WISDOM GDP SCORE / 100</div>'
+            f'<div class="xp-bar-bg" style="margin-top:12px;"><div style="height:100%;border-radius:20px;background:{gdp_color};width:{gdp_pct}%;"></div></div>'
+            f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+        st.markdown("### 📈 Component Metrics")
+        ph1,ph2,ph3,ph4,ph5,ph6 = st.columns(6)
+        for col, label, val, color in [
+            (ph1,"Avg Coherence",avg_coh,"#00cfff"),
+            (ph2,"Active Families",len(families_ph),"#a020f0"),
+            (ph3,"Lessons Done",total_lessons,"#00ff88"),
+            (ph4,"Avg Streak",f"🔥{avg_streak}","#ff9500"),
+            (ph5,"Certs Earned",total_certs,"#f7931a"),
+            (ph6,"AI Honest Score",honesty_stats.get("honest_ai_score","—"),"#00cfff"),
+        ]:
+            col.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{color};font-size:0.9rem;">{val}</div><div class="stat-lbl">{label}</div></div>', unsafe_allow_html=True)
+
+        st.divider()
+        st.markdown("### 🔮 What This Becomes at Scale")
+        scale_data = [
+            ("10 families",   10, "Neighborhood wisdom signal"),
+            ("100 families",  100, "Community epistemic health tracker"),
+            ("1,000 families", 1000, "City-level coherence index"),
+            ("10,000 families", 10000, "National epistemic infrastructure"),
+            ("1M families",   1000000, "Global Wisdom GDP — real-time"),
+        ]
+        for label, n, desc in scale_data:
+            projected_gdp = min(100, int(wisdom_gdp * 100 * (1 + n/1000)))
+            st.markdown(
+                f'<div class="memory-node" style="border-left:3px solid #a020f0;">'
+                f'<span style="color:#a020f0;font-size:0.78rem;">{label}</span>'
+                f' <span style="color:#445577;font-size:0.72rem;">—</span>'
+                f' <span style="color:#c8d8ff;font-size:0.82rem;">{desc}</span>'
+                f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+        st.markdown("### 📣 Manifesto")
+        st.markdown("""
+        > *"We track GDP, inflation, and unemployment — proxies for material well-being.*  
+        > *We track nothing about how well societies are reasoning.*  
+        > *No metric for manipulation resistance. No index for epistemic coherence.*  
+        > *No dashboard for humanity's collective ability to find truth.*  
+        >  
+        > *AUBIEETERNAL is building that infrastructure.*  
+        > *One sovereign family at a time.*  
+        > *On-chain, forever, uncapturable.*"*
+        >
+        > — Sovereign Family Epistemic Practice | War Eagle Eternal 🦅❤️*
+        """)
+
+    except ImportError as e:
+        st.warning(f"Module not found: {e}")
