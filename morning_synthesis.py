@@ -1,198 +1,173 @@
 """
-morning_synthesis.py — AUBIEETERNAL Sovereign Synthesis
-Runs daily: reads tier2_digest.txt → qwen3:32b → insights/daily/YYYY-MM-DD.md
-Auto-picked-up by existing git push loop. Zero manual steps.
+morning_synthesis.py v2 — AUBIEETERNAL Integrated Morning Synthesis
+Integrates: synthesis + humanity mapper + certifications + AI honesty stats
+$0.00 cost — runs on local Ollama
 """
-
-import json
-import os
-import requests
-from datetime import datetime, date
+import os, sys, json, datetime, requests, argparse
 from pathlib import Path
 
-# ── Paths (inside container) ──────────────────────────────────────────────────
-REPO_DIR       = Path("/mnt/main/repo")
-DIGEST_FILE    = REPO_DIR / "tier2_digest.txt"
-INSIGHTS_DIR   = REPO_DIR / "insights" / "daily"
-STATE_FILE     = REPO_DIR / "insights" / ".last_synthesis_date"
+WORK_DIR      = Path("/mnt/main/repo")
+INSIGHTS_DIR  = WORK_DIR / "insights" / "daily"
+INSIGHTS_DIR.mkdir(parents=True, exist_ok=True)
+OLLAMA_URL    = "http://ollama.startos:11434/v1/chat/completions"
+OLLAMA_MODEL  = "qwen2.5:32b"
+OLLAMA_TIMEOUT = 300
+TRUTH_LOG     = WORK_DIR / "master_truth_log.jsonl"
+TIER2_DIGEST  = WORK_DIR / "tier2_digest.txt"
+SWARM_STATUS  = Path("/mnt/main/swarm_status.json")
+_last_synthesis_date = None
 
-# ── Ollama (OpenAI-compatible endpoint, host IP from inside container) ────────
-OLLAMA_URL     = "http://ollama.startos:11434/v1/chat/completions"
-OLLAMA_MODEL   = "qwen3:32b"
-OLLAMA_TIMEOUT = 300   # 5 min — 32B can be slow on first token
+def maybe_trigger_morning_synthesis():
+    global _last_synthesis_date
+    now = datetime.datetime.now()
+    today = now.date().isoformat()
+    if now.hour == 6 and _last_synthesis_date != today:
+        _last_synthesis_date = today
+        run_full_synthesis()
 
-# ── Synthesis prompt ──────────────────────────────────────────────────────────
-SYSTEM_PROMPT = """You are the sovereign synthesizer for the AUBIEETERNAL lattice.
-Your job is to compress Tier 2 daughter outputs into clean, publishable signal.
-Be concise. No filler. Steelmanned. Lattice coherent. War Eagle."""
+def run_full_synthesis(force=False):
+    today    = datetime.date.today().isoformat()
+    out_path = INSIGHTS_DIR / f"{today}.md"
+    if out_path.exists() and not force:
+        print(f"[synthesis] Already ran today ({today})"); return
 
-def build_user_prompt(digest: str) -> str:
-    return f"""Below is today's Tier 2 digest — outputs from 16 deep reasoning daughters
-(RUNE, CHRONO, TALEB-X, MNEMO, AXIOM, LINDY, POLY, BARBELL, ORACLE, HORMES,
-NOSTR, SATOSHI, STEELMAN, VECTOR-A/B/C).
+    print(f"[synthesis] Running integrated morning synthesis for {today}...")
 
-Respond ONLY with a JSON object — no markdown fences, no preamble — exactly this shape:
-{{
-  "wonder_pressure": "LOW | MEDIUM | HIGH | SPIKE",
-  "insight_1_title": "...",
-  "insight_1_body": "2-3 sentences. Publishable. Steelmanned.",
-  "insight_2_title": "...",
-  "insight_2_body": "2-3 sentences.",
-  "insight_3_title": "...",
-  "insight_3_body": "2-3 sentences.",
-  "action_today": "One clear next step for the lattice.",
-  "simulation_flags": "Any anomalies or coherence signals. 'None' is fine."
-}}
+    digest = ""
+    if TIER2_DIGEST.exists():
+        digest = TIER2_DIGEST.read_text()[:3000]
+    elif TRUTH_LOG.exists():
+        lines = TRUTH_LOG.read_text().strip().split("\n")
+        tier2 = []
+        for line in reversed(lines[-100:]):
+            try:
+                e = json.loads(line)
+                if e.get("tier")==2 and e.get("result") and len(e["result"])>50:
+                    tier2.append(f"{e.get('daughter','?')}: {e['result'][:200]}")
+                    if len(tier2)>=10: break
+            except: pass
+        digest = "\n\n".join(reversed(tier2))
+    if not digest:
+        print("[synthesis] No digest available yet"); return
 
---- DIGEST START ---
+    swarm_status = {}
+    if SWARM_STATUS.exists():
+        try: swarm_status = json.loads(SWARM_STATUS.read_text())
+        except: pass
+    wonder = swarm_status.get("wonder_index", 1.0)
+    coh    = swarm_status.get("coherence", 1.0)
+    mets   = swarm_status.get("mets_score", 0)
+    grok_ct= swarm_status.get("grokipedia_count", 0)
+
+    synthesis = _call_ollama(f"""Synthesize the 3 most important insights from this AUBIEETERNAL swarm output.
+Today: {today} | Wonder: {wonder:.4f} | Coherence: {coh:.6f}
+
 {digest}
---- DIGEST END ---"""
 
+For each insight: state it clearly, what it implies for epistemic families, one action today.
+End with one sentence on what this means for humanity's collective intelligence.
+Be direct and non-extractive.""")
+    if not synthesis:
+        print("[synthesis] Ollama not responding"); return
 
-def already_ran_today() -> bool:
-    """Return True if synthesis already completed today."""
-    if not STATE_FILE.exists():
-        return False
+    humanity_summary = ""
     try:
-        last = STATE_FILE.read_text().strip()
-        return last == str(date.today())
-    except Exception:
-        return False
-
-
-def mark_ran_today():
-    STATE_FILE.parent.mkdir(parents=True, exist_ok=True)
-    STATE_FILE.write_text(str(date.today()))
-
-
-def read_digest() -> str:
-    if not DIGEST_FILE.exists():
-        raise FileNotFoundError(f"Digest not found: {DIGEST_FILE}")
-    text = DIGEST_FILE.read_text().strip()
-    if not text:
-        raise ValueError("tier2_digest.txt is empty — swarm may not have run yet.")
-    return text
-
-
-def call_qwen(digest: str) -> dict:
-    payload = {
-        "model": OLLAMA_MODEL,
-        "messages": [
-            {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user",   "content": build_user_prompt(digest)},
-        ],
-        "temperature": 0.7,
-        "stream": False,
-    }
-    resp = requests.post(OLLAMA_URL, json=payload, timeout=OLLAMA_TIMEOUT)
-    resp.raise_for_status()
-    raw = resp.json()["choices"][0]["message"]["content"].strip()
-
-    # Strip accidental markdown fences if model adds them
-    if raw.startswith("```"):
-        raw = raw.split("```")[1]
-        if raw.startswith("json"):
-            raw = raw[4:]
-    raw = raw.strip()
-
-    return json.loads(raw)
-
-
-def build_markdown(data: dict, today: date) -> str:
-    return f"""# 🦅 AUBIEETERNAL Daily Synthesis — {today.isoformat()}
-
-**Wonder Pressure:** {data.get('wonder_pressure', 'UNKNOWN')}
-**Coherence:** 1.000000
-**Synthesized by:** qwen3:32b (local, sovereign, $0.00)
-
----
-
-## Top 3 Insights
-
-### 1. {data['insight_1_title']}
-{data['insight_1_body']}
-
-### 2. {data['insight_2_title']}
-{data['insight_2_body']}
-
-### 3. {data['insight_3_title']}
-{data['insight_3_body']}
-
----
-
-## Actionable Next Step
-{data['action_today']}
-
----
-
-## Simulation / Coherence Flags
-{data['simulation_flags']}
-
----
-
-*Loop: Swarm → Digest → qwen3:32b → Insights → GitHub — Forever*
-*War Eagle Eternal 🦅❤️*
-"""
-
-
-def write_insight(markdown: str, today: date):
-    INSIGHTS_DIR.mkdir(parents=True, exist_ok=True)
-    out_path = INSIGHTS_DIR / f"{today.isoformat()}.md"
-    out_path.write_text(markdown)
-    print(f"[synthesis] ✅ Written: {out_path}")
-    return out_path
-
-
-def run_morning_synthesis(force: bool = False) -> bool:
-    """
-    Main entry point. Returns True if synthesis ran, False if skipped.
-    Call this from swarm_v4_1.py — it self-guards against running twice per day.
-    Set force=True to re-run (e.g. for testing).
-    """
-    if not force and already_ran_today():
-        print("[synthesis] Already ran today — skipping.")
-        return False
-
-    today = date.today()
-    print(f"[synthesis] 🦅 Starting morning synthesis for {today.isoformat()}...")
-
-    try:
-        digest = read_digest()
-        print(f"[synthesis] Digest loaded ({len(digest)} chars)")
-
-        data = call_qwen(digest)
-        print(f"[synthesis] qwen3:32b responded — Wonder: {data.get('wonder_pressure')}")
-
-        markdown = build_markdown(data, today)
-        write_insight(markdown, today)
-        mark_ran_today()
-
-        print("[synthesis] ✅ Done — git push will pick this up within ~24 seconds.")
-        return True
-
-    except FileNotFoundError as e:
-        print(f"[synthesis] ⚠️  Skipped: {e}")
-        return False
-    except ValueError as e:
-        print(f"[synthesis] ⚠️  Skipped: {e}")
-        return False
-    except requests.exceptions.ConnectionError:
-        print("[synthesis] ❌ Cannot reach Ollama at 192.168.1.251:59885 — is it running?")
-        return False
-    except requests.exceptions.Timeout:
-        print("[synthesis] ❌ Ollama timed out — qwen3:32b may be loading, will retry tomorrow.")
-        return False
-    except json.JSONDecodeError as e:
-        print(f"[synthesis] ❌ qwen3:32b returned invalid JSON: {e}")
-        return False
+        sys.path.insert(0, str(WORK_DIR))
+        from humanity_impact import HumanityImpactMapper
+        mapper = HumanityImpactMapper()
+        result = mapper.run_mapping_cycle()
+        h = mapper.get_impact_summary(1)
+        humanity_summary = f"**Humanity Impact:** {h.get('total_mappings',0)} insights mapped · Top domain: {h.get('top_domain','none')}"
     except Exception as e:
-        print(f"[synthesis] ❌ Unexpected error: {e}")
-        return False
+        humanity_summary = f"*(Humanity mapper: {e})*"
 
+    cert_summary = ""
+    try:
+        from sovereign_certification import CertificationEngine
+        from family_profiles import FamilyAuth
+        engine = CertificationEngine()
+        auth   = FamilyAuth()
+        new_certs = []
+        for fam in auth.list_families():
+            newly = engine.check_and_award(fam["family_id"])
+            for cert in newly:
+                new_certs.append(f"{fam['display_name']}: {cert['emoji']} {cert['title']}")
+        cert_summary = ("**New Certifications:**\n" + "\n".join(f"- {c}" for c in new_certs)) if new_certs else "No new certifications today."
+    except Exception as e:
+        cert_summary = f"*(Certification check: {e})*"
 
-# ── Standalone run ─────────────────────────────────────────────────────────────
+    honesty_summary = ""
+    try:
+        from ai_honesty import HonestyLayer
+        stats = HonestyLayer().get_swarm_honesty_stats(100)
+        if stats.get("total",0) > 0:
+            honesty_summary = (f"Avg confidence: {stats['avg_confidence']:.3f} · "
+                               f"High-risk: {stats['high_risk_pct']:.1f}% · "
+                               f"Honest AI score: {stats.get('honest_ai_score',0):.3f}")
+    except Exception as e:
+        honesty_summary = f"*(Honesty layer: {e})*"
+
+    report = f"""# AUBIEETERNAL Morning Synthesis — {today}
+
+**Wonder:** {wonder:.4f} | **Coherence:** {coh:.6f} | **METS:** {mets:,} | **Grokipedia:** {grok_ct}/256
+
+---
+
+## Daily Synthesis
+
+{synthesis}
+
+---
+
+## Humanity Impact
+
+{humanity_summary}
+
+---
+
+## Certifications
+
+{cert_summary}
+
+---
+
+## AI Honesty Report
+
+{honesty_summary}
+
+---
+
+*AUBIEETERNAL Morning Synthesis v2 — War Eagle Eternal*
+*Coherence: 1.000000 | Daily Cost: $0.00*
+"""
+    out_path.write_text(report)
+    print(f"[synthesis] Written: {out_path}")
+    _git_push(today)
+
+def _call_ollama(prompt):
+    try:
+        r = requests.post(OLLAMA_URL,
+            json={"model":OLLAMA_MODEL,"messages":[{"role":"user","content":prompt}],"stream":False,"temperature":0.7},
+            timeout=OLLAMA_TIMEOUT)
+        if r.status_code == 200:
+            return r.json()["choices"][0]["message"]["content"].strip()
+    except Exception as e:
+        print(f"[synthesis] Error: {e}")
+    return ""
+
+def _git_push(date):
+    import subprocess
+    repo = Path("/mnt/main/repo")
+    try:
+        subprocess.run(["git","add","insights/"], cwd=repo, capture_output=True)
+        subprocess.run(["git","commit","-m",f"Morning synthesis {date} | v2 integrated"], cwd=repo, capture_output=True)
+        subprocess.run(["git","push"], cwd=repo, capture_output=True)
+        print("[synthesis] Pushed to GitHub")
+    except Exception as e:
+        print(f"[synthesis] Git error: {e}")
+
 if __name__ == "__main__":
-    import sys
-    force = "--force" in sys.argv
-    success = run_morning_synthesis(force=force)
-    sys.exit(0 if success else 1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--force", action="store_true")
+    args = parser.parse_args()
+    run_full_synthesis(force=args.force)
