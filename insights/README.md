@@ -13,6 +13,7 @@ Every morning (or as needed), a strong local model (such as `qwen3:32b` or `llam
 ## Latest Syntheses
 | Date       | Title                                              | Link |
 |------------|----------------------------------------------------|------|
+| 2026-05-26 | Bitcoin Intrinsic Value & Lattice Antifragility    | [View](2026-05-26-bitcoin-intrinsic-value-antifragility.md) |
 | 2026-05-25 | Wonder Spike 2.0000 — Antifragility, Via Negativa & Stress as Evolution | [View](2026-05-25-wonder-spike-antifragility-via-negativa.md) |
 | 2026-05-24 | Hormetic Awe Regeneration & Phoenix Cycles         | [View](2026-05-24-hormetic-awe-regeneration.md) |
 | 2026-05-22 | Antifragility Through Self-Referential Loops and Via-Negativa Filtering | [View](2026-05-22-antifragility-self-referential-loops.md) |
