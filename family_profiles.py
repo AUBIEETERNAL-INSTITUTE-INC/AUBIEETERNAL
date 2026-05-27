@@ -101,16 +101,16 @@ DEFAULT_STATE = {
 
 # ── Daily quest pool ───────────────────────────────────────────────────────────
 QUEST_POOL = [
-    {"id": "q_steelman",    "title": "Steelman one idea you disagree with",      "xp": 20, "category": "truth"},
-    {"id": "q_btc",         "title": "Check the Bitcoin block height",            "xp": 10, "category": "bitcoin"},
-    {"id": "q_oracle",      "title": "Ask the Oracle one genuine question",       "xp": 15, "category": "learning"},
-    {"id": "q_antifrag",    "title": "Name one thing that made you stronger today","xp": 15, "category": "antifragility"},
-    {"id": "q_memory",      "title": "Save one insight to the Memory Palace",     "xp": 10, "category": "memory"},
-    {"id": "q_family",      "title": "Share one insight with a family member",    "xp": 20, "category": "family"},
-    {"id": "q_lesson",      "title": "Complete one curriculum lesson",            "xp": 25, "category": "learning"},
-    {"id": "q_falsify",     "title": "Find one claim you believed that was wrong","xp": 20, "category": "truth"},
-    {"id": "q_sovereignty", "title": "Do one thing today that increases sovereignty","xp": 15, "category": "sovereignty"},
-    {"id": "q_reading",     "title": "Read one chapter or article",               "xp": 10, "category": "learning"},
+    {"id": "q_steelman",    "title": "Steelman one idea you disagree with",       "xp": 20, "sats": 21, "category": "truth"},
+    {"id": "q_btc",         "title": "Check the Bitcoin block height",             "xp": 10, "sats": 10, "category": "bitcoin"},
+    {"id": "q_oracle",      "title": "Ask the Oracle one genuine question",        "xp": 15, "sats": 15, "category": "learning"},
+    {"id": "q_antifrag",    "title": "Name one thing that made you stronger today","xp": 15, "sats": 15, "category": "antifragility"},
+    {"id": "q_memory",      "title": "Save one insight to the Memory Palace",      "xp": 10, "sats": 10, "category": "memory"},
+    {"id": "q_family",      "title": "Share one insight with a family member",     "xp": 20, "sats": 21, "category": "family"},
+    {"id": "q_lesson",      "title": "Complete one curriculum lesson",             "xp": 25, "sats": 25, "category": "learning"},
+    {"id": "q_falsify",     "title": "Find one claim you believed that was wrong", "xp": 20, "sats": 21, "category": "truth"},
+    {"id": "q_sovereignty", "title": "Do one thing today that increases sovereignty","xp": 15, "sats": 15, "category": "sovereignty"},
+    {"id": "q_reading",     "title": "Read one chapter or article",                "xp": 10, "sats": 10, "category": "learning"},
 ]
 
 
@@ -274,9 +274,13 @@ def complete_quest(family_id: str, quest_id: str) -> dict:
         stats["quests_completed"].append(quest_id)
         stats["total_xp"] = stats.get("total_xp", 0) + xp
         stats["level"]    = max(1, stats["total_xp"] // 100 + 1)
+        # Find sats for this quest too
+        sats = next((q["sats"] for q in QUEST_POOL if q["id"] == base_id), 0)
+        stats["sats_earned"] = stats.get("sats_earned", 0) + sats
         save_family_stats(stats, family_id)
-        return {"completed": True, "xp_awarded": xp, "new_level": stats["level"]}
-    return {"completed": False, "xp_awarded": 0}
+        return {"completed": True, "xp": xp, "xp_awarded": xp,
+                "sats": sats, "new_level": stats["level"]}
+    return {"completed": False, "xp": 0, "xp_awarded": 0, "sats": 0}
 
 
 # ── Module-level compat ────────────────────────────────────────────────────────
