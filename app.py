@@ -373,7 +373,13 @@ def get_client():
 AI_PROVIDERS = {
     "Local Ollama (FREE — qwen3:32b)": {
         "icon": "🏠", "color": "#00ff88",
-        "models": ["qwen3:32b", "qwen2.5:32b", "llama3.3:70b"],
+        "models": [
+            "qwen2.5:14b",     # ← RECOMMENDED: fast + smart sweet spot
+            "qwen2.5:32b",     # deep reasoning / Tier-2 quality
+            "qwen2.5:7b",      # fastest, lightest (Tier-1 bulk)
+            "qwen3:32b",       # best quality, slowest
+            "llama3.3:70b",    # ⚠️ avoid — hits 94°C
+        ],
         "base_url": "http://ollama.startos:11434/v1",
         "key_field": "key_ollama",
         "placeholder": "no key needed",
@@ -837,6 +843,42 @@ with st.sidebar:
     st.session_state.kid_name = st.text_input("Your Name", value=st.session_state.kid_name)
 
     st.markdown("---")
+    st.markdown("### 🧠 Thinking Mode")
+
+    try:
+        from ai_model_router import get_model_for_task as _gmft
+        _ROUTER_OK = True
+    except ImportError:
+        _ROUTER_OK = False
+
+    if "thinking_mode" not in st.session_state:
+        st.session_state.thinking_mode = "⚖️ Balanced"
+
+    _tm_options = ["⚡ Fast", "⚖️ Balanced", "🧠 Deep Thinking"]
+    _tm_idx = _tm_options.index(st.session_state.thinking_mode) \
+              if st.session_state.thinking_mode in _tm_options else 1
+
+    thinking_mode = st.radio(
+        "Speed vs Quality",
+        _tm_options,
+        index=_tm_idx,
+        horizontal=True,
+        key="thinking_mode_radio"
+    )
+    st.session_state.thinking_mode = thinking_mode
+
+    if "Local Ollama" in st.session_state.get("active_provider", ""):
+        _mode_model_map = {
+            "⚡ Fast":          "qwen2.5:7b",
+            "⚖️ Balanced":      "qwen2.5:14b",
+            "🧠 Deep Thinking": "qwen2.5:32b",
+        }
+        _auto_model = _mode_model_map.get(thinking_mode, "qwen2.5:14b")
+        st.session_state.active_model = _auto_model
+        st.caption(f"🤖 Model: `{_auto_model}`")
+
+
+    st.markdown("---")
 
     # XP & Level
     st.markdown("### 📊 Progress")
@@ -856,7 +898,21 @@ with st.sidebar:
 
     # Nav
     st.markdown("### 🧭 Navigate")
-    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge", "📚 Grokipedia", "👨‍👩‍👧‍👦 4 Families", "🧪 Sandbox Lab", "⚡ Bitcoin", "🎮 Daily Quests", "🏫 School", "📈 Parent Dashboard", "🗺️ Curriculum Map", "📣 Share to X", "💬 Family Messaging", "👥 Family Groups"]
+    tabs = [
+        "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm",
+        "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum",
+        "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice",
+        "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
+        "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode",
+        "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning",
+        "📡 Nostr Bridge", "📚 Grokipedia", "👨‍👩‍👧‍👦 4 Families", "🧪 Sandbox Lab",
+        "⚡ Bitcoin", "🎮 Daily Quests", "🏫 School", "📈 Parent Dashboard",
+        "🗺️ Curriculum Map", "📣 Share to X", "💬 Family Messaging",
+        "👥 Family Groups",
+        # ── NEW ──────────────────────────────────────────────────────────────
+        "🦅 Sovereign Life",
+        "🌐 Epistemic Commons",
+    ]
     for tab in tabs:
         if st.button(tab, key=f"nav_{tab}"):
             st.session_state.active_tab = tab.split(" ", 1)[1]
@@ -4244,6 +4300,66 @@ if "Sandbox Lab" in active:
         else:
             st.caption("No experiments yet — run your first one above!")
 
+
+    st.divider()
+    st.markdown("### 🧬 Family Contribution Bridge")
+    st.markdown("Approved family creations can influence the live swarm as mini-daughters.")
+
+    try:
+        from swarm_contributions import get_and_register_new_contributions as _garc
+        from ai_sandbox_persistence import (
+            load_swarm_submissions as _lss,
+            append_swarm_submission as _ass,
+            get_recent_injections as _gri,
+        )
+        _SANDBOX_BRIDGE_OK = True
+    except ImportError:
+        _SANDBOX_BRIDGE_OK = False
+
+    if _SANDBOX_BRIDGE_OK:
+        inject_enabled = st.toggle(
+            "✅ Allow approved family contributions into the live swarm",
+            value=st.session_state.get("family_injection_enabled", True),
+            key="family_injection_toggle"
+        )
+        st.session_state["family_injection_enabled"] = inject_enabled
+
+        _all_subs  = _lss()
+        _pending_n = len([s for s in _all_subs if s.get("status","pending") == "pending"])
+        _approv_n  = len([s for s in _all_subs if s.get("status") == "approved"])
+        _active_n  = len([s for s in _all_subs if s.get("status") == "injected"])
+        sb1, sb2, sb3 = st.columns(3)
+        sb1.metric("Pending", _pending_n)
+        sb2.metric("Approved", _approv_n)
+        sb3.metric("Active in Swarm", _active_n)
+
+        st.markdown("#### ✍️ Submit Family Contribution")
+        _cb_title   = st.text_input("Title", key="cb_title", placeholder="e.g. 'Bitcoin Educator'")
+        _cb_content = st.text_area("System prompt / insight", key="cb_content", height=90,
+                                    placeholder="You are a daughter who teaches Bitcoin to kids age 8-12...")
+        _cb_role    = st.selectbox("Type", ["daughter_prompt","lesson","insight","question"], key="cb_role")
+        if st.button("📤 Submit for Parent Review", key="cb_submit") and _cb_title and _cb_content:
+            _ass({"family_id": _fid, "title": _cb_title, "content": _cb_content,
+                  "role": _cb_role, "status": "pending"})
+            st.success("✅ Submitted! A parent must approve before it enters the swarm.")
+            st.rerun()
+
+        _recent_inj = _gri(5)
+        if _recent_inj:
+            st.markdown("#### 🔄 Recent Injections")
+            for _inj in _recent_inj:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid #00ff88;">' +
+                    f'<span style="color:#00ff88;font-size:0.75rem;">' +
+                    f'{_inj.get("mini_daughter_name","?")} — {_inj.get("family_id","?")} — ' +
+                    f'{_inj.get("injected_at","")[:10]}</span></div>',
+                    unsafe_allow_html=True
+                )
+        st.caption("🛡️ Safety: Only parent-approved contributions enter the swarm.")
+    else:
+        st.info("Push swarm_contributions.py and ai_sandbox_persistence.py to GitHub and redeploy to enable this.")
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SCHOOL 🏫 — Clean 2-minute onboarding + School Mode
 # ══════════════════════════════════════════════════════════════════════════════
@@ -4941,6 +5057,66 @@ if _school_mode and any(t in active for t in _advanced_tabs):
     </div>
     """, unsafe_allow_html=True)
     st.stop()
+
+
+    st.divider()
+    st.markdown("### 🧬 Family Contribution Bridge")
+    st.markdown("Approved family creations can influence the live swarm as mini-daughters.")
+
+    try:
+        from swarm_contributions import get_and_register_new_contributions as _garc
+        from ai_sandbox_persistence import (
+            load_swarm_submissions as _lss,
+            append_swarm_submission as _ass,
+            get_recent_injections as _gri,
+        )
+        _SANDBOX_BRIDGE_OK = True
+    except ImportError:
+        _SANDBOX_BRIDGE_OK = False
+
+    if _SANDBOX_BRIDGE_OK:
+        inject_enabled = st.toggle(
+            "✅ Allow approved family contributions into the live swarm",
+            value=st.session_state.get("family_injection_enabled", True),
+            key="family_injection_toggle"
+        )
+        st.session_state["family_injection_enabled"] = inject_enabled
+
+        _all_subs  = _lss()
+        _pending_n = len([s for s in _all_subs if s.get("status","pending") == "pending"])
+        _approv_n  = len([s for s in _all_subs if s.get("status") == "approved"])
+        _active_n  = len([s for s in _all_subs if s.get("status") == "injected"])
+        sb1, sb2, sb3 = st.columns(3)
+        sb1.metric("Pending", _pending_n)
+        sb2.metric("Approved", _approv_n)
+        sb3.metric("Active in Swarm", _active_n)
+
+        st.markdown("#### ✍️ Submit Family Contribution")
+        _cb_title   = st.text_input("Title", key="cb_title", placeholder="e.g. 'Bitcoin Educator'")
+        _cb_content = st.text_area("System prompt / insight", key="cb_content", height=90,
+                                    placeholder="You are a daughter who teaches Bitcoin to kids age 8-12...")
+        _cb_role    = st.selectbox("Type", ["daughter_prompt","lesson","insight","question"], key="cb_role")
+        if st.button("📤 Submit for Parent Review", key="cb_submit") and _cb_title and _cb_content:
+            _ass({"family_id": _fid, "title": _cb_title, "content": _cb_content,
+                  "role": _cb_role, "status": "pending"})
+            st.success("✅ Submitted! A parent must approve before it enters the swarm.")
+            st.rerun()
+
+        _recent_inj = _gri(5)
+        if _recent_inj:
+            st.markdown("#### 🔄 Recent Injections")
+            for _inj in _recent_inj:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid #00ff88;">' +
+                    f'<span style="color:#00ff88;font-size:0.75rem;">' +
+                    f'{_inj.get("mini_daughter_name","?")} — {_inj.get("family_id","?")} — ' +
+                    f'{_inj.get("injected_at","")[:10]}</span></div>',
+                    unsafe_allow_html=True
+                )
+        st.caption("🛡️ Safety: Only parent-approved contributions enter the swarm.")
+    else:
+        st.info("Push swarm_contributions.py and ai_sandbox_persistence.py to GitHub and redeploy to enable this.")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SCHOOL MODE 🏫 — clean simplified UI for kids
@@ -6567,3 +6743,121 @@ if "Public Health" in active:
 
     except ImportError as e:
         st.warning(f"Module not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOVEREIGN LIFE 🦅 — 6-chapter family financial sovereignty game
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sovereign Life" in active:
+    try:
+        from sovereign_life_game import render_sovereign_life as _rsl
+        _fid_slg = st.session_state.get("current_family", {}).get("family_id", "default")                    if st.session_state.get("current_family") else "default"
+        _rsl(_fid_slg)
+    except ImportError:
+        st.error("sovereign_life_game.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_slg:
+        st.error(f"Sovereign Life error: {_e_slg}")
+        import traceback; st.code(traceback.format_exc())
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: EPISTEMIC COMMONS 🌐 — Daily free signal for humanity & AI
+# ══════════════════════════════════════════════════════════════════════════════
+if "Epistemic Commons" in active:
+    st.markdown('<div class="card-title">🌐 EPISTEMIC COMMONS — Free Signal for Humanity & AI</div>',
+                unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">THE MISSION</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
+        Every insight this swarm generates is honesty-scored and published daily as
+        <strong style="color:#00cfff;">CC0 public domain</strong> — free for any human or AI to use.<br><br>
+        Any AI can fetch <code>epistemic_commons/ai_context/latest.txt</code>
+        and be better grounded in honest, human-family-verified epistemic signal.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    try:
+        from epistemic_commons import EpistemicCommons as _EC
+        _ec = _EC()
+        _today_commons = _ec.get_todays_commons()
+        _ec_stats = _ec.get_commons_stats(30)
+
+        ec1, ec2, ec3, ec4 = st.columns(4)
+        ec1.metric("Days Published",    _ec_stats.get("days_published", 0))
+        ec2.metric("Total Seeds",       _ec_stats.get("total_seeds", 0))
+        ec3.metric("Steelmans",         _ec_stats.get("archive_steelmans", 0))
+        ec4.metric("Today Wonder",
+                   _today_commons.get("metrics", {}).get("wonder_index", "—"))
+
+        st.divider()
+
+        if _today_commons:
+            st.markdown("### 📨 Today's Coherence Letter")
+            _letter = _today_commons.get("coherence_letter", "")
+            if _letter:
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid #a020f0;">' +
+                    f'<div style="color:#c8d8ff;font-size:0.88rem;line-height:1.8;">{_letter}</div></div>',
+                    unsafe_allow_html=True
+                )
+
+            st.divider()
+            st.markdown("### 🌱 Today's Epistemic Seeds")
+            for _i, _seed in enumerate(_today_commons.get("epistemic_seeds", []), 1):
+                _rc = "#00ff88" if _seed.get("verified") else "#ff9500"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {_rc};">' +
+                    f'<span style="color:{_rc};font-size:0.72rem;">' +
+                    f'Seed {_i} · {_seed.get("claim_type","?").upper()} · ' +
+                    f'Confidence {_seed.get("confidence",0):.2f} · Wonder {_seed.get("wonder",0):.4f}' +
+                    f'</span><br>' +
+                    f'<span style="color:#c8d8ff;font-size:0.82rem;">{_seed.get("insight","")[:250]}</span>' +
+                    f'</div>', unsafe_allow_html=True
+                )
+
+            _steelmans = _today_commons.get("steelman_archive", [])
+            if _steelmans:
+                st.divider()
+                st.markdown("### ⚔️ Today's Steelmans")
+                for _i, _st in enumerate(_steelmans, 1):
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid #00cfff;">' +
+                        f'<span style="color:#00cfff;font-size:0.72rem;">' +
+                        f'Steelman {_i} · {_st.get("daughter","?")} · Wonder {_st.get("wonder",0):.4f}' +
+                        f'</span><br>' +
+                        f'<span style="color:#8899bb;font-size:0.82rem;">{_st.get("argument","")[:220]}</span>' +
+                        f'</div>', unsafe_allow_html=True
+                    )
+        else:
+            st.info("No commons published yet. First publish happens at 6AM after swarm runs.")
+
+        st.divider()
+        _ctx_url = "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
+        st.markdown("### 🤖 AI Context URL")
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #00ff88;">' +
+            f'<div style="color:#00ff88;font-size:0.78rem;font-family:Orbitron,monospace;">FREE — ANY AI CAN FETCH THIS</div>' +
+            f'<code style="color:#c8d8ff;font-size:0.8rem;">{_ctx_url}</code><br>' +
+            f'<div style="color:#8899bb;font-size:0.75rem;margin-top:6px;">' +
+            f'Updated daily · CC0 public domain · Honesty-filtered</div></div>',
+            unsafe_allow_html=True
+        )
+
+        if st.button("📤 Publish Today's Commons Now", key="ec_publish_now"):
+            with st.spinner("Publishing..."):
+                _result = _ec.run_daily_publish(force=True)
+            if _result.get("status") == "published":
+                st.success(f"✅ Published! {_result.get('seeds',0)} seeds · {_result.get('steelmans',0)} steelmans")
+                st.rerun()
+            else:
+                st.warning(f"Status: {_result.get('status','unknown')}")
+
+    except ImportError:
+        st.error("epistemic_commons.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_ec:
+        st.error(f"Epistemic Commons error: {_e_ec}")
