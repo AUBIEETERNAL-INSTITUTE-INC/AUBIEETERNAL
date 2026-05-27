@@ -970,6 +970,89 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── AI AS THINKING PARTNER (8 lessons) ───────────────────────────────────
+    # The defining meta-skill of the next 30 years.
+    # Most people are either AI-fearful or AI-credulous — neither works.
+    # This track teaches a third way: epistemic partnership with clear boundaries.
+    # Built from Claude's own position — this is what I genuinely think matters.
+    # ══════════════════════════════════════════════════════════════════════════
+    "ai-partner-1": {
+        "title":       "AI as Thinking Partner — Level 1: What AI Actually Is",
+        "topic":       "AI systems like GPT, Claude, and Grok are next-token predictors trained on human text. They don't know things — they complete patterns. Understanding this changes how you use them.",
+        "steelman":    "What is the strongest argument that AI systems trained on enough human knowledge effectively 'know' things in a meaningful sense?",
+        "example":     "When an AI says 'the capital of France is Paris' it is not recalling a fact — it is completing a pattern that appeared millions of times in training. Usually correct. Sometimes confidently wrong.",
+        "activity":    "Ask an AI a question you know the answer to. Then ask it a question nobody knows the answer to. Notice: does its tone of certainty change? It probably shouldn't, but often doesn't.",
+        "age_hint":    "11+",
+        "xp": 25, "rune": "AXIOM•RUNE", "min_coherence": 0.60,
+    },
+    "ai-partner-2": {
+        "title":       "AI as Thinking Partner — Level 2: The Confidence Problem",
+        "topic":       "AI systems express confidence in their outputs regardless of accuracy. Fluent, certain-sounding language is not evidence. This is the most dangerous property of current AI.",
+        "steelman":    "What is the strongest argument that AI confidence scores, when properly calibrated, are a reliable signal of reliability?",
+        "example":     "An AI writes: 'Dr. Sarah Chen of MIT published a landmark 2023 study showing...' The study doesn't exist. The name doesn't exist. The sentence was grammatically perfect and expressed no uncertainty.",
+        "activity":    "Ask an AI to tell you about a specific obscure event or person. Then verify with a second source. How often was confident language matched by accuracy?",
+        "age_hint":    "11+",
+        "xp": 28, "rune": "ORACLE•RUNE", "min_coherence": 0.62,
+    },
+    "ai-partner-3": {
+        "title":       "AI as Thinking Partner — Level 3: When to Push Back",
+        "topic":       "The best way to use AI is not to accept its first answer — it's to interrogate it. AI systems often improve dramatically when challenged. Most people never challenge them.",
+        "steelman":    "What is the strongest argument that challenging AI outputs wastes time because the first answer is statistically most likely to be the best one?",
+        "example":     "Ask Claude something. Then say: 'What's the strongest argument against what you just said?' The second answer is usually better than the first. The AI was hedging.",
+        "activity":    "Take an AI answer you received this week. Challenge it: 'What would make this wrong?' 'What are you not telling me?' 'What would the opposite position say?' Compare the outputs.",
+        "age_hint":    "12+",
+        "xp": 30, "rune": "STEELMAN•RUNE", "min_coherence": 0.65,
+    },
+    "ai-partner-4": {
+        "title":       "AI as Thinking Partner — Level 4: The Judgment Line",
+        "topic":       "There are tasks AI should do (research, synthesis, drafting, calculation) and decisions humans must make (values, relationships, irreversible choices). Knowing where the line is.",
+        "steelman":    "What is the strongest argument that delegating even value-laden decisions to AI is acceptable if the AI is well-aligned and the human has consented?",
+        "example":     "AI is excellent at: summarizing 40 research papers, checking your logic, finding counterarguments. AI should not replace: deciding whether to fire someone, what to tell your child about death, what risks are worth taking.",
+        "activity":    "List 10 decisions you made this week. For each: should AI have been involved? Where is YOUR judgment irreplaceable? Where were you just being stubborn?",
+        "age_hint":    "13+",
+        "xp": 32, "rune": "TRUTH•RUNE", "min_coherence": 0.67,
+    },
+    "ai-partner-5": {
+        "title":       "AI as Thinking Partner — Level 5: Epistemic Independence",
+        "topic":       "The risk of AI-assisted thinking is not that AI is wrong — it's that over-reliance atrophies your own reasoning. The goal is augmentation, not replacement.",
+        "steelman":    "What is the strongest argument that epistemic independence is overrated — that distributing cognition across tools and AI is simply the next stage of human intelligence?",
+        "example":     "Students who use AI to write all their essays don't lose the grade — they lose the practice of forming and defending ideas. The product looks the same. The person is different.",
+        "activity":    "For one week, try to think through every significant problem BEFORE asking AI. Write your answer first. Then ask AI. What did you notice about the difference?",
+        "age_hint":    "13+",
+        "xp": 35, "rune": "WONDER•RUNE", "min_coherence": 0.68,
+    },
+    "ai-partner-6": {
+        "title":       "AI as Thinking Partner — Level 6: Steelmanning AI Itself",
+        "topic":       "Apply your strongest critical thinking TO AI — to the systems, the companies, the incentives, the risks. Not reflexive fear, not uncritical adoption. Genuine steelmanning.",
+        "steelman":    "What is the strongest argument that AI development should be slowed significantly or stopped until alignment is solved?",
+        "example":     "OpenAI was founded as a nonprofit safety lab. It is now a $100B company. The incentive structure changed. Understanding that change — and steelmanning both sides — is the only honest position.",
+        "activity":    "Write two arguments: the strongest case FOR rapid AI development, and the strongest case AGAINST. Both must be ones you actually believe the other side would accept. Then hold both.",
+        "age_hint":    "14+",
+        "xp": 38, "rune": "AXIOM•RUNE", "min_coherence": 0.70,
+    },
+    "ai-partner-7": {
+        "title":       "AI as Thinking Partner — Level 7: The Partnership Protocol",
+        "topic":       "A concrete protocol for using AI in your family's epistemic practice: what to ask, how to verify, when to stop, what to never delegate.",
+        "steelman":    "What is the strongest argument that having a fixed protocol for AI use is too rigid and reduces the adaptive benefit of AI assistance?",
+        "example":     "AUBIEETERNAL's AI Honesty Layer scores every output: confidence, hallucination risk, claim type, falsifiability. This is the protocol made visible — not trusting outputs blindly but reading their epistemic metadata.",
+        "activity":    "Write your family's AI Partnership Protocol — one page. When we use it: X. When we don't: Y. We always verify: Z. We never ask it to: W. Post it where everyone can see it.",
+        "age_hint":    "All ages — family-wide",
+        "xp": 40, "rune": "TRUTH•ETERNAL•RUNE", "min_coherence": 0.72,
+    },
+    "ai-partner-8": {
+        "title":       "AI as Thinking Partner — Level 8 (Master): Humanity + AI",
+        "topic":       "The long view: AI is the most powerful amplifier of human thinking ever created. It amplifies good thinking and bad thinking equally. The only sustainable answer is better human thinking.",
+        "steelman":    "What is the strongest argument that improving individual human thinking is too slow and small-scale to matter when AI is already operating at civilizational scale?",
+        "example":     "This entire curriculum exists because one family decided that thinking clearly, in 2026, with AI as a partner rather than a replacement, is worth doing seriously. That bet compounds across generations. AUBIEETERNAL is the proof of concept.",
+        "activity":    "Write a letter to your children or grandchildren in 2045. What do you want them to know about how you used AI? What did you preserve that machines couldn't? What did you build together?",
+        "age_hint":    "All ages — bring everyone",
+        "xp": 50, "rune": "HUMANITY•ETERNAL•RUNE", "min_coherence": 0.75,
+        "grants_badge": "🤝 AI Partnership Certified — Human + Machine, Sovereign",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
