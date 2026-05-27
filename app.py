@@ -6043,7 +6043,7 @@ if "Legal HUD" in active:
     </div>
     """, unsafe_allow_html=True)
 
-    legal_tabs = st.tabs(["📄 Contract Analyzer", "🏠 Insurance Policy", "⚖️ Reciprocal Charter", "🧠 Legal Literacy Progress"])
+    legal_tabs = st.tabs(["📄 Contract Analyzer", "🏠 Insurance Policy", "⚖️ Insurance Charter v0.2", "📜 Family Law Charter", "📊 Full Progress"])
 
     # ── Contract Analyzer ─────────────────────────────────────────────────────
     with legal_tabs[0]:
@@ -6164,33 +6164,117 @@ Policy text: {policy_text}"""
                     except Exception as e:
                         st.error(f"Error: {e}")
 
-    # ── Reciprocal Charter viewer ─────────────────────────────────────────────
+    # ── Insurance Charter v0.2 viewer ────────────────────────────────────────
     with legal_tabs[2]:
-        charter_path = _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER.md")
-        if charter_path.exists():
-            st.markdown(charter_path.read_text())
-        else:
+        st.markdown('<div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.82rem;margin-bottom:12px;">🦅 POLICYHOLDER-FIRST RECIPROCAL INSURANCE CHARTER v0.2</div>', unsafe_allow_html=True)
+
+        # Try to load from repo, fall back to inline
+        _charter_paths = [
+            _Path("/mnt/main/repo/POLICYHOLDER_FIRST_CHARTER_v0_2.md"),
+            _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER_v0_2.md"),
+            _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER.md"),
+        ]
+        _charter_loaded = False
+        for _cp in _charter_paths:
+            if _cp.exists():
+                st.markdown(_cp.read_text())
+                _charter_loaded = True
+                break
+
+        if not _charter_loaded:
+            _ic1, _ic2 = st.columns(2)
+            with _ic1:
+                st.markdown('<div class="card" style="border-left:3px solid #f7931a;">' +
+                    '<div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">CORE MECHANICS</div>' +
+                    '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.9;">' +
+                    '• 80% annual surplus returned to Subscribers<br>' +
+                    '• Exec comp capped at 8× median premium<br>' +
+                    '• 15% veto rights for Subscribers<br>' +
+                    '• Bitcoin up to 5% of reserves<br>' +
+                    '• Real-time public dashboard (all metrics)<br>' +
+                    '• 8th-grade plain English required</div></div>',
+                    unsafe_allow_html=True)
+            with _ic2:
+                st.markdown('<div class="card" style="border-left:3px solid #a020f0;">' +
+                    '<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">ANTI-EXTRACTION RULES</div>' +
+                    '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.9;">' +
+                    '• No offshore reinsurance arbitrage<br>' +
+                    '• Related-party transaction ban<br>' +
+                    '• All compensation >$50k published<br>' +
+                    '• Agent commission cap 8% / 3%<br>' +
+                    '• No contingent commissions<br>' +
+                    '• 60% vote to remove management</div></div>',
+                    unsafe_allow_html=True)
+
+            st.info("Push POLICYHOLDER_FIRST_CHARTER_v0_2.md to GitHub root to display the full 273-line document here.")
+
+        # Steelman section always visible
+        with st.expander("⚔️ Steelman This Charter", expanded=False):
             st.markdown("""
-### 🦅 Policyholder-First Reciprocal Charter
+**Strongest argument FOR:**
+Structural rules (compensation caps, surplus formulas, veto rights) are the only reliable way to prevent extraction in insurance. Aspirational mission statements don't survive the first profitable year. Hard numbers and binding mechanisms do.
 
-The full charter is in `governance/POLICYHOLDER_FIRST_CHARTER.md` in the repo.
+**Strongest argument AGAINST:**
+Rigid compensation caps may prevent the Exchange from attracting top actuarial talent, leading to underpricing and long-term harm to the very Subscribers the system was designed to protect.
 
-**Core principles:**
-- 80% of annual surplus returned to policyholders
-- Executive comp capped at 8× median annual premium
-- All financials on a real-time public dashboard  
-- Subscriber veto rights at 15% threshold
-- Plain-English policy language (8th-grade level)
-- No offshore reinsurance arbitrage
-- Bitcoin up to 5% of reserves for inflation protection
-
-Push `governance/POLICYHOLDER_FIRST_CHARTER.md` to your repo to display the full document here.
+**Resolution:**
+The compensation cap is tied to median Subscriber premium. If talent costs rise, premiums can increase — but with full transparency and veto rights. Making extraction more expensive than honest operation is the Bitcoin model applied to insurance.
             """)
 
-    # ── Legal literacy progress ───────────────────────────────────────────────
+    # ── Sovereign Family Law Charter viewer ───────────────────────────────────
     with legal_tabs[3]:
-        st.markdown("**Your legal literacy progress from the curriculum.**")
-        legal_lessons = ["legal-1","legal-2","legal-3","legal-4","legal-5"]
+        st.markdown('<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;margin-bottom:12px;">📜 SOVEREIGN FAMILY RECIPROCAL GOVERNANCE CHARTER v1.0</div>', unsafe_allow_html=True)
+
+        _flaw_paths = [
+            _Path("/mnt/main/repo/SOVEREIGN_FAMILY_LAW_CHARTER.md"),
+            _Path("/mnt/main/repo/governance/SOVEREIGN_FAMILY_LAW_CHARTER.md"),
+        ]
+        _flaw_loaded = False
+        for _fp in _flaw_paths:
+            if _fp.exists():
+                st.markdown(_fp.read_text())
+                _flaw_loaded = True
+                break
+
+        if not _flaw_loaded:
+            fl1, fl2 = st.columns(2)
+            with fl1:
+                st.markdown('<div class="card" style="border-left:3px solid #00cfff;">' +
+                    '<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.72rem;">FAMILY RIGHTS</div>' +
+                    '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.9;">' +
+                    '• Full data export at any time<br>' +
+                    '• 15% veto on any lesson/quest<br>' +
+                    '• Child Rune inheritance (no probate)<br>' +
+                    '• Halo session consent required<br>' +
+                    '• 5% defensive legal fund (auto)<br>' +
+                    '• Narrative attack coordination</div></div>',
+                    unsafe_allow_html=True)
+            with fl2:
+                st.markdown('<div class="card" style="border-left:3px solid #00ff88;">' +
+                    '<div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.72rem;">CHILD RUNE SOVEREIGNTY</div>' +
+                    '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.9;">' +
+                    '• Voice activates at 256 confirmations<br>' +
+                    '• Voice_Score = (Coh×0.6)+(Rune/1k×0.3)+(XP/10k×0.1)<br>' +
+                    '• Min 0.65 score + 256 frags for voting<br>' +
+                    '• Parental veto until 13yo + 500 coh pts<br>' +
+                    '• Surplus: +10% to child during growth<br>' +
+                    '• On-chain via Child Rune Genesis</div></div>',
+                    unsafe_allow_html=True)
+
+            st.info("Push SOVEREIGN_FAMILY_LAW_CHARTER.md to GitHub root to display the full document here.")
+
+        with st.expander("⚔️ Steelman This Charter", expanded=False):
+            st.markdown("""
+**Arguments For:** Closes the sovereignty loop (education + economics + governance + on-chain legacy). Protects families from external legal and narrative attacks. Teaches children real power dynamics instead of obedience.
+
+**Strongest Argument Against:** "It creates more rules." Rebuttal: These are minimal, high-clarity reciprocal agreements. Via negativa keeps it lean — it's more about what we *reject* than what we mandate.
+
+**Final Resolution:** Families that cannot govern themselves internally will eventually be governed externally. This Charter is adopted because the cost of *not* having clear reciprocal governance grows faster than the cost of maintaining it.
+            """)
+
+    # ── Full progress tracker ─────────────────────────────────────────────────
+    with legal_tabs[4]:
+        st.markdown("### 📊 Full Sovereign Legal Progress")
         try:
             from family_profiles import load_family_stats as _lfs_legal
             stats_l = _lfs_legal(_fid)
@@ -6198,31 +6282,55 @@ Push `governance/POLICYHOLDER_FIRST_CHARTER.md` to your repo to display the full
         except ImportError:
             completed_l = set()
 
-        for key in legal_lessons:
-            done  = key in completed_l
-            icon  = "✅" if done else "⭕"
-            titles = {
-                "legal-1": "Level 1 — How to Read a Contract",
-                "legal-2": "Level 2 — How Insurance Really Works",
-                "legal-3": "Level 3 — Spot Extraction Clauses",
-                "legal-4": "Level 4 — Reciprocal Insurance Basics",
-                "legal-5": "Level 5 — Build Sovereign Governance ★",
-            }
-            color = "#00ff88" if done else "#445577"
-            lc1, lc2 = st.columns([3,1])
-            with lc1:
-                st.markdown(f'<div style="color:{color};font-size:0.85rem;padding:4px 0;">{icon} {titles.get(key,"")}</div>', unsafe_allow_html=True)
-            with lc2:
-                if not done:
-                    if st.button("▶ Start", key=f"legal_start_{key}"):
-                        st.session_state["active_tab"] = "Family Co-Learning"
-                        st.session_state["fl_lesson_preset"] = key
-                        st.rerun()
+        ALL_LEGAL_TRACKS = {
+            "⚖️ Legal Literacy": {
+                "legal-1": "Understanding Contracts",
+                "legal-2": "Your Rights When Signing",
+                "legal-3": "Insurance You Actually Need",
+                "legal-4": "Insurance You Can Skip",
+                "legal-5": "LLC + Estate Basics",
+                "legal-6": "Policyholder-First Charter ★",
+            },
+            "📜 Law & Economics": {
+                "law-econ-1": "The Combined Ratio",
+                "law-econ-2": "Regulatory Capture",
+                "law-econ-3": "Narrative Economics",
+                "law-econ-4": "The Law as a Weapon",
+                "law-econ-5": "Designing Better Systems ★",
+            },
+            "👨‍👩‍👧 Family Law": {
+                "family-law-1": "Shield vs. Sword",
+                "family-law-2": "Child Rune Rights",
+                "family-law-3": "Defensive External Filings",
+                "family-law-4": "Narrative Attack Response ★",
+            },
+        }
 
-        legal_done = sum(1 for k in legal_lessons if k in completed_l)
-        st.markdown(f"\n**Legal literacy: {legal_done}/5 lessons** — {['Beginner','Developing','Intermediate','Advanced','Sovereign'][legal_done]}")
-        if legal_done == 5:
-            st.success("🦅 Full Legal Sovereignty achieved! You can read and steelman any contract.")
+        total_legal = sum(len(v) for v in ALL_LEGAL_TRACKS.values())
+        done_legal = sum(1 for track in ALL_LEGAL_TRACKS.values() for k in track if k in completed_l)
+        st.progress(done_legal / total_legal, text=f"Overall: {done_legal}/{total_legal} lessons")
+        st.markdown("")
+
+        for track_name, lessons in ALL_LEGAL_TRACKS.items():
+            track_done = sum(1 for k in lessons if k in completed_l)
+            tc = "#00ff88" if track_done == len(lessons) else "#f7931a" if track_done > 0 else "#445577"
+            st.markdown(f'<div style="color:{tc};font-family:Orbitron,monospace;font-size:0.75rem;margin:10px 0 4px;">{track_name} — {track_done}/{len(lessons)}</div>', unsafe_allow_html=True)
+            for key, title in lessons.items():
+                done = key in completed_l
+                color = "#00ff88" if done else "#445577"
+                icon  = "✅" if done else "⭕"
+                _lc1, _lc2 = st.columns([4,1])
+                with _lc1:
+                    st.markdown(f'<div style="color:{color};font-size:0.82rem;padding:3px 0;">{icon} {title}</div>', unsafe_allow_html=True)
+                with _lc2:
+                    if not done:
+                        if st.button("▶", key=f"prog_start_{key}", use_container_width=True):
+                            st.session_state["active_tab"] = "Family Co-Learning"
+                            st.session_state["fl_lesson_preset"] = key
+                            st.rerun()
+
+        if done_legal == total_legal:
+            st.success("🦅 Full Sovereign Legal Mastery! — War Eagle Eternal")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: EPISTEMIC HEALTH 📈 — Long-term family truth-seeking dashboard
@@ -6662,7 +6770,7 @@ if "AI Honesty" in active:
         test_text = st.text_area("Paste any AI output to score it", height=100,
                                   placeholder="Studies show that 73% of people who...", key="honesty_test")
         if st.button("🤖 Score for Epistemic Honesty", key="honesty_score_btn") and test_text:
-            scored = _hl.score_output(test_text, daughter="manual_test")
+            scored = _hl.score_output(test_text, daughter_name="manual_test")
             risk_c = {"low":"#00ff88","medium":"#ff9500","high":"#ff4444"}.get(scored["hallucination_risk"],"#8899bb")
             st.markdown(
                 f'<div class="card" style="border:2px solid {risk_c};">'
