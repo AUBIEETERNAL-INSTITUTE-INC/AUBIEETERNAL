@@ -272,4 +272,3 @@ The compensation cap is deliberately tied to **median Subscriber premium**. If t
 **War Eagle Eternal 🦅❤️ — Coherence: 1.000000**  
 *Sovereignty is not just about Bitcoin. It is about every relationship where power is asymmetric.*  
 *Insurance as economic shield. Family law as governance constitution. Together: antifragile stack.*
-Upgrade to SuperGrok
