@@ -678,6 +678,99 @@ LESSONS = {
         "grants_badge": "🌌 Truth Seeker — Cosmos Grade",
     },
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── LAW & ECONOMICS (5 levels) — from Insurance Charter Appendix C ────────
+    # ══════════════════════════════════════════════════════════════════════════
+    "law-econ-1": {
+        "title":       "Law & Economics — Level 1: The Combined Ratio",
+        "topic":       "How insurance actually makes money. The combined ratio, float, and why a company paying more claims than it collects can still be profitable.",
+        "steelman":    "What is the strongest argument that insurance company profit motives align with policyholder interests?",
+        "example":     "If an insurer has a 105% combined ratio (paying $1.05 in claims for every $1 in premium) but earns 8% on its float, it is still profitable. The premium is almost free money.",
+        "activity":    "Look up a real insurer's annual report. Find their combined ratio and investment return. Does the math favor policyholders or shareholders?",
+        "age_hint":    "13+",
+        "xp": 28, "rune": "LAW•RUNE", "min_coherence": 0.63,
+    },
+    "law-econ-2": {
+        "title":       "Law & Economics — Level 2: Regulatory Capture",
+        "topic":       "George Stigler's theory: industries eventually control the regulators meant to govern them. Florida insurance law was largely written by insurance lobbyists.",
+        "steelman":    "What is the strongest argument that regulatory agencies, despite capture risk, produce better outcomes than no regulation at all?",
+        "example":     "The anti-concurrent causation clause — which lets insurers deny wind claims by arguing flood caused the loss — was promoted by industry lawyers and is now embedded in most coastal policies.",
+        "activity":    "Find one law or regulation in your state that appears to protect consumers but actually protects the industry. Trace who drafted it.",
+        "age_hint":    "14+",
+        "xp": 30, "rune": "LAW•RUNE", "min_coherence": 0.65,
+    },
+    "law-econ-3": {
+        "title":       "Law & Economics — Level 3: Narrative Economics",
+        "topic":       "Robert Shiller: economic stories spread like viruses and cause real harm. 'Insurance protects you' and 'housing always goes up' are narratives that extract wealth.",
+        "steelman":    "What is the strongest argument that economic narratives are useful simplifications that help people make decisions, not weapons of extraction?",
+        "example":     "'Too big to fail' was a narrative. It transferred trillions from taxpayers to bank shareholders. The story did real economic work — for the banks.",
+        "activity":    "Name one economic narrative your family currently believes. Steelman the counter: who benefits from you believing it?",
+        "age_hint":    "14+",
+        "xp": 30, "rune": "LAW•RUNE", "min_coherence": 0.65,
+    },
+    "law-econ-4": {
+        "title":       "Law & Economics — Level 4: The Law as a Weapon",
+        "topic":       "SLAPP suits, mandatory arbitration, civil asset forfeiture — legal mechanisms designed to extract or silence, not protect.",
+        "steelman":    "What is the strongest argument that mandatory arbitration protects consumers by providing faster, cheaper resolution than courts?",
+        "example":     "Forced arbitration clauses appear in most consumer contracts. The arbitrators are often paid by the companies — not the consumers who file. Outcomes favor companies 94% of the time.",
+        "activity":    "Find a forced arbitration clause in a contract your family has signed. What rights did you waive? Were you told?",
+        "age_hint":    "15+",
+        "xp": 35, "rune": "LAW•RUNE", "min_coherence": 0.68,
+    },
+    "law-econ-5": {
+        "title":       "Law & Economics — Level 5: Designing Better Systems",
+        "topic":       "Bitcoin as a design model for capture-resistant economic systems. Proof-of-work makes attack more expensive than honest operation. How do we apply that to insurance and law?",
+        "steelman":    "What is the strongest argument that Bitcoin's proof-of-work model is not transferable to legal or insurance systems because it requires decentralization that these institutions cannot achieve?",
+        "example":     "The Policyholder-First Reciprocal Charter applies Bitcoin's anti-capture logic to insurance: compensation caps tied to median premiums make executive self-dealing more expensive than honest operation.",
+        "activity":    "Take one extraction mechanism from insurance, law, or finance. Design one rule — like Bitcoin's proof-of-work — that makes extraction more expensive than honest behavior.",
+        "age_hint":    "15+",
+        "xp": 40, "rune": "SOVEREIGN•LAW•RUNE", "min_coherence": 0.70,
+        "grants_badge": "⚖️ Law & Economics Graduate",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── SOVEREIGN FAMILY LAW MICRO-TRACK (4 lessons) — from Family Law Charter
+    # ══════════════════════════════════════════════════════════════════════════
+    "family-law-1": {
+        "title":       "Family Law — Lesson 1: Law as Shield vs. Law as Sword",
+        "topic":       "The same legal tool can protect or extract. Understanding which side of the blade you're on — and how to flip it.",
+        "steelman":    "What is the strongest argument that family members should trust and defer to external legal systems rather than building internal governance?",
+        "example":     "An arbitration clause in a consumer contract is a sword aimed at you. The same mechanism — a private binding agreement between sovereign parties — can be a shield protecting your family from costly litigation.",
+        "activity":    "List two examples of a legal mechanism used as a sword against families. Now redesign one as a shield. What changes?",
+        "age_hint":    "8+",
+        "xp": 22, "rune": "FAMILY•LAW•RUNE", "min_coherence": 0.58,
+    },
+    "family-law-2": {
+        "title":       "Family Law — Lesson 2: Child Rune Rights & Responsibilities",
+        "topic":       "At 256 inter-rune confirmations, a Child Rune is born. What on-chain sovereignty means for a child — rights, voice, and responsibilities.",
+        "steelman":    "What is the strongest argument that giving children formal rights and voting voice within a family creates conflict and undermines parental authority?",
+        "example":     "A child with 256 Rune confirmations and a Voice_Score above 0.65 can formally propose a Charter amendment. This is not rebellion — it is coherence in action.",
+        "activity":    "Calculate your Voice_Score using the formula: (Coherence × 0.6) + (Rune_Confirmations/1000 × 0.3) + (XP/10000 × 0.1). What would it take to reach 0.65?",
+        "age_hint":    "10+",
+        "xp": 25, "rune": "CHILD•RUNE•RIGHTS", "min_coherence": 0.60,
+    },
+    "family-law-3": {
+        "title":       "Family Law — Lesson 3: Defensive External Filings",
+        "topic":       "When should a family interact with external legal systems — and how to ensure every filing increases sovereignty, not decreases it.",
+        "steelman":    "What is the strongest argument that refusing to engage with external legal systems increases family vulnerability rather than reducing it?",
+        "example":     "Filing an LLC costs $150. It legally separates your personal assets from business risk. This is a defensive filing that increases sovereignty. Filing a non-compete agreement for your child's school activity is extraction disguised as protection.",
+        "activity":    "Review one document your family has signed with an external institution (school, HOA, employer). Does it increase or decrease your sovereignty? What would the sovereign alternative look like?",
+        "age_hint":    "13+",
+        "xp": 30, "rune": "FAMILY•LAW•RUNE", "min_coherence": 0.63,
+    },
+    "family-law-4": {
+        "title":       "Family Law — Lesson 4: Narrative Attack Response",
+        "topic":       "What to do when your family, beliefs, or choices are attacked publicly or legally. The Nostr coordination protocol and coherence-weighted response.",
+        "steelman":    "What is the strongest argument that responding publicly to narrative attacks amplifies them and families are better served by silence?",
+        "example":     "When USAA policyholders were denied claims after Hurricane Harvey, the ones who coordinated responses publicly and documented everything in writing recovered 3× faster than those who complained only privately.",
+        "activity":    "Write a family Narrative Attack Response Plan: who responds, in what order, what is published publicly, and what stays private. Make it one page.",
+        "age_hint":    "All ages — family-wide",
+        "xp": 35, "rune": "SOVEREIGN•FAMILY•RUNE", "min_coherence": 0.65,
+        "grants_badge": "🛡️ Sovereign Family Law Complete",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
