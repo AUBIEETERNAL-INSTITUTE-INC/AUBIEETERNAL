@@ -896,26 +896,82 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # Nav
-    st.markdown("### 🧭 Navigate")
-    tabs = [
-        "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm",
-        "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum",
-        "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice",
-        "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
-        "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode",
-        "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning",
-        "📡 Nostr Bridge", "📚 Grokipedia", "👨‍👩‍👧‍👦 4 Families", "🧪 Sandbox Lab",
-        "⚡ Bitcoin", "🎮 Daily Quests", "🏫 School", "📈 Parent Dashboard",
-        "🗺️ Curriculum Map", "📣 Share to X", "💬 Family Messaging",
-        "👥 Family Groups",
-        # ── NEW ──────────────────────────────────────────────────────────────
-        "🦅 Sovereign Life",
-        "🌐 Epistemic Commons",
-    ]
-    for tab in tabs:
-        if st.button(tab, key=f"nav_{tab}"):
-            st.session_state.active_tab = tab.split(" ", 1)[1]
+    # ── Categorized Navigation ────────────────────────────────────────────────
+    _NAV_CATEGORIES = {
+        "🏠 HOME": [
+            "📊 Dashboard", "🌅 Digest", "📜 Provenance",
+        ],
+        "🤖 AI": [
+            "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace",
+            "🧪 Sandbox Lab", "📚 Grokipedia",
+        ],
+        "👾 SWARM": [
+            "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "🌐 Epistemic Commons",
+        ],
+        "👨‍👩‍👧 FAMILY": [
+            "👨‍👩‍👧‍👦 4 Families", "🥽 Family Co-Learning",
+            "👨‍👩‍👧 Parent Guide", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
+        ],
+        "💬 CONNECT": [
+            "💬 Family Messaging", "👥 Family Groups",
+            "📣 Share to X", "📡 Nostr Bridge",
+        ],
+        "🏫 SCHOOL": [
+            "🏫 School", "🗺️ Curriculum Map",
+            "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
+        ],
+        "🧬 TRUTH": [
+            "🔮 Truth Lattice", "🧬 Family Lattice",
+            "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
+        ],
+        "₿ BITCOIN": [
+            "₿ Rune-Palace", "⚡ Bitcoin", "🛡️ Shield Rune",
+        ],
+        "🎮 GAMES": [
+            "🦅 Sovereign Life", "💰 Sovereign Cashflow",
+        ],
+        "📊 HEALTH": [
+            "📈 Epistemic Health", "🌍 Humanity Impact",
+            "🎓 Certifications", "🤖 AI Honesty", "📊 Public Health",
+        ],
+    }
+
+    # Expand/collapse state per category
+    if "nav_open" not in st.session_state:
+        st.session_state.nav_open = {"🏠 HOME": True}
+
+    _active_now = st.session_state.get("active_tab", "Oracle")
+
+    for _cat, _cat_tabs in _NAV_CATEGORIES.items():
+        # Check if any tab in this category is active
+        _cat_active = any(_active_now in t or t.split(" ",1)[-1] in _active_now
+                          for t in _cat_tabs)
+        _is_open = st.session_state.nav_open.get(_cat, _cat_active)
+
+        # Category header — acts as toggle
+        _cat_color = "#f7931a" if _cat_active else "#445577"
+        _cat_arrow = "▼" if _is_open else "▶"
+        if st.button(
+            f"{_cat_arrow} {_cat}",
+            key=f"cat_{_cat}",
+            use_container_width=True,
+        ):
+            st.session_state.nav_open[_cat] = not _is_open
+            st.rerun()
+
+        if _is_open:
+            for _tab in _cat_tabs:
+                _tab_name = _tab.split(" ", 1)[1] if " " in _tab else _tab
+                _is_active_tab = (_active_now in _tab or _tab_name in _active_now)
+                _btn_style = "primary" if _is_active_tab else "secondary"
+                if st.button(
+                    f"  {_tab}",
+                    key=f"nav_{_tab}",
+                    use_container_width=True,
+                    type=_btn_style,
+                ):
+                    st.session_state.active_tab = _tab_name
+                    st.rerun()
 
     st.markdown("---")
     if st.button("🗑️ Clear Chat"):
@@ -6758,6 +6814,21 @@ if "Sovereign Life" in active:
     except Exception as _e_slg:
         st.error(f"Sovereign Life error: {_e_slg}")
         import traceback; st.code(traceback.format_exc())
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOVEREIGN CASHFLOW 💰 — Rich Dad Poor Dad style, updated for 2026
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sovereign Cashflow" in active:
+    try:
+        from sovereign_cashflow_game import render_sovereign_life as _rsc
+        _fid_sc = st.session_state.get("current_family", {}).get("family_id", "default") \
+                  if st.session_state.get("current_family") else "default"
+        _rsc(_fid_sc)
+    except ImportError:
+        st.error("sovereign_cashflow_game.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_sc:
+        st.error(f"Sovereign Cashflow error: {_e_sc}")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
