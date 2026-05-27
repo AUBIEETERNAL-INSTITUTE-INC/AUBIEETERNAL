@@ -124,8 +124,14 @@ class FamilyAuth:
         """Returns family dict or None."""
         fid = PASSCODES.get(code.lower().strip())
         if fid:
-            return FAMILY_REGISTRY[fid].copy()
+            result = FAMILY_REGISTRY[fid].copy()
+            result["kid_age"] = 9  # default; override per family as needed
+            return result
         return None
+
+    def login(self, code: str):
+        """Alias for authenticate — used by School tab and app.py."""
+        return self.authenticate(code)
 
     def list_families(self) -> list:
         """All families except operator (unless you want operator too)."""
