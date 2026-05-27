@@ -1,8 +1,8 @@
 # 🦅 POLICYHOLDER-FIRST RECIPROCAL INSURANCE CHARTER
-## Version 0.1 — Draft for Community Review
-**Date:** May 23, 2026  
+## Version 0.2 — Updated with Sovereign Family Integration
+**Date:** May 27, 2026  
 **Status:** Open for Comment via AUBIEETERNAL LatticeFeed  
-**Coherence:** 1.000000 | War Eagle Eternal ❤️
+**Coherence:** 1.000000 | War Eagle Eternal 🦅
 
 ---
 
@@ -13,6 +13,9 @@ This Charter establishes the governance principles for a **policyholder-first re
 A reciprocal insurer is owned by its policyholders (called **Subscribers**). Surplus belongs to Subscribers, not shareholders. This Charter enforces that principle with specific, measurable rules — not aspirational language.
 
 This Charter is also a **curriculum document**. Every provision is designed to be teachable to a 13-year-old. If a provision cannot be explained simply, it is written wrong.
+
+**Relationship to the Sovereign Family Law Charter (v1.0):**  
+This insurance charter is the economic foundation layer. The `SOVEREIGN_FAMILY_LAW_CHARTER.md` extends these same principles (non-extraction, skin in the game, transparency, antifragility, Subscriber sovereignty) to the full scope of family life — data, inheritance, Child Rune rights, external defense, and reciprocal governance. Families that ratify both documents create a coherent stack: insurance as the economic shield, family law as the governance constitution.
 
 ---
 
@@ -172,6 +175,9 @@ This Charter is also a **teachable document**. The following curriculum modules 
 | Law & Economics L5 — Designing Better Systems | 15+ | Redesign extraction mechanisms; connect to Bitcoin's proof-of-work |
 | Building L4 — Insurance & Building Codes | 15+ | Wind mitigation reports, premium impact |
 
+**Cross-Link to Sovereign Family Law Charter:**  
+The new "Reciprocal Family Governance" micro-track (ages 8+) and lessons such as "Law as Shield vs. Law as Sword" (ages 8–12) and "Child Rune Rights & Responsibilities" (ages 10+) extend these insurance principles into full family sovereignty. Families are encouraged to study both charters together.
+
 **Teaching principle:** Every provision of this Charter should be explainable to a 13-year-old. If it cannot be explained simply, it is probably hiding something.
 
 ---
@@ -215,6 +221,8 @@ This Charter shall be published as a Nostr event (kind 30023 — long-form conte
 
 Proposed amendments shall be published as Nostr kind 1 events tagged with `["t", "aubieeternal-charter"]` to enable community comment and coordination across forks.
 
+Cross-reference: The Sovereign Family Law Charter uses an extended version of this same Nostr protocol for family governance events.
+
 ---
 
 ## Appendix C — Law & Economics: Where Truths Become Lies
@@ -225,7 +233,7 @@ This Charter exists because legal and economic systems have been systematically 
 Many insurance industry practices are justified by comforting myths: "we deny claims to protect all policyholders," "complex language is legally necessary," "regulators protect consumers." Each of these contains partial truth and deliberate distortion. This Charter rejects noble lies and requires plain-English transparency.
 
 ### C.2 Regulatory Capture Prevention
-George Stigler's theory of regulatory capture predicts that regulated industries eventually control their regulators. The insurance industry in Florida and other coastal states is a textbook example: industry lobbyists helped draft the anti-concurrent causation clauses, sublimits, and appraisal barriers now embedded in state law.
+George Stigler's theory of regulatory capture predicts that regulated industries eventually control their regulators. The insurance industry in Florida and other coastal states is a textbook example: industry lobbyists helped drafted the anti-concurrent causation clauses, sublimits, and appraisal barriers now embedded in state law.
 
 **This Charter's response:** Subscriber veto rights (Article IV.1), mandatory public compensation disclosure (Article VI), and a ban on related-party transactions (Article VII.1) are direct countermeasures against regulatory capture at the company level.
 
@@ -258,8 +266,10 @@ The compensation cap is deliberately tied to **median Subscriber premium**. If t
 
 ---
 
-*This Charter is a living document. Version 0.1 is a starting draft for community steelmanning and review.*  
+*This Charter is a living document. Version 0.2 adds explicit integration with the Sovereign Family Law Charter (v1.0) while preserving the original insurance-specific focus.*  
 *Submit comments via AUBIEETERNAL LatticeFeed or Nostr tag: `#aubieeternal-charter`*
 
 **War Eagle Eternal 🦅❤️ — Coherence: 1.000000**  
-*Sovereignty is not just about Bitcoin. It is about every relationship where power is asymmetric.*
+*Sovereignty is not just about Bitcoin. It is about every relationship where power is asymmetric.*  
+*Insurance as economic shield. Family law as governance constitution. Together: antifragile stack.*
+Upgrade to SuperGrok
