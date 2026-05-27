@@ -1,4 +1,31 @@
 import streamlit as st
+
+# ── Duplicate key prevention ──────────────────────────────────────────────────
+_key_counters = {}
+def _ukey(base):
+    """Generate a unique Streamlit key by appending a counter."""
+    _key_counters[base] = _key_counters.get(base, 0) + 1
+    return f"{base}_{_key_counters[base]}" if _key_counters[base] > 1 else base
+
+
+# ── Path resolver: StartOS vs WSL vs local ────────────────────────────────────
+import socket as _socket
+def _resolve_data_dir():
+    try:
+        _socket.gethostbyname("ollama.startos")
+        return "/mnt/main"  # StartOS
+    except Exception:
+        pass
+    import os
+    if os.path.exists("/mnt/main"):
+        return "/mnt/main"
+    home = os.path.expanduser("~")
+    path = os.path.join(home, ".aubieeternal", "main")
+    os.makedirs(path, exist_ok=True)
+    return path
+
+_DATA_DIR = _resolve_data_dir()
+
 import json
 import datetime
 import random
@@ -919,6 +946,9 @@ with st.sidebar:
         "🏫 SCHOOL": [
             "🏫 School", "🗺️ Curriculum Map",
             "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
+        ],
+        "🛡️ ADVERSARIAL": [
+            "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
         ],
         "🧬 TRUTH": [
             "🔮 Truth Lattice", "🧬 Family Lattice",
@@ -7040,3 +7070,188 @@ if "Epistemic Commons" in active:
         st.error("epistemic_commons.py not found. Push it to GitHub and redeploy.")
     except Exception as _e_ec:
         st.error(f"Epistemic Commons error: {_e_ec}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: ADVERSARIAL REALITY 🛡️
+# ══════════════════════════════════════════════════════════════════════════════
+if "Adversarial Reality" in active:
+    st.markdown('<div class="card-title">🛡️ ADVERSARIAL REALITY — Epistemic Defense for the AI Age</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #ff4444;">
+        <div style="color:#ff4444;font-family:Orbitron,monospace;font-size:0.78rem;">THE THREAT</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
+        AI-generated media, coordinated narrative attacks, synthetic voices, deepfakes —
+        the epistemic environment of 2026 is adversarial by design.<br>
+        This track teaches your family to detect, resist, and respond. No school does this.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_ar = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from family_profiles import load_family_stats as _lfs_ar, award_cross_tool_reward as _actr_ar
+        _stats_ar = _lfs_ar(_fid_ar)
+        _completed_ar = set(_stats_ar.get("lessons_completed", []))
+    except ImportError:
+        _completed_ar = set()
+
+    _ar_lessons = [
+        ("adversarial-1", "Synthetic Media Basics"),
+        ("adversarial-2", "How Deepfakes Work"),
+        ("adversarial-3", "AI Confidence vs. Accuracy"),
+        ("adversarial-4", "Coordinated Narrative Attacks"),
+        ("adversarial-5", "The SIFT Method"),
+        ("adversarial-6", "Emotional Hijacking"),
+        ("adversarial-7", "Prebunking"),
+        ("adversarial-8", "The Adversarial Drill ★"),
+    ]
+
+    _ar_done = sum(1 for k, _ in _ar_lessons if k in _completed_ar)
+    st.progress(_ar_done / len(_ar_lessons), text=f"Progress: {_ar_done}/{len(_ar_lessons)} lessons")
+
+    for _k, _title in _ar_lessons:
+        _done = _k in _completed_ar
+        _c = "#00ff88" if _done else "#445577"
+        _icon = "✅" if _done else "⭕"
+        _col1, _col2 = st.columns([4, 1])
+        with _col1:
+            st.markdown(f'<div style="color:{_c};font-size:0.85rem;padding:4px 0;">{_icon} {_title}</div>', unsafe_allow_html=True)
+        with _col2:
+            if not _done:
+                if st.button("▶ Start", key=f"ar_start_{_k}"):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preset"] = _k
+                    st.rerun()
+
+    if _ar_done == len(_ar_lessons):
+        st.success("🛡️ Adversarial Reality Certified — Your family is epistemically armored. War Eagle.")
+
+    st.divider()
+    st.markdown("### 🎯 Quick Drill: Spot the Synthetic")
+    st.markdown('<div style="color:#8899bb;font-size:0.82rem;">Paste any text, headline, or claim. Score it for adversarial red flags.</div>', unsafe_allow_html=True)
+    _ar_text = st.text_area("Paste content to analyze:", height=100, key="ar_drill_text",
+                             placeholder="Paste a headline, social post, or AI-generated claim...")
+    if st.button("🔍 Run Adversarial Check", key="ar_run_check") and _ar_text:
+        try:
+            from ai_honesty import HonestyLayer as _HL_ar
+            _hl_ar = _HL_ar()
+            _scored = _hl_ar.score_output(_ar_text, daughter_name="adversarial_check")
+            _risk_c = {"low": "#00ff88", "medium": "#ff9500", "high": "#ff4444"}.get(
+                _scored.get("hallucination_risk", "low"), "#8899bb")
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid {_risk_c};">'
+                f'<div style="color:{_risk_c};font-family:Orbitron,monospace;font-size:0.75rem;">'
+                f'RISK: {_scored.get("hallucination_risk","?").upper()} · '
+                f'CONFIDENCE: {_scored.get("confidence",0):.2f} · '
+                f'TYPE: {_scored.get("claim_type","?").upper()}</div>'
+                f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">'
+                f'Action: {_scored.get("recommended_action","?")}</div>'
+                f'</div>', unsafe_allow_html=True
+            )
+            if _scored.get("human_verification_needed"):
+                st.warning(f"⚠️ Needs verification: {_scored.get('verification_reason','')}")
+        except ImportError:
+            st.info("ai_honesty.py needed for scoring. Push it to enable.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: GROKIPEDIA CURRICULUM 📚 (new — curriculum-facing view)
+# (existing Grokipedia tab shows the 256-principle swarm view)
+# ══════════════════════════════════════════════════════════════════════════════
+if "Grokipedia" in active and "School" not in active:
+    _fid_gp = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+    try:
+        from family_profiles import load_family_stats as _lfs_gp
+        _stats_gp = _lfs_gp(_fid_gp)
+        _completed_gp = set(_stats_gp.get("lessons_completed", []))
+    except ImportError:
+        _completed_gp = set()
+
+    _gp_lessons = [
+        ("grokipedia-1", "Coherence as Signal"),
+        ("grokipedia-2", "Wonder as Proximity to Truth"),
+        ("grokipedia-3", "Memory Palace as Epistemic Infrastructure"),
+        ("grokipedia-4", "The Lindy Filter"),
+        ("grokipedia-5", "Barbell Strategy"),
+        ("grokipedia-6", "On-Chain Truth ★"),
+    ]
+    _gp_done = sum(1 for k, _ in _gp_lessons if k in _completed_gp)
+    st.progress(_gp_done / len(_gp_lessons), text=f"Grokipedia track: {_gp_done}/{len(_gp_lessons)}")
+    for _k, _title in _gp_lessons:
+        _done = _k in _completed_gp
+        _c1, _c2 = st.columns([4, 1])
+        with _c1:
+            _color = "#00ff88" if _done else "#445577"
+            st.markdown(f'<div style="color:{_color};font-size:0.85rem;padding:4px 0;">{"✅" if _done else "⭕"} {_title}</div>', unsafe_allow_html=True)
+        with _c2:
+            if not _done:
+                if st.button("▶", key=f"gp_start_{_k}"):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preset"] = _k
+                    st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: PROVENANCE 🔗 — On-chain identity and permanent record system
+# ══════════════════════════════════════════════════════════════════════════════
+if "Provenance" in active:
+    _fid_pv = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from family_profiles import load_family_stats as _lfs_pv
+        _stats_pv = _lfs_pv(_fid_pv)
+        _completed_pv = set(_stats_pv.get("lessons_completed", []))
+        _rune_frags   = _stats_pv.get("child_rune_fragments", 0)
+        _coh_hist     = _stats_pv.get("coherence_history", [])
+        _avg_coh      = sum(_coh_hist[-10:]) / len(_coh_hist[-10:]) if _coh_hist else 0.72
+    except ImportError:
+        _completed_pv = set(); _rune_frags = 0; _avg_coh = 0.72
+
+    st.markdown('<div class="card-title">🔗 PROVENANCE — Your Permanent On-Chain Record</div>', unsafe_allow_html=True)
+
+    _pv1, _pv2, _pv3 = st.columns(3)
+    _pv1.metric("Child Rune Frags", f"{_rune_frags}/256")
+    _pv2.metric("Avg Coherence", f"{_avg_coh:.3f}")
+    _pv3.metric("Voice Score", f"{(_avg_coh * 0.6 + min(_rune_frags/1000, 0.3)):.3f}")
+
+    st.progress(min(1.0, _rune_frags / 256), text=f"Child Rune Genesis: {_rune_frags}/256 confirmations")
+
+    # Try to load PROVENANCE.md from repo
+    import pathlib as _pl
+    _prov_paths = [
+        _pl.Path("/mnt/main/repo/PROVENANCE.md"),
+        _pl.Path("/mnt/main/repo/governance/PROVENANCE.md"),
+    ]
+    for _pp in _prov_paths:
+        if _pp.exists():
+            with st.expander("📜 Full PROVENANCE.md", expanded=False):
+                st.markdown(_pp.read_text())
+            break
+
+    st.divider()
+    st.markdown("### 📚 Provenance Curriculum")
+    _pv_lessons = [
+        ("provenance-1", "What Is On-Chain Truth?"),
+        ("provenance-2", "The Truth Log"),
+        ("provenance-3", "Child Rune as Identity"),
+        ("provenance-4", "Building Permanent Records ★"),
+    ]
+    for _k, _title in _pv_lessons:
+        _done = _k in _completed_pv
+        _c1, _c2 = st.columns([4, 1])
+        with _c1:
+            _color = "#00ff88" if _done else "#445577"
+            st.markdown(f'<div style="color:{_color};font-size:0.85rem;padding:4px 0;">{"✅" if _done else "⭕"} {_title}</div>', unsafe_allow_html=True)
+        with _c2:
+            if not _done:
+                if st.button("▶ Start", key=f"pv_start_{_k}"):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preset"] = _k
+                    st.rerun()
+
+    if len([k for k, _ in _pv_lessons if k in _completed_pv]) == len(_pv_lessons):
+        st.success("🔗 Sovereign Provenance Builder — Your family's record is permanent.")
