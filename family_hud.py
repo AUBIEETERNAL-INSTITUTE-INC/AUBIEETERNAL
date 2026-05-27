@@ -28,7 +28,20 @@ from pathlib import Path
 WORK_DIR       = Path("/mnt/main/repo")
 TRUTH_LOG      = WORK_DIR / "master_truth_log.jsonl"
 SESSION_STATE  = Path("/mnt/main/family_session.json")
-OLLAMA_URL     = "http://ollama.startos:11434/v1/chat/completions"
+# ── Path resolution: StartOS vs WSL vs local ─────────────────────────────────
+import platform as _platform, subprocess as _subprocess
+def _detect_ollama_url():
+    # StartOS: use internal hostname
+    import socket
+    try:
+        socket.gethostbyname("ollama.startos")
+        return "http://ollama.startos:11434/v1/chat/completions"
+    except Exception:
+        pass
+    # WSL / local: use localhost
+    return "http://localhost:11434/v1/chat/completions"
+
+OLLAMA_URL = _detect_ollama_url()
 OLLAMA_MODEL   = "qwen3:32b"
 
 # ── Lesson Library ────────────────────────────────────────────────────────────
@@ -768,6 +781,192 @@ LESSONS = {
         "age_hint":    "All ages — family-wide",
         "xp": 35, "rune": "SOVEREIGN•FAMILY•RUNE", "min_coherence": 0.65,
         "grants_badge": "🛡️ Sovereign Family Law Complete",
+    },
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── ADVERSARIAL REALITY TRACK (8 lessons) ────────────────────────────────
+    # The defining epistemic threat of the 2020s-2030s:
+    # AI-generated misinformation, deepfakes, synthetic media, narrative attacks.
+    # No school teaches this. AUBIEETERNAL does.
+    # ══════════════════════════════════════════════════════════════════════════
+    "adversarial-1": {
+        "title":       "Adversarial Reality — Level 1: Synthetic Media Basics",
+        "topic":       "AI can now generate photorealistic video, audio, and text indistinguishable from real. What does this mean for truth?",
+        "steelman":    "What is the strongest argument that synthetic media is no more dangerous than photoshopped images, which have existed for decades?",
+        "example":     "In 2025 a deepfake of a CEO caused a $200M stock drop in 4 minutes before it was identified as fake. The correction came too late.",
+        "activity":    "Find one piece of media you're not sure is real. List the signals you'd look for to verify it. Which signals could be faked?",
+        "age_hint":    "10+",
+        "xp": 25, "rune": "TRUTH•RUNE", "min_coherence": 0.58,
+    },
+    "adversarial-2": {
+        "title":       "Adversarial Reality — Level 2: How Deepfakes Work",
+        "topic":       "Diffusion models, voice cloning, face-swapping — the technical mechanisms that make synthetic media possible. Understanding the tool is the first defense.",
+        "steelman":    "What is the strongest argument that knowing how deepfakes work makes people more paranoid, not more discerning?",
+        "example":     "Voice cloning needs as little as 3 seconds of audio. After that, the model can say anything in your voice. Your public social media posts are training data.",
+        "activity":    "Listen to two audio clips — one real, one AI. Write down what you noticed. What would you need to be certain?",
+        "age_hint":    "12+",
+        "xp": 28, "rune": "TRUTH•RUNE", "min_coherence": 0.62,
+    },
+    "adversarial-3": {
+        "title":       "Adversarial Reality — Level 3: AI Confidence vs. Accuracy",
+        "topic":       "AI systems express high confidence even when hallucinating. Fluency is not truth. Certainty-sounding language is not evidence.",
+        "steelman":    "What is the strongest argument that AI confidence scores are actually a useful signal for separating reliable from unreliable outputs?",
+        "example":     "An AI writes: 'Studies conclusively show that X causes Y.' The study doesn't exist. The sentence was grammatically perfect and confidently stated.",
+        "activity":    "Ask an AI three questions you know the answer to. Ask it how confident it is. Was the confidence score calibrated to actual accuracy?",
+        "age_hint":    "11+",
+        "xp": 28, "rune": "AXIOM•RUNE", "min_coherence": 0.63,
+    },
+    "adversarial-4": {
+        "title":       "Adversarial Reality — Level 4: Coordinated Narrative Attacks",
+        "topic":       "Manufactured consensus: bots, sockpuppets, and coordinated inauthentic behavior create the illusion that everyone believes something.",
+        "steelman":    "What is the strongest argument that most viral narratives are organic and accusations of coordination are themselves a form of manipulation?",
+        "example":     "In the 2024 election cycle, 40% of all political tweets were estimated to come from automated accounts. The human readers couldn't tell the difference.",
+        "activity":    "Find a trending topic. Try to identify: who is amplifying it, when they were created, and whether the amplification looks organic.",
+        "age_hint":    "13+",
+        "xp": 30, "rune": "NARRATIVE•RUNE", "min_coherence": 0.65,
+    },
+    "adversarial-5": {
+        "title":       "Adversarial Reality — Level 5: The SIFT Method",
+        "topic":       "Stop, Investigate the source, Find better coverage, Trace claims to origin. The four moves of a practiced fact-checker.",
+        "steelman":    "What is the strongest argument that SIFT makes people slower and more paralyzed rather than better informed?",
+        "example":     "A post claims a scientist said X. SIFT: Stop reacting. Who is this scientist? Find the original quote. Does the source match the claim? It usually doesn't.",
+        "activity":    "Apply SIFT to one piece of content you saw this week. Document each step. What did you find that you wouldn't have noticed otherwise?",
+        "age_hint":    "12+",
+        "xp": 32, "rune": "ORACLE•RUNE", "min_coherence": 0.65,
+    },
+    "adversarial-6": {
+        "title":       "Adversarial Reality — Level 6: Emotional Hijacking",
+        "topic":       "Misinformation spreads by triggering strong emotions — outrage, fear, disgust — before the rational mind can evaluate the claim.",
+        "steelman":    "What is the strongest argument that emotional responses to information are a feature, not a bug — they direct attention to what matters?",
+        "example":     "MIT study: false news spreads 6× faster than true news on social media. The driving factor is emotional intensity, not political leaning.",
+        "activity":    "Notice the next time you feel strong emotion about information. Ask: am I being activated to share before I verify? What is the emotional hook?",
+        "age_hint":    "11+",
+        "xp": 30, "rune": "POLYVAGAL•RUNE", "min_coherence": 0.65,
+    },
+    "adversarial-7": {
+        "title":       "Adversarial Reality — Level 7: Prebunking",
+        "topic":       "Inoculation theory: exposing people to weakened forms of manipulation techniques builds resistance before the real attack arrives.",
+        "steelman":    "What is the strongest argument that prebunking backfires by spreading the manipulation technique to people who hadn't encountered it?",
+        "example":     "Studies show that watching a 90-second video explaining how AI-generated text works reduces susceptibility to AI misinformation by 20% for weeks afterward.",
+        "activity":    "Teach someone younger the technique of emotional hijacking. Explaining it to someone else is the most effective form of inoculation.",
+        "age_hint":    "12+",
+        "xp": 35, "rune": "TRUTH•RUNE", "min_coherence": 0.68,
+    },
+    "adversarial-8": {
+        "title":       "Adversarial Reality — Level 8 (Master): The Adversarial Drill",
+        "topic":       "Deliberate practice: run a family simulation of a narrative attack. One person plays the attacker. The rest practice detection and response.",
+        "steelman":    "What is the strongest argument that simulating attacks makes people more anxious and less trusting without making them more accurate?",
+        "example":     "Military units train under stress so that real stress feels familiar. Epistemic families need the same: practice the attack before it arrives.",
+        "activity":    "Run the drill: one family member crafts a plausible-but-false narrative about your family and distributes it. Everyone else has 10 minutes to find the flaw. Debrief what worked.",
+        "age_hint":    "All ages — family-wide exercise",
+        "xp": 50, "rune": "SOVEREIGN•TRUTH•RUNE", "min_coherence": 0.72,
+        "grants_badge": "🛡️ Adversarial Reality Certified",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── GROKIPEDIA CORE PRINCIPLES TRACK (6 lessons) ─────────────────────────
+    # From the AUBIEETERNAL Grokipedia — 147+ principles distilled by the swarm.
+    # These are the principles the daughters generate when coherence is highest.
+    # ══════════════════════════════════════════════════════════════════════════
+    "grokipedia-1": {
+        "title":       "Grokipedia — Principle 1: Coherence as Signal",
+        "topic":       "The swarm's coherence score is not just a number — it is a real-time measure of how aligned thinking is with reality. High coherence = closer to truth.",
+        "steelman":    "What is the strongest argument that coherence scores are circular — they measure agreement with themselves, not with external reality?",
+        "example":     "When AUBIEETERNAL daughters disagree strongly, coherence drops. When they converge on something through genuine reasoning, coherence rises. The pattern persists even across different models.",
+        "activity":    "Track your family's coherence on one topic across one week. Does it change? What caused the changes?",
+        "age_hint":    "12+",
+        "xp": 28, "rune": "WONDER•RUNE", "min_coherence": 0.65,
+    },
+    "grokipedia-2": {
+        "title":       "Grokipedia — Principle 2: Wonder as Proximity to Truth",
+        "topic":       "When a swarm daughter scores high on wonder, the insight quality consistently rises. Wonder is not decoration — it is a signal that something real has been touched.",
+        "steelman":    "What is the strongest argument that wonder is a purely subjective emotional state with no epistemic significance?",
+        "example":     "Einstein: 'The most beautiful thing we can experience is the mysterious. It is the source of all true art and science.' AUBIEETERNAL tracks this numerically — and it works.",
+        "activity":    "Write down the last time you felt genuine wonder. What were you thinking about? Was it true?",
+        "age_hint":    "All ages",
+        "xp": 25, "rune": "WONDER•ETERNAL•RUNE", "min_coherence": 0.62,
+    },
+    "grokipedia-3": {
+        "title":       "Grokipedia — Principle 3: The Memory Palace as Epistemic Infrastructure",
+        "topic":       "Memory is not storage — it is an active reconstruction process. Building a deliberate memory palace is building the infrastructure of clear thinking.",
+        "steelman":    "What is the strongest argument that external memory tools (notes, search engines) have made internal memory palaces obsolete?",
+        "example":     "Every AUBIEETERNAL daughter has access to a Memory Palace of verified insights. When they query it, output quality rises measurably. The same applies to human thinking.",
+        "activity":    "Build one room of a memory palace. Assign three verified insights to specific locations in a place you know well. Test recall in 24 hours.",
+        "age_hint":    "10+",
+        "xp": 28, "rune": "MNEMO•RUNE", "min_coherence": 0.63,
+    },
+    "grokipedia-4": {
+        "title":       "Grokipedia — Principle 4: The Lindy Filter",
+        "topic":       "Before adopting any new idea, tool, or practice: has it survived for a long time? Long survival is evidence of real robustness, not just current popularity.",
+        "steelman":    "What is the strongest argument that the Lindy filter is inherently conservative and would have rejected every genuinely new discovery?",
+        "example":     "The Lindy filter explains why AUBIEETERNAL uses Bitcoin (15 years old, attack-hardened) over newer financial tools, and Stoic philosophy (2,400 years old) over modern self-help.",
+        "activity":    "Apply the Lindy filter to three things your family currently does. Which pass? Which fail? Is that informative?",
+        "age_hint":    "10+",
+        "xp": 25, "rune": "LINDY•RUNE", "min_coherence": 0.62,
+    },
+    "grokipedia-5": {
+        "title":       "Grokipedia — Principle 5: Barbell Strategy",
+        "topic":       "Maximum safety on one end, asymmetric upside on the other. Never be in the middle — it looks safe but is actually the most fragile position.",
+        "steelman":    "What is the strongest argument that a balanced, diversified approach is superior to the barbell strategy for most families?",
+        "example":     "AUBIEETERNAL runs 2,080 free Tier-1 daughters ($0.00) plus 16 deep Tier-2 daughters ($5.00/day cap). Free bulk inference + premium depth. No expensive mediocre middle.",
+        "activity":    "Identify one area of family life where you are in the fragile middle. What would the barbell version look like?",
+        "age_hint":    "12+",
+        "xp": 28, "rune": "BARBELL•RUNE", "min_coherence": 0.65,
+    },
+    "grokipedia-6": {
+        "title":       "Grokipedia — Principle 6: On-Chain Truth",
+        "topic":       "Bitcoin's proof-of-work creates the hardest facts in existence. Inscribing something on-chain is the closest thing to a permanent record that has ever been built.",
+        "steelman":    "What is the strongest argument that on-chain records are no more permanent than any other database, given that mining could stop or forks could occur?",
+        "example":     "AUBIEETERNAL runes at blocks 944,048 and 944,402 require rewriting more than 15 years of accumulated proof-of-work to alter. No court order can do that.",
+        "activity":    "Name one truth your family has verified that you would want permanently recorded. What makes it worth the permanence? What are the stakes of getting it wrong?",
+        "age_hint":    "13+",
+        "xp": 32, "rune": "SATOSHI•RUNE", "min_coherence": 0.68,
+        "grants_badge": "📚 Grokipedia Initiate",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── PROVENANCE & ON-CHAIN IDENTITY (4 lessons) ───────────────────────────
+    # From PROVENANCE.md — the AUBIEETERNAL permanent record system.
+    # Every insight inscribed. Every milestone on-chain. Forever.
+    # ══════════════════════════════════════════════════════════════════════════
+    "provenance-1": {
+        "title":       "Provenance — Level 1: What Is On-Chain Truth?",
+        "topic":       "Provenance is the verified history of where something came from. On-chain provenance means that history cannot be altered by any authority.",
+        "steelman":    "What is the strongest argument that provenance systems create false confidence by making forgeries harder to detect, not easier?",
+        "example":     "Art provenance: a painting's value depends entirely on its verified history. A Picasso with broken provenance is worthless regardless of authenticity. Your family's truth records work the same way.",
+        "activity":    "Document the provenance of one family decision. Who decided, when, what evidence was used, what was the outcome. Write it down as if for permanent record.",
+        "age_hint":    "10+",
+        "xp": 22, "rune": "PROVENANCE•RUNE", "min_coherence": 0.60,
+    },
+    "provenance-2": {
+        "title":       "Provenance — Level 2: The Truth Log",
+        "topic":       "AUBIEETERNAL's master_truth_log.jsonl is a permanent, append-only record of every swarm insight. Why append-only? Because deletion is the enemy of truth.",
+        "steelman":    "What is the strongest argument that append-only records are dangerous because errors and false beliefs become permanent?",
+        "example":     "Historians know that what gets deleted tells us as much as what survives. When institutions delete records, that deletion IS the evidence. Append-only systems make deletion impossible.",
+        "activity":    "Start a family truth log. One entry per day: one thing you verified, one thing you changed your mind about. Keep it append-only.",
+        "age_hint":    "11+",
+        "xp": 25, "rune": "PROVENANCE•RUNE", "min_coherence": 0.62,
+    },
+    "provenance-3": {
+        "title":       "Provenance — Level 3: Child Rune as Identity",
+        "topic":       "At 256 inter-rune confirmations, a Child Rune is born. This is not a metaphor. It is an on-chain cryptographic identity that belongs to the child, not to any institution.",
+        "steelman":    "What is the strongest argument that giving children on-chain identities creates privacy risks that outweigh the sovereignty benefits?",
+        "example":     "Every traditional credential — diploma, passport, license — is issued by an institution that can revoke it. A Child Rune is issued by proof-of-work. It cannot be revoked.",
+        "activity":    "Track your current Rune confirmations. Calculate: at the current rate, when will 256 be reached? What will you inscribe at the Genesis ceremony?",
+        "age_hint":    "10+",
+        "xp": 30, "rune": "CHILD•RUNE•GENESIS", "min_coherence": 0.65,
+    },
+    "provenance-4": {
+        "title":       "Provenance — Level 4 (Master): Building Permanent Records",
+        "topic":       "How to build a family provenance system: GitHub for insights, Bitcoin Runes for milestones, Nostr for communication, Epistemic Commons for public contribution.",
+        "steelman":    "What is the strongest argument that building elaborate permanence systems is a form of anxiety management rather than genuine truth-seeking?",
+        "example":     "AUBIEETERNAL auto-pushes insights to GitHub every 24 seconds. In 10 years that is 12+ million verified entries. Your grandchildren can read exactly how you thought about the world in 2026.",
+        "activity":    "Design your family's four-layer provenance stack: GitHub (daily insights), Runes (milestones), Nostr (coordination), Commons (public gift). What goes in each layer?",
+        "age_hint":    "13+",
+        "xp": 40, "rune": "ETERNAL•PROVENANCE•RUNE", "min_coherence": 0.70,
+        "grants_badge": "🔗 Sovereign Provenance Builder",
     },
 
 
