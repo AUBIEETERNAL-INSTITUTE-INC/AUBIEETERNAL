@@ -950,6 +950,10 @@ with st.sidebar:
         "🛡️ ADVERSARIAL": [
             "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
         ],
+        "🤝 AI PARTNERSHIP": [
+            "🤝 AI Partnership",
+            "🕸️ Living Lattice",
+        ],
         "🧬 TRUTH": [
             "🔮 Truth Lattice", "🧬 Family Lattice",
             "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
@@ -7255,3 +7259,234 @@ if "Provenance" in active:
 
     if len([k for k, _ in _pv_lessons if k in _completed_pv]) == len(_pv_lessons):
         st.success("🔗 Sovereign Provenance Builder — Your family's record is permanent.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: AI PARTNERSHIP 🤝
+# How to use AI as a thinking partner without offloading judgment to it.
+# The defining meta-skill of the next 30 years.
+# ══════════════════════════════════════════════════════════════════════════════
+if "AI Partnership" in active:
+    st.markdown('<div class="card-title">🤝 AI AS THINKING PARTNER — The Meta-Skill of the AI Age</div>',
+                unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #a020f0;">
+        <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">WHY THIS MATTERS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Most people in 2026 are either AI-fearful or AI-credulous. Neither produces good thinking.
+        This track teaches a third way: genuine epistemic partnership — using AI's strengths
+        while maintaining your own judgment, detecting its failures, and knowing exactly
+        where the line between augmentation and replacement must be drawn.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_ap = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+    try:
+        from family_profiles import load_family_stats as _lfs_ap
+        _stats_ap    = _lfs_ap(_fid_ap)
+        _completed_ap = set(_stats_ap.get("lessons_completed", []))
+    except ImportError:
+        _completed_ap = set()
+
+    _ap_lessons = [
+        ("ai-partner-1", "What AI Actually Is"),
+        ("ai-partner-2", "The Confidence Problem"),
+        ("ai-partner-3", "When to Push Back"),
+        ("ai-partner-4", "The Judgment Line"),
+        ("ai-partner-5", "Epistemic Independence"),
+        ("ai-partner-6", "Steelmanning AI Itself"),
+        ("ai-partner-7", "The Partnership Protocol"),
+        ("ai-partner-8", "Humanity + AI ★"),
+    ]
+    _ap_done = sum(1 for k, _ in _ap_lessons if k in _completed_ap)
+    st.progress(_ap_done / len(_ap_lessons),
+                text=f"Progress: {_ap_done}/{len(_ap_lessons)} lessons")
+    st.markdown("")
+
+    for _k, _title in _ap_lessons:
+        _done = _k in _completed_ap
+        _color = "#00ff88" if _done else "#445577"
+        _c1, _c2 = st.columns([4, 1])
+        with _c1:
+            st.markdown(
+                f'<div style="color:{_color};font-size:0.85rem;padding:4px 0;">'
+                f'{"✅" if _done else "⭕"} {_title}</div>',
+                unsafe_allow_html=True
+            )
+        with _c2:
+            if not _done:
+                if st.button("▶ Start", key=f"ap_start_{_k}"):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preset"] = _k
+                    st.rerun()
+
+    if _ap_done == len(_ap_lessons):
+        st.success("🤝 AI Partnership Certified — You are neither AI-fearful nor AI-credulous. War Eagle.")
+
+    st.divider()
+
+    # Live practice: interrogate an AI output right now
+    st.markdown("### 🔬 Live Partnership Practice")
+    st.markdown('<div style="color:#8899bb;font-size:0.8rem;">Paste any AI output. Practice the partnership skills: what\'s the confidence vs accuracy? What would make it wrong? What should YOU decide?</div>',
+                unsafe_allow_html=True)
+
+    _ap_input = st.text_area("Paste AI output to interrogate:", height=120, key="ap_practice_input",
+                              placeholder="Paste any AI-generated text here...")
+    if st.button("🤝 Interrogate This Output", key="ap_interrogate") and _ap_input:
+        try:
+            from ai_honesty import HonestyLayer as _HL_ap
+            _hl_ap  = _HL_ap()
+            _scored = _hl_ap.score_output(_ap_input, daughter_name="partnership_practice")
+
+            _risk_colors = {"low": "#00ff88", "medium": "#ff9500", "high": "#ff4444"}
+            _rc = _risk_colors.get(_scored.get("hallucination_risk", "low"), "#8899bb")
+
+            _ap_c1, _ap_c2 = st.columns(2)
+            with _ap_c1:
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {_rc};">'
+                    f'<div style="color:{_rc};font-family:Orbitron,monospace;font-size:0.72rem;">'
+                    f'HONESTY SCORE</div>'
+                    f'<div style="font-size:0.82rem;color:#c8d8ff;margin-top:6px;line-height:1.8;">'
+                    f'Confidence: {_scored.get("confidence", 0):.2f}<br>'
+                    f'Risk: {_scored.get("hallucination_risk","?").upper()}<br>'
+                    f'Type: {_scored.get("claim_type","?").title()}<br>'
+                    f'Action: {_scored.get("recommended_action","?")}</div></div>',
+                    unsafe_allow_html=True
+                )
+            with _ap_c2:
+                _questions = [
+                    "What specific claim here could be wrong?",
+                    "What is this AI NOT telling you?",
+                    "What decision should you NOT delegate based on this?",
+                    "What would you need to verify before acting on this?",
+                ]
+                st.markdown(
+                    '<div class="card" style="border-left:3px solid #a020f0;">'
+                    '<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">PARTNERSHIP QUESTIONS</div>'
+                    '<div style="font-size:0.8rem;color:#8899bb;margin-top:6px;line-height:2.0;">'
+                    + "<br>".join(f"• {q}" for q in _questions)
+                    + '</div></div>',
+                    unsafe_allow_html=True
+                )
+            if _scored.get("human_verification_needed"):
+                st.warning(f"⚠️ Human judgment required: {_scored.get('verification_reason', '')}")
+        except ImportError:
+            st.info("ai_honesty.py needed for scoring.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: LIVING LATTICE 🕸️ — Anonymous coherence network
+# ══════════════════════════════════════════════════════════════════════════════
+if "Living Lattice" in active:
+    st.markdown('<div class="card-title">🕸️ LIVING LATTICE — Collective Epistemic Health</div>',
+                unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">WHAT THIS IS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        The Living Lattice connects sovereign families through anonymous coherence sharing.
+        No PII. No personal data. Just: coherence scores, lesson counts, wonder index, track activity.<br><br>
+        What this creates over time: the first real-time measure of collective epistemic health
+        that has ever existed. Not engagement metrics — actual coherence from families doing
+        real truth-seeking. Researchers, AI systems, and policymakers have no equivalent.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_ll = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from living_lattice import LivingLattice as _LL
+        _lattice = _LL(_fid_ll)
+        _summary = _lattice.get_lattice_summary()
+        _stats_ll = _summary.get("stats", {})
+
+        # Key metrics
+        _ll_c1, _ll_c2, _ll_c3, _ll_c4 = st.columns(4)
+        _ll_c1.metric("Wisdom GDP",      f"{_stats_ll.get('wisdom_gdp', 0):.2f}/10")
+        _ll_c2.metric("Avg Coherence",   f"{_stats_ll.get('avg_coherence_30d', 0):.4f}")
+        _ll_c3.metric("Days Active",     _stats_ll.get("days_active", 0))
+        _ll_c4.metric("Trend",           _stats_ll.get("trend", "—").title())
+
+        st.divider()
+
+        # Wisdom GDP chart
+        _gdp_history = _lattice.get_wisdom_gdp_history(30)
+        if _gdp_history:
+            import pandas as _pd
+            _df = _pd.DataFrame(_gdp_history)
+            st.markdown("### 📈 Wisdom GDP — 30 Day History")
+            st.line_chart(_df.set_index("date")[["wisdom_gdp", "coherence"]])
+
+        st.divider()
+
+        # Lattice ID + controls
+        st.markdown("### 🔑 Your Lattice Node")
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #00ff88;">'
+            f'<div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.72rem;">ANONYMOUS LATTICE ID</div>'
+            f'<code style="color:#c8d8ff;font-size:0.85rem;">{_summary["lattice_id"]}</code><br>'
+            f'<div style="color:#556677;font-size:0.72rem;margin-top:4px;">'
+            f'Locally generated · Not linked to any identity · Regenerate any time</div>'
+            f'</div>', unsafe_allow_html=True
+        )
+
+        _ll_btn1, _ll_btn2 = st.columns(2)
+        with _ll_btn1:
+            if st.button("📡 Publish Today's Signal", key="ll_publish"):
+                with st.spinner("Publishing..."):
+                    _result = _lattice.publish_daily_signal(force=True)
+                if _result.get("status") == "published":
+                    _sig = _result.get("signal", {})
+                    st.success(
+                        f"✅ Signal published — "
+                        f"coherence: {_sig.get('avg_coherence', 0):.4f} · "
+                        f"wonder: {_sig.get('wonder_index', 0):.4f} · "
+                        f"lessons: {_sig.get('lessons_completed', 0)}"
+                    )
+                else:
+                    st.info(f"Status: {_result.get('status', '?')}")
+        with _ll_btn2:
+            if st.button("🔄 Regenerate Lattice ID", key="ll_regen"):
+                _new_id = _lattice.regenerate_lattice_id()
+                st.info(f"New ID: {_new_id}")
+
+        # Track effectiveness
+        st.divider()
+        st.markdown("### 📊 Track Effectiveness")
+        _effectiveness = _lattice.get_track_effectiveness()
+        if "note" in _effectiveness:
+            st.info(_effectiveness["note"])
+        else:
+            _ll_e1, _ll_e2 = st.columns(2)
+            with _ll_e1:
+                st.metric("High-learning coherence", f"{_effectiveness.get('high_learning_coh',0):.4f}")
+            with _ll_e2:
+                st.metric("Low-learning coherence",  f"{_effectiveness.get('low_learning_coh',0):.4f}")
+            st.markdown(
+                f'<div style="color:#8899bb;font-size:0.8rem;">'
+                f'{_effectiveness.get("interpretation", "")}'
+                f'</div>', unsafe_allow_html=True
+            )
+
+        # Privacy statement
+        st.divider()
+        st.markdown("""
+        **Privacy guarantee:**
+        The signal published contains: aggregate coherence (not per-family), lesson count (not which lessons),
+        wonder index, active track names, rune fragment count. Zero PII. Zero individual family data.
+        Your Lattice ID is locally generated and never linked to any name, device, or account.
+        You can regenerate it at any time to sever all historical linkage.
+        """)
+
+    except ImportError:
+        st.error("living_lattice.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_ll:
+        st.error(f"Living Lattice error: {_e_ll}")
+        import traceback as _tb
+        st.code(_tb.format_exc())
