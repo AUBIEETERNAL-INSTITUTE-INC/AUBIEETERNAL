@@ -7778,6 +7778,27 @@ if "X Bridge" in active:
                 f"Attacks caught: {_stats_xb['attacks_caught']} ({_stats_xb['attack_rate']}%) · "
                 f"Avg stress: {_stats_xb['avg_stress']}/10"
             )
+        # Contribute to Living Lattice
+        st.divider()
+        st.markdown("### 🕸️ Contribute to Living Lattice")
+        st.caption("Every post you process adds anonymous coherence signal to the global lattice.")
+        if st.button("📡 Publish Today\'s Signal to Lattice", key="xb_lattice_publish",
+                     use_container_width=True):
+            try:
+                from living_lattice import LivingLattice as _LL_xb
+                _ll_xb   = _LL_xb(_fid_xb)
+                _ll_res  = _ll_xb.publish_daily_signal(force=True)
+                _ll_sig  = _ll_res.get("signal", {})
+                st.success(
+                    f"✅ Signal published — coherence: {_ll_sig.get('avg_coherence',0):.4f} · "
+                    f"wonder: {_ll_sig.get('wonder_index',0):.4f} · "
+                    f"lessons: {_ll_sig.get('lessons_completed',0)} · "
+                    f"ID: {_ll_xb.lattice_id}"
+                )
+            except ImportError:
+                st.info("living_lattice.py needed.")
+            except Exception as _e_ll_xb:
+                st.error(f"Lattice error: {_e_ll_xb}")
     except ImportError:
         st.info("x_bridge.py needed.")
 
