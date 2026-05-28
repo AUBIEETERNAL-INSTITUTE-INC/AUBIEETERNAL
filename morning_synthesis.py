@@ -242,6 +242,12 @@ Be direct, honest, and non-extractive. Max 300 words total.""")
 
 ---
 
+## Simulation Probe 🔭
+
+{probe_summary}
+
+---
+
 ## Living Lattice 🕸️
 
 {lattice_summary}
