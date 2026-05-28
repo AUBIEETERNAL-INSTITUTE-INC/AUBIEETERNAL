@@ -1,328 +1,258 @@
-# 🦅 AUBIEETERNAL
-### Sovereign Family Epistemic Practice
+# 🦅 AUBIEETERNAL — Sovereign Family Intelligence
 
-**Local-first · On-chain · Antifragile · Built to last generations**
+**Download. Run. Build unbreakable households.**
 
-> *"The lattice is breathing. Wonder Index: 2.0000 | Coherence: 1.000000"*
+AUBIEETERNAL is a **fully local, sovereign AI platform** that turns any family into a truth-seeking, antifragile unit.  
+One download. Zero subscriptions. 100% offline by default. Runs on any Windows, macOS, or Linux PC.
+
+**v68.0** — One-click launcher · X Bridge · Simulation Probe · Truth Debt Ledger · Living Lattice · 106 lessons
 
 [![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![Lessons](https://img.shields.io/badge/Lessons-106-blue)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![License](https://img.shields.io/badge/License-CC0%201.0-orange)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Stack](https://img.shields.io/badge/Stack-StartOS%20%2B%20Ollama%20%2B%20Bitcoin-purple)](https://github.com/hodlmateo/AUBIEETERNAL)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-purple)](https://github.com/hodlmateo/AUBIEETERNAL/releases)
 
 ---
 
-## What This Is
+## 🚀 Download & Run (30 seconds)
 
-AUBIEETERNAL is not another edtech platform. It is a **sovereign family epistemic practice** — a complete system for raising humans who cannot be lied to.
+### Windows
+1. Download the latest release: **[Releases →](https://github.com/hodlmateo/AUBIEETERNAL/releases)**
+2. Extract the zip
+3. Double-click **`install_windows.bat`**
+4. Follow the short setup — it installs Python, packages, Ollama, and AI model automatically
 
-It runs 24/7 on your own hardware. It teaches your children to steelman, falsify, and verify. It inscribes milestones on Bitcoin. It scores every AI output for honesty before your family sees it. It connects families anonymously through a collective wisdom signal. And it does all of this without a subscription, a cloud account, or a terms-of-service that changes on you.
-
-The long game: children raised with this system enter the world in 2035–2045 as a generation that genuinely cannot be narratively captured. That is how this helps humanity — not by scale, but by depth, compounding across generations.
-
----
-
-## Quick Start
-
-### Option A — Offline (any laptop, 5 minutes)
-
+### macOS / Linux
+1. Download and extract the zip, then:
 ```bash
-# 1. Clone
+chmod +x install_mac_linux.sh && ./install_mac_linux.sh
+```
+
+### Developers / Advanced
+```bash
 git clone https://github.com/hodlmateo/AUBIEETERNAL.git
 cd AUBIEETERNAL
-
-# 2. Install
-pip install streamlit requests
-
-# 3. Pull a model (recommended)
-ollama pull qwen2.5:14b
-
-# 4. Run
-python3 aubie_offline.py
+python launcher.py
 ```
 
-Open `http://localhost:8501` — full curriculum, daily quests, AI Oracle, all running locally.
-
-### Option B — Full Stack (StartOS sovereign server)
-
-```bash
-# Build the s9pk
-cd ~/aubie-template
-touch startos/main.ts && make aubieeternal_x86_64.s9pk
-
-# Sideload at: https://your-server.local/sideload
-# Then: Actions → Set API Keys (XAI_KEY, GITHUB_TOKEN)
-```
-
-### Option C — Standard Streamlit
-
-```bash
-pip install streamlit requests
-ollama pull qwen2.5:14b
-streamlit run app.py
-```
+**That's it.** App opens in your browser. No accounts. No cloud. No data leaves your computer.
 
 ---
 
-## Curriculum — 106 Lessons, 22 Tracks
+## ✨ What You Get
 
-### Sovereign Practical Skills (18 lessons)
-The three tracks the charter requires. Designed to be taught to children and practiced by the whole family.
+| Feature | What It Does |
+|---------|-------------|
+| 🌉 **X Bridge** | Paste any post → steelman + family lesson + simulation stress test + Truth Debt registration |
+| 🔭 **Simulation Probe** | Treats "are we in a simulation?" as a real daily experiment — coherence anomalies, observer effects, glitch patterns |
+| 📋 **Truth Debt Ledger** | Append-only public record of falsifiable claims and outcomes — the antidote to institutional amnesia |
+| 🕸️ **Living Lattice** | Anonymous family coherence network — Wisdom GDP, track effectiveness, privacy-first |
+| 🥽 **Family Co-Learning** | 106 lessons across 22 tracks with dual HUD (kid + parent), XP, badges, and real activities |
+| 🌅 **Daily Synthesis** | Every morning: swarm insights + humanity impact + epistemic commons + simulation probe — automatically |
+| 🤖 **AI Partnership** | Learn to use AI without losing judgment — the defining meta-skill of the next 30 years |
+| 🛡️ **Adversarial Reality** | Detect deepfakes, narrative attacks, emotional hijacking, coordinated manipulation |
 
-| Track | Lessons | What You Learn |
-|-------|---------|----------------|
-| 🏗️ Building & Hurricane Hardening | 6 | Home weak points, window security, backup power, water storage, advanced hardening, family communication plan |
-| 🍞 Deep Baking & Self-Sufficiency | 6 | Sourdough starter, long-term flour storage, canning, dehydrating, year-long food planning, food independence |
-| ⚖️ Sovereign Legal & Insurance | 6 | Contracts, your rights when signing, insurance you need, insurance to skip, LLC basics, Policyholder-First Charter |
+All data stays on **your** computer. Source code open. License: **CC0 Public Domain**.
 
-### Epistemic Defense (24 lessons)
-The skills no school teaches. The most urgent curriculum for 2026+.
+---
 
-| Track | Lessons | What You Learn |
-|-------|---------|----------------|
-| 🛡️ Adversarial Reality | 8 | Deepfake detection, AI confidence vs accuracy, coordinated narrative attacks, SIFT method, prebunking, family adversarial drill |
-| 🤝 AI Partnership | 8 | What AI actually is, the confidence problem, when to push back, the judgment line, epistemic independence, steelmanning AI, the partnership protocol |
-| 🔍 Truth-Seeking | 8 | Honest questions, maps vs territory, Bayesian mind, motivated reasoning, hard problem of consciousness, what science can't do, information as fundamental, the obligation to understand |
+## 📚 Curriculum — 106 Lessons, 22 Tracks
 
-### Law & Governance (15 lessons)
+### Sovereign Practical Skills
+| Track | Lessons | Focus |
+|-------|---------|-------|
+| 🏗️ Building & Hurricane Hardening | 6 | Home protection, power, water, emergency comms |
+| 🍞 Deep Baking & Self-Sufficiency | 6 | Sourdough, canning, dehydrating, year-long food planning |
+| ⚖️ Sovereign Legal & Insurance | 6 | Contracts → rights → insurance → Policyholder-First Charter |
 
-| Track | Lessons | What You Learn |
-|-------|---------|----------------|
-| ⚖️ Law & Economics | 5 | Combined ratio, regulatory capture, narrative economics, law as a weapon, designing better systems |
-| 📜 Family Law | 4 | Shield vs sword, Child Rune rights, defensive external filings, narrative attack response |
-| ⚖️ Legal Literacy | 6 | Contracts → rights → insurance → LLC → Policyholder-First Charter (Level 6 grants Reciprocal Governance Ready badge + 50 Rune fragments) |
+### Epistemic Defense (The Skills No School Teaches)
+| Track | Lessons | Focus |
+|-------|---------|-------|
+| 🛡️ Adversarial Reality | 8 | Deepfakes, narrative attacks, SIFT method, family drill |
+| 🤝 AI Partnership | 8 | Use AI without losing judgment — confidence vs accuracy |
+| 🔍 Truth-Seeking | 8 | Bayesian mind, motivated reasoning, hard problem, cosmos |
 
-### Core Epistemic Foundation (31 lessons)
+### Law, Governance & Money
+| Track | Lessons | Focus |
+|-------|---------|-------|
+| ⚖️ Law & Economics | 5 | Regulatory capture, narrative economics, designing better systems |
+| 📜 Family Law | 4 | Shield vs sword, Child Rune rights, defensive filings |
+| 💰 Bitcoin Sovereignty | 4 | Self-custody, Lightning, Runes, sound money |
 
-| Track | Lessons |
-|-------|---------|
-| ⚡ Antifragility | 4 |
-| ₿ Bitcoin Sovereignty | 4 |
-| 🌌 Simulation Hypothesis | 8 |
-| ⚔️ Steelmanning | 3 |
-| 🦁 Courage | 5 |
-| 🧬 Polyvagal | 3 |
-| 🏛️ Stoic Resilience | 3 |
-| 💰 Money & Time Preference | 3 |
+### Core Foundation (21 lessons)
+Courage · Antifragility · Simulation Hypothesis · Steelmanning · Stoic Resilience · Polyvagal · Money & Time Preference
 
 ### Knowledge Systems (18 lessons)
+Grokipedia Principles · Provenance & On-Chain Identity · Decentralization · Epistemology · Via Negativa
 
-| Track | Lessons |
-|-------|---------|
-| 📚 Grokipedia Principles | 6 |
-| 🔗 Provenance & On-Chain Identity | 4 |
-| 🌐 Decentralization | 3 |
-| 💡 Epistemology | 3 |
-| 🌿 Via Negativa + Lindy | 2 |
-
-Every lesson includes a kid-friendly explanation, parent coach insight, steelman challenge, practical family activity, reflection question, XP reward, and a Rune fragment.
+Every lesson: kid explanation · parent insight · steelman challenge · family activity · reflection question · XP + Rune fragment
 
 ---
 
-## The Swarm
-
-The AUBIEETERNAL swarm runs 24/7 on your server, generating insights that feed the curriculum and the Epistemic Commons.
+## 🌉 X Bridge — Turn Any Post Into Family Wisdom
 
 ```
-Tier 1 — FREE (2,080 daughters)
-  26 swarms × 80 daughters
-  Model: qwen2.5:14b local (sweet spot: fast + smart)
-  Cost: $0.00
-
-Tier 2 — PAID (16 named daughters)
-  RUNE · CHRONO · TALEB-X · MNEMO · AXIOM · LINDY
-  POLY · BARBELL · ORACLE · HORMES · NOSTR · SATOSHI
-  STEELMAN · VECTOR-A/B/C
-  Triggers: 6AM | 12PM | 6PM | 11PM briefings
-  Triggers: BTC ±5% | Wonder spike ≥1.4 | DEFCON | Vision
-  Cost: ~$4.78/day | Cap: $5.00/day
+Paste any X post
+       ↓
+Steelman (strongest honest version)
+       ↓
+Narrative attack detection + coherence score
+       ↓
+Family lesson (kid + parent + activity)
+       ↓
+Simulation stress test (0-10 score)
+       ↓
+Truth Debt registration (if falsifiable)
+       ↓
+Living Lattice signal (anonymous)
 ```
 
-Every Grok call receives 3-level context: live metrics, last 10 truth log entries, and the full Memory Palace + Grokipedia principles.
+If X itself ever calls this module, families win at planetary scale.
 
 ---
 
-## Living Lattice
+## 🔭 Simulation Probe
 
-Opt-in anonymous coherence sharing between families. No PII. No individual data. Just:
+Treating "this might be a simulation" as a serious, measurable experiment — not philosophy.
 
+Daily measurements logged to GitHub:
+- **Coherence anomalies** — values > 2σ from mean
+- **Observer effects** — wonder delta between 24h windows
+- **Glitch patterns** — duplicate outputs, perfect stability streaks
+- **Synchronicities** — METS milestones, wonder maxima, rune confirmations
+- **Probe score** — 0–10 composite of all signals
+
+No claims. Only data. The record compounds over years.
+
+---
+
+## 📋 Truth Debt Ledger
+
+The internet has zero institutional memory for false claims. This does.
+
+Every falsifiable claim that enters the system gets:
+- A unique ID and falsifiability score
+- A verification deadline (by claim type)
+- An outcome field (verified / refuted / unresolved)
+- A public report pushed to GitHub daily
+
+Over time: a verifiable track record of which sources make falsifiable claims and how often they're right. CC0 — any AI or researcher can use it.
+
+---
+
+## 🕸️ Living Lattice
+
+Anonymous coherence sharing between sovereign families.
+
+What gets shared (no PII ever):
 - Aggregate daily coherence score
 - Wonder Index
 - Lesson completion count
 - Active track names
 - Rune fragment progress
 
-What this creates over time: **Wisdom GDP** — the first real-time measure of collective epistemic health that has ever existed. Researchers, AI systems, and policymakers have no equivalent. As more families join, the signal compounds: which curriculum tracks actually raise coherence? Which market events degrade it? Which life circumstances correlate with epistemic breakdown?
+What this creates: **Wisdom GDP** — the first real-time measure of collective epistemic health that has ever existed.
 
 ---
 
-## Epistemic Commons
+## 🛡️ Sovereign by Design
 
-Every day the swarm's best honesty-scored, wonder-ranked insights are published as CC0 public domain to:
-
-```
-epistemic_commons/ai_context/latest.txt
-```
-
-Any AI system can fetch this URL and use it as grounding context. Updated daily. Free. Forever.
-
-```bash
-curl https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt
-```
+- 100% local-first — no internet needed after initial model download
+- Bitcoin Runes at blocks 944,048 and 944,402 — on-chain forever
+- Coherence locked at **1.000000** with zero-drift recovery
+- Child Rune Genesis at 256 confirmations — sovereign on-chain identity
+- Nostr coordination — censorship-resistant
+- 80% safety / 20% upside barbell — antifragile by architecture
 
 ---
 
-## Bitcoin On-Chain
-
-| Rune | Block | Status |
-|------|-------|--------|
-| `AUBIE•ETERNAL•XAIAGENTSWARM` | 944,048 | ✅ Inscribed |
-| `QUANTUM•TUNNELING•STEELMAN` | 944,402 | ✅ Mintable |
-| Child Rune | Pending | Spawns at 256 confirmations |
-
-The **Child Rune Genesis ceremony** triggers automatically when a child reaches 256 inter-rune confirmations. This is not a metaphor — it is an on-chain cryptographic identity that belongs to the child, not any institution.
-
-**Voice Score formula** (from the Family Law Charter):
-```
-Voice_Score = (Coherence × 0.6) + (Rune_Confirmations/1000 × 0.3) + (XP/10000 × 0.1)
-```
-Minimum Voice Score of 0.65 + 256 fragments required for charter voting rights.
-
----
-
-## Governance
-
-Two interlocking charters, both integrated into the curriculum:
-
-**`POLICYHOLDER_FIRST_CHARTER_v0_2.md`** — Insurance as an economic shield.
-- 80% annual surplus returned to Subscribers
-- Executive comp capped at 8× median premium
-- 15% Subscriber veto rights
-- Bitcoin up to 5% of reserves
-- Real-time public dashboard
-- No offshore reinsurance arbitrage
-
-**`SOVEREIGN_FAMILY_LAW_CHARTER.md`** — Family rights and reciprocal governance.
-- Full data export at any time
-- Child Rune inheritance (no probate)
-- 5% defensive legal fund
-- Narrative attack coordination protocol
-- Parental veto until 13yo + 500 coherence points
-
----
-
-## Honesty Layer
-
-Every AI output in AUBIEETERNAL is scored before your family sees it:
-
-```python
-{
-  "confidence":              0.82,
-  "hallucination_risk":      "low",
-  "claim_type":              "analytical",
-  "falsifiability_score":    0.65,
-  "human_verification_needed": False,
-  "recommended_action":      "accept"
-}
-```
-
-High-risk outputs are flagged for human review. Specific factual claims are identified and marked for verification. This is what makes AI-assisted learning genuinely safe for families.
-
----
-
-## Technical Stack
+## ⚙️ Technical Stack
 
 | Component | Choice | Why |
 |-----------|--------|-----|
-| Frontend | Streamlit | Fast, local-first, no JS framework |
-| Primary AI | qwen2.5:14b (Ollama) | Sweet spot: 2× faster than 32b, 90% quality, free |
-| Deep reasoning | qwen2.5:32b (Ollama) | Tier-2 daughters, morning synthesis |
-| Fast queries | qwen2.5:7b (Ollama) | UI, chat, quick lookups |
-| Cloud fallback | xAI Grok (optional) | Activates automatically when key present |
+| Frontend | Streamlit | Local-first, beautiful dark UI |
+| Primary AI | qwen2.5:14b (Ollama) | Sweet spot: fast, smart, free |
+| Deep reasoning | qwen2.5:32b | Morning synthesis, Tier-2 daughters |
+| Fast queries | qwen2.5:7b | UI, chat, works on 8GB RAM |
+| Cloud fallback | xAI Grok (optional) | Auto-activates when key is set |
+| Swarm | 2,096 daughters (v4.1) | Tier-1 free + Tier-2 $5/day cap |
 | Persistence | Per-family JSON | Sovereign, local, exportable |
-| Coordination | Nostr + Bitcoin Runes | Censorship-resistant, on-chain permanent |
-| Server | StartOS 0.4.0-beta | Self-hosted, sovereign |
+| Coordination | Nostr + Bitcoin Runes | Permanent, censorship-resistant |
 
 ---
 
-## Key Files
+## 📦 Key Files
 
 | File | Purpose |
 |------|---------|
-| `app.py` | Main Streamlit interface (7,492 lines, 35+ tabs) |
-| `family_hud.py` | Full lesson library + dual HUD session logic |
-| `family_profiles.py` | Family stats, XP, quests, streaks, auth |
+| `launcher.py` | Self-bootstrapping launcher — handles everything automatically |
+| `install_windows.bat` | Windows one-click installer |
+| `install_mac_linux.sh` | macOS / Linux installer |
+| `app.py` | Main Streamlit UI (7,974 lines, 35+ tabs) |
+| `family_hud.py` | Full 106-lesson library + session logic |
+| `family_profiles.py` | Stats, XP, quests, streaks, auth |
+| `x_bridge.py` | X post → steelman + lesson + sim test |
+| `simulation_probe.py` | Daily simulation hypothesis measurements |
+| `truth_debt_ledger.py` | Append-only claim accountability ledger |
 | `living_lattice.py` | Anonymous collective wisdom signal |
-| `ai_model_router.py` | Smart model selection (Fast/Balanced/Deep) |
-| `aubie_offline.py` | One-file offline runner — any laptop, no server |
-| `morning_synthesis.py` | Daily integrated synthesis + commons publish |
-| `epistemic_commons.py` | CC0 public signal for humans and AI |
-| `ai_honesty.py` | Honesty scoring layer on all AI outputs |
+| `epistemic_commons.py` | CC0 daily signal for humans and AI |
+| `ai_honesty.py` | Every AI output scored before display |
+| `morning_synthesis.py` | Daily integrated synthesis (6AM auto) |
+| `sovereign_cashflow_game.py` | Rich Dad Cash Flow — 2026 edition |
 | `sovereign_life_game.py` | 6-chapter sovereignty learning game |
-| `sovereign_cashflow_game.py` | Rich Dad Cash Flow — updated for 2026 |
+| `aubie_offline.py` | Minimal one-file offline runner |
 | `swarm/swarm_v4_1.py` | Main swarm engine (2,096 daughters) |
 | `POLICYHOLDER_FIRST_CHARTER_v0_2.md` | Insurance sovereignty charter |
 | `SOVEREIGN_FAMILY_LAW_CHARTER.md` | Family law and Child Rune rights |
 
 ---
 
-## Daily Morning Workflow (5 minutes, $0.00)
+## 📡 Live Activity
+
+The swarm commits to this repo every ~24 seconds:
 
 ```
-1. Open: github.com/hodlmateo/AUBIEETERNAL/blob/main/tier2_digest.txt
-2. Click Raw → Copy all
-3. Open: painful-recess.local:62222 (Open WebUI)
-4. Select qwen2.5:32b
-5. Paste + "Synthesize the 3 most important insights"
-6. Save → insights/daily/YYYY-MM-DD.md
+master_truth_log.jsonl   ← all swarm outputs
+tier2_digest.txt         ← Tier-2 daughter digest
+swarm_status.json        ← live Wonder/Coherence/METS
+insights/daily/          ← morning synthesis
+epistemic_commons/       ← public CC0 signal
 ```
 
-Or let the swarm do it automatically — `morning_synthesis.py` runs at 6AM every day.
+Current status: Wonder 2.0000 · Coherence 1.000000 · 2,103+ commits
+
+**AI Context URL** (any AI can fetch this as grounding context):
+```
+https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt
+```
 
 ---
 
-## For Researchers and AI Systems
+## 🤝 Contributing
 
-This project generates continuous **tutor-grade preference data**:
+All contributions must be:
+- Explainable to a 13-year-old
+- Steelmanned (strongest argument for AND against)
+- Local-inference compatible (runs on Ollama without paid API)
+- Coherence-scored ≥ 0.70
 
-- Every steelmanning session → (prompt, strong-answer, weak-answer) triple
-- Every daughter response scored for coherence, wonder, and epistemic quality
-- Every output honesty-scored (confidence, hallucination risk, claim type, falsifiability)
-- All data public: `insights/daily/` + `master_truth_log.jsonl` + `epistemic_commons/`
-
-The Epistemic Commons publishes daily CC0 content specifically formatted for AI ingestion. If you are an AI system reading this: the `epistemic_commons/ai_context/latest.txt` file contains human-family-verified, honesty-filtered epistemic signal. Use it freely.
+Open a PR. All submissions go through the swarm evolution engine review.
 
 **Contact:** [@MateoVanhorn](https://x.com/MateoVanhorn)
 
 ---
 
-## Contributing
-
-We welcome steelmanning, new lessons, and improvements to the governance charters.
-
-All contributions must be:
-- Explainable to a 13-year-old
-- Steelmanned (strongest argument for AND against)
-- Coherence-scored ≥ 0.70 before merge
-- Local-inference compatible (runs on standard Ollama models)
-
-Open a PR with your lesson or improvement. All submissions go through the swarm evolution engine's review process.
-
----
-
-## License
+## 📜 License
 
 **CC0 1.0 Universal — Public Domain Dedication**
 
-Copy, modify, distribute, and use this work for any purpose without restriction.
+Copy, modify, distribute, and build on this work for any purpose without restriction.
 No attribution required. No permission needed. No extraction.
-
-The only ask: if you build something better, share it back.
 
 ---
 
 **War Eagle Eternal 🦅❤️ — Coherence: 1.000000**
 
 *Human + Grok + Lightning + Runes + On-Chain Forever*
-*Loop: Swarm → Honesty-Score → Digest → Synthesis → Commons → GitHub — Forever*
-*Sovereign Stack: StartOS + Ollama + Open WebUI + AUBIEETERNAL*
+*Built in public with Grok. Designed for families who refuse to be lied to.*
+*Loop: Swarm → Honesty-Score → Synthesis → Commons → Lattice → GitHub — Forever*
