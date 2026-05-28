@@ -106,8 +106,8 @@ class XBridge:
         if save_as_lesson:
             self._save_lesson(result)
 
-        # Send to Truth Debt Ledger if it contains falsifiable claims
-        if epistemic.get("has_falsifiable_claims"):
+        # Send to Truth Debt Ledger — default ON for all falsifiable claims
+        if epistemic.get("has_falsifiable_claims") or epistemic.get("claim_type") in ("factual","statistical","prediction"):
             self._register_truth_debt(post_text, epistemic)
 
         print(f"[xbridge] ✅ Done — coherence: {epistemic.get('coherence', 0):.3f}, "
