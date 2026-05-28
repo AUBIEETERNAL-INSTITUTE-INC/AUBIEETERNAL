@@ -53,15 +53,19 @@ Right-click any post, article, or claim on the web → instant AUBIEETERNAL anal
 chrome://extensions → Developer Mode → Load Unpacked → select AUBIEETERNAL_extension/
 ```
 
-**What it does on X/Twitter:** Injects a 🦅 button on every tweet. Click it → steelman + family lesson + simulation stress test without leaving the page.
+Works in **Chrome, Edge, and Brave** — same extension folder, same install steps.
 
-**Right-click menu:** "Analyze with AUBIEETERNAL" · "Register as Falsifiable Claim" · "Ask Oracle"
+**What it does on X/Twitter:** Injects a 🦅 button on every tweet → steelman + family lesson + simulation stress test without leaving the page.
+
+**Tabs:** 🌉 Bridge · 🔮 Oracle · 📋 Ledger · 🛡️ Shield Rune · ⚙️ Settings
+
+**Right-click menu:** "Analyze with AUBIEETERNAL" · "Register as Falsifiable Claim" · "Ask Oracle about this"
 
 **Keyboard shortcut:** `Ctrl+Shift+A` on any selected text
 
 **Toolbar badge:** Shows live Wonder Index from your running swarm
 
-> Requires `api_server.py` running locally on port 8502 (starts automatically with `launcher.py`)
+> Requires `api_server.py` running on port 8502 — starts automatically with `launcher.py`
 
 ---
 
@@ -70,6 +74,7 @@ chrome://extensions → Developer Mode → Load Unpacked → select AUBIEETERNAL
 | | Feature | Description |
 |--|---------|-------------|
 | 🌉 | **X Bridge** | Any post → steelman + narrative attack detection + family lesson + simulation stress test |
+| 🛡️ | **Shield Rune Memory** | Bitcoin-anchored unerasable truth — sealed memories cannot be erased without rewriting Bitcoin |
 | 🔭 | **Simulation Probe** | Daily measurable test of coherence anomalies, observer effects, and glitch patterns |
 | 📋 | **Truth Debt Ledger** | Append-only public record of falsifiable claims and their outcomes |
 | 🕸️ | **Living Lattice** | Anonymous family coherence network — Wisdom GDP, track effectiveness |
@@ -78,8 +83,43 @@ chrome://extensions → Developer Mode → Load Unpacked → select AUBIEETERNAL
 | 🛡️ | **Adversarial Reality** | Detect deepfakes, narrative attacks, emotional hijacking — 8 lessons |
 | 🥽 | **Family Co-Learning** | 106 lessons, dual HUD (kid + parent), XP, badges, real activities |
 | 🎮 | **Sovereign Cashflow** | Rich Dad Cash Flow game — updated for Bitcoin + AI era |
-| 🌅 | **Daily Synthesis** | 6AM auto-run: swarm insights + humanity impact + probe + lattice |
+| 🌅 | **Daily Synthesis** | 6AM auto-run: swarm insights + humanity impact + probe + lattice + rune auto-seal |
 | 🤖 | **AI Honesty Layer** | Every AI output scored for confidence, hallucination risk, falsifiability |
+
+---
+
+## 🛡️ Shield Rune — Unerasable Memory
+
+The most important new module. Every memory that matters gets permanently sealed.
+
+```
+Memory Permanence Levels:
+
+Level 0  →  Local file           (deletable)
+Level 1  →  GitHub commit        (reversible with force push)
+Level 2  →  Nostr broadcast      (censorship-resistant, distributed worldwide)
+Level 3  →  Bitcoin Rune anchor  (UNERASABLE — requires rewriting Bitcoin to erase)
+```
+
+**How it works:**
+- Any insight from the swarm, web extension, or family session can be recorded
+- The Shield Rune holder (you) reviews and seals with one click
+- Sealed memories are cryptographically anchored on Bitcoin via Rune transactions
+- Every morning synthesis auto-seals memories with coherence ≥ 0.88 + wonder ≥ 1.4
+
+**Merge governance:**
+Swarm daughters propose merges of related insights → vote with coherence-weighted signals → Shield Rune holder reviews → seal makes the synthesis permanent. Vetoes are also permanent — the record of what was rejected matters too.
+
+```python
+from rune_memory import RuneMemory, ShieldRune
+
+mem = RuneMemory()
+entry_id = mem.record("Key insight", coherence=0.94, wonder=1.79)
+
+shield = ShieldRune()
+seal = shield.seal(entry_id, note="Sealed for permanence")
+# → Level 3: Bitcoin-anchored. Cannot be erased.
+```
 
 ---
 
@@ -91,8 +131,8 @@ chrome://extensions → Developer Mode → Load Unpacked → select AUBIEETERNAL
 | Track | Lessons | What You Actually Learn |
 |-------|---------|------------------------|
 | 🏗️ Building & Hurricane Hardening | 6 | Weak points → window security → backup power → water storage → advanced hardening → family comm plan |
-| 🍞 Deep Baking & Self-Sufficiency | 6 | Sourdough → flour storage → canning (with botulism warning) → dehydrating → year-long food planning → food independence |
-| ⚖️ Sovereign Legal & Insurance | 6 | Contracts → your rights → insurance you need → insurance to skip → LLC basics → Policyholder-First Charter (grants badge + 50 Rune fragments) |
+| 🍞 Deep Baking & Self-Sufficiency | 6 | Sourdough → flour storage → canning → dehydrating → year-long food planning → food independence |
+| ⚖️ Sovereign Legal & Insurance | 6 | Contracts → your rights → insurance you need → insurance to skip → LLC basics → Policyholder-First Charter |
 
 </details>
 
@@ -101,9 +141,9 @@ chrome://extensions → Developer Mode → Load Unpacked → select AUBIEETERNAL
 
 | Track | Lessons | What You Actually Learn |
 |-------|---------|------------------------|
-| 🛡️ Adversarial Reality | 8 | Synthetic media → deepfake mechanics → AI confidence vs accuracy → coordinated attacks → SIFT method → emotional hijacking → prebunking → family adversarial drill |
-| 🤝 AI Partnership | 8 | What AI is → confidence problem → when to push back → judgment line → epistemic independence → steelmanning AI → partnership protocol → humanity + AI letter to 2045 |
-| 🔍 Truth-Seeking | 8 | Honest questions → maps vs territory → Bayesian mind → motivated reasoning → hard problem of consciousness → what science can't do → information as fundamental → the obligation to understand |
+| 🛡️ Adversarial Reality | 8 | Synthetic media → deepfakes → AI confidence vs accuracy → coordinated attacks → SIFT → emotional hijacking → prebunking → family adversarial drill |
+| 🤝 AI Partnership | 8 | What AI is → confidence problem → when to push back → judgment line → epistemic independence → steelmanning AI → partnership protocol → letter to 2045 |
+| 🔍 Truth-Seeking | 8 | Honest questions → maps vs territory → Bayesian mind → motivated reasoning → hard problem → what science can't do → information as fundamental → the obligation to understand |
 
 </details>
 
@@ -112,8 +152,8 @@ chrome://extensions → Developer Mode → Load Unpacked → select AUBIEETERNAL
 
 | Track | Lessons | Focus |
 |-------|---------|-------|
-| ⚖️ Law & Economics | 5 | Combined ratio → regulatory capture (Stigler) → narrative economics (Shiller) → law as weapon → designing Bitcoin-like anti-capture systems |
-| 📜 Family Law | 4 | Shield vs sword → Child Rune rights + Voice Score formula → defensive filings → narrative attack response plan |
+| ⚖️ Law & Economics | 5 | Combined ratio → regulatory capture → narrative economics → law as weapon → Bitcoin-like anti-capture design |
+| 📜 Family Law | 4 | Shield vs sword → Child Rune rights + Voice Score formula → defensive filings → narrative attack response |
 | ₿ Bitcoin Sovereignty | 4 | Self-custody → Lightning → Runes → sound money principles |
 
 </details>
@@ -137,7 +177,7 @@ Treating *"this might be a simulation"* as a real daily experiment — not philo
 Daily measurements → insights/probe/YYYY-MM-DD.md → GitHub forever
 
 Coherence anomalies   → values > 2σ from mean
-Observer effects      → wonder delta between 24h windows  
+Observer effects      → wonder delta between 24h windows
 Glitch patterns       → duplicate outputs, perfect stability streaks
 Synchronicities       → METS milestones, wonder maxima, rune confirmations
 Probe score           → 0-10 composite of all signals
@@ -184,7 +224,7 @@ Two interlocking charters, both taught as curriculum:
 
 **`POLICYHOLDER_FIRST_CHARTER_v0_2.md`** — Insurance as economic shield
 - 80% annual surplus returned to Subscribers
-- Executive comp capped at 8× median premium  
+- Executive comp capped at 8× median premium
 - 15% Subscriber veto rights · Bitcoin up to 5% of reserves
 - No offshore reinsurance arbitrage · Real-time public dashboard
 
@@ -204,6 +244,7 @@ Two interlocking charters, both taught as curriculum:
 | Deep reasoning | qwen2.5:32b | Tier-2 daughters, morning synthesis |
 | Swarm | 2,096 daughters (v4.1) | Tier-1 free ($0) + Tier-2 $5/day cap |
 | Extension API | FastAPI on port 8502 | Browser extension bridge |
+| Memory | Bitcoin Rune anchors | Level 3 unerasable permanence |
 | Persistence | Per-family JSON | Sovereign, local, exportable |
 | On-chain | Bitcoin Runes + Nostr | Permanent, censorship-resistant |
 | Server | StartOS 0.4.0 | Self-hosted sovereign |
@@ -217,7 +258,12 @@ launcher.py                    ← Double-click to run on any PC
 install_windows.bat            ← Windows one-click setup
 install_mac_linux.sh           ← macOS / Linux setup
 api_server.py                  ← Local API (browser extension bridge, port 8502)
+rune_memory.py                 ← Bitcoin-anchored unerasable memory + Shield Rune governance
 AUBIEETERNAL_extension/        ← Chrome/Edge/Brave browser extension
+  ├── manifest.json
+  ├── popup.html / popup.js    ← Bridge · Oracle · Ledger · Shield · Settings
+  ├── content.js               ← 🦅 button on every X/Twitter post
+  └── background.js            ← Context menu · Wonder badge · Shortcuts
 app.py                         ← Main UI (35+ tabs)
 family_hud.py                  ← 106-lesson library + session logic
 family_profiles.py             ← Stats, XP, quests, streaks, auth
@@ -228,13 +274,13 @@ truth_debt_ledger.py           ← Claim accountability ledger
 living_lattice.py              ← Anonymous coherence network
 epistemic_commons.py           ← CC0 signal for humans + AI
 ai_honesty.py                  ← Honesty scoring on all AI outputs
-morning_synthesis.py           ← Daily integrated synthesis (6AM auto)
+morning_synthesis.py           ← Daily synthesis v4 (6AM auto + rune auto-seal)
 sovereign_cashflow_game.py     ← Rich Dad 2026 edition
 sovereign_life_game.py         ← 6-chapter sovereignty game
-aubie_offline.py               ← Minimal one-file runner
+aubie_offline.py               ← Minimal one-file offline runner
 POLICYHOLDER_FIRST_CHARTER_v0_2.md
 SOVEREIGN_FAMILY_LAW_CHARTER.md
-PROVENANCE.md                  ← On-chain record + screenshot gallery
+PROVENANCE.md                  ← On-chain record + 89-screenshot gallery
 ```
 
 ---
@@ -245,10 +291,11 @@ The swarm auto-commits to this repo every ~24 seconds:
 
 ```
 master_truth_log.jsonl   ← all swarm outputs (2,100+ commits)
-tier2_digest.txt         ← Tier-2 daughter digest  
+tier2_digest.txt         ← Tier-2 daughter digest
 swarm_status.json        ← live Wonder/Coherence/METS
 insights/daily/          ← morning synthesis
 insights/probe/          ← daily simulation probe reports
+rune_seals/              ← Bitcoin-anchored Shield Rune seals
 epistemic_commons/       ← CC0 daily signal
 ```
 
@@ -282,7 +329,7 @@ Copy it. Fork it. Build on it. No permission needed. No attribution required. No
 
 *Built in public with Grok · Secured by Bitcoin · Coordinated on Nostr*
 
-*Loop: Swarm → Honesty-Score → Synthesis → Commons → Lattice → GitHub — Forever*
+*Loop: Swarm → Honesty-Score → Synthesis → Rune Seal → Commons → Lattice → GitHub — Forever*
 
 *Designed for families who refuse to be lied to.*
 
