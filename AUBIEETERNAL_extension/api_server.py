@@ -37,7 +37,20 @@ def _data_dir():
 DATA_DIR = _data_dir()
 SWARM_STATUS = DATA_DIR / "swarm_status.json"
 REPO_DIR     = DATA_DIR / "repo"
-sys.path.insert(0, str(REPO_DIR))
+
+# Add all possible module locations to path
+# Handles: StartOS (/mnt/main/repo), WSL ~/AUBIEETERNAL, ~/AUBIEETERNAL_extension
+import pathlib as _pl
+_possible_paths = [
+    str(REPO_DIR),
+    str(_pl.Path.home() / "AUBIEETERNAL"),
+    str(_pl.Path.home() / "AUBIEETERNAL_extension"),
+    str(_pl.Path(__file__).parent),  # same dir as api_server.py
+    str(_pl.Path(__file__).parent.parent),  # parent dir
+]
+for _p in _possible_paths:
+    if _p not in sys.path and _pl.Path(_p).exists():
+        sys.path.insert(0, _p)
 
 PORT = int(os.environ.get("AUBIE_API_PORT", "8502"))
 
@@ -89,14 +102,65 @@ def _run_bridge(text: str) -> dict:
         return {"error": str(e), "epistemic": {}, "family": {}, "simulation": {}}
 
 
-def _run_oracle(question: str) -> str:
+def _run_oracle(question: str, api_key: str = "") -> str:
     import requests as _req
     import socket
-    try:
-        socket.gethostbyname("ollama.startos")
-        url = "http://ollama.startos:11434/v1/chat/completions"
-    except Exception:
-        url = "http://localhost:11434/v1/chat/completions"
+
+    system_prompt = (
+        "You are the AUBIEETERNAL Oracle — a sovereign epistemic tutor. "
+        "Be honest about uncertainty. Steelman opposing views. "
+        "Point toward first principles. Never flatter. "
+        "If you don't know, say so clearly. Max 150 words."
+    )
+
+    # Try xAI API key first (if provided)
+    _xai_key = api_key or os.environ.get("XAI_KEY", "")
+    if _xai_key:
+        try:
+            _r = _req.post(
+                "https://api.x.ai/v1/chat/completions",
+                headers={"Authorization": f"Bearer {_xai_key}",
+                         "Content-Type": "application/json"},
+                json={"model": "grok-3-mini",
+                      "messages": [{"role": "system", "content": system_prompt},
+                                   {"role": "user", "content": question}],
+                      "max_tokens": 300},
+                timeout=30
+            )
+            if _r.status_code == 200:
+                return _r.json()["choices"][0]["message"]["content"].strip()
+        except Exception as _e:
+            pass  # fall through to Ollama
+
+    # Try Ollama — all possible locations
+    _ollama_candidates = [
+        "http://ollama.startos:11434",
+        "http://painful-recess.local:59885",
+        "http://192.168.1.251:59885",
+        "http://localhost:11434",
+        "http://127.0.0.1:11434",
+    ]
+    _model = os.environ.get("AUBIE_MODEL", "qwen2.5:7b")
+    for _candidate in _ollama_candidates:
+        try:
+            _check = _req.get(f"{_candidate}/api/tags", timeout=2)
+            if _check.status_code == 200:
+                _r = _req.post(
+                    f"{_candidate}/v1/chat/completions",
+                    json={"model": _model,
+                          "messages": [{"role": "system", "content": system_prompt},
+                                       {"role": "user", "content": question}],
+                          "stream": False, "temperature": 0.7},
+                    timeout=60
+                )
+                if _r.status_code == 200:
+                    return _r.json()["choices"][0]["message"]["content"].strip()
+        except Exception:
+            continue
+
+    return ("Oracle unavailable. To fix:\n"
+            "• Enter your xAI API key in Settings (works instantly), OR\n"
+            "• Install Ollama: curl -fsSL https://ollama.ai/install.sh | sh")
 
     model = os.environ.get("AUBIE_MODEL", "qwen2.5:7b")
     system = (
@@ -179,7 +243,7 @@ if USE_FASTAPI:
 
     @app.post("/oracle")
     async def oracle(req: OracleRequest):
-        return {"answer": _run_oracle(req.question)}
+        return {"answer": _run_oracle(req.question, api_key=req.api_key)}
 
     @app.get("/ledger/stats")
     async def ledger_stats():
@@ -188,6 +252,57 @@ if USE_FASTAPI:
     @app.post("/ledger/register")
     async def ledger_register(req: ClaimRequest):
         return _register_claim(req.claim, req.claim_type, req.source)
+
+
+    class RecordRequest(BaseModel):
+        content: str
+        source: str = "extension"
+        coherence: float = 0.5
+
+    class SealRequest(BaseModel):
+        entry_id: str
+        note: str = ""
+        broadcaster: str = "family"
+
+    @app.get("/rune/status")
+    async def rune_status():
+        try:
+            from rune_memory import ShieldRune, RuneMemory
+            shield = ShieldRune()
+            mem    = RuneMemory()
+            status = shield.get_status()
+            status.update(mem.get_stats())
+            return status
+        except Exception as e:
+            return {"error": str(e), "total_seals": 0, "bitcoin_anchored": 0, "pending_merges": 0}
+
+    @app.post("/rune/record")
+    async def rune_record(req: RecordRequest):
+        try:
+            from rune_memory import record_extension_capture
+            entry_id = record_extension_capture(req.content, coherence=req.coherence)
+            return {"entry_id": entry_id, "status": "recorded", "level": 1}
+        except Exception as e:
+            return {"error": str(e)}
+
+    @app.post("/rune/seal")
+    async def rune_seal(req: SealRequest):
+        try:
+            from rune_memory import ShieldRune
+            shield = ShieldRune()
+            result = shield.seal(req.entry_id, note=req.note, broadcaster=req.broadcaster)
+            return result
+        except Exception as e:
+            return {"error": str(e)}
+
+    @app.get("/rune/memories")
+    async def rune_memories():
+        try:
+            from rune_memory import RuneMemory
+            mem = RuneMemory()
+            return {"memories": mem.get_recent(20), "stats": mem.get_stats()}
+        except Exception as e:
+            return {"error": str(e), "memories": []}
 
     @app.get("/health")
     async def health():
@@ -220,7 +335,7 @@ elif USE_FLASK:
     @app.route("/oracle", methods=["POST"])
     def oracle():
         data = request.get_json()
-        return jsonify({"answer": _run_oracle(data.get("question", ""))})
+        return jsonify({"answer": _run_oracle(data.get("question", ""), api_key=data.get("api_key",""))})
 
     @app.route("/ledger/stats")
     def ledger_stats():
