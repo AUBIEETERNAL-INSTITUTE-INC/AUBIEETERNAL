@@ -3138,6 +3138,46 @@ if "Digest" in active:
         except Exception as e:
             st.error(f"Could not read digest: {e}")
 
+    # ── Manual synthesis trigger ──────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 🌅 Morning Synthesis")
+    _today_synth = datetime.date.today().isoformat()
+    _synth_path  = _Path(f"/mnt/main/repo/insights/daily/{_today_synth}.md")
+    if _synth_path.exists():
+        st.success(f"✅ Today\'s synthesis ready — {_today_synth}")
+        with st.expander("📄 View today\'s synthesis", expanded=False):
+            st.markdown(_synth_path.read_text())
+    else:
+        st.info(f"No synthesis yet for {_today_synth} — auto-runs at 6AM or click below.")
+
+    _ms1, _ms2 = st.columns(2)
+    with _ms1:
+        if st.button("🌅 Run Morning Synthesis Now", key="manual_synthesis",
+                     use_container_width=True, type="primary"):
+            with st.spinner("Running synthesis (1-2 min with Ollama)..."):
+                try:
+                    import sys as _sys_synth
+                    if "/mnt/main/repo" not in _sys_synth.path:
+                        _sys_synth.path.insert(0, "/mnt/main/repo")
+                    from morning_synthesis import run_full_synthesis as _rfs
+                    _ms_result = _rfs(force=True)
+                    if _ms_result and _ms_result.get("status") == "complete":
+                        st.success(f"✅ Done! Check insights/daily/{_today_synth}.md")
+                        st.rerun()
+                    else:
+                        st.info(f"Status: {_ms_result}")
+                except Exception as _e_ms:
+                    st.error(f"Synthesis error: {_e_ms}")
+    with _ms2:
+        st.markdown(
+            '<div style="color:#556677;font-size:0.75rem;line-height:1.9;">' +
+            '<b>Manual fallback:</b><br>' +
+            '1. Copy tier2_digest.txt (Raw)<br>' +
+            '2. Open WebUI → qwen2.5:32b<br>' +
+            '3. Paste + "Synthesize top 3 insights"' +
+            '</div>', unsafe_allow_html=True
+        )
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: FAMILY CO-LEARNING  🥽
