@@ -958,6 +958,11 @@ with st.sidebar:
             "🔮 Truth Lattice", "🧬 Family Lattice",
             "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
         ],
+        "🌉 X BRIDGE": [
+            "🌉 X Bridge",
+            "🔭 Simulation Probe",
+            "📋 Truth Debt Ledger",
+        ],
         "₿ BITCOIN": [
             "₿ Rune-Palace", "⚡ Bitcoin", "🛡️ Shield Rune",
         ],
@@ -7638,3 +7643,311 @@ if "Living Lattice" in active:
         st.error(f"Living Lattice error: {_e_ll}")
         import traceback as _tb
         st.code(_tb.format_exc())
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: X BRIDGE 🌉
+# Any X post → swarm steelman + coherence + narrative flags + family lesson
+# ══════════════════════════════════════════════════════════════════════════════
+if "X Bridge" in active:
+    st.markdown('<div class="card-title">🌉 X BRIDGE — Turn Any Post Into Family Wisdom</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #1DA1F2;">
+        <div style="color:#1DA1F2;font-family:Orbitron,monospace;font-size:0.78rem;">THE LOOP</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Any X post → steelman → coherence score → narrative attack detection →
+        family lesson → simulation stress test → optional Truth Debt registration.<br><br>
+        Families use this to turn the noise of X into antifragile wisdom for their kids.
+        If X itself ever calls this module, the NPCs win at planetary scale.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_xb = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    _xb_input = st.text_area(
+        "Paste any X post (or URL):",
+        height=120, key="xb_input",
+        placeholder="Paste the post text here. URLs are noted but can't be fetched — paste the text directly for full analysis."
+    )
+    _xb_save = st.checkbox("Save as family lesson", value=True, key="xb_save")
+
+    if st.button("🌉 Process Through Lattice", key="xb_process",
+                 use_container_width=True, type="primary") and _xb_input:
+        with st.spinner("Running through the lattice... (steelman + family lesson + sim test)"):
+            try:
+                from x_bridge import XBridge as _XB
+                _bridge  = _XB()
+                _result  = _bridge.process(_xb_input, family_id=_fid_xb,
+                                            save_as_lesson=_xb_save)
+
+                if "error" in _result:
+                    st.error(_result["error"])
+                else:
+                    _ep  = _result.get("epistemic", {})
+                    _fl  = _result.get("family", {})
+                    _sim = _result.get("simulation", {})
+
+                    # ── Epistemic results ─────────────────────────────────────
+                    _ep_c = "#ff4444" if _ep.get("narrative_attack_detected") else "#00ff88"
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid {_ep_c};">'
+                        f'<div style="color:{_ep_c};font-family:Orbitron,monospace;font-size:0.75rem;">'
+                        f'EPISTEMIC ANALYSIS · Coherence: {_ep.get("coherence",0):.2f} · '
+                        f'{_ep.get("epistemic_quality","?").upper()}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:8px;line-height:1.8;">'
+                        f'<b>Steelman:</b> {_ep.get("steelman","")}<br>'
+                        f'<b>Counter:</b> {_ep.get("steel_against","")}<br>'
+                        f'<b>Truth:</b> <em>{_ep.get("one_sentence_truth","")}</em></div>'
+                        + (f'<div style="color:#ff4444;margin-top:6px;font-size:0.78rem;">'
+                           f'⚠️ Narrative attack: {_ep.get("narrative_attack_type","")}</div>'
+                           if _ep.get("narrative_attack_detected") else "")
+                        + f'</div>', unsafe_allow_html=True
+                    )
+
+                    # ── Family lesson ─────────────────────────────────────────
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid #a020f0;margin-top:8px;">'
+                        f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.75rem;">'
+                        f'FAMILY LESSON — {_fl.get("lesson_title","")} · +{_fl.get("xp",20)} XP</div>'
+                        f'<div style="font-size:0.82rem;color:#c8d8ff;margin-top:8px;line-height:1.9;">'
+                        f'<b>👧 For kids:</b> {_fl.get("kid_explanation","")}<br>'
+                        f'<b>👨‍👩 For parents:</b> {_fl.get("parent_insight","")}<br>'
+                        f'<b>⚔️ Challenge:</b> {_fl.get("steelman_challenge","")}<br>'
+                        f'<b>🎯 Activity:</b> {_fl.get("family_activity","")}<br>'
+                        f'<b>🪞 Reflection:</b> <em>{_fl.get("reflection_question","")}</em>'
+                        f'</div></div>', unsafe_allow_html=True
+                    )
+
+                    # ── Simulation stress test ────────────────────────────────
+                    _sc = _sim.get("stress_score", 5)
+                    _sc_c = "#00ff88" if _sc >= 7 else "#ff9500" if _sc >= 4 else "#ff4444"
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid {_sc_c};margin-top:8px;">'
+                        f'<div style="color:{_sc_c};font-family:Orbitron,monospace;font-size:0.75rem;">'
+                        f'SIMULATION INTEGRITY: {_sim.get("sim_integrity","?")} · '
+                        f'Stress {_sc}/10 — {_sim.get("stress_label","")}</div>'
+                        f'<div style="color:#8899bb;font-size:0.8rem;margin-top:6px;line-height:1.7;">'
+                        f'{_sim.get("observer_note","")}'
+                        + (f'<br><span style="color:#ff9500;">Anomalies: {", ".join(_sim["anomalies"])}</span>'
+                           if _sim.get("anomalies") else "")
+                        + f'<br><b>Recommendation:</b> {_sim.get("recommendation","")}'
+                        + f'</div></div>', unsafe_allow_html=True
+                    )
+
+                    # Award XP
+                    try:
+                        from family_profiles import award_cross_tool_reward as _actr_xb
+                        _actr_xb(_fid_xb, "x_bridge", "post_processed", xp=_fl.get("xp", 20))
+                    except Exception:
+                        pass
+
+            except ImportError:
+                st.error("x_bridge.py not found. Push it to GitHub and redeploy.")
+            except Exception as _e_xb:
+                st.error(f"X Bridge error: {_e_xb}")
+
+    # ── Recent bridge lessons ─────────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 📚 Recent Bridge Lessons")
+    try:
+        from x_bridge import XBridge as _XB2
+        _recent = _XB2().get_recent_lessons(5)
+        if _recent:
+            for _r in _recent:
+                _fl2 = _r.get("family", {})
+                _ep2 = _r.get("epistemic", {})
+                _sim2 = _r.get("simulation", {})
+                _sc2 = _sim2.get("stress_score", 5)
+                _c2  = "#00ff88" if _sc2 >= 7 else "#ff9500" if _sc2 >= 4 else "#ff4444"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {_c2};">'
+                    f'<span style="color:{_c2};font-size:0.72rem;">'
+                    f'{_r.get("timestamp","")[:10]} · {_fl2.get("lesson_title","?")} · '
+                    f'Stress {_sc2}/10 · Coherence {_ep2.get("coherence",0):.2f}</span><br>'
+                    f'<span style="color:#8899bb;font-size:0.78rem;">'
+                    f'{_r.get("post_text","")[:120]}...</span></div>',
+                    unsafe_allow_html=True
+                )
+        else:
+            st.info("No bridge lessons yet. Process your first post above.")
+        _stats_xb = _XB2().get_stats()
+        if _stats_xb.get("total", 0) > 0:
+            st.caption(
+                f"Total processed: {_stats_xb['total']} · "
+                f"Attacks caught: {_stats_xb['attacks_caught']} ({_stats_xb['attack_rate']}%) · "
+                f"Avg stress: {_stats_xb['avg_stress']}/10"
+            )
+    except ImportError:
+        st.info("x_bridge.py needed.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SIMULATION PROBE 🔭
+# ══════════════════════════════════════════════════════════════════════════════
+if "Simulation Probe" in active:
+    st.markdown('<div class="card-title">🔭 SIMULATION PROBE — No Claims, Only Data</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">THE HYPOTHESIS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Treating "this might be a simulation" as a testable experimental hypothesis
+        rather than abstract speculation. We measure coherence anomalies, observer
+        effects, wonder discontinuities, and glitch patterns — not to claim anything,
+        but to have a permanent, honest record of what the data shows.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    try:
+        from simulation_probe import SimulationProbe as _SP
+        _probe   = _SP()
+        _summary = _probe.get_probe_summary(30)
+
+        # Key metrics
+        _sp1, _sp2, _sp3, _sp4 = st.columns(4)
+        _sp1.metric("Probe Score Today", f"{_summary.get('latest_score', 0)}/10")
+        _sp2.metric("Avg Score (30d)",   f"{_summary.get('avg_probe_score', 0):.2f}")
+        _sp3.metric("Anomalies Total",   _summary.get("total_anomalies", 0))
+        _sp4.metric("Observer Events",   _summary.get("observer_events", 0))
+
+        st.divider()
+
+        _sp_c1, _sp_c2 = st.columns(2)
+        with _sp_c1:
+            if st.button("🔭 Run Probe Now", key="sp_run",
+                         use_container_width=True, type="primary"):
+                with st.spinner("Running simulation probe..."):
+                    _report = _probe.run_daily_probe(force=True)
+                st.success(
+                    f"✅ Probe complete — Score: {_report['probe_score']}/10 · "
+                    f"Integrity: {'HOLDING' if _report['lattice_integrity'].get('all_invariants_hold') else 'CHECK'}"
+                )
+                st.rerun()
+
+        # Today's probe if available
+        import pathlib as _pl_sp
+        _today_probe = _pl_sp.Path(f"/mnt/main/repo/insights/probe/{datetime.date.today().isoformat()}.md")
+        if _today_probe.exists():
+            with st.expander("📄 Today's Full Probe Report", expanded=True):
+                st.markdown(_today_probe.read_text())
+        else:
+            st.info("No probe run yet today. Click 'Run Probe Now' above.")
+
+        # 30-day history
+        if _summary.get("total_days", 0) > 0:
+            st.divider()
+            st.markdown("### 📈 30-Day Signal History")
+            st.markdown(
+                f'<div class="card">'
+                f'<div style="font-size:0.82rem;color:#8899bb;line-height:2.0;">'
+                f'Days active: {_summary["total_days"]} · '
+                f'Avg probe score: {_summary["avg_probe_score"]:.2f}/10<br>'
+                f'Total anomalies: {_summary["total_anomalies"]} · '
+                f'Glitch patterns: {_summary.get("total_glitches", 0)}<br>'
+                f'Observer events: {_summary["observer_events"]} · '
+                f'Integrity held: {_summary["integrity_holds"]}/{_summary["total_days"]} days'
+                f'</div></div>', unsafe_allow_html=True
+            )
+
+    except ImportError:
+        st.error("simulation_probe.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_sp:
+        st.error(f"Simulation Probe error: {_e_sp}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: TRUTH DEBT LEDGER 📋
+# Public record of falsifiable claims and their outcomes
+# ══════════════════════════════════════════════════════════════════════════════
+if "Truth Debt Ledger" in active:
+    st.markdown('<div class="card-title">📋 TRUTH DEBT LEDGER — Public Claim Accountability</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #f7931a;">
+        <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE PROBLEM THIS SOLVES</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        The internet has zero institutional memory for false claims. A source makes a
+        specific falsifiable claim. It spreads. It's wrong. Nobody is held accountable.
+        The same claim gets made again.<br><br>
+        This ledger is the antidote: append-only, public, CC0. Every falsifiable claim
+        registered here is tracked to its outcome. Over time it becomes a verifiable
+        track record — for families, for researchers, and for AI systems.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    try:
+        from truth_debt_ledger import TruthDebtLedger as _TDL
+        _ledger = _TDL()
+        _report = _ledger.get_accountability_report(90)
+
+        # Stats
+        _td1, _td2, _td3, _td4 = st.columns(4)
+        _td1.metric("Total Claims",   _report.get("total", 0))
+        _td2.metric("Verified True",  _report.get("verified", 0))
+        _td3.metric("Refuted False",  _report.get("refuted", 0))
+        _td4.metric("Accuracy Rate",
+                    f"{_report['accuracy_rate']}%" if _report.get("accuracy_rate") else "N/A")
+
+        st.divider()
+
+        # Register a new claim
+        st.markdown("### ✍️ Register a Falsifiable Claim")
+        _tdl_claim = st.text_area("Claim to track:", height=80, key="tdl_claim",
+                                    placeholder="e.g. 'Bitcoin will reach $150k by end of 2026'")
+        _tdl_type  = st.selectbox("Claim type:", ["general","prediction","factual","statistical","scientific","political"], key="tdl_type")
+        _tdl_src   = st.text_input("Source (X handle, outlet, etc.):", key="tdl_src", placeholder="@username or outlet name")
+
+        if st.button("📋 Register Claim", key="tdl_register") and _tdl_claim:
+            _entry = _ledger.register(claim=_tdl_claim, source=_tdl_src or "manual",
+                                       claim_type=_tdl_type)
+            st.success(f"✅ Registered — ID: `{_entry['claim_id']}` · "
+                       f"Falsifiability: {_entry['falsifiability']:.2f} · "
+                       f"Check by: {_entry['verification_deadline']}")
+
+        # Overdue claims
+        _overdue = _ledger.get_overdue_claims()
+        if _overdue:
+            st.divider()
+            st.markdown(f"### ⏰ Overdue Claims ({len(_overdue)} awaiting verification)")
+            for _oe in _overdue[:5]:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid #ff9500;">'
+                    f'<span style="color:#ff9500;font-size:0.72rem;">'
+                    f'{_oe.get("source","?")} · Due: {_oe.get("verification_deadline","?")}</span><br>'
+                    f'<span style="color:#c8d8ff;font-size:0.82rem;">{_oe["claim"][:150]}</span></div>',
+                    unsafe_allow_html=True
+                )
+                _resolve_ans = st.selectbox("Outcome:", ["—","verified","refuted","unresolved","partially_true"],
+                                             key=f"tdl_resolve_{_oe['claim_id']}")
+                _resolve_ev  = st.text_input("Evidence:", key=f"tdl_ev_{_oe['claim_id']}")
+                if st.button("✅ Resolve", key=f"tdl_btn_{_oe['claim_id']}") and _resolve_ans != "—":
+                    _ledger.resolve(_oe["claim_id"], _resolve_ans, _resolve_ev)
+                    st.success("✅ Resolved!")
+                    st.rerun()
+
+        # Write and display public report
+        st.divider()
+        if st.button("📤 Write Public Report to GitHub", key="tdl_write"):
+            _path = _ledger.write_public_report()
+            st.success(f"✅ Written to {_path}")
+
+        if _report.get("sources"):
+            st.divider()
+            st.markdown("### 📊 Source Accountability")
+            for _src, _stats in sorted(_report["sources"].items(),
+                                        key=lambda x: x[1]["total"], reverse=True)[:8]:
+                _acc = round(_stats["verified"] / max(1, _stats["verified"] + _stats["refuted"]) * 100)
+                _bar_c = "#00ff88" if _acc >= 70 else "#ff9500" if _acc >= 40 else "#ff4444"
+                st.markdown(
+                    f'<div style="display:flex;justify-content:space-between;font-size:0.8rem;'
+                    f'padding:4px 0;border-bottom:1px solid #1a2233;">'
+                    f'<span style="color:#c8d8ff;">{_src}</span>'
+                    f'<span style="color:{_bar_c};">{_stats["total"]} claims · {_acc}% accurate</span>'
+                    f'</div>', unsafe_allow_html=True
+                )
+
+    except ImportError:
+        st.error("truth_debt_ledger.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_tdl:
+        st.error(f"Truth Debt Ledger error: {_e_tdl}")
