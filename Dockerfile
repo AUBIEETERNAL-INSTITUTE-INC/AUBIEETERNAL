@@ -1,38 +1,13 @@
-name: Build and Push Docker
+FROM python:3.11-slim
+WORKDIR /work
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+# Split pip installs to prevent OOM (StartOS builder has limited RAM)
+RUN pip install --no-cache-dir streamlit>=1.32.0
+RUN pip install --no-cache-dir openai>=1.14.0 requests>=2.31.0
+RUN pip install --no-cache-dir pandas>=2.0.0 plotly>=5.18.0
+RUN pip install --no-cache-dir python-dateutil pytz
 
-jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+# Copy all repo files
+COPY . .
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: |
-            ghcr.io/hodlmateo/aubieeternal:v8
-            ghcr.io/hodlmateo/aubieeternal:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+CMD ["/bin/bash", "start.sh"]
