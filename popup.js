@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupLedger();
   setupSettings();
   loadLedgerStats();
+  loadRuneStatus();
+  setupRune();
 });
 
 // ── Settings ───────────────────────────────────────────────────────────────────
@@ -24,6 +26,7 @@ async function loadSettings() {
   const data = await chrome.storage.local.get(['serverUrl','apiKey','autoAnalyze','showXButtons']);
   serverUrl = data.serverUrl || DEFAULT_SERVER;
   document.getElementById('serverUrl').value     = serverUrl;
+  document.getElementById('appUrl').value         = data.appUrl || '';
   document.getElementById('apiKey').value         = data.apiKey || '';
   document.getElementById('autoAnalyze').checked  = data.autoAnalyze || false;
   document.getElementById('showXButtons').checked = data.showXButtons !== false;
@@ -33,6 +36,7 @@ function setupSettings() {
   document.getElementById('saveSettings').addEventListener('click', async () => {
     const settings = {
       serverUrl:     document.getElementById('serverUrl').value.trim(),
+      appUrl:        document.getElementById('appUrl').value.trim(),
       apiKey:        document.getElementById('apiKey').value.trim(),
       autoAnalyze:   document.getElementById('autoAnalyze').checked,
       showXButtons:  document.getElementById('showXButtons').checked,
@@ -94,8 +98,12 @@ function setupTabs() {
 // ── X Bridge ───────────────────────────────────────────────────────────────────
 function setupBridge() {
   document.getElementById('analyzeBtn').addEventListener('click', runBridge);
-  document.getElementById('openAppBtn').addEventListener('click', () => {
-    chrome.tabs.create({ url: serverUrl });
+  document.getElementById('openAppBtn').addEventListener('click', async () => {
+    // Open the Streamlit app, not the API server
+    // Try stored app URL, fall back to StartOS default
+    const data = await chrome.storage.local.get('appUrl');
+    const appUrl = data.appUrl || 'https://painful-recess.local:62751';
+    chrome.tabs.create({ url: appUrl });
   });
 
   // Use selected text from active tab
@@ -267,10 +275,11 @@ async function runOracle() {
   document.getElementById('oracleResponse').className = 'oracle-response';
 
   try {
+    const stored = await chrome.storage.local.get('apiKey');
     const res = await fetch(`${serverUrl}/oracle`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ question }),
+      body: JSON.stringify({ question, api_key: stored.apiKey || '' }),
       signal: AbortSignal.timeout(60000)
     });
     const data = await res.json();
@@ -331,4 +340,74 @@ async function registerClaim() {
     success.textContent = `Error: ${err.message}`;
     success.style.display = 'block';
   }
+}
+
+// ── Shield Rune / Rune Memory ──────────────────────────────────────────────
+async function loadRuneStatus() {
+  try {
+    const res = await fetch(`${serverUrl}/rune/status`, { signal: AbortSignal.timeout(3000) });
+    if (!res.ok) return;
+    const data = await res.json();
+    const el = (id) => document.getElementById(id);
+    if (el('totalSeals'))   el('totalSeals').textContent   = data.total_seals || 0;
+    if (el('btcAnchored'))  el('btcAnchored').textContent  = data.bitcoin_anchored || 0;
+    if (el('pendingMerges')) el('pendingMerges').textContent = data.pending_merges || 0;
+  } catch { /* server not available */ }
+}
+
+function setupRune() {
+  document.getElementById('recordMemoryBtn')?.addEventListener('click', async () => {
+    const content = document.getElementById('memoryInput')?.value?.trim();
+    if (!content) return;
+    try {
+      const res = await fetch(`${serverUrl}/rune/record`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, source: 'extension' }),
+        signal: AbortSignal.timeout(15000)
+      });
+      const data = await res.json();
+      showRuneResult(`✅ Recorded — ID: ${data.entry_id}\nContent preserved at Level 1 (GitHub).\nUse the ID above to seal with Shield Rune.`);
+      document.getElementById('memoryInput').value = '';
+      document.getElementById('sealIdInput').value = data.entry_id || '';
+      loadRuneStatus();
+    } catch (err) {
+      showRuneResult(`❌ Error: ${err.message}`);
+    }
+  });
+
+  document.getElementById('sealBtn')?.addEventListener('click', async () => {
+    const seal_id = document.getElementById('sealIdInput')?.value?.trim();
+    const note    = document.getElementById('sealNote')?.value?.trim() || '';
+    if (!seal_id) return;
+    try {
+      const res = await fetch(`${serverUrl}/rune/seal`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ entry_id: seal_id, note }),
+        signal: AbortSignal.timeout(20000)
+      });
+      const data = await res.json();
+      showRuneResult(
+        `🛡️ SEALED\n` +
+        `Seal ID: ${data.seal_id || '?'}\n` +
+        `Level: ${data.level || '?'} ${data.level >= 3 ? '— BITCOIN ANCHORED 🔒' : '— Nostr broadcast'}\n` +
+        `Hash: ${(data.seal_hash||'').slice(0,32)}...\n` +
+        `Anchor: ${(data.bitcoin_txid||'pending').slice(0,40)}\n\n` +
+        `This memory cannot be erased without rewriting Bitcoin.`
+      );
+      document.getElementById('sealIdInput').value = '';
+      loadRuneStatus();
+    } catch (err) {
+      showRuneResult(`❌ Seal error: ${err.message}`);
+    }
+  });
+}
+
+function showRuneResult(msg) {
+  const el = document.getElementById('runeResult');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 8000);
 }
