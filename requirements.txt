@@ -1,30 +1,29 @@
-# AUBIEETERNAL — Sovereign Family Intelligence Stack
-# Install: pip install -r requirements.txt --break-system-packages
+# AUBIEETERNAL requirements.txt
+# Updated for v8 — covers all modules
 
-# ── Core UI ───────────────────────────────────────────────────────────────────
+# ── Core UI ──────────────────────────────────────────────────────────────────
 streamlit>=1.32.0
 
-# ── AI / API ──────────────────────────────────────────────────────────────────
-openai>=1.12.0          # OpenAI-compatible client (used for Ollama + Grok)
-requests>=2.31.0        # HTTP calls to Ollama, mempool.space, Grok API
+# ── AI / API ─────────────────────────────────────────────────────────────────
+openai>=1.14.0
+requests>=2.31.0
 
-# ── Data + Visualization ──────────────────────────────────────────────────────
+# ── Data + Viz ────────────────────────────────────────────────────────────────
 pandas>=2.0.0
 plotly>=5.18.0
-numpy>=1.24.0
 
-# ── Bitcoin / Lightning ───────────────────────────────────────────────────────
-# (watch-only — no private keys stored)
-# requests handles mempool.space API calls
+# ── Bitcoin / Nostr ───────────────────────────────────────────────────────────
+# (nostr uses requests only — no extra package needed)
 
-# ── Nostr (optional — for encrypted family messaging) ────────────────────────
-websocket-client>=1.7.0
-cryptography>=41.0.0
+# ── Living Lattice + Epistemic Commons ───────────────────────────────────────
+# (uses stdlib only: json, hashlib, datetime, pathlib, socket)
 
-# ── Halo Glasses (optional — install when glasses arrive) ────────────────────
-# frame-sdk>=0.1.0       # Brilliant Labs Halo SDK
-# speechrecognition>=3.10.0
-# pyaudio>=0.2.14
+# ── Sovereign Cashflow Game ───────────────────────────────────────────────────
+# (uses stdlib only: json, random, datetime, pathlib)
 
-# ── Standard library (no install needed) ─────────────────────────────────────
-# json, os, datetime, pathlib, hashlib, random, threading, time, re, statistics
+# ── Offline runner ────────────────────────────────────────────────────────────
+# (uses subprocess, os, sys — all stdlib)
+
+# ── Utils ─────────────────────────────────────────────────────────────────────
+python-dateutil>=2.8.2
+pytz>=2023.3
