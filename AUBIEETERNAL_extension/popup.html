@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUBIEETERNAL</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    width: 380px;
+    min-height: 200px;
+    background: #0a0e1a;
+    color: #c8d8ff;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    font-size: 13px;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #0d1228, #1a2233);
+    padding: 12px 14px 10px;
+    border-bottom: 1px solid #1e2a3a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .header-left { display:flex; align-items:center; gap:8px; }
+  .eagle { font-size:20px; }
+  .app-name {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    color: #f7931a;
+    letter-spacing: 0.05em;
+  }
+  .app-sub { font-size:10px; color:#445577; letter-spacing:0.1em; }
+
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #888; transition: background 0.3s;
+  }
+  .status-dot.online  { background: #00ff88; box-shadow: 0 0 6px #00ff88; }
+  .status-dot.offline { background: #ff4444; }
+
+  /* Status bar */
+  .statusbar {
+    background: #0d1228;
+    padding: 6px 14px;
+    border-bottom: 1px solid #1e2a3a;
+    display: flex;
+    gap: 14px;
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    color: #445577;
+  }
+  .statusbar span { color: #f7931a; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    background: #0d1228;
+    border-bottom: 1px solid #1e2a3a;
+  }
+  .tab {
+    flex: 1;
+    padding: 8px 4px;
+    text-align: center;
+    font-size: 10px;
+    cursor: pointer;
+    color: #445577;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+  .tab:hover { color: #8899bb; }
+  .tab.active { color: #f7931a; border-bottom-color: #f7931a; }
+
+  /* Content panels */
+  .panel { display:none; padding:12px 14px; }
+  .panel.active { display:block; }
+
+  /* Text area */
+  textarea {
+    width: 100%;
+    background: #111827;
+    border: 1px solid #1e2a3a;
+    border-radius: 6px;
+    color: #c8d8ff;
+    padding: 8px 10px;
+    font-size: 12px;
+    resize: none;
+    outline: none;
+    transition: border 0.2s;
+    font-family: inherit;
+  }
+  textarea:focus { border-color: #f7931a; }
+
+  /* Buttons */
+  .btn {
+    width: 100%;
+    padding: 9px 14px;
+    border: none;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 6px;
+    letter-spacing: 0.03em;
+  }
+  .btn-primary { background: #f7931a; color: #0a0e1a; }
+  .btn-primary:hover { background: #ff9f20; }
+  .btn-primary:disabled { background: #333; color: #556; cursor: default; }
+  .btn-secondary { background: #1a2233; color: #c8d8ff; border: 1px solid #2a3550; }
+  .btn-secondary:hover { background: #2a3550; }
+  .btn-purple { background: #a020f0; color: white; }
+  .btn-purple:hover { background: #b030ff; }
+  .btn-teal { background: #0d6e6e; color: #00ffdd; }
+  .btn-teal:hover { background: #0e8080; }
+
+  .btn-row { display:flex; gap:6px; margin-top:6px; }
+  .btn-row .btn { margin-top:0; }
+
+  /* Result card */
+  .result {
+    margin-top: 10px;
+    background: #111827;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #1e2a3a;
+    display: none;
+  }
+  .result.visible { display:block; }
+  .result-header {
+    padding: 7px 10px;
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.1em;
+    border-bottom: 1px solid #1e2a3a;
+  }
+  .result-body { padding: 10px; font-size: 12px; line-height: 1.6; }
+
+  .tag-green  { background: #0a2a1a; border-color: #00ff88; }
+  .tag-orange { background: #2a1a0a; border-color: #f7931a; }
+  .tag-red    { background: #2a0a0a; border-color: #ff4444; }
+  .tag-purple { background: #1a0a2a; border-color: #a020f0; }
+  .tag-teal   { background: #0a1a2a; border-color: #00cfff; }
+
+  .result-header.green  { color: #00ff88; }
+  .result-header.orange { color: #f7931a; }
+  .result-header.red    { color: #ff4444; }
+  .result-header.purple { color: #a020f0; }
+  .result-header.teal   { color: #00cfff; }
+
+  .score-bar {
+    height: 4px; border-radius: 2px; margin: 6px 0;
+    background: #1e2a3a;
+  }
+  .score-fill { height: 100%; border-radius: 2px; transition: width 0.4s; }
+
+  /* Metric row */
+  .metrics { display:flex; gap:8px; margin: 8px 0; }
+  .metric {
+    flex:1; background:#0d1228; border-radius:6px;
+    padding:6px 8px; text-align:center;
+    border: 1px solid #1e2a3a;
+  }
+  .metric-val { font-size:14px; font-weight:700; font-family:'Courier New',monospace; }
+  .metric-lbl { font-size:9px; color:#445577; letter-spacing:0.1em; margin-top:2px; }
+
+  .lesson-section { margin-top:8px; }
+  .lesson-label {
+    font-size:10px; color:#445577; letter-spacing:0.08em;
+    margin-bottom:3px; font-weight:600;
+  }
+  .lesson-text { color:#c8d8ff; font-size:12px; line-height:1.6; }
+
+  .attack-badge {
+    display:inline-block; padding:2px 8px; border-radius:12px;
+    background:#2a0a0a; color:#ff4444; font-size:10px;
+    border:1px solid #ff4444; margin-top:4px;
+  }
+
+  /* Spinner */
+  .spinner {
+    display:none; text-align:center; padding:20px;
+    color:#445577; font-size:11px;
+  }
+  .spinner.active { display:block; }
+  .spinner::before {
+    content:'⚡'; display:block; font-size:24px;
+    animation: pulse 1s infinite; margin-bottom:6px;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* Oracle */
+  .oracle-response {
+    margin-top:10px; padding:10px;
+    background:#0d1228; border-radius:6px;
+    border-left:3px solid #a020f0;
+    font-size:12px; line-height:1.7; color:#c8d8ff;
+    display:none;
+  }
+  .oracle-response.visible { display:block; }
+
+  /* Settings */
+  .setting-row {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:8px 0; border-bottom:1px solid #1e2a3a;
+    font-size:12px;
+  }
+  .setting-row:last-child { border-bottom:none; }
+  .setting-label { color:#8899bb; }
+  input[type="text"], input[type="url"] {
+    background:#111827; border:1px solid #1e2a3a;
+    border-radius:4px; color:#c8d8ff; padding:4px 8px;
+    font-size:11px; outline:none; width:160px;
+  }
+  input[type="text"]:focus, input[type="url"]:focus { border-color:#f7931a; }
+
+  .footer {
+    padding:8px 14px;
+    border-top:1px solid #1e2a3a;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .footer-left { font-size:10px; color:#445577; font-family:'Courier New',monospace; }
+  .footer-right a {
+    font-size:10px; color:#f7931a; text-decoration:none;
+  }
+
+  .open-app-btn {
+    width:100%; padding:7px; background:#1a2233;
+    border:1px solid #2a3550; border-radius:6px;
+    color:#8899bb; font-size:11px; cursor:pointer; text-align:center;
+    margin-top:8px; transition:all 0.2s;
+  }
+  .open-app-btn:hover { background:#2a3550; color:#c8d8ff; }
+
+  .not-connected {
+    padding:20px; text-align:center;
+  }
+  .not-connected h3 { color:#f7931a; font-size:13px; margin-bottom:8px; }
+  .not-connected p { color:#445577; font-size:11px; line-height:1.6; }
+  .not-connected code {
+    display:block; background:#111827; padding:6px 10px;
+    border-radius:4px; color:#00ff88; font-size:11px;
+    margin:8px 0; border:1px solid #1e2a3a;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <span class="eagle">🦅</span>
+    <div>
+      <div class="app-name">AUBIEETERNAL</div>
+      <div class="app-sub">SOVEREIGN · LOCAL · ANTIFRAGILE</div>
+    </div>
+  </div>
+  <div id="statusDot" class="status-dot"></div>
+</div>
+
+<!-- Status bar (when connected) -->
+<div class="statusbar" id="statusBar" style="display:none">
+  <div>W: <span id="wonderVal">—</span></div>
+  <div>C: <span id="cohVal">—</span></div>
+  <div>RUNE: <span id="runeVal">—</span>/256</div>
+  <div>$<span id="costVal">0.00</span>/day</div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" data-panel="bridge">🌉 Bridge</div>
+  <div class="tab" data-panel="oracle">🔮 Oracle</div>
+  <div class="tab" data-panel="ledger">📋 Ledger</div>
+  <div class="tab" data-panel="rune">🛡️ Shield</div>
+  <div class="tab" data-panel="settings">⚙️ Settings</div>
+</div>
+
+<!-- ═══════════════════════════════════ X BRIDGE ═════════════════════════════ -->
+<div class="panel active" id="panel-bridge">
+
+  <div id="notConnected" class="not-connected" style="display:none">
+    <h3>⚠️ AUBIEETERNAL not running</h3>
+    <p>Start the local server first:</p>
+    <code>python launcher.py</code>
+    <p>Then reload this popup.</p>
+    <button class="btn btn-secondary" id="retryBtn">↻ Retry connection</button>
+  </div>
+
+  <div id="bridgeConnected">
+    <textarea id="bridgeInput" rows="4"
+      placeholder="Paste any post, headline, or claim here...&#10;&#10;Or select text on any page and press Ctrl+Shift+A"></textarea>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" id="analyzeBtn">⚔️ Analyze</button>
+      <button class="btn btn-secondary" id="useSelectionBtn">📋 Use Selection</button>
+    </div>
+
+    <div class="spinner" id="bridgeSpinner">Processing through the lattice...</div>
+
+    <!-- Epistemic result -->
+    <div class="result tag-green" id="epistemicResult">
+      <div class="result-header green" id="epistemicHeader">EPISTEMIC ANALYSIS</div>
+      <div class="result-body" id="epistemicBody"></div>
+    </div>
+
+    <!-- Family lesson -->
+    <div class="result tag-purple" id="lessonResult">
+      <div class="result-header purple" id="lessonHeader">FAMILY LESSON</div>
+      <div class="result-body" id="lessonBody"></div>
+    </div>
+
+    <!-- Sim test -->
+    <div class="result tag-teal" id="simResult">
+      <div class="result-header teal" id="simHeader">SIMULATION INTEGRITY</div>
+      <div class="result-body" id="simBody"></div>
+    </div>
+
+    <button class="open-app-btn" id="openAppBtn">↗ Open full AUBIEETERNAL app</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ ORACLE ═══════════════════════════════ -->
+<div class="panel" id="panel-oracle">
+  <textarea id="oracleInput" rows="3"
+    placeholder="Ask anything. The Oracle is honest about what it knows and doesn't know."></textarea>
+  <button class="btn btn-purple" id="oracleBtn">🔮 Ask Oracle</button>
+  <div class="spinner" id="oracleSpinner">Thinking...</div>
+  <div class="oracle-response" id="oracleResponse"></div>
+</div>
+
+<!-- ═══════════════════════════════════ LEDGER ═══════════════════════════════ -->
+<div class="panel" id="panel-ledger">
+  <div class="metrics" id="ledgerMetrics">
+    <div class="metric">
+      <div class="metric-val" id="ledgerTotal" style="color:#f7931a">—</div>
+      <div class="metric-lbl">CLAIMS</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="ledgerVerified" style="color:#00ff88">—</div>
+      <div class="metric-lbl">VERIFIED</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="ledgerRefuted" style="color:#ff4444">—</div>
+      <div class="metric-lbl">REFUTED</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="ledgerAccuracy" style="color:#a020f0">—</div>
+      <div class="metric-lbl">ACCURACY</div>
+    </div>
+  </div>
+
+  <textarea id="claimInput" rows="2"
+    placeholder="Register a falsifiable claim to track..."></textarea>
+  <div id="claimTypeRow" style="margin-top:6px">
+    <select id="claimType" style="background:#111827;border:1px solid #1e2a3a;color:#c8d8ff;padding:4px 8px;border-radius:4px;font-size:11px;width:100%">
+      <option value="general">General</option>
+      <option value="prediction">Prediction (time-bound)</option>
+      <option value="factual">Factual claim</option>
+      <option value="statistical">Statistical claim</option>
+      <option value="scientific">Scientific claim</option>
+    </select>
+  </div>
+  <button class="btn btn-teal" id="registerClaimBtn" style="margin-top:6px">📋 Register Claim</button>
+  <div id="claimSuccess" style="display:none;margin-top:6px;padding:6px 10px;background:#0a2a1a;border-radius:4px;border-left:3px solid #00ff88;font-size:11px;color:#00ff88;"></div>
+</div>
+
+
+<!-- ═══════════════════════════════ SHIELD RUNE ═════════════════════════════ -->
+<div class="panel" id="panel-rune">
+  <div style="text-align:center;padding:8px 0 4px;">
+    <div style="font-size:28px">🛡️</div>
+    <div style="color:#f7931a;font-family:'Courier New',monospace;font-size:11px;letter-spacing:0.1em;margin-top:4px;">AUBIE•ETERNAL•SHIELD</div>
+    <div style="color:#445577;font-size:10px;margin-top:2px;">Last Say · Unerasable Truth · Bitcoin-Anchored</div>
+  </div>
+
+  <div class="metrics" id="runeMetrics" style="margin-top:8px">
+    <div class="metric">
+      <div class="metric-val" id="totalSeals" style="color:#f7931a">—</div>
+      <div class="metric-lbl">SEALED</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="btcAnchored" style="color:#00ff88">—</div>
+      <div class="metric-lbl">ON-CHAIN</div>
+    </div>
+    <div class="metric">
+      <div class="metric-val" id="pendingMerges" style="color:#a020f0">—</div>
+      <div class="metric-lbl">PENDING</div>
+    </div>
+  </div>
+
+  <!-- Record a memory -->
+  <div style="margin-top:8px">
+    <div style="font-size:10px;color:#445577;letter-spacing:0.08em;margin-bottom:4px;font-weight:600;">RECORD MEMORY</div>
+    <textarea id="memoryInput" rows="3"
+      style="width:100%;background:#111827;border:1px solid #1e2a3a;border-radius:6px;color:#c8d8ff;padding:8px;font-size:12px;resize:none;outline:none;font-family:inherit"
+      placeholder="Any insight, capture, or truth you want preserved forever..."></textarea>
+    <button class="btn btn-primary" id="recordMemoryBtn" style="margin-top:4px">
+      📝 Record to Memory
+    </button>
+  </div>
+
+  <!-- Seal a memory -->
+  <div style="margin-top:8px">
+    <div style="font-size:10px;color:#445577;letter-spacing:0.08em;margin-bottom:4px;font-weight:600;">🛡️ SHIELD SEAL — MAKE UNERASABLE</div>
+    <input type="text" id="sealIdInput"
+      style="width:100%;background:#111827;border:1px solid #1e2a3a;border-radius:6px;color:#c8d8ff;padding:6px 8px;font-size:11px;outline:none;margin-bottom:4px"
+      placeholder="Memory ID or Merge ID to seal...">
+    <input type="text" id="sealNote"
+      style="width:100%;background:#111827;border:1px solid #1e2a3a;border-radius:6px;color:#c8d8ff;padding:6px 8px;font-size:11px;outline:none;margin-bottom:4px"
+      placeholder="Note (optional)">
+    <button class="btn btn-primary" id="sealBtn"
+      style="background:#a020f0;margin-top:0">
+      🛡️ Seal with Shield Rune
+    </button>
+  </div>
+
+  <div id="runeResult" style="display:none;margin-top:8px;padding:8px 10px;
+    background:#0a1a0a;border-radius:6px;border-left:3px solid #00ff88;
+    font-size:11px;color:#00ff88;line-height:1.7"></div>
+
+  <div style="margin-top:8px;padding:8px;background:#0d1228;border-radius:6px;
+    border:1px solid #1e2a3a;font-size:10px;color:#445577;line-height:1.8">
+    <div style="color:#f7931a;font-weight:600;margin-bottom:2px">How sealing works:</div>
+    Level 1 → GitHub commit (auto-push)<br>
+    Level 2 → Nostr broadcast (censorship-resistant)<br>
+    Level 3 → Bitcoin Rune anchor (UNERASABLE)<br>
+    <div style="color:#556677;margin-top:4px">Sealed memories require rewriting Bitcoin to erase.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════ SETTINGS ════════════════════════════ -->
+<div class="panel" id="panel-settings">
+  <div class="setting-row">
+    <span class="setting-label">API Server URL</span>
+    <input type="url" id="serverUrl" value="http://localhost:8502" />
+  </div>
+  <div class="setting-row">
+    <span class="setting-label">App URL</span>
+    <input type="url" id="appUrl" placeholder="https://painful-recess.local:62751" />
+  </div>
+  <div class="setting-row">
+    <span class="setting-label">xAI API Key</span>
+    <input type="text" id="apiKey" placeholder="xai-... (optional)" />
+  </div>
+  <div class="setting-row">
+    <span class="setting-label">Auto-analyze X posts</span>
+    <input type="checkbox" id="autoAnalyze" style="width:auto">
+  </div>
+  <div class="setting-row">
+    <span class="setting-label">Show buttons on X</span>
+    <input type="checkbox" id="showXButtons" checked style="width:auto">
+  </div>
+  <button class="btn btn-primary" id="saveSettings" style="margin-top:8px">💾 Save Settings</button>
+  <div id="settingsSaved" style="display:none;margin-top:6px;color:#00ff88;font-size:11px;text-align:center">✅ Saved</div>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <div class="footer-left">v68.0 · Coherence 1.000000</div>
+  <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank">GitHub ↗</a>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
