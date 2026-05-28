@@ -1,18 +1,38 @@
-FROM python:3.11-slim
-WORKDIR /work
+name: Build and Push Docker
 
-# Install git + system deps
-RUN apt-get update && \
-    apt-get install -y git curl && \
-    rm -rf /var/lib/apt/lists/*
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
 
-# Install Python packages — split to avoid OOM
-RUN pip install --no-cache-dir streamlit
-RUN pip install --no-cache-dir openai requests
-RUN pip install --no-cache-dir pandas plotly
-RUN pip install --no-cache-dir numpy
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
-# Copy repo files into image as fallback
-COPY . .
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-CMD ["/bin/bash", "start.sh"]
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/hodlmateo/aubieeternal:v8
+            ghcr.io/hodlmateo/aubieeternal:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
