@@ -926,11 +926,11 @@ with st.sidebar:
     # ── Categorized Navigation ────────────────────────────────────────────────
     _NAV_CATEGORIES = {
         "🏠 HOME": [
-            "📊 Dashboard", "🌅 Digest", "📜 Provenance",
+            "📊 Dashboard", "🌅 Digest",
         ],
         "🤖 AI": [
             "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace",
-            "🧪 Sandbox Lab", "📚 Grokipedia",
+            "🧪 Sandbox Lab",
         ],
         "👾 SWARM": [
             "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "🌐 Epistemic Commons",
@@ -1632,31 +1632,53 @@ elif "Kid Curriculum" in active:
                 col_a, col_b = st.columns([2, 1])
                 with col_a:
                     if st.button(f"📖 Generate Week {week['num']} Lesson", key=f"gen_week_{week['num']}"):
-                        if not st.session_state.api_key:
-                            st.error("Enter your XAI API Key in the sidebar first.")
-                        else:
-                            with st.spinner("Grok is forging your lesson..."):
+                        with st.spinner("Generating your lesson..."):
+                            try:
+                                _kid_prompt = (f"Create a detailed, warm, engaging lesson for Week {week['num']} "
+                                               f"titled '{week['title']}' for {kid_name} (age {kid_age}, {age_group}). "
+                                               f"Include: 1) A fun story or analogy, 2) Key concept explained simply, "
+                                               f"3) A hands-on activity, 4) A reflection question. Be encouraging and age-appropriate.")
+                                # Use Ollama (free, local) — fall back to cloud if key present
+                                _kid_lesson = ""
                                 try:
+                                    import requests as _req_kid
+                                    _ollama_kid = "http://ollama.startos:11434/v1/chat/completions"
+                                    _r = _req_kid.post(_ollama_kid,
+                                        json={"model":"qwen2.5:14b",
+                                              "messages":[{"role":"user","content":_kid_prompt}],
+                                              "stream":False,"temperature":0.75},
+                                        timeout=120)
+                                    if _r.status_code == 200:
+                                        _kid_lesson = _r.json()["choices"][0]["message"]["content"].strip()
+                                except Exception:
+                                    pass
+                                # Cloud fallback if Ollama unavailable and key present
+                                if not _kid_lesson and st.session_state.get("api_key"):
                                     client, model, _provider, _pname = get_ai_client()
                                     resp = client.chat.completions.create(
                                         model=model,
-                                        messages=[{"role": "user", "content": f"Create a detailed, warm, engaging lesson for Week {week['num']} titled '{week['title']}' for {kid_name} (age {kid_age}, {age_group}). Include: 1) A fun story or analogy, 2) Key concept explained simply, 3) A hands-on activity, 4) A reflection question. Be encouraging and age-appropriate."}],
-                                        max_tokens=900
-                                    )
-                                    lesson = resp.choices[0].message.content
-                                    st.markdown(f'<div class="card"><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;">{lesson}</div></div>', unsafe_allow_html=True)
-                                    completed.append(week["num"])
-                                    st.session_state.kid_progress[kid_name]["completed_weeks"] = completed
-                                    award_xp(80)
-                                    st.session_state.rune_points += 40
-                                    st.session_state.streak += 1
-                                    if len(completed) == 1:
-                                        st.toast("🏅 Badge: First Flame!", icon="🔥")
-                                    if len(completed) == 5:
-                                        st.toast("🦅 Badge: War Eagle Eternal!", icon="🦅")
-                                        st.balloons()
-                                except Exception as e:
-                                    st.error(str(e))
+                                        messages=[{"role":"user","content":_kid_prompt}],
+                                        max_tokens=900)
+                                    _kid_lesson = resp.choices[0].message.content
+                                if not _kid_lesson:
+                                    _kid_lesson = (f"## {week['title']}\n\n"
+                                                   f"*(Ollama not responding — start Ollama and pull qwen2.5:14b)*\n\n"
+                                                   f"**Story:** Imagine you're learning {week['title'].lower()} for the first time...\n\n"
+                                                   f"**Activity:** Talk with your family about what this means to you.")
+                                lesson = _kid_lesson
+                                st.markdown(f'<div class="card"><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;">{lesson}</div></div>', unsafe_allow_html=True)
+                                completed.append(week["num"])
+                                st.session_state.kid_progress[kid_name]["completed_weeks"] = completed
+                                award_xp(80)
+                                st.session_state.rune_points += 40
+                                st.session_state.streak += 1
+                                if len(completed) == 1:
+                                    st.toast("🏅 Badge: First Flame!", icon="🔥")
+                                if len(completed) == 5:
+                                    st.toast("🦅 Badge: War Eagle Eternal!", icon="🦅")
+                                    st.balloons()
+                            except Exception as e:
+                                st.error(str(e))
                 with col_b:
                     st.markdown(f'<div class="memory-node" style="text-align:center;"><div style="color:#ff6b35;font-size:1.5rem;">⚡</div><div style="color:#ff6b35;font-size:0.75rem;">+80 XP<br>+40 Shards</div></div>', unsafe_allow_html=True)
 
@@ -1664,20 +1686,32 @@ elif "Kid Curriculum" in active:
     st.markdown("### 🎙️ Voice Co-Tutor")
     chat_prompt = st.chat_input(f"Ask your co-tutor anything, {kid_name}...")
     if chat_prompt:
-        if not st.session_state.api_key:
-            st.error("Enter your XAI API Key in the sidebar first.")
-        else:
-            st.session_state.chat_history.append({"role": "user", "content": chat_prompt})
+        st.session_state.chat_history.append({"role": "user", "content": chat_prompt})
+        try:
+            import requests as _req_voice
+            _sys_voice = (f"You are AUBIEETERNAL Co-Tutor for {kid_name} ({kid_age}yo). "
+                          f"Use runes, streaks, and antifragile language. Be warm, short, end with a question or challenge.")
+            _msgs_voice = [{"role":"system","content":_sys_voice}] + st.session_state.chat_history[-8:]
+            _reply = ""
             try:
+                _r_voice = _req_voice.post("http://ollama.startos:11434/v1/chat/completions",
+                    json={"model":"qwen2.5:14b","messages":_msgs_voice,"stream":False,"temperature":0.75},
+                    timeout=60)
+                if _r_voice.status_code == 200:
+                    _reply = _r_voice.json()["choices"][0]["message"]["content"].strip()
+            except Exception:
+                pass
+            if not _reply and st.session_state.get("api_key"):
                 client, model, _provider, _pname = get_ai_client()
-                sys = f"You are Grok Co-Tutor for {kid_name} ({kid_age}yo). Use runes, streaks, and antifragile language. Be warm, short, and end with a question or challenge."
-                messages = [{"role": "system", "content": sys}] + st.session_state.chat_history[-8:]
-                reply = client.chat.completions.create(model=model, messages=messages, max_tokens=500).choices[0].message.content
-                st.session_state.chat_history.append({"role": "assistant", "content": reply})
-                award_xp(10)
-            except Exception as e:
-                st.error(str(e))
-            st.rerun()
+                _reply = client.chat.completions.create(model=model, messages=_msgs_voice, max_tokens=500).choices[0].message.content
+            if not _reply:
+                _reply = "I'm thinking... make sure Ollama is running with qwen2.5:14b pulled."
+            reply = _reply
+            st.session_state.chat_history.append({"role": "assistant", "content": reply})
+            award_xp(10)
+        except Exception as e:
+            st.error(str(e))
+        st.rerun()
 
     for msg in st.session_state.chat_history[-6:]:
         if msg["role"] == "user":
@@ -3411,6 +3445,80 @@ if "Family Co-Learning" in active:
                     f'<div style="color:#f7931a;font-size:0.82rem;margin-top:4px;">+1 {lesson["rune"]} earned</div>'
                     f'</div>', unsafe_allow_html=True)
 
+                # ── Save lesson completion to family_profiles ─────────────────
+                if not sess.get("lesson_saved"):
+                    sess["lesson_saved"] = True
+                    try:
+                        from family_profiles import load_family_stats as _lfs_fl, save_family_stats as _sfs_fl, award_badge as _ab_fl
+                        _fid_fl = st.session_state.get("current_family", {}).get("family_id", "default") \
+                                  if st.session_state.get("current_family") else "default"
+                        _stats_fl = _lfs_fl(_fid_fl)
+                        _lk = sess.get("lesson_key", "")
+                        if _lk and _lk not in _stats_fl.get("lessons_completed", []):
+                            _stats_fl.setdefault("lessons_completed", []).append(_lk)
+                        _stats_fl["total_xp"]   = _stats_fl.get("total_xp", 0) + sess["xp_earned"]
+                        _stats_fl["level"]       = max(1, _stats_fl["total_xp"] // 100 + 1)
+                        _stats_fl["streak_days"] = _stats_fl.get("streak_days", 0) + 1
+                        if sess.get("rune_earned"):
+                            _stats_fl["child_rune_fragments"] = _stats_fl.get("child_rune_fragments", 0) + 1
+                        # Grant badge if lesson has one
+                        if lesson.get("grants_badge"):
+                            _badge = lesson["grants_badge"]
+                            if _badge not in _stats_fl.get("badges", []):
+                                _stats_fl.setdefault("badges", []).append(_badge)
+                                st.toast(f"🏅 Badge earned: {_badge}", icon="🦅")
+                        if lesson.get("rune_fragments"):
+                            _stats_fl["child_rune_fragments"] = _stats_fl.get("child_rune_fragments", 0) + lesson["rune_fragments"]
+                        # Save coherence history
+                        _coh_now = sess["kid_coherence"]
+                        _stats_fl.setdefault("coherence_history", []).append(round(_coh_now, 4))
+                        _stats_fl["coherence_history"] = _stats_fl["coherence_history"][-50:]
+                        _sfs_fl(_stats_fl, _fid_fl)
+                    except Exception as _e_save:
+                        pass  # fail silently — don't block the UI
+
+                # ── Next Lesson button ────────────────────────────────────────
+                _nl_c1, _nl_c2 = st.columns(2)
+                with _nl_c1:
+                    if st.button("➡️ Next Lesson", key="fl_next_lesson",
+                                 use_container_width=True, type="primary"):
+                        # Find next lesson key
+                        _current_idx = lesson_keys.index(sess["lesson_key"]) \
+                                       if sess.get("lesson_key") in lesson_keys else 0
+                        _next_idx    = min(_current_idx + 1, len(lesson_keys) - 1)
+                        _next_key    = lesson_keys[_next_idx]
+                        # Reset session for next lesson
+                        sess["lesson_key"]        = _next_key
+                        sess["kid_coherence"]     = sess["kid_coherence"]  # carry coherence forward
+                        sess["coherence_history"].append(sess["kid_coherence"])
+                        sess["xp_earned"]         = 0
+                        sess["rune_earned"]        = False
+                        sess["lesson_saved"]       = False
+                        sess["messages"]           = []
+                        sess["last_refresh"]       = time.time()
+                        # Re-init hud for new lesson
+                        if _HUD_AVAILABLE:
+                            try:
+                                sess["hud_obj"].start_lesson(_next_key)
+                            except Exception:
+                                pass
+                        st.rerun()
+                with _nl_c2:
+                    if st.button("🔚 End Session", key="fl_end_after_xp",
+                                 use_container_width=True):
+                        try:
+                            from family_profiles import load_family_stats as _lfs_end, save_family_stats as _sfs_end
+                            _fid_end = st.session_state.get("current_family", {}).get("family_id", "default") \
+                                       if st.session_state.get("current_family") else "default"
+                            save_memory(f"Co-Learning: {lesson['title']}",
+                                        f"{kid_name} session +{sess['xp_earned']} XP | coherence {sess['kid_coherence']:.3f}",
+                                        tags=["co-learning", "family"])
+                        except Exception:
+                            pass
+                        sess["active"] = False
+                        st.success("✅ Session saved 🦅")
+                        st.rerun()
+
         # ── PARENT HUD (right) ────────────────────────────────────────────────
         with col_parent:
             st.markdown(
@@ -4385,7 +4493,7 @@ if "Sandbox Lab" in active:
                     f'<div class="memory-node" style="border-left:3px solid {color};">'
                     f'<span style="color:{color};font-size:0.72rem;">{etype}</span> '
                     f'<span style="color:#445577;font-size:0.7rem;">{ts}</span><br>'
-                    f'<span style="color:#aabbcc;font-size:0.78rem;">{e.get("name",e.get("topic",e.get("hypothesis",""),""))[:80]}</span>'
+                    f'<span style="color:#aabbcc;font-size:0.78rem;">{e.get("name", e.get("topic", e.get("hypothesis", "")))[:80]}</span>'
                     f'</div>', unsafe_allow_html=True)
         else:
             st.caption("No experiments yet — run your first one above!")
