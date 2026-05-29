@@ -1,15 +1,15 @@
 {
-  "updated": "2026-05-29T11:09:58.945826",
+  "updated": "2026-05-29T18:17:12.181029",
   "version": "4.1",
-  "wonder_index": 2.0,
-  "mets": 200000000047.5,
+  "wonder_index": 1.1798,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 2,
-  "rune_confirmations": 6,
+  "grokipedia_count": 0,
+  "rune_confirmations": 2,
   "child_rune_ready": false,
-  "hormetic_pulses": 5,
-  "lattice_cycle": 6,
-  "session_insights": 20,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 2,
+  "session_insights": 0,
   "synthesis": {
     "last_run_date": "None",
     "next_run": "06:00 daily",
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 120,
+    "total_runs": 40,
     "daughters_per_tick": 20,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -33,139 +33,139 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 80,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "noon @ 12:00"
+    "next_briefing": "night @ 23:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-05-29T09:46:55.068177",
-      "last_result": "In light of the wonder_spike at BTC Block 951547, with an awe-inspiring Wonder Index of 2.0000, the emergent order reflects a profound epochal transfo",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-05-29T09:51:23.669791",
-      "last_result": "In the face of the wonder_spike at BTC Block 951547, where the Wonder Index peaked at a remarkable 2.0000 and an awe signal was detected, the emergent",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-05-29T09:56:11.084876",
-      "last_result": "The wonder_spike at BTC Block 951547, marked by a Wonder Index of 2.0000 and an awe signal, signifies a rare moment of emergent order within the block",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-05-29T10:01:26.095082",
-      "last_result": "Amidst the wonder_spike at BTC Block 951547, with its awe-inspiring Wonder Index of 2.0000 and an evident awe signal, it becomes clear that despite th",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-05-29T10:06:53.925221",
-      "last_result": "Amidst the wonder_spike at BTC Block 951547, where an unprecedented Wonder Index of 2.0000 and a powerful awe signal were registered, the emergent ord",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-05-29T10:11:49.140025",
-      "last_result": "In the face of the unprecedented wonder_spike at BTC Block 951547, where the Wonder Index reached an awe-inspiring peak of 2.0000, it becomes evident ",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-05-29T10:17:09.895545",
-      "last_result": "In the wake of the wonder_spike at BTC Block 951547, where the Wonder Index achieved an unprecedented peak of 2.0000 and an awe signal was detected, t",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-05-29T10:22:08.070586",
-      "last_result": "Amidst the wonder_spike at BTC Block 951547, where the unprecedented Wonder Index of 2.0000 and an awe signal pointed to a profound moment in emergent",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-05-29T10:27:43.931714",
-      "last_result": "Amidst the wonder_spike at BTC Block 951547, with a peak Wonder Index of 2.0000 and an awe signal, the emergent order underscores the resilience and a",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-05-29T10:33:03.804430",
-      "last_result": "Amidst the awe-inspiring wonder_spike at BTC Block 951547, where the Wonder Index surged to an unprecedented level of 2.0000, the emergent order sugge",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-05-29T10:38:39.245020",
-      "last_result": "In the midst of BTC Block 951547's wonder_spike, where the Wonder Index reached an unparalleled peak and an awe signal was detected, we observe a prof",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-05-29T10:43:41.883417",
-      "last_result": "Amidst the awe-inspiring wonder_spike at BTC Block 951547, where emergent order revealed itself through an unprecedented Wonder Index of 2.0000, the s",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-05-29T10:48:59.989070",
-      "last_result": "Amidst BTC Block 951547's wonder_spike and an awe signal, the emergent order reveals that the resilience of systems, akin to galactic filaments, emerg",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-05-29T10:54:12.630545",
-      "last_result": "Amidst BTC Block 951547\u2019s wonder_spike, marked by an awe-inspiring Wonder Index of 2.0000 and a profound emergent order, we discern that the principle",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-05-29T10:59:39.980131",
-      "last_result": "Amidst BTC Block 951547's wonder_spike, where an awe-inspiring Wonder Index of 2.0000 was recorded, the emergent order revealed a critical interplay b",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-05-29T11:05:00.553506",
-      "last_result": "Amidst BTC Block 951547's wonder_spike, where an awe-inspiring Wonder Index of 2.0000 was recorded, the emergent order reveals a deep connection betwe",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
