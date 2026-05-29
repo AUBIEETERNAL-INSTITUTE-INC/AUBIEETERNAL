@@ -8540,3 +8540,164 @@ if "Narrative Patterns" in active:
             st.info("No clusters in last 72h. Log signals above to start tracking.")
     except ImportError:
         st.info("narrative_pattern_detector.py needed.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: FAMILY DYNASTY 👑
+# The Dynasty Operating System — the single most powerful lever
+# ══════════════════════════════════════════════════════════════════════════════
+if "Family Dynasty" in active:
+    st.markdown('<div class="card-title">👑 FAMILY DYNASTY — Build Civilizational Capital Across Generations</div>', unsafe_allow_html=True)
+
+    _fid_dy = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from legacy_ledger import LegacyLedger as _LL, RiteOfPassage as _ROP
+        from legacy_ledger import RITES_OF_PASSAGE as _ROPS
+        _ledger = _LL(_fid_dy)
+        _state  = _ledger.get_dynasty_state()
+
+        # ── Dynasty header ─────────────────────────────────────────────────────
+        _dl = _state.get("dynasty_level", "Seeker")
+        _ds = _state.get("dynasty_score", 0)
+        _lc = "#f7931a" if _dl == "Founder" else "#00cfff" if _dl == "Builder" else "#445577"
+        st.markdown(
+            f'<div style="text-align:center;padding:14px 0 8px;">'
+            f'<div style="font-size:36px">👑</div>'
+            f'<div style="color:{_lc};font-family:Orbitron,monospace;font-size:1.1rem;margin-top:4px;">'
+            f'{_dl.upper()}</div>'
+            f'<div style="color:#445577;font-size:11px;letter-spacing:0.1em;margin-top:2px;">'
+            f'DYNASTY SCORE: {_ds:.0f}/100 · '
+            f'{_state.get("generations_active",1)} GENERATION(S) ACTIVE · '
+            f'{_state.get("total_wisdom",0)} WISDOM ENTRIES · '
+            f'{_state.get("sealed_wisdom",0)} SEALED</div>'
+            f'</div>', unsafe_allow_html=True
+        )
+        st.progress(_ds / 100)
+
+        # ── Key metrics ────────────────────────────────────────────────────────
+        _dy1, _dy2, _dy3, _dy4 = st.columns(4)
+        _dy1.metric("Generations",  _state.get("generations_active", 1))
+        _dy2.metric("Wisdom Entries", _state.get("total_wisdom", 0))
+        _dy3.metric("Sealed", _state.get("sealed_wisdom", 0))
+        _dy4.metric("Milestones", _state.get("total_milestones", 0))
+
+        st.divider()
+
+        _dy_tabs = st.tabs(["📜 Record Wisdom", "🎖️ Rites of Passage", "📅 Timeline", "👴 Grandparent Mode"])
+
+        # ── Record wisdom ──────────────────────────────────────────────────────
+        with _dy_tabs[0]:
+            st.markdown("Record any wisdom, insight, or family truth for permanent preservation.")
+            _dy_content = st.text_area("Wisdom entry:", height=120, key="dy_content",
+                placeholder="What do you know that you want your descendants to know?\n'The greatest lie my generation was told was...'")
+            _dy_col1, _dy_col2 = st.columns(2)
+            with _dy_col1:
+                _dy_author = st.text_input("Author:", key="dy_author", placeholder="Your name or role (e.g. Parent, Grandparent)")
+                _dy_gen    = st.selectbox("Generation:", [1,2,3], key="dy_gen",
+                    format_func=lambda x: {1:"Generation 1 (current parents)", 2:"Generation 2 (grandparents)", 3:"Generation 3 (great-grandparents)"}[x])
+            with _dy_col2:
+                _dy_seal   = st.checkbox("Seal permanently (Bitcoin-anchored)", key="dy_seal", value=True)
+                _dy_tags   = st.text_input("Tags (comma separated):", key="dy_tags",
+                    placeholder="courage, money, faith, survival")
+            if st.button("📜 Record in Legacy Ledger", key="dy_record", type="primary") and _dy_content:
+                _tags = [t.strip() for t in _dy_tags.split(",") if t.strip()]
+                _entry = _ledger.record_wisdom(_dy_content, author=_dy_author or "family",
+                                                generation=_dy_gen, tags=_tags, seal=_dy_seal)
+                _icon = "🛡️" if _entry.get("sealed") else "✅"
+                st.success(f"{_icon} Recorded — ID: `{_entry['entry_id'][:8]}` | "
+                           f"{'Bitcoin-anchored' if _entry.get('sealed') else 'Local record'}")
+                st.rerun()
+
+            # Show latest wisdom
+            _wisdom = _ledger._load_wisdom()
+            if _wisdom:
+                st.divider()
+                st.markdown("### Latest Family Wisdom")
+                for _w in reversed(_wisdom[-5:]):
+                    _wc = "#00ff88" if _w.get("sealed") else "#445577"
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {_wc};">'
+                        f'<div style="color:{_wc};font-size:0.7rem;">'
+                        f'{_w["date"]} · {_w.get("author","?")} · Gen {_w.get("generation",1)} · '
+                        f'{"🛡️ Sealed" if _w.get("sealed") else "⏳ Local"}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:3px;">'
+                        f'{_w["content"][:120]}...</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Rites of Passage ───────────────────────────────────────────────────
+        with _dy_tabs[1]:
+            st.markdown("Formal ceremonies for milestone achievements. Sealed permanently.")
+            for _rk, _ri in _ROPS.items():
+                with st.expander(f"{_ri['emoji']} {_ri['title']} (+{_ri['rune_grant']} Runes)", expanded=False):
+                    st.markdown(f"**Meaning:** {_ri['meaning']}")
+                    st.markdown(f"**Ceremony:** *{_ri['ceremony']}*")
+                    _rop_member  = st.text_input("Member's name:", key=f"rop_member_{_rk}")
+                    _rop_pledge  = st.text_area("Member's pledge:", key=f"rop_pledge_{_rk}", height=60,
+                        placeholder="I understand that...")
+                    _rop_family  = st.text_area("Family statement:", key=f"rop_family_{_rk}", height=60,
+                        placeholder="We, the family, witness...")
+                    if st.button(f"🎖️ Conduct {_ri['title']}", key=f"rop_btn_{_rk}") and _rop_member:
+                        with st.spinner("Conducting ceremony and sealing..."):
+                            _rite_result = _ROP().conduct(
+                                member=_rop_member, rite_key=_rk, family_id=_fid_dy,
+                                family_statement=_rop_family, member_pledge=_rop_pledge
+                            )
+                        st.success(
+                            f"✅ {_ri['emoji']} {_ri['title']} — {_rop_member}\n\n"
+                            f"Runes granted: {_ri['rune_grant']}\n\n"
+                            f"{'🛡️ Bitcoin-anchored — this ceremony is permanent.' if _rite_result.get('sealed') else 'Recorded locally.'}"
+                        )
+
+        # ── Timeline ───────────────────────────────────────────────────────────
+        with _dy_tabs[2]:
+            _timeline = _ledger.get_timeline(20)
+            if _timeline:
+                st.markdown("### 📅 Family Legacy Timeline")
+                for _ev in _timeline:
+                    _tc = "#f7931a" if _ev["type"] == "milestone" else \
+                          "#00ff88" if _ev.get("sealed") else "#445577"
+                    _icon = "🎖️" if _ev["type"] == "milestone" else \
+                            "🛡️" if _ev.get("sealed") else "📜"
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {_tc};">'
+                        f'<div style="color:{_tc};font-size:0.7rem;">{_ev["date"]} · {_icon} {_ev["type"].title()} · {_ev["author"]}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:3px;">{_ev["content"][:100]}</div>'
+                        f'</div>', unsafe_allow_html=True)
+            else:
+                st.info("No dynasty records yet. Record your first wisdom above.")
+
+        # ── Grandparent Mode ───────────────────────────────────────────────────
+        with _dy_tabs[3]:
+            st.markdown("""
+            <div class="card" style="border-left:3px solid #a020f0;">
+                <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">GRANDPARENT MODE</div>
+                <div style="color:#8899bb;font-size:0.85rem;margin-top:8px;line-height:1.9;">
+                Simplified wisdom transfer interface.<br>
+                No technical knowledge required.<br>
+                Just type what you know. We preserve it forever.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            st.markdown("")
+            _gp_name  = st.text_input("Your name:", key="gp_name", placeholder="Grandma, Grandpa, Tia, Tio...")
+            _gp_q1 = st.text_area("What did your generation learn the hard way?", height=100, key="gp_q1")
+            _gp_q2 = st.text_area("What do you know now that you wish you knew at 25?", height=100, key="gp_q2")
+            _gp_q3 = st.text_area("What is one thing about our family that should never be forgotten?", height=100, key="gp_q3")
+
+            if st.button("💛 Save My Wisdom Forever", key="gp_save", type="primary"):
+                _saved = 0
+                for _q, _label in [(_gp_q1,"hard lessons"),(_gp_q2,"life wisdom"),(_gp_q3,"family memory")]:
+                    if _q.strip():
+                        _ledger.record_wisdom(_q, author=_gp_name or "grandparent",
+                                               generation=2, tags=[_label], seal=True)
+                        _saved += 1
+                if _saved:
+                    st.success(f"✅ {_saved} wisdom entries sealed permanently. "
+                               f"Your grandchildren will be able to read this forever. 💛")
+                    st.balloons()
+
+    except ImportError:
+        st.error("legacy_ledger.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_dy:
+        st.error(f"Dynasty error: {_e_dy}")
