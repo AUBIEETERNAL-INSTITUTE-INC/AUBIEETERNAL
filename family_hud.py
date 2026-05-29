@@ -1282,6 +1282,102 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── FAMILY DYNASTY (3 lessons) ───────────────────────────────────────────
+    # Intergenerational capital. The missing ingredient that made ancient
+    # educational systems legendary. Wisdom that compounds across bloodlines.
+    # ══════════════════════════════════════════════════════════════════════════
+    "dynasty-1": {
+        "title":       "Dynasty — Level 1: What Grandparents Know That Schools Don't Teach",
+        "topic":       "Every generation has hard-won wisdom that never makes it into any curriculum. The wisdom that keeps families intact through disaster, depression, and upheaval lives in the memory of elders — and it dies with them unless someone builds a system to capture it.",
+        "steelman":    "What is the strongest argument that written/recorded wisdom can never replace the lived mentorship of an elder? That something essential is lost when wisdom is formalized?",
+        "example":     (
+            "Three types of knowledge that grandparents carry but schools don't teach:\n"
+            "1. Practical sovereignty: how to preserve food, fix things, grow things, "
+            "navigate institutions without being trapped by them\n"
+            "2. Historical pattern recognition: 'I've seen this before' — the ability to "
+            "recognize a panic, a manipulation, a boom-and-bust without needing theory\n"
+            "3. Relational wisdom: how to keep a family together under pressure, "
+            "what actually matters when things get hard, what you regret at the end\n\n"
+            "The Talmudic tradition, the great monastic schools, and the Academy all "
+            "survived because they built mechanisms for this knowledge to compound. "
+            "None of them had Bitcoin. AUBIEETERNAL does."
+        ),
+        "activity":    (
+            "Interview your oldest family member or a trusted elder. Ask three questions:\n"
+            "1. What did your generation learn the hard way that mine hasn't had to learn yet?\n"
+            "2. What do you know now that you wish you had known at my age?\n"
+            "3. What is one thing about how our family survives that should never be forgotten?\n\n"
+            "Record the answers in the Legacy Ledger. Seal the best insight permanently."
+        ),
+        "age_hint":    "All ages — requires an elder",
+        "xp": 40, "rune": "DYNASTY•RUNE", "min_coherence": 0.70,
+    },
+    "dynasty-2": {
+        "title":       "Dynasty — Level 2: Building the Family Wisdom Archive",
+        "topic":       "What if your great-great-grandchildren could read exactly what you thought, what you learned, and what you believed in 2026? Not filtered through someone else's history. Your actual words, permanently preserved, accessible to anyone in your bloodline forever.",
+        "steelman":    "What is the strongest argument that family legacy archives create unhealthy ancestor worship and prevent future generations from developing their own independent thinking?",
+        "example":     (
+            "The Legacy Ledger is not a journal. It is a permanent record with three "
+            "components:\n"
+            "1. Wisdom entries — insights, learnings, beliefs, and observations "
+            "written by any family member, tagged by generation\n"
+            "2. Milestone records — the Rites of Passage, sealed with Bitcoin Runes "
+            "as on-chain proof that this moment happened\n"
+            "3. Inheritance mechanics — Rune fragments that pass from parent to child "
+            "automatically, carrying forward the epistemic capital of the previous generation\n\n"
+            "A family that starts this in 2026 and stays consistent will have, by 2050, "
+            "a 3-generation archive that is more historically significant than most "
+            "institutional records — and they own it completely."
+        ),
+        "activity":    (
+            "Start your family's Legacy Ledger right now.\n"
+            "Each family member writes one entry (any length):\n"
+            "'The most important thing I know that I want future generations to know is...'\n\n"
+            "Read them aloud to each other. Discuss.\n"
+            "Then seal the one you agree is most important using the Shield Rune.\n"
+            "This is your family's first permanent record."
+        ),
+        "age_hint":    "All ages — full family session",
+        "xp": 50, "rune": "LEGACY•RUNE", "min_coherence": 0.72,
+        "grants_badge": "📜 Legacy Founder — First Entry Sealed",
+    },
+    "dynasty-3": {
+        "title":       "Dynasty — Level 3 (Master): The Rite of Passage Protocol",
+        "topic":       "The most powerful educational systems in history made learning sacred. Not sacred in a religious sense — sacred in the sense that milestones felt like becoming something, not just completing something. The Rite of Passage Protocol restores that feeling.",
+        "steelman":    "What is the strongest argument that formal rituals around learning milestones are performative, not substantive, and that what actually matters is the quality of the learning itself?",
+        "example":     (
+            "Five Rites of Passage in the AUBIEETERNAL system:\n\n"
+            "🌅 First Light — completing the first lesson. Ceremony: read the core insight "
+            "aloud. Parent witnesses.\n\n"
+            "🛡️ The First Seal — sealing the first memory on Bitcoin. Ceremony: read the "
+            "sealed insight aloud. Family asks: why does this truth matter?\n\n"
+            "🔓 Sovereign Epistemic Node — completing the full Gatekeeping track. "
+            "Ceremony: name one belief you held that arrived through an unexamined "
+            "gatekeeper. Release it. Log the replacement.\n\n"
+            "₿ Child Rune Genesis — 256 confirmations. Ceremony: the family reads the "
+            "Sovereign Family Law Charter aloud. The new sovereign node responds: "
+            "'I understand and I hold this.'\n\n"
+            "👑 Dynasty Founder — three generations in the lattice. The rarest rite."
+        ),
+        "activity":    (
+            "Design your own family Rite of Passage for one milestone that matters to you.\n"
+            "Answer these questions:\n"
+            "1. What is the milestone?\n"
+            "2. What does it mean to your family?\n"
+            "3. What is the ceremony? (Who is present, what is said, what is sealed?)\n"
+            "4. What changes after it happens?\n\n"
+            "Log the designed rite in the Legacy Ledger. When the milestone is reached, "
+            "conduct the ceremony and seal the record permanently."
+        ),
+        "age_hint":    "All ages — full family session",
+        "xp": 60, "rune": "RITE•OF•PASSAGE•RUNE", "min_coherence": 0.75,
+        "grants_badge": "👑 Dynasty Builder — Rite Protocol Designed",
+        "lattice_node": "family-dynasty-rite-of-passage-protocol",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
