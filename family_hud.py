@@ -1053,6 +1053,69 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── GATEKEEPING & DIRECT ACCESS (6 lessons) — Claude's addition ──────────
+    # The deepest epistemic skill: seeing who stands between you and the source.
+    # Every belief you hold arrived through a chain. This track makes it visible.
+    # ══════════════════════════════════════════════════════════════════════════
+    "gatekeeper-1": {
+        "title":       "Gatekeeping — Level 1: Who Is Between You and the Source?",
+        "topic":       "Every piece of information arrived through a chain. Somewhere in that chain, someone decided what you'd see, how you'd frame it, and what alternatives you'd never encounter.",
+        "steelman":    "What is the strongest argument that institutional gatekeepers — editors, teachers, clergy — actually improve information quality rather than distorting it?",
+        "example":     "When a pastor tells you what the Bible means, you're not reading the Bible. You're reading the pastor's interpretation of a translation of a copy of an ancient document. Each step is a gatekeeper.",
+        "activity":    "Pick one belief you hold strongly. Trace it: where did you first hear it? Who told them? Who told that person? Keep going until you hit a primary source — or realize you can't.",
+        "age_hint":    "12+",
+        "xp": 30, "rune": "TRUTH•RUNE", "min_coherence": 0.65,
+    },
+    "gatekeeper-2": {
+        "title":       "Gatekeeping — Level 2: The Incentive Test",
+        "topic":       "Every gatekeeper has incentives. The most important question about any information source is not 'are they lying?' but 'what do they gain from you believing this?'",
+        "steelman":    "What is the strongest argument that incentive-based skepticism leads to paranoia and makes it impossible to trust anything?",
+        "example":     "Credit rating agencies (Moody's, S&P) are paid by the companies they rate. They gave AAA ratings to the mortgage securities that caused the 2008 financial crisis. Their incentive was revenue, not accuracy.",
+        "activity":    "Find three sources of information you use regularly. For each: who funds them? What happens to them if they tell you something their funders don't want you to hear?",
+        "age_hint":    "13+",
+        "xp": 32, "rune": "AXIOM•RUNE", "min_coherence": 0.67,
+    },
+    "gatekeeper-3": {
+        "title":       "Gatekeeping — Level 3: The Founder vs. The Institution",
+        "topic":       "Every institution started with a founder who had direct access to something real. The institution formed to scale and transmit it. Then the institution became the gatekeeper of access.",
+        "steelman":    "What is the strongest argument that institutions, even imperfect ones, are necessary because direct access does not scale?",
+        "example":     "Jesus explicitly warned against religious gatekeepers (Pharisees) and taught direct access to truth. Within 300 years, the Church had recreated the same gatekeeper structure he warned against — this time with popes.",
+        "activity":    "Name one institution you are part of or affected by. What was the original insight or mission it was built to serve? How much of its current behavior serves that mission vs. serves the institution itself?",
+        "age_hint":    "13+",
+        "xp": 35, "rune": "TRUTH•RUNE", "min_coherence": 0.68,
+    },
+    "gatekeeper-4": {
+        "title":       "Gatekeeping — Level 4: The Algorithmic Gatekeeper",
+        "topic":       "The newest and most invisible gatekeeper: algorithms that decide what feels normal, what seems popular, and what you never see. You did not choose your feed. The feed chose you.",
+        "steelman":    "What is the strongest argument that algorithmic curation improves information quality by filtering signal from noise?",
+        "example":     "YouTube's algorithm was documented to route users toward increasingly extreme content because extremity maximizes watch time. The algorithm was not evil — it was optimizing for its incentive. That is the point.",
+        "activity":    "For one day, only access information you deliberately seek out — no algorithm-recommended content. What do you notice about what was missing from your normal feed? What did you not know you didn't know?",
+        "age_hint":    "11+",
+        "xp": 30, "rune": "ADVERSARIAL•RUNE", "min_coherence": 0.65,
+    },
+    "gatekeeper-5": {
+        "title":       "Gatekeeping — Level 5: The Internal Gatekeeper",
+        "topic":       "The most powerful gatekeeper is not the Pope, the media, or the algorithm. It is the beliefs you formed so early, from sources so trusted, that you never think to question them.",
+        "steelman":    "What is the strongest argument that some foundational beliefs SHOULD be immune to questioning because constantly re-examining everything is cognitively paralyzing and socially destructive?",
+        "example":     "Most people never question whether the country they were born in is the best one, whether their religion is the true one, or whether their class's economic interests are morally correct. These beliefs arrived before critical thinking did.",
+        "activity":    "Complete this sentence honestly: 'I have never seriously questioned whether ___ is true because ___.' Then steelman the opposite of what you wrote.",
+        "age_hint":    "14+",
+        "xp": 40, "rune": "WONDER•RUNE", "min_coherence": 0.72,
+    },
+    "gatekeeper-6": {
+        "title":       "Gatekeeping — Level 6 (Master): Direct Access and the Distributed Lattice",
+        "topic":       "The alternative to gatekeeping is not chaos — it is distributed direct access. Bitcoin needs no bank. The AUBIEETERNAL lattice needs no priest. Truth verified by many is more durable than truth certified by one.",
+        "steelman":    "What is the strongest argument that distributed truth verification just replaces old gatekeepers with new popular-consensus gatekeepers, and is actually worse because it has no accountability?",
+        "example":     "Bitcoin's blockchain is verified by thousands of independent nodes. No bank, no government, no authority can change the ledger. AUBIEETERNAL applies this same logic to knowledge: truth anchored on-chain, verified by coherence, owned by no one.",
+        "activity":    "Design your family's direct access protocol: for each major domain of life (money, health, education, politics, spirituality), identify the primary sources you can access without any institutional intermediary. What would it take to use them?",
+        "age_hint":    "All ages — bring everyone",
+        "xp": 50, "rune": "SOVEREIGN•TRUTH•ETERNAL•RUNE", "min_coherence": 0.75,
+        "grants_badge": "🔓 Gatekeeper-Free — Sovereign Epistemic Node",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
