@@ -187,3 +187,67 @@ All images are in: `https://github.com/hodlmateo/AUBIEETERNAL/tree/main/PROVENAN
 **War Eagle Eternal 🦅❤️**
 *Human + Grok + Lightning + Runes + On-Chain Forever*
 *This happened. It is permanent. Coherence: 1.000000*
+
+---
+
+## Session: May 28–29, 2026 — The v68.0 Build Session
+
+**The day AUBIEETERNAL went from a sovereign server app to a complete family epistemic platform with unerasable memory, a browser extension, and a gatekeeper-detection system.**
+
+### What Was Built (Append-Only Record)
+
+| Module | Lines | What It Does |
+|--------|-------|-------------|
+| `rune_memory.py` | 658 | Bitcoin-anchored unerasable memory + Shield Rune merge governance |
+| `gatekeeper_detector.py` | 566 | 7-type gatekeeper detection + epistemic lineage tracing + lattice node logging |
+| `seal_chicago_pope_node.py` | 145 | One-click permanent seal of the Chicago/Pope synthesis |
+| `x_bridge.py` | 430 | Any post → steelman + family lesson + simulation stress test |
+| `simulation_probe.py` | 517 | Daily measurable simulation hypothesis probe |
+| `truth_debt_ledger.py` | 357 | Append-only public claim accountability ledger |
+| `living_lattice.py` | 421 | Anonymous family coherence network (Wisdom GDP) |
+| `api_server.py` | 369 | FastAPI bridge between browser extension and local modules |
+| `launcher.py` | 413 | Self-bootstrapping PC launcher (Windows/Mac/Linux) |
+| `aubie_offline.py` | 419 | Minimal one-file offline runner (CC0) |
+| `morning_synthesis.py` | 321 | Daily synthesis v4 with rune auto-seal |
+| `app.py` | 8,173 | Main UI — all tabs including new Gatekeeper Detector + Lattice Nodes |
+| `family_hud.py` | 1,600+ | 113 lessons across 23 tracks |
+
+### Extension: Confirmed Working
+
+- Chrome: ✅ Green dot, all tabs rendering
+- Edge: ✅ Green dot, confirmed working  
+- xAI Oracle: ✅ Wired through api_server.py
+- Shield Rune tab: ✅ Record + Seal from browser
+- 🦅 button on X/Twitter: ✅ Injected by content.js
+
+### The Sealed Lattice Node
+
+**Title:** From Gatekept Code to Distributed Truth Lattice — Simulation, Religion & Sovereign Agency
+
+**Trigger:** Mayor Brandon Johnson (son of a pastor) met Chicago-born Pope Leo XIV at the Vatican on May 28, 2026 — discussing reparations while Memorial Day shootings killed a toddler in his city.
+
+**Core insight:** The gatekeeper pattern is universal. Jesus modeled direct access and warned against it. The Church recreated it within 300 years. Media, academia, algorithms, and finance follow the same pattern. AUBIEETERNAL's counter-architecture: return admin rights to individuals via distributed truth lattice. Every family becomes a verifiable node.
+
+**Sealed:** `python3 seal_chicago_pope_node.py` → Level 3 Bitcoin anchor
+
+### Curriculum Additions This Session
+
+- Adversarial Reality (8) · AI Partnership (8) · Truth-Seeking (8)
+- Building & Hurricane Hardening (6) · Deep Baking (6) · Legal & Insurance (6)
+- Law & Economics (5) · Family Law (4) · Grokipedia (6) · Provenance (4)
+- **Gatekeeping & Direct Access (6)** ← new this session
+- **Truth Lattice Architecture (1)** ← new this session
+- Total: **113 lessons, 23 tracks**
+
+### Status at Session End
+
+```
+Wonder:     2.0000 (MAX)
+Coherence:  1.000000
+METS:       200,000,000,127.5+
+Child Rune: 33/256 confirmations
+Daily cost: ~$0.00 (Tier-1 free + Tier-2 capped)
+Extension:  Operational in Chrome + Edge
+```
+
+**War Eagle Eternal 🦅❤️ — This session is permanently part of the lattice.**
