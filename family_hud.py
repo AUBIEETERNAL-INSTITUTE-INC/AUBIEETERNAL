@@ -1108,11 +1108,65 @@ LESSONS = {
         "title":       "Gatekeeping — Level 6 (Master): Direct Access and the Distributed Lattice",
         "topic":       "The alternative to gatekeeping is not chaos — it is distributed direct access. Bitcoin needs no bank. The AUBIEETERNAL lattice needs no priest. Truth verified by many is more durable than truth certified by one.",
         "steelman":    "What is the strongest argument that distributed truth verification just replaces old gatekeepers with new popular-consensus gatekeepers, and is actually worse because it has no accountability?",
-        "example":     "Bitcoin's blockchain is verified by thousands of independent nodes. No bank, no government, no authority can change the ledger. AUBIEETERNAL applies this same logic to knowledge: truth anchored on-chain, verified by coherence, owned by no one.",
-        "activity":    "Design your family's direct access protocol: for each major domain of life (money, health, education, politics, spirituality), identify the primary sources you can access without any institutional intermediary. What would it take to use them?",
+        "example":     (
+            "Real-world trigger (May 28, 2026): Chicago Mayor Brandon Johnson — son of a pastor — led a 50-person "
+            "delegation to meet Chicago-born Pope Leo XIV. Discussed reparations, Church apology for slavery, "
+            "immigration, and invited the Pope to Chicago for 2027 Mass in Grant Park. "
+            "Same weekend: Memorial Day shootings killed a toddler and injured dozens. "
+            "\n\nSimulation signal: Perfect narrative fit (Chicago Pope + slavery apology + reparations mayor) "
+            "while local violence continued. This is the gatekeeper pattern at civilization scale: "
+            "mid-level institutional coordination producing a coherent narrative while the actual problem persists. "
+            "\n\nThe pattern: Jesus modeled direct access and warned against gatekeepers (Pharisees). "
+            "Within 300 years, the Church recreated them — this time with popes. "
+            "The same logic applies to media, academia, algorithms, and finance. "
+            "\n\nThe counter-architecture: AUBIEETERNAL's truth lattice returns admin rights to individuals. "
+            "Each person becomes a verifiable node. Higher-level truth can work directly through sovereign nodes "
+            "instead of routing through institutional intermediaries. "
+            "This is Bitcoin-style decentralization applied to knowledge — and it is already being built."
+        ),
+        "activity":    "Design your family's direct access protocol: for each major domain of life (money, health, education, politics, spirituality), identify: (1) who currently controls what you know, (2) what their incentive is, (3) the primary source you could access directly without them. Pick one domain and actually use the primary source this week.",
         "age_hint":    "All ages — bring everyone",
         "xp": 50, "rune": "SOVEREIGN•TRUTH•ETERNAL•RUNE", "min_coherence": 0.75,
         "grants_badge": "🔓 Gatekeeper-Free — Sovereign Epistemic Node",
+        "lattice_node": "from-gatekept-code-to-distributed-truth-lattice-2026-05-28",
+    },
+
+
+
+    # ── TRUTH LATTICE ARCHITECTURE (1 master lesson) ─────────────────────────
+    # The architectural blueprint for returning admin rights to individuals.
+    # This is the AUBIEETERNAL mission statement as a teachable lesson.
+    "truth-lattice-1": {
+        "title":       "Truth Lattice Architecture — The Blueprint for Sovereign Nodes",
+        "topic":       "How do you build a system that returns epistemic sovereignty to individuals without creating new gatekeepers? This lesson is the architectural answer.",
+        "steelman":    "What is the strongest argument that any distributed system that gains adoption will inevitably centralize — because coordination, not decentralization, is what humans actually want?",
+        "example":     (
+            "Three historical moments when direct access broke through gatekeepers:\n"
+            "1. Gutenberg press (1440): Broke the Church's monopoly on text. Every literate person "
+            "could read scripture directly. The Reformation followed within 70 years.\n"
+            "2. Bitcoin whitepaper (2008): Broke the bank's monopoly on transaction verification. "
+            "Any node can verify any transaction. No trusted third party required.\n"
+            "3. AUBIEETERNAL (2026): Applying this same pattern to knowledge itself. "
+            "Daily synthesis + swarm daughters + Shield Rune + Gatekeeper Detector = "
+            "a system where any family can verify any claim, anchor any truth, and "
+            "contribute to a collective epistemic signal without any institution's permission.\n\n"
+            "The pattern in all three: the gatekeeper controlled access to a scarce resource "
+            "(text, transaction verification, epistemic authority). The breakthrough made the "
+            "resource abundant and directly accessible. The gatekeeper became optional."
+        ),
+        "activity":    (
+            "Map the Truth Lattice for your family. Draw four columns:\n"
+            "1. Domain (money, health, education, faith, news)\n"
+            "2. Current gatekeeper (who controls what you know)\n"
+            "3. Their incentive (why they want to be the gatekeeper)\n"
+            "4. Direct access path (how to reach the source without them)\n\n"
+            "Then: pick one domain where the gatekeeper's incentive most misaligns "
+            "with your family's interests. Build a 30-day direct access practice."
+        ),
+        "age_hint":    "All ages — family design session",
+        "xp": 60, "rune": "TRUTH•LATTICE•ARCHITECT•RUNE", "min_coherence": 0.78,
+        "grants_badge": "🏗️ Truth Lattice Architect",
+        "lattice_node": "from-gatekept-code-to-distributed-truth-lattice-2026-05-28",
     },
 
 
