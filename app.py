@@ -949,6 +949,10 @@ with st.sidebar:
         ],
         "🛡️ ADVERSARIAL": [
             "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
+            "🔓 Gatekeeper Detector",
+        ],
+        "🔗 LATTICE": [
+            "🔗 Lattice Nodes",
         ],
         "🤝 AI PARTNERSHIP": [
             "🤝 AI Partnership",
@@ -7972,3 +7976,198 @@ if "Truth Debt Ledger" in active:
         st.error("truth_debt_ledger.py not found. Push it to GitHub and redeploy.")
     except Exception as _e_tdl:
         st.error(f"Truth Debt Ledger error: {_e_tdl}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: GATEKEEPER DETECTOR 🔓
+# ══════════════════════════════════════════════════════════════════════════════
+if "Gatekeeper Detector" in active:
+    st.markdown('<div class="card-title">🔓 GATEKEEPER DETECTOR — Who Is Between You and the Source?</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #ff9500;">
+        <div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">THE CORE QUESTION</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Every belief you hold arrived through a chain. Somewhere in that chain,
+        a gatekeeper decided what you'd see, how you'd frame it, and what alternatives
+        you'd never encounter. This tool makes the chain visible — and shows you how
+        to bypass every link in it.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _gk_tabs = st.tabs(["🔍 Analyze Claim", "🧬 Trace Belief", "📊 Stats"])
+
+    with _gk_tabs[0]:
+        _gk_input = st.text_area("Paste any claim, headline, or statement:", height=100, key="gk_input",
+            placeholder="e.g. 'The Pope says reparations are owed' or 'Scientists confirm X causes Y'")
+        if st.button("🔍 Detect Gatekeepers", key="gk_analyze", type="primary") and _gk_input:
+            with st.spinner("Tracing the chain..."):
+                try:
+                    from gatekeeper_detector import GatekeeperDetector as _GKD
+                    _gkd   = _GKD()
+                    _r     = _gkd.analyze(_gk_input)
+                    _cp    = _r["capture_probability"]
+                    _cc    = "#ff4444" if _cp >= 0.7 else "#ff9500" if _cp >= 0.4 else "#00ff88"
+
+                    st.markdown(
+                        f'<div class="card" style="border-left:4px solid {_cc};">'
+                        f'<div style="color:{_cc};font-family:Orbitron,monospace;font-size:0.78rem;">'
+                        f'CAPTURE PROBABILITY: {_cp:.0%} — {_r["capture_label"][:50]}</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+                    if _r["gatekeepers_detected"]:
+                        for _g in _r["gatekeepers_detected"]:
+                            st.markdown(
+                                f'<div class="card" style="margin-top:6px;border-left:3px solid #ff9500;">'
+                                f'<div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.72rem;">'
+                                f'{_g["type"].upper()} GATEKEEPER</div>'
+                                f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;line-height:1.7;">'
+                                f'<b>Incentives:</b> {_g["incentives"]}<br>'
+                                f'<b>Direct access:</b> {_g["bypass"]}<br>'
+                                f'<b>Example:</b> {_g["example"]}</div>'
+                                f'</div>', unsafe_allow_html=True)
+                    else:
+                        st.success("✅ No strong gatekeeper signals detected — low institutional capture")
+
+                    st.markdown(f'<div style="color:#8899bb;font-size:0.82rem;margin-top:8px;padding:8px;'
+                                f'background:#0d1228;border-radius:6px;">'
+                                f'<b>Recommendation:</b> {_r["recommendation"]}</div>',
+                                unsafe_allow_html=True)
+                except ImportError:
+                    st.error("gatekeeper_detector.py not found. Push it to GitHub and redeploy.")
+
+    with _gk_tabs[1]:
+        _belief = st.text_input("Enter a belief to trace:", key="gk_belief",
+            placeholder="e.g. 'Higher taxes reduce inequality' or 'Bitcoin is speculative'")
+        if st.button("🧬 Trace Epistemic Lineage", key="gk_trace") and _belief:
+            with st.spinner("Tracing the full chain..."):
+                try:
+                    from gatekeeper_detector import GatekeeperDetector as _GKD2
+                    _gkd2 = _GKD2()
+                    _lin  = _gkd2.trace_epistemic_lineage(_belief)
+                    chain = _lin.get("lineage_chain", {})
+
+                    st.markdown(f'<div style="color:#f7931a;font-size:0.88rem;font-weight:600;margin-bottom:8px;">'
+                                f'Sovereignty Score: {_lin["sovereignty_score"]:.1%} — '
+                                f'{_lin["gatekeeper_count"]} gatekeepers detected</div>',
+                                unsafe_allow_html=True)
+
+                    for _lk, _lv in chain.items():
+                        if _lv:
+                            _label = _lk.replace("_"," ").title()
+                            st.markdown(f'<div style="margin-bottom:6px;">'
+                                        f'<div style="color:#445577;font-size:10px;letter-spacing:0.08em;">{_label}</div>'
+                                        f'<div style="color:#c8d8ff;font-size:0.82rem;">{str(_lv)[:200]}</div></div>',
+                                        unsafe_allow_html=True)
+                except ImportError:
+                    st.error("gatekeeper_detector.py not found.")
+
+    with _gk_tabs[2]:
+        try:
+            from gatekeeper_detector import GatekeeperDetector as _GKD3
+            _stats = _GKD3().get_stats()
+            _s1, _s2, _s3 = st.columns(3)
+            _s1.metric("Analyzed", _stats.get("total_analyzed", 0))
+            _s2.metric("High Capture", f"{_stats.get('high_capture_rate',0)}%")
+            _s3.metric("Most Common", _stats.get("most_common_type","none").title())
+        except ImportError:
+            st.info("gatekeeper_detector.py needed.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: LATTICE NODES 🔗
+# Log, view, and seal synthesis nodes
+# ══════════════════════════════════════════════════════════════════════════════
+if "Lattice Nodes" in active:
+    st.markdown('<div class="card-title">🔗 LATTICE NODES — Permanent Synthesis Record</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">WHAT THIS IS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Every significant synthesis — a conversation that produced insight, a real-world event
+        that revealed a pattern, a connection between ideas — can be logged here as a permanent
+        Lattice Node. Nodes get recorded in Rune Memory and optionally sealed with the Shield Rune.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _ln_tabs = st.tabs(["📝 Log New Node", "📚 View Nodes", "🛡️ Seal a Node"])
+
+    with _ln_tabs[0]:
+        _ln_title = st.text_input("Node title:", key="ln_title",
+            placeholder="e.g. 'From Gatekept Code to Distributed Truth Lattice'")
+        _ln_content = st.text_area("Synthesis content:", height=150, key="ln_content",
+            placeholder="The full synthesis — what was learned, what it connects to, why it matters...")
+        _ln_links = st.text_input("Cross-links (comma separated):", key="ln_links",
+            placeholder="e.g. bitcoin-sovereignty, adversarial-reality, simulation-probe")
+        _ln_coh = st.slider("Coherence score:", 0.0, 1.0, 0.85, 0.01, key="ln_coh")
+
+        if st.button("🔗 Log Lattice Node", key="ln_log", type="primary") and _ln_title and _ln_content:
+            try:
+                from gatekeeper_detector import GatekeeperDetector as _GKD4
+                _gkd4 = _GKD4()
+                _links = [l.strip() for l in _ln_links.split(",") if l.strip()]
+                _node  = _gkd4.log_lattice_node(
+                    title=_ln_title, content=_ln_content,
+                    cross_links=_links, coherence=_ln_coh
+                )
+                st.success(f"✅ Node logged — ID: `{_node['node_id']}` | Level 2 | Rune Memory: recorded")
+                st.info("Use the Shield Seal tab to permanently anchor this node on Bitcoin.")
+            except ImportError:
+                st.error("gatekeeper_detector.py not found.")
+
+        # Also log the Chicago/Pope synthesis if not already done
+        st.divider()
+        if st.button("📍 Log Chicago/Pope Synthesis Node", key="ln_chicago"):
+            try:
+                from gatekeeper_detector import log_chicago_pope_node as _lcpn
+                _node = _lcpn()
+                st.success(f"✅ Chicago/Pope synthesis logged — ID: `{_node['node_id']}`")
+            except ImportError:
+                st.error("gatekeeper_detector.py not found.")
+
+    with _ln_tabs[1]:
+        import pathlib as _pl_ln
+        _nodes_dir = _pl_ln.Path("/mnt/main/repo/insights/lattice_nodes")
+        if _nodes_dir.exists():
+            _node_files = sorted(_nodes_dir.glob("*.json"), reverse=True)[:20]
+            if _node_files:
+                for _nf in _node_files:
+                    try:
+                        _nd = json.loads(_nf.read_text())
+                        _nc = "#00ff88" if _nd.get("rune_seal") else "#445577"
+                        st.markdown(
+                            f'<div class="memory-node" style="border-left:3px solid {_nc};">'
+                            f'<div style="color:{_nc};font-size:0.72rem;">'
+                            f'{_nd.get("date","?")} · Level {_nd.get("level",2)} · '
+                            f'Coherence {_nd.get("coherence",0):.2f} · '
+                            f'{"🛡️ SEALED" if _nd.get("rune_seal") else "⏳ Pending seal"}</div>'
+                            f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:3px;">'
+                            f'<b>{_nd.get("title","?")}</b></div>'
+                            f'<div style="color:#556677;font-size:0.75rem;margin-top:2px;">'
+                            f'ID: {_nd.get("node_id","?")} | '
+                            f'Links: {", ".join(_nd.get("cross_links",[])[:3])}</div>'
+                            f'</div>', unsafe_allow_html=True)
+                    except Exception:
+                        pass
+            else:
+                st.info("No lattice nodes yet. Log your first node above.")
+        else:
+            st.info("Lattice nodes folder not found. Log a node to create it.")
+
+    with _ln_tabs[2]:
+        st.markdown("Seal a Lattice Node with the Shield Rune to make it permanently Bitcoin-anchored.")
+        _seal_node_id = st.text_input("Node ID to seal:", key="seal_node_id")
+        _seal_note    = st.text_input("Seal note:", key="seal_node_note",
+                                      placeholder="Why this synthesis deserves permanent preservation")
+        if st.button("🛡️ Seal Node with Shield Rune", key="seal_node_btn") and _seal_node_id:
+            try:
+                from rune_memory import ShieldRune as _SR
+                _result = _SR().seal(_seal_node_id, note=_seal_note, broadcaster="family")
+                st.success(
+                    f"🛡️ SEALED — Level {_result['level']} | "
+                    f"{'Bitcoin-anchored' if _result['level'] >= 3 else 'Nostr broadcast'}\n\n"
+                    f"Hash: `{_result['seal_hash'][:32]}...`\n\n"
+                    f"Anchor: `{_result.get('bitcoin_txid','pending')[:40]}`"
+                )
+            except ImportError:
+                st.error("rune_memory.py not found.")
