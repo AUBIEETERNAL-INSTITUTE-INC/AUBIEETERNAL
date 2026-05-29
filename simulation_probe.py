@@ -472,6 +472,85 @@ class SimulationProbe:
         with open(PROBE_LOG, "a") as f:
             f.write(json.dumps(entry) + "\n")
 
+
+    def run_quantum_darwinism_mode(self) -> dict:
+        """
+        Quantum Darwinism Mode: measures how much information is
+        redundantly copied across independent observers/daughters.
+
+        In quantum physics, only information that gets redundantly
+        copied into many independent environmental fragments survives
+        as 'objective reality'. We apply this to swarm outputs:
+        if many independent daughters reach the same conclusion,
+        it is more likely to be true.
+
+        Returns a redundancy score 0-1 where 1 = maximum redundancy.
+        """
+        if not TRUTH_LOG.exists():
+            return {"status": "no_data", "redundancy_score": 0}
+
+        # Load recent daughter outputs
+        from collections import Counter
+        import re as _re
+
+        content_fragments = []
+        daughter_outputs  = {}
+
+        for line in TRUTH_LOG.read_text().strip().split("\n")[-200:]:
+            try:
+                e = json.loads(line)
+                daughter = e.get("daughter", e.get("source", "unknown"))
+                result   = e.get("result", "")[:200]
+                if result and len(result) > 30:
+                    # Extract key phrases (simplified)
+                    words = set(result.lower().split())
+                    content_fragments.append(frozenset(words))
+                    daughter_outputs.setdefault(daughter, []).append(words)
+            except Exception:
+                pass
+
+        if len(content_fragments) < 10:
+            return {"status": "insufficient_data", "redundancy_score": 0}
+
+        # Measure redundancy: how many fragment pairs share significant overlap?
+        overlaps = []
+        fragments = list(content_fragments)[:50]
+        for i in range(len(fragments)):
+            for j in range(i+1, min(i+10, len(fragments))):
+                if fragments[i] and fragments[j]:
+                    jaccard = len(fragments[i] & fragments[j]) / len(fragments[i] | fragments[j])
+                    overlaps.append(jaccard)
+
+        avg_overlap       = sum(overlaps) / len(overlaps) if overlaps else 0
+        redundancy_score  = round(min(1.0, avg_overlap * 5), 3)
+
+        # Independent daughters agreeing = strongest signal
+        n_daughters       = len(daughter_outputs)
+        consensus_topics  = []
+        if n_daughters >= 3:
+            all_words = []
+            for outputs in daughter_outputs.values():
+                for output in outputs[-3:]:
+                    all_words.extend(output)
+            word_counts = Counter(all_words)
+            consensus_topics = [w for w, c in word_counts.most_common(10)
+                                 if c >= n_daughters * 0.5 and len(w) > 4]
+
+        return {
+            "status":            "ok",
+            "redundancy_score":  redundancy_score,
+            "n_daughters":       n_daughters,
+            "fragments_analyzed": len(content_fragments),
+            "consensus_topics":  consensus_topics[:5],
+            "interpretation":    (
+                f"Redundancy score {redundancy_score:.3f} across {n_daughters} daughters. "
+                + ("High redundancy — multiple independent sources converge."
+                   if redundancy_score >= 0.5 else
+                   "Moderate redundancy — some convergence." if redundancy_score >= 0.25 else
+                   "Low redundancy — outputs are highly diverse.")
+            ),
+        }
+
     def get_probe_summary(self, days: int = 30) -> dict:
         """Aggregate probe data for display."""
         if not PROBE_LOG.exists():
