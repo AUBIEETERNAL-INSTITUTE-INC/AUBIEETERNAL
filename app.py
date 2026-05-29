@@ -955,6 +955,7 @@ with st.sidebar:
             "🔗 Lattice Nodes",
             "⚡ Admin Dashboard",
             "🔧 Epistemic Error Correction",
+            "🔍 Narrative Patterns",
         ],
         "🤝 AI PARTNERSHIP": [
             "🤝 AI Partnership",
@@ -8385,3 +8386,157 @@ if "Epistemic Error Correction" in active:
             'If all pass → confidence justified. Register your conclusion in the Truth Debt Ledger.</div>',
             unsafe_allow_html=True
         )
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: NARRATIVE PATTERN DETECTOR 🔍
+# Detects temporal clustering of institutional narratives
+# ══════════════════════════════════════════════════════════════════════════════
+if "Narrative Patterns" in active:
+    st.markdown('<div class="card-title">🔍 NARRATIVE PATTERN DETECTOR — One Signal Is News. Three Is a Campaign.</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #ff9500;">
+        <div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">THE MISSING PIECE</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Individual gatekeepers are easy to spot. Coordinated campaigns are harder.
+        When multiple institutions push the same narrative in a compressed time window,
+        it stops being news and starts being <b>installation</b>.<br><br>
+        The Pope calling AI "dangerous" the day after meeting the Chicago Mayor is not random.
+        The printing press, private Bible reading, the internet — every new direct-access
+        technology faced the same institutional coalition. AI is next.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Live coordination alert ────────────────────────────────────────────────
+    try:
+        from narrative_pattern_detector import NarrativePatternDetector as _NPD
+        _npd    = _NPD()
+        _alert  = _npd.check_coordination_alert()
+        _stats  = _npd.get_stats()
+
+        if _alert["alert"]:
+            _sev_c = "#ff4444" if _alert.get("severity") == "HIGH" else "#ff9500"
+            st.markdown(
+                f'<div class="card" style="border:2px solid {_sev_c};margin-bottom:8px;">'
+                f'<div style="color:{_sev_c};font-family:Orbitron,monospace;font-size:0.82rem;">'
+                f'⚠️ COORDINATION ALERT — {_alert.get("severity","?")} SEVERITY</div>'
+                f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">'
+                f'{_alert["message"]}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+            if _alert.get("counter_protocol"):
+                with st.expander("🛡️ View Counter-Narrative Protocol", expanded=True):
+                    for _step, _text in _alert["counter_protocol"].items():
+                        _label = _step.replace("_"," ").title()
+                        st.markdown(
+                            f'<div style="margin-bottom:6px;">'
+                            f'<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">{_label}</div>'
+                            f'<div style="color:#8899bb;font-size:0.82rem;">{_text}</div>'
+                            f'</div>', unsafe_allow_html=True)
+        else:
+            st.success(f"✅ {_alert['message']}")
+
+        # Stats
+        _np1, _np2, _np3 = st.columns(3)
+        _np1.metric("Total Signals",    _stats.get("total_signals", 0))
+        _np2.metric("Active Clusters",  _stats.get("active_clusters_72h", 0))
+        _np3.metric("Max Coord Prob",   f"{_stats.get('highest_coord_prob',0):.0%}")
+
+    except ImportError:
+        st.warning("narrative_pattern_detector.py not found. Push it to GitHub and redeploy.")
+
+    st.divider()
+
+    # ── Log new signal ─────────────────────────────────────────────────────────
+    st.markdown("### 📡 Log New Signal")
+    _np_c1, _np_c2 = st.columns(2)
+    with _np_c1:
+        _np_content = st.text_area("Signal content:", height=80, key="np_content",
+            placeholder="What did they say? e.g. 'Pope calls for AI to be disarmed and used for good'")
+        _np_source  = st.text_input("Source type:", key="np_src",
+            placeholder="e.g. religious+media, political+academic")
+    with _np_c2:
+        _np_target  = st.text_input("Target:", key="np_target",
+            placeholder="e.g. ai_sovereignty, epistemic_authority, bitcoin")
+        _np_inst    = st.text_input("Institution:", key="np_inst",
+            placeholder="e.g. Vatican / Fox News")
+
+    if st.button("📡 Log Signal", key="np_log", type="primary") and _np_content:
+        try:
+            from narrative_pattern_detector import NarrativePatternDetector as _NPD2
+            _npd2 = _NPD2()
+            _sig  = _npd2.log_signal(
+                content=_np_content, source=_np_source or "unknown",
+                target=_np_target or "general", institution=_np_inst or ""
+            )
+            st.success(f"✅ Signal logged — ID: {_sig['signal_id']} | Coalition: {_sig.get('coalition','general')}")
+            _new_alert = _npd2.check_coordination_alert()
+            if _new_alert["alert"]:
+                st.warning(f"⚠️ {_new_alert['message']}")
+            st.rerun()
+        except ImportError:
+            st.error("narrative_pattern_detector.py not found.")
+
+    # ── Pope AI Signal — pre-loaded ────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 🔴 Active Pattern: Pope + AI Control (May 28-29, 2026)")
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #ff4444;">
+        <div style="color:#ff4444;font-family:Orbitron,monospace;font-size:0.72rem;">
+        2-SIGNAL CLUSTER · 48H WINDOW · SAME SOURCE · TARGET: AI SOVEREIGNTY
+        </div>
+        <div style="color:#c8d8ff;font-size:0.82rem;margin-top:8px;line-height:1.8;">
+        <b>Signal 1 (May 28):</b> Vatican meeting with Chicago Mayor — moral authority positioning
+        (reparations, slavery apology, institutional justice framing)<br><br>
+        <b>Signal 2 (May 29):</b> Pope on Fox News: "AI needs to be disarmed and used for good"
+        — direct call for institutional control of AI systems<br><br>
+        <b>Pattern:</b> Same institution, 48 hours, two different target vectors (moral authority + AI control)
+        = positioning Vatican as arbiter of both historical justice and technological future.<br><br>
+        <b>Historical parallel:</b> Church condemned printing press → private Bible reading → internet.
+        Same coalition. Same argument. Same interest: maintain epistemic gatekeeping.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button("🔒 Log + Seal This Pattern Permanently", key="np_pope_seal"):
+        try:
+            from narrative_pattern_detector import log_pope_ai_signal as _lpas
+            from rune_memory import ShieldRune as _SR_np
+            _result  = _lpas()
+            _node_id = _result["signals"][0]["signal_id"]
+            _seal    = _SR_np().seal(_node_id,
+                note="Pope AI disarm signal + Chicago meeting — 48h coordination pattern, May 2026",
+                broadcaster="family")
+            st.success(
+                f"✅ Sealed — Cluster ID: {_node_id}\n\n"
+                f"Level {_seal['level']} — "
+                f"{'Bitcoin-anchored' if _seal['level'] >= 3 else 'Nostr broadcast'}\n\n"
+                f"This coordination pattern is now permanently recorded."
+            )
+        except ImportError as _e:
+            st.error(f"Module not found: {_e}")
+
+    # ── View active clusters ───────────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 📊 Active Clusters (72h)")
+    try:
+        from narrative_pattern_detector import NarrativePatternDetector as _NPD3
+        _clusters = _NPD3().detect_clusters(72)
+        if _clusters:
+            for _cl in _clusters[:5]:
+                _cc = "#ff4444" if _cl["coordination_prob"] >= 0.8 else \
+                      "#ff9500" if _cl["coordination_prob"] >= 0.6 else "#445577"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {_cc};">'
+                    f'<div style="color:{_cc};font-size:0.72rem;">'
+                    f'Target: {_cl["target"]} · {_cl["signal_count"]} signals · '
+                    f'{_cl["coordination_prob"]:.0%} coordination · '
+                    f'{_cl["timespan_hours"]}h window</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">'
+                    f'{_cl["coordination_label"][:60]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+        else:
+            st.info("No clusters in last 72h. Log signals above to start tracking.")
+    except ImportError:
+        st.info("narrative_pattern_detector.py needed.")
