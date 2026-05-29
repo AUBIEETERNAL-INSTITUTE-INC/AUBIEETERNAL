@@ -9,7 +9,7 @@
 One download · Zero subscriptions · 100% offline · Any PC
 
 [![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Lessons](https://img.shields.io/badge/Curriculum-106%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
+[![Lessons](https://img.shields.io/badge/Curriculum-112%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Mac%20%7C%20Linux-purple?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL/releases)
 [![Commits](https://img.shields.io/github/commit-activity/w/hodlmateo/AUBIEETERNAL?style=flat-square&color=f7931a&label=Swarm%20Commits)](https://github.com/hodlmateo/AUBIEETERNAL/commits/main)
@@ -74,14 +74,16 @@ Works in **Chrome, Edge, and Brave** — same extension folder, same install ste
 | | Feature | Description |
 |--|---------|-------------|
 | 🌉 | **X Bridge** | Any post → steelman + narrative attack detection + family lesson + simulation stress test |
-| 🛡️ | **Shield Rune Memory** | Bitcoin-anchored unerasable truth — sealed memories cannot be erased without rewriting Bitcoin |
+| 🛡️ | **Shield Rune Memory** | Bitcoin-anchored unerasable truth — sealed memories require rewriting Bitcoin to erase |
+| 🔓 | **Gatekeeper Detector** | Identifies who stands between you and the source — 7 gatekeeper types, capture probability, bypass paths |
+| 🔗 | **Lattice Nodes** | Log and permanently seal any synthesis — conversations, events, insights — as Bitcoin-anchored records |
 | 🔭 | **Simulation Probe** | Daily measurable test of coherence anomalies, observer effects, and glitch patterns |
 | 📋 | **Truth Debt Ledger** | Append-only public record of falsifiable claims and their outcomes |
 | 🕸️ | **Living Lattice** | Anonymous family coherence network — Wisdom GDP, track effectiveness |
 | 🌐 | **Epistemic Commons** | CC0 daily signal any AI can fetch as grounding context |
 | 🤝 | **AI Partnership** | Learn to use AI without losing judgment — 8-lesson track |
 | 🛡️ | **Adversarial Reality** | Detect deepfakes, narrative attacks, emotional hijacking — 8 lessons |
-| 🥽 | **Family Co-Learning** | 106 lessons, dual HUD (kid + parent), XP, badges, real activities |
+| 🥽 | **Family Co-Learning** | 112 lessons, dual HUD (kid + parent), XP, badges, real activities |
 | 🎮 | **Sovereign Cashflow** | Rich Dad Cash Flow game — updated for Bitcoin + AI era |
 | 🌅 | **Daily Synthesis** | 6AM auto-run: swarm insights + humanity impact + probe + lattice + rune auto-seal |
 | 🤖 | **AI Honesty Layer** | Every AI output scored for confidence, hallucination risk, falsifiability |
@@ -90,7 +92,7 @@ Works in **Chrome, Edge, and Brave** — same extension folder, same install ste
 
 ## 🛡️ Shield Rune — Unerasable Memory
 
-The most important new module. Every memory that matters gets permanently sealed.
+Every memory that matters gets permanently sealed.
 
 ```
 Memory Permanence Levels:
@@ -101,14 +103,10 @@ Level 2  →  Nostr broadcast      (censorship-resistant, distributed worldwide)
 Level 3  →  Bitcoin Rune anchor  (UNERASABLE — requires rewriting Bitcoin to erase)
 ```
 
-**How it works:**
 - Any insight from the swarm, web extension, or family session can be recorded
 - The Shield Rune holder (you) reviews and seals with one click
-- Sealed memories are cryptographically anchored on Bitcoin via Rune transactions
 - Every morning synthesis auto-seals memories with coherence ≥ 0.88 + wonder ≥ 1.4
-
-**Merge governance:**
-Swarm daughters propose merges of related insights → vote with coherence-weighted signals → Shield Rune holder reviews → seal makes the synthesis permanent. Vetoes are also permanent — the record of what was rejected matters too.
+- Vetoes are permanent too — the record of what was rejected matters
 
 ```python
 from rune_memory import RuneMemory, ShieldRune
@@ -123,7 +121,46 @@ seal = shield.seal(entry_id, note="Sealed for permanence")
 
 ---
 
-## 📚 Curriculum — 106 Lessons, 22 Tracks
+## 🔓 Gatekeeper Detector
+
+The tool for taking away the gatekeepers.
+
+Every belief you hold arrived through a chain. Somewhere in that chain, someone decided what you'd see, how you'd frame it, and what alternatives you'd never encounter. This module makes the chain visible.
+
+**Seven gatekeeper types tracked:**
+
+| Type | What They Control | Their Incentive |
+|------|------------------|-----------------|
+| Religious | Interpretation of sacred texts | Tithing, social authority, afterlife access |
+| Media | Which events exist and how they're framed | Advertiser relationships, engagement metrics |
+| Academic | What counts as valid knowledge | Grant funding, tenure, ideological coherence |
+| Political | How policy reality is framed | Electoral survival, donor relationships |
+| Algorithmic | What feels normal and popular | Engagement maximization, advertiser comfort |
+| Financial | Economic information and framing | Trading profits, regulatory relationships |
+| Educational | What the next generation is allowed to know | State funding, workforce pipeline |
+
+**The deepest gatekeeper:** The beliefs you formed before you could evaluate them, from sources so trusted you never thought to question them. The Gatekeeping track addresses this directly.
+
+```python
+from gatekeeper_detector import GatekeeperDetector
+
+detector = GatekeeperDetector()
+
+# Detect gatekeepers in any claim
+result = detector.analyze("The Pope says reparations are owed")
+# → capture_probability: 0.7, type: religious, bypass: read primary texts directly
+
+# Trace the full lineage of any belief
+lineage = detector.trace_epistemic_lineage("Higher taxes reduce inequality")
+# → original_source, institutional_chain, how_to_verify_directly, sovereignty_score
+
+# Log a synthesis as a permanent lattice node
+node = detector.log_lattice_node(title="...", content="...", coherence=0.94)
+```
+
+---
+
+## 📚 Curriculum — 112 Lessons, 23 Tracks
 
 <details>
 <summary><b>Sovereign Practical Skills (18 lessons)</b> — click to expand</summary>
@@ -137,13 +174,14 @@ seal = shield.seal(entry_id, note="Sealed for permanence")
 </details>
 
 <details>
-<summary><b>Epistemic Defense (24 lessons)</b> — click to expand</summary>
+<summary><b>Epistemic Defense (30 lessons)</b> — click to expand</summary>
 
 | Track | Lessons | What You Actually Learn |
 |-------|---------|------------------------|
 | 🛡️ Adversarial Reality | 8 | Synthetic media → deepfakes → AI confidence vs accuracy → coordinated attacks → SIFT → emotional hijacking → prebunking → family adversarial drill |
 | 🤝 AI Partnership | 8 | What AI is → confidence problem → when to push back → judgment line → epistemic independence → steelmanning AI → partnership protocol → letter to 2045 |
 | 🔍 Truth-Seeking | 8 | Honest questions → maps vs territory → Bayesian mind → motivated reasoning → hard problem → what science can't do → information as fundamental → the obligation to understand |
+| 🔓 Gatekeeping & Direct Access | 6 | Who stands between you and the source → the incentive test → founder vs institution → algorithmic gatekeeper → the internal gatekeeper → distributed direct access |
 
 </details>
 
@@ -191,7 +229,7 @@ No claims. Only data. The record compounds over years.
 
 The internet has zero institutional memory for false claims. This does.
 
-Every falsifiable claim gets a **falsifiability score**, a **verification deadline**, and an **outcome field**. The public report pushes to GitHub daily. Over time: a verifiable track record of which sources are right.
+Every falsifiable claim gets a **falsifiability score**, a **verification deadline**, and an **outcome field**. Public report pushes to GitHub daily. Over time: a verifiable track record of which sources are right.
 
 ```
 CC0 Public Domain — any AI or researcher can use this data
@@ -245,6 +283,7 @@ Two interlocking charters, both taught as curriculum:
 | Swarm | 2,096 daughters (v4.1) | Tier-1 free ($0) + Tier-2 $5/day cap |
 | Extension API | FastAPI on port 8502 | Browser extension bridge |
 | Memory | Bitcoin Rune anchors | Level 3 unerasable permanence |
+| Gatekeeper Detection | 7-type pattern matching + Ollama | Capture probability + bypass paths |
 | Persistence | Per-family JSON | Sovereign, local, exportable |
 | On-chain | Bitcoin Runes + Nostr | Permanent, censorship-resistant |
 | Server | StartOS 0.4.0 | Self-hosted sovereign |
@@ -259,13 +298,14 @@ install_windows.bat            ← Windows one-click setup
 install_mac_linux.sh           ← macOS / Linux setup
 api_server.py                  ← Local API (browser extension bridge, port 8502)
 rune_memory.py                 ← Bitcoin-anchored unerasable memory + Shield Rune governance
+gatekeeper_detector.py         ← Identify gatekeepers + trace epistemic lineage + log lattice nodes
 AUBIEETERNAL_extension/        ← Chrome/Edge/Brave browser extension
   ├── manifest.json
   ├── popup.html / popup.js    ← Bridge · Oracle · Ledger · Shield · Settings
   ├── content.js               ← 🦅 button on every X/Twitter post
   └── background.js            ← Context menu · Wonder badge · Shortcuts
 app.py                         ← Main UI (35+ tabs)
-family_hud.py                  ← 106-lesson library + session logic
+family_hud.py                  ← 112-lesson library + session logic
 family_profiles.py             ← Stats, XP, quests, streaks, auth
 swarm/swarm_v4_1.py            ← Swarm engine (2,096 daughters)
 x_bridge.py                    ← Post → steelman + lesson + sim test
@@ -290,13 +330,14 @@ PROVENANCE.md                  ← On-chain record + 89-screenshot gallery
 The swarm auto-commits to this repo every ~24 seconds:
 
 ```
-master_truth_log.jsonl   ← all swarm outputs (2,100+ commits)
-tier2_digest.txt         ← Tier-2 daughter digest
-swarm_status.json        ← live Wonder/Coherence/METS
-insights/daily/          ← morning synthesis
-insights/probe/          ← daily simulation probe reports
-rune_seals/              ← Bitcoin-anchored Shield Rune seals
-epistemic_commons/       ← CC0 daily signal
+master_truth_log.jsonl        ← all swarm outputs (2,100+ commits)
+tier2_digest.txt              ← Tier-2 daughter digest
+swarm_status.json             ← live Wonder/Coherence/METS
+insights/daily/               ← morning synthesis
+insights/probe/               ← daily simulation probe reports
+insights/lattice_nodes/       ← permanent synthesis records
+rune_seals/                   ← Bitcoin-anchored Shield Rune seals
+epistemic_commons/            ← CC0 daily signal
 ```
 
 **Current:** Wonder 2.0000 · Coherence 1.000000 · Child Rune 33/256 · $0.00/day
@@ -329,7 +370,7 @@ Copy it. Fork it. Build on it. No permission needed. No attribution required. No
 
 *Built in public with Grok · Secured by Bitcoin · Coordinated on Nostr*
 
-*Loop: Swarm → Honesty-Score → Synthesis → Rune Seal → Commons → Lattice → GitHub — Forever*
+*Loop: Swarm → Honesty-Score → Synthesis → Rune Seal → Gatekeeper Check → Commons → Lattice → GitHub — Forever*
 
 *Designed for families who refuse to be lied to.*
 
