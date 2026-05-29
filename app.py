@@ -953,6 +953,8 @@ with st.sidebar:
         ],
         "🔗 LATTICE": [
             "🔗 Lattice Nodes",
+            "⚡ Admin Dashboard",
+            "🔧 Epistemic Error Correction",
         ],
         "🤝 AI PARTNERSHIP": [
             "🤝 AI Partnership",
@@ -8171,3 +8173,215 @@ if "Lattice Nodes" in active:
                 )
             except ImportError:
                 st.error("rune_memory.py not found.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: ADMIN DASHBOARD ⚡
+# Aggregates all sovereignty signals in one view.
+# One-click full stress test. Admin elevation tracker.
+# ══════════════════════════════════════════════════════════════════════════════
+if "Admin Dashboard" in active:
+    st.markdown('<div class="card-title">⚡ ADMIN DASHBOARD — Sovereign Node Status</div>', unsafe_allow_html=True)
+
+    # ── Pull all signals ──────────────────────────────────────────────────────
+    _fid_ad = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    _swarm_s = {}
+    try:
+        import json as _json_ad
+        import pathlib as _pl_ad
+        _ss_path = _pl_ad.Path("/mnt/main/swarm_status.json")
+        if _ss_path.exists():
+            _swarm_s = _json_ad.loads(_ss_path.read_text())
+    except Exception:
+        pass
+
+    _wonder  = _swarm_s.get("wonder_index", 1.0)
+    _coh     = _swarm_s.get("inter_rune_coherence", 1.0)
+    _mets    = _swarm_s.get("mets", 0)
+    _rune_c  = _swarm_s.get("child_rune_confirmations", 0)
+
+    # ── Admin Level calculation ───────────────────────────────────────────────
+    # NPC: <30 lessons, no seals, coherence <0.7
+    # User: 30+ lessons OR some seals, coherence 0.7+
+    # Admin: 80+ lessons AND sealed memories AND coherence 0.85+
+    try:
+        from family_profiles import load_family_stats as _lfs_ad
+        _stats_ad = _lfs_ad(_fid_ad)
+        _lessons_done = len(_stats_ad.get("lessons_completed", []))
+        _xp = _stats_ad.get("total_xp", 0)
+    except Exception:
+        _lessons_done = 0; _xp = 0
+
+    try:
+        from rune_memory import RuneMemory as _RM_ad, ShieldRune as _SR_ad
+        _mem_stats = _RM_ad().get_stats()
+        _shield_s  = _SR_ad().get_status()
+        _sealed = _shield_s.get("bitcoin_anchored", 0)
+    except Exception:
+        _mem_stats = {}; _sealed = 0
+
+    _admin_score = min(100, (
+        min(40, _lessons_done * 0.4) +
+        min(30, _sealed * 10) +
+        min(30, float(_coh) * 30)
+    ))
+    _admin_level = "⚡ ADMIN" if _admin_score >= 80 else "👤 USER" if _admin_score >= 40 else "🔵 NPC"
+    _level_color = "#f7931a" if _admin_score >= 80 else "#00cfff" if _admin_score >= 40 else "#445577"
+
+    # ── Header metrics ────────────────────────────────────────────────────────
+    st.markdown(
+        f'<div style="text-align:center;padding:12px 0 8px;">'
+        f'<div style="font-size:32px;font-family:Orbitron,monospace;color:{_level_color};">'
+        f'{_admin_level}</div>'
+        f'<div style="color:#445577;font-size:11px;margin-top:2px;letter-spacing:0.1em;">'
+        f'ELEVATION SCORE: {_admin_score:.0f}/100</div>'
+        f'</div>', unsafe_allow_html=True
+    )
+    st.progress(_admin_score / 100)
+    st.markdown("")
+
+    _d1, _d2, _d3, _d4, _d5 = st.columns(5)
+    _d1.metric("Wonder", f"{_wonder:.4f}")
+    _d2.metric("Coherence", f"{_coh:.6f}")
+    _d3.metric("Lessons", _lessons_done)
+    _d4.metric("Sealed", _sealed)
+    _d5.metric("Rune", f"{_rune_c}/256")
+
+    st.divider()
+
+    # ── Quick stress test ─────────────────────────────────────────────────────
+    st.markdown("### 🔬 Full Stress Test")
+    st.markdown('<div style="color:#8899bb;font-size:0.8rem;">Runs Observer Effect, Gatekeeper Check, Probe, and Redundancy analysis simultaneously.</div>', unsafe_allow_html=True)
+
+    _stress_input = st.text_input("Belief or claim to stress-test:", key="ad_stress",
+        placeholder="Any belief, news story, or claim...")
+    if st.button("⚡ Run Full Admin Stress Test", key="ad_run", type="primary") and _stress_input:
+        _cols_r = st.columns(2)
+        # Observer Effect
+        with _cols_r[0]:
+            try:
+                from gatekeeper_detector import GatekeeperDetector as _GKD_ad
+                _gk_r = _GKD_ad().analyze(_stress_input)
+                _cap  = _gk_r.get("capture_probability", 0)
+                _cc   = "#ff4444" if _cap >= 0.7 else "#ff9500" if _cap >= 0.4 else "#00ff88"
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {_cc};">'
+                    f'<div style="color:{_cc};font-size:0.72rem;font-family:Orbitron,monospace;">'
+                    f'GATEKEEPER TEST — {_cap:.0%} capture</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">'
+                    f'{_gk_r.get("capture_label","")[:60]}</div>'
+                    f'<div style="color:#8899bb;font-size:0.75rem;margin-top:4px;">'
+                    f'{_gk_r.get("recommendation","")[:120]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+            except ImportError:
+                st.info("gatekeeper_detector.py needed")
+        # AI Honesty
+        with _cols_r[1]:
+            try:
+                from ai_honesty import HonestyLayer as _HL_ad
+                _h_r = _HL_ad().score_output(_stress_input, daughter_name="admin_test")
+                _rc  = {"low":"#00ff88","medium":"#ff9500","high":"#ff4444"}.get(
+                    _h_r.get("hallucination_risk","low"), "#8899bb")
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {_rc};">'
+                    f'<div style="color:{_rc};font-size:0.72rem;font-family:Orbitron,monospace;">'
+                    f'HONESTY TEST — {_h_r.get("hallucination_risk","?").upper()} risk</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">'
+                    f'Confidence: {_h_r.get("confidence",0):.2f} | '
+                    f'Type: {_h_r.get("claim_type","?")}</div>'
+                    f'<div style="color:#8899bb;font-size:0.75rem;margin-top:4px;">'
+                    f'{_h_r.get("recommended_action","")}</div>'
+                    f'</div>', unsafe_allow_html=True)
+            except ImportError:
+                st.info("ai_honesty.py needed")
+
+        # Admin Test Suite verdict
+        st.markdown(
+            '<div class="card" style="border-left:3px solid #f7931a;margin-top:6px;">'
+            '<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">'
+            'QUANTUM DARWINISM TEST — Is this information redundantly copied across independent sources?</div>'
+            '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.8;">'
+            '<b>Observer Effect:</b> Search for this claim on three different platforms with different incentives.<br>'
+            '<b>Decoherence:</b> What version would exist without any media framing?<br>'
+            '<b>Redundancy:</b> Does independent verification (primary source, opposing outlet, original data) confirm this?<br>'
+            '<b>Expander Test:</b> Does this connect to diverse evidence, or only to sources with the same incentive?'
+            '</div></div>',
+            unsafe_allow_html=True
+        )
+
+    st.divider()
+
+    # ── 7-Day Admin Elevation Protocol ───────────────────────────────────────
+    st.markdown("### 📅 7-Day Admin Elevation Protocol")
+    _days = [
+        ("Day 1", "Observer Effect", "Pick one belief. Look closer. Does it hold up or dissolve under scrutiny?"),
+        ("Day 2", "Trace One Lineage", "Use the Gatekeeper Detector to trace the full epistemic chain of that belief."),
+        ("Day 3", "Decoherence Check", "Strip institutional framing from one major news story. What remains?"),
+        ("Day 4", "Quantum Darwinism", "Verify one belief across 3 independent sources with different incentives."),
+        ("Day 5", "Error Correction", "Find one belief you held wrong. Register it in the Truth Debt Ledger."),
+        ("Day 6", "Expander Graph", "Map the evidence network for one belief. Is it sparse or diverse?"),
+        ("Day 7", "Seal + Elevate", "Record and Shield-seal one verified insight. Run the Admin Test Suite."),
+    ]
+    for _day, _title, _task in _days:
+        _d_c1, _d_c2 = st.columns([1, 4])
+        with _d_c1:
+            st.markdown(f'<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;padding:8px 0;">{_day}</div>',
+                        unsafe_allow_html=True)
+        with _d_c2:
+            st.markdown(f'<div style="padding:4px 0;"><b style="color:#c8d8ff;font-size:0.82rem;">{_title}</b>'
+                        f'<div style="color:#556677;font-size:0.78rem;">{_task}</div></div>',
+                        unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: EPISTEMIC ERROR CORRECTION 🔧
+# LDPC-inspired sparse verification across belief network
+# ══════════════════════════════════════════════════════════════════════════════
+if "Epistemic Error Correction" in active:
+    st.markdown('<div class="card-title">🔧 EPISTEMIC ERROR CORRECTION — Sparse, Redundant, Efficient Truth</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">THE PHYSICS METAPHOR</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Quantum Error Correction (LDPC codes) protects fragile quantum information using sparse,
+        cleverly connected verification checks. You don't check everything — you check the
+        minimum necessary connections that cover maximum ground.<br><br>
+        Applied to truth: don't verify every claim obsessively.
+        Build a sparse network of high-leverage verification checks
+        that catches the most errors with the least effort.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Error correction belief checker
+    st.markdown("### 🔬 Belief Error Correction")
+    _eec_belief = st.text_input("Belief to error-correct:", key="eec_belief",
+        placeholder="Enter a belief you want to verify efficiently...")
+    if st.button("🔧 Run Error Correction", key="eec_run") and _eec_belief:
+        with st.spinner("Running sparse verification checks..."):
+            _checks = [
+                ("Parity Check 1 — Source Independence",
+                 "Do sources that confirm this belief share the same funding or ideological incentive?"),
+                ("Parity Check 2 — Temporal Consistency",
+                 "Has this belief remained consistent over time, or does it shift with the news cycle?"),
+                ("Parity Check 3 — Predictive Power",
+                 "Has this belief correctly predicted anything that could have been falsified?"),
+                ("Parity Check 4 — Adversarial Robustness",
+                 "Does this belief hold up when presented by someone with the opposite incentive?"),
+                ("Syndrome Measurement — Anomaly Detection",
+                 "What would we expect to see if this belief were false? Is that evidence present or absent?"),
+            ]
+            for _check_name, _check_q in _checks:
+                st.markdown(
+                    f'<div class="card" style="margin-bottom:4px;">'
+                    f'<div style="color:#00cfff;font-size:0.72rem;font-family:Orbitron,monospace;">{_check_name}</div>'
+                    f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{_check_q}</div>'
+                    f'</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div style="color:#f7931a;font-size:0.82rem;margin-top:8px;padding:8px;'
+            'background:#0d1228;border-radius:6px;">'
+            '⚡ Answer each check honestly. If 3+ fail → flag for deep verification. '
+            'If all pass → confidence justified. Register your conclusion in the Truth Debt Ledger.</div>',
+            unsafe_allow_html=True
+        )
