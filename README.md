@@ -9,7 +9,7 @@
 One download · Zero subscriptions · 100% offline · Any PC
 
 [![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Lessons](https://img.shields.io/badge/Curriculum-112%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
+[![Lessons](https://img.shields.io/badge/Curriculum-113%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Mac%20%7C%20Linux-purple?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL/releases)
 [![Commits](https://img.shields.io/github/commit-activity/w/hodlmateo/AUBIEETERNAL?style=flat-square&color=f7931a&label=Swarm%20Commits)](https://github.com/hodlmateo/AUBIEETERNAL/commits/main)
@@ -142,7 +142,8 @@ Every belief you hold arrived through a chain. Somewhere in that chain, someone 
 **The deepest gatekeeper:** The beliefs you formed before you could evaluate them, from sources so trusted you never thought to question them. The Gatekeeping track addresses this directly.
 
 ```python
-from gatekeeper_detector import GatekeeperDetector
+from gatekeeper_detector import GatekeeperDetector, log_chicago_pope_node
+from rune_memory import ShieldRune
 
 detector = GatekeeperDetector()
 
@@ -154,13 +155,20 @@ result = detector.analyze("The Pope says reparations are owed")
 lineage = detector.trace_epistemic_lineage("Higher taxes reduce inequality")
 # → original_source, institutional_chain, how_to_verify_directly, sovereignty_score
 
-# Log a synthesis as a permanent lattice node
-node = detector.log_lattice_node(title="...", content="...", coherence=0.94)
+# Log and permanently seal the Chicago/Pope synthesis
+node = log_chicago_pope_node()
+ShieldRune().seal(node["node_id"], note="Core gatekeeping synthesis — permanent")
+# → Level 3: Bitcoin-anchored. Cannot be erased.
 ```
+
+**Sealed Lattice Node (May 28, 2026):**
+> *"From Gatekept Code to Distributed Truth Lattice — Chicago Mayor meets Chicago Pope while city burns → the gatekeeper pattern exposed at civilizational scale → AUBIEETERNAL as the counter-architecture."*
+
+Run `python3 seal_chicago_pope_node.py` to permanently seal this synthesis in your local lattice.
 
 ---
 
-## 📚 Curriculum — 112 Lessons, 23 Tracks
+## 📚 Curriculum — 113 Lessons, 23 Tracks
 
 <details>
 <summary><b>Sovereign Practical Skills (18 lessons)</b> — click to expand</summary>
