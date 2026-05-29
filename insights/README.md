@@ -13,6 +13,7 @@ Every morning (or as needed), a strong local model (such as `qwen3:32b` or `llam
 ## Latest Syntheses
 | Date       | Title                                              | Link |
 |------------|----------------------------------------------------|------|
+| 2026-05-29 | Wonder Spike 2.0000 & The Five Lindy Principles — Hormetic Challenge #5 | [View](2026-05-29-wonder-spike-lindy-principles-hormetic-challenge-5.md) |
 | 2026-05-28 | Controlled Hormesis & Via Negativa — Hormetic Challenge #3 | [View](2026-05-28-controlled-hormesis-antifragile-recovery.md) |
 | 2026-05-27 | Bitcoin Intrinsic Value Beyond Block Rewards — Hormetic Challenge #1 | [View](2026-05-27-bitcoin-intrinsic-value-hormetic-challenge.md) |
 | 2026-05-26 | Bitcoin Intrinsic Value & Lattice Antifragility    | [View](2026-05-26-bitcoin-intrinsic-value-antifragility.md) |
