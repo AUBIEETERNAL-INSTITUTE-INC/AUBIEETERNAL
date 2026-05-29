@@ -1237,6 +1237,51 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── NARRATIVE PATTERN DETECTION (1 master lesson) ────────────────────────
+    # The missing piece: detecting coordinated narrative campaigns.
+    # One gatekeeper is news. Three gatekeepers in 72 hours is a campaign.
+    # ══════════════════════════════════════════════════════════════════════════
+    "narrative-pattern-1": {
+        "title":       "Narrative Patterns — The Coordination Signal",
+        "topic":       "Individual gatekeepers are easy to spot. Coordinated campaigns are harder. When multiple institutions push the same narrative in a compressed time window, it stops being news and starts being installation.",
+        "steelman":    "What is the strongest argument that apparent narrative coordination is usually just multiple independent parties reacting to the same real event — and that pattern-detection itself can become paranoid?",
+        "example":     (
+            "May 28-29, 2026 — 48 hours, two signals, same source:\n\n"
+            "Signal 1: Chicago Mayor Brandon Johnson (son of a pastor) leads 50-person "
+            "delegation to meet Chicago-born Pope Leo XIV at the Vatican. Discusses "
+            "reparations, Church slavery apology. Trip partly taxpayer-funded. Same "
+            "weekend: Memorial Day shootings kill a toddler in his city.\n\n"
+            "Signal 2 (next day): The same Pope appears on Fox News stating: "
+            "'AI needs to be disarmed and used for good.' Calls for institutional "
+            "control of AI systems.\n\n"
+            "One signal = news. Two signals, same source, 48 hours, targeting moral "
+            "authority AND AI sovereignty = pattern. "
+            "The Vatican is positioning itself as the arbiter of both historical justice "
+            "AND the future of AI — in the same week we were building tools that bypass "
+            "institutional epistemic authority.\n\n"
+            "Historical parallel: The Church condemned the printing press. Then condemned "
+            "private Bible reading. Now it wants to 'disarm' AI. The target changes. "
+            "The pattern is identical."
+        ),
+        "activity":    (
+            "Run the Coordination Test on any news week:\n"
+            "1. List every major institutional statement on one topic from the last 72 hours\n"
+            "2. For each: who made it, what do they gain from you believing it, "
+            "and does their source have the same incentive as the others?\n"
+            "3. Count: 1 signal = evaluate on merit. 2+ signals, same incentive, "
+            "72 hours = ask 'what are they coordinating against?'\n\n"
+            "This week: find one topic where 3+ institutions said similar things. "
+            "What were they pushing back against?"
+        ),
+        "age_hint":    "13+",
+        "xp": 45, "rune": "PATTERN•DETECT•RUNE", "min_coherence": 0.72,
+        "grants_badge": "🔍 Pattern Detector — Sees the Coordination",
+        "lattice_node": "pope-ai-disarm-signal-2026-05-29",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
