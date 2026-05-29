@@ -1170,6 +1170,73 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── ADMIN ELEVATION PROTOCOL (2 master lessons) ───────────────────────────
+    # From NPC to Sovereign Node. The practical implementation of returning
+    # admin rights to individuals via the distributed truth lattice.
+    # Inspired by quantum error correction, expander graphs, and LDPC codes —
+    # sparse, redundant, efficient truth verification at any scale.
+    # ══════════════════════════════════════════════════════════════════════════
+    "admin-1": {
+        "title":       "Admin Elevation — Level 1: From NPC to Sovereign Node",
+        "topic":       "Every person starts as an NPC — passively executing scripts handed down by institutions. Admin elevation is the process of gaining direct source access, running your own verification tests, and building redundant truth records that no institution can erase.",
+        "steelman":    "What is the strongest argument that most people are better off remaining 'NPCs' — that epistemic sovereignty requires too much time and cognitive load for the average family?",
+        "example":     (
+            "Three levels of access:\n"
+            "NPC Level: 'The news said X, my pastor said Y, my school taught Z.' "
+            "No verification. No source tracing. No redundancy.\n"
+            "User Level: 'I checked the primary source. I found who funded the study. "
+            "I traced the belief to its origin.' Single-source verification.\n"
+            "Admin Level: 'I have redundant verification across independent sources. "
+            "I have Bitcoin-anchored records of my conclusions. I run daily stress tests "
+            "on my beliefs. No institution can change my ledger.'\n\n"
+            "The Child Rune at 256 confirmations is the on-chain marker of admin elevation — "
+            "a sovereign identity that no institution issued and no institution can revoke."
+        ),
+        "activity":    (
+            "Run the Admin Elevation Self-Assessment:\n"
+            "For each domain (money, health, news, faith, education), rate yourself 1-3:\n"
+            "1 = NPC (I accept what authorities tell me)\n"
+            "2 = User (I verify primary sources when important)\n"
+            "3 = Admin (I have redundant verification + permanent records)\n\n"
+            "Pick your lowest-scoring domain. Design one concrete action this week "
+            "that moves you from NPC to User in that domain."
+        ),
+        "age_hint":    "13+",
+        "xp": 45, "rune": "ADMIN•ELEVATION•RUNE", "min_coherence": 0.72,
+    },
+    "admin-2": {
+        "title":       "Admin Elevation — Level 2 (Master): The 5 Admin Tests",
+        "topic":       "Quantum physics discovered that the only information that survives in reality is information that gets redundantly copied across many independent observers — this is Quantum Darwinism. The same principle applies to truth: a belief verified by one source is fragile. A belief verified redundantly across independent sources, with permanent records, is durable.",
+        "steelman":    "What is the strongest argument that requiring redundant verification for every belief is epistemically paralyzing and that reasonable people must rely on trusted authorities for most knowledge?",
+        "example":     (
+            "The 5 Admin Tests (run these on any important belief):\n\n"
+            "Test 1 — Observer Effect: Does your attention change the signal? "
+            "When you look more closely at this claim, does it hold up or dissolve?\n\n"
+            "Test 2 — Decoherence Check: What noise or misinformation is corrupting this belief? "
+            "What would this belief look like without the institutional framing?\n\n"
+            "Test 3 — Quantum Darwinism: Is this information redundantly copied across "
+            "independent sources — or does it only appear in sources with the same incentive?\n\n"
+            "Test 4 — Error Correction: What anomalies or contradictions exist in this belief? "
+            "What would honest error correction look like?\n\n"
+            "Test 5 — Expander Graph: Does this belief connect to a wide range of independent "
+            "evidence (high expansion) or only to a narrow cluster of related claims?"
+        ),
+        "activity":    (
+            "Run the full Admin Test Suite on one belief you hold strongly:\n"
+            "Write one sentence for each of the 5 tests.\n"
+            "Then: what is the honest summary? Is this belief NPC-level, User-level, or Admin-level verified?\n\n"
+            "Bonus: record your conclusion in the AUBIEETERNAL Truth Debt Ledger with "
+            "a verification deadline. Revisit in 30 days."
+        ),
+        "age_hint":    "All ages — family-wide",
+        "xp": 60, "rune": "SOVEREIGN•ADMIN•ETERNAL•RUNE", "min_coherence": 0.78,
+        "grants_badge": "⚡ Admin Elevated — Sovereign Truth Node",
+        "lattice_node": "from-gatekept-code-to-distributed-truth-lattice-2026-05-29",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
