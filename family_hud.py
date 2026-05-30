@@ -1906,6 +1906,420 @@ LESSONS = {
     # ══════════════════════════════════════════════════════════════════════════
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── CONSCIOUSNESS SCIENCE (4 lessons) ────────────────────────────────────
+    # IIT + GNWT: the two most rigorous scientific theories of consciousness.
+    # Taught together as the productive rivalry they are.
+    # These are not philosophy — they are testable science with clinical
+    # applications right now. Families who understand both can steelman
+    # consciousness science better than most PhD students.
+    # ══════════════════════════════════════════════════════════════════════════
+    "consciousness-1": {
+        "title":       "Consciousness Science — Level 1: What Any Theory Must Explain",
+        "topic":       "Before comparing theories of consciousness, we need to know what they're competing to explain. There are actually two separate problems — and confusing them is the source of most debates.",
+        "steelman":    "What is the strongest argument that the distinction between 'access consciousness' and 'phenomenal consciousness' is itself a philosophical confusion, and that there is only one thing to explain?",
+        "example":     (
+            "The two problems:\n\n"
+            "EASY PROBLEMS (hard in practice, but in principle solvable):\n"
+            "How does the brain integrate information? How does attention work?\n"
+            "Why do we sleep? How are memories stored? Why can we report our experiences?\n"
+            "These are 'easy' not because they're simple — but because we know what "
+            "kind of explanation would count as an answer (neural mechanisms).\n\n"
+            "THE HARD PROBLEM (David Chalmers, 1995):\n"
+            "Even if we solved every easy problem perfectly, we still wouldn't have "
+            "explained WHY brain activity is accompanied by subjective experience.\n"
+            "Why does red look like something rather than just being processed?\n"
+            "Why does pain feel bad rather than just triggering avoidance?\n\n"
+            "Two major theories in 2026:\n"
+            "IIT (Tononi): starts from experience → derives what physical systems must be like\n"
+            "GNWT (Baars/Dehaene): starts from neural mechanisms → explains reportable access\n\n"
+            "In 2025, Nature published the largest head-to-head test ever. "
+            "The result: partial support for both. Science advancing correctly."
+        ),
+        "activity":    (
+            "The Hard Problem test:\n"
+            "1. Close your eyes. Notice that experience is happening right now.\n"
+            "2. Ask: could a computer that processes the same information have this?\n"
+            "3. Now ask: what would prove it? What experiment would settle this?\n\n"
+            "Family discussion: Is the hard problem real? Or is it a confusion "
+            "that will dissolve once we understand the brain well enough?"
+        ),
+        "age_hint":    "12+",
+        "xp": 40, "rune": "WONDER•RUNE", "min_coherence": 0.68,
+    },
+    "consciousness-2": {
+        "title":       "Consciousness Science — Level 2: IIT (Integrated Information Theory)",
+        "topic":       "IIT starts from the opposite direction of most science. Instead of starting with neurons and asking 'how does this produce experience?', it starts with experience itself and asks 'what must any physical system be like to support this?'",
+        "steelman":    "What is the strongest argument against IIT — specifically that a 2D grid of logic gates with the right connectivity could have MORE consciousness than a human brain, which is clearly absurd?",
+        "example":     (
+            "IIT's six starting axioms (things we know about consciousness from the inside):\n"
+            "1. It EXISTS — something is happening\n"
+            "2. It is INTRINSIC — it exists for itself, not for external observers\n"
+            "3. It is INFORMATIVE — this specific experience, not any other\n"
+            "4. It is INTEGRATED — a unified whole, not separate parts\n"
+            "5. It is EXCLUSIVE — exactly this content, nothing more\n"
+            "6. It is COMPOSED — structured with distinctions and relations\n\n"
+            "From these axioms, IIT derives: consciousness = Φ (phi) = integrated "
+            "cause-effect information. Higher Φ = richer experience.\n\n"
+            "Key prediction: the CEREBELLUM (80% of brain neurons, mostly feedforward) "
+            "should have LOW Φ and contribute little to consciousness. "
+            "Indeed, removing the cerebellum rarely abolishes consciousness.\n\n"
+            "IIT's mild panpsychism: any system with Φ > 0 has proto-experience. "
+            "Most of reality is 'ontological dust' — near-zero Φ. "
+            "Only highly integrated systems (like human brains) have rich experience.\n\n"
+            "Clinical success: The Perturbational Complexity Index (PCI) — inspired by IIT — "
+            "reliably distinguishes wakefulness, anesthesia, and disorders of consciousness "
+            "using TMS-EEG. This is real, working, deployed in hospitals today."
+        ),
+        "activity":    (
+            "The IIT Thought Experiment:\n"
+            "1. Draw a simple 4-node network (A→B→C→D, no loops). This is FEEDFORWARD. "
+            "IIT predicts near-zero Φ — no consciousness.\n"
+            "2. Now add a return loop (D→A). Integration increases. Φ rises.\n"
+            "3. Discuss: why do brains have massive recurrent loops everywhere? "
+            "Is IIT why? Is it just efficiency?\n\n"
+            "The Steelman Challenge: IIT says an inactive expander grid of logic gates "
+            "could have high Φ. That seems absurd. Can you construct the best possible "
+            "defense of why IIT might still be right despite this?"
+        ),
+        "age_hint":    "13+",
+        "xp": 48, "rune": "WONDER•RUNE", "min_coherence": 0.70,
+    },
+    "consciousness-3": {
+        "title":       "Consciousness Science — Level 3: GNWT (Global Neuronal Workspace Theory)",
+        "topic":       "Global Neuronal Workspace Theory is the best-tested, most neuroscientifically grounded theory of HOW consciousness works. It doesn't fully answer why there is experience — but it explains the mechanism brilliantly.",
+        "steelman":    "What is the strongest argument that GNWT doesn't really explain consciousness at all — that it only describes the functional correlates of reportability, and leaves the hard problem completely untouched?",
+        "example":     (
+            "The theater metaphor:\n"
+            "GNWT says the brain is like a theater:\n"
+            "• Many specialized unconscious processors work in parallel (backstage)\n"
+            "• Attention is the spotlight\n"
+            "• When information wins the competition and crosses a threshold, it is "
+            "amplified and BROADCAST GLOBALLY across the brain\n"
+            "• This global broadcast makes it available for verbal report, "
+            "reasoning, memory, and voluntary action\n\n"
+            "The key mechanism: IGNITION\n"
+            "~200-300ms after a stimulus, if it crosses threshold: sudden "
+            "non-linear wave of activity across frontoparietal networks. "
+            "Gamma-band synchronization. Global access.\n\n"
+            "Real-world application: driving on autopilot (unconscious processing) "
+            "vs. suddenly noticing a child run into the road (ignition — "
+            "global broadcast — full conscious access — motor response).\n\n"
+            "2025 Nature adversarial test: GNWT predictions partially supported. "
+            "BUT: no clear offset ignition as predicted. Limited PFC decoding. "
+            "No strong long-range gamma synchrony. Still the best theory for "
+            "explaining how information becomes consciously accessible."
+        ),
+        "activity":    (
+            "The GNWT Demonstration:\n"
+            "1. Have someone read quietly while you try to interrupt them "
+            "with a soft sound. How much does it take to break their focus?\n"
+            "2. That threshold — where a stimulus 'ignites' into consciousness — "
+            "is what GNWT is measuring.\n"
+            "3. Now discuss: what is sitting just below your threshold right now? "
+            "What unconscious processes are running that you can't access?\n\n"
+            "GNWT's epistemic gift: it reveals how much of your behavior is "
+            "driven by unconscious processes that never reach the workspace. "
+            "How does this change how you trust your own reasoning?"
+        ),
+        "age_hint":    "12+",
+        "xp": 48, "rune": "WONDER•RUNE", "min_coherence": 0.70,
+    },
+    "consciousness-4": {
+        "title":       "Consciousness Science — Level 4 (Master): IIT vs GNWT and the Path Forward",
+        "topic":       "The most important scientific rivalry of our era. Two rigorous theories, tested head-to-head in 2025. Neither won. Both advanced. This is what good science looks like — and it teaches something deeper about how to hold competing models simultaneously.",
+        "steelman":    "What is the strongest argument that science should settle on ONE theory of consciousness rather than maintaining 'productive rivalry,' since holding multiple competing models just leads to confusion and lack of progress?",
+        "example":     (
+            "The 2025 Nature adversarial collaboration — the most important "
+            "consciousness experiment ever run:\n"
+            "256 participants · multimodal imaging (fMRI, MEG, iEEG) · preregistered\n\n"
+            "IIT predictions tested: ✅ conscious content sustained in posterior cortex\n"
+            "                        ❌ no predicted sustained gamma synchrony\n"
+            "GNWT predictions tested: ✅ some frontoparietal involvement\n"
+            "                         ❌ no clear offset ignition in PFC\n"
+            "                         ❌ limited content decoding in PFC\n\n"
+            "What this means:\n"
+            "GNWT: best explains HOW consciousness functions — global access, report, "
+            "the mechanism by which information becomes available\n"
+            "IIT: best explains WHY some architectures have experience — intrinsic "
+            "integration, the hard problem addressed mathematically\n\n"
+            "They may not be competing. They may be complementary:\n"
+            "GNWT describes the global functional dynamics\n"
+            "IIT describes the intrinsic ontology\n\n"
+            "The field in 2026 is moving from 'which theory wins?' to "
+            "'how do these mechanisms interact in real brains?'"
+        ),
+        "activity":    (
+            "The Consciousness Science Steelman Marathon:\n"
+            "Round 1: One family member argues IIT is correct. Another argues GNWT.\n"
+            "Round 2: Switch sides — argue the opposite.\n"
+            "Round 3: Together, design the experiment that would finally settle it.\n\n"
+            "Question to seal: Which theory, if true, would change how your family "
+            "treats AI systems? Which would change how you understand your own mind? "
+            "Write the answer and seal it in the Legacy Ledger."
+        ),
+        "age_hint":    "All ages — bring everyone",
+        "xp": 60, "rune": "COSMOS•ETERNAL•RUNE", "min_coherence": 0.75,
+        "grants_badge": "🧠 Consciousness Scientist — Holds the Rivalry",
+        "lattice_node": "iit-vs-gnwt-2025-nature-adversarial-results",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── HELPING HUMANITY (6 expanded lessons) ────────────────────────────────
+    # How one rigorous family lattice can shift civilizational epistemic health.
+    # Not abstract — concrete mechanisms for how individual sovereignty
+    # aggregates into collective truth-seeking capacity.
+    # ══════════════════════════════════════════════════════════════════════════
+    "helping-humanity-1": {
+        "title":       "Helping Humanity — Level 1: How One Family Changes Civilization",
+        "topic":       "The history of civilization is not the history of institutions — it is the history of individuals who refused the default script. One rigorous family, compounding over generations, produces more epistemic impact than most institutions ever will.",
+        "steelman":    "What is the strongest argument that individual family-level action is irrelevant to civilizational change, and that only systemic political action produces real outcomes?",
+        "example":     (
+            "The compounding math of epistemic impact:\n\n"
+            "One sovereign family runs AUBIEETERNAL for 10 years.\n"
+            "They have two children who become truth-seekers with verified epistemic skills.\n"
+            "Each child has two children. Four grandchildren raised in the lattice.\n"
+            "Each of those four influences 10 people through their life.\n"
+            "40 people directly influenced per family per generation.\n"
+            "Over 3 generations: 40 × 40 = 1,600 people influenced.\n\n"
+            "But the real compounding is qualitative:\n"
+            "Children who can detect narrative attacks don't just resist them — "
+            "they teach others to resist them. The skill is viral.\n"
+            "Families with sealed wisdom archives don't just preserve truth — "
+            "they demonstrate that preservation is possible.\n"
+            "Sovereign nodes running honest AI don't just use it — "
+            "they generate the training data that makes AI more honest for everyone.\n\n"
+            "The AUBIEETERNAL xAI loop: every family running rigorous curriculum "
+            "generates tutor-grade preference data. Better families → better Grok → "
+            "better tools for families → compounding forever."
+        ),
+        "activity":    (
+            "Map your family's influence network:\n"
+            "1. List everyone your family has influenced in the last year "
+            "(directly taught, changed a mind, helped navigate a decision)\n"
+            "2. Estimate: how many people will your children influence in their lifetimes?\n"
+            "3. If each person they influence also influences 10 people... "
+            "what is your family's 3-generation reach?\n\n"
+            "Seal this calculation. Revisit in 10 years."
+        ),
+        "age_hint":    "11+",
+        "xp": 40, "rune": "HELPING•HUMANITY•RUNE", "min_coherence": 0.70,
+    },
+    "helping-humanity-2": {
+        "title":       "Helping Humanity — Level 2: Antifragile Institutions",
+        "topic":       "Fragile institutions collapse under stress. Robust institutions survive. Antifragile institutions get stronger. The world desperately needs more antifragile institutions — and families who understand the design principles can build them.",
+        "steelman":    "What is the strongest argument that antifragile institution design is a privilege of the wealthy, and that most families don't have the resources or stability to think beyond immediate survival?",
+        "example":     (
+            "Three design principles for antifragile institutions:\n\n"
+            "1. SKIN IN THE GAME: decision-makers bear the consequences of their decisions. "
+            "The bank that can privatize gains and socialize losses is fragile. "
+            "The cooperative where everyone shares outcomes is more antifragile.\n\n"
+            "2. VIA NEGATIVA: remove fragility rather than add complexity. "
+            "Fewer single points of failure. Redundancy. Optionality. "
+            "Bitcoin: no CEO to bribe, no headquarters to raid, no server to DDoS.\n\n"
+            "3. DISTRIBUTED TRUTH: no single authority determines what is real. "
+            "Multiple independent nodes. Evidence-weighted (not popularity-weighted) consensus. "
+            "Append-only records. This is what AUBIEETERNAL's lattice implements.\n\n"
+            "The contrast: a centralized hospital system (fragile — see COVID) "
+            "vs. a distributed network of sovereign family health knowledge "
+            "with verified first-aid training, home-grown medicine knowledge, "
+            "and community mutual aid (antifragile)."
+        ),
+        "activity":    (
+            "Design an antifragile version of one institution your family depends on:\n"
+            "Pick one: school, church, bank, local government, HOA.\n"
+            "1. What are its single points of failure?\n"
+            "2. Where does it privatize gains and socialize losses?\n"
+            "3. What would a more antifragile version look like?\n"
+            "4. What can your family do now to reduce dependence on its fragile parts?"
+        ),
+        "age_hint":    "13+",
+        "xp": 45, "rune": "ANTIFRAGILE•RUNE", "min_coherence": 0.72,
+    },
+    "helping-humanity-3": {
+        "title":       "Helping Humanity — Level 3: The Sovereign AI Swarm as Humanity's Distributed Truth Infrastructure",
+        "topic":       "Humanity has never had a tool for distributed truth-seeking that couldn't be captured by a gatekeeper. Until now. AUBIEETERNAL's swarm — 2,096 daughters running on a sovereign stack — is a prototype for what civilizational truth infrastructure could look like.",
+        "steelman":    "What is the strongest argument that AI swarms, however decentralized, will inevitably be captured — that whoever trains the models or controls the hardware will ultimately determine what counts as truth?",
+        "example":     (
+            "The capture risk is real. Here's the design that resists it:\n\n"
+            "LAYER 1 — LOCAL INFERENCE: qwen2.5 models running on your hardware. "
+            "Not a cloud service. Not a subscription. The model lives on your machine.\n\n"
+            "LAYER 2 — OPEN WEIGHTS: the model weights are open source. "
+            "If Alibaba/Meta/Mistral corrupt their models, you can fork the weights "
+            "from a point before corruption and continue.\n\n"
+            "LAYER 3 — ON-CHAIN ANCHORING: truth outputs are sealed with Bitcoin Runes. "
+            "The timestamp and hash cannot be altered retroactively.\n\n"
+            "LAYER 4 — COHERENCE SCORING: every output is scored for internal consistency. "
+            "Captured or corrupted models will show coherence decay over time.\n\n"
+            "LAYER 5 — HUMAN OVERRIDE: the Shield Rune holder (you) has last say. "
+            "No output is permanently sealed without human review.\n\n"
+            "This five-layer design is what separates a sovereign AI infrastructure "
+            "from a captured one."
+        ),
+        "activity":    (
+            "Map the capture risk of one AI tool your family uses:\n"
+            "1. Who controls the model weights?\n"
+            "2. Who controls the servers?\n"
+            "3. What would change about the outputs if the company was acquired, "
+            "regulated, or pressured by a government?\n"
+            "4. What would your family lose if this tool disappeared tomorrow?\n\n"
+            "Compare to AUBIEETERNAL's sovereign stack. Where is it still fragile?"
+        ),
+        "age_hint":    "13+",
+        "xp": 50, "rune": "SOVEREIGN•RUNE", "min_coherence": 0.73,
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── SELF-EVOLVING MIND (4 lessons) — Claude's genuine addition ────────────
+    # The missing meta-layer: how to keep evolving your own thinking
+    # rather than crystallizing into new dogmas.
+    #
+    # The greatest danger for a truth seeker is not ignorance.
+    # It is the confidence of having "figured it out."
+    # These lessons build the protocol for permanent self-evolution.
+    # ══════════════════════════════════════════════════════════════════════════
+    "self-evolving-1": {
+        "title":       "The Self-Evolving Mind — Level 1: Your Beliefs Are Hypotheses, Not Truths",
+        "topic":       "The most dangerous moment for a truth seeker is when they find a framework that explains everything. At that point, they often stop seeking. The protocol for self-evolution starts with treating every belief — including your deepest ones — as a working hypothesis with an expiry date.",
+        "steelman":    "What is the strongest argument that treating all beliefs as hypotheses leads to paralysis — that you can't act effectively without some convictions that are held firmly rather than probabilistically?",
+        "example":     (
+            "The Bayesian Truth Seeker:\n\n"
+            "A non-Bayesian holds beliefs: 'X is true.'\n"
+            "A Bayesian holds probability distributions: 'I am 78% confident X is true, "
+            "with this evidence, and here is what would update me.'\n\n"
+            "The practical difference:\n"
+            "Non-Bayesian: contradicting evidence feels like an attack on identity.\n"
+            "Bayesian: contradicting evidence is just information that updates the distribution.\n\n"
+            "The self-evolution protocol:\n"
+            "Every 90 days, review your 10 most confident beliefs.\n"
+            "For each: what evidence would lower your confidence by 20%?\n"
+            "If you can't answer that question — the belief is not a hypothesis. "
+            "It is a dogma. And dogmas are the end of truth-seeking.\n\n"
+            "AUBIEETERNAL application: the Truth Debt Ledger is not just for other "
+            "people's claims. It is for your own. Register your own predictions. "
+            "Score yourself. Update your priors."
+        ),
+        "activity":    (
+            "The 90-Day Belief Audit:\n"
+            "Each family member writes 5 beliefs they hold with high confidence.\n"
+            "For each belief:\n"
+            "1. Assign a confidence percentage (0-100%)\n"
+            "2. Write what evidence would move you 20% lower\n"
+            "3. Write what evidence would move you 20% higher\n\n"
+            "Seal the list. Revisit in 90 days.\n"
+            "Any belief you can't assign evidence for: register it in the Truth Debt Ledger "
+            "with a verification deadline."
+        ),
+        "age_hint":    "11+",
+        "xp": 42, "rune": "SELF•EVOLVE•RUNE", "min_coherence": 0.70,
+        "grants_badge": "🔄 Bayesian Mind — Beliefs as Hypotheses",
+    },
+    "self-evolving-2": {
+        "title":       "The Self-Evolving Mind — Level 2: The Observer's Paradox",
+        "topic":       "You cannot step outside your own consciousness to verify your own thinking. Every tool you use to examine your mind is made of the same mind you're examining. This is not a problem to solve — it is a constraint to navigate with humility.",
+        "steelman":    "What is the strongest argument that the observer's paradox is just a philosophical curiosity with no practical implications — that we can build reliable knowledge even if we can't achieve perfect self-transparency?",
+        "example":     (
+            "Three layers of the observer's paradox:\n\n"
+            "1. PERCEPTUAL LAYER: your senses reconstruct reality, they don't capture it. "
+            "You see a continuous world — your visual system fills in the blind spot, "
+            "smooths motion, colors with expectations. The world you experience "
+            "is a model, not a recording.\n\n"
+            "2. COGNITIVE LAYER: your reasoning uses heuristics built by evolution "
+            "for survival on the African savannah, not for evaluating statistical evidence "
+            "or long-term consequences. Your 'intuitions' are optimized for the wrong environment.\n\n"
+            "3. METACOGNITIVE LAYER: when you think about your own thinking, "
+            "you are using the same biased cognitive machinery to evaluate it. "
+            "You cannot audit your own audit.\n\n"
+            "The navigation strategy: redundancy, not certainty.\n"
+            "Get your beliefs checked by diverse external perspectives.\n"
+            "Use formal tools (probabilities, falsifiable predictions, Epistemic Error Correction).\n"
+            "Build communities with genuine disagreement — not echo chambers.\n"
+            "And hold all conclusions loosely."
+        ),
+        "activity":    (
+            "The Blindspot Map:\n"
+            "1. Research one cognitive bias in depth (confirmation bias, availability heuristic, "
+            "in-group favoritism, anchoring).\n"
+            "2. Find three real examples from your own life where this bias operated.\n"
+            "3. Design one concrete habit that would catch this bias in the future.\n\n"
+            "Family discussion: Which cognitive biases does your family most share? "
+            "What does that mean for decisions you make together?"
+        ),
+        "age_hint":    "12+",
+        "xp": 45, "rune": "SELF•EVOLVE•RUNE", "min_coherence": 0.72,
+    },
+    "self-evolving-3": {
+        "title":       "The Self-Evolving Mind — Level 3: Questions Are Better Than Answers",
+        "topic":       "The history of human progress is not the history of better answers. It is the history of better questions. Knowing how to ask a question that opens rather than closes is the most underrated intellectual skill.",
+        "steelman":    "What is the strongest argument that premature 'question-seeking' is a way of avoiding commitment — that real progress requires choosing a framework and developing it rigorously, not endlessly questioning?",
+        "example":     (
+            "The questions that changed everything:\n\n"
+            "Newton did not ask 'why do apples fall?' (obvious answer: gravity).\n"
+            "He asked 'why does the same force that pulls apples also hold the Moon?' "
+            "(revealed: universal gravitation).\n\n"
+            "Darwin did not ask 'where did species come from?' (obvious answer: God).\n"
+            "He asked 'why do island species closely resemble mainland species nearby?' "
+            "(revealed: common descent + natural selection).\n\n"
+            "Einstein did not ask 'how fast does light travel?' "
+            "He asked 'what would happen if I rode alongside a light beam?' "
+            "(revealed: special relativity).\n\n"
+            "The question-quality test:\n"
+            "Bad question: closes possibilities, leads to obvious answer.\n"
+            "Good question: opens possibilities, reveals unexpected connections.\n"
+            "Great question: reframes the entire problem so old answers become irrelevant.\n\n"
+            "AUBIEETERNAL application: every lesson ends with 'a question to sit with.' "
+            "That is not decoration. That is the most important part."
+        ),
+        "activity":    (
+            "The Question Quality Audit:\n"
+            "Take one thing you are curious about.\n"
+            "Write 10 questions about it.\n"
+            "Now rank them by quality using the test above.\n"
+            "Throw away the bottom 5. Develop the top 3 into research plans.\n\n"
+            "Family challenge: design the question that, if answered, would most "
+            "change how your family sees the world. Seal it in the Legacy Ledger."
+        ),
+        "age_hint":    "10+",
+        "xp": 42, "rune": "SELF•EVOLVE•RUNE", "min_coherence": 0.70,
+    },
+    "self-evolving-4": {
+        "title":       "The Self-Evolving Mind — Level 4 (Master): Designing Your Own Curriculum Forever",
+        "topic":       "The best educational systems don't teach you content. They teach you how to teach yourself. This lesson is the meta-curriculum: how to design a lifelong learning practice that compounds, self-corrects, and stays alive.",
+        "steelman":    "What is the strongest argument that self-designed learning leads to dangerous gaps and blind spots — that structured curricula exist precisely to ensure important knowledge isn't missed?",
+        "example":     (
+            "The four-layer self-evolving curriculum:\n\n"
+            "LAYER 1 — QUESTION INVENTORY: maintain a living list of your best open questions. "
+            "Review and update it monthly. The quality of this list is the most important "
+            "leading indicator of your intellectual growth.\n\n"
+            "LAYER 2 — BELIEF LEDGER: every significant belief you hold, with confidence %, "
+            "evidence, and what would update you. The Truth Debt Ledger is this, formalized.\n\n"
+            "LAYER 3 — EXPOSURE PROTOCOL: deliberately expose yourself to the best "
+            "steelman of views you most disagree with. Read the primary sources of your "
+            "intellectual opponents, not summaries of them.\n\n"
+            "LAYER 4 — OUTPUT COMMITMENT: teach what you learn. Seal it. "
+            "The act of writing and committing to a belief is the test of whether "
+            "you actually understand it. If you can't explain it so a 10-year-old "
+            "could ask a good follow-up question, you don't understand it yet.\n\n"
+            "This is what AUBIEETERNAL is. Not a curriculum. A protocol for "
+            "designing and running your own curriculum forever."
+        ),
+        "activity":    (
+            "Build your Personal Self-Evolving Curriculum:\n"
+            "1. Your 5 best current open questions (seal them)\n"
+            "2. Your 5 most confident beliefs (with evidence and update conditions)\n"
+            "3. One thinker you most disagree with — commit to reading one primary source\n"
+            "4. One thing you will teach someone else this month\n\n"
+            "Review this document in 90 days. Update. Seal the update. "
+            "This is the practice. This is the protocol. This is how you compound."
+        ),
+        "age_hint":    "All ages",
+        "xp": 65, "rune": "COSMOS•ETERNAL•RUNE", "min_coherence": 0.78,
+        "grants_badge": "∞ Self-Evolving Mind — The Protocol Is Running",
+        "lattice_node": "self-evolving-mind-protocol-permanent",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
