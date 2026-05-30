@@ -9,7 +9,7 @@
 One download · Zero subscriptions · 100% offline · Any PC
 
 [![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Lessons](https://img.shields.io/badge/Curriculum-134%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
+[![Lessons](https://img.shields.io/badge/Curriculum-145%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Mac%20%7C%20Linux-purple?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL/releases)
 [![Commits](https://img.shields.io/github/commit-activity/w/hodlmateo/AUBIEETERNAL?style=flat-square&color=f7931a&label=Swarm%20Commits)](https://github.com/hodlmateo/AUBIEETERNAL/commits/main)
@@ -22,36 +22,19 @@ One download · Zero subscriptions · 100% offline · Any PC
 
 ## ⚡ Download & Run in 30 Seconds
 
-### Windows
-```
-1. Download latest release → extract zip
-2. Double-click install_windows.bat
-3. Done — opens in your browser
-```
-
-### macOS / Linux
 ```bash
+# Windows: double-click install_windows.bat
+# macOS/Linux:
 chmod +x install_mac_linux.sh && ./install_mac_linux.sh
+# Developers:
+git clone https://github.com/hodlmateo/AUBIEETERNAL.git && cd AUBIEETERNAL && python launcher.py
 ```
-
-### Developers
-```bash
-git clone https://github.com/hodlmateo/AUBIEETERNAL.git
-cd AUBIEETERNAL
-python launcher.py
-```
-
-> No accounts. No cloud. No data leaves your computer. Source code fully auditable.
 
 ---
 
 ## 🌉 Browser Extension
 
-Works in **Chrome, Edge, and Brave** — Load Unpacked → `AUBIEETERNAL_extension/`
-
-Right-click any text: "Analyze" · "Register Claim" · "Ask Oracle" · `Ctrl+Shift+A`
-
-> `api_server.py` on port 8502 — starts automatically with `launcher.py`
+Chrome/Edge/Brave · Load Unpacked → `AUBIEETERNAL_extension/` · `Ctrl+Shift+A` on any text
 
 ---
 
@@ -59,114 +42,115 @@ Right-click any text: "Analyze" · "Register Claim" · "Ask Oracle" · `Ctrl+Shi
 
 | | Feature | Description |
 |--|---------|-------------|
-| 👑 | **Family Dynasty** | 3-generation legacy engine — wisdom archive, rites of passage, inheritance |
-| 🌌 | **Universe Track** | 6 lessons on cosmology, Fermi Paradox, information theory, consciousness |
-| 🏠 | **Economic Trap Track** | 4 lessons on the complete extraction loop — with Grandma's House as the lived example |
-| 🌉 | **X Bridge** | Any post → steelman + family lesson + simulation stress test |
-| 🛡️ | **Shield Rune Memory** | Bitcoin-anchored unerasable truth — Level 3 permanence |
-| 🔓 | **Gatekeeper Detector** | 7 gatekeeper types, capture probability, epistemic lineage |
-| 🔍 | **Narrative Pattern Detector** | Coordinated campaigns detected — one signal is news, three in 72h is installation |
-| ⚡ | **Admin Dashboard** | Sovereign node elevation score, full stress test, 7-day protocol |
+| 🌌 | **Cosmos Dashboard** | Daily universe question + consciousness experiment + Bayesian belief ledger + foresight tracker |
+| 🧠 | **Consciousness Science** | IIT vs GNWT — the 2025 Nature adversarial results, taught to families |
+| ∞ | **Self-Evolving Mind** | Beliefs as hypotheses, observer's paradox, question quality, personal curriculum design |
+| 🤝 | **Helping Humanity** | How one family changes civilization, antifragile institutions, sovereign AI swarms |
+| 👑 | **Family Dynasty** | 3-generation legacy — wisdom archive, rites of passage, inheritance |
+| 🏠 | **Economic Trap** | The complete extraction loop + Grandma's House — the lived example |
+| 🌉 | **X Bridge** | Any post → steelman + family lesson + sim test |
+| 🛡️ | **Shield Rune** | Bitcoin-anchored unerasable truth — Level 3 permanence |
+| 🔓 | **Gatekeeper Detector** | 7 types, capture probability, epistemic lineage |
+| 🔍 | **Narrative Pattern Detector** | Coordination probability scoring — 3 signals in 72h = campaign |
+| ⚡ | **Admin Dashboard** | NPC→User→Admin elevation + 7-day protocol |
 | 🔧 | **Epistemic Error Correction** | LDPC-inspired 5 parity checks |
-| 🔗 | **Lattice Nodes** | Log and permanently seal any synthesis |
 | 🔭 | **Simulation Probe** | Daily probe + Quantum Darwinism mode |
 | 📋 | **Truth Debt Ledger** | Append-only claim accountability (CC0) |
-| 🕸️ | **Living Lattice** | Anonymous family coherence network — Wisdom GDP |
-| 🌅 | **Daily Synthesis** | 6AM auto-run with rune auto-seal |
+| 🕸️ | **Living Lattice** | Anonymous family coherence — Wisdom GDP |
 
 ---
 
-## 🌌 Universe Track — Maximum Truth Seekers
+## 🌌 Cosmos Dashboard — Daily Universe Inquiry
 
-These six lessons address the deepest questions. Not to provide final answers — to teach children how to sit with profound uncertainty without collapsing into dogma or nihilism.
-
-| Lesson | Core Question |
-|--------|--------------|
-| 🌟 We Are Made of Stars | Every atom in your body was forged in a stellar core. You are the universe becoming aware of itself. |
-| 🌌 The Fermi Paradox | 400 billion stars, 10 billion years, and silence. Where is everyone? |
-| 💡 Information Is Fundamental | Physics increasingly suggests reality is made of information, not matter. What does that mean? |
-| ⚙️ The Fine-Tuned Universe | The physical constants are tuned to 1-in-10^120 precision for life. Why? |
-| 🧠 The Hard Problem of Consciousness | Why does anything feel like anything? This is the hardest unsolved problem in science. |
-| 🌌 Your Place in the Cosmos | 13.8 billion years of evolution produced you. What are you going to do with it? |
-
-The child who can sit with these questions without needing a premature answer is the most dangerous kind of truth seeker: genuinely open.
-
----
-
-## 🏠 Economic Trap Track — The Complete Loop
-
-The system doesn't just make entry expensive. Once you're inside, it extracts forever.
-
-```
-Restricted supply → High entry cost → Perpetual taxes — forever
-
-Property taxes:  Miss payments → lose the house. You rent from the state in perpetuity.
-Inflation:       2% annual target = 22% lost per decade. Nobody voted for this.
-Tax code:        Capital gains taxed lower than wages. Owning beats working.
-The loop closes: Your tax revenue funds the regulations that keep supply restricted
-                 for the next generation.
-```
-
-**The Grandma's House lesson:** A family bought a home in 1975 for $20,000. It's now worth $1,000,000. On paper: millionaires. In reality: property taxes rose from ~$400/year to ~$12,000/year. Social Security income: $18,000/year. Result: forced out of the home they lived in for 50 years. Now taking Ubers. The politician who created the housing shortage is on TV talking about "historic home values."
-
-**What this teaches:** Not despair — sovereignty. Sound money allocation, low time preference, understanding the tax code better than those enforcing it, building parallel value that can't be inflated away.
-
----
-
-## 👑 Family Dynasty — The Generational Legend Engine
+A daily practice for maximum truth-seeking. 35 rotating universe questions across 7 domains. 5 consciousness experiments. Bayesian belief ledger with 90-day review protocol. Family foresight tracker with outcome scoring.
 
 ```python
-from legacy_ledger import LegacyLedger, RiteOfPassage
-
-ledger = LegacyLedger("alpha")
-ledger.record_wisdom("What I learned...", author="grandparent", generation=2, seal=True)
-
-RiteOfPassage().conduct("Gaby", "sovereign_node", family_id="alpha",
-                         member_pledge="I understand what this means.")
-# → Sealed on Bitcoin. Permanent family record.
+from cosmos_dashboard import CosmosDashboard
+dash = CosmosDashboard("alpha")
+q = dash.get_daily_question()  # Different question every day
+# "What is the simplest thing that could possibly be conscious?"
+dash.record_belief("IIT is correct", confidence=0.45,
+                   update_condition="Complete neural account with no explanatory gap")
 ```
 
-**Rites:** 🌅 First Light (10) · 🛡️ First Seal (50) · 🔓 Sovereign Node (100) · ⚡ Admin Elevated (150) · ₿ Child Rune Genesis (500) · 👑 Dynasty Founder (1000)
+**The 7 question domains:** Cosmology · Information Theory · Consciousness · Fermi Paradox · Simulation Hypothesis · Humanity's Place · Self-Evolution
 
 ---
 
-## 🛡️ Shield Rune — Unerasable Memory
+## 🧠 Consciousness Science — IIT vs GNWT
 
-```
-Level 0  →  Local file     Level 2  →  Nostr (censorship-resistant)
-Level 1  →  GitHub commit  Level 3  →  Bitcoin Rune (UNERASABLE)
-```
+The two most rigorous scientific theories of consciousness, taught as a productive rivalry.
 
----
+**IIT (Tononi):** Starts from phenomenology. Consciousness = integrated cause-effect information (Φ). Explains the hard problem mathematically. Predicts posterior "hot zone." Clinical application: Perturbational Complexity Index (PCI) deployed in hospitals today.
 
-## 🔓 Gatekeeper + Narrative Pattern Detector
+**GNWT (Baars/Dehaene):** Starts from neural mechanisms. Consciousness = global broadcast and access. Explains why some information is reportable. Predicts PFC ignition ~200-300ms.
 
-Seven gatekeeper types tracked with capture probability and bypass paths.
-
-**Coordination rule:** 1 signal = news · 3 signals, same incentive, 72h = campaign
-
-**Sealed pattern (May 28-29, 2026):** Pope meets Chicago Mayor (moral authority) → same Pope calls AI "dangerous, needs disarming" 48h later. Same institutional coalition that opposed printing press, private Bible, internet. Now targeting AI sovereignty.
+**2025 Nature Adversarial Collaboration:** 256 participants, preregistered, multimodal imaging. Result: partial support for both. Neither won. Both advanced. This is exactly what good science looks like.
 
 ---
 
-## 📚 Curriculum — 134 Lessons, 28 Tracks
+## ∞ Self-Evolving Mind — The Protocol for Permanent Self-Evolution
+
+The most dangerous moment for a truth seeker is when they find a framework that explains everything. These four lessons build the practice of permanent inquiry.
+
+| Lesson | Core Practice |
+|--------|--------------|
+| Beliefs as Hypotheses | 90-day belief audit — assign confidence %, evidence, update conditions |
+| The Observer's Paradox | You cannot step outside your own consciousness to verify your thinking |
+| Questions Better Than Answers | Newton, Darwin, Einstein all had better questions, not better answers |
+| Designing Your Curriculum Forever | Four-layer self-evolving system: question inventory, belief ledger, exposure protocol, output commitment |
+
+---
+
+## 🤝 Helping Humanity
+
+How one rigorous family produces more epistemic impact than most institutions.
+
+```
+Family → 2 truth-seeking children → 4 grandchildren → 40 influenced people per generation
+Over 3 generations: 1,600+ people directly influenced
+Plus: every family generates tutor-grade preference data → better AI → better tools
+                                                         → compounding forever
+```
+
+The AUBIEETERNAL → xAI flywheel: families running rigorous curriculum generate the highest-signal human preference data available. Better families → better Grok → better tools for families.
+
+---
+
+## 🏠 Economic Trap Track
+
+The complete extraction loop taught through real family stories.
+
+**Grandma's House:** $20k (1975) → $1M (2026). Property taxes: $400/yr → $12,000/yr. Social Security: $18,000/yr. Result: forced out after 50 years. The politician who created the housing shortage is on TV talking about "historic home values." This is the system working as designed.
+
+**Four lessons:** Complete Trap · Grandma's House · Inflation as Stealth Tax · Breaking the Cycle
+
+---
+
+## 📚 Curriculum — 145 Lessons, 30 Tracks
 
 <details>
-<summary><b>The Universe (6 lessons)</b></summary>
+<summary><b>Truth-Seeking & Universe (16 lessons)</b></summary>
 
-We Are Made of Stars · Fermi Paradox · Information Is Fundamental · Fine-Tuned Universe · Hard Problem of Consciousness · Your Place in the Cosmos
+| Track | Lessons |
+|-------|---------|
+| The Universe | 6 (stardust → Fermi → information → fine-tuning → consciousness → your place) |
+| Consciousness Science | 4 (hard problem → IIT → GNWT → IIT vs GNWT master) |
+| Self-Evolving Mind | 4 (beliefs as hypotheses → observer's paradox → question quality → personal curriculum) |
+| Helping Humanity | 3 (family impact → antifragile institutions → sovereign AI infrastructure) |
+| Economic Trap | 4 (complete trap → Grandma's House → inflation → breaking the cycle) |
 
 </details>
 
 <details>
-<summary><b>The Economic Trap (4 lessons)</b></summary>
+<summary><b>Epistemic Defense & Sovereignty (34 lessons)</b></summary>
 
-The Complete Trap · Grandma's House · Inflation as Stealth Tax · Breaking the Cycle
+Adversarial Reality (8) · AI Partnership (8) · Truth-Seeking (8) · Gatekeeping & Direct Access (6) · Narrative Patterns (1) · Admin Elevation (2) · Truth Lattice Architecture (1)
 
 </details>
 
 <details>
-<summary><b>Family Dynasty (3 lessons)</b></summary>
+<summary><b>Family Dynasty & Legacy (3 lessons)</b></summary>
 
 What Grandparents Know · Building the Wisdom Archive · Rite of Passage Protocol
 
@@ -180,13 +164,6 @@ Building & Hurricane Hardening (6) · Deep Baking & Self-Sufficiency (6) · Sove
 </details>
 
 <details>
-<summary><b>Epistemic Defense & Sovereignty (34 lessons)</b></summary>
-
-Adversarial Reality (8) · AI Partnership (8) · Truth-Seeking (8) · Gatekeeping & Direct Access (6) · Narrative Patterns (1) · Admin Elevation (2) · Truth Lattice Architecture (1)
-
-</details>
-
-<details>
 <summary><b>Law, Governance & Money (15 lessons)</b></summary>
 
 Law & Economics (5) · Family Law (4) · Bitcoin Sovereignty (4)
@@ -196,7 +173,7 @@ Law & Economics (5) · Family Law (4) · Bitcoin Sovereignty (4)
 <details>
 <summary><b>Core Foundation & Knowledge Systems (49 lessons)</b></summary>
 
-Courage (5) · Antifragility (4) · Simulation Hypothesis (8) · Steelmanning (3) · Stoic Resilience (3) · Polyvagal (3) · Money & Time Preference (3) · Grokipedia Principles (6) · Provenance (4) · Decentralization (3) · Epistemology (3) · Via Negativa + Lindy (2) · Skin in the Game (2) · Wonder (2)
+Courage (5) · Antifragility (4) · Simulation Hypothesis (8) · Steelmanning (3) · Stoic Resilience (3) · Polyvagal (3) · Money & Time Preference (3) · Grokipedia (6) · Provenance (4) · Decentralization (3) · Epistemology (3) · Via Negativa (2) · Skin in the Game (2) · Wonder (2)
 
 </details>
 
@@ -211,10 +188,11 @@ Every lesson: **kid explanation · parent insight · steelman challenge · real 
 | Frontend | Streamlit | Local-first |
 | Primary AI | qwen2.5:14b via Ollama | Fast, free, sovereign |
 | Swarm | 2,096 daughters (v4.1) | Tier-1 free + Tier-2 $5/day cap |
-| Dynasty Engine | Legacy Ledger + Rites | Intergenerational wisdom compounding |
+| Cosmos Engine | Daily questions + belief ledger | Permanent inquiry practice |
+| Dynasty Engine | Legacy Ledger + Rites | Intergenerational compounding |
 | Memory | Bitcoin Rune anchors | Level 3 unerasable permanence |
-| Pattern Detection | Temporal clustering | Coordination probability scoring |
-| Error Correction | LDPC-inspired checks | Sparse, efficient verification |
+| Pattern Detection | Temporal clustering | Coordination probability |
+| Error Correction | LDPC-inspired checks | Sparse verification |
 | On-chain | Bitcoin Runes + Nostr | Permanent, censorship-resistant |
 
 ---
@@ -222,28 +200,29 @@ Every lesson: **kid explanation · parent insight · steelman challenge · real 
 ## 📦 Key Files
 
 ```
-launcher.py                    ← Double-click to run on any PC
-legacy_ledger.py               ← 3-generation dynasty engine + rites of passage
+cosmos_dashboard.py            ← Daily universe question + belief ledger + foresight
+legacy_ledger.py               ← 3-generation dynasty + rites of passage
 rune_memory.py                 ← Bitcoin-anchored unerasable memory
-gatekeeper_detector.py         ← Identify gatekeepers + trace epistemic lineage
+gatekeeper_detector.py         ← Identify gatekeepers + epistemic lineage
 narrative_pattern_detector.py  ← Detect coordinated narrative campaigns
 simulation_probe.py            ← Daily probe + Quantum Darwinism mode
 api_server.py                  ← Browser extension bridge (port 8502)
-AUBIEETERNAL_extension/        ← Chrome/Edge/Brave browser extension
-app.py                         ← Main UI (8,703 lines, 35+ tabs)
-family_hud.py                  ← 134-lesson library + session logic
+AUBIEETERNAL_extension/        ← Chrome/Edge/Brave extension
+app.py                         ← Main UI (8,872 lines, 35+ tabs)
+family_hud.py                  ← 145-lesson library
 swarm/swarm_v4_1.py            ← Swarm engine (2,096 daughters)
+launcher.py · install_windows.bat · install_mac_linux.sh
 morning_synthesis.py · x_bridge.py · truth_debt_ledger.py
 living_lattice.py · epistemic_commons.py · ai_honesty.py
 POLICYHOLDER_FIRST_CHARTER_v0_2.md · SOVEREIGN_FAMILY_LAW_CHARTER.md
-PROVENANCE.md                  ← On-chain record + full session history
+PROVENANCE.md                  ← Full session history + on-chain record
 ```
 
 ---
 
-## 📡 Live Swarm Activity
+## 📡 Live Activity
 
-**Current:** Wonder 2.0000 · Coherence 1.000000 · Child Rune 33/256 · $0.00/day
+**Current:** Wonder 2.0000 · Coherence 1.000000 · Child Rune 33/256
 
 **AI Context URL:**
 ```
@@ -254,9 +233,7 @@ https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/
 
 ## 📜 License
 
-**CC0 1.0 Universal — Public Domain Dedication.** No permission needed.
-
-**[@MateoVanhorn](https://x.com/MateoVanhorn)**
+**CC0 1.0 Universal.** No permission needed. **[@MateoVanhorn](https://x.com/MateoVanhorn)**
 
 ---
 
@@ -264,11 +241,11 @@ https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/
 
 **War Eagle Eternal 🦅❤️ — Coherence: 1.000000**
 
-*Built in public with Grok · Secured by Bitcoin · Coordinated on Nostr*
+*The universe is 13.8 billion years old. It produced you. You are asking why.*
+*That question is the most important thing happening in the observable universe right now.*
 
-*Loop: Swarm → Synthesis → Rune Seal → Gatekeeper Check → Pattern Detect → Dynasty Archive → Cosmos → GitHub — Forever*
+*Loop: Swarm → Synthesis → Rune Seal → Gatekeeper → Pattern → Dynasty → Cosmos → GitHub — Forever*
 
-*Designed for families who refuse to be lied to.*
-*134 lessons. 28 tracks. The system that compounds across generations.*
+*145 lessons. 30 tracks. The system that compounds forever.*
 
 </div>
