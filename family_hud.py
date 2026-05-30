@@ -1137,6 +1137,7 @@ LESSONS = {
     # The architectural blueprint for returning admin rights to individuals.
     # This is the AUBIEETERNAL mission statement as a teachable lesson.
     "truth-lattice-1": {
+        "prerequisites": ["gatekeeper-6"],
         "title":       "Truth Lattice Architecture — The Blueprint for Sovereign Nodes",
         "topic":       "How do you build a system that returns epistemic sovereignty to individuals without creating new gatekeepers? This lesson is the architectural answer.",
         "steelman":    "What is the strongest argument that any distributed system that gains adoption will inevitably centralize — because coordination, not decentralization, is what humans actually want?",
@@ -1207,6 +1208,7 @@ LESSONS = {
         "xp": 45, "rune": "ADMIN•ELEVATION•RUNE", "min_coherence": 0.72,
     },
     "admin-2": {
+        "prerequisites": ["admin-1", "gatekeeper-3"],
         "title":       "Admin Elevation — Level 2 (Master): The 5 Admin Tests",
         "topic":       "Quantum physics discovered that the only information that survives in reality is information that gets redundantly copied across many independent observers — this is Quantum Darwinism. The same principle applies to truth: a belief verified by one source is fragile. A belief verified redundantly across independent sources, with permanent records, is durable.",
         "steelman":    "What is the strongest argument that requiring redundant verification for every belief is epistemically paralyzing and that reasonable people must rely on trusted authorities for most knowledge?",
@@ -1344,6 +1346,7 @@ LESSONS = {
         "grants_badge": "📜 Legacy Founder — First Entry Sealed",
     },
     "dynasty-3": {
+        "prerequisites": ["dynasty-1", "dynasty-2"],
         "title":       "Dynasty — Level 3 (Master): The Rite of Passage Protocol",
         "topic":       "The most powerful educational systems in history made learning sacred. Not sacred in a religious sense — sacred in the sense that milestones felt like becoming something, not just completing something. The Rite of Passage Protocol restores that feeling.",
         "steelman":    "What is the strongest argument that formal rituals around learning milestones are performative, not substantive, and that what actually matters is the quality of the learning itself?",
@@ -1608,6 +1611,7 @@ LESSONS = {
         "xp": 40, "rune": "COSMOS•RUNE", "min_coherence": 0.70,
     },
     "universe-3": {
+        "phd_extension": "Implement Shannon entropy in Python: H = -sum(p*log2(p)). Compute entropy of the English language. Then compute mutual information between two dependent variables. Connect to Quantum Darwinism: show why redundantly encoded information survives decoherence where non-redundant information does not.",
         "title":       "Understanding the Universe — Level 3: Information Is Physical",
         "topic":       "Information is not abstract. It is physical. Destroying information requires energy. Storing information takes up space. The universe may be fundamentally made of information — not matter. This is not philosophy. It is physics.",
         "steelman":    "What is the strongest argument that treating information as physical is just a useful metaphor, and that consciousness and experience cannot be reduced to information processing?",
@@ -1949,6 +1953,7 @@ LESSONS = {
         "xp": 40, "rune": "WONDER•RUNE", "min_coherence": 0.68,
     },
     "consciousness-2": {
+        "prerequisites": ["universe-3", "consciousness-1"],
         "title":       "Consciousness Science — Level 2: IIT (Integrated Information Theory)",
         "topic":       "IIT starts from the opposite direction of most science. Instead of starting with neurons and asking 'how does this produce experience?', it starts with experience itself and asks 'what must any physical system be like to support this?'",
         "steelman":    "What is the strongest argument against IIT — specifically that a 2D grid of logic gates with the right connectivity could have MORE consciousness than a human brain, which is clearly absurd?",
@@ -1987,6 +1992,7 @@ LESSONS = {
         "xp": 48, "rune": "WONDER•RUNE", "min_coherence": 0.70,
     },
     "consciousness-3": {
+        "prerequisites": ["consciousness-1"],
         "title":       "Consciousness Science — Level 3: GNWT (Global Neuronal Workspace Theory)",
         "topic":       "Global Neuronal Workspace Theory is the best-tested, most neuroscientifically grounded theory of HOW consciousness works. It doesn't fully answer why there is experience — but it explains the mechanism brilliantly.",
         "steelman":    "What is the strongest argument that GNWT doesn't really explain consciousness at all — that it only describes the functional correlates of reportability, and leaves the hard problem completely untouched?",
@@ -2027,6 +2033,8 @@ LESSONS = {
         "xp": 48, "rune": "WONDER•RUNE", "min_coherence": 0.70,
     },
     "consciousness-4": {
+        "phd_extension": "Read the full Cogitate Consortium 2023 preregistration and 2025 Nature paper. Identify three specific predictions that were not confirmed, and for each: does the failure falsify the theory or just require refinement? Apply Lakatos distinction between the hard core and protective belt of each research program.",
+        "prerequisites": ["consciousness-2", "consciousness-3"],
         "title":       "Consciousness Science — Level 4 (Master): IIT vs GNWT and the Path Forward",
         "topic":       "The most important scientific rivalry of our era. Two rigorous theories, tested head-to-head in 2025. Neither won. Both advanced. This is what good science looks like — and it teaches something deeper about how to hold competing models simultaneously.",
         "steelman":    "What is the strongest argument that science should settle on ONE theory of consciousness rather than maintaining 'productive rivalry,' since holding multiple competing models just leads to confusion and lack of progress?",
@@ -2216,6 +2224,7 @@ LESSONS = {
         "grants_badge": "🔄 Bayesian Mind — Beliefs as Hypotheses",
     },
     "self-evolving-2": {
+        "prerequisites": ["self-evolving-1"],
         "title":       "The Self-Evolving Mind — Level 2: The Observer's Paradox",
         "topic":       "You cannot step outside your own consciousness to verify your own thinking. Every tool you use to examine your mind is made of the same mind you're examining. This is not a problem to solve — it is a constraint to navigate with humility.",
         "steelman":    "What is the strongest argument that the observer's paradox is just a philosophical curiosity with no practical implications — that we can build reliable knowledge even if we can't achieve perfect self-transparency?",
@@ -2250,6 +2259,7 @@ LESSONS = {
         "xp": 45, "rune": "SELF•EVOLVE•RUNE", "min_coherence": 0.72,
     },
     "self-evolving-3": {
+        "prerequisites": ["self-evolving-2"],
         "title":       "The Self-Evolving Mind — Level 3: Questions Are Better Than Answers",
         "topic":       "The history of human progress is not the history of better answers. It is the history of better questions. Knowing how to ask a question that opens rather than closes is the most underrated intellectual skill.",
         "steelman":    "What is the strongest argument that premature 'question-seeking' is a way of avoiding commitment — that real progress requires choosing a framework and developing it rigorously, not endlessly questioning?",
@@ -2284,6 +2294,8 @@ LESSONS = {
         "xp": 42, "rune": "SELF•EVOLVE•RUNE", "min_coherence": 0.70,
     },
     "self-evolving-4": {
+        "phd_extension": "Run a formal calibration experiment: make 50 predictions across diverse domains with stated confidence levels (50%, 70%, 90%). Resolve them all. Plot calibration curve. Compute Brier score. If your 70% confidence predictions are correct 90% of the time, you are underconfident — you should be more aggressive. If your 90% predictions are only 60% correct, you are overconfident. Design the correction protocol.",
+        "prerequisites": ["self-evolving-3"],
         "title":       "The Self-Evolving Mind — Level 4 (Master): Designing Your Own Curriculum Forever",
         "topic":       "The best educational systems don't teach you content. They teach you how to teach yourself. This lesson is the meta-curriculum: how to design a lifelong learning practice that compounds, self-corrects, and stays alive.",
         "steelman":    "What is the strongest argument that self-designed learning leads to dangerous gaps and blind spots — that structured curricula exist precisely to ensure important knowledge isn't missed?",
@@ -2462,6 +2474,7 @@ LESSONS = {
     # Where students begin doing real intellectual work, not just consuming it.
     # ══════════════════════════════════════════════════════════════════════════
     "school-advanced-1": {
+        "prerequisites": ["school-foundation-1", "school-foundation-2"],
         "title":       "Advanced — Research Methodology: How to Know What Is True",
         "topic":       "Every claim you encounter was produced by a method. Understanding the method is understanding the limits of the claim. This is what separates someone who can evaluate evidence from someone who just accepts conclusions.",
         "steelman":    "What is the strongest argument that teaching research methodology to teenagers is premature — that they lack the mathematical and conceptual maturity to understand the tradeoffs and will just develop false confidence?",
@@ -2497,6 +2510,7 @@ LESSONS = {
         "xp": 50, "rune": "ADVANCED•RUNE", "min_coherence": 0.72,
     },
     "school-advanced-2": {
+        "prerequisites": ["school-advanced-1"],
         "title":       "Advanced — Philosophy of Science: The Limits of Knowing",
         "topic":       "Science is the most powerful truth-finding method humans have invented. It is also limited in specific, understandable ways. Knowing those limits is not anti-science — it is the most rigorous form of scientific thinking.",
         "steelman":    "What is the strongest argument that teaching 'the limits of science' to young people is used primarily as a rhetorical tool by those who want to reject inconvenient findings — and that the benefits don't outweigh this risk?",
@@ -2533,6 +2547,7 @@ LESSONS = {
         "xp": 52, "rune": "ADVANCED•RUNE", "min_coherence": 0.73,
     },
     "school-advanced-3": {
+        "prerequisites": ["school-advanced-2"],
         "title":       "Advanced — Independent Research: Running Your Own Experiment",
         "topic":       "The difference between a student and a researcher is one thing: a researcher generates new knowledge, not just acquires existing knowledge. Every AUBIEETERNAL Advanced student runs at least one real research project.",
         "steelman":    "What is the strongest argument that independent research by teenagers without institutional oversight is dangerous — that without expert supervision, kids will reinforce their biases rather than overcome them?",
@@ -2605,6 +2620,7 @@ LESSONS = {
         "xp": 55, "rune": "UNIVERSITY•RUNE", "min_coherence": 0.75,
     },
     "school-university-2": {
+        "prerequisites": ["school-university-1"],
         "title":       "University Pathway — Building Your Intellectual Portfolio",
         "topic":       "The credential economy is being disrupted. The new credential is demonstrated competence: a public portfolio of work that shows what you can actually do. This lesson teaches how to build one from age 14 that will be more valuable than most college degrees by age 18.",
         "steelman":    "What is the strongest argument that public portfolios and alternative credentials are only valued in certain tech-adjacent fields — and that in law, medicine, and most traditional careers, formal degrees remain essential?",
@@ -2636,6 +2652,8 @@ LESSONS = {
         "xp": 58, "rune": "UNIVERSITY•RUNE", "min_coherence": 0.76,
     },
     "school-university-3": {
+        "phd_extension": "Write a 3,000-word original research proposal on a question at the intersection of your two deepest intellectual domains. Format: abstract, literature review, methodology, expected findings, falsifiability, broader significance. Submit to the AUBIEETERNAL Epistemic Commons as CC0. This is your first academic publication.",
+        "prerequisites": ["school-university-1", "school-university-2"],
         "title":       "University Pathway (Master) — Designing a Life of Compounding Inquiry",
         "topic":       "The goal is not to finish school. The goal is to design a life structured so that every year you understand more than the year before — and that understanding compounds into genuine mastery and genuine contribution.",
         "steelman":    "What is the strongest argument that 'lifelong learning' is a cliché used by institutions to keep people consuming their products — and that there is a natural point where specialization and execution should replace broad learning?",
@@ -2740,6 +2758,7 @@ LESSONS = {
         "xp": 42, "rune": "SYSTEMS•RUNE", "min_coherence": 0.65,
     },
     "systems-3": {
+        "prerequisites": ["systems-1", "systems-2"],
         "title":       "Systems Thinking — Level 3: Leverage Points (Where to Push)",
         "topic":       "In a complex system, most interventions have little effect. But a few leverage points — the right places, the right changes — can fundamentally transform the system. Donella Meadows mapped 12 leverage points. This lesson teaches the most powerful ones.",
         "steelman":    "What is the strongest argument that leverage point thinking leads to hubristic overconfidence in 'systems changers' who cause more harm than good with their high-level interventions?",
@@ -2778,6 +2797,7 @@ LESSONS = {
         "xp": 48, "rune": "SYSTEMS•RUNE", "min_coherence": 0.70,
     },
     "systems-4": {
+        "prerequisites": ["systems-3"],
         "title":       "Systems Thinking — Level 4: Complex Adaptive Systems",
         "topic":       "Complex Adaptive Systems (CAS) are systems where agents adapt to each other and to their environment — and the system itself evolves. Markets, ecosystems, immune systems, civilizations — all CAS. Understanding CAS is understanding how the world actually works.",
         "steelman":    "What is the strongest argument that Complex Adaptive Systems theory is too abstract and mathematical to be practically useful for families and individuals — and that simpler mental models produce better decisions?",
@@ -2814,6 +2834,8 @@ LESSONS = {
         "xp": 52, "rune": "SYSTEMS•RUNE", "min_coherence": 0.72,
     },
     "systems-5": {
+        "phd_extension": "Model your personal system as a Markov chain. Assign transition probabilities between states (focused/distracted, productive/unproductive, high-coherence/low-coherence). Compute the steady-state distribution. What does it tell you about where you spend most of your time? What transition probability change would most shift the steady state?",
+        "prerequisites": ["systems-4"],
         "title":       "Systems Thinking — Level 5 (Master): You Are a System of Systems",
         "topic":       "You are not a fixed entity. You are a complex adaptive system — your beliefs, habits, relationships, and environments are all feedback loops that constantly shape each other. Understanding yourself as a system is the most powerful self-improvement insight available.",
         "steelman":    "What is the strongest argument that thinking of yourself as a 'system' is dehumanizing — that it removes agency, dignity, and the sense of personal responsibility that makes genuine growth possible?",
@@ -2929,6 +2951,7 @@ LESSONS = {
         "xp": 45, "rune": "BUILDER•RUNE", "min_coherence": 0.60,
     },
     "builder-3": {
+        "prerequisites": ["builder-1", "builder-2"],
         "title":       "Master Builder — Level 3: How AI Models Actually Work (Age 11+)",
         "topic":       "Every AI model running in AUBIEETERNAL is a mathematical object. Understanding the basic architecture — transformer, attention, weights — turns you from a user into someone who can evaluate, modify, and eventually train models.",
         "steelman":    "What is the strongest argument that teaching transformer architecture to 11-year-olds is harmful — that premature formalization destroys the intuition that should develop first from using AI systems naturally?",
@@ -2965,6 +2988,7 @@ LESSONS = {
         "xp": 50, "rune": "MASTER•BUILDER•RUNE", "min_coherence": 0.68,
     },
     "builder-4": {
+        "prerequisites": ["builder-3"],
         "title":       "Master Builder — Level 4: Optimizing Your Sovereign Stack (Age 13+)",
         "topic":       "A sovereign AI stack has a performance envelope — memory bandwidth, compute throughput, latency — and an optimization space. Understanding how to tune the system is the difference between a consumer and an engineer.",
         "steelman":    "What is the strongest argument that most families don't need to optimize their AI stack — that using default settings is safer and that optimization creates fragility through complexity?",
@@ -2999,6 +3023,7 @@ LESSONS = {
         "xp": 58, "rune": "MASTER•BUILDER•RUNE", "min_coherence": 0.72,
     },
     "builder-5": {
+        "prerequisites": ["builder-3", "builder-4"],
         "title":       "Master Builder — Level 5: Fine-Tuning and Preference Data (Age 15+)",
         "topic":       "The AUBIEETERNAL loop runs from family to model: families generate high-signal preference data, that data improves the models, better models help families go deeper. Understanding how fine-tuning works lets you participate in this loop consciously.",
         "steelman":    "What is the strongest argument that allowing families to influence model training is dangerous — that without expert oversight, fine-tuning could introduce biases that harm users?",
@@ -3035,6 +3060,8 @@ LESSONS = {
         "xp": 65, "rune": "MASTER•BUILDER•RUNE", "min_coherence": 0.74,
     },
     "builder-6": {
+        "phd_extension": "Implement scaled dot-product attention from scratch in NumPy (50 lines). Verify it produces identical output to PyTorch F.scaled_dot_product_attention on a test input. Then implement one step of the transformer forward pass. Benchmark: how does attention time scale with sequence length? Verify the quadratic relationship empirically.",
+        "prerequisites": ["builder-4", "builder-5"],
         "title":       "PhD Builder — Level 6: Neural Architecture and the Future of AI (Age 16+ / Any motivated mind)",
         "topic":       "The most powerful people in the AI era are not those who use AI best — they are those who design the architectures that determine what AI can do at all. This lesson introduces neural architecture at PhD depth.",
         "steelman":    "What is the strongest argument that neural architecture research is too specialized to be useful for most families — and that time spent on architecture would be better spent on applications and epistemics?",
@@ -3076,6 +3103,8 @@ LESSONS = {
         "grants_badge": "🧬 PhD Builder — Understands the Architecture",
     },
     "builder-7": {
+        "phd_extension": "Implement ECDSA on secp256k1 from scratch. Steps: (1) point addition on elliptic curve (2) scalar multiplication via double-and-add (3) key generation (4) signature (5) verification. Confirm your implementation produces signatures verifiable by a standard Bitcoin library. This is the mathematical foundation of everything AUBIEETERNAL seals on-chain.",
+        "prerequisites": ["builder-6"],
         "title":       "PhD Builder — Level 7: Cryptography, Proofs, and Sovereign Verification (Age 16+)",
         "topic":       "Bitcoin Runes anchor our memories. But WHY are they unerasable? The answer is cryptographic proof — mathematics so strong that breaking it would require more computation than exists in the universe. Understanding this is understanding why AUBIEETERNAL's permanence claims are real.",
         "steelman":    "What is the strongest argument that cryptographic security is only as strong as the implementation — and that teaching families to trust cryptographic proofs creates dangerous overconfidence in systems that can still have bugs?",
@@ -3120,6 +3149,7 @@ LESSONS = {
         "xp": 85, "rune": "PHD•BUILDER•RUNE", "min_coherence": 0.80,
     },
     "builder-8": {
+        "prerequisites": ["builder-5", "builder-6", "builder-7"],
         "title":       "PhD Builder — Level 8 (Master): Contributing Back to the Lattice (Any Age)",
         "topic":       "The final step of the builder path is not consuming better tools — it is building tools that make others more sovereign. This lesson teaches how to contribute improvements back to the AUBIEETERNAL ecosystem and to the open-source AI infrastructure that humanity depends on.",
         "steelman":    "What is the strongest argument that open-source contribution without rigorous quality control degrades projects — and that it is better for non-experts to use existing tools than to modify them?",
@@ -3400,6 +3430,120 @@ LESSONS = {
     # ══════════════════════════════════════════════════════════════════════════
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── CAPSTONE PROJECTS (3 lessons + 1 PhD) ────────────────────────────────
+    # These are not lessons in the normal sense. They are final projects
+    # that synthesize everything. No answers provided — only requirements.
+    # Completion is judged by the Shield Rune seal and peer review.
+    # ══════════════════════════════════════════════════════════════════════════
+    "capstone-associate": {
+        "title":       "Capstone — Sovereign Associate: Deploy Your First Node",
+        "topic":       "The Associate capstone requires you to demonstrate practical sovereignty: install, configure, and document a complete AUBIEETERNAL setup for your family or another family.",
+        "steelman":    "What is the strongest argument that deploying technology without deep theoretical understanding creates dependencies rather than sovereignty?",
+        "example":     (
+            "Requirements for Associate capstone:\n"
+            "1. Install Ollama + at least one local model on family hardware\n"
+            "2. Configure and run AUBIEETERNAL (all tabs accessible)\n"
+            "3. Complete at least 3 hardware benchmark logs\n"
+            "4. Document your sovereign stack (hardware config, models, benchmarks)\n"
+            "5. Seal the documentation in the Legacy Ledger\n"
+            "6. Demonstrate to at least one family member (or external reviewer)\n\n"
+            "Grading: pass/fail. You either have a running sovereign node or you don't."
+        ),
+        "activity":    "Complete all six requirements. Seal the proof. Request peer review.",
+        "age_hint":    "Any — primary requirement is working installation",
+        "xp": 80, "rune": "CAPSTONE•ASSOCIATE•RUNE", "min_coherence": 0.68,
+        "prerequisites": ["builder-1","builder-2","school-foundation-4"],
+        "grants_badge": "📜 Sovereign Associate — First Node Deployed",
+        "is_capstone": True,
+    },
+    "capstone-bachelor": {
+        "title":       "Capstone — Truth Architect: Original Research + Community Contribution",
+        "topic":       "The Bachelor capstone requires two deliverables: an original 1,500-word research paper on any AUBIEETERNAL-adjacent topic, and a documented community contribution.",
+        "steelman":    "What is the strongest argument that requiring formal papers from students who could instead be building is a credential-fetishism trap — exactly what AUBIEETERNAL is trying to escape?",
+        "example":     (
+            "Requirements for Truth Architect capstone:\n"
+            "1. RESEARCH PAPER (1,500+ words, sealed CC0 in Epistemic Commons):\n"
+            "   • Original thesis, falsifiable\n"
+            "   • Three forms of evidence\n"
+            "   • Steelmanned opposition\n"
+            "   • Conclusion with specific predictions\n\n"
+            "2. COMMUNITY CONTRIBUTION (any type from sovereign_builder.py):\n"
+            "   • Minimum 10 people reached\n"
+            "   • Documented with photos or verifiable evidence\n"
+            "   • Sealed in Legacy Ledger\n\n"
+            "3. PEER REVIEW: at least one external reviewer (not family) reads "
+            "and provides written feedback on the research paper\n\n"
+            "The paper and contribution together demonstrate that you can both "
+            "think rigorously and act effectively."
+        ),
+        "activity":    "Complete research paper + community contribution + peer review. Seal all three.",
+        "age_hint":    "14+ (adult reviewers welcomed)",
+        "xp": 120, "rune": "CAPSTONE•ARCHITECT•RUNE", "min_coherence": 0.75,
+        "prerequisites": ["capstone-associate","school-university-1","helping-humanity-1"],
+        "grants_badge": "🏛️ Truth Architect — Research Published + Community Served",
+        "is_capstone": True,
+    },
+    "capstone-masters": {
+        "title":       "Capstone — Master of Epistemic Rigor: The 90-Day Experiment",
+        "topic":       "The Masters capstone requires running a real 90-day research experiment, pre-registered in the Truth Debt Ledger, with honest results whether or not the hypothesis was confirmed.",
+        "steelman":    "What is the strongest argument that 90-day family experiments are too short, too uncontrolled, and too small-sample to produce meaningful knowledge?",
+        "example":     (
+            "Requirements for Master of Epistemic Rigor capstone:\n"
+            "1. PRE-REGISTRATION (day 0): write the hypothesis, method, "
+            "prediction with probability, and falsifiability criteria. "
+            "Register in Truth Debt Ledger. Cannot be changed after day 0.\n\n"
+            "2. CONDUCT (days 1-90): follow the protocol. Document weekly.\n\n"
+            "3. ANALYSIS (day 91): what did the data show? Was the hypothesis confirmed? "
+            "What would have been needed to confirm it more strongly?\n\n"
+            "4. PUBLICATION: 2,000-word paper with full methodology, raw data, "
+            "and honest analysis sealed CC0 in Epistemic Commons.\n\n"
+            "5. REPLICATION PACKAGE: enough documentation that another family "
+            "could replicate your experiment independently.\n\n"
+            "Note: confirming your hypothesis is not required. "
+            "A falsified hypothesis with honest analysis is a valid Masters capstone."
+        ),
+        "activity":    "Pre-register today. Run the experiment. Report honestly. Seal everything.",
+        "age_hint":    "15+ (can be family team project)",
+        "xp": 180, "rune": "CAPSTONE•MASTER•RUNE", "min_coherence": 0.82,
+        "prerequisites": ["capstone-bachelor","school-advanced-3","self-evolving-1"],
+        "grants_badge": "🎓 Master of Epistemic Rigor — 90-Day Experiment Complete",
+        "is_capstone": True,
+    },
+    "capstone-phd": {
+        "title":       "Capstone — Eternal Founder (PhD): Build the Infrastructure Others Use",
+        "topic":       "The PhD capstone has one requirement: build something real that other sovereign families use. Not a paper about building. Not a plan to build. A working piece of infrastructure with documented adoption.",
+        "steelman":    "What is the strongest argument that 'adoption' is a poor measure of intellectual achievement — that the most important contributions are often not widely adopted in their time?",
+        "example":     (
+            "PhD capstone requirements:\n\n"
+            "1. BUILD: create a working module, tool, curriculum extension, "
+            "community node, or infrastructure piece that other AUBIEETERNAL "
+            "families can use. It must work. It must be documented.\n\n"
+            "2. ADOPT: demonstrate that at least 3 families or individuals "
+            "outside your household have used it and can speak to its value.\n\n"
+            "3. CONTRIBUTE: release as CC0. Submit to the AUBIEETERNAL repo "
+            "as a pull request. Get it merged.\n\n"
+            "4. REFLECT: write a 500-word honest post-mortem. What worked? "
+            "What failed? What would you build differently? What did you learn "
+            "that you couldn't have learned without building?\n\n"
+            "5. CHILD RUNE GENESIS: 256 Bitcoin confirmations. Your sovereign "
+            "identity is on-chain. The dynasty is real.\n\n"
+            "Previous PhD projects: new curriculum tracks, AR overlay guides, "
+            "humanitarian node deployments, translated curriculum packages, "
+            "community Living Lattice nodes, preference dataset contributions."
+        ),
+        "activity":    "Build. Deploy. Adopt. Contribute. Reflect. Seal. The lattice grows.",
+        "age_hint":    "No age — readiness is the only requirement",
+        "xp": 300, "rune": "ETERNAL•FOUNDER•RUNE", "min_coherence": 0.88,
+        "prerequisites": ["capstone-masters","builder-8","truth-lattice-1"],
+        "special_requirement": "child_rune_genesis",
+        "grants_badge": "⚡ Eternal Founder — Built the Infrastructure Others Use",
+        "is_capstone": True,
+        "lattice_node": "eternal-founder-capstone-completed",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
@@ -3661,6 +3805,67 @@ class FamilySession:
             # ── 3. Write permanent ceremony record to insights/daily/ ─────────
             insights_dir.mkdir(parents=True, exist_ok=True)
             ceremony_md = f"""# 🔴 CHILD RUNE GENESIS — {now.strftime('%Y-%m-%d')}
+
+
+    def get_lesson_status(self, lesson_key: str) -> dict:
+        lesson = LESSONS.get(lesson_key)
+        if not lesson: return {"status":"unknown"}
+        completed = self.state.get("lessons_completed",[])
+        if lesson_key in completed:
+            return {"status":"completed","missing_prereqs":[],"current_coherence":self.state.get("coherence",0.5),"required_coherence":lesson.get("min_coherence",0)}
+        missing = [p for p in lesson.get("prerequisites",[]) if p not in completed]
+        coh = self.state.get("coherence",0.5)
+        req_coh = lesson.get("min_coherence",0)
+        if missing or coh < req_coh:
+            reasons = []
+            if missing: reasons.append(f"Need: {', '.join(missing[:3])}")
+            if coh < req_coh: reasons.append(f"Coherence {coh:.2f} < required {req_coh:.2f}")
+            return {"status":"locked","reason":" | ".join(reasons),"missing_prereqs":missing,"current_coherence":coh,"required_coherence":req_coh}
+        return {"status":"available","reason":"Ready to start","missing_prereqs":[],"current_coherence":coh,"required_coherence":req_coh}
+
+    def mark_lesson_completed(self, lesson_key: str, final_coherence: float = None) -> dict:
+        lesson = LESSONS.get(lesson_key)
+        if not lesson: return {"status":"error"}
+        completed = self.state.get("lessons_completed",[])
+        if lesson_key in completed: return {"status":"already_completed"}
+        xp_earned = lesson.get("xp",15)
+        new_xp = self.state.get("total_xp",0) + xp_earned
+        coh_boost = min(0.02, xp_earned/5000)
+        new_coh = min(1.0, self.state.get("coherence",0.5) + coh_boost)
+        if final_coherence is not None: new_coh = max(new_coh, min(1.0, final_coherence))
+        completed.append(lesson_key)
+        self.state.update({"lessons_completed":completed,"total_xp":new_xp,"coherence":round(new_coh,6)})
+        badge = lesson.get("grants_badge")
+        if badge:
+            badges = self.state.get("badges",[]); badges.append(badge); self.state["badges"] = badges
+        self._save_state()
+        self._write_to_truth_log(f"COMPLETED: {lesson.get('title','')} | XP:{xp_earned}")
+        if xp_earned >= 60:
+            try:
+                from rune_memory import RuneMemory
+                RuneMemory().record(f"LESSON COMPLETE: {lesson.get('title','')} | XP:{xp_earned}",source="curriculum",coherence=new_coh,tags=["lesson_complete",lesson_key])
+            except Exception: pass
+        return {"lesson":lesson.get("title",""),"lesson_key":lesson_key,"xp_earned":xp_earned,"rune_earned":lesson.get("rune","TRUTH•RUNE"),"new_coherence":round(new_coh,6),"total_xp":new_xp,"badge":badge,"status":"completed","total_lessons_done":len(completed)}
+
+    def get_unlocked_lessons(self, department: str = None) -> list:
+        return [{"key":k,"lesson":l,"status":self.get_lesson_status(k)} for k,l in LESSONS.items() if (not department or k.startswith(department)) and self.get_lesson_status(k)["status"]=="available"]
+
+    def get_degree_eligibility(self) -> dict:
+        completed = self.state.get("lessons_completed",[]); total_xp = self.state.get("total_xp",0)
+        coherence = self.state.get("coherence",0.5); child_rune = self.state.get("child_rune_confirmations",0)
+        DEGREES = [
+            {"name":"Sovereign Associate",      "credits":60,  "coherence":0.68,"emoji":"📜"},
+            {"name":"Truth Architect",           "credits":120, "coherence":0.75,"emoji":"🏛️"},
+            {"name":"Master of Epistemic Rigor", "credits":180, "coherence":0.82,"emoji":"🎓"},
+            {"name":"Eternal Founder (PhD)",     "credits":250, "coherence":0.88,"emoji":"⚡","special_rune":256},
+        ]
+        credits = total_xp // 10; highest = None
+        for d in DEGREES:
+            ok = credits >= d["credits"] and coherence >= d["coherence"]
+            if d.get("special_rune"): ok = ok and child_rune >= d["special_rune"]
+            if ok: highest = d
+        return {"credits":credits,"coherence":round(coherence,4),"lessons_done":len(completed),"highest_degree":highest,"all_degrees":DEGREES,"child_rune_pct":min(100,child_rune/2.56)}
+
 
 **Event:** Child Rune spawned at {confirmations} confirmations
 **Kid:** {self.kid_name}
