@@ -949,6 +949,7 @@ with st.sidebar:
             "🏫 School", "🗺️ Curriculum Map",
             "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
             "🏛️ School Pathway",
+            "🔧 Sovereign Builder",
         ],
         "🛡️ ADVERSARIAL": [
             "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
@@ -9001,3 +9002,189 @@ if "School Pathway" in active:
             f'<b style="color:#c8d8ff;">Step 4 — Find the leverage point:</b> Where is the highest-impact intervention?<br>'
             f'<b style="color:#c8d8ff;">Step 5 — Predict unintended consequences:</b> What will your intervention break?'
             f'</div></div>', unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOVEREIGN BUILDER 🔧
+# Age 5 → PhD. AR/Halo always-on mentor. Hardware → AI architecture → contribution.
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sovereign Builder" in active:
+    st.markdown('<div class="card-title">🔧 SOVEREIGN BUILDER — Age 5 to PhD, Always Building</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #f7931a;">
+        <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE BUILDER'S PROMISE</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+        Your child won't just learn with technology — they'll grow up <b style="color:#c8d8ff;">building and evolving</b> it.<br>
+        With Halo glasses as always-on AR mentor, kids ages 5–18 learn to upgrade, improve, and expand
+        their family's sovereign intelligence system.<br><br>
+        <b style="color:#f7931a;">The humanitarian case:</b> the child who can build sovereign AI infrastructure
+        cannot be controlled by anyone who only lets them consume it.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_sb = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from sovereign_builder import SovereignBuilder as _SB, BuilderContribution as _BC
+        _builder = _SB(_fid_sb)
+        _level   = _builder.get_level()
+
+        # ── Level display ──────────────────────────────────────────────────────
+        _lc = {"junior":"#00ff88","master":"#00cfff","phd":"#a020f0","humanity":"#f7931a"}.get(
+            _level["level"], "#445577")
+        st.markdown(
+            f'<div style="text-align:center;padding:12px 0 8px;">'
+            f'<div style="font-size:36px">{_level["emoji"]}</div>'
+            f'<div style="color:{_lc};font-family:Orbitron,monospace;font-size:1.0rem;margin-top:4px;">'
+            f'{_level["title"].upper()}</div>'
+            f'<div style="color:#445577;font-size:11px;margin-top:2px;letter-spacing:0.1em;">'
+            f'XP: {_level["xp"]} · Upgrades: {_level["upgrades_done"]} · '
+            f'AR Sessions: {_level["ar_sessions"]} · '
+            f'{"✅ Humanity Builder" if _level["level"] == "humanity" else str(_level["xp_to_next"]) + " XP to next level"}'
+            f'</div></div>', unsafe_allow_html=True)
+
+        if _level.get("xp_to_next", 0) > 0:
+            from sovereign_builder import BUILDER_LEVELS as _BL
+            _next_thresh = _BL.get(_level["next_level"], {}).get("xp_threshold", 1)
+            st.progress(min(1.0, _level["xp"] / _next_thresh))
+
+        st.divider()
+        _sb_tabs = st.tabs(["🔧 Level Path", "⬆️ Log Upgrade", "📊 Benchmarks",
+                             "🌍 Contribute", "🥽 AR Guide"])
+
+        # ── Level path ─────────────────────────────────────────────────────────
+        with _sb_tabs[0]:
+            from sovereign_builder import BUILDER_LEVELS as _BLS
+            for _lk, _li in _BLS.items():
+                _lcc = {"junior":"#00ff88","master":"#00cfff","phd":"#a020f0","humanity":"#f7931a"}[_lk]
+                _is_current = _lk == _level["level"]
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:4px solid {_lcc};">'
+                    f'<div style="color:{_lcc};font-family:Orbitron,monospace;font-size:0.72rem;">'
+                    f'{_li["emoji"]} {_li["title"].upper()} · Ages {_li["age_range"]} '
+                    f'{"← YOU ARE HERE" if _is_current else ""}</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">{_li["description"]}</div>'
+                    f'<div style="color:#445577;font-size:0.72rem;margin-top:2px;">'
+                    f'Requires: {", ".join(_li["required_lessons"])} | '
+                    f'XP threshold: {_li["xp_threshold"]} | '
+                    f'Rune grant: {_li["rune_grant"]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+        # ── Log upgrade ────────────────────────────────────────────────────────
+        with _sb_tabs[1]:
+            st.markdown("Log a hardware upgrade to earn XP and contribute to the community benchmark.")
+            _ub_c1, _ub_c2 = st.columns(2)
+            with _ub_c1:
+                _ub_comp = st.selectbox("Component:", ["RAM","SSD","GPU","CPU","Motherboard","NIC","Other"], key="ub_comp")
+                _ub_from = st.text_input("From:", key="ub_from", placeholder="e.g. 16GB DDR4")
+            with _ub_c2:
+                _ub_to   = st.text_input("To:", key="ub_to", placeholder="e.g. 32GB DDR4")
+                _ub_note = st.text_input("Notes:", key="ub_note", placeholder="Why this upgrade?")
+            if st.button("⬆️ Log Upgrade (+25 XP)", key="ub_log", type="primary") and _ub_to:
+                _upg = _builder.log_upgrade(_ub_comp, _ub_from, _ub_to, _ub_note)
+                st.success(f"✅ Upgrade logged — {_ub_comp}: {_ub_from} → {_ub_to} | +25 XP")
+                st.rerun()
+
+            # Current hardware
+            hw = _level.get("hardware", {})
+            if hw:
+                st.divider()
+                st.markdown("**Current hardware:**")
+                for comp, spec in hw.items():
+                    st.markdown(f'<span style="color:#f7931a;font-size:0.78rem;">{comp}:</span> '
+                                f'<span style="color:#c8d8ff;font-size:0.78rem;">{spec}</span>',
+                                unsafe_allow_html=True)
+
+        # ── Benchmarks ─────────────────────────────────────────────────────────
+        with _sb_tabs[2]:
+            st.markdown("Log your AI model performance. Every benchmark helps other families choose the right hardware.")
+            _bm_c1, _bm_c2 = st.columns(2)
+            with _bm_c1:
+                _bm_model = st.selectbox("Model:", ["qwen2.5:7b","qwen2.5:14b","qwen2.5:32b",
+                                                      "qwen2.5:72b","other"], key="bm_model")
+                _bm_speed = st.number_input("Tokens/second:", min_value=0.0, value=10.0,
+                                             step=0.1, key="bm_speed")
+            with _bm_c2:
+                _bm_quant = st.selectbox("Quantization:", ["Q4","Q8","FP16","FP32"], key="bm_quant")
+                _bm_hw    = st.text_input("Hardware description:", key="bm_hw",
+                                           placeholder="e.g. Ryzen 7 5700X + 32GB DDR4")
+            if st.button("📊 Log Benchmark (+15 XP)", key="bm_log") and _bm_speed > 0:
+                _bm = _builder.log_benchmark(_bm_model, _bm_speed, _bm_hw,
+                                              quantization=_bm_quant)
+                st.success(f"✅ Benchmark: {_bm_model} @ {_bm_speed:.1f} tok/s | +15 XP")
+
+            # Community benchmarks
+            _community = _builder.get_community_benchmarks()
+            if _community:
+                st.divider()
+                st.markdown("**Community benchmarks (fastest first):**")
+                for _bm_entry in _community[:10]:
+                    st.markdown(
+                        f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<span style="color:#f7931a;font-size:0.8rem;font-weight:600;">'
+                        f'{_bm_entry.get("tokens_per_sec",0):.1f} tok/s</span> '
+                        f'<span style="color:#c8d8ff;font-size:0.78rem;">'
+                        f'{_bm_entry.get("model","?")} ({_bm_entry.get("quantization","?")})</span> '
+                        f'<span style="color:#445577;font-size:0.72rem;">'
+                        f'{_bm_entry.get("hardware","?")[:40]}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Contributions ──────────────────────────────────────────────────────
+        with _sb_tabs[3]:
+            st.markdown("Contribute back to humanity's epistemic infrastructure.")
+            _ct_stats = _BC().get_community_stats()
+            _cc1, _cc2, _cc3 = st.columns(3)
+            _cc1.metric("Total Contributions", _ct_stats.get("total",0))
+            _cc2.metric("Contributing Families", _ct_stats.get("families",0))
+            _cc3.metric("Your Contributions", _level.get("contributions",0))
+
+            _ct_type = st.selectbox("Contribution type:",
+                ["curriculum","bugfix","benchmark","documentation","new_module","preference_data"],
+                key="ct_type",
+                format_func=lambda x: {"curriculum":"📚 Curriculum improvement",
+                    "bugfix":"🐛 Bug fix","benchmark":"📊 Benchmark data",
+                    "documentation":"📝 Documentation","new_module":"🔧 New module",
+                    "preference_data":"🎓 Preference data"}[x])
+            _ct_desc = st.text_area("Description:", height=80, key="ct_desc",
+                placeholder="What did you build, fix, or improve?")
+            _ct_url  = st.text_input("GitHub PR or link (optional):", key="ct_url")
+            if st.button("🌍 Log Contribution", key="ct_log", type="primary") and _ct_desc:
+                _ct = _BC().log(_ct_type, _ct_desc, _ct_url, _fid_sb)
+                st.success(f"✅ Contribution logged — ID: `{_ct['contrib_id']}` | "
+                           f"+{_ct['xp_earned']} XP")
+                st.balloons()
+
+        # ── AR Guide ───────────────────────────────────────────────────────────
+        with _sb_tabs[4]:
+            st.markdown("🥽 **Halo AR Overlay Guide** — step-by-step instructions for your current task")
+            _ar_task = st.selectbox("Select task:", [
+                "ram_upgrade", "ssd_install", "ollama_setup", "benchmark"
+            ], key="ar_task",
+            format_func=lambda x: {"ram_upgrade":"⬆️ RAM Upgrade",
+                "ssd_install":"💾 SSD Installation",
+                "ollama_setup":"🤖 Ollama Setup",
+                "benchmark":"📊 Run Benchmark"}[x])
+            _guide = _builder.get_ar_guide(_ar_task)
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid #f7931a;">'
+                f'<div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.75rem;">'
+                f'🥽 AR GUIDE: {_guide["title"].upper()}</div>'
+                f'</div>', unsafe_allow_html=True)
+            for i, step in enumerate(_guide["steps"], 1):
+                st.markdown(
+                    f'<div style="padding:6px 0;border-bottom:1px solid #1e2a3a;">'
+                    f'<span style="color:#f7931a;font-weight:600;font-family:Orbitron,monospace;">'
+                    f'Step {i}</span> '
+                    f'<span style="color:#c8d8ff;font-size:0.85rem;">{step}</span>'
+                    f'</div>', unsafe_allow_html=True)
+            if _guide.get("verify_command"):
+                st.code(_guide["verify_command"], language="bash")
+            if st.button("✅ Mark AR Session Complete (+10 XP)", key="ar_done"):
+                _builder.log_ar_session(_ar_task, completed=True)
+                st.success("✅ AR session logged | +10 XP")
+
+    except ImportError:
+        st.error("sovereign_builder.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_sb:
+        st.error(f"Builder error: {_e_sb}")
