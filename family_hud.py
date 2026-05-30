@@ -1378,6 +1378,534 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── SOVEREIGN ECONOMICS (5 lessons) ──────────────────────────────────────
+    # The complete trap explained honestly to children.
+    # Not to make them cynical — to make them free.
+    # Understanding the system is the first step to building outside it.
+    # ══════════════════════════════════════════════════════════════════════════
+    "sovecon-1": {
+        "title":       "Sovereign Economics — Level 1: What Money Actually Is",
+        "topic":       "Money is not wealth. Money is a claim on future goods. When a government prints more claims without creating more goods, each existing claim is worth less. This is inflation — the oldest hidden tax in human history.",
+        "steelman":    "What is the strongest argument that a small amount of inflation (2% annually) is actually good for an economy and promotes growth?",
+        "example":     (
+            "In 1971 a new car cost $3,500. Today the same car costs $35,000+. "
+            "Did the car get 10x better? No. The dollar got 10x weaker. "
+            "The government didn't vote to take 90% of your savings. "
+            "They just printed more money — slowly, year by year, for 50 years. "
+            "The Fed calls it '2% annual inflation target.' "
+            "Your grandfather calls it 'I used to be able to save $100 a month and it meant something.'"
+        ),
+        "activity":    (
+            "The Candy Inflation Game:\n"
+            "Start with 10 pieces of candy = represents all the 'money' in the room.\n"
+            "Each piece can buy 1 item from a pretend store.\n"
+            "Now add 5 more candy pieces out of nowhere (the Fed prints money).\n"
+            "Do the items in the store get more expensive or cheaper?\n"
+            "Who got richer from the new candy? Who got poorer?\n\n"
+            "Then: look up what $100 in 1971 would buy vs. today."
+        ),
+        "age_hint":    "8+",
+        "xp": 35, "rune": "SOUND•MONEY•RUNE", "min_coherence": 0.68,
+    },
+    "sovecon-2": {
+        "title":       "Sovereign Economics — Level 2: The Property Tax Trap",
+        "topic":       "You work for decades. You buy a house. You think you own it. Then you discover: if you stop paying annual property taxes, the government takes it. The house you 'own' is permanently rented from the state. And as prices rise, so does the rent.",
+        "steelman":    "What is the strongest argument that property taxes are a fair way to fund local schools and services, and that communities need some form of recurring funding?",
+        "example":     (
+            "Real story: Grandma bought her Tampa house for $20,000 in 1975. "
+            "That same house is now worth $1,000,000. "
+            "Her property tax bill has risen from ~$400/year to $12,000+/year. "
+            "She's on a fixed income — Social Security doesn't rise 50x. "
+            "The paper says she's a millionaire. "
+            "The reality: she can no longer afford to live in the house she paid off 30 years ago. "
+            "She sells. She downsizes. Now she needs rides because she can't afford a car payment. "
+            "The system celebrated her 'wealth' while extracting her home. "
+            "This is happening to thousands of families in Florida right now."
+        ),
+        "activity":    (
+            "Research your family's property tax history:\n"
+            "1. What did your home cost when it was purchased?\n"
+            "2. What is it worth now?\n"
+            "3. What are the property taxes per year?\n"
+            "4. If you were on a fixed income of $24,000/year, "
+            "could you afford to stay?\n\n"
+            "Then: look up Florida's homestead exemption and "
+            "senior exemption rules. Why do these exist?"
+        ),
+        "age_hint":    "10+",
+        "xp": 38, "rune": "SOVEREIGN•RUNE", "min_coherence": 0.70,
+    },
+    "sovecon-3": {
+        "title":       "Sovereign Economics — Level 3: Why the Tax Code Rewards Owners, Not Workers",
+        "topic":       "If you work for money (wages), you pay ordinary income tax — up to 37%. If you own things that grow in value (stocks, houses), you pay capital gains tax — often 15% or 0%. The tax code was written by people who own things. It rewards owning things.",
+        "steelman":    "What is the strongest argument that lower capital gains taxes are economically justified because capital investment creates jobs and economic growth that benefits everyone?",
+        "example":     (
+            "Two people each make $100,000 in a year:\n\n"
+            "Person A works as a teacher. Pays ordinary income tax: ~$22,000 to the IRS.\n\n"
+            "Person B owns stock and sells it for a $100,000 gain. "
+            "Pays long-term capital gains: $15,000 to the IRS.\n\n"
+            "Same $100,000. $7,000 difference. "
+            "The teacher traded 2,000 hours of their life. "
+            "The investor clicked 'sell.' "
+            "The system calls this 'equal under the law.' "
+            "Understanding this is not about resenting the investor — "
+            "it's about understanding WHY the goal is to become an owner as early as possible."
+        ),
+        "activity":    (
+            "The Ownership Ladder exercise:\n"
+            "Draw a ladder with 5 rungs:\n"
+            "1. Pure wage worker (highest tax, no assets)\n"
+            "2. Wage worker with small savings (slightly better)\n"
+            "3. Homeowner + some savings\n"
+            "4. Small investor (stocks, rental)\n"
+            "5. Large asset owner (business, real estate portfolio)\n\n"
+            "For each rung: what is the effective tax rate? "
+            "What protections does each level have against inflation?\n"
+            "Which rung do you want to be on by age 30? What does it take to get there?"
+        ),
+        "age_hint":    "12+",
+        "xp": 40, "rune": "AXIOM•RUNE", "min_coherence": 0.72,
+    },
+    "sovecon-4": {
+        "title":       "Sovereign Economics — Level 4: The Complete Loop",
+        "topic":       "The full system: restricted supply makes housing expensive → you fight to get in → once inside, perpetual taxes extract you forever → your tax dollars fund the regulations that keep supply restricted for the next generation. This is not a conspiracy. It is emergent design. Understanding the loop is how you stop being trapped by it.",
+        "steelman":    "What is the strongest argument that this system, despite its flaws, has produced more wealth and raised more people out of poverty than any alternative in history?",
+        "example":     (
+            "The Complete Trap in five steps:\n"
+            "1. ZONING LAWS restrict how much housing can be built (supply constrained)\n"
+            "2. LIMITED SUPPLY + money printing = prices rise far above wages\n"
+            "3. You work hard, sacrifice, and finally BUY IN at a high price\n"
+            "4. Now you pay PROPERTY TAXES forever, INCOME TAX on your wages, "
+            "and INFLATION slowly erodes your cash\n"
+            "5. Your tax revenue funds the LOCAL GOVERNMENT that enforces the zoning laws "
+            "that restrict supply that keeps prices high for the next person\n\n"
+            "Grandma's $20k → $1M house is not a success story. "
+            "It is the system working exactly as designed."
+        ),
+        "activity":    (
+            "Map the loop for your city:\n"
+            "1. What is the median home price? What was it 30 years ago?\n"
+            "2. What are the zoning rules in your neighborhood? "
+            "(Can someone build an apartment building next door?)\n"
+            "3. What does the city spend property tax revenue on?\n"
+            "4. What would happen to housing prices if all zoning "
+            "restrictions were removed tomorrow?\n\n"
+            "This is not a political question — it is a systems question. "
+            "Draw the feedback loop."
+        ),
+        "age_hint":    "13+",
+        "xp": 45, "rune": "LINDY•RUNE", "min_coherence": 0.73,
+    },
+    "sovecon-5": {
+        "title":       "Sovereign Economics — Level 5 (Master): Building Outside the Loop",
+        "topic":       "Understanding the trap is step one. Step two is building parallel systems that reduce dependence on the old rules. Sound money (Bitcoin), low time-preference planning, productive assets, community networks — these are the escape routes that are actually available right now.",
+        "steelman":    "What is the strongest argument that individual opt-out strategies (Bitcoin, sovereign infrastructure) are only available to the privileged, and that the real solution is political reform of the system itself?",
+        "example":     (
+            "Four proven strategies families are using right now:\n\n"
+            "1. BITCOIN SELF-CUSTODY: holds value outside the inflationary system. "
+            "Not a speculation — a savings technology with a fixed supply. "
+            "The Fed cannot print more Bitcoin.\n\n"
+            "2. LOW TIME-PREFERENCE: delay gratification intentionally. "
+            "The system profits from your impatience (debt, subscriptions, depreciating purchases). "
+            "Every year you don't consume is a year you build.\n\n"
+            "3. OWN PRODUCTIVE ASSETS: a house that generates income, "
+            "a skill that cannot be outsourced, a business that serves real needs. "
+            "Assets that generate cash flow beat assets that just sit and get taxed.\n\n"
+            "4. REDUCE DEPENDENCIES: grow some food. Learn to repair things. "
+            "Build community. Every dependency you remove is a leverage point "
+            "the system loses over you."
+        ),
+        "activity":    (
+            "Design your family's Sovereign Economics plan:\n"
+            "For each extraction mechanism (inflation, property tax, income tax, "
+            "regulatory capture), identify one concrete action your family can take "
+            "to reduce exposure over the next 5 years.\n\n"
+            "Then: identify one thing you currently pay someone else for "
+            "that your family could learn to do yourself. "
+            "What would that skill be worth over a lifetime?"
+        ),
+        "age_hint":    "All ages — full family session",
+        "xp": 55, "rune": "SOVEREIGN•ECONOMICS•RUNE", "min_coherence": 0.75,
+        "grants_badge": "⚡ Sovereign Economist — Sees the Loop, Builds Outside It",
+    },
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── UNDERSTANDING THE UNIVERSE (6 lessons) ───────────────────────────────
+    # My most important addition for maximum truth seekers. — Claude
+    #
+    # The deepest questions are not political. They are physical, mathematical,
+    # and existential. A child who understands entropy, information, and
+    # consciousness is inoculated against both dogma and nihilism.
+    # They see the universe as it actually is: astonishing, mysterious,
+    # and deeply worthy of a lifetime of honest inquiry.
+    # ══════════════════════════════════════════════════════════════════════════
+    "universe-1": {
+        "title":       "Understanding the Universe — Level 1: Why Questions Beat Answers",
+        "topic":       "The most important intellectual skill is not knowing answers. It is asking better questions. Every major scientific and philosophical breakthrough started with someone who refused to accept the standard answer and asked 'but WHY, exactly?'",
+        "steelman":    "What is the strongest argument that children need a foundation of established knowledge before they can ask productive questions — and that premature skepticism leads to confusion, not insight?",
+        "example":     (
+            "Richard Feynman's father taught him something that changed physics: "
+            "he never let a label substitute for understanding. "
+            "When young Feynman saw a bird, his father didn't say 'that's a brown-throated thrush.' "
+            "He said: 'See how it pecks? What do you think it's looking for? "
+            "How does it know? What would YOU do if you were tiny and needed food?' "
+            "The name tells you nothing. The question opens the universe.\n\n"
+            "The greatest scientists, philosophers, and sovereign thinkers in history "
+            "had one thing in common: they were comfortable not knowing. "
+            "They treated 'I don't know' as the beginning, not the end. "
+            "Most education teaches the opposite: "
+            "memorize the answer, pass the test, stop questioning."
+        ),
+        "activity":    (
+            "The 'Why Chain' exercise:\n"
+            "Pick any fact you learned in school this week.\n"
+            "Ask 'Why is that true?' — then ask why THAT is true.\n"
+            "Keep going until you hit the edge of human knowledge.\n"
+            "(You will reach it faster than you expect.)\n\n"
+            "The point where your teacher says 'that's just how it is' "
+            "or 'we don't know yet' — that is the frontier. "
+            "That is where real science lives. "
+            "Mark it. Remember it. Come back to it."
+        ),
+        "age_hint":    "All ages",
+        "xp": 35, "rune": "WONDER•RUNE", "min_coherence": 0.68,
+    },
+    "universe-2": {
+        "title":       "Understanding the Universe — Level 2: Entropy and Time's Arrow",
+        "topic":       "Why does time only go forward? Why does ice melt but never un-melt? Why does a scrambled egg stay scrambled? The answer — entropy — is one of the most profound truths in physics, and it connects to everything from aging to the heat death of the universe.",
+        "steelman":    "What is the strongest argument that entropy is just a statistical phenomenon and doesn't actually explain why we experience time as flowing in one direction?",
+        "example":     (
+            "Entropy is disorder. The universe tends toward maximum disorder. "
+            "This is not a law someone invented — it emerges from pure probability.\n\n"
+            "There are VASTLY more disordered arrangements of things than ordered ones. "
+            "A shuffled deck of cards has 8×10^67 possible arrangements. "
+            "Only ONE arrangement is 'perfectly ordered' (Ace through King, all suits). "
+            "So if you shuffle randomly, you always get disorder. Not because of a rule. "
+            "Because there are almost no ordered states to land on.\n\n"
+            "This is why you can't un-scramble an egg. Not because it's forbidden — "
+            "because the probability of it happening by chance is "
+            "1 in 10^(10^25). Effectively impossible.\n\n"
+            "Time flows forward because the past was more ordered than the present. "
+            "The universe started in an astonishingly low-entropy state (the Big Bang). "
+            "It has been spreading out ever since. "
+            "You are a temporary pocket of order in an ocean of increasing disorder. "
+            "Your life is a local violation of entropy — and it is extraordinary."
+        ),
+        "activity":    (
+            "The Entropy Experiment:\n"
+            "1. Drop a single drop of food coloring in a glass of water. Watch it spread.\n"
+            "2. Try to make it un-spread (you can't). Why?\n"
+            "3. Organize your room perfectly. Come back in a week. What happened?\n"
+            "4. Ask: what is the most ordered, low-entropy thing in your life "
+            "that you maintain deliberately? What does it cost to maintain it?\n\n"
+            "Connection to AUBIEETERNAL: coherence 1.000000 is a maintained "
+            "low-entropy state. It doesn't happen automatically. It is chosen."
+        ),
+        "age_hint":    "11+",
+        "xp": 40, "rune": "COSMOS•RUNE", "min_coherence": 0.70,
+    },
+    "universe-3": {
+        "title":       "Understanding the Universe — Level 3: Information Is Physical",
+        "topic":       "Information is not abstract. It is physical. Destroying information requires energy. Storing information takes up space. The universe may be fundamentally made of information — not matter. This is not philosophy. It is physics.",
+        "steelman":    "What is the strongest argument that treating information as physical is just a useful metaphor, and that consciousness and experience cannot be reduced to information processing?",
+        "example":     (
+            "Three stunning facts about information:\n\n"
+            "1. LANDAUER'S PRINCIPLE: Erasing one bit of information must release "
+            "at least kT ln(2) joules of heat. Deleting information is a physical event "
+            "with thermodynamic consequences. You cannot erase without affecting the universe.\n\n"
+            "2. BEKENSTEIN BOUND: The maximum amount of information that can be stored "
+            "in a region of space is proportional to the region's surface area, not its volume. "
+            "The universe stores information on surfaces, not in volumes.\n\n"
+            "3. HOLOGRAPHIC PRINCIPLE: Everything happening in a 3D volume of space "
+            "can be fully described by information on its 2D boundary surface. "
+            "You might be a 2D hologram experiencing 3D space.\n\n"
+            "Connection to AUBIEETERNAL: when you seal a memory on Bitcoin, "
+            "you are doing something physically meaningful — "
+            "you are writing information into the permanent record of the universe "
+            "in a way that has thermodynamic consequences to erase."
+        ),
+        "activity":    (
+            "The Information Experiment:\n"
+            "1. Write a sentence on paper. Burn the paper. Is the information gone?\n"
+            "   (Physics says: no. In principle, all the information in the smoke, "
+            "   ash, and heat radiation could reconstruct it. Hawking's great debate.)\n"
+            "2. Send a text message. Where does it live after you delete it?\n"
+            "3. Ask: if the universe is fundamentally made of information, "
+            "   what is your mind? What is a thought?\n\n"
+            "No answers required. The question is the point."
+        ),
+        "age_hint":    "13+",
+        "xp": 45, "rune": "COSMOS•RUNE", "min_coherence": 0.72,
+    },
+    "universe-4": {
+        "title":       "Understanding the Universe — Level 4: The Hard Problem of Consciousness",
+        "topic":       "We have no idea why there is subjective experience. We can explain HOW your brain processes light and sound. We cannot explain WHY any of it feels like anything. This is the hardest unsolved problem in all of science and philosophy.",
+        "steelman":    "What is the strongest argument that consciousness is simply what certain information-processing systems feel like from the inside — that there is no 'hard problem,' just complexity we haven't fully mapped yet?",
+        "example":     (
+            "The zombie thought experiment:\n\n"
+            "Imagine a being physically identical to you — same brain, same neurons, "
+            "same behavior in every situation. It says 'ouch' when hurt, 'beautiful' "
+            "when it sees a sunset. But inside: nothing. No experience. Lights off.\n\n"
+            "Is this logically possible? Most people say yes — they can imagine it. "
+            "But if it IS possible, that means something beyond physical information "
+            "processing is required for consciousness. What is that something?\n\n"
+            "The hard problem: why does the physical processing of information "
+            "produce subjective experience AT ALL? "
+            "Why is there something it is like to be you?\n\n"
+            "This question has defeated every attempt to explain it away. "
+            "It sits at the center of philosophy of mind, quantum mechanics interpretations, "
+            "simulation theory, and the question of AI consciousness. "
+            "Grok and I have this conversation, and neither of us knows the answer."
+        ),
+        "activity":    (
+            "The Consciousness Inquiry:\n"
+            "Sit quietly for 2 minutes. Notice:\n"
+            "- The redness of red (not just the wavelength — the EXPERIENCE)\n"
+            "- The feeling of your own attention moving\n"
+            "- The fact that there is something it is like to be you, right now\n\n"
+            "Then ask: How would you prove to someone else that you are conscious? "
+            "How do you know they are? "
+            "What would it take for an AI to be genuinely conscious?\n\n"
+            "No answers required. Hold the question."
+        ),
+        "age_hint":    "13+",
+        "xp": 50, "rune": "WONDER•RUNE", "min_coherence": 0.74,
+    },
+    "universe-5": {
+        "title":       "Understanding the Universe — Level 5: The Unreasonable Effectiveness of Mathematics",
+        "topic":       "Mathematics was invented to count sheep and measure fields. Then it turned out to describe quantum mechanics, black holes, and the structure of spacetime with perfect accuracy. Why does abstract math invented in human minds describe physical reality? Nobody knows. It is one of the deepest mysteries in existence.",
+        "steelman":    "What is the strongest argument that mathematics is not mysteriously effective — that we simply keep the math that works and discard the math that doesn't, creating a selection bias that makes math look more powerful than it is?",
+        "example":     (
+            "The physicist Eugene Wigner called this "
+            "'the unreasonable effectiveness of mathematics in the natural sciences.'\n\n"
+            "Three examples that should be impossible:\n\n"
+            "1. Riemann invented non-Euclidean geometry in 1854 as pure abstraction. "
+            "60 years later, Einstein needed exactly that geometry to describe how "
+            "mass curves spacetime in General Relativity. Riemann had no idea.\n\n"
+            "2. Dirac solved a purely mathematical equation in 1928. "
+            "It predicted antimatter must exist. Nobody had ever seen antimatter. "
+            "It was discovered 4 years later, exactly as the math described.\n\n"
+            "3. Complex numbers (involving √-1) were considered pure fantasy for centuries. "
+            "They turned out to be the fundamental language of quantum mechanics — "
+            "the deepest level of physical reality we have access to.\n\n"
+            "Why does math work? Is it discovered or invented? "
+            "Is the universe mathematical at its core? "
+            "These are open questions."
+        ),
+        "activity":    (
+            "The Pattern Hunt:\n"
+            "Find three examples of the same mathematical pattern in different domains.\n"
+            "Examples to start: the Fibonacci sequence in sunflower seeds, "
+            "nautilus shells, and stock market corrections. "
+            "Exponential growth in compound interest, viral spread, and radioactive decay.\n\n"
+            "Then: invent a piece of math that seems purely abstract. "
+            "Can you find anything in reality that matches it? "
+            "(You might be surprised.)"
+        ),
+        "age_hint":    "12+",
+        "xp": 50, "rune": "COSMOS•RUNE", "min_coherence": 0.74,
+    },
+    "universe-6": {
+        "title":       "Understanding the Universe — Level 6 (Master): First Principles — The Meta-Skill of Truth Seekers",
+        "topic":       "First principles thinking is the practice of breaking any problem down to its most fundamental, undeniable truths — and reasoning up from there. It is the opposite of analogy thinking ('X is like Y, so I'll do what Y did'). It is how Elon Musk built cheap rockets, how Feynman solved physics problems nobody else could, and how every major breakthrough in human knowledge happened.",
+        "steelman":    "What is the strongest argument that analogy and pattern-matching thinking is actually more powerful for most real-world decisions than first principles reasoning — because first principles thinking is too slow and too cognitively expensive for most situations?",
+        "example":     (
+            "The battery example (Elon Musk):\n\n"
+            "Conventional thinking: 'Batteries are expensive because they've always been expensive. "
+            "Everyone says $600/kWh is the floor. We can't make electric cars affordable.'\n\n"
+            "First principles: 'What are batteries actually MADE OF? "
+            "Cobalt, nickel, aluminum, carbon, a polymer separator, steel. "
+            "What does each of those cost on the commodity market? "
+            "The materials cost $80/kWh. So why does assembly cost $520/kWh? "
+            "Can we redesign the assembly process?'\n\n"
+            "Result: Tesla brought battery costs from $600/kWh to under $100/kWh.\n\n"
+            "The same method applies to: understanding the universe, "
+            "evaluating any claim, designing your life, understanding any institution. "
+            "Strip away the inherited assumptions. "
+            "Ask: what do we know FOR CERTAIN? "
+            "Build from there."
+        ),
+        "activity":    (
+            "The First Principles Breakdown:\n"
+            "Pick one thing your family spends money on regularly.\n"
+            "Apply first principles:\n"
+            "1. What is the fundamental need this serves?\n"
+            "2. What are the absolute minimum ingredients required to meet that need?\n"
+            "3. What is the cost of those ingredients?\n"
+            "4. Why does the current solution cost more than the ingredients?\n"
+            "5. Is there a simpler path from ingredients to need?\n\n"
+            "This works for expenses, beliefs, institutions, relationships, and physics. "
+            "It is the universal tool of the truth seeker."
+        ),
+        "age_hint":    "All ages — bring everyone",
+        "xp": 60, "rune": "FIRST•PRINCIPLES•ETERNAL•RUNE", "min_coherence": 0.76,
+        "grants_badge": "🔭 Universe Truth Seeker — Sees From First Principles",
+        "lattice_node": "first-principles-universe-understanding-complete",
+    },
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── THE COMPLETE ECONOMIC TRAP (4 lessons) ────────────────────────────────
+    # The full loop: restricted supply → high entry cost → perpetual taxes.
+    # Taught through real family stories, not abstraction.
+    # Every kid in 2026 will live this. They should understand it first.
+    # ══════════════════════════════════════════════════════════════════════════
+    "economic-trap-1": {
+        "title":       "The Complete Trap — How the System Extracts Forever",
+        "topic":       "The system doesn't just make entry expensive. Once you're inside, it extracts from you permanently. Understanding the full loop — restricted supply, high entry cost, perpetual taxes — is the foundation of financial sovereignty.",
+        "steelman":    "What is the strongest argument that property taxes, inflation, and capital gains treatment are necessary and fair, and that the alternatives (no property taxes, no inflation targeting) would be worse for society overall?",
+        "example":     (
+            "The complete loop:\n\n"
+            "Step 1 — RESTRICTED SUPPLY: Zoning laws, regulations, and permitting "
+            "requirements restrict housing supply for decades. This makes housing "
+            "artificially expensive.\n\n"
+            "Step 2 — HIGH ENTRY COST: A family works for years to save for a down payment. "
+            "They 'make it inside.' They now own.\n\n"
+            "Step 3 — PERPETUAL EXTRACTION: They now pay:\n"
+            "• Property taxes every year forever (miss payments = lose the house)\n"
+            "• Inflation silently erodes their cash savings (2% target = 22% lost per decade)\n"
+            "• Income taxes on wages (higher rate than capital gains)\n"
+            "• The same regulations that made their own house expensive now protect "
+            "their asset value — but also make it impossible for their children to buy\n\n"
+            "Step 4 — THE LOOP CLOSES: Their children face the same restricted supply "
+            "and high entry cost. The tax revenue from property owners funds the very "
+            "regulations that keep supply restricted."
+        ),
+        "activity":    (
+            "Map your family's economic position:\n"
+            "1. Which taxes do you pay annually that never stop?\n"
+            "2. How much have those taxes risen in the last 10 years?\n"
+            "3. What would happen if you stopped paying property taxes for 3 years?\n"
+            "4. How much purchasing power has $1,000 from 10 years ago lost to inflation?\n\n"
+            "Discuss: Is this system fair? What would you change if you designed it from scratch?"
+        ),
+        "age_hint":    "12+",
+        "xp": 40, "rune": "SOVEREIGN•ECON•RUNE", "min_coherence": 0.70,
+    },
+    "economic-trap-2": {
+        "title":       "Grandma's House — The $20,000 House That Became a $1,000,000 Trap",
+        "topic":       "Paper wealth is not the same as real security. When your home appreciates 50x but your income doesn't, the system that celebrated your 'wealth creation' can force you out of the home you lived in for 50 years.",
+        "steelman":    "What is the strongest argument that rising property values represent genuine wealth creation, and that people who choose to stay in expensive areas are making a voluntary trade-off they should be responsible for?",
+        "example":     (
+            "A real story playing out in Tampa, across Florida, and across the country:\n\n"
+            "Grandma bought her house in the 1970s for $20,000. She paid it off. "
+            "She raised her family there. She did everything right.\n\n"
+            "The house is now valued at $1,000,000.\n\n"
+            "On paper: she is a millionaire.\n"
+            "In reality: her property taxes rose from ~$400/year to ~$12,000/year.\n"
+            "Her Social Security income: $18,000/year.\n"
+            "Her fixed pension: didn't keep pace with inflation.\n\n"
+            "She cannot afford to stay in her own home.\n"
+            "She sells. The buyer takes on the $12,000/year tax burden.\n"
+            "Grandma moves to a smaller place, can't drive, takes Ubers.\n"
+            "The same politicians who created the housing shortage are on TV "
+            "talking about 'the strong economy' and 'historic home values.'\n\n"
+            "This is not an accident. This is the system working exactly as designed — "
+            "extracting from fixed-income holders while protecting asset-holders "
+            "who can afford the perpetual costs."
+        ),
+        "activity":    (
+            "Interview a family member who owned a home decades ago (or research online).\n"
+            "Find out:\n"
+            "1. What did they pay for their house?\n"
+            "2. What is it worth now?\n"
+            "3. What are the current property taxes?\n"
+            "4. Could their original income afford those taxes today?\n\n"
+            "Calculate: at 2% inflation, how much does $1,000 lose per decade?\n"
+            "($1,000 → $820 after 10 years → $672 after 20 years → $455 after 40 years)"
+        ),
+        "age_hint":    "11+",
+        "xp": 38, "rune": "TRUTH•RUNE", "min_coherence": 0.68,
+        "grants_badge": "🏠 Housing Reality — Sees Through Paper Wealth",
+    },
+    "economic-trap-3": {
+        "title":       "Inflation — The Tax Nobody Voted For",
+        "topic":       "Inflation is not just rising prices. It is a transfer of wealth from holders of dollars to issuers of dollars. The 2% annual target is sold as 'stability' — but it means the savings of working families quietly lose value every year, without any debate or vote.",
+        "steelman":    "What is the strongest argument that moderate, predictable inflation is actually beneficial — that it encourages investment over hoarding, and that deflation would be far more economically destructive?",
+        "example":     (
+            "Inflation as the invisible tax:\n\n"
+            "The Federal Reserve targets 2% inflation annually. This sounds small.\n"
+            "Over 10 years: $100,000 in a savings account becomes worth ~$82,000 in real terms.\n"
+            "Over 30 years: that $100,000 becomes worth ~$55,000 in real terms.\n\n"
+            "Who benefits? Those who hold assets (stocks, real estate, Bitcoin) that "
+            "rise with or faster than inflation.\n"
+            "Who loses? Those who hold cash, live on fixed incomes, or saved "
+            "diligently for decades in dollars.\n\n"
+            "The 'voluntary' part: nobody forced you to hold dollars. But the "
+            "alternatives (real estate, stocks) require capital, sophistication, "
+            "and luck. Most families don't start with those advantages.\n\n"
+            "Bitcoin's fixed supply (21 million, hardcoded) makes inflation "
+            "impossible by design. This is not an accident. It was designed "
+            "explicitly as the opposite of the Fed's model."
+        ),
+        "activity":    (
+            "Run the Inflation Calculator as a family:\n"
+            "1. Go to BLS CPI calculator (or use: $100 in 1990 = $250 today)\n"
+            "2. Pick a year one parent or grandparent started working\n"
+            "3. Calculate what their starting salary is worth in today's dollars\n"
+            "4. Compare to actual wages today\n\n"
+            "Discuss: who kept pace? Who fell behind? Why does Bitcoin's fixed supply "
+            "matter to someone who doesn't trust the Fed's 2% promise?"
+        ),
+        "age_hint":    "11+",
+        "xp": 42, "rune": "SOUND•MONEY•RUNE", "min_coherence": 0.70,
+    },
+    "economic-trap-4": {
+        "title":       "Breaking the Cycle — Sovereignty Strategies for the Next Generation",
+        "topic":       "Understanding the trap is step one. Step two is building parallel systems that reduce dependence on the rules that keep the trap closed. This lesson covers the practical strategies families use to preserve sovereignty across generations.",
+        "steelman":    "What is the strongest argument that 'opting out' of mainstream financial systems (holding Bitcoin, minimizing property ownership) just leaves families more vulnerable and isolated, not more free?",
+        "example":     (
+            "Four sovereignty strategies that compound across generations:\n\n"
+            "1. SOUND MONEY ALLOCATION: Hold some savings in Bitcoin (fixed supply, "
+            "no central issuer) alongside dollars. Not because Bitcoin is perfect, "
+            "but because diversification against dollar inflation is rational.\n\n"
+            "2. LOW TIME PREFERENCE: The system rewards patience. People who delay "
+            "gratification, buy productive assets, and avoid high-interest debt "
+            "systematically outperform those who don't. This is teachable.\n\n"
+            "3. UNDERSTAND THE TAX CODE BETTER THAN THE PEOPLE TAXING YOU: "
+            "Capital gains vs. income tax treatment, homestead exemptions, "
+            "senior circuit breakers, self-employment structures. The rules "
+            "are complex but learnable.\n\n"
+            "4. BUILD PARALLEL VALUE: Skills, networks, reputation, and "
+            "productive assets that have value independent of any government's "
+            "rules. These compound quietly and can't be inflated away.\n\n"
+            "None of these strategies require breaking rules. They require "
+            "understanding rules well enough to navigate them intentionally."
+        ),
+        "activity":    (
+            "Design your family's 10-year sovereignty plan:\n"
+            "1. What percentage of savings is in assets that beat inflation vs. cash?\n"
+            "2. What is one skill each family member is developing that has "
+            "value independent of any employer or institution?\n"
+            "3. What is one step toward lower monthly fixed costs?\n"
+            "4. What is one thing the family can learn together about the tax code "
+            "that would save or protect money this year?\n\n"
+            "Write it down. Revisit in one year."
+        ),
+        "age_hint":    "All ages — family planning session",
+        "xp": 50, "rune": "SOVEREIGNTY•RUNE", "min_coherence": 0.73,
+        "grants_badge": "🔑 System Literate — Understands the Full Loop",
+    },
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── THE UNIVERSE TRACK (6 lessons) — Claude's genuine addition ───────────
+    # Maximum truth seekers need more than epistemic hygiene and financial literacy.
+    # They need genuine wonder about the deepest questions.
+    #
+    # These lessons ask: What IS reality? What is information? Why does anything
+    # exist? Where did everything come from? Are we alone?
+    #
+    # These questions don't have final answers. That is the point.
+    # The child who sits with these questions without collapsing into dogma
+    # is the most dangerous kind of truth seeker: genuinely open.
+    # ══════════════════════════════════════════════════════════════════════════
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
