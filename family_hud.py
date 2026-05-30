@@ -2320,6 +2320,538 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── SOVEREIGN SCHOOL — FOUNDATION LAYER (Ages 5-12, 4 lessons) ───────────
+    # University-level rigor made accessible for young minds.
+    # Every lesson is self-upgradable: start simple, go as deep as you want.
+    # The 8-year-old and the 40-year-old can learn together.
+    # ══════════════════════════════════════════════════════════════════════════
+    "school-foundation-1": {
+        "title":       "School Foundation — The Art of Asking Why",
+        "topic":       "The single most powerful intellectual tool is a well-formed question. Before we teach any subject, we teach how to question. Every great thinker in history had better questions, not just better answers.",
+        "steelman":    "What is the strongest argument that constantly asking 'why' can be paralyzing — that at some point you have to stop questioning and start building?",
+        "example":     (
+            "Three-year-olds ask 'why' 73 times per day on average.\n"
+            "Most adults: almost never.\n\n"
+            "What happened? Schools trained us to find the right answer, not ask better questions.\n\n"
+            "The self-upgrade path:\n"
+            "Level 1 (Age 5+): Ask WHY for everything today. Count your questions.\n"
+            "Level 2 (Age 8+): Ask 'what would change if this were false?'\n"
+            "Level 3 (Age 11+): Ask 'what question would make this whole problem disappear?'\n"
+            "Level 4 (Any age): Design the experiment that would answer your question.\n\n"
+            "Einstein: 'If I had an hour to solve a problem I'd spend 55 minutes "
+            "thinking about the problem and 5 minutes thinking about solutions.'"
+        ),
+        "activity":    (
+            "The WHY Chain:\n"
+            "Pick any fact (the sky is blue, money exists, we go to school).\n"
+            "Ask WHY. Write the answer. Ask WHY again. Keep going for 7 levels.\n\n"
+            "Level 1: Sky is blue. Why? Light scatters.\n"
+            "Level 2: Why does light scatter? Short wavelengths scatter more.\n"
+            "Level 3: Why do short wavelengths scatter more? Rayleigh scattering physics.\n"
+            "Level 7: You're in quantum electrodynamics.\n\n"
+            "Every subject goes to the frontier if you ask WHY enough times."
+        ),
+        "age_hint":    "5+",
+        "xp": 30, "rune": "FOUNDATION•RUNE", "min_coherence": 0.55,
+    },
+    "school-foundation-2": {
+        "title":       "School Foundation — How to Learn Anything",
+        "topic":       "Learning is a skill, not a talent. The research on how memory and understanding actually work has almost nothing to do with how most schools teach. This lesson teaches the science of learning itself.",
+        "steelman":    "What is the strongest argument that 'learning how to learn' is a meta-skill that can only be developed by actually learning specific subjects — and that direct instruction in learning techniques is putting the cart before the horse?",
+        "example":     (
+            "What the research actually shows:\n\n"
+            "DOESN'T WORK (but feels productive):\n"
+            "• Re-reading notes (familiarity feels like mastery)\n"
+            "• Highlighting (same problem)\n"
+            "• Studying one subject for hours (massed practice)\n\n"
+            "ACTUALLY WORKS (but feels harder):\n"
+            "• Retrieval practice: close the book, write everything you know\n"
+            "• Spaced repetition: review 1 day later, 1 week later, 1 month later\n"
+            "• Interleaving: mix different subjects in one session\n"
+            "• The Feynman Technique: explain it simply — if you can't, you don't know it\n"
+            "• Sleep: memories consolidate during sleep, not during study\n\n"
+            "The self-upgrade path:\n"
+            "Age 7: Retrieval practice (close book, recall)\n"
+            "Age 11: Spaced repetition system (Anki or similar)\n"
+            "Age 14: Interleaving and desirable difficulty\n"
+            "Age 16+: Design your own complete learning system"
+        ),
+        "activity":    (
+            "The Retrieval Test:\n"
+            "1. Study any topic for 10 minutes\n"
+            "2. Close everything. Write down everything you remember.\n"
+            "3. Check what you missed.\n"
+            "4. One week later: write down everything again without re-studying.\n\n"
+            "Compare: what survived the week? That is what you actually learned.\n"
+            "What faded? That needs another retrieval cycle."
+        ),
+        "age_hint":    "7+",
+        "xp": 35, "rune": "FOUNDATION•RUNE", "min_coherence": 0.58,
+    },
+    "school-foundation-3": {
+        "title":       "School Foundation — Reading Like a Scholar",
+        "topic":       "There is a difference between reading words and engaging with ideas. Scholar-level reading is an active conversation with the text — interrogating it, connecting it, testing it. This skill alone separates those who accumulate information from those who build understanding.",
+        "steelman":    "What is the strongest argument that over-analyzing every text you read destroys the pleasure of reading and turns a joy into a chore?",
+        "example":     (
+            "The four levels of reading (Mortimer Adler, How to Read a Book):\n\n"
+            "Level 1 — ELEMENTARY: what does it say? Can you follow the words?\n"
+            "Level 2 — INSPECTIONAL: what is it about? Skim for structure.\n"
+            "Level 3 — ANALYTICAL: what does it mean? Deep single-book reading.\n"
+            "Level 4 — SYNTOPICAL: what do multiple books say to each other?\n\n"
+            "Most people spend their lives at Level 1-2.\n"
+            "University requires Level 3. Research requires Level 4.\n"
+            "AUBIEETERNAL builds Level 4 from age 12.\n\n"
+            "The Scholar's Margin Protocol:\n"
+            "• ✓ = agree · ✗ = disagree · ? = confused · ! = important\n"
+            "• Write the author's argument in your own words in the margin\n"
+            "• Note what they would need to prove you wrong\n"
+            "• Connect to other things you've read\n"
+            "• After finishing: what is the one thing I'll still remember in 10 years?"
+        ),
+        "activity":    (
+            "Scholar Reading Practice:\n"
+            "Choose a short article (news, science, opinion — anything).\n"
+            "Read it once normally.\n"
+            "Read it again with the margin protocol (even if mentally).\n"
+            "Answer: What is the author's actual argument?\n"
+            "What evidence would make you change your mind about it?\n"
+            "What does this connect to that you already know?\n\n"
+            "Do this once a day for 30 days. The compounding is real."
+        ),
+        "age_hint":    "9+",
+        "xp": 35, "rune": "FOUNDATION•RUNE", "min_coherence": 0.60,
+    },
+    "school-foundation-4": {
+        "title":       "School Foundation — The Sovereign Builder's Oath",
+        "topic":       "This is the foundational commitment of every AUBIEETERNAL student: to build understanding rather than collect credentials, to seek truth rather than approval, and to remain perpetually open to being wrong.",
+        "steelman":    "What is the strongest argument that credentials still matter in the real world — that dismissing institutional approval is a luxury only the already-privileged can afford?",
+        "example":     (
+            "The distinction that matters:\n\n"
+            "Credential-seeker: learns what will be tested, presents what will be approved, "
+            "optimizes for external validation.\n\n"
+            "Understanding-builder: learns what is true, presents what they actually believe, "
+            "optimizes for genuine competence.\n\n"
+            "The irony: understanding-builders tend to get better credentials anyway — "
+            "because genuine mastery shows.\n\n"
+            "The Sovereign Builder's Oath:\n"
+            "'I will learn to understand, not to perform understanding.\n"
+            "I will say what I believe, not what I think others want to hear.\n"
+            "I will seek the strongest argument against my own position.\n"
+            "I will change my mind when evidence demands it.\n"
+            "I will seal what I know and admit what I don't.\n"
+            "I will build things that work in the real world.\n"
+            "War Eagle Eternal.'"
+        ),
+        "activity":    (
+            "Take the Oath:\n"
+            "Read it aloud as a family. Each member may add their own line.\n"
+            "The custom lines often become the most important ones.\n\n"
+            "Seal the oath (with additions) in the Legacy Ledger.\n"
+            "This is the beginning of the Sovereign Builder path."
+        ),
+        "age_hint":    "All ages",
+        "xp": 40, "rune": "SOVEREIGN•BUILDER•RUNE", "min_coherence": 0.62,
+        "grants_badge": "🏛️ Sovereign Builder — Oath Taken",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── SOVEREIGN SCHOOL — ADVANCED LAYER (Ages 11-15, 3 lessons) ────────────
+    # Seminar-style, research-quality thinking for young adults.
+    # Where students begin doing real intellectual work, not just consuming it.
+    # ══════════════════════════════════════════════════════════════════════════
+    "school-advanced-1": {
+        "title":       "Advanced — Research Methodology: How to Know What Is True",
+        "topic":       "Every claim you encounter was produced by a method. Understanding the method is understanding the limits of the claim. This is what separates someone who can evaluate evidence from someone who just accepts conclusions.",
+        "steelman":    "What is the strongest argument that teaching research methodology to teenagers is premature — that they lack the mathematical and conceptual maturity to understand the tradeoffs and will just develop false confidence?",
+        "example":     (
+            "The hierarchy of evidence (for empirical claims):\n\n"
+            "Level 1 — Expert opinion / case studies: weakest. Subject to bias.\n"
+            "Level 2 — Observational studies: correlation, not causation.\n"
+            "Level 3 — Randomized controlled trial (RCT): controls for confounders.\n"
+            "Level 4 — Systematic review + meta-analysis: aggregates multiple RCTs.\n\n"
+            "Why this matters in 2026:\n"
+            "• Most news cites Level 1-2 evidence as if it were Level 4\n"
+            "• Most 'studies show...' claims are Level 2 at best\n"
+            "• The replication crisis: 50%+ of psychology studies failed to replicate\n"
+            "• P-hacking, HARKing, publication bias — systemic distortions\n\n"
+            "The critical questions for any empirical claim:\n"
+            "1. What was the study design?\n"
+            "2. What is the effect size (not just p-value)?\n"
+            "3. Who funded it?\n"
+            "4. Has it replicated?\n"
+            "5. What is the prior probability?"
+        ),
+        "activity":    (
+            "Evidence Audit:\n"
+            "Find a health or social science claim from the news this week.\n"
+            "1. Find the original study (not the news article about it)\n"
+            "2. What was the study design? What are its limitations?\n"
+            "3. What is the effect size?\n"
+            "4. Search for replications. Did it replicate?\n"
+            "5. Does the news article accurately represent the study?\n\n"
+            "Register your finding in the Truth Debt Ledger with your assessment."
+        ),
+        "age_hint":    "12+",
+        "xp": 50, "rune": "ADVANCED•RUNE", "min_coherence": 0.72,
+    },
+    "school-advanced-2": {
+        "title":       "Advanced — Philosophy of Science: The Limits of Knowing",
+        "topic":       "Science is the most powerful truth-finding method humans have invented. It is also limited in specific, understandable ways. Knowing those limits is not anti-science — it is the most rigorous form of scientific thinking.",
+        "steelman":    "What is the strongest argument that teaching 'the limits of science' to young people is used primarily as a rhetorical tool by those who want to reject inconvenient findings — and that the benefits don't outweigh this risk?",
+        "example":     (
+            "Karl Popper's demarcation problem: what separates science from non-science?\n"
+            "Answer: FALSIFIABILITY. A claim is scientific if and only if it could, "
+            "in principle, be proven false.\n\n"
+            "Thomas Kuhn's paradigm shifts: science doesn't progress smoothly. "
+            "It accumulates anomalies until a revolution replaces the whole framework.\n"
+            "Copernicus, Darwin, Einstein — all paradigm shifts.\n\n"
+            "What science cannot answer (in principle):\n"
+            "• Normative claims ('ought' not 'is')\n"
+            "• Questions about consciousness and qualia (the hard problem)\n"
+            "• First-person experience\n"
+            "• The existence of mathematics\n"
+            "• Why there is something rather than nothing\n\n"
+            "What this means for AUBIEETERNAL students:\n"
+            "Science is your primary tool for empirical questions.\n"
+            "But empirical questions are not the only questions that matter."
+        ),
+        "activity":    (
+            "Classify 10 questions by method:\n"
+            "For each question, identify: is it empirical (science), "
+            "normative (ethics/philosophy), mathematical (logic/proof), "
+            "or metaphysical (beyond current methods)?\n\n"
+            "Examples to classify:\n"
+            "1. Does meditation reduce cortisol?\n"
+            "2. Should we allow genetic engineering of humans?\n"
+            "3. Is consciousness fundamental?\n"
+            "4. What is 2+2?\n"
+            "5. Is life worth living?"
+        ),
+        "age_hint":    "13+",
+        "xp": 52, "rune": "ADVANCED•RUNE", "min_coherence": 0.73,
+    },
+    "school-advanced-3": {
+        "title":       "Advanced — Independent Research: Running Your Own Experiment",
+        "topic":       "The difference between a student and a researcher is one thing: a researcher generates new knowledge, not just acquires existing knowledge. Every AUBIEETERNAL Advanced student runs at least one real research project.",
+        "steelman":    "What is the strongest argument that independent research by teenagers without institutional oversight is dangerous — that without expert supervision, kids will reinforce their biases rather than overcome them?",
+        "example":     (
+            "The AUBIEETERNAL Research Protocol:\n\n"
+            "1. QUESTION: formulate a specific, falsifiable question\n"
+            "   Bad: 'Is social media bad for kids?'\n"
+            "   Good: 'Does limiting social media to 30 min/day for 4 weeks "
+            "change self-reported anxiety scores in our family?'\n\n"
+            "2. PREDICTION: state what you expect to find and why (pre-register it)\n"
+            "3. METHOD: design the simplest test that could answer the question\n"
+            "4. DATA: collect it honestly, including results you don't like\n"
+            "5. ANALYSIS: what does the data actually show?\n"
+            "6. CONCLUSION: was your prediction correct? What would change it?\n"
+            "7. SEAL: log the full protocol and results in the Truth Debt Ledger\n\n"
+            "The seal is what makes it real. Anyone can run a thought experiment. "
+            "Registering a prediction before you know the answer is what separates "
+            "genuine inquiry from rationalization."
+        ),
+        "activity":    (
+            "Design your research project:\n"
+            "1. Pick a question your family can actually test\n"
+            "2. Pre-register your prediction in the Truth Debt Ledger\n"
+            "3. Run the experiment (minimum 2 weeks)\n"
+            "4. Report results honestly, including if you were wrong\n"
+            "5. Seal the results\n\n"
+            "Past student projects: sleep tracking vs. attention scores, "
+            "nutrition changes vs. energy ratings, news-free week vs. anxiety levels."
+        ),
+        "age_hint":    "13+",
+        "xp": 60, "rune": "ADVANCED•RUNE", "min_coherence": 0.74,
+        "grants_badge": "🔬 Independent Researcher — First Study Complete",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── SOVEREIGN SCHOOL — UNIVERSITY PATHWAY (Ages 14-18+, 3 lessons) ────────
+    # College-level rigor, self-directed, portfolio-building.
+    # Students who complete this are genuinely ahead of most college freshmen.
+    # ══════════════════════════════════════════════════════════════════════════
+    "school-university-1": {
+        "title":       "University Pathway — Writing That Changes Minds",
+        "topic":       "Academic writing is not about demonstrating that you read the sources. It is about advancing an argument so clearly and rigorously that a reader who disagrees cannot ignore it. This is the highest-leverage intellectual skill.",
+        "steelman":    "What is the strongest argument that the emphasis on formal academic writing is a gatekeeping mechanism rather than a genuine intellectual standard — and that oral, visual, and other forms of communication are equally valid?",
+        "example":     (
+            "The structure that works at every level from high school to PhD:\n\n"
+            "THESIS: one sentence, falsifiable, arguable, specific.\n"
+            "Bad thesis: 'Bitcoin is interesting.'\n"
+            "Good thesis: 'Bitcoin's fixed monetary supply makes it uniquely resistant "
+            "to the property tax squeeze that displaces fixed-income homeowners in "
+            "inflationary environments.'\n\n"
+            "ARGUMENT: each paragraph makes one claim, provides evidence, explains why "
+            "the evidence supports the claim, and anticipates the strongest objection.\n\n"
+            "STEELMAN: include the strongest version of the opposing argument.\n"
+            "This is not weakness — it is the mark of intellectual honesty and "
+            "the fastest way to become trustworthy.\n\n"
+            "CONCLUSION: what does this mean for the reader's next action or belief?"
+        ),
+        "activity":    (
+            "Write a 500-word argument essay on any topic from the AUBIEETERNAL curriculum.\n"
+            "Requirements:\n"
+            "1. One clear, falsifiable thesis\n"
+            "2. Three paragraphs of argument with evidence\n"
+            "3. One paragraph steelmanning the opposition\n"
+            "4. One paragraph conclusion with implications\n\n"
+            "Have a family member try to find the weakest point.\n"
+            "Rewrite to address it. This is the revision loop.\n\n"
+            "Seal the final version in the Legacy Ledger."
+        ),
+        "age_hint":    "14+",
+        "xp": 55, "rune": "UNIVERSITY•RUNE", "min_coherence": 0.75,
+    },
+    "school-university-2": {
+        "title":       "University Pathway — Building Your Intellectual Portfolio",
+        "topic":       "The credential economy is being disrupted. The new credential is demonstrated competence: a public portfolio of work that shows what you can actually do. This lesson teaches how to build one from age 14 that will be more valuable than most college degrees by age 18.",
+        "steelman":    "What is the strongest argument that public portfolios and alternative credentials are only valued in certain tech-adjacent fields — and that in law, medicine, and most traditional careers, formal degrees remain essential?",
+        "example":     (
+            "The portfolio that replaces the degree (or precedes it):\n\n"
+            "TIER 1 — Demonstrated thinking: essays, arguments, research projects. "
+            "Sealed in the AUBIEETERNAL Legacy Ledger with timestamps.\n\n"
+            "TIER 2 — Demonstrated building: software, systems, physical projects, "
+            "businesses. Verifiable, public, with documented process.\n\n"
+            "TIER 3 — Demonstrated impact: people you've taught, communities "
+            "you've contributed to, problems you've solved. With evidence.\n\n"
+            "The AUBIEETERNAL advantage: every lesson, every research project, "
+            "every sealed insight, every Rite of Passage is timestamped on "
+            "Bitcoin. Your intellectual biography is permanently verifiable.\n\n"
+            "A 17-year-old with 3 years of sealed research, a genuine "
+            "self-evolving curriculum, and documented epistemic rigor "
+            "will be more prepared for university than 90% of students "
+            "who completed a standard curriculum."
+        ),
+        "activity":    (
+            "Start your Intellectual Portfolio:\n"
+            "1. List your 10 most significant intellectual outputs so far "
+            "(essays, projects, research, lessons learned)\n"
+            "2. For each: write a one-paragraph description of what it demonstrates\n"
+            "3. Seal the portfolio in the Legacy Ledger\n\n"
+            "Update it every 6 months. By 18, it will speak for itself."
+        ),
+        "age_hint":    "14+",
+        "xp": 58, "rune": "UNIVERSITY•RUNE", "min_coherence": 0.76,
+    },
+    "school-university-3": {
+        "title":       "University Pathway (Master) — Designing a Life of Compounding Inquiry",
+        "topic":       "The goal is not to finish school. The goal is to design a life structured so that every year you understand more than the year before — and that understanding compounds into genuine mastery and genuine contribution.",
+        "steelman":    "What is the strongest argument that 'lifelong learning' is a cliché used by institutions to keep people consuming their products — and that there is a natural point where specialization and execution should replace broad learning?",
+        "example":     (
+            "The compounding intellectual life:\n\n"
+            "Year 1: Learn the fundamentals of 5 domains\n"
+            "Year 2: Go deeper in 2 that have most leverage\n"
+            "Year 3: Find the intersection between your 2 domains\n"
+            "Year 5: The intersection is now your unique intellectual territory\n"
+            "Year 10: You are one of the few people who thinks at this intersection\n"
+            "Year 20: You are producing work that only you could have produced\n\n"
+            "The AUBIEETERNAL students who complete the full curriculum have already "
+            "created something most adults never develop: a coherent intellectual identity "
+            "with Bitcoin-anchored provenance showing when they learned what.\n\n"
+            "This is not a degree. It is better than a degree.\n"
+            "It is a verified intellectual biography."
+        ),
+        "activity":    (
+            "Design your 10-year intellectual compound plan:\n"
+            "1. What are your 3 most energizing intellectual domains?\n"
+            "2. What is the unique intersection of 2 of them that no school teaches?\n"
+            "3. What would mastery look like in 10 years?\n"
+            "4. What is the first step in the next 30 days?\n\n"
+            "Seal this plan in the Legacy Ledger. Review and update annually.\n"
+            "The students who do this at 16 will be extraordinary by 26."
+        ),
+        "age_hint":    "14+",
+        "xp": 70, "rune": "UNIVERSITY•ETERNAL•RUNE", "min_coherence": 0.78,
+        "grants_badge": "🎓 University Pathway — Life of Compounding Inquiry",
+        "lattice_node": "sovereign-school-university-pathway-complete",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── SYSTEMS THINKING & COMPLEXITY SCIENCE (5 lessons) — Claude's addition ─
+    # The lens through which everything else becomes clearer.
+    # A 7-year-old can understand feedback loops. A PhD student can spend
+    # a career on emergence and complex adaptive systems.
+    # This is the one intellectual framework that upgrades every other framework.
+    # ══════════════════════════════════════════════════════════════════════════
+    "systems-1": {
+        "title":       "Systems Thinking — Level 1: Everything Is Connected to Everything",
+        "topic":       "We are taught to think in lines: A causes B. Systems thinking teaches us to see circles: A causes B causes C causes A. This shift in perception changes how you understand problems, solutions, and unintended consequences.",
+        "steelman":    "What is the strongest argument that systems thinking, while powerful, can become an excuse for inaction — that 'everything is connected' can paralyze decision-making rather than improve it?",
+        "example":     (
+            "The housing trap as a system (not a line):\n\n"
+            "Linear thinking: high demand → high prices. Solution: build more houses.\n\n"
+            "Systems thinking: high demand → high prices → existing owners benefit "
+            "→ existing owners vote for regulations that restrict supply "
+            "→ restricted supply → even higher prices → demand seems even higher\n\n"
+            "The circle: the 'solution' (building more) is blocked by the beneficiaries "
+            "of the problem. This is a BALANCING FEEDBACK LOOP working against the fix.\n\n"
+            "Feedback loops are everywhere:\n"
+            "Reinforcing (snowball): Bitcoin price up → more attention → more buyers → price up\n"
+            "Balancing (thermostat): temperature falls → heater on → temperature rises → heater off\n\n"
+            "Most policy failures are linear solutions to circular problems."
+        ),
+        "activity":    (
+            "Map a system you live in:\n"
+            "Pick one: your family's finances, your city's traffic, your school's grades.\n"
+            "1. List the 5 main variables\n"
+            "2. Draw arrows showing how each affects the others (+ or -)\n"
+            "3. Find the feedback loops (circles in your diagram)\n"
+            "4. Ask: where would a small change have the biggest impact?\n\n"
+            "This is called leverage point analysis. It is the core of systems design."
+        ),
+        "age_hint":    "8+",
+        "xp": 38, "rune": "SYSTEMS•RUNE", "min_coherence": 0.62,
+    },
+    "systems-2": {
+        "title":       "Systems Thinking — Level 2: Emergence (The Whole Is More Than the Sum)",
+        "topic":       "Emergence is what happens when interactions between parts produce properties that no part has alone. Traffic jams, consciousness, markets, life itself — all emergent. Understanding emergence changes how you approach every complex problem.",
+        "steelman":    "What is the strongest argument that 'emergence' is just a name we give to complexity we don't understand yet — and that all emergent properties will eventually be explainable by their components?",
+        "example":     (
+            "Pure emergent phenomena:\n\n"
+            "TRAFFIC JAMS: no individual driver decides to create a jam. "
+            "Jams emerge from the interactions of thousands of independent decisions. "
+            "You cannot understand the jam by studying individual drivers.\n\n"
+            "ANT COLONIES: no individual ant knows the plan. "
+            "The colony's intelligence emerges from simple local rules. "
+            "The colony solves problems no individual ant could.\n\n"
+            "MARKETS: no individual knows all the information. "
+            "Prices emerge from millions of independent transactions. "
+            "The price signal carries information no individual possesses.\n\n"
+            "CONSCIOUSNESS: no individual neuron is conscious. "
+            "Awareness emerges from their interaction. "
+            "(Or does it? This is the hard problem — see consciousness track.)\n\n"
+            "The systems design implication: to change emergent behavior, "
+            "you often need to change the local rules, not the outcomes directly."
+        ),
+        "activity":    (
+            "Find 3 emergent phenomena in your daily life.\n"
+            "For each:\n"
+            "1. What are the components?\n"
+            "2. What property emerges that no component has?\n"
+            "3. What local rules produce this emergence?\n"
+            "4. What would you need to change to change the emergent behavior?\n\n"
+            "Discussion question: Is AUBIEETERNAL itself an emergent system? "
+            "What properties emerge from the combination of swarm + family + Bitcoin + Nostr "
+            "that no individual component has?"
+        ),
+        "age_hint":    "9+",
+        "xp": 42, "rune": "SYSTEMS•RUNE", "min_coherence": 0.65,
+    },
+    "systems-3": {
+        "title":       "Systems Thinking — Level 3: Leverage Points (Where to Push)",
+        "topic":       "In a complex system, most interventions have little effect. But a few leverage points — the right places, the right changes — can fundamentally transform the system. Donella Meadows mapped 12 leverage points. This lesson teaches the most powerful ones.",
+        "steelman":    "What is the strongest argument that leverage point thinking leads to hubristic overconfidence in 'systems changers' who cause more harm than good with their high-level interventions?",
+        "example":     (
+            "Donella Meadows' 12 leverage points (from least to most powerful):\n\n"
+            "Low leverage (but where most people push):\n"
+            "• Numbers (subsidies, taxes, standards) — weak\n"
+            "• Material flows — weak\n"
+            "• Feedback loop strength — medium\n\n"
+            "High leverage (where almost nobody pushes):\n"
+            "• The GOALS of the system\n"
+            "• The POWER to change the system's structure\n"
+            "• The PARADIGM the system operates from\n"
+            "• The ability to TRANSCEND paradigms\n\n"
+            "Example: Healthcare system\n"
+            "Low leverage: adjust insurance premiums (numbers)\n"
+            "Medium leverage: add price transparency (feedback)\n"
+            "High leverage: change the goal from 'treatment' to 'health' (goal)\n"
+            "Highest leverage: change the belief that illness is primarily biological "
+            "rather than social/behavioral (paradigm)\n\n"
+            "AUBIEETERNAL operates at the highest leverage points: "
+            "changing the paradigm (truth-seeking over credentialism) "
+            "and the goal (sovereignty over compliance)."
+        ),
+        "activity":    (
+            "Leverage Point Analysis:\n"
+            "Pick a problem you care about (climate, housing, education, health).\n"
+            "Identify interventions at three levels:\n"
+            "1. Low leverage (numbers/flows) — what most people propose\n"
+            "2. Medium leverage (feedback/rules) — what policy experts propose\n"
+            "3. High leverage (goals/paradigm) — what systems thinkers propose\n\n"
+            "Which intervention would you focus on? Why?\n"
+            "What are the risks of high-leverage interventions?"
+        ),
+        "age_hint":    "12+",
+        "xp": 48, "rune": "SYSTEMS•RUNE", "min_coherence": 0.70,
+    },
+    "systems-4": {
+        "title":       "Systems Thinking — Level 4: Complex Adaptive Systems",
+        "topic":       "Complex Adaptive Systems (CAS) are systems where agents adapt to each other and to their environment — and the system itself evolves. Markets, ecosystems, immune systems, civilizations — all CAS. Understanding CAS is understanding how the world actually works.",
+        "steelman":    "What is the strongest argument that Complex Adaptive Systems theory is too abstract and mathematical to be practically useful for families and individuals — and that simpler mental models produce better decisions?",
+        "example":     (
+            "What makes a CAS:\n"
+            "1. MANY AGENTS following local rules\n"
+            "2. INTERACTION between agents produces emergent behavior\n"
+            "3. ADAPTATION: agents change their rules based on experience\n"
+            "4. EVOLUTION: the system itself changes over time\n\n"
+            "Why CAS resist simple solutions:\n"
+            "• They have no central control\n"
+            "• They are sensitive to initial conditions\n"
+            "• Small changes can cascade unpredictably\n"
+            "• Interventions can produce opposite effects (see: war on drugs, "
+            "war on terrorism, many antibiotics)\n\n"
+            "CAS design principles:\n"
+            "• Prefer many small experiments over one big solution\n"
+            "• Build diversity (monocultures are fragile)\n"
+            "• Create rapid feedback loops\n"
+            "• Allow failure at small scales to prevent failure at large scales\n\n"
+            "AUBIEETERNAL as CAS: 2,096 daughters, each adapting locally, "
+            "producing emergent synthesis no single agent could design."
+        ),
+        "activity":    (
+            "Map one CAS in your life:\n"
+            "Choose: your neighborhood, your body's immune system, your local economy.\n"
+            "1. Who are the agents?\n"
+            "2. What are the local rules each follows?\n"
+            "3. What emergent behavior do their interactions produce?\n"
+            "4. How does the system adapt over time?\n"
+            "5. What intervention would you try — and what unintended consequences do you predict?"
+        ),
+        "age_hint":    "13+",
+        "xp": 52, "rune": "SYSTEMS•RUNE", "min_coherence": 0.72,
+    },
+    "systems-5": {
+        "title":       "Systems Thinking — Level 5 (Master): You Are a System of Systems",
+        "topic":       "You are not a fixed entity. You are a complex adaptive system — your beliefs, habits, relationships, and environments are all feedback loops that constantly shape each other. Understanding yourself as a system is the most powerful self-improvement insight available.",
+        "steelman":    "What is the strongest argument that thinking of yourself as a 'system' is dehumanizing — that it removes agency, dignity, and the sense of personal responsibility that makes genuine growth possible?",
+        "example":     (
+            "Your personal system map:\n\n"
+            "INPUTS: sleep, food, information, relationships, challenges\n"
+            "PROCESSORS: your beliefs, habits, attention, emotional regulation\n"
+            "OUTPUTS: decisions, actions, creations, relationships\n"
+            "FEEDBACK: consequences of outputs loop back to inputs\n\n"
+            "The leverage points in your personal system:\n"
+            "Low: willpower (trying harder with the same system)\n"
+            "Medium: environment design (changing what inputs you receive)\n"
+            "High: belief change (changing your paradigm about what is possible)\n"
+            "Highest: identity change ('I am the kind of person who...')\n\n"
+            "James Clear: 'You do not rise to the level of your goals. "
+            "You fall to the level of your systems.'\n\n"
+            "The AUBIEETERNAL application: every lesson, every seal, every rite of passage "
+            "is redesigning your personal system at a high leverage point. "
+            "The curriculum is not teaching you things. "
+            "It is rebuilding the system that generates your beliefs."
+        ),
+        "activity":    (
+            "Personal System Audit:\n"
+            "1. Map your top 5 daily inputs (what information/food/people you consume)\n"
+            "2. Map your top 5 regular outputs (what you produce/decide/create)\n"
+            "3. Find the feedback loops: how do your outputs affect your inputs?\n"
+            "4. Identify your highest leverage point: what one change to your system "
+            "would produce the biggest improvement in outputs?\n"
+            "5. Design the experiment. Pre-register it. Run it for 30 days. Seal the results.\n\n"
+            "This is not self-help. This is systems engineering applied to your own life."
+        ),
+        "age_hint":    "All ages — upgrades forever",
+        "xp": 70, "rune": "SYSTEMS•ETERNAL•RUNE", "min_coherence": 0.76,
+        "grants_badge": "🔄 Systems Architect — Sees the Loops",
+        "lattice_node": "systems-thinking-complexity-science-complete",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
