@@ -3,11 +3,21 @@ name: Build and Push Docker
 on:
   push:
     branches: [ main ]
-  workflow_dispatch:
+    paths:
+      # Only rebuild when these files change — not on every swarm auto-push
+      - 'Dockerfile'
+      - 'requirements.txt'
+      - 'start.sh'
+      - 'app.py'
+      - 'swarm/swarm_v4_1.py'
+      - '.github/workflows/docker.yml'
+  workflow_dispatch:  # Manual trigger from GitHub Actions tab
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+
+    # CRITICAL: packages:write is required for ghcr.io push
     permissions:
       contents: read
       packages: write
