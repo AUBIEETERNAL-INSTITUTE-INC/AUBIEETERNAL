@@ -938,6 +938,7 @@ with st.sidebar:
         "👨‍👩‍👧 FAMILY": [
             "👨‍👩‍👧‍👦 4 Families", "🥽 Family Co-Learning",
             "👨‍👩‍👧 Parent Guide", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
+            "👑 Family Dynasty",
         ],
         "💬 CONNECT": [
             "💬 Family Messaging", "👥 Family Groups",
