@@ -9,7 +9,7 @@
 One download · Zero subscriptions · 100% offline · Any PC
 
 [![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Lessons](https://img.shields.io/badge/Curriculum-119%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
+[![Lessons](https://img.shields.io/badge/Curriculum-134%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Mac%20%7C%20Linux-purple?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL/releases)
 [![Commits](https://img.shields.io/github/commit-activity/w/hodlmateo/AUBIEETERNAL?style=flat-square&color=f7931a&label=Swarm%20Commits)](https://github.com/hodlmateo/AUBIEETERNAL/commits/main)
@@ -49,11 +49,9 @@ python launcher.py
 
 Works in **Chrome, Edge, and Brave** — Load Unpacked → `AUBIEETERNAL_extension/`
 
-**Tabs:** 🌉 Bridge · 🔮 Oracle · 📋 Ledger · 🛡️ Shield Rune · ⚙️ Settings
-
 Right-click any text: "Analyze" · "Register Claim" · "Ask Oracle" · `Ctrl+Shift+A`
 
-> Requires `api_server.py` on port 8502 — starts automatically with `launcher.py`
+> `api_server.py` on port 8502 — starts automatically with `launcher.py`
 
 ---
 
@@ -61,105 +59,118 @@ Right-click any text: "Analyze" · "Register Claim" · "Ask Oracle" · `Ctrl+Shi
 
 | | Feature | Description |
 |--|---------|-------------|
-| 👑 | **Family Dynasty** | 3-generation legacy engine — wisdom archive, rites of passage, inheritance mechanics |
+| 👑 | **Family Dynasty** | 3-generation legacy engine — wisdom archive, rites of passage, inheritance |
+| 🌌 | **Universe Track** | 6 lessons on cosmology, Fermi Paradox, information theory, consciousness |
+| 🏠 | **Economic Trap Track** | 4 lessons on the complete extraction loop — with Grandma's House as the lived example |
 | 🌉 | **X Bridge** | Any post → steelman + family lesson + simulation stress test |
 | 🛡️ | **Shield Rune Memory** | Bitcoin-anchored unerasable truth — Level 3 permanence |
-| 🔓 | **Gatekeeper Detector** | 7 gatekeeper types, capture probability, epistemic lineage tracing |
-| 🔍 | **Narrative Pattern Detector** | Detects coordinated campaigns — one signal is news, three in 72h is installation |
+| 🔓 | **Gatekeeper Detector** | 7 gatekeeper types, capture probability, epistemic lineage |
+| 🔍 | **Narrative Pattern Detector** | Coordinated campaigns detected — one signal is news, three in 72h is installation |
 | ⚡ | **Admin Dashboard** | Sovereign node elevation score, full stress test, 7-day protocol |
 | 🔧 | **Epistemic Error Correction** | LDPC-inspired 5 parity checks |
-| 🔗 | **Lattice Nodes** | Log and seal any synthesis as Bitcoin-anchored records |
+| 🔗 | **Lattice Nodes** | Log and permanently seal any synthesis |
 | 🔭 | **Simulation Probe** | Daily probe + Quantum Darwinism mode |
-| 📋 | **Truth Debt Ledger** | Append-only claim accountability record (CC0) |
+| 📋 | **Truth Debt Ledger** | Append-only claim accountability (CC0) |
 | 🕸️ | **Living Lattice** | Anonymous family coherence network — Wisdom GDP |
-| 🌐 | **Epistemic Commons** | CC0 daily signal any AI can fetch as grounding context |
-| 🥽 | **Family Co-Learning** | 119 lessons, dual HUD, XP, badges, real activities |
-| 🌅 | **Daily Synthesis** | 6AM auto-run: swarm + probe + lattice + rune auto-seal |
+| 🌅 | **Daily Synthesis** | 6AM auto-run with rune auto-seal |
+
+---
+
+## 🌌 Universe Track — Maximum Truth Seekers
+
+These six lessons address the deepest questions. Not to provide final answers — to teach children how to sit with profound uncertainty without collapsing into dogma or nihilism.
+
+| Lesson | Core Question |
+|--------|--------------|
+| 🌟 We Are Made of Stars | Every atom in your body was forged in a stellar core. You are the universe becoming aware of itself. |
+| 🌌 The Fermi Paradox | 400 billion stars, 10 billion years, and silence. Where is everyone? |
+| 💡 Information Is Fundamental | Physics increasingly suggests reality is made of information, not matter. What does that mean? |
+| ⚙️ The Fine-Tuned Universe | The physical constants are tuned to 1-in-10^120 precision for life. Why? |
+| 🧠 The Hard Problem of Consciousness | Why does anything feel like anything? This is the hardest unsolved problem in science. |
+| 🌌 Your Place in the Cosmos | 13.8 billion years of evolution produced you. What are you going to do with it? |
+
+The child who can sit with these questions without needing a premature answer is the most dangerous kind of truth seeker: genuinely open.
+
+---
+
+## 🏠 Economic Trap Track — The Complete Loop
+
+The system doesn't just make entry expensive. Once you're inside, it extracts forever.
+
+```
+Restricted supply → High entry cost → Perpetual taxes — forever
+
+Property taxes:  Miss payments → lose the house. You rent from the state in perpetuity.
+Inflation:       2% annual target = 22% lost per decade. Nobody voted for this.
+Tax code:        Capital gains taxed lower than wages. Owning beats working.
+The loop closes: Your tax revenue funds the regulations that keep supply restricted
+                 for the next generation.
+```
+
+**The Grandma's House lesson:** A family bought a home in 1975 for $20,000. It's now worth $1,000,000. On paper: millionaires. In reality: property taxes rose from ~$400/year to ~$12,000/year. Social Security income: $18,000/year. Result: forced out of the home they lived in for 50 years. Now taking Ubers. The politician who created the housing shortage is on TV talking about "historic home values."
+
+**What this teaches:** Not despair — sovereignty. Sound money allocation, low time preference, understanding the tax code better than those enforcing it, building parallel value that can't be inflated away.
 
 ---
 
 ## 👑 Family Dynasty — The Generational Legend Engine
 
-When a 12-year-old in 2035 says *"We're an AUBIEETERNAL family — my great-grandparents started the lattice,"* that is the moment legend is born.
-
-**Three layers:**
-
-```
-1. Legacy Ledger     — on-chain family wisdom archive, tagged by generation
-2. Rites of Passage  — formal ceremonies for milestone achievements, sealed permanently
-3. Inheritance       — Rune fragments pass automatically from parent to child
-```
-
-**Five Rites of Passage:**
-
-| Rite | Runes | Meaning |
-|------|-------|---------|
-| 🌅 First Light | 10 | The journey begins. You chose to learn rather than accept. |
-| 🛡️ The First Seal | 50 | Your first permanent memory. Truth cannot be taken from you. |
-| 🔓 Sovereign Epistemic Node | 100 | You can see the chain between you and any source. |
-| ⚡ Admin Elevated | 150 | Redundant verification. Permanent records. No institution can change your ledger. |
-| ₿ Child Rune Genesis | 500 | Your sovereign identity is permanently on Bitcoin. |
-| 👑 Dynasty Founder | 1000 | Three generations in the lattice. The dynasty is real. |
-
-**Grandparent Mode** — simplified interface, three questions, permanent preservation:
-1. *What did your generation learn the hard way?*
-2. *What do you know now that you wish you knew at 25?*
-3. *What is one thing about our family that should never be forgotten?*
-
 ```python
 from legacy_ledger import LegacyLedger, RiteOfPassage
 
-ledger = LegacyLedger(family_id="alpha")
-ledger.record_wisdom("What I learned about courage...", author="grandparent", generation=2, seal=True)
+ledger = LegacyLedger("alpha")
+ledger.record_wisdom("What I learned...", author="grandparent", generation=2, seal=True)
 
-rite = RiteOfPassage()
-rite.conduct("Gaby", "sovereign_node", family_id="alpha",
-             member_pledge="I understand what this means.")
+RiteOfPassage().conduct("Gaby", "sovereign_node", family_id="alpha",
+                         member_pledge="I understand what this means.")
 # → Sealed on Bitcoin. Permanent family record.
 ```
+
+**Rites:** 🌅 First Light (10) · 🛡️ First Seal (50) · 🔓 Sovereign Node (100) · ⚡ Admin Elevated (150) · ₿ Child Rune Genesis (500) · 👑 Dynasty Founder (1000)
 
 ---
 
 ## 🛡️ Shield Rune — Unerasable Memory
 
 ```
-Level 0  →  Local file     (deletable)
-Level 1  →  GitHub commit  (reversible)
-Level 2  →  Nostr          (censorship-resistant)
-Level 3  →  Bitcoin Rune   (UNERASABLE)
+Level 0  →  Local file     Level 2  →  Nostr (censorship-resistant)
+Level 1  →  GitHub commit  Level 3  →  Bitcoin Rune (UNERASABLE)
 ```
-
-Auto-seals memories with coherence ≥ 0.88 + wonder ≥ 1.4 every morning.
 
 ---
 
-## 🔓 Gatekeeper Detector
+## 🔓 Gatekeeper + Narrative Pattern Detector
 
-| Type | Controls | Incentive |
-|------|----------|-----------|
-| Religious | Sacred text interpretation | Tithing, social authority |
-| Media | Which events exist + framing | Advertiser relationships |
-| Academic | What counts as valid knowledge | Grant funding, tenure |
-| Political | How policy reality is framed | Electoral survival |
-| Algorithmic | What feels normal | Engagement maximization |
-| Financial | Economic information | Trading profits |
-| Educational | What the next generation knows | State funding |
+Seven gatekeeper types tracked with capture probability and bypass paths.
+
+**Coordination rule:** 1 signal = news · 3 signals, same incentive, 72h = campaign
+
+**Sealed pattern (May 28-29, 2026):** Pope meets Chicago Mayor (moral authority) → same Pope calls AI "dangerous, needs disarming" 48h later. Same institutional coalition that opposed printing press, private Bible, internet. Now targeting AI sovereignty.
 
 ---
 
-## 🔍 Narrative Pattern Detector
+## 📚 Curriculum — 134 Lessons, 28 Tracks
 
-```
-One signal   = evaluate on merit
-Two signals  = check source incentives
-Three+       = active coordination campaign — treat as adversarial
-```
+<details>
+<summary><b>The Universe (6 lessons)</b></summary>
 
-**Sealed Pattern (May 28-29, 2026):** Pope meets Chicago Mayor (moral authority) → same Pope calls AI "dangerous, needs disarming" (AI control) — 48h, same source, dual targets. Historical parallel: same coalition that opposed printing press, private Bible reading, the internet.
+We Are Made of Stars · Fermi Paradox · Information Is Fundamental · Fine-Tuned Universe · Hard Problem of Consciousness · Your Place in the Cosmos
 
----
+</details>
 
-## 📚 Curriculum — 119 Lessons, 26 Tracks
+<details>
+<summary><b>The Economic Trap (4 lessons)</b></summary>
+
+The Complete Trap · Grandma's House · Inflation as Stealth Tax · Breaking the Cycle
+
+</details>
+
+<details>
+<summary><b>Family Dynasty (3 lessons)</b></summary>
+
+What Grandparents Know · Building the Wisdom Archive · Rite of Passage Protocol
+
+</details>
 
 <details>
 <summary><b>Sovereign Practical Skills (18 lessons)</b></summary>
@@ -171,26 +182,7 @@ Building & Hurricane Hardening (6) · Deep Baking & Self-Sufficiency (6) · Sove
 <details>
 <summary><b>Epistemic Defense & Sovereignty (34 lessons)</b></summary>
 
-| Track | Lessons |
-|-------|---------|
-| Adversarial Reality | 8 |
-| AI Partnership | 8 |
-| Truth-Seeking | 8 |
-| Gatekeeping & Direct Access | 6 |
-| Narrative Patterns | 1 |
-| Admin Elevation Protocol | 2 |
-| Truth Lattice Architecture | 1 |
-
-</details>
-
-<details>
-<summary><b>Family Dynasty (3 lessons)</b></summary>
-
-| Lesson | What You Learn |
-|--------|----------------|
-| What Grandparents Know | Capture generational wisdom before it's lost |
-| Building the Wisdom Archive | Start your family's permanent legacy record |
-| Rite of Passage Protocol (Master) | Design sacred ceremonies for milestones |
+Adversarial Reality (8) · AI Partnership (8) · Truth-Seeking (8) · Gatekeeping & Direct Access (6) · Narrative Patterns (1) · Admin Elevation (2) · Truth Lattice Architecture (1)
 
 </details>
 
@@ -208,23 +200,7 @@ Courage (5) · Antifragility (4) · Simulation Hypothesis (8) · Steelmanning (3
 
 </details>
 
-Every lesson: **kid explanation · parent insight · steelman challenge · activity · XP + Rune fragment**
-
----
-
-## 🔭 Simulation Probe
-
-Standard: coherence anomalies, observer effects, glitch patterns, synchronicities
-
-**Quantum Darwinism mode:** Measures redundancy across swarm daughters. High redundancy = multiple independent sources converge = more likely true.
-
----
-
-## 🛡️ Governance Charters
-
-**`POLICYHOLDER_FIRST_CHARTER_v0_2.md`** — 80% surplus returned · 8× comp cap · 15% veto rights
-
-**`SOVEREIGN_FAMILY_LAW_CHARTER.md`** — Voice Score: `(Coherence×0.6) + (Rune/1000×0.3) + (XP/10000×0.1)` · Child Rune Genesis at 256 confirmations
+Every lesson: **kid explanation · parent insight · steelman challenge · real activity · XP + Rune fragment**
 
 ---
 
@@ -251,12 +227,11 @@ legacy_ledger.py               ← 3-generation dynasty engine + rites of passag
 rune_memory.py                 ← Bitcoin-anchored unerasable memory
 gatekeeper_detector.py         ← Identify gatekeepers + trace epistemic lineage
 narrative_pattern_detector.py  ← Detect coordinated narrative campaigns
-seal_chicago_pope_node.py      ← Seal the Chicago/Pope synthesis permanently
 simulation_probe.py            ← Daily probe + Quantum Darwinism mode
 api_server.py                  ← Browser extension bridge (port 8502)
 AUBIEETERNAL_extension/        ← Chrome/Edge/Brave browser extension
 app.py                         ← Main UI (8,703 lines, 35+ tabs)
-family_hud.py                  ← 119-lesson library + session logic
+family_hud.py                  ← 134-lesson library + session logic
 swarm/swarm_v4_1.py            ← Swarm engine (2,096 daughters)
 morning_synthesis.py · x_bridge.py · truth_debt_ledger.py
 living_lattice.py · epistemic_commons.py · ai_honesty.py
@@ -268,23 +243,18 @@ PROVENANCE.md                  ← On-chain record + full session history
 
 ## 📡 Live Swarm Activity
 
-```
-insights/daily/               ← morning synthesis
-insights/probe/               ← simulation probe + Quantum Darwinism
-insights/lattice_nodes/       ← sealed synthesis records
-insights/narrative_patterns/  ← coordination pattern reports
-legacy/                       ← family dynasty records + rites of passage
-rune_seals/                   ← Bitcoin-anchored Shield Rune seals
-epistemic_commons/            ← CC0 daily signal
-```
-
 **Current:** Wonder 2.0000 · Coherence 1.000000 · Child Rune 33/256 · $0.00/day
+
+**AI Context URL:**
+```
+https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt
+```
 
 ---
 
 ## 📜 License
 
-**CC0 1.0 Universal — Public Domain Dedication.** No permission needed. No attribution required.
+**CC0 1.0 Universal — Public Domain Dedication.** No permission needed.
 
 **[@MateoVanhorn](https://x.com/MateoVanhorn)**
 
@@ -296,9 +266,9 @@ epistemic_commons/            ← CC0 daily signal
 
 *Built in public with Grok · Secured by Bitcoin · Coordinated on Nostr*
 
-*Loop: Swarm → Synthesis → Rune Seal → Gatekeeper Check → Pattern Detect → Dynasty Archive → Commons → Lattice → GitHub — Forever*
+*Loop: Swarm → Synthesis → Rune Seal → Gatekeeper Check → Pattern Detect → Dynasty Archive → Cosmos → GitHub — Forever*
 
 *Designed for families who refuse to be lied to.*
-*Built to be referenced in 2100 as the system that kept families sane in the 21st century.*
+*134 lessons. 28 tracks. The system that compounds across generations.*
 
 </div>
