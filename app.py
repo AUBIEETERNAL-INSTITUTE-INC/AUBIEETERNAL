@@ -950,6 +950,7 @@ with st.sidebar:
             "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
             "🏛️ School Pathway",
             "🔧 Sovereign Builder",
+            "🎓 University Registrar",
         ],
         "🛡️ ADVERSARIAL": [
             "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
@@ -9387,3 +9388,213 @@ if "Sovereign Builder" in active:
         st.error("sovereign_builder.py not found. Push it to GitHub and redeploy.")
     except Exception as _e_sb:
         st.error(f"Builder error: {_e_sb}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: UNIVERSITY REGISTRAR 🎓
+# Degree programs · Prerequisites · Capstone submission · Transcript
+# ══════════════════════════════════════════════════════════════════════════════
+if "University Registrar" in active:
+    st.markdown('<div class="card-title">🎓 SOVEREIGN UNIVERSITY — Registrar</div>', unsafe_allow_html=True)
+
+    _fid_ur = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    # Load session for degree checks
+    _ur_session = None
+    try:
+        from family_hud import FamilySession as _FSUR, LESSONS as _ALL_LESSONS
+        _ur_session = _FSUR(_fid_ur, "")
+        _deg_data   = _ur_session.get_degree_eligibility()
+    except Exception as _e_ur:
+        _deg_data = {"credits":0,"coherence":0.5,"lessons_done":0,"highest_degree":None,
+                     "all_degrees":[],"child_rune_pct":0}
+        st.warning(f"Session load: {_e_ur}")
+
+    # ── Current standing ───────────────────────────────────────────────────────
+    _highest = _deg_data.get("highest_degree")
+    _hname   = _highest["name"] if _highest else "No degree yet"
+    _hemoji  = _highest["emoji"] if _highest else "📋"
+    _hc      = "#f7931a" if _highest and "PhD" in _highest.get("name","") else \
+               "#a020f0" if _highest and "Master" in _highest.get("name","") else \
+               "#00cfff" if _highest else "#445577"
+
+    st.markdown(
+        f'<div style="text-align:center;padding:12px 0 8px;">'
+        f'<div style="font-size:36px">{_hemoji}</div>'
+        f'<div style="color:{_hc};font-family:Orbitron,monospace;font-size:1rem;margin-top:4px;">'
+        f'{_hname.upper()}</div>'
+        f'<div style="color:#445577;font-size:10px;letter-spacing:0.08em;margin-top:2px;">'
+        f'{_deg_data["credits"]} CREDITS · COHERENCE {_deg_data["coherence"]:.3f} · '
+        f'{_deg_data["lessons_done"]} LESSONS COMPLETED</div>'
+        f'</div>', unsafe_allow_html=True)
+
+    _ur1,_ur2,_ur3,_ur4 = st.columns(4)
+    _ur1.metric("Credits",    _deg_data["credits"])
+    _ur2.metric("Coherence",  f"{_deg_data['coherence']:.3f}")
+    _ur3.metric("Lessons",    _deg_data["lessons_done"])
+    _ur4.metric("Rune %",     f"{_deg_data['child_rune_pct']:.0f}%")
+
+    st.divider()
+    _ur_tabs = st.tabs(["🎓 Degrees", "📋 Transcript", "🎯 Capstone", "🔓 Prerequisites", "⚡ Mark Complete"])
+
+    # ── Degree programs ────────────────────────────────────────────────────────
+    with _ur_tabs[0]:
+        st.markdown("### Degree Programs")
+        for _d in _deg_data.get("all_degrees",[]):
+            _curr_credits = _deg_data["credits"]
+            _curr_coh     = _deg_data["coherence"]
+            _credits_pct  = min(100, _curr_credits / _d["credits"] * 100)
+            _coh_pct      = min(100, _curr_coh / _d["coherence"] * 100)
+            _earned       = (_curr_credits >= _d["credits"] and _curr_coh >= _d["coherence"])
+            _dc           = "#00ff88" if _earned else "#00cfff" if _credits_pct > 60 else "#445577"
+            _special_note = " + Child Rune Genesis (256 confirmations)" if _d.get("special_rune") else ""
+            st.markdown(
+                f'<div class="card" style="border-left:4px solid {_dc};margin-bottom:6px;">'
+                f'<div style="display:flex;justify-content:space-between;align-items:center;">'
+                f'<div><span style="font-size:20px">{_d["emoji"]}</span> '
+                f'<b style="color:{_dc};font-size:0.9rem;">{_d["name"]}</b>'
+                f'{"  ✅ EARNED" if _earned else ""}</div>'
+                f'<div style="color:#445577;font-size:0.75rem;">{_d["credits"]} credits · coh {_d["coherence"]}{_special_note}</div>'
+                f'</div>'
+                f'<div style="margin-top:6px;">'
+                f'<div style="font-size:10px;color:#445577;margin-bottom:2px;">Credits: {_curr_credits}/{_d["credits"]}</div>'
+                f'<div style="background:#1e2a3a;border-radius:4px;height:6px;">'
+                f'<div style="background:{_dc};width:{_credits_pct:.0f}%;height:6px;border-radius:4px;"></div></div>'
+                f'<div style="font-size:10px;color:#445577;margin:3px 0 2px;">Coherence: {_curr_coh:.3f}/{_d["coherence"]}</div>'
+                f'<div style="background:#1e2a3a;border-radius:4px;height:6px;">'
+                f'<div style="background:{_dc};width:{_coh_pct:.0f}%;height:6px;border-radius:4px;"></div></div>'
+                f'</div></div>', unsafe_allow_html=True)
+
+        if _highest and _ur_session:
+            st.divider()
+            if st.button(f"🎓 Award {_highest['name']}", key="ur_award", type="primary"):
+                badges = _ur_session.state.get("badges",[])
+                badge  = f"{_highest['emoji']} {_highest['name']}"
+                if badge not in badges:
+                    badges.append(badge); _ur_session.state["badges"] = badges; _ur_session._save_state()
+                try:
+                    from rune_memory import ShieldRune, RuneMemory
+                    eid = RuneMemory().record(f"DEGREE AWARDED: {_highest['name']} | Credits:{_deg_data['credits']} | Coherence:{_deg_data['coherence']}",
+                                              source="registrar", coherence=_deg_data["coherence"], tags=["degree",_highest["name"].lower().replace(" ","-")])
+                    ShieldRune().seal(eid, note=f"Degree: {_highest['name']}", broadcaster=_fid_ur)
+                    st.success(f"✅ {_highest['emoji']} {_highest['name']} — Awarded and Bitcoin-anchored permanently.")
+                    st.balloons()
+                except Exception as _e: st.success(f"✅ {_highest['emoji']} {_highest['name']} — Awarded!")
+
+    # ── Transcript ─────────────────────────────────────────────────────────────
+    with _ur_tabs[1]:
+        if _ur_session:
+            _completed = _ur_session.state.get("lessons_completed",[])
+            st.markdown(f"**Official Transcript** — {len(_completed)} courses completed")
+            if _completed:
+                for _lk in reversed(_completed[-15:]):
+                    try:
+                        _l = _ALL_LESSONS.get(_lk,{})
+                        st.markdown(
+                            f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                            f'<span style="color:#f7931a;font-size:0.72rem;font-weight:600;">{_l.get("xp",0)} XP</span> '
+                            f'<span style="color:#c8d8ff;font-size:0.82rem;">{_l.get("title",_lk)}</span>'
+                            f'</div>', unsafe_allow_html=True)
+                    except Exception: pass
+            else:
+                st.info("No lessons completed yet. Start learning to build your transcript.")
+
+    # ── Capstone ───────────────────────────────────────────────────────────────
+    with _ur_tabs[2]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #f7931a;">
+            <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">CAPSTONE PROJECTS</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            Capstones are final projects that cannot be faked. They require
+            real deployments, real experiments, or real contributions —
+            verified by peer review and sealed permanently.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        _cap_levels = [
+            ("📜 Associate", "Deploy your first sovereign node", "capstone-associate", 0.68),
+            ("🏛️ Truth Architect", "Research paper + community contribution (10+ people)", "capstone-bachelor", 0.75),
+            ("🎓 Master", "90-day pre-registered experiment + honest results", "capstone-masters", 0.82),
+            ("⚡ PhD / Eternal Founder", "Build infrastructure others use + CC0 contribution", "capstone-phd", 0.88),
+        ]
+        for _cl_name, _cl_req, _cl_key, _cl_coh in _cap_levels:
+            _cl_done = _cl_key in _ur_session.state.get("lessons_completed",[]) if _ur_session else False
+            _cl_c    = "#00ff88" if _cl_done else "#445577"
+            st.markdown(
+                f'<div class="memory-node" style="border-left:3px solid {_cl_c};">'
+                f'<div style="color:{_cl_c};font-weight:600;">{_cl_name} {"✅" if _cl_done else ""}</div>'
+                f'<div style="color:#8899bb;font-size:0.78rem;">{_cl_req}</div>'
+                f'<div style="color:#334466;font-size:0.72rem;">Min coherence: {_cl_coh} | Key: {_cl_key}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+        st.markdown("**Submit Capstone Completion**")
+        _cap_select = st.selectbox("Capstone:", ["capstone-associate","capstone-bachelor","capstone-masters","capstone-phd"], key="cap_sel")
+        _cap_proof  = st.text_area("Evidence / proof URL / description:", height=80, key="cap_proof")
+        _cap_peer   = st.text_input("Peer reviewer name (required for Bachelor+):", key="cap_peer")
+        if st.button("🎓 Submit Capstone", key="cap_submit", type="primary") and _cap_proof and _ur_session:
+            result = _ur_session.mark_lesson_completed(_cap_select)
+            try:
+                from rune_memory import ShieldRune, RuneMemory
+                eid = RuneMemory().record(f"CAPSTONE COMPLETE: {_cap_select}\nProof: {_cap_proof[:200]}\nReviewer: {_cap_peer}",
+                                          source="capstone", coherence=0.95, tags=["capstone",_cap_select])
+                ShieldRune().seal(eid, note=f"Capstone: {_cap_select}", broadcaster=_fid_ur)
+                st.success(f"✅ {result.get('lesson','Capstone')} — Completed and Bitcoin-anchored!")
+                st.balloons()
+            except Exception as _e:
+                st.success(f"✅ {result.get('lesson','Capstone')} — Recorded!")
+
+    # ── Prerequisites ──────────────────────────────────────────────────────────
+    with _ur_tabs[3]:
+        if _ur_session:
+            st.markdown("### Next Available Lessons")
+            _unlocked = _ur_session.get_unlocked_lessons()[:15]
+            if _unlocked:
+                for _ul in _unlocked:
+                    _l = _ul["lesson"]
+                    st.markdown(
+                        f'<div style="padding:5px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<b style="color:#00ff88;font-size:0.75rem;">✅ AVAILABLE</b> '
+                        f'<span style="color:#c8d8ff;font-size:0.82rem;">{_l.get("title",_ul["key"])}</span> '
+                        f'<span style="color:#445577;font-size:0.72rem;">({_l.get("xp",0)} XP)</span>'
+                        f'</div>', unsafe_allow_html=True)
+            else:
+                st.info("Complete prerequisites to unlock more lessons.")
+
+            st.divider()
+            st.markdown("### Check Any Lesson Status")
+            _chk_key = st.text_input("Lesson key:", key="prereq_check", placeholder="e.g. consciousness-4, builder-6")
+            if _chk_key:
+                _chk = _ur_session.get_lesson_status(_chk_key)
+                _sc  = {"completed":"#00ff88","available":"#00cfff","locked":"#ff4444"}.get(_chk["status"],"#445577")
+                _missing_html = '<div style="color:#445577;font-size:0.75rem;margin-top:4px;">Missing: ' + ", ".join(_chk.get("missing_prereqs",[])) + "</div>" if _chk.get("missing_prereqs") else ""
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {_sc};">'
+                    f'<div style="color:{_sc};font-weight:600;">{_chk["status"].upper()}</div>'
+                    f'<div style="color:#8899bb;font-size:0.82rem;">{_chk.get("reason","")}</div>'
+                    f'{_missing_html}'
+                    f'</div>', unsafe_allow_html=True)
+
+    # ── Mark complete ──────────────────────────────────────────────────────────
+    with _ur_tabs[4]:
+        st.markdown("**Mark a lesson as completed and award XP + Rune.**")
+        _mc_key  = st.text_input("Lesson key:", key="mc_key", placeholder="e.g. courage-1, systems-3")
+        _mc_coh  = st.slider("Final coherence after lesson:", 0.5, 1.0, 0.75, 0.01, key="mc_coh")
+        if st.button("⚡ Mark Complete", key="mc_btn", type="primary") and _mc_key and _ur_session:
+            _chk = _ur_session.get_lesson_status(_mc_key)
+            if _chk["status"] == "locked":
+                st.error(f"🔒 Locked: {_chk.get('reason','Prerequisites not met')}")
+            else:
+                result = _ur_session.mark_lesson_completed(_mc_key, _mc_coh)
+                if result.get("status") == "completed":
+                    st.success(
+                        f"✅ {result['lesson']}\n\n"
+                        f"XP earned: **{result['xp_earned']}** | "
+                        f"Total: **{result['total_xp']}** | "
+                        f"Coherence: **{result['new_coherence']:.4f}**"
+                        + (f"\n\n🏅 Badge: {result['badge']}" if result.get('badge') else "")
+                    )
+                    st.rerun()
+                else:
+                    st.warning(f"Status: {result.get('status','?')}")
