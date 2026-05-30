@@ -948,6 +948,7 @@ with st.sidebar:
         "🏫 SCHOOL": [
             "🏫 School", "🗺️ Curriculum Map",
             "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
+            "🏛️ School Pathway",
         ],
         "🛡️ ADVERSARIAL": [
             "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
@@ -8870,3 +8871,133 @@ if "Cosmos Dashboard" in active:
         st.error("cosmos_dashboard.py not found. Push it to GitHub and redeploy.")
     except Exception as _e_cs:
         st.error(f"Cosmos Dashboard error: {_e_cs}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SCHOOL PATHWAY 🏛️
+# Foundation (5-12) → Advanced (11-15) → University (14-18+)
+# Self-upgradable at every level
+# ══════════════════════════════════════════════════════════════════════════════
+if "School Pathway" in active:
+    st.markdown('<div class="card-title">🏛️ SOVEREIGN SCHOOL — University-Level Rigor at Any Age</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #f7931a;">
+        <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE SOVEREIGN SCHOOL PROMISE</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+        We operate as a school, but we teach at university level.<br>
+        Every class is self-upgradable — start where you are, go as deep as you want.<br>
+        Any student who completes our full program will be ahead of most traditional college
+        students if they choose to attend conventional university later.<br><br>
+        A 12-year-old and a 40-year-old can learn the same lesson — at different depths — at the same time.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Three-layer display ────────────────────────────────────────────────────
+    _sp_tabs = st.tabs(["🌱 Foundation (5-12)", "🔬 Advanced (11-15)",
+                         "🎓 University (14-18+)", "🔄 Systems Thinking"])
+
+    # Define the layer content
+    _layers = {
+        "foundation": {
+            "color": "#00ff88",
+            "emoji": "🌱",
+            "desc": "Project-based + guided. Builds the love of learning before the pressure of performance.",
+            "tracks": [
+                ("The Art of Asking Why", "Single most powerful intellectual tool. Every great thinker had better questions, not answers."),
+                ("How to Learn Anything", "Retrieval practice, spaced repetition, Feynman technique. The science of learning itself."),
+                ("Reading Like a Scholar", "Four levels of reading. The margin protocol. Turning words into understanding."),
+                ("The Sovereign Builder's Oath", "The foundational commitment: build understanding, not credentials. Sealed permanently."),
+            ],
+            "badge": "🏛️ Sovereign Builder — Oath Taken",
+        },
+        "advanced": {
+            "color": "#00cfff",
+            "emoji": "🔬",
+            "desc": "Seminar-style, research-quality thinking. Students begin producing knowledge, not just consuming it.",
+            "tracks": [
+                ("Research Methodology", "How to know what is true. Evidence hierarchy, study design, replication crisis, p-hacking."),
+                ("Philosophy of Science", "Popper's falsifiability, Kuhn's paradigm shifts, what science can and cannot answer."),
+                ("Independent Research", "Run a real experiment, pre-register, collect honest data, seal results. First study complete."),
+            ],
+            "badge": "🔬 Independent Researcher — First Study Complete",
+        },
+        "university": {
+            "color": "#a020f0",
+            "emoji": "🎓",
+            "desc": "College-level rigor, self-directed, portfolio-building. Genuinely ahead of most freshmen.",
+            "tracks": [
+                ("Writing That Changes Minds", "Thesis, argument, steelman, conclusion. The structure that works from high school to PhD."),
+                ("Building Your Intellectual Portfolio", "The new credential is demonstrated competence. Bitcoin-timestamped. Permanently verifiable."),
+                ("Designing a Life of Compounding Inquiry", "Ten-year intellectual compound plan. The students who do this at 16 are extraordinary by 26."),
+            ],
+            "badge": "🎓 University Pathway — Life of Compounding Inquiry",
+        },
+        "systems": {
+            "color": "#f7931a",
+            "emoji": "🔄",
+            "desc": "The lens through which everything else becomes clearer. Age 8 to PhD territory.",
+            "tracks": [
+                ("Everything Is Connected", "Feedback loops. Reinforcing vs balancing. Housing trap as a systems diagram."),
+                ("Emergence", "Traffic jams, ant colonies, markets, consciousness. The whole is more than the sum."),
+                ("Leverage Points", "Where to push. Donella Meadows' 12 levels. Why most interventions don't work."),
+                ("Complex Adaptive Systems", "Agents, adaptation, evolution. Why CAS resist simple solutions."),
+                ("You Are a System of Systems", "Personal system audit. Highest leverage point: identity change."),
+            ],
+            "badge": "🔄 Systems Architect — Sees the Loops",
+        },
+    }
+
+    for tab, (layer_key, layer) in zip(_sp_tabs, _layers.items()):
+        with tab:
+            st.markdown(
+                f'<div style="padding:8px 0 4px;">'
+                f'<div style="color:{layer["color"]};font-family:Orbitron,monospace;font-size:0.75rem;">'
+                f'{layer["emoji"]} {layer_key.upper().replace("-"," ")} LAYER</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;">{layer["desc"]}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+            for _track_title, _track_desc in layer["tracks"]:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {layer["color"]};">'
+                    f'<div style="color:{layer["color"]};font-size:0.75rem;font-weight:600;">{_track_title}</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">{_track_desc}</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+            st.markdown(f'<div style="margin-top:8px;color:#445577;font-size:0.75rem;">'
+                        f'Completion badge: <span style="color:{layer["color"]};">{layer["badge"]}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+    st.divider()
+    # ── Self-upgrade explainer ─────────────────────────────────────────────────
+    st.markdown("### ⬆️ Self-Upgrade Protocol")
+    st.markdown("""
+    <div class="card">
+        <div style="font-size:0.82rem;color:#8899bb;line-height:2.0;">
+        Every lesson in the Sovereign School has four upgrade paths:<br><br>
+        <b style="color:#00ff88;">Level 1 (Age 5+)</b> — Core concept, family activity, reflection question<br>
+        <b style="color:#00cfff;">Level 2 (Age 11+)</b> — Research context, primary sources, independent project<br>
+        <b style="color:#a020f0;">Level 3 (Age 14+)</b> — Competing theories, methodology critique, original argument<br>
+        <b style="color:#f7931a;">Level 4 (Any age)</b> — Design the experiment that would advance the field<br><br>
+        The lesson never changes. The depth does.
+        A motivated 14-year-old doing Level 4 work is genuinely ahead of most college freshmen.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Systems Thinking quick demo ────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 🔄 Quick Systems Map")
+    st.markdown('<div style="color:#8899bb;font-size:0.8rem;margin-bottom:8px;">Name a system to analyze (feedback loops, emergence, leverage points):</div>',
+                unsafe_allow_html=True)
+    _sys_input = st.text_input("System:", key="sp_sys", placeholder="e.g. 'housing market', 'my family's finances', 'school grades'")
+    if st.button("🔄 Generate Systems Map", key="sp_sys_btn") and _sys_input:
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #f7931a;">'
+            f'<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">SYSTEMS ANALYSIS: {_sys_input.upper()}</div>'
+            f'<div style="font-size:0.82rem;color:#8899bb;line-height:1.9;margin-top:8px;">'
+            f'<b style="color:#c8d8ff;">Step 1 — Identify the agents:</b> Who are the main actors in this system?<br>'
+            f'<b style="color:#c8d8ff;">Step 2 — Map the feedback loops:</b> What reinforces itself? What self-corrects?<br>'
+            f'<b style="color:#c8d8ff;">Step 3 — Find the emergence:</b> What property appears that no agent has alone?<br>'
+            f'<b style="color:#c8d8ff;">Step 4 — Find the leverage point:</b> Where is the highest-impact intervention?<br>'
+            f'<b style="color:#c8d8ff;">Step 5 — Predict unintended consequences:</b> What will your intervention break?'
+            f'</div></div>', unsafe_allow_html=True)
