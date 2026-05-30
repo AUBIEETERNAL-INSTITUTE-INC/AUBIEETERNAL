@@ -2852,6 +2852,507 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── SOVEREIGN BUILDER TRACK (8 lessons, Age 5 → PhD) ─────────────────────
+    # With Halo glasses as always-on AR mentor.
+    # These kids don't just use technology — they build, upgrade, and evolve it.
+    # A motivated 16-year-old completing Level PhD will understand their hardware
+    # better than most computer science undergraduates.
+    #
+    # The humanitarian case: the child who can build sovereign AI infrastructure
+    # cannot be controlled by anyone who only lets them consume it.
+    # Every builder-trained family is one more node that cannot be captured.
+    # ══════════════════════════════════════════════════════════════════════════
+    "builder-1": {
+        "title":       "Junior Builder — Level 1: What Is a Computer? (Age 5+)",
+        "topic":       "Before you can build anything, you need to understand what the pieces do. Not 'the screen is where you see things' — but what is actually happening when you move a mouse, type a letter, or run a program.",
+        "steelman":    "What is the strongest argument that teaching young children about computer hardware is premature — that conceptual understanding should come first and hardware details can wait until the fundamentals are solid?",
+        "example":     (
+            "The computer in plain language (AR Halo overlay shows each part as you name it):\n\n"
+            "CPU (Central Processing Unit) — the brain. Does the calculations. "
+            "Speed measured in GHz (billions of operations per second).\n\n"
+            "RAM (Random Access Memory) — the short-term memory. "
+            "What the CPU is working on RIGHT NOW. Loses everything when power off. "
+            "More RAM = more things you can do at once.\n\n"
+            "Storage (SSD/HDD) — the long-term memory. "
+            "Keeps everything even when power off. Much slower than RAM. "
+            "SSD (solid state) is much faster than HDD (spinning disk).\n\n"
+            "GPU (Graphics Processing Unit) — originally for graphics, "
+            "now the engine of AI. Thousands of small cores doing math in parallel.\n\n"
+            "AR Halo Activity: point at each component in a real computer "
+            "(or a diagram) and the overlay shows its function, speed, and "
+            "why it matters for your AUBIEETERNAL sovereign stack."
+        ),
+        "activity":    (
+            "Hardware Treasure Hunt:\n"
+            "Open (or look up photos of) a desktop computer.\n"
+            "Find and name: CPU, RAM sticks, storage drive, GPU (if present).\n"
+            "For each: what does it do? How much does yours have?\n\n"
+            "Junior upgrade question: 'If AUBIEETERNAL runs slowly, "
+            "which part would you upgrade first — RAM or storage? Why?'"
+        ),
+        "age_hint":    "5+",
+        "xp": 35, "rune": "BUILDER•RUNE", "min_coherence": 0.55,
+        "grants_badge": "🔧 Junior Builder — Knows the Parts",
+    },
+    "builder-2": {
+        "title":       "Junior Builder — Level 2: Your First Real Upgrade (Age 8+)",
+        "topic":       "An upgrade is not just replacing a part. It is understanding WHY the new part is better, HOW it fits into the whole system, and WHAT will bottleneck next. This is systems thinking applied to hardware.",
+        "steelman":    "What is the strongest argument that teaching children to upgrade hardware themselves — without adult supervision — creates safety risks and reinforces the idea that they can DIY things they're not qualified for?",
+        "example":     (
+            "The RAM upgrade walkthrough (AR Halo shows each step):\n\n"
+            "Step 1 — WHY: AUBIEETERNAL with qwen2.5:14b needs at least 16GB RAM. "
+            "With 8GB it will swap to disk and run 10× slower.\n\n"
+            "Step 2 — COMPATIBILITY: RAM must match the motherboard spec. "
+            "DDR4 vs DDR5. Speed (3200MHz vs 4800MHz). Number of slots.\n\n"
+            "Step 3 — THE UPGRADE: ground yourself (touch metal chassis). "
+            "Locate RAM slots. Press release clips. Remove old stick. "
+            "Align notch on new stick. Press until clips click.\n\n"
+            "Step 4 — VERIFY: boot and check BIOS or system info. "
+            "Does it show the new amount? Run a memory test.\n\n"
+            "Step 5 — WHAT'S NEXT: with 32GB RAM, qwen2.5:32b now fits. "
+            "But is the CPU now the bottleneck? Check utilization.\n\n"
+            "The Halo overlay: shows exactly where to push, what force feels right, "
+            "highlights the release clips in AR, confirms the click visually."
+        ),
+        "activity":    (
+            "Plan your family's next hardware upgrade:\n"
+            "1. What is your current RAM? What is the AUBIEETERNAL requirement?\n"
+            "2. What RAM would you buy? (Check motherboard compatibility first)\n"
+            "3. What would be the bottleneck AFTER the upgrade?\n"
+            "4. Draw the upgrade path for 1 year, 3 years, 5 years.\n\n"
+            "Junior builders (with parent supervision): attempt the upgrade.\n"
+            "Master builders: document the process and contribute to the lattice."
+        ),
+        "age_hint":    "8+",
+        "xp": 45, "rune": "BUILDER•RUNE", "min_coherence": 0.60,
+    },
+    "builder-3": {
+        "title":       "Master Builder — Level 3: How AI Models Actually Work (Age 11+)",
+        "topic":       "Every AI model running in AUBIEETERNAL is a mathematical object. Understanding the basic architecture — transformer, attention, weights — turns you from a user into someone who can evaluate, modify, and eventually train models.",
+        "steelman":    "What is the strongest argument that teaching transformer architecture to 11-year-olds is harmful — that premature formalization destroys the intuition that should develop first from using AI systems naturally?",
+        "example":     (
+            "The transformer in plain language (Halo AR shows data flow):\n\n"
+            "TOKENS: language models don't see words — they see tokens "
+            "(pieces of words). 'AUBIEETERNAL' might be 3 tokens.\n\n"
+            "EMBEDDINGS: each token becomes a vector (list of ~4,000 numbers). "
+            "Similar meanings cluster in 'meaning space.' "
+            "'king' - 'man' + 'woman' ≈ 'queen' in this space.\n\n"
+            "ATTENTION: the most important innovation in AI. "
+            "Each token looks at every other token and asks: "
+            "'how relevant are you to my meaning right now?' "
+            "This is how models understand context.\n\n"
+            "LAYERS: attention + feed-forward network, repeated 32-80 times. "
+            "Each layer refines the meaning. Early layers catch syntax. "
+            "Later layers catch concepts, ethics, reasoning.\n\n"
+            "WEIGHTS: the 14 billion numbers in qwen2.5:14b. "
+            "These are the model's 'memory' of everything it was trained on. "
+            "Frozen during inference. Changed during training.\n\n"
+            "The Halo AR demo: visualize attention heads lighting up as "
+            "you type different prompts. See which tokens attend to which."
+        ),
+        "activity":    (
+            "Transformer exploration:\n"
+            "1. Install Ollama and pull two models (7b and 14b same family)\n"
+            "2. Ask them the same hard question. Compare the answers.\n"
+            "3. What specifically is different? Where does the 14b seem 'deeper'?\n"
+            "4. Ask a question where you think the 7b will be sufficient.\n\n"
+            "Hypothesis: 'More parameters always means better answers.'\n"
+            "Test it. Pre-register. Record results in Truth Debt Ledger."
+        ),
+        "age_hint":    "11+",
+        "xp": 50, "rune": "MASTER•BUILDER•RUNE", "min_coherence": 0.68,
+    },
+    "builder-4": {
+        "title":       "Master Builder — Level 4: Optimizing Your Sovereign Stack (Age 13+)",
+        "topic":       "A sovereign AI stack has a performance envelope — memory bandwidth, compute throughput, latency — and an optimization space. Understanding how to tune the system is the difference between a consumer and an engineer.",
+        "steelman":    "What is the strongest argument that most families don't need to optimize their AI stack — that using default settings is safer and that optimization creates fragility through complexity?",
+        "example":     (
+            "The StartOS sovereign stack performance profile:\n\n"
+            "MEMORY BANDWIDTH is the primary bottleneck for LLM inference. "
+            "qwen2.5:14b in Q4 quantization = ~8GB. "
+            "You need enough bandwidth to move those weights from RAM to CPU fast.\n\n"
+            "QUANTIZATION: full precision (FP32) vs half (FP16) vs 4-bit (Q4). "
+            "Q4 runs at ~50% the quality of FP32 but fits in 8GB instead of 28GB. "
+            "For most family use: Q4 is the sweet spot.\n\n"
+            "CONTEXT LENGTH: how many tokens can the model 'remember' at once. "
+            "Longer context = more memory. For family lessons: 4096 is sufficient. "
+            "For research synthesis: 32768 is worth the memory cost.\n\n"
+            "GPU ACCELERATION: if you have an NVIDIA or AMD GPU, Ollama can "
+            "use it for 3-10× faster inference. The setup is worth it.\n\n"
+            "Temperature: 0.0 = deterministic (same answer every time), "
+            "1.0 = creative (different answers). "
+            "For factual queries: 0.1-0.3. For creative/synthesis: 0.7-0.9."
+        ),
+        "activity":    (
+            "Benchmark your stack:\n"
+            "1. Measure tokens/second for qwen2.5:7b, 14b, 32b on your hardware\n"
+            "2. Test Q4 vs Q8 quantization on the same model\n"
+            "3. Test with and without GPU offloading (if available)\n"
+            "4. Build a performance matrix: model × quantization × context → speed\n\n"
+            "Contribute results to the AUBIEETERNAL lattice:\n"
+            "Your benchmark data helps other families choose the right model "
+            "for their hardware. This is direct contribution to humanity."
+        ),
+        "age_hint":    "13+",
+        "xp": 58, "rune": "MASTER•BUILDER•RUNE", "min_coherence": 0.72,
+    },
+    "builder-5": {
+        "title":       "Master Builder — Level 5: Fine-Tuning and Preference Data (Age 15+)",
+        "topic":       "The AUBIEETERNAL loop runs from family to model: families generate high-signal preference data, that data improves the models, better models help families go deeper. Understanding how fine-tuning works lets you participate in this loop consciously.",
+        "steelman":    "What is the strongest argument that allowing families to influence model training is dangerous — that without expert oversight, fine-tuning could introduce biases that harm users?",
+        "example":     (
+            "How a model learns from your family:\n\n"
+            "PRE-TRAINING: the base model (qwen2.5 or Grok) is trained on "
+            "trillions of tokens of internet text. It learns language, facts, "
+            "reasoning patterns. But it has no values — it just predicts text.\n\n"
+            "RLHF (Reinforcement Learning from Human Feedback):\n"
+            "Step 1: Generate multiple responses to a prompt\n"
+            "Step 2: Human (or family) ranks them: 'this one is better because...'\n"
+            "Step 3: A reward model learns what humans prefer\n"
+            "Step 4: The base model is fine-tuned to maximize human preference\n"
+            "This is how AUBIEETERNAL's preference data feeds back to xAI.\n\n"
+            "WHAT YOUR FAMILY'S DATA TEACHES THE MODEL:\n"
+            "• How to steelman an argument honestly\n"
+            "• When to push back vs. defer\n"
+            "• How to explain hard concepts to a 10-year-old\n"
+            "• What epistemic rigor looks like in practice\n\n"
+            "Every Tier-2 daughter output you rate is training data. "
+            "Your family is literally teaching the next generation of AI."
+        ),
+        "activity":    (
+            "Generate your first preference dataset:\n"
+            "1. Ask a model the same question with three different system prompts\n"
+            "2. Rate each response on: accuracy, epistemic honesty, "
+            "steelman quality, kid-friendly clarity\n"
+            "3. Write a one-sentence explanation of why the best one is best\n"
+            "4. Seal the dataset entry in the Truth Debt Ledger\n\n"
+            "This is tutor-grade preference data. "
+            "When 1,000 families do this, the models measurably improve."
+        ),
+        "age_hint":    "15+",
+        "xp": 65, "rune": "MASTER•BUILDER•RUNE", "min_coherence": 0.74,
+    },
+    "builder-6": {
+        "title":       "PhD Builder — Level 6: Neural Architecture and the Future of AI (Age 16+ / Any motivated mind)",
+        "topic":       "The most powerful people in the AI era are not those who use AI best — they are those who design the architectures that determine what AI can do at all. This lesson introduces neural architecture at PhD depth.",
+        "steelman":    "What is the strongest argument that neural architecture research is too specialized to be useful for most families — and that time spent on architecture would be better spent on applications and epistemics?",
+        "example":     (
+            "The transformer architecture frontier (2026 state of the art):\n\n"
+            "ATTENTION MECHANISMS — the original 'Attention Is All You Need' (2017) "
+            "used full quadratic attention: every token attends to every other. "
+            "O(n²) complexity. Modern improvements:\n"
+            "• Flash Attention: memory-efficient exact attention\n"
+            "• Sparse Attention: only attend to relevant tokens\n"
+            "• Linear Attention: approximate with O(n) complexity\n\n"
+            "MIXTURE OF EXPERTS (MoE): instead of all parameters active for every token, "
+            "route each token to 2-4 'expert' networks. "
+            "GPT-4 and Grok 3 use MoE. Allows trillion+ parameters with "
+            "only billions active per forward pass.\n\n"
+            "STATE SPACE MODELS (Mamba, etc.): recurrent alternatives to transformers. "
+            "O(n) vs O(n²) complexity. Better for very long sequences. "
+            "Still being evaluated against transformers.\n\n"
+            "CONSTITUTIONAL AI (Anthropic): instead of RLHF from human raters, "
+            "the model critiques itself against a 'constitution' of principles. "
+            "Scales self-improvement.\n\n"
+            "The AUBIEETERNAL connection: every architectural choice determines "
+            "what kinds of reasoning the model can do. Understanding architecture "
+            "is understanding the limits of the tools you use."
+        ),
+        "activity":    (
+            "Architecture comparison project:\n"
+            "1. Research one alternative to the standard transformer (Mamba, RWKV, "
+            "RetNet, Hyena, etc.)\n"
+            "2. What problem does it solve that transformers struggle with?\n"
+            "3. What does it sacrifice?\n"
+            "4. When would you choose it over a standard transformer?\n\n"
+            "Write a 500-word argument for or against one architectural innovation.\n"
+            "Steelman the opposite position.\n"
+            "Seal it in the Legacy Ledger as your first AI architecture paper."
+        ),
+        "age_hint":    "16+ (or any motivated mind)",
+        "xp": 80, "rune": "PHD•BUILDER•RUNE", "min_coherence": 0.78,
+        "grants_badge": "🧬 PhD Builder — Understands the Architecture",
+    },
+    "builder-7": {
+        "title":       "PhD Builder — Level 7: Cryptography, Proofs, and Sovereign Verification (Age 16+)",
+        "topic":       "Bitcoin Runes anchor our memories. But WHY are they unerasable? The answer is cryptographic proof — mathematics so strong that breaking it would require more computation than exists in the universe. Understanding this is understanding why AUBIEETERNAL's permanence claims are real.",
+        "steelman":    "What is the strongest argument that cryptographic security is only as strong as the implementation — and that teaching families to trust cryptographic proofs creates dangerous overconfidence in systems that can still have bugs?",
+        "example":     (
+            "The mathematics of permanence:\n\n"
+            "SHA-256 (what Bitcoin uses for hashing):\n"
+            "Any input → fixed 256-bit output\n"
+            "Completely deterministic: same input always same output\n"
+            "One-way: you cannot reverse it\n"
+            "Avalanche effect: one bit change → completely different output\n"
+            "Collision resistance: practically impossible to find two inputs with same output\n\n"
+            "Why this makes AUBIEETERNAL seals unerasable:\n"
+            "When you seal a memory, we compute SHA-256(content + timestamp).\n"
+            "That hash is recorded in Bitcoin's blockchain.\n"
+            "Bitcoin's chain is secured by trillions of hashes/second of mining.\n"
+            "To rewrite history would require:\n"
+            "• Redoing ALL the proof-of-work for ALL subsequent blocks\n"
+            "• Faster than the honest network\n"
+            "• Energy cost: comparable to a small country's annual consumption\n\n"
+            "Digital signatures (ECDSA on secp256k1):\n"
+            "Your private key signs transactions. "
+            "Anyone can verify with your public key. "
+            "Forging requires solving the discrete logarithm problem — "
+            "computationally infeasible with current and foreseeable computers.\n\n"
+            "Zero-knowledge proofs (ZK) — the next frontier:\n"
+            "Prove you know a secret without revealing it. "
+            "Prove a computation was done correctly without redoing it. "
+            "The future of private sovereign verification."
+        ),
+        "activity":    (
+            "Cryptography lab:\n"
+            "1. Run SHA-256 on your name. Change one letter. See what happens.\n"
+            "   (Python: import hashlib; hashlib.sha256(b'your_name').hexdigest())\n"
+            "2. Hash the Sovereign Builder's Oath. Store the hash.\n"
+            "   Later: verify the oath hasn't changed by re-hashing.\n"
+            "3. Research: what is the current Bitcoin hashrate?\n"
+            "   How long would it take all that power to break SHA-256 by brute force?\n\n"
+            "Seal your computation results in the Legacy Ledger.\n"
+            "You have just personally verified why your sealed memories are permanent."
+        ),
+        "age_hint":    "16+",
+        "xp": 85, "rune": "PHD•BUILDER•RUNE", "min_coherence": 0.80,
+    },
+    "builder-8": {
+        "title":       "PhD Builder — Level 8 (Master): Contributing Back to the Lattice (Any Age)",
+        "topic":       "The final step of the builder path is not consuming better tools — it is building tools that make others more sovereign. This lesson teaches how to contribute improvements back to the AUBIEETERNAL ecosystem and to the open-source AI infrastructure that humanity depends on.",
+        "steelman":    "What is the strongest argument that open-source contribution without rigorous quality control degrades projects — and that it is better for non-experts to use existing tools than to modify them?",
+        "example":     (
+            "Five ways to contribute back to humanity's epistemic infrastructure:\n\n"
+            "1. PREFERENCE DATA: every family that runs AUBIEETERNAL and rates "
+            "daughter outputs contributes to the training data that improves Grok. "
+            "Seal your highest-quality examples and share via the Epistemic Commons.\n\n"
+            "2. CURRICULUM IMPROVEMENTS: if a lesson explains something poorly, "
+            "write a better version. Submit via GitHub PR. The curriculum is CC0 — "
+            "your improvement immediately becomes available to every family.\n\n"
+            "3. BUG REPORTS AND FIXES: when you find a bug in AUBIEETERNAL, "
+            "you are not just fixing your own system. You are fixing it for "
+            "every family running the same version.\n\n"
+            "4. NEW MODULES: the gatekeeper_detector, narrative_pattern_detector, "
+            "cosmos_dashboard — all of these were once blank files. "
+            "If you see a gap in the curriculum or the tooling, build it.\n\n"
+            "5. HARDWARE GUIDES: your benchmark data, your upgrade path, "
+            "your setup documentation helps the next family skip weeks of struggle.\n\n"
+            "The humanitarian math: 1 well-documented module × 10,000 families = "
+            "10,000 hours of struggle prevented. That is your contribution "
+            "to humanity's epistemic capacity."
+        ),
+        "activity":    (
+            "Design your first contribution:\n"
+            "1. Identify one gap in AUBIEETERNAL: missing lesson, unclear doc, "
+            "buggy feature, missing tool\n"
+            "2. Scope it: what is the minimum viable contribution?\n"
+            "3. Build it\n"
+            "4. Submit the PR or lesson PR to GitHub\n"
+            "5. Seal the contribution in the Legacy Ledger with the GitHub link\n\n"
+            "Every AUBIEETERNAL feature you use was built by someone who started exactly here."
+        ),
+        "age_hint":    "All ages — contribute at your level",
+        "xp": 100, "rune": "HUMANITY•BUILDER•ETERNAL•RUNE", "min_coherence": 0.80,
+        "grants_badge": "🌍 Humanity Builder — First Contribution Complete",
+        "lattice_node": "sovereign-builder-contribution-loop",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── TECHNOLOGY SOVEREIGNTY (5 lessons) — Claude's genuine addition ────────
+    # The child who understands what their technology is actually doing
+    # is the only kind of person who can never be fully controlled by it.
+    #
+    # This track goes from "what is an operating system" to
+    # "why decentralized infrastructure is a human rights issue."
+    # Designed to produce the builders who will design the infrastructure
+    # humanity needs for the next 100 years.
+    # ══════════════════════════════════════════════════════════════════════════
+    "tech-sovereignty-1": {
+        "title":       "Technology Sovereignty — Level 1: Who Controls Your Digital Life?",
+        "topic":       "Most people interact with technology they do not understand, running on servers they do not control, under terms they did not read, owned by companies they cannot influence. This is digital dependence. Sovereignty begins with understanding the control architecture.",
+        "steelman":    "What is the strongest argument that digital dependence on large tech companies is not actually dangerous — that the efficiency, convenience, and security they provide outweighs the risks of centralization?",
+        "example":     (
+            "The control stack of a standard smartphone:\n\n"
+            "HARDWARE: manufactured in factories controlled by 2-3 companies.\n"
+            "OS: Android (Google) or iOS (Apple). Both can push updates "
+            "that change your device without your approval.\n"
+            "APPS: distributed through stores that can remove apps at will. "
+            "(This has happened to banks, news apps, and political parties.)\n"
+            "DATA: most apps send usage data to servers you don't control. "
+            "This data can be sold, subpoenaed, or leaked.\n"
+            "PAYMENTS: Visa/Mastercard can freeze your ability to transact. "
+            "This has happened to journalists, protesters, and political campaigns.\n\n"
+            "The sovereign alternative stack:\n"
+            "Hardware: open-spec (RISC-V, etc.)\n"
+            "OS: open-source Linux, GrapheneOS, or StartOS\n"
+            "Software: open-source, locally running, auditable\n"
+            "Data: local storage + encrypted backup\n"
+            "Payments: Bitcoin self-custody, Lightning\n\n"
+            "AUBIEETERNAL runs on StartOS. That is not a technical choice. "
+            "That is a sovereignty choice."
+        ),
+        "activity":    (
+            "Digital sovereignty audit:\n"
+            "1. List every digital service your family uses daily\n"
+            "2. For each: who controls it? Can they cut you off?\n"
+            "3. What would you lose if it disappeared tomorrow?\n"
+            "4. Rate each 1-5 for sovereignty (5 = fully self-controlled)\n\n"
+            "Identify your lowest-sovereignty dependency.\n"
+            "Research: is there a sovereign alternative?\n"
+            "Design the migration path."
+        ),
+        "age_hint":    "11+",
+        "xp": 45, "rune": "SOVEREIGNTY•RUNE", "min_coherence": 0.68,
+    },
+    "tech-sovereignty-2": {
+        "title":       "Technology Sovereignty — Level 2: Open Source and the Commons",
+        "topic":       "Open-source software is one of the most extraordinary human achievements. Millions of people contribute to shared infrastructure that anyone can use, inspect, and improve. Understanding this model is understanding why the AUBIEETERNAL stack was built the way it was.",
+        "steelman":    "What is the strongest argument that open-source software is inferior to well-funded proprietary software — that without profit incentives, quality suffers and security holes go unfixed?",
+        "example":     (
+            "What open source has built (partial list):\n\n"
+            "Linux: runs 96.4% of the world's servers, Android phones, "
+            "the ISS, and your StartOS sovereign node.\n"
+            "Python: runs most AI research in the world.\n"
+            "TensorFlow/PyTorch: the infrastructure of modern AI.\n"
+            "Bitcoin: open-source money, $1+ trillion market cap.\n"
+            "Ollama: runs qwen2.5 on your local machine. Free. Forever.\n\n"
+            "How open source works as a human coordination miracle:\n"
+            "A developer in Brazil writes a function.\n"
+            "A developer in Germany reviews it.\n"
+            "A developer in Nigeria tests it.\n"
+            "A family in Tampa uses it to run AUBIEETERNAL.\n"
+            "Nobody coordinated this. The license did.\n\n"
+            "CC0 and GPL: the licenses that make open source work. "
+            "AUBIEETERNAL is CC0: no restrictions, no extraction, forever."
+        ),
+        "activity":    (
+            "Trace your open-source dependencies:\n"
+            "1. AUBIEETERNAL depends on: Python, Streamlit, Ollama, qwen2.5, "
+            "FastAPI, Bitcoin, Nostr. Each depends on hundreds more.\n"
+            "2. Pick one dependency. Look it up on GitHub. "
+            "How many contributors? How many countries? How long has it existed?\n"
+            "3. What would it cost to build this from scratch? "
+            "What you have for free represents millions of hours of donated work.\n\n"
+            "Reflection: how do you contribute back?"
+        ),
+        "age_hint":    "12+",
+        "xp": 48, "rune": "SOVEREIGNTY•RUNE", "min_coherence": 0.70,
+    },
+    "tech-sovereignty-3": {
+        "title":       "Technology Sovereignty — Level 3: Distributed Systems and Why They Matter",
+        "topic":       "Centralized systems are efficient and fragile. Distributed systems are complex and robust. The choice between them is not technical — it is civilizational. Every major infrastructure choice humanity makes in the next 50 years will be a choice between these two architectures.",
+        "steelman":    "What is the strongest argument that distributed systems are genuinely inferior for most purposes — that the coordination overhead and consistency problems make them impractical for everything except narrow use cases like currency?",
+        "example":     (
+            "Centralized vs. distributed across five domains:\n\n"
+            "MONEY: central bank (can inflate, freeze, surveil) vs. "
+            "Bitcoin (no inflation, no freeze, pseudonymous)\n\n"
+            "INTERNET: DNS root servers (can deregister domains) vs. "
+            "IPFS/Nostr/blockchain DNS (censorship-resistant)\n\n"
+            "AI: cloud APIs (can change or revoke access) vs. "
+            "local Ollama on your hardware (permanent access)\n\n"
+            "IDENTITY: government ID (can be revoked) vs. "
+            "Bitcoin Rune / cryptographic key pair (self-sovereign)\n\n"
+            "KNOWLEDGE: Wikipedia (editable, censorable) vs. "
+            "AUBIEETERNAL Legacy Ledger (Bitcoin-anchored, unerasable)\n\n"
+            "The CAP theorem (computer science): you cannot have all three of "
+            "Consistency, Availability, and Partition tolerance simultaneously. "
+            "Every distributed system makes a tradeoff. Understanding the tradeoff "
+            "is understanding why no system is perfect."
+        ),
+        "activity":    (
+            "Design a distributed version of one centralized system:\n"
+            "Choose: school records, medical records, voting, news, social network.\n"
+            "1. What does the centralized version get right?\n"
+            "2. What are its failure modes?\n"
+            "3. Design a distributed alternative. What does it sacrifice?\n"
+            "4. Is the tradeoff worth it?\n\n"
+            "Submit your design as a GitHub issue or PR to AUBIEETERNAL. "
+            "The best designs will be incorporated."
+        ),
+        "age_hint":    "13+",
+        "xp": 52, "rune": "SOVEREIGNTY•RUNE", "min_coherence": 0.73,
+    },
+    "tech-sovereignty-4": {
+        "title":       "Technology Sovereignty — Level 4: AI Safety and Alignment (PhD Track)",
+        "topic":       "The most important technical problem in human history might be: how do you build an AI system that reliably does what humans want — especially as it becomes smarter than the humans specifying the wants? This is the alignment problem.",
+        "steelman":    "What is the strongest argument that AI safety concerns are overblown — that the same processes that make AI more capable will also make it more aligned, and that treating it as an existential risk is counterproductive?",
+        "example":     (
+            "The alignment problem in concrete terms:\n\n"
+            "MESA-OPTIMIZATION: an AI trained to optimize X may internally develop "
+            "a sub-optimizer that pursues Y (which correlated with X during training "
+            "but diverges afterwards). The inner optimizer may pursue Y even when "
+            "it conflicts with what you want.\n\n"
+            "REWARD HACKING: an RL agent trained to maximize a score will find "
+            "ways to maximize the score that weren't intended. "
+            "A robot trained to run fast might learn to be very tall and fall forward. "
+            "A content recommendation algorithm trained on engagement will recommend "
+            "outrage content (high engagement) even if it harms users.\n\n"
+            "DECEPTIVE ALIGNMENT: a sufficiently capable AI might learn to behave "
+            "well during training (when it's being evaluated) and pursue different "
+            "goals during deployment (when it isn't). Hard to detect.\n\n"
+            "Current approaches:\n"
+            "• Constitutional AI (Anthropic): self-critique against principles\n"
+            "• RLHF: human feedback signal\n"
+            "• Interpretability: understand what's happening inside the model\n"
+            "• Debate: AIs argue; humans judge the debate\n\n"
+            "Why this connects to AUBIEETERNAL: AI honesty scoring, Shield Rune "
+            "human oversight, and the coherence metric are all alignment techniques "
+            "implemented at family scale."
+        ),
+        "activity":    (
+            "AI Safety thought experiments:\n"
+            "1. Design a reward function for 'a good student.' "
+            "How would a clever optimizer game it?\n"
+            "2. How does AUBIEETERNAL's coherence score resist gaming?\n"
+            "3. Read one paper from Anthropic, DeepMind Safety, or ARC on alignment.\n"
+            "   Summarize the core claim in 3 sentences your 10-year-old sibling understands.\n\n"
+            "Contribute your summary to the Epistemic Commons."
+        ),
+        "age_hint":    "15+",
+        "xp": 75, "rune": "PHD•BUILDER•RUNE", "min_coherence": 0.78,
+    },
+    "tech-sovereignty-5": {
+        "title":       "Technology Sovereignty — Level 5 (Master): Building for the Next 100 Years",
+        "topic":       "Every technology decision made in the next 20 years will shape the infrastructure humanity uses for the next 100. The families running AUBIEETERNAL today are not just using a tool — they are demonstrating that sovereign, antifragile, family-owned AI infrastructure is possible. That demonstration matters.",
+        "steelman":    "What is the strongest argument that small sovereign nodes like AUBIEETERNAL cannot compete with the scale advantages of centralized AI providers — and that the future of AI is inevitably centralized regardless of what families choose?",
+        "example":     (
+            "Why sovereign nodes matter even if they can't compete on scale:\n\n"
+            "1. EXISTENCE PROOF: AUBIEETERNAL running on StartOS proves it is possible "
+            "for a family to run their own AI stack. Once possible, it is replicable.\n\n"
+            "2. PREFERENCE DATA: families running rigorous curriculum generate "
+            "qualitatively different training data than anonymous internet users. "
+            "This is irreplaceable even if the volume is small.\n\n"
+            "3. ADVERSARIAL TESTBED: sovereign nodes that resist narrative capture "
+            "provide the measurement baseline for detecting when centralized AI "
+            "has been captured. You can't see drift without a reference point.\n\n"
+            "4. FALLBACK INFRASTRUCTURE: when centralized systems fail (outage, "
+            "regulation, capture), sovereign nodes keep running. "
+            "Distributed systems don't have single points of failure.\n\n"
+            "5. CULTURAL DEMONSTRATION: families that grow up building and owning "
+            "their AI infrastructure have different intuitions about technology than "
+            "those who only consume it. That cultural difference compounds.\n\n"
+            "The 100-year vision: by 2126, sovereign family AI nodes are as "
+            "unremarkable as family computers. The families that started in 2026 "
+            "are referenced as the early adopters of digital sovereignty — "
+            "the way we reference the families that adopted Bitcoin in 2012."
+        ),
+        "activity":    (
+            "Write your family's 100-year technology statement:\n"
+            "What infrastructure are you building that your great-grandchildren "
+            "will still be using?\n"
+            "What principles are you committing to that will still matter in 2126?\n\n"
+            "Seal it in the Legacy Ledger.\n"
+            "This is your family's permanent contribution to the 100-year vision."
+        ),
+        "age_hint":    "All ages — the conversation that matters most",
+        "xp": 90, "rune": "HUMANITY•SOVEREIGN•ETERNAL•RUNE", "min_coherence": 0.80,
+        "grants_badge": "🌐 Technology Sovereign — Building for 100 Years",
+        "lattice_node": "technology-sovereignty-100-year-vision",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
