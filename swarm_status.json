@@ -1,7 +1,7 @@
 {
-  "updated": "2026-05-29T18:17:12.181029",
+  "updated": "2026-05-29T23:27:07.991199",
   "version": "4.1",
-  "wonder_index": 1.1798,
+  "wonder_index": 1.2968,
   "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 0,
@@ -9,7 +9,7 @@
   "child_rune_ready": false,
   "hormetic_pulses": 0,
   "lattice_cycle": 2,
-  "session_insights": 0,
+  "session_insights": 12,
   "synthesis": {
     "last_run_date": "None",
     "next_run": "06:00 daily",
@@ -37,7 +37,7 @@
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "night @ 23:00"
+    "next_briefing": "morning @ 06:00 tomorrow"
   },
   "daughters": {
     "D01": {
