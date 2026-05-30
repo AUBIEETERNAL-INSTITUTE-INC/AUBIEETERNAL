@@ -9188,3 +9188,202 @@ if "Sovereign Builder" in active:
         st.error("sovereign_builder.py not found. Push it to GitHub and redeploy.")
     except Exception as _e_sb:
         st.error(f"Builder error: {_e_sb}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOVEREIGN BUILDER 🔧
+# Hardware upgrades · AI benchmarks · Halo AR hooks · Humanitarian contributions
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sovereign Builder" in active:
+    st.markdown('<div class="card-title">🔧 SOVEREIGN BUILDER — From User to Builder to Humanitarian</div>', unsafe_allow_html=True)
+
+    _fid_sb = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from sovereign_builder import SovereignBuilder as _SB, CONTRIBUTION_TYPES as _CTYPES
+        _sb    = _SB(_fid_sb)
+        _stats = _sb.get_builder_stats()
+        _telem = _sb.get_live_telemetry()
+        _rec   = _sb.get_optimal_model()
+
+        # ── Builder level header ───────────────────────────────────────────────
+        _bl    = _stats.get("builder_level", 0)
+        _blc   = "#f7931a" if _bl >= 6 else "#00cfff" if _bl >= 3 else "#445577"
+        _blnames = {0:"Beginner",1:"Tinkerer",2:"Upgrader",3:"Optimizer",
+                    4:"Architect",5:"Engineer",6:"Master",7:"PhD",8:"Humanity Builder"}
+        st.markdown(
+            f'<div style="text-align:center;padding:10px 0 6px;">'
+            f'<div style="font-size:28px">🔧</div>'
+            f'<div style="color:{_blc};font-family:Orbitron,monospace;font-size:1rem;margin-top:4px;">'
+            f'LEVEL {_bl} — {_blnames.get(_bl,"Builder").upper()}</div>'
+            f'<div style="color:#445577;font-size:10px;letter-spacing:0.1em;margin-top:2px;">'
+            f'{_stats["total_upgrades"]} UPGRADES · {_stats["total_benchmarks"]} BENCHMARKS · '
+            f'{_stats["people_reached"]} PEOPLE REACHED</div>'
+            f'</div>', unsafe_allow_html=True)
+
+        # Live telemetry row
+        _sb1,_sb2,_sb3,_sb4 = st.columns(4)
+        _sb1.metric("Ollama", "🟢 Running" if _telem.get("ollama_running") else "⚫ Offline")
+        _sb2.metric("RAM Used", f"{_telem.get('ram_used_gb',0):.1f}/{_telem.get('ram_total_gb',0):.0f}GB")
+        _sb3.metric("CPU", f"{_telem.get('cpu_percent',0):.0f}%")
+        _sb4.metric("Best Model", _stats.get("best_model","none")[:12])
+
+        # Model recommendation
+        st.markdown(
+            f'<div style="padding:6px 10px;background:#0d1228;border-radius:6px;'
+            f'border-left:3px solid #a020f0;margin-bottom:8px;">'
+            f'<span style="color:#a020f0;font-size:0.72rem;font-family:Orbitron,monospace;">OPTIMAL CONFIG</span> '
+            f'<span style="color:#c8d8ff;font-size:0.82rem;">{_rec.get("recommendation","—")}</span>'
+            f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+
+        _sb_tabs = st.tabs(["🔩 Log Upgrade", "⚡ Benchmark", "🌍 Humanitarian", "🥽 Halo AR Guide"])
+
+        # ── Log upgrade ────────────────────────────────────────────────────────
+        with _sb_tabs[0]:
+            st.markdown("**Track every hardware improvement. Seals to Legacy Ledger automatically.**")
+            _uc1, _uc2 = st.columns(2)
+            with _uc1:
+                _up_comp = st.text_input("Component:", key="up_comp",
+                    placeholder="e.g. RAM, NVMe, GPU, CPU Cooler")
+                _up_desc = st.text_input("Description:", key="up_desc",
+                    placeholder="e.g. 8GB to 32GB DDR4-3200")
+            with _uc2:
+                _up_before = st.number_input("Before score:", 0, 100, 0, key="up_before")
+                _up_after  = st.number_input("After score:", 0, 100, 0, key="up_after")
+            _up_cost  = st.number_input("Cost ($):", 0.0, 10000.0, 0.0, key="up_cost")
+            _up_notes = st.text_input("Notes:", key="up_notes")
+            if st.button("🔩 Log Upgrade", key="up_log", type="primary") and _up_comp:
+                _u = _sb.log_upgrade(_up_comp, _up_desc, _up_before, _up_after, _up_cost, _up_notes)
+                _imp = _u["improvement"]
+                st.success(f"✅ Upgrade logged — {_up_comp} | +{_imp:.0f} score | Sealed to Legacy Ledger")
+
+            # Current hardware config
+            hw = _stats.get("hardware_config",{})
+            if hw:
+                st.divider()
+                st.markdown("**Your Sovereign Stack:**")
+                for comp, desc in hw.items():
+                    st.markdown(f'<div style="padding:3px 0;color:#8899bb;font-size:0.8rem;">'
+                                f'<b style="color:#c8d8ff;">{comp}:</b> {desc}</div>',
+                                unsafe_allow_html=True)
+
+        # ── Benchmark ─────────────────────────────────────────────────────────
+        with _sb_tabs[1]:
+            st.markdown("**Benchmark your AI models. Find your optimal configuration.**")
+            _bc1, _bc2 = st.columns(2)
+            with _bc1:
+                _bm_model = st.text_input("Model:", key="bm_model", value="qwen2.5:14b")
+                _bm_tps   = st.number_input("Tokens/sec:", 0.0, 1000.0, 0.0, 0.1, key="bm_tps")
+            with _bc2:
+                _bm_ram  = st.number_input("RAM used (GB):", 0.0, 128.0, 0.0, 0.1, key="bm_ram")
+                _bm_qual = st.slider("Quality score (1-10):", 1.0, 10.0, 7.0, 0.5, key="bm_qual")
+            _bm_quant = st.selectbox("Quantization:", ["q4_K_M","q5_K_M","q8_0","f16","f32"], key="bm_quant")
+            if st.button("⚡ Log Benchmark", key="bm_log", type="primary") and _bm_tps > 0:
+                _b = _sb.log_benchmark(_bm_model, _bm_tps, _bm_ram, _bm_qual, quantization=_bm_quant)
+                st.success(f"✅ Benchmark: {_bm_model} | {_bm_tps:.1f} tok/s | {_bm_ram:.1f}GB")
+
+            # Model leaderboard
+            models = _stats.get("current_models",[])
+            if models:
+                st.divider()
+                st.markdown("**Your Model Leaderboard:**")
+                for m in sorted(models, key=lambda x: x.get("tokens_per_sec",0), reverse=True):
+                    st.markdown(
+                        f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<b style="color:#f7931a;">{m.get("tokens_per_sec",0):.1f} tok/s</b> '
+                        f'<span style="color:#c8d8ff;">{m.get("model","?")}</span> '
+                        f'<span style="color:#445577;font-size:0.75rem;">{m.get("ram_gb",0):.1f}GB · {m.get("date","?")}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Humanitarian contributions ─────────────────────────────────────────
+        with _sb_tabs[2]:
+            st.markdown("""
+            <div class="card" style="border-left:3px solid #00ff88;">
+                <div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.72rem;">THE HUMANITARIAN MISSION</div>
+                <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+                Every Sovereign Builder who completes the track can deploy sovereign infrastructure
+                for communities that have none. An upgraded computer + Ollama + AUBIEETERNAL costs
+                $50 in RAM and a few hours. The impact compounds forever.<br><br>
+                <b style="color:#c8d8ff;">Humanitarian impact score:</b> """ +
+                str(_stats.get("humanitarian_impact",0)) + """ · 
+                <b style="color:#c8d8ff;">People reached:</b> """ +
+                str(_stats.get("people_reached",0)) + """
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            _ct_select = st.selectbox("Contribution type:", list(_CTYPES.keys()), key="ct_type",
+                format_func=lambda k: f"{k.replace('_',' ').title()} — {_CTYPES[k]['desc']}")
+            _ct_desc   = st.text_area("Describe your contribution:", height=80, key="ct_desc",
+                placeholder="e.g. Set up 2 computers with AUBIEETERNAL at Lincoln Elementary — 45 students will use them")
+            _ct_people = st.number_input("People reached:", 0, 10000, 0, key="ct_people")
+            _ct_loc    = st.text_input("Location (optional):", key="ct_loc")
+
+            if st.button("🌍 Log Contribution", key="ct_log", type="primary") and _ct_desc:
+                _c = _sb.log_contribution(_ct_select, _ct_desc, _ct_people, _ct_loc, seal=True)
+                _rune = _CTYPES.get(_ct_select,{}).get("rune_grant",25)
+                st.success(
+                    f"✅ Contribution logged and sealed!\n\n"
+                    f"Impact score: {_c['impact_score']} · Runes earned: {_rune}\n\n"
+                    f"{'🛡️ Bitcoin-anchored — this contribution is permanently recorded.' if _c.get('sealed') else 'Recorded locally.'}"
+                )
+
+            # Contribution history
+            contribs = _sb.get_all_contributions()
+            if contribs:
+                st.divider()
+                for _c in reversed(contribs[-5:]):
+                    _cc = "#00ff88" if _c.get("sealed") else "#445577"
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {_cc};">'
+                        f'<div style="color:{_cc};font-size:0.7rem;">'
+                        f'{_c["date"]} · {_c["type"].replace("_"," ")} · impact={_c["impact_score"]} · '
+                        f'people={_c.get("people_reached",0)} · {"🛡️ sealed" if _c.get("sealed") else "local"}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.8rem;">{_c["description"][:120]}</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Halo AR Guide ──────────────────────────────────────────────────────
+        with _sb_tabs[3]:
+            st.markdown("""
+            <div class="card" style="border-left:3px solid #a020f0;">
+                <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">🥽 HALO AR OVERLAY SYSTEM</div>
+                <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+                When Halo glasses are connected, these step-by-step instructions float directly
+                in your visual field as you work on the hardware. Components are highlighted.
+                XP is awarded automatically when steps are completed.<br><br>
+                Currently showing the guide in text format. AR activation: connect Halo device.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            _ar_context = st.selectbox("Select hardware task:", 
+                ["ram_installation","nvme_installation"], key="ar_ctx",
+                format_func=lambda x: x.replace("_"," ").title())
+            _overlay = _sb.get_ar_overlay(_ar_context)
+
+            st.markdown(f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.75rem;margin-top:8px;">'
+                        f'{_ar_context.replace("_"," ").upper()} · XP: {_overlay.get("xp_award",0)}</div>',
+                        unsafe_allow_html=True)
+            for _idx, _step in enumerate(_overlay.get("steps",[]), 1):
+                st.markdown(
+                    f'<div style="padding:6px 0;border-bottom:1px solid #1e2a3a;">'
+                    f'<span style="color:#a020f0;font-weight:600;">Step {_idx}:</span> '
+                    f'<span style="color:#c8d8ff;font-size:0.85rem;">{_step}</span>'
+                    f'</div>', unsafe_allow_html=True)
+
+            st.markdown(f"""
+            <div style="margin-top:12px;padding:8px 10px;background:#0d1228;border-radius:6px;
+                border:1px solid #1e2a3a;font-size:10px;color:#445577;line-height:1.8;">
+            <div style="color:#f7931a;font-weight:600;margin-bottom:2px;">Age-Appropriate Guidance</div>
+            Age 5-8 (Junior Builder): Kitchen analogy, supervised hands-on, XP celebrations<br>
+            Age 8-12 (Builder): Full upgrade walkthroughs, benchmark before/after, part identification<br>
+            Age 13-16 (Advanced): Bottleneck analysis, quantization testing, performance optimization<br>
+            Age 16+ / PhD: Architecture deep-dives, RLHF pipeline, custom inference stack
+            </div>""", unsafe_allow_html=True)
+
+    except ImportError:
+        st.error("sovereign_builder.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_sb:
+        st.error(f"Builder error: {_e_sb}")
