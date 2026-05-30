@@ -931,6 +931,7 @@ with st.sidebar:
         "🤖 AI": [
             "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace",
             "🧪 Sandbox Lab",
+            "🌌 Cosmos Dashboard",
         ],
         "👾 SWARM": [
             "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "🌐 Epistemic Commons",
@@ -8702,3 +8703,170 @@ if "Family Dynasty" in active:
         st.error("legacy_ledger.py not found. Push it to GitHub and redeploy.")
     except Exception as _e_dy:
         st.error(f"Dynasty error: {_e_dy}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: COSMOS DASHBOARD 🌌
+# Daily universe question + consciousness experiment + belief ledger
+# ══════════════════════════════════════════════════════════════════════════════
+if "Cosmos Dashboard" in active:
+    st.markdown('<div class="card-title">🌌 COSMOS DASHBOARD — Daily Universe Inquiry</div>', unsafe_allow_html=True)
+
+    _fid_cs = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from cosmos_dashboard import CosmosDashboard as _CD
+        _dash   = _CD(_fid_cs)
+        _q      = _dash.get_daily_question()
+        _exp    = _dash.get_daily_experiment()
+        _summ   = _dash.get_cosmos_summary()
+
+        # ── Today's question ──────────────────────────────────────────────────
+        _qc = {"cosmology":"#00cfff","information":"#a020f0","consciousness":"#00ff88",
+               "fermi":"#f7931a","simulation":"#ff9500","humanity":"#f7931a",
+               "self-evolve":"#00ff88"}.get(_q.get("track","?"),"#445577")
+        st.markdown(
+            f'<div class="card" style="border:2px solid {_qc};padding:16px;">'
+            f'<div style="color:{_qc};font-family:Orbitron,monospace;font-size:0.72rem;letter-spacing:0.12em;">'
+            f'TODAY\'S UNIVERSE QUESTION · {_q.get("track","?").upper()} · {_q.get("difficulty","?").upper()}</div>'
+            f'<div style="color:#c8d8ff;font-size:1.05rem;margin-top:10px;line-height:1.7;font-weight:500;">'
+            f'{_q.get("q","")}</div>'
+            f'</div>', unsafe_allow_html=True)
+
+        # ── Quick metrics ──────────────────────────────────────────────────────
+        _cs1, _cs2, _cs3, _cs4 = st.columns(4)
+        _cs1.metric("Beliefs Tracked", _summ.get("total_beliefs",0))
+        _cs2.metric("Overdue Review",  _summ.get("overdue_beliefs",0))
+        _cs3.metric("Experiments",     _summ.get("total_experiments",0))
+        _cs4.metric("Calibration",     f"{_summ.get('calibration_score',0):.2f}")
+
+        st.divider()
+
+        _cs_tabs = st.tabs(["🧠 Daily Experiment", "📝 Belief Ledger",
+                             "🔭 Foresight", "📚 Consciousness Science"])
+
+        # ── Daily consciousness experiment ─────────────────────────────────────
+        with _cs_tabs[0]:
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid #a020f0;">'
+                f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.75rem;">'
+                f'🧠 CONSCIOUSNESS EXPERIMENT · {_exp.get("duration",60)}s · TODAY</div>'
+                f'<div style="color:#f7931a;font-size:0.95rem;margin-top:8px;font-weight:600;">'
+                f'{_exp.get("title","")}</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:8px;line-height:1.8;">'
+                f'{_exp.get("instructions","")}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+            _obs = st.text_area("What did you observe?", height=80, key="cs_obs",
+                placeholder="Describe what happened during the experiment...")
+            if st.button("✅ Log Observation", key="cs_log_obs") and _obs:
+                _dash.log_foresight_experiment(
+                    f"[EXPERIMENT] {_exp['title']}: {_obs[:200]}",
+                    prediction=0.5, domain="consciousness"
+                )
+                st.success("✅ Observation logged to foresight experiments")
+
+        # ── Belief Ledger ─────────────────────────────────────────────────────
+        with _cs_tabs[1]:
+            st.markdown("Track your beliefs as Bayesian hypotheses. Review every 90 days.")
+            _bl_belief = st.text_input("Belief:", key="bl_belief",
+                placeholder="e.g. 'Consciousness is fundamental to reality'")
+            _bl_conf   = st.slider("Confidence:", 0.0, 1.0, 0.5, 0.05, key="bl_conf",
+                format="%.0f%%")
+            _bl_ev     = st.text_input("Supporting evidence:", key="bl_ev",
+                placeholder="What currently supports this?")
+            _bl_upd    = st.text_input("What would update you -20%?", key="bl_upd",
+                placeholder="What evidence would lower your confidence?")
+            _bl_member = st.text_input("Member:", key="bl_member", value="family")
+
+            if st.button("📝 Record Belief", key="bl_record") and _bl_belief:
+                _entry = _dash.record_belief(_bl_belief, _bl_conf, _bl_ev, _bl_upd, _bl_member)
+                st.success(f"✅ Belief recorded — ID: `{_entry['belief_id']}` | "
+                           f"Confidence: {_bl_conf:.0%} | Review: {_entry['review_date']}")
+
+            # Overdue beliefs
+            _overdue = _dash.get_overdue_beliefs()
+            if _overdue:
+                st.divider()
+                st.markdown(f"### ⏰ Overdue Reviews ({len(_overdue)})")
+                for _b in _overdue[:5]:
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid #ff9500;">'
+                        f'<div style="color:#ff9500;font-size:0.7rem;">'
+                        f'{_b["date"]} · {_b.get("member","?")} · Due: {_b.get("review_date","?")}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.82rem;">'
+                        f'{_b["belief"][:120]}</div>'
+                        f'<div style="color:#445577;font-size:0.75rem;">'
+                        f'Current confidence: {_b["confidence"]:.0%}</div>'
+                        f'</div>', unsafe_allow_html=True)
+                    _new_conf = st.slider(f"Updated confidence for {_b['belief_id']}:",
+                                           0.0, 1.0, float(_b["confidence"]), 0.05,
+                                           key=f"bl_upd_{_b['belief_id']}")
+                    _upd_note = st.text_input("What changed?", key=f"bl_note_{_b['belief_id']}")
+                    if st.button("✅ Update", key=f"bl_btn_{_b['belief_id']}"):
+                        _dash.update_belief(_b["belief_id"], _new_conf, _upd_note)
+                        st.success("✅ Belief updated")
+                        st.rerun()
+
+            # All beliefs
+            _all_beliefs = _dash.get_all_beliefs()
+            if _all_beliefs:
+                st.divider()
+                st.markdown("### 📋 Your Belief Ledger")
+                for _b in reversed(_all_beliefs[-10:]):
+                    _bc = "#00ff88" if _b["confidence"] >= 0.7 else \
+                          "#ff9500" if _b["confidence"] >= 0.4 else "#445577"
+                    st.markdown(
+                        f'<div style="padding:6px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<span style="color:{_bc};font-size:0.8rem;font-weight:600;">'
+                        f'{_b["confidence"]:.0%}</span> '
+                        f'<span style="color:#c8d8ff;font-size:0.82rem;">{_b["belief"][:100]}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Foresight Experiments ──────────────────────────────────────────────
+        with _cs_tabs[2]:
+            st.markdown("Log predictions about the world. Track your accuracy over time.")
+            _fe_desc = st.text_area("Prediction:", height=80, key="fe_desc",
+                placeholder="e.g. 'Families that run daily Simulation Probe will report higher wonder in 30 days'")
+            _fe_prob = st.slider("Your probability:", 0.0, 1.0, 0.6, 0.05, key="fe_prob",
+                format="%.0f%%")
+            _fe_dom  = st.selectbox("Domain:", ["general","consciousness","economics",
+                                                 "physics","society","family"], key="fe_dom")
+            _fe_date = st.date_input("Expected resolution:", key="fe_date",
+                value=datetime.date.today() + datetime.timedelta(days=30))
+            if st.button("🔭 Log Prediction", key="fe_log") and _fe_desc:
+                _fe = _dash.log_foresight_experiment(_fe_desc, _fe_prob, _fe_dom,
+                                                      str(_fe_date))
+                st.success(f"✅ Prediction logged — ID: `{_fe['exp_id']}` | "
+                           f"Your probability: {_fe_prob:.0%} | Resolution: {_fe_date}")
+
+        # ── Consciousness Science Quick Reference ──────────────────────────────
+        with _cs_tabs[3]:
+            st.markdown("""
+            <div style="font-size:0.85rem;line-height:2.0;color:#8899bb;">
+            <div style="color:#f7931a;font-weight:600;margin-bottom:8px;font-family:Orbitron,monospace;font-size:0.75rem;">
+            IIT vs GNWT — THE 2025 NATURE ADVERSARIAL RESULTS</div>
+
+            <b style="color:#c8d8ff;">IIT (Tononi):</b> Consciousness = integrated cause-effect information (Φ)
+            · Starts from phenomenology · Explains the hard problem mathematically
+            · Predicts posterior "hot zone" · 2025: ✅ posterior content · ❌ gamma synchrony<br><br>
+
+            <b style="color:#c8d8ff;">GNWT (Dehaene):</b> Consciousness = global broadcast and access
+            · Starts from neural mechanisms · Explains reportability and function
+            · Predicts PFC ignition · 2025: ✅ some PFC involvement · ❌ no offset ignition<br><br>
+
+            <b style="color:#00ff88;">Bottom line:</b> Neither theory won. Both advanced. The field is moving
+            from "which theory?" to "how do these mechanisms interact?" This is
+            exactly what good science looks like.<br><br>
+
+            <b style="color:#a020f0;">For families:</b> IIT gives you a way to think about which architectures
+            feel like something. GNWT gives you a way to think about why some
+            thoughts are accessible while most processing stays unconscious.
+            Together they frame the deepest questions about mind and reality.
+            </div>
+            """, unsafe_allow_html=True)
+
+    except ImportError:
+        st.error("cosmos_dashboard.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_cs:
+        st.error(f"Cosmos Dashboard error: {_e_cs}")
