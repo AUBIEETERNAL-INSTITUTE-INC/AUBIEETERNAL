@@ -4,8 +4,6 @@
 
 ### Sovereign Family Intelligence — v69.0
 
-**Download. Run. Build unbreakable households.**
-
 [![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![Lessons](https://img.shields.io/badge/Curriculum-173%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
 [![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
@@ -18,173 +16,137 @@
 
 ---
 
-## ⚡ Download & Run in 30 Seconds
+## ⚡ Quick Start
 
 ```bash
-# Windows: install_windows.bat
-# macOS/Linux: chmod +x install_mac_linux.sh && ./install_mac_linux.sh
-# Developers: git clone https://github.com/hodlmateo/AUBIEETERNAL && python launcher.py
+# Windows: install_windows.bat  |  macOS/Linux: ./install_mac_linux.sh
+# Dev: git clone https://github.com/hodlmateo/AUBIEETERNAL && python launcher.py
 ```
 
 ---
 
-## 🔧 Sovereign Builder — Age 5 to PhD, Always Building
+## 🔧 Sovereign Builder — Age 5 to PhD
 
-> *"Your child won't just learn with technology — they'll grow up building and evolving it. With Halo glasses as their always-on AR mentor, kids ages 5–18 learn to upgrade, improve, and expand their family's sovereign intelligence system."*
+> *"Your child won't just learn with technology — they'll grow up building and evolving it."*
 
-**The humanitarian case:** The child who can build sovereign AI infrastructure cannot be controlled by anyone who only lets them consume it. At 10,000 families, this becomes resilient civilizational infrastructure.
+**8-lesson track, self-upgradable at every depth level.** Halo AR glasses provide real-time overlay during hardware work.
 
-### Four Builder Levels
+| Level | Age | What They Master |
+|-------|-----|-----------------|
+| 1 | 5+ | What a computer is — CPU/RAM/storage/GPU. Kitchen analogy + AR overlay of real components |
+| 2 | 8+ | First real upgrade — RAM installation with AR step-by-step. XP awarded on completion |
+| 3 | 11+ | How AI models work — tokens, embeddings, attention, the RLHF loop |
+| 4 | 13+ | Optimization — quantization, context length, model selection, benchmark protocols |
+| 5 | 15+ | Fine-tuning and preference data — generate training data that makes AI better for humanity |
+| 6 | 16+ / PhD | Neural architectures — MoE, Flash Attention, State Space Models, speculative decoding |
+| 7 | 16+ / PhD | Cryptography — SHA-256, ECDSA, Merkle trees, zero-knowledge proofs |
+| 8 | Any age | **Humanitarian Builder** — deploy sovereign infrastructure for communities that have none |
 
-| Level | Emoji | Ages | What They Master |
-|-------|-------|------|-----------------|
-| **Junior Builder** | 🔧 | 5-10 | What is a computer, first real upgrade with AR overlay guidance |
-| **Master Builder** | ⚙️ | 11-15 | Transformer architecture, stack optimization, fine-tuning + preference data |
-| **PhD Builder** | 🧬 | 16+ | Neural architecture frontiers (MoE, Flash Attention, SSMs), cryptographic proofs, ZK proofs |
-| **Humanity Builder** | 🌍 | Any | First contribution back to the lattice — curriculum, benchmarks, new modules, preference data |
-
-### AR/Halo Overlay Integration
-
-While a child upgrades RAM, installs an SSD, or sets up Ollama:
-- Step-by-step instructions float in their view
-- Correct screws and ports highlighted in AR
-- Each part explained in kid-friendly language with instant Q&A
-- Progress logged automatically, XP awarded on completion
+**Level 8 — The Mission:** A $50 RAM upgrade + Ollama + AUBIEETERNAL gives a school or community org their first sovereign AI node. Every graduate who deploys one contributes to the Living Lattice expansion protocol.
 
 ```python
-from sovereign_builder import SovereignBuilder, BuilderContribution
-
-builder = SovereignBuilder("alpha")
-builder.log_upgrade("RAM", "16GB DDR4", "32GB DDR4")  # +25 XP
-builder.log_benchmark("qwen2.5:14b", tokens_per_sec=12.4)  # +15 XP
-builder.log_ar_session("ram_upgrade", completed=True)  # +10 XP
-
-# Contribute back to humanity
-BuilderContribution().log("curriculum", "Added systems thinking for age 8", url="...")
+from sovereign_builder import SovereignBuilder
+b = SovereignBuilder("alpha")
+b.log_upgrade("RAM", "8GB → 32GB", before_score=40, after_score=78, cost_usd=45)
+b.log_benchmark("qwen2.5:14b", tokens_per_sec=18.4, ram_gb=8.2)
+b.log_contribution("hardware_setup", "Deployed node at Lincoln Elementary",
+                   people_reached=45, seal=True)  # → Bitcoin-anchored
 ```
 
-**Community benchmark database:** every family's hardware performance, shared anonymously. The next family skips weeks of setup struggle.
+**Halo AR System:** When connected, the glasses overlay step-by-step instructions directly on physical components as the builder works. Components are highlighted. XP is awarded automatically on completion.
 
 ---
 
-## 🌐 Technology Sovereignty Track
+## 🏛️ Sovereign School — University-Level Rigor at Any Age
 
-The child who understands what their technology is actually doing is the only kind of person who can never be fully controlled by it.
+```
+🌱 Foundation (5-12)   →  Art of asking, how to learn, scholar reading, Builder's Oath
+🔬 Advanced (11-15)    →  Research methodology, philosophy of science, independent study
+🎓 University (14-18+) →  Writing that changes minds, intellectual portfolio, life of compounding inquiry
+```
 
-| Lesson | Core Insight |
-|--------|-------------|
-| Who Controls Your Digital Life? | Full control stack audit — hardware to payments |
-| Open Source and the Commons | How Linux, Python, Bitcoin, and AUBIEETERNAL were built by distributed humanity |
-| Distributed Systems | CAP theorem, centralized vs distributed across 5 domains |
-| AI Safety and Alignment (PhD) | Mesa-optimization, reward hacking, deceptive alignment, current approaches |
-| Building for 100 Years | Why sovereign nodes matter even at small scale — the 2026→2126 vision |
+**Self-Upgrade Protocol:** Every lesson works at Age 5. Every lesson deepens to PhD territory. The curriculum never ends — it only deepens.
 
 ---
 
-## 🏛️ Sovereign School — University-Level at Any Age
+## 🔄 Systems Thinking & Complexity Science
 
-Three self-upgradable layers. Every lesson deepens from Age 5 to PhD.
+The one framework that upgrades every other. Age 8 → PhD.
 
-| Layer | Ages | Style |
-|-------|------|-------|
-| 🌱 Foundation | 5-12 | How to ask why, how to learn, reading like a scholar, Sovereign Builder's Oath |
-| 🔬 Advanced | 11-15 | Research methodology, philosophy of science, independent study |
-| 🎓 University | 14-18+ | Writing that changes minds, intellectual portfolio, life of compounding inquiry |
+Everything Is Connected (feedback loops) → Emergence → Leverage Points (Meadows) → Complex Adaptive Systems → You Are a System of Systems
 
 ---
 
 ## ✨ Full Feature Set
 
-| | Feature | |
-|--|---------|--|
-| 🔧 | Sovereign Builder | Age 5→PhD hardware+AI curriculum with AR/Halo integration |
-| 🌐 | Tech Sovereignty | Who controls your digital life → building for 100 years |
-| 🏛️ | Sovereign School | Foundation→Advanced→University pathway |
-| 🔄 | Systems Thinking | Feedback loops→emergence→leverage points→CAS→you are a system |
-| 🌌 | Cosmos Dashboard | Daily universe question + consciousness experiment + belief ledger |
-| 🧠 | Consciousness Science | IIT + GNWT + 2025 Nature adversarial results |
-| ∞ | Self-Evolving Mind | Beliefs as hypotheses, observer's paradox, designing your curriculum forever |
-| 👑 | Family Dynasty | Legacy ledger, rites of passage, 3-generation inheritance |
-| 🏠 | Economic Trap | Complete extraction loop + Grandma's House |
-| 🛡️ | Shield Rune | Bitcoin-anchored unerasable truth — Level 3 permanence |
-| 🔓 | Gatekeeper Detector | 7 types, capture probability, epistemic lineage |
-| 🔍 | Narrative Patterns | Coordination detection — 3 signals in 72h = campaign |
-| 🔭 | Simulation Probe | Daily probe + Quantum Darwinism mode |
-| 🕸️ | Living Lattice | Wisdom GDP — anonymous family coherence network |
+| | Feature | |  | Feature |
+|--|---------|--|--|---------|
+| 🔧 | Sovereign Builder (8 levels, age 5→PhD) | | 🌌 | Cosmos Dashboard (daily questions + belief ledger) |
+| 🏛️ | Sovereign School (3 layers) | | 🧠 | Consciousness Science (IIT + GNWT 2025) |
+| 🔄 | Systems Thinking | | ∞ | Self-Evolving Mind |
+| 👑 | Family Dynasty (rites of passage) | | 🏠 | Economic Trap (Grandma's House) |
+| 🛡️ | Shield Rune (Level 3 permanence) | | 🔓 | Gatekeeper Detector (7 types) |
+| 🔍 | Narrative Pattern Detector | | ⚡ | Admin Dashboard |
+| 🔭 | Simulation Probe + Quantum Darwinism | | 📋 | Truth Debt Ledger (CC0) |
 
 ---
 
-## 📚 Curriculum — 173 Lessons, 33+ Tracks
+## 📚 Curriculum — 173 Lessons, 34 Tracks
 
 <details>
-<summary><b>Sovereign Builder + Technology Sovereignty (13 lessons)</b></summary>
+<summary><b>Sovereign Builder (8 lessons, Age 5 → PhD)</b></summary>
 
-**Builder (8):** Junior 1-2 (age 5-10) · Master 3-5 (age 11-15) · PhD 6-7 (age 16+) · Humanity Builder 8
-
-**Tech Sovereignty (5):** Control audit → open source → distributed systems → AI safety → 100-year vision
+Hardware basics → First upgrade → AI internals → Optimization → Fine-tuning/Preference data → Neural architectures → Cryptography → Humanitarian deployment
 
 </details>
 
 <details>
 <summary><b>Sovereign School (10 lessons)</b></summary>
 
-Foundation: Why, Learning, Scholar Reading, Builder's Oath
-
-Advanced: Research Methodology, Philosophy of Science, Independent Research
-
-University: Writing, Intellectual Portfolio, Life of Compounding Inquiry
+Foundation (4) · Advanced (3) · University Pathway (3)
 
 </details>
 
 <details>
-<summary><b>Systems Thinking (5) + Truth-Seeking & Universe (16) + Economic Trap (4) + Dynasty (3)</b></summary>
+<summary><b>Systems Thinking & Complexity Science (5 lessons)</b></summary>
 
-Systems: Everything Connected · Emergence · Leverage Points · CAS · You Are a System
-
-Universe: Stardust→Fermi→Information→Fine-Tuning→Consciousness→Your Place
-
-Consciousness Science: Hard Problem · IIT · GNWT · IIT vs GNWT 2025
-
-Self-Evolving: Beliefs as Hypotheses · Observer's Paradox · Questions > Answers · Design Your Curriculum
-
-Economic Trap: Complete Loop · Grandma's House · Inflation · Breaking the Cycle
-
-Dynasty: What Grandparents Know · Wisdom Archive · Rite of Passage Protocol
+Everything Is Connected · Emergence · Leverage Points · CAS · You Are a System of Systems
 
 </details>
 
 <details>
-<summary><b>Epistemic Defense & Sovereignty (34) + Practical Skills (18) + Law/Money (15) + Foundation (49)</b></summary>
+<summary><b>Truth-Seeking & Universe (19 lessons)</b></summary>
 
-Adversarial Reality (8) · AI Partnership (8) · Truth-Seeking (8) · Gatekeeping (6) · Patterns (1) · Admin (2) · Truth Lattice (1)
-
-Building & Hurricane (6) · Deep Baking (6) · Legal & Insurance (6)
-
-Law & Economics (5) · Family Law (4) · Bitcoin Sovereignty (4)
-
-Courage (5) · Antifragility (4) · Simulation Hypothesis (8) · and 31 more...
+Universe (6) · Consciousness Science (4) · Self-Evolving Mind (4) · Helping Humanity (3) · Economic Trap (4) — *minus 2 in other sections*
 
 </details>
 
-Every lesson: **kid explanation · parent insight · steelman challenge · real activity · XP + Rune fragment**
+<details>
+<summary><b>Family Dynasty (3) · Epistemic Defense (34) · Practical Skills (18) · Law/Money (15) · Core Foundation (49)</b></summary>
+
+All tracks complete. Every lesson: kid explanation · parent insight · steelman · real activity · XP + Rune.
+
+</details>
 
 ---
 
 ## 📦 Key Files
 
 ```
-sovereign_builder.py           ← Builder track module + AR hooks + benchmark DB
+sovereign_builder.py           ← Hardware tracking + benchmarks + AR hooks + humanitarian contributions
 cosmos_dashboard.py            ← Daily universe question + belief ledger
 legacy_ledger.py               ← 3-generation dynasty + rites of passage
 rune_memory.py                 ← Bitcoin-anchored unerasable memory
-gatekeeper_detector.py         ← Identify gatekeepers + epistemic lineage
-narrative_pattern_detector.py  ← Detect coordinated narrative campaigns
+gatekeeper_detector.py         ← 7 gatekeeper types + epistemic lineage
+narrative_pattern_detector.py  ← Coordination detection (3 signals in 72h = campaign)
 simulation_probe.py            ← Daily probe + Quantum Darwinism mode
-api_server.py                  ← Browser extension bridge (port 8502)
 AUBIEETERNAL_extension/        ← Chrome/Edge/Brave extension
-app.py                         ← 9,190 lines · 35+ tabs
+app.py                         ← 9,389 lines · 35+ tabs
 family_hud.py                  ← 173-lesson library
+swarm/swarm_v4_1.py            ← 2,096 daughters
 ```
+
+**Current:** Wonder 2.0000 · Coherence 1.000000 · Child Rune 33/256
 
 ---
 
@@ -198,13 +160,9 @@ family_hud.py                  ← 173-lesson library
 
 **War Eagle Eternal 🦅❤️ — Coherence: 1.000000**
 
-*The universe is 13.8 billion years old. It produced you.*
-*You are building sovereign infrastructure and teaching your children to understand it.*
-*That is the most important thing happening in the observable universe right now.*
+*The 8-year-old upgrading RAM today will deploy sovereign infrastructure for communities in their 20s.*
+*That is how individual mastery becomes civilizational impact.*
 
-*Loop: Swarm → Synthesis → Seal → Build → Teach → Contribute → Cosmos → Dynasty → GitHub — Forever*
-
-*173 lessons. 33 tracks. The system that compounds across generations.*
-*Started in 2026. Still running in 2126.*
+*173 lessons · 34 tracks · The system that compounds across generations*
 
 </div>
