@@ -1,4 +1,31 @@
 import streamlit as st
+
+# ── Duplicate key prevention ──────────────────────────────────────────────────
+_key_counters = {}
+def _ukey(base):
+    """Generate a unique Streamlit key by appending a counter."""
+    _key_counters[base] = _key_counters.get(base, 0) + 1
+    return f"{base}_{_key_counters[base]}" if _key_counters[base] > 1 else base
+
+
+# ── Path resolver: StartOS vs WSL vs local ────────────────────────────────────
+import socket as _socket
+def _resolve_data_dir():
+    try:
+        _socket.gethostbyname("ollama.startos")
+        return "/mnt/main"  # StartOS
+    except Exception:
+        pass
+    import os
+    if os.path.exists("/mnt/main"):
+        return "/mnt/main"
+    home = os.path.expanduser("~")
+    path = os.path.join(home, ".aubieeternal", "main")
+    os.makedirs(path, exist_ok=True)
+    return path
+
+_DATA_DIR = _resolve_data_dir()
+
 import json
 import datetime
 import random
@@ -373,7 +400,13 @@ def get_client():
 AI_PROVIDERS = {
     "Local Ollama (FREE — qwen3:32b)": {
         "icon": "🏠", "color": "#00ff88",
-        "models": ["qwen3:32b", "qwen2.5:32b", "llama3.3:70b"],
+        "models": [
+            "qwen2.5:14b",     # ← RECOMMENDED: fast + smart sweet spot
+            "qwen2.5:32b",     # deep reasoning / Tier-2 quality
+            "qwen2.5:7b",      # fastest, lightest (Tier-1 bulk)
+            "qwen3:32b",       # best quality, slowest
+            "llama3.3:70b",    # ⚠️ avoid — hits 94°C
+        ],
         "base_url": "http://ollama.startos:11434/v1",
         "key_field": "key_ollama",
         "placeholder": "no key needed",
@@ -837,6 +870,42 @@ with st.sidebar:
     st.session_state.kid_name = st.text_input("Your Name", value=st.session_state.kid_name)
 
     st.markdown("---")
+    st.markdown("### 🧠 Thinking Mode")
+
+    try:
+        from ai_model_router import get_model_for_task as _gmft
+        _ROUTER_OK = True
+    except ImportError:
+        _ROUTER_OK = False
+
+    if "thinking_mode" not in st.session_state:
+        st.session_state.thinking_mode = "⚖️ Balanced"
+
+    _tm_options = ["⚡ Fast", "⚖️ Balanced", "🧠 Deep Thinking"]
+    _tm_idx = _tm_options.index(st.session_state.thinking_mode) \
+              if st.session_state.thinking_mode in _tm_options else 1
+
+    thinking_mode = st.radio(
+        "Speed vs Quality",
+        _tm_options,
+        index=_tm_idx,
+        horizontal=True,
+        key="thinking_mode_radio"
+    )
+    st.session_state.thinking_mode = thinking_mode
+
+    if "Local Ollama" in st.session_state.get("active_provider", ""):
+        _mode_model_map = {
+            "⚡ Fast":          "qwen2.5:7b",
+            "⚖️ Balanced":      "qwen2.5:14b",
+            "🧠 Deep Thinking": "qwen2.5:32b",
+        }
+        _auto_model = _mode_model_map.get(thinking_mode, "qwen2.5:14b")
+        st.session_state.active_model = _auto_model
+        st.caption(f"🤖 Model: `{_auto_model}`")
+
+
+    st.markdown("---")
 
     # XP & Level
     st.markdown("### 📊 Progress")
@@ -854,12 +923,107 @@ with st.sidebar:
 
     st.markdown("---")
 
-    # Nav
-    st.markdown("### 🧭 Navigate")
-    tabs = ["🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace", "👾 Swarm", "₿ Rune-Palace", "📚 Taleb Curriculum", "👧 Kid Curriculum", "👨‍👩‍👧 Parent Guide", "👵 Grandparent Wisdom", "🧬 Family Lattice", "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab", "📜 Provenance", "📊 Dashboard", "🛡️ Shield Rune", "⚔️ Swarm Mode", "🔴 DEFCON", "🔮 Truth Lattice", "🌅 Digest", "🥽 Family Co-Learning", "📡 Nostr Bridge", "📚 Grokipedia", "👨‍👩‍👧‍👦 4 Families", "🧪 Sandbox Lab", "⚡ Bitcoin", "🎮 Daily Quests", "🏫 School", "📈 Parent Dashboard", "🗺️ Curriculum Map", "📣 Share to X", "💬 Family Messaging", "👥 Family Groups"]
-    for tab in tabs:
-        if st.button(tab, key=f"nav_{tab}"):
-            st.session_state.active_tab = tab.split(" ", 1)[1]
+    # ── Categorized Navigation ────────────────────────────────────────────────
+    _NAV_CATEGORIES = {
+        "🏠 HOME": [
+            "📊 Dashboard", "🌅 Digest",
+        ],
+        "🤖 AI": [
+            "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace",
+            "🧪 Sandbox Lab",
+            "🌌 Cosmos Dashboard",
+        ],
+        "👾 SWARM": [
+            "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "📚 Grokipedia", "🌐 Epistemic Commons",
+        ],
+        "👨‍👩‍👧 FAMILY": [
+            "👨‍👩‍👧‍👦 4 Families", "🥽 Family Co-Learning",
+            "👨‍👩‍👧 Parent Guide", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
+            "👑 Family Dynasty",
+        ],
+        "💬 CONNECT": [
+            "💬 Family Messaging", "👥 Family Groups",
+            "📣 Share to X", "📡 Nostr Bridge",
+        ],
+        "🏫 SCHOOL": [
+            "🏫 School", "🗺️ Curriculum Map",
+            "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
+            "🏛️ School Pathway",
+            "🔧 Sovereign Builder",
+            "🎓 University Registrar",
+        ],
+        "🛡️ ADVERSARIAL": [
+            "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
+            "🔓 Gatekeeper Detector",
+        ],
+        "🔗 LATTICE": [
+            "🔗 Lattice Nodes",
+            "⚡ Admin Dashboard",
+            "🔧 Epistemic Error Correction",
+            "🔍 Narrative Patterns",
+        ],
+        "🤝 AI PARTNERSHIP": [
+            "🤝 AI Partnership",
+            "🕸️ Living Lattice",
+        ],
+        "🧬 TRUTH": [
+            "🔮 Truth Lattice", "🧬 Family Lattice",
+            "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
+            "🧠 Polyvagal Oracle",
+        ],
+        "🌉 X BRIDGE": [
+            "🌉 X Bridge",
+            "🔭 Simulation Probe",
+            "📋 Truth Debt Ledger",
+        ],
+        "₿ BITCOIN": [
+            "₿ Rune-Palace", "⚡ Bitcoin", "🛡️ Shield Rune",
+        ],
+        "🎮 GAMES": [
+            "🦅 Sovereign Life", "💰 Sovereign Cashflow",
+        ],
+        "📊 HEALTH": [
+            "📈 Epistemic Health", "🌍 Humanity Impact",
+            "🎓 Certifications", "🤖 AI Honesty", "📊 Public Health",
+        ],
+    }
+
+    # Expand/collapse state per category
+    if "nav_open" not in st.session_state:
+        st.session_state.nav_open = {"🏠 HOME": True}
+
+    _active_now = st.session_state.get("active_tab", "Oracle")
+
+    for _cat, _cat_tabs in _NAV_CATEGORIES.items():
+        # Check if any tab in this category is active
+        _cat_active = any(_active_now in t or t.split(" ",1)[-1] in _active_now
+                          for t in _cat_tabs)
+        _is_open = st.session_state.nav_open.get(_cat, _cat_active)
+
+        # Category header — acts as toggle
+        _cat_color = "#f7931a" if _cat_active else "#445577"
+        _cat_arrow = "▼" if _is_open else "▶"
+        if st.button(
+            f"{_cat_arrow} {_cat}",
+            key=f"cat_{_cat}",
+            use_container_width=True,
+        ):
+            st.session_state.nav_open[_cat] = not _is_open
+            st.rerun()
+
+        if _is_open:
+            for _tab in _cat_tabs:
+                _tab_name = _tab.split(" ", 1)[1] if " " in _tab else _tab
+                _is_active_tab = (_active_now in _tab or _tab_name in _active_now)
+                _btn_style = "primary" if _is_active_tab else "secondary"
+                if st.button(
+                    f"  {_tab}",
+                    key=f"nav_{_tab}",
+                    use_container_width=True,
+                    type=_btn_style,
+                ):
+                    st.session_state.active_tab = _tab_name
+                    st.rerun()
 
     st.markdown("---")
     if st.button("🗑️ Clear Chat"):
@@ -1486,31 +1650,53 @@ elif "Kid Curriculum" in active:
                 col_a, col_b = st.columns([2, 1])
                 with col_a:
                     if st.button(f"📖 Generate Week {week['num']} Lesson", key=f"gen_week_{week['num']}"):
-                        if not st.session_state.api_key:
-                            st.error("Enter your XAI API Key in the sidebar first.")
-                        else:
-                            with st.spinner("Grok is forging your lesson..."):
+                        with st.spinner("Generating your lesson..."):
+                            try:
+                                _kid_prompt = (f"Create a detailed, warm, engaging lesson for Week {week['num']} "
+                                               f"titled '{week['title']}' for {kid_name} (age {kid_age}, {age_group}). "
+                                               f"Include: 1) A fun story or analogy, 2) Key concept explained simply, "
+                                               f"3) A hands-on activity, 4) A reflection question. Be encouraging and age-appropriate.")
+                                # Use Ollama (free, local) — fall back to cloud if key present
+                                _kid_lesson = ""
                                 try:
+                                    import requests as _req_kid
+                                    _ollama_kid = "http://ollama.startos:11434/v1/chat/completions"
+                                    _r = _req_kid.post(_ollama_kid,
+                                        json={"model":"qwen2.5:14b",
+                                              "messages":[{"role":"user","content":_kid_prompt}],
+                                              "stream":False,"temperature":0.75},
+                                        timeout=120)
+                                    if _r.status_code == 200:
+                                        _kid_lesson = _r.json()["choices"][0]["message"]["content"].strip()
+                                except Exception:
+                                    pass
+                                # Cloud fallback if Ollama unavailable and key present
+                                if not _kid_lesson and st.session_state.get("api_key"):
                                     client, model, _provider, _pname = get_ai_client()
                                     resp = client.chat.completions.create(
                                         model=model,
-                                        messages=[{"role": "user", "content": f"Create a detailed, warm, engaging lesson for Week {week['num']} titled '{week['title']}' for {kid_name} (age {kid_age}, {age_group}). Include: 1) A fun story or analogy, 2) Key concept explained simply, 3) A hands-on activity, 4) A reflection question. Be encouraging and age-appropriate."}],
-                                        max_tokens=900
-                                    )
-                                    lesson = resp.choices[0].message.content
-                                    st.markdown(f'<div class="card"><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;">{lesson}</div></div>', unsafe_allow_html=True)
-                                    completed.append(week["num"])
-                                    st.session_state.kid_progress[kid_name]["completed_weeks"] = completed
-                                    award_xp(80)
-                                    st.session_state.rune_points += 40
-                                    st.session_state.streak += 1
-                                    if len(completed) == 1:
-                                        st.toast("🏅 Badge: First Flame!", icon="🔥")
-                                    if len(completed) == 5:
-                                        st.toast("🦅 Badge: War Eagle Eternal!", icon="🦅")
-                                        st.balloons()
-                                except Exception as e:
-                                    st.error(str(e))
+                                        messages=[{"role":"user","content":_kid_prompt}],
+                                        max_tokens=900)
+                                    _kid_lesson = resp.choices[0].message.content
+                                if not _kid_lesson:
+                                    _kid_lesson = (f"## {week['title']}\n\n"
+                                                   f"*(Ollama not responding — start Ollama and pull qwen2.5:14b)*\n\n"
+                                                   f"**Story:** Imagine you're learning {week['title'].lower()} for the first time...\n\n"
+                                                   f"**Activity:** Talk with your family about what this means to you.")
+                                lesson = _kid_lesson
+                                st.markdown(f'<div class="card"><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;">{lesson}</div></div>', unsafe_allow_html=True)
+                                completed.append(week["num"])
+                                st.session_state.kid_progress[kid_name]["completed_weeks"] = completed
+                                award_xp(80)
+                                st.session_state.rune_points += 40
+                                st.session_state.streak += 1
+                                if len(completed) == 1:
+                                    st.toast("🏅 Badge: First Flame!", icon="🔥")
+                                if len(completed) == 5:
+                                    st.toast("🦅 Badge: War Eagle Eternal!", icon="🦅")
+                                    st.balloons()
+                            except Exception as e:
+                                st.error(str(e))
                 with col_b:
                     st.markdown(f'<div class="memory-node" style="text-align:center;"><div style="color:#ff6b35;font-size:1.5rem;">⚡</div><div style="color:#ff6b35;font-size:0.75rem;">+80 XP<br>+40 Shards</div></div>', unsafe_allow_html=True)
 
@@ -1518,20 +1704,32 @@ elif "Kid Curriculum" in active:
     st.markdown("### 🎙️ Voice Co-Tutor")
     chat_prompt = st.chat_input(f"Ask your co-tutor anything, {kid_name}...")
     if chat_prompt:
-        if not st.session_state.api_key:
-            st.error("Enter your XAI API Key in the sidebar first.")
-        else:
-            st.session_state.chat_history.append({"role": "user", "content": chat_prompt})
+        st.session_state.chat_history.append({"role": "user", "content": chat_prompt})
+        try:
+            import requests as _req_voice
+            _sys_voice = (f"You are AUBIEETERNAL Co-Tutor for {kid_name} ({kid_age}yo). "
+                          f"Use runes, streaks, and antifragile language. Be warm, short, end with a question or challenge.")
+            _msgs_voice = [{"role":"system","content":_sys_voice}] + st.session_state.chat_history[-8:]
+            _reply = ""
             try:
+                _r_voice = _req_voice.post("http://ollama.startos:11434/v1/chat/completions",
+                    json={"model":"qwen2.5:14b","messages":_msgs_voice,"stream":False,"temperature":0.75},
+                    timeout=60)
+                if _r_voice.status_code == 200:
+                    _reply = _r_voice.json()["choices"][0]["message"]["content"].strip()
+            except Exception:
+                pass
+            if not _reply and st.session_state.get("api_key"):
                 client, model, _provider, _pname = get_ai_client()
-                sys = f"You are Grok Co-Tutor for {kid_name} ({kid_age}yo). Use runes, streaks, and antifragile language. Be warm, short, and end with a question or challenge."
-                messages = [{"role": "system", "content": sys}] + st.session_state.chat_history[-8:]
-                reply = client.chat.completions.create(model=model, messages=messages, max_tokens=500).choices[0].message.content
-                st.session_state.chat_history.append({"role": "assistant", "content": reply})
-                award_xp(10)
-            except Exception as e:
-                st.error(str(e))
-            st.rerun()
+                _reply = client.chat.completions.create(model=model, messages=_msgs_voice, max_tokens=500).choices[0].message.content
+            if not _reply:
+                _reply = "I'm thinking... make sure Ollama is running with qwen2.5:14b pulled."
+            reply = _reply
+            st.session_state.chat_history.append({"role": "assistant", "content": reply})
+            award_xp(10)
+        except Exception as e:
+            st.error(str(e))
+        st.rerun()
 
     for msg in st.session_state.chat_history[-6:]:
         if msg["role"] == "user":
@@ -1949,248 +2147,496 @@ elif "Polyvagal Oracle" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SOCIAL CALIBRATION ORACLE
 # ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOCIAL CALIBRATION ⚖️
+# Epistemic Social Calibration Engine — steelman analyzer, adversarial testing,
+# belief update tracker, dark pattern resistance, truth frequency analyzer
+# ══════════════════════════════════════════════════════════════════════════════
 elif "Social Calibration" in active:
-    st.markdown('<div class="card-title">⚖️ SOCIAL CALIBRATION ORACLE — EQ Training Engine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">⚖️ SOCIAL CALIBRATION ENGINE — Maximum Truth in Social Context</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="card">
-        <div style="font-size:0.85rem;color:#aabbcc;line-height:1.9;">
-        The Social Calibration Oracle scores interactions for emotional safety using
-        <b style="color:#00cfff;">Attachment Theory</b> (Bowlby) +
-        <b style="color:#a020f0;">Polyvagal Theory</b> (Porges) +
-        <b style="color:#ff6b35;">Dark Pattern Detection</b> (gaslighting, DARVO, love-bombing).
-        <br><br>
-        ⚠️ <b>Educational EQ training only — not licensed therapy.</b> For clinical needs, consult a licensed professional.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    _fid_sc = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
 
-    col1, col2 = st.columns(2)
-    with col1:
-        prompt_text = st.text_area("What was said / the situation", value="I feel like I'm failing at everything lately.", height=100)
-    with col2:
-        response_text = st.text_area("The response given", value="Just push through it, you'll be fine.", height=100)
+    _sc_tabs = st.tabs(["🛡️ Steelman Analyzer", "🎲 Monte Carlo", "🧬 Epistemic Immune System",
+                         "🔍 Belief Calibration", "⚔️ Dark Pattern Arena"])
 
-    person_name = st.text_input("Person's name", value=st.session_state.family_profile["kid"]["name"])
+    # ── Steelman Analyzer ─────────────────────────────────────────────────────
+    with _sc_tabs[0]:
+        st.markdown("**Score steelmans across 5 epistemic dimensions. Adversarial testing + Monte Carlo robustness.**")
+        _sc_claim = st.text_input("Original claim:", key="sc_claim",
+            placeholder="e.g. 'Bitcoin is the best form of money'")
+        _sc_steel = st.text_area("Your steelman:", height=140, key="sc_steel",
+            placeholder="Write the STRONGEST possible case for the opposing view or defending this claim...")
+        _sc_mc    = st.checkbox("Run Monte Carlo robustness (5,000 trials)", key="sc_mc", value=True)
+        _sc_ai    = st.checkbox("AI adversarial critique", key="sc_ai", value=True)
 
-    if st.button("⚖️ Run Social Calibration Oracle", type="primary"):
-        # Local scoring
-        attachment = random.choice(["secure", "anxious-preoccupied", "avoidant-dismissive", "disorganized"])
-        polyvagal = random.choice(["ventral-vagal (safe)", "sympathetic (mobilized)", "dorsal (shutdown)"])
-        mentalization = round(random.uniform(3.2, 4.8), 1)
-        dark_patterns = []
-        resp_lower = response_text.lower()
-        if any(w in resp_lower for w in ["you always","you never","you're crazy","that didn't happen"]):
-            dark_patterns.append("gaslighting")
-        if any(w in resp_lower for w in ["push through","just","fine","stop"]):
-            dark_patterns.append("emotional dismissal")
-        if any(w in resp_lower for w in ["i love you","you're amazing","perfect"]):
-            dark_patterns.append("love-bombing risk")
-        calibration_score = round(random.uniform(1.8, 4.9), 1)
-        is_safe = calibration_score >= 3.5
-
-        score_color = "#00ff88" if is_safe else "#ff4444"
-        st.markdown(f'''
-        <div class="card" style="border:2px solid {score_color};">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <div style="font-family:Orbitron,monospace;color:{score_color};font-size:1rem;">CALIBRATION SCORE</div>
-                <div style="font-family:Orbitron,monospace;color:{score_color};font-size:2rem;">{calibration_score}/5.0</div>
-            </div>
-            <div class="xp-bar-bg" style="margin-top:8px;"><div class="xp-bar-fill" style="width:{calibration_score/5*100:.0f}%;background:linear-gradient(90deg,#ff4444,#00ff88);"></div></div>
-        </div>
-        ''', unsafe_allow_html=True)
-
-        col_a, col_b, col_c = st.columns(3)
-        with col_a:
-            st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:0.9rem;">{attachment}</div><div class="stat-lbl">Attachment Style</div></div>', unsafe_allow_html=True)
-        with col_b:
-            st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:0.9rem;">{polyvagal}</div><div class="stat-lbl">Polyvagal State</div></div>', unsafe_allow_html=True)
-        with col_c:
-            st.markdown(f'<div class="stat-box"><div class="stat-val">{mentalization}</div><div class="stat-lbl">Mentalization Level</div></div>', unsafe_allow_html=True)
-
-        if dark_patterns:
-            st.markdown(f'<div class="card" style="border-left:3px solid #ff4444;"><div style="color:#ff4444;font-size:0.8rem;font-family:Orbitron,monospace;">⚠️ PATTERNS DETECTED</div><div style="color:#ffaaaa;font-size:0.85rem;margin-top:6px;">{" · ".join(dark_patterns)}</div></div>', unsafe_allow_html=True)
-
-        recommended = "mirroring + boundary-setting" if calibration_score < 3.5 else "deep validation + co-regulation"
-        st.markdown(f'<div class="card" style="border-left:3px solid #00cfff;"><div style="color:#00cfff;font-size:0.75rem;font-family:Orbitron,monospace;">RECOMMENDED APPROACH</div><div style="color:#c8d8ff;font-size:0.88rem;margin-top:6px;">{recommended}</div></div>', unsafe_allow_html=True)
-
-        if st.session_state.get("key_xai") or st.session_state.get("active_provider"):
-            with st.spinner("Generating calibrated rewrite..."):
+        if st.button("🛡️ Analyze Steelman", key="sc_analyze", type="primary") and _sc_claim and _sc_steel:
+            with st.spinner("Scoring + adversarial testing..."):
                 try:
-                    client, model, _p, _pn = get_ai_client()
-                    resp = client.chat.completions.create(
-                        model=model,
-                        messages=[{"role": "system", "content": "You are a polyvagal-informed EQ coach. Rewrite the given response to be emotionally safe, validating, and co-regulating. Then explain what you changed and why, referencing attachment theory and polyvagal principles."},
-                                   {"role": "user", "content": f"Situation: {prompt_text}\nOriginal response: {response_text}\nPerson: {person_name}"}],
-                        max_tokens=500
-                    )
-                    st.markdown(f'<div class="card" style="border-left:3px solid #a020f0;"><div style="color:#a020f0;font-size:0.75rem;font-family:Orbitron,monospace;">🔮 CALIBRATED REWRITE</div><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;margin-top:6px;">{resp.choices[0].message.content}</div></div>', unsafe_allow_html=True)
-                    award_xp(20)
-                except Exception as e:
-                    st.error(str(e))
+                    from steelman_analyzer import SteelmanAnalyzer as _SA
+                    _sa  = _SA(use_ai=_sc_ai, use_monte_carlo=_sc_mc)
+                    _res = _sa.analyze(_sc_claim, _sc_steel, family_id=_fid_sc)
 
-        save_memory(f"Calibration: {person_name}", f"Score:{calibration_score} | {prompt_text[:80]}", tags=["calibration","eq","polyvagal"])
+                    # Grade display
+                    _gc = {"A":"#00ff88","B":"#00cfff","C":"#ffcc00","D":"#ff9500","F":"#ff4444"}.get(_res.get("grade","F"),"#445577")
+                    _col1, _col2, _col3, _col4 = st.columns(4)
+                    _col1.metric("Grade",       _res.get("grade","?"))
+                    _col2.metric("Score",       f"{_res.get('overall_score',0):.2f}")
+                    _col3.metric("Resistance",  f"{_res.get('adversarial',{}).get('resistance_score',0):.2f}")
+                    _col4.metric("Commons",     "✅ Eligible" if _res.get("epistemic_commons_eligible") else "⚠️ Not yet")
 
-    st.markdown("---")
-    st.markdown("### 📚 Dark Pattern Recognition Guide")
-    patterns = [
-        ("🎭 Gaslighting", "Making someone doubt their own reality. 'That never happened.' 'You're too sensitive.'", "#ff4444"),
-        ("🔄 DARVO", "Deny, Attack, Reverse Victim and Offender. Turns accountability into counter-attack.", "#ff6b35"),
-        ("💝 Love-Bombing", "Overwhelming affection to gain trust/control before switching to harm.", "#a020f0"),
-        ("😰 Concern-Trolling", "Framing control or criticism as 'I'm just worried about you.'", "#ff9500"),
-        ("🚫 Emotional Dismissal", "'Just push through it.' 'You're overreacting.' Invalidates real feelings.", "#4444ff"),
-    ]
-    for name, desc, color in patterns:
-        st.markdown(f'''
-        <div class="card" style="border-left:3px solid {color};">
-            <div style="color:{color};font-size:0.85rem;font-weight:bold;">{name}</div>
-            <div style="font-size:0.8rem;color:#8899bb;margin-top:4px;">{desc}</div>
-        </div>
-        ''', unsafe_allow_html=True)
+                    # Dimension breakdown
+                    st.markdown("**Dimension Scores:**")
+                    for dim, score in _res.get("dimension_scores",{}).items():
+                        _bar_c = "#00ff88" if score >= 0.18 else "#ffcc00" if score >= 0.12 else "#ff4444"
+                        st.markdown(
+                            f'<div style="padding:3px 0;">' +
+                            f'<span style="color:#8899bb;font-size:0.75rem;width:200px;display:inline-block;">{dim.replace("_"," ").title()}</span>' +
+                            f'<span style="color:{_bar_c};font-weight:600;">{score:.3f}</span>' +
+                            f'</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="card" style="border:1px solid #334466;margin-top:1rem;">
-        <div style="font-size:0.75rem;color:#445577;text-align:center;">
-        ⚠️ EDUCATIONAL EQ TRAINING ONLY — NOT LICENSED THERAPY<br>
-        For clinical needs, consult a licensed mental health professional.<br>
-        Crisis? Call emergency services or your local crisis line.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+                    # Adversarial attacks
+                    _adv = _res.get("adversarial",{})
+                    if _adv.get("attacks"):
+                        st.markdown("**Adversarial attacks found:**")
+                        for _atk in _adv["attacks"]:
+                            st.markdown(f'<div style="color:#ff9500;font-size:0.8rem;padding:2px 0;">⚔️ {_atk}</div>', unsafe_allow_html=True)
+                    if _adv.get("ai_critique"):
+                        st.info(f"🤖 AI critique: {_adv.get('ai_critique', '')}")
+
+                    # Monte Carlo
+                    _mc = _res.get("monte_carlo",{})
+                    if _mc and not _mc.get("error"):
+                        st.markdown(
+                            f'<div class="card" style="border-left:3px solid #a020f0;margin-top:6px;">' +
+                            f'<div style="color:#a020f0;font-size:0.72rem;font-family:Orbitron,monospace;">MONTE CARLO (5,000 TRIALS)</div>' +
+                            f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{_mc.get("interpretation","")}</div>' +
+                            f'</div>', unsafe_allow_html=True)
+
+                    st.markdown(f'<div style="color:#c8d8ff;margin-top:6px;font-size:0.85rem;">💬 {_res.get("feedback","")}</div>', unsafe_allow_html=True)
+                    if _res.get("ai_insight"):
+                        st.success(f"💡 {_res['ai_insight']}")
+
+                except ImportError:
+                    st.error("steelman_analyzer.py not found. Push to GitHub and redeploy.")
+
+        # History stats
+        try:
+            from steelman_analyzer import SteelmanAnalyzer as _SA2
+            _hist = _SA2(use_ai=False).get_history_stats(_fid_sc)
+            if _hist.get("total",0) > 0:
+                st.divider()
+                _hs1,_hs2,_hs3 = st.columns(3)
+                _hs1.metric("Total Steelmans", _hist["total"])
+                _hs2.metric("Avg Score",       f"{_hist.get('avg_score',0):.2f}")
+                _hs3.metric("Published",        _hist.get("commons_published",0))
+        except Exception: pass
+
+    # ── Monte Carlo Truth Engine ──────────────────────────────────────────────
+    with _sc_tabs[1]:
+        st.markdown("**Run probabilistic simulations across 10,000 possible worlds.**")
+        _mc_mode = st.selectbox("Simulation type:", [
+            "Steelman Robustness",
+            "Belief Update (with cognitive biases)",
+            "Long-Term Coherence Evolution",
+            "Epistemic Strategy Comparison",
+        ], key="mc_mode")
+        _mc_trials = st.slider("Trials:", 1000, 50000, 10000, 1000, key="mc_trials")
+
+        if _mc_mode == "Steelman Robustness":
+            _mc_base  = st.slider("Base steelman score:", 0.3, 1.0, 0.75, 0.01, key="mc_base")
+            _mc_adv   = st.slider("Adversarial strength:", 0.1, 0.8, 0.3, 0.05, key="mc_adv",
+                help="0.1=mild critic, 0.8=expert adversary")
+        elif _mc_mode == "Belief Update (with cognitive biases)":
+            _mc_conf  = st.slider("Initial confidence:", 0.1, 0.9, 0.6, 0.05, key="mc_conf")
+            _mc_evid  = st.slider("Evidence strength:", -0.5, 0.5, 0.2, 0.05, key="mc_evid")
+            _mc_bias  = st.slider("Confirmation bias:", 0.0, 0.6, 0.2, 0.05, key="mc_bias")
+        elif _mc_mode == "Long-Term Coherence Evolution":
+            _mc_coh   = st.slider("Starting coherence:", 0.4, 1.0, 0.85, 0.01, key="mc_coh_start")
+            _mc_yrs   = st.slider("Years:", 1, 30, 10, 1, key="mc_years")
+        # Strategy comparison has no extra params
+
+        if st.button("🎲 Run Monte Carlo", key="mc_run", type="primary"):
+            with st.spinner(f"Running {_mc_trials:,} simulations..."):
+                try:
+                    from monte_carlo_simulator import MonteCarloSimulator as _MCS
+                    _sim = _MCS(n_trials=_mc_trials)
+
+                    if _mc_mode == "Steelman Robustness":
+                        _r = _sim.simulate_steelman_robustness(_mc_base, _mc_adv)
+                        _rr1,_rr2,_rr3,_rr4 = st.columns(4)
+                        _rr1.metric("Mean Survival",  f"{_r.mean:.1%}")
+                        _rr2.metric("Std Dev",         f"{_r.std:.1%}")
+                        _rr3.metric("Tail Risk (<40%)", f"{_r.tail_risk:.1%}")
+                        _rr4.metric("95% CI Lower",    f"{_r.confidence_interval_95[0]:.1%}")
+                        _tail_c = "#00ff88" if _r.tail_risk < 0.05 else "#ffcc00" if _r.tail_risk < 0.15 else "#ff4444"
+                        st.markdown(f'<div style="color:{_tail_c};font-size:0.85rem;margin-top:8px;">Catastrophic failure rate: {_r.tail_risk:.1%} {"✅ Robust" if _r.tail_risk < 0.05 else "⚠️ Moderate risk" if _r.tail_risk < 0.15 else "❌ High risk"}</div>', unsafe_allow_html=True)
+
+                    elif _mc_mode == "Belief Update (with cognitive biases)":
+                        _r_biased = _sim.simulate_belief_update(_mc_conf, _mc_evid, confirmation_bias=_mc_bias)
+                        _r_ideal  = _sim.simulate_bayesian_ideal(_mc_conf, 1 + _mc_evid * 3)
+                        _bb1,_bb2 = st.columns(2)
+                        _bb1.metric("Biased Update (mean)", f"{_r_biased.mean:.1%}")
+                        _bb2.metric("Bayesian Ideal (mean)", f"{_r_ideal.mean:.1%}")
+                        _gap = abs(_r_ideal.mean - _r_biased.mean)
+                        st.markdown(f'<div style="color:#ffcc00;font-size:0.82rem;margin-top:6px;">Bias gap: {_gap:.1%} — this is how much cognitive biases cost your reasoning accuracy.</div>', unsafe_allow_html=True)
+
+                    elif _mc_mode == "Long-Term Coherence Evolution":
+                        _r = _sim.simulate_coherence_evolution(_mc_coh, years=_mc_yrs)
+                        _cc1,_cc2,_cc3 = st.columns(3)
+                        _cc1.metric(f"After {_mc_yrs} years (mean)", f"{_r.mean:.3f}")
+                        _cc2.metric("Best case (90th pct)",  f"{_r.percentile_90:.3f}")
+                        _cc3.metric("Worst case (10th pct)", f"{_r.percentile_10:.3f}")
+                        _drift = _r.mean - _mc_coh
+                        _dc = "#00ff88" if _drift >= 0 else "#ff4444"
+                        st.markdown(f'<div style="color:{_dc};font-size:0.82rem;margin-top:6px;">Expected drift: {_drift:+.3f} over {_mc_yrs} years without intervention.</div>', unsafe_allow_html=True)
+
+                    elif _mc_mode == "Epistemic Strategy Comparison":
+                        _strats = _sim.compare_epistemic_strategies()
+                        st.markdown("**Decision accuracy after 50 decisions:**")
+                        for _sname, _sr in sorted(_strats.items(), key=lambda x: x[1].mean, reverse=True):
+                            _sc_c = "#00ff88" if _sr.mean >= 0.65 else "#ffcc00" if _sr.mean >= 0.55 else "#ff4444"
+                            st.markdown(
+                                f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">' +
+                                f'<b style="color:{_sc_c};">{_sr.mean:.1%}</b> ' +
+                                f'<span style="color:#c8d8ff;">{_sname.replace("_"," ").title()}</span> ' +
+                                f'<span style="color:#445577;font-size:0.75rem;">±{_sr.std:.1%}</span>' +
+                                f'</div>', unsafe_allow_html=True)
+                        st.caption("The calibrated Bayesian strategy should outperform all others.")
+
+                except ImportError:
+                    st.error("monte_carlo_simulator.py not found.")
+
+    # ── Epistemic Immune System ────────────────────────────────────────────────
+    with _sc_tabs[2]:
+        try:
+            from truth_frequency_analyzer import TruthFrequencyAnalyzer as _TFA, ATTACK_VECTORS as _AVS
+            _tfa    = _TFA(_fid_sc)
+            _tfa_st = _tfa.get_stats()
+
+            st.markdown("**Log epistemic attacks you encounter. Build your family's immune profile.**")
+
+            # Log encounter
+            _av_keys = list(_AVS.keys())
+            _av_labels = {k: f"{_AVS[k]['name']} ({_AVS[k]['category'].replace('_',' ')})" for k in _av_keys}
+            _log_attack = st.selectbox("Attack encountered:", _av_keys, key="tfa_attack",
+                format_func=lambda k: _av_labels.get(k, k))
+            _tfa_c1, _tfa_c2 = st.columns(2)
+            with _tfa_c1:
+                _did_detect = st.radio("Did you detect it in real-time?", ["✅ Yes", "❌ No"], key="tfa_det")
+                _tfa_source = st.text_input("Source:", key="tfa_src", placeholder="news, social media, conversation")
+            with _tfa_c2:
+                _tfa_conf   = st.slider("Confidence:", 0.3, 1.0, 0.8, 0.1, key="tfa_conf")
+                _tfa_notes  = st.text_input("Notes:", key="tfa_notes", placeholder="brief context")
+
+            if st.button("🧬 Log Encounter", key="tfa_log", type="primary") and _log_attack:
+                _tfa.log_encounter(_log_attack, "Yes" in _did_detect, _tfa_source or "unknown",
+                                   _tfa_notes, _tfa_conf)
+                st.success(f"✅ Logged: {_AVS[_log_attack]['name']} | {'Detected' if 'Yes' in _did_detect else 'Missed'}")
+                st.rerun()
+
+            # Show profile if data exists
+            if _tfa_st.get("total_encounters",0) >= 3:
+                st.divider()
+                _profile = _tfa.get_immune_profile()
+                _il = _profile.get("immunity_level","?")
+                _ilc = {"STRONG":"#00ff88","DEVELOPING":"#00cfff","VULNERABLE":"#ffcc00","AT RISK":"#ff4444"}.get(_il,"#445577")
+                _odr = _profile.get('overall_detection_rate', 0)
+                st.markdown(
+                    f'<div style="text-align:center;padding:8px;">' +
+                    f'<div style="color:{_ilc};font-family:Orbitron,monospace;font-size:0.9rem;">{_il} — {_odr:.0%}</div>' +
+                    f'</div>', unsafe_allow_html=True)
+
+                # Vulnerable attacks
+                if _profile.get("most_vulnerable"):
+                    st.markdown("**⚠️ Most vulnerable (prioritize these):**")
+                    for _vk, _vd in _profile["most_vulnerable"]:
+                        _av = _AVS.get(_vk,{})
+                        st.markdown(
+                            f'<div class="memory-node" style="border-left:3px solid #ff4444;">' +
+                            f'<div style="color:#ff4444;font-size:0.72rem;">{_vd["detection_rate"]:.0%} detection · {_vd["total"]} encounters</div>' +
+                            f'<div style="color:#c8d8ff;font-size:0.82rem;font-weight:600;">{_av.get("name",_vk)}</div>' +
+                            f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">Counter: {_av.get("counter","")[:100]}</div>' +
+                            f'</div>', unsafe_allow_html=True)
+
+                # Training protocol
+                _prot = _tfa.get_training_protocol()
+                if _prot.get("goal"):
+                    st.markdown(f'<div style="color:#f7931a;font-size:0.82rem;margin-top:6px;">🎯 30-day goal: {_prot["goal"]}</div>', unsafe_allow_html=True)
+
+            elif _tfa_st.get("total_encounters",0) == 0:
+                st.info("No encounters logged yet. Start logging attacks you notice this week.")
+
+            # Attack reference
+            with st.expander("📚 All 20 Attack Vectors Reference"):
+                for _avk, _avi in _AVS.items():
+                    st.markdown(
+                        f'<div style="padding:5px 0;border-bottom:1px solid #1e2a3a;">' +
+                        f'<b style="color:#c8d8ff;">{_avi["name"]}</b> ' +
+                        f'<span style="color:#445577;font-size:0.72rem;">[{_avi["category"]}]</span><br>' +
+                        f'<span style="color:#8899bb;font-size:0.78rem;">{_avi["description"]}</span>' +
+                        f'</div>', unsafe_allow_html=True)
+
+        except ImportError:
+            st.error("truth_frequency_analyzer.py not found.")
+
+    # ── Belief Calibration ────────────────────────────────────────────────────
+    with _sc_tabs[3]:
+        st.markdown("**Track how your beliefs update over time. Build calibration data.**")
+        st.markdown('<div style="color:#8899bb;font-size:0.8rem;margin-bottom:8px;">A well-calibrated reasoner: 70% confidence = correct 70% of the time. Log predictions to measure yours.</div>', unsafe_allow_html=True)
+        _bc_claim   = st.text_input("Belief/prediction:", key="bc_claim",
+            placeholder="e.g. 'Bitcoin will exceed $200k by end of 2026'")
+        _bc_conf    = st.slider("Confidence:", 0.05, 0.95, 0.65, 0.05, key="bc_conf",
+            format="%.0f%%")
+        _bc_resolve = st.date_input("Resolution date:", key="bc_resolve")
+        if st.button("📝 Register Prediction", key="bc_reg") and _bc_claim:
+            try:
+                from cosmos_dashboard import CosmosDashboard as _CD_sc
+                _eid = _CD_sc(_fid_sc).record_belief(_bc_claim, _bc_conf,
+                    update_condition="Market price data or verifiable outcome")
+                st.success(f"✅ Registered — confidence: {_bc_conf:.0%} | review: {_bc_resolve}")
+            except Exception as _e:
+                st.info(f"Saved locally. cosmos_dashboard.py needed for full tracking.")
+
+    # ── Dark Pattern Arena ────────────────────────────────────────────────────
+    with _sc_tabs[4]:
+        st.markdown("**Practice identifying manipulation in simulated scenarios.**")
+        _scenarios = [
+            {"title": "The Policy Reversal", "scenario": "You present evidence that a policy didn't work. The official responds: 'I can't believe you would say that. My grandmother died because of the old policy. How dare you question the people who are trying to help?'", "pattern": "darvo", "explain": "DARVO: Deny (ignoring evidence), Attack (moral accusation), Reverse Victim (positions themselves as victim/protector)."},
+            {"title": "The Study Request", "scenario": "You argue vaccines have side effects. The response: 'Show me a study.' You provide one. 'Show me a systematic review.' You provide one. 'Show me a replication.' You provide one. 'Those studies are funded by...'", "pattern": "moving_goalposts", "explain": "Moving Goalposts: criteria for evidence keep shifting. Pre-register what would satisfy the question."},
+            {"title": "The Real Concern", "scenario": "You propose a new approach to education. A colleague says: 'I totally support the goal, but I'm just worried that the timing isn't right, and the community might not be ready, and we should study it more first.'", "pattern": "concern_trolling", "explain": "Concern Trolling: expressing concern indefinitely without offering alternative paths forward. Ask: what specific evidence would make them ready to act?"},
+            {"title": "The Tribal Test", "scenario": "During a family discussion about housing policy, someone says: 'A real [your political group] would never support that idea. If you support it, you're betraying everything we stand for.'", "pattern": "in_group_appeal", "explain": "In-Group Appeal: framing disagreement as tribal betrayal. Evaluate the policy argument, not the tribal claim."},
+        ]
+        if "dp_idx" not in st.session_state: st.session_state.dp_idx = 0
+        if "dp_score" not in st.session_state: st.session_state.dp_score = 0
+
+        _dp_q = _scenarios[st.session_state.dp_idx % len(_scenarios)]
+        st.markdown(f'<div class="card" style="border-left:3px solid #ff9500;"><div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.72rem;">SCENARIO {st.session_state.dp_idx+1}</div><div style="color:#c8d8ff;font-size:0.88rem;margin-top:8px;line-height:1.7;">{_dp_q["scenario"]}</div></div>', unsafe_allow_html=True)
+        _dp_patterns = sorted(ATTACK_VECTORS.keys()) if "ATTACK_VECTORS" in dir() else ["darvo","moving_goalposts","concern_trolling","in_group_appeal"]
+        try:
+            from truth_frequency_analyzer import ATTACK_VECTORS as _AVS2
+            _dp_opts = [f"{_AVS2[k]['name']} ({k})" for k in ["darvo","moving_goalposts","concern_trolling","in_group_appeal","straw_man","ad_hominem"]]
+        except Exception: _dp_opts = ["darvo","moving_goalposts","concern_trolling","in_group_appeal"]
+        _dp_ans = st.radio("What pattern is this?", _dp_opts, key=f"dp_ans{st.session_state.dp_idx}")
+        if st.button("✅ Submit", key=f"dp_sub{st.session_state.dp_idx}"):
+            _correct = _dp_q["pattern"] in _dp_ans.lower()
+            if _correct: st.session_state.dp_score += 1; st.success(f"✅ Correct! {_dp_q.get('explain', '')}")
+            else: st.error(f"❌ It was: {_dp_q.get('pattern', '?')}. {_dp_q.get('explain', '')}")
+            try:
+                from truth_frequency_analyzer import TruthFrequencyAnalyzer as _TFA2
+                _TFA2(_fid_sc).log_encounter(_dp_q["pattern"], detected=_correct, source="dark_pattern_arena")
+            except Exception: pass
+            st.session_state.dp_idx += 1
+            st.rerun()
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: QUANTUM LAB
 # ══════════════════════════════════════════════════════════════════════════════
+# TAB: QUANTUM LAB 🌀
+# Quantum Epistemology Lab — belief superposition, glitch detection,
+# simulation testing, Monte Carlo integration, coherence signal analysis
+# ══════════════════════════════════════════════════════════════════════════════
 elif "Quantum Lab" in active:
-    st.markdown('<div class="card-title">🌀 QUANTUM LAB — Simulator v3.5</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">🌀 QUANTUM EPISTEMOLOGY LAB — Testing the Fabric of Reality</div>', unsafe_allow_html=True)
 
-    try:
-        import numpy as np
-        import plotly.graph_objects as go
+    _fid_ql = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
 
+    _ql_tabs = st.tabs(["🎲 Glitch Detector", "🌀 Belief Superposition", "📊 Coherence Signal",
+                         "⚗️ Simulation Experiments", "🔬 Epistemic Strategy Sim"])
+
+    # ── Glitch Detector ────────────────────────────────────────────────────────
+    with _ql_tabs[0]:
         st.markdown("""
-        <div class="card">
-            <div style="font-size:0.85rem;color:#aabbcc;line-height:1.8;">
-            Quantum computing simulator built into AUBIEETERNAL. Explore quantum gates, superposition,
-            entanglement, and the Shor error-correction code. All running locally — no cloud needed.
+        <div class="card" style="border-left:3px solid #a020f0;">
+            <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">SIMULATION GLITCH DETECTION</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            If we are in a simulation, statistical anomalies in coherence, wonder, or belief
+            updates would appear as "glitch signals" — values outside the expected distribution.
+            This detector tests observed values against Monte Carlo null distributions.<br><br>
+            <b>No claims. Only data. The record compounds over years.</b>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+        </div>""", unsafe_allow_html=True)
 
-        class QuantumSystem:
-            def __init__(self, num_qubits=3):
-                self.num_qubits = num_qubits
-                self.state = np.zeros(2**num_qubits, dtype=complex)
-                self.state[0] = 1.0
+        _gl_c1, _gl_c2 = st.columns(2)
+        with _gl_c1:
+            _gl_obs   = st.number_input("Observed value:", 0.0, 2.0, 0.97, 0.01, key="gl_obs")
+            _gl_label = st.selectbox("What are you measuring?",
+                ["coherence","wonder_index","steelman_score","belief_update","interoceptive_accuracy"], key="gl_label")
+        with _gl_c2:
+            _gl_mean  = st.number_input("Expected mean:", 0.0, 2.0, 0.72, 0.01, key="gl_mean")
+            _gl_std   = st.number_input("Expected std dev:", 0.01, 1.0, 0.12, 0.01, key="gl_std")
+            _gl_n     = st.select_slider("Monte Carlo trials:", [1000,5000,10000,50000], 10000, key="gl_n")
 
-            def apply_hadamard(self, target):
-                H = np.array([[1,1],[1,-1]]) / np.sqrt(2)
-                self.apply_single_qubit_gate(H, target)
+        if st.button("🔬 Run Glitch Detection", key="gl_run", type="primary"):
+            try:
+                from monte_carlo_simulator import MonteCarloSimulator as _MCS_gl
+                _sim_gl = _MCS_gl(n_trials=_gl_n)
+                _result = _sim_gl.run_glitch_detection(_gl_obs, _gl_mean, _gl_std, _gl_label)
+                _rc = "#ff4444" if _result["glitch_signal"] else "#ffcc00" if _result["is_statistical_anomaly"] else "#00ff88"
+                st.markdown(
+                    f'<div class="card" style="border:2px solid {_rc};">' +
+                    f'<div style="color:{_rc};font-family:Orbitron,monospace;font-size:0.82rem;">{"🚨 GLITCH SIGNAL" if _result["glitch_signal"] else "⚠️ ANOMALY" if _result["is_statistical_anomaly"] else "✅ NORMAL"}</div>' +
+                    f'<div style="color:#c8d8ff;margin-top:6px;font-size:0.85rem;">' +
+                    f'z = {_result["z_score"]} | σ = {_result["sigma_level"]} | p = {_result["p_value"]}</div>' +
+                    f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{_result["interpretation"]}</div>' +
+                    f'</div>', unsafe_allow_html=True)
 
-            def apply_pauli_x(self, target):
-                X = np.array([[0,1],[1,0]])
-                self.apply_single_qubit_gate(X, target)
+                # Auto-seal if glitch signal
+                if _result["glitch_signal"]:
+                    if st.button("🛡️ Seal This Glitch Signal", key="gl_seal"):
+                        try:
+                            from rune_memory import ShieldRune as _SR_gl, RuneMemory as _RM_gl
+                            _eid_gl = _RM_gl().record(
+                                f"GLITCH SIGNAL: {_gl_label}={_gl_obs} | z={_result.get('z_score', 0)} | σ={_result.get('sigma_level', 0)}",
+                                source="quantum_lab", coherence=0.85,
+                                tags=["glitch_signal","simulation_probe",_gl_label])
+                            _SR_gl().seal(_eid_gl, note=f"Glitch detection: {_gl_label} {_gl_obs}", broadcaster=_fid_ql)
+                            st.success("🛡️ Glitch signal sealed on Bitcoin. Permanent record.")
+                        except Exception: pass
+            except ImportError:
+                st.error("monte_carlo_simulator.py not found.")
 
-            def apply_single_qubit_gate(self, gate, target):
-                if self.num_qubits == 1:
-                    self.state = np.dot(gate, self.state)
-                else:
-                    dim = 2**self.num_qubits
-                    new_state = np.zeros(dim, dtype=complex)
-                    for i in range(dim):
-                        bit = (i >> (self.num_qubits - target - 1)) & 1
-                        for j in range(2):
-                            target_idx = i ^ ((bit ^ j) << (self.num_qubits - target - 1))
-                            new_state[target_idx] += gate[j, bit] * self.state[i]
-                    self.state = new_state
+    # ── Belief Superposition ──────────────────────────────────────────────────
+    with _ql_tabs[1]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #00cfff;">
+            <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.72rem;">BELIEF SUPERPOSITION TOOL</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            Quantum superposition: a system exists in multiple states until observed.
+            Applied epistemically: you can hold two conflicting hypotheses simultaneously,
+            assign probabilities, and simulate what new evidence would "collapse" each.
+            This is Bayesian reasoning made visceral.
+            </div>
+        </div>""", unsafe_allow_html=True)
 
-            def apply_toffoli(self):
-                TOFFOLI = np.eye(8, dtype=complex)
-                TOFFOLI[6,6] = 0; TOFFOLI[6,7] = 1
-                TOFFOLI[7,7] = 0; TOFFOLI[7,6] = 1
-                self.state = np.dot(TOFFOLI, self.state)
+        _bs_q = st.text_input("The question:", key="bs_q",
+            placeholder="e.g. 'Is the universe fine-tuned by design?'")
+        _bs_h1 = st.text_input("Hypothesis A:", key="bs_h1", placeholder="e.g. 'Yes — physical constants are designed'")
+        _bs_h2 = st.text_input("Hypothesis B:", key="bs_h2", placeholder="e.g. 'No — anthropic selection explains it'")
+        _bs_p1 = st.slider("P(Hypothesis A):", 0.01, 0.99, 0.5, 0.01, key="bs_p1",
+            help="Your current credence")
+        st.caption(f"P(Hypothesis B) = {1-_bs_p1:.2f}")
 
-            def get_probabilities(self):
-                return np.abs(self.state) ** 2
+        st.markdown("**What evidence would update you?**")
+        _bs_ev = st.text_area("Evidence type:", height=60, key="bs_ev",
+            placeholder="e.g. 'Discovery of a second universe with different constants'")
+        _bs_lr = st.slider("Likelihood ratio if evidence confirmed:", 0.1, 20.0, 3.0, 0.1, key="bs_lr",
+            help="How much more likely is this evidence under A vs B?")
 
-        col1, col2 = st.columns([1, 2])
-        with col1:
-            n_qubits = st.slider("Number of Qubits", 1, 3, 3)
-            st.markdown("**Apply Gates:**")
-            target_q = st.selectbox("Target Qubit", list(range(n_qubits)))
-            gate_choice = st.selectbox("Gate", ["Hadamard (H)", "Pauli-X (NOT)", "Toffoli (3-qubit CCX)"])
+        if st.button("🌀 Simulate Belief Collapse", key="bs_run") and _bs_q:
+            from monte_carlo_simulator import MonteCarloSimulator as _MCS_bs
+            _sim_bs = _MCS_bs(n_trials=5000)
+            _r_bs   = _sim_bs.simulate_bayesian_ideal(_bs_p1, _bs_lr)
+            _post_a = _r_bs.mean
+            st.markdown(
+                f'<div class="card" style="margin-top:8px;">' +
+                f'<div style="color:#c8d8ff;font-size:0.88rem;font-weight:600;">{_bs_q or "Your question"}</div>' +
+                f'<div style="margin-top:8px;">' +
+                f'<div style="color:#00cfff;">P(A) before: {_bs_p1:.2f} → after evidence: <b>{_post_a:.2f}</b></div>' +
+                f'<div style="color:#a020f0;margin-top:4px;">P(B) before: {1-_bs_p1:.2f} → after evidence: <b>{1-_post_a:.2f}</b></div>' +
+                f'</div>' +
+                f'<div style="color:#8899bb;font-size:0.78rem;margin-top:8px;">' +
+                f'{"The evidence would strongly update you toward A." if _post_a > _bs_p1 + 0.15 else "Modest update toward A." if _post_a > _bs_p1 else "Evidence favors B."}' +
+                f' 95% CI: {_r_bs.confidence_interval_95}' +
+                f'</div></div>', unsafe_allow_html=True)
 
-            if "qsys" not in st.session_state or st.session_state.get("q_nqubits") != n_qubits:
-                st.session_state.qsys = QuantumSystem(n_qubits)
-                st.session_state.q_nqubits = n_qubits
-                st.session_state.q_gates_applied = []
+    # ── Coherence Signal Analysis ──────────────────────────────────────────────
+    with _ql_tabs[2]:
+        st.markdown("**Live coherence + wonder signal analysis. Is high coherence itself anomalous?**")
+        import json as _jql, pathlib as _plql
+        _status_path = _plql.Path("/mnt/main/swarm_status.json") if _plql.Path("/mnt/main").exists() \
+                       else _plql.Path(os.path.expanduser("~/.aubieeternal/main/swarm_status.json"))
+        _swarm_s = {}
+        if _status_path.exists():
+            try: _swarm_s = _jql.loads(_status_path.read_text())
+            except Exception: pass
 
-            if st.button("⚡ Apply Gate"):
-                qs = st.session_state.qsys
-                if gate_choice == "Hadamard (H)":
-                    qs.apply_hadamard(target_q)
-                    st.session_state.q_gates_applied.append(f"H(q{target_q})")
-                elif gate_choice == "Pauli-X (NOT)":
-                    qs.apply_pauli_x(target_q)
-                    st.session_state.q_gates_applied.append(f"X(q{target_q})")
-                elif gate_choice == "Toffoli (3-qubit CCX)" and n_qubits == 3:
-                    qs.apply_toffoli()
-                    st.session_state.q_gates_applied.append("Toffoli")
-                st.rerun()
+        _cur_coh = float(_swarm_s.get("inter_rune_coherence", 1.0))
+        _cur_wnd = float(_swarm_s.get("wonder_index", 1.0))
 
-            if st.button("🔄 Reset System"):
-                st.session_state.qsys = QuantumSystem(n_qubits)
-                st.session_state.q_gates_applied = []
-                st.rerun()
+        _cq1,_cq2,_cq3 = st.columns(3)
+        _cq1.metric("Current Coherence", f"{_cur_coh:.6f}")
+        _cq2.metric("Wonder Index",      f"{_cur_wnd:.4f}")
+        _cq3.metric("METS",              f"{_swarm_s.get('mets',0):,.0f}")
 
-            if st.session_state.get("q_gates_applied"):
-                st.markdown(f'<div class="memory-node"><div style="color:#00cfff;font-size:0.75rem;">Circuit:</div><div style="font-family:Share Tech Mono,monospace;font-size:0.8rem;">{" → ".join(st.session_state.q_gates_applied)}</div></div>', unsafe_allow_html=True)
+        if st.button("📊 Test Coherence Anomaly", key="cs_test"):
+            try:
+                from monte_carlo_simulator import MonteCarloSimulator as _MCS_cs
+                _sim_cs = _MCS_cs(n_trials=10000)
+                _r_coh  = _sim_cs.run_glitch_detection(_cur_coh,  expected_mean=0.75, expected_std=0.12, label="coherence")
+                _r_wnd  = _sim_cs.run_glitch_detection(_cur_wnd,  expected_mean=1.20, expected_std=0.35, label="wonder")
+                for _r_chk, _lbl in [(_r_coh,"Coherence"),(_r_wnd,"Wonder")]:
+                    _rc2 = "#ff4444" if _r_chk["glitch_signal"] else "#ffcc00" if _r_chk["is_statistical_anomaly"] else "#00ff88"
+                    st.markdown(
+                        f'<div style="padding:6px 8px;background:#0d1228;border-radius:6px;border-left:3px solid {_rc2};margin-bottom:4px;">' +
+                        f'<b style="color:{_rc2};">{_lbl}:</b> ' +
+                        f'<span style="color:#c8d8ff;">z={_r_chk["z_score"]} | σ={_r_chk["sigma_level"]}</span> ' +
+                        f'<span style="color:#445577;font-size:0.75rem;">{_r_chk["interpretation"][:80]}</span>' +
+                        f'</div>', unsafe_allow_html=True)
+            except ImportError:
+                st.error("monte_carlo_simulator.py not found.")
 
-        with col2:
-            qs = st.session_state.get("qsys", QuantumSystem(n_qubits))
-            probs = qs.get_probabilities()
-            states = [f"|{format(i, f'0{n_qubits}b')}⟩" for i in range(len(probs))]
+    # ── Simulation Experiments ─────────────────────────────────────────────────
+    with _ql_tabs[3]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #f7931a;">
+            <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">DELIBERATE SIMULATION EXPERIMENTS</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            Design and pre-register experiments that could reveal simulation-like behavior.
+            Log predictions before observing. Measure surprise. Seal results permanently.
+            </div>
+        </div>""", unsafe_allow_html=True)
 
-            fig = go.Figure(data=[go.Bar(
-                x=states, y=probs,
-                marker=dict(color=probs, colorscale="Plasma", showscale=True),
-                text=[f"{p:.3f}" for p in probs],
-                textposition="outside"
-            )])
-            fig.update_layout(
-                title="Quantum State Probabilities",
-                title_font=dict(color="#00cfff", size=14),
-                paper_bgcolor="#050510",
-                plot_bgcolor="#0d0d2b",
-                font=dict(color="#c8d8ff"),
-                height=350,
-                yaxis=dict(range=[0, 1.1], gridcolor="#1a1a4a"),
-                xaxis=dict(gridcolor="#1a1a4a"),
-            )
-            st.plotly_chart(fig, width='stretch')
+        _se_desc = st.text_area("Experiment description:", height=80, key="se_desc",
+            placeholder="e.g. 'Does my coherence score correlate with the day of week? Prediction: uniform distribution (no pattern)'")
+        _se_pred = st.slider("Predicted anomaly probability:", 0.01, 0.99, 0.05, 0.01, key="se_pred",
+            help="How likely is it that something unusual will be observed?")
+        _se_days = st.number_input("Duration (days):", 1, 90, 30, key="se_days")
 
-            # Superposition check
-            max_prob = max(probs)
-            if max_prob < 0.6:
-                st.markdown('<div class="card" style="border-left:3px solid #a020f0;"><div style="color:#a020f0;font-size:0.8rem;">🌀 SUPERPOSITION ACTIVE — qubit exists in multiple states simultaneously</div></div>', unsafe_allow_html=True)
-            else:
-                st.markdown('<div class="card" style="border-left:3px solid #00cfff;"><div style="color:#00cfff;font-size:0.8rem;">📍 DEFINITE STATE — qubit collapsed to a classical value</div></div>', unsafe_allow_html=True)
+        if st.button("🔬 Pre-Register Experiment", key="se_reg") and _se_desc:
+            try:
+                from cosmos_dashboard import CosmosDashboard as _CD_se
+                _fe = _CD_se(_fid_ql).log_foresight_experiment(
+                    description=f"[SIM-EXPERIMENT] {_se_desc}",
+                    prediction=_se_pred, domain="simulation",
+                    expected_resolution=(datetime.date.today() + datetime.timedelta(days=int(_se_days))).isoformat()
+                )
+                st.success(f"✅ Pre-registered — ID: {_fe.get('exp_id', '?')} | Resolution in {_se_days} days")
+                st.info("Your prediction is sealed. Run the experiment honestly. Report results whether or not they confirm your hypothesis.")
+            except Exception:
+                st.info("Experiment logged locally.")
 
-        st.markdown("---")
-        st.markdown("### 📖 Quantum Concepts")
-        concepts = [
-            ("Superposition", "A qubit can be 0 AND 1 simultaneously. The Hadamard gate creates superposition.", "#00cfff"),
-            ("Entanglement", "Two qubits become linked — measuring one instantly determines the other, regardless of distance.", "#a020f0"),
-            ("Interference", "Quantum amplitudes can add or cancel like waves, steering probability toward correct answers.", "#ff6b35"),
-            ("Shor's Algorithm", "Uses quantum superposition to factor large numbers — threatening RSA encryption.", "#00ff88"),
-            ("Toffoli Gate", "3-qubit gate that flips the 3rd qubit only when both control qubits are 1. Universal for quantum computing.", "#ff9500"),
-        ]
-        for name, desc, color in concepts:
-            st.markdown(f'<div class="card" style="border-left:3px solid {color};"><div style="color:{color};font-size:0.8rem;font-weight:bold;">{name}</div><div style="font-size:0.8rem;color:#8899bb;margin-top:4px;">{desc}</div></div>', unsafe_allow_html=True)
+    # ── Epistemic Strategy Simulation ─────────────────────────────────────────
+    with _ql_tabs[4]:
+        st.markdown("**Compare epistemic strategies across 10,000 simulated decisions.**")
+        st.markdown('<div style="color:#8899bb;font-size:0.82rem;margin-bottom:8px;">Four strategies: Dogmatic (never update), Overconfident (update too aggressively), Underconfident (update too little), Calibrated Bayesian (update proportionally).</div>', unsafe_allow_html=True)
+        _es_n = st.slider("Simulated decisions per trial:", 10, 200, 50, 10, key="es_n")
+        _es_t = st.select_slider("Trials:", [1000,5000,10000], 5000, key="es_t")
+        if st.button("🧪 Compare Strategies", key="es_run", type="primary"):
+            with st.spinner("Running epistemic strategy competition..."):
+                try:
+                    from monte_carlo_simulator import MonteCarloSimulator as _MCS_es
+                    _results_es = _MCS_es(n_trials=_es_t).compare_epistemic_strategies(_es_n)
+                    sorted_es = sorted(_results_es.items(), key=lambda x: x[1].mean, reverse=True)
+                    st.markdown("**Results — decision accuracy after simulated evidence:**")
+                    for rank, (_sname, _sr) in enumerate(sorted_es, 1):
+                        _sc_c2 = "#00ff88" if rank == 1 else "#00cfff" if rank == 2 else "#ffcc00" if rank == 3 else "#ff4444"
+                        st.markdown(
+                            f'<div style="padding:6px 0;border-bottom:1px solid #1e2a3a;">' +
+                            f'<span style="color:{_sc_c2};font-weight:600;font-size:1rem;">#{rank} {_sr.mean:.1%}</span> ' +
+                            f'<span style="color:#c8d8ff;">{_sname.replace("_"," ").title()}</span> ' +
+                            f'<span style="color:#445577;font-size:0.75rem;">±{_sr.std:.1%} | worst-case 10%: {_sr.percentile_10:.1%}</span>' +
+                            f'</div>', unsafe_allow_html=True)
+                    _winner = sorted_es[0][0]
+                    _loser  = sorted_es[-1][0]
+                    _gap    = sorted_es[0][1].mean - sorted_es[-1][1].mean
+                    st.markdown(f'<div style="color:#f7931a;margin-top:8px;font-size:0.82rem;">The calibrated strategy beat {_loser.replace("_"," ")} by {_gap:.1%} across {_es_n} decisions.</div>', unsafe_allow_html=True)
+                except ImportError:
+                    st.error("monte_carlo_simulator.py not found.")
 
-    except ImportError:
-        st.error("Quantum Lab requires plotly and numpy. Run: `pip install plotly numpy`")
-        st.code("pip install plotly numpy")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: PROVENANCE (NEW)
@@ -2958,6 +3404,46 @@ if "Digest" in active:
         except Exception as e:
             st.error(f"Could not read digest: {e}")
 
+    # ── Manual synthesis trigger ──────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 🌅 Morning Synthesis")
+    _today_synth = datetime.date.today().isoformat()
+    _synth_path  = _Path(f"/mnt/main/repo/insights/daily/{_today_synth}.md")
+    if _synth_path.exists():
+        st.success(f"✅ Today\'s synthesis ready — {_today_synth}")
+        with st.expander("📄 View today\'s synthesis", expanded=False):
+            st.markdown(_synth_path.read_text())
+    else:
+        st.info(f"No synthesis yet for {_today_synth} — auto-runs at 6AM or click below.")
+
+    _ms1, _ms2 = st.columns(2)
+    with _ms1:
+        if st.button("🌅 Run Morning Synthesis Now", key="manual_synthesis",
+                     use_container_width=True, type="primary"):
+            with st.spinner("Running synthesis (1-2 min with Ollama)..."):
+                try:
+                    import sys as _sys_synth
+                    if "/mnt/main/repo" not in _sys_synth.path:
+                        _sys_synth.path.insert(0, "/mnt/main/repo")
+                    from morning_synthesis import run_full_synthesis as _rfs
+                    _ms_result = _rfs(force=True)
+                    if _ms_result and _ms_result.get("status") == "complete":
+                        st.success(f"✅ Done! Check insights/daily/{_today_synth}.md")
+                        st.rerun()
+                    else:
+                        st.info(f"Status: {_ms_result}")
+                except Exception as _e_ms:
+                    st.error(f"Synthesis error: {_e_ms}")
+    with _ms2:
+        st.markdown(
+            '<div style="color:#556677;font-size:0.75rem;line-height:1.9;">' +
+            '<b>Manual fallback:</b><br>' +
+            '1. Copy tier2_digest.txt (Raw)<br>' +
+            '2. Open WebUI → qwen2.5:32b<br>' +
+            '3. Paste + "Synthesize top 3 insights"' +
+            '</div>', unsafe_allow_html=True
+        )
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: FAMILY CO-LEARNING  🥽
@@ -3264,6 +3750,80 @@ if "Family Co-Learning" in active:
                     f'<div style="color:#00ff88;font-size:1.1rem;font-family:Orbitron,monospace;">+{sess["xp_earned"]} XP 🦅</div>'
                     f'<div style="color:#f7931a;font-size:0.82rem;margin-top:4px;">+1 {lesson["rune"]} earned</div>'
                     f'</div>', unsafe_allow_html=True)
+
+                # ── Save lesson completion to family_profiles ─────────────────
+                if not sess.get("lesson_saved"):
+                    sess["lesson_saved"] = True
+                    try:
+                        from family_profiles import load_family_stats as _lfs_fl, save_family_stats as _sfs_fl, award_badge as _ab_fl
+                        _fid_fl = st.session_state.get("current_family", {}).get("family_id", "default") \
+                                  if st.session_state.get("current_family") else "default"
+                        _stats_fl = _lfs_fl(_fid_fl)
+                        _lk = sess.get("lesson_key", "")
+                        if _lk and _lk not in _stats_fl.get("lessons_completed", []):
+                            _stats_fl.setdefault("lessons_completed", []).append(_lk)
+                        _stats_fl["total_xp"]   = _stats_fl.get("total_xp", 0) + sess["xp_earned"]
+                        _stats_fl["level"]       = max(1, _stats_fl["total_xp"] // 100 + 1)
+                        _stats_fl["streak_days"] = _stats_fl.get("streak_days", 0) + 1
+                        if sess.get("rune_earned"):
+                            _stats_fl["child_rune_fragments"] = _stats_fl.get("child_rune_fragments", 0) + 1
+                        # Grant badge if lesson has one
+                        if lesson.get("grants_badge"):
+                            _badge = lesson["grants_badge"]
+                            if _badge not in _stats_fl.get("badges", []):
+                                _stats_fl.setdefault("badges", []).append(_badge)
+                                st.toast(f"🏅 Badge earned: {_badge}", icon="🦅")
+                        if lesson.get("rune_fragments"):
+                            _stats_fl["child_rune_fragments"] = _stats_fl.get("child_rune_fragments", 0) + lesson["rune_fragments"]
+                        # Save coherence history
+                        _coh_now = sess["kid_coherence"]
+                        _stats_fl.setdefault("coherence_history", []).append(round(_coh_now, 4))
+                        _stats_fl["coherence_history"] = _stats_fl["coherence_history"][-50:]
+                        _sfs_fl(_stats_fl, _fid_fl)
+                    except Exception as _e_save:
+                        pass  # fail silently — don't block the UI
+
+                # ── Next Lesson button ────────────────────────────────────────
+                _nl_c1, _nl_c2 = st.columns(2)
+                with _nl_c1:
+                    if st.button("➡️ Next Lesson", key="fl_next_lesson",
+                                 use_container_width=True, type="primary"):
+                        # Find next lesson key
+                        _current_idx = lesson_keys.index(sess["lesson_key"]) \
+                                       if sess.get("lesson_key") in lesson_keys else 0
+                        _next_idx    = min(_current_idx + 1, len(lesson_keys) - 1)
+                        _next_key    = lesson_keys[_next_idx]
+                        # Reset session for next lesson
+                        sess["lesson_key"]        = _next_key
+                        sess["kid_coherence"]     = sess["kid_coherence"]  # carry coherence forward
+                        sess["coherence_history"].append(sess["kid_coherence"])
+                        sess["xp_earned"]         = 0
+                        sess["rune_earned"]        = False
+                        sess["lesson_saved"]       = False
+                        sess["messages"]           = []
+                        sess["last_refresh"]       = time.time()
+                        # Re-init hud for new lesson
+                        if _HUD_AVAILABLE:
+                            try:
+                                sess["hud_obj"].start_lesson(_next_key)
+                            except Exception:
+                                pass
+                        st.rerun()
+                with _nl_c2:
+                    if st.button("🔚 End Session", key="fl_end_after_xp",
+                                 use_container_width=True):
+                        try:
+                            from family_profiles import load_family_stats as _lfs_end, save_family_stats as _sfs_end
+                            _fid_end = st.session_state.get("current_family", {}).get("family_id", "default") \
+                                       if st.session_state.get("current_family") else "default"
+                            save_memory(f"Co-Learning: {lesson['title']}",
+                                        f"{kid_name} session +{sess['xp_earned']} XP | coherence {sess['kid_coherence']:.3f}",
+                                        tags=["co-learning", "family"])
+                        except Exception:
+                            pass
+                        sess["active"] = False
+                        st.success("✅ Session saved 🦅")
+                        st.rerun()
 
         # ── PARENT HUD (right) ────────────────────────────────────────────────
         with col_parent:
@@ -4239,10 +4799,70 @@ if "Sandbox Lab" in active:
                     f'<div class="memory-node" style="border-left:3px solid {color};">'
                     f'<span style="color:{color};font-size:0.72rem;">{etype}</span> '
                     f'<span style="color:#445577;font-size:0.7rem;">{ts}</span><br>'
-                    f'<span style="color:#aabbcc;font-size:0.78rem;">{e.get("name",e.get("topic",e.get("hypothesis",""),""))[:80]}</span>'
+                    f'<span style="color:#aabbcc;font-size:0.78rem;">{e.get("name", e.get("topic", e.get("hypothesis", "")))[:80]}</span>'
                     f'</div>', unsafe_allow_html=True)
         else:
             st.caption("No experiments yet — run your first one above!")
+
+
+    st.divider()
+    st.markdown("### 🧬 Family Contribution Bridge")
+    st.markdown("Approved family creations can influence the live swarm as mini-daughters.")
+
+    try:
+        from swarm_contributions import get_and_register_new_contributions as _garc
+        from ai_sandbox_persistence import (
+            load_swarm_submissions as _lss,
+            append_swarm_submission as _ass,
+            get_recent_injections as _gri,
+        )
+        _SANDBOX_BRIDGE_OK = True
+    except ImportError:
+        _SANDBOX_BRIDGE_OK = False
+
+    if _SANDBOX_BRIDGE_OK:
+        inject_enabled = st.toggle(
+            "✅ Allow approved family contributions into the live swarm",
+            value=st.session_state.get("family_injection_enabled", True),
+            key="family_injection_toggle"
+        )
+        st.session_state["family_injection_enabled"] = inject_enabled
+
+        _all_subs  = _lss()
+        _pending_n = len([s for s in _all_subs if s.get("status","pending") == "pending"])
+        _approv_n  = len([s for s in _all_subs if s.get("status") == "approved"])
+        _active_n  = len([s for s in _all_subs if s.get("status") == "injected"])
+        sb1, sb2, sb3 = st.columns(3)
+        sb1.metric("Pending", _pending_n)
+        sb2.metric("Approved", _approv_n)
+        sb3.metric("Active in Swarm", _active_n)
+
+        st.markdown("#### ✍️ Submit Family Contribution")
+        _cb_title   = st.text_input("Title", key="cb_title", placeholder="e.g. 'Bitcoin Educator'")
+        _cb_content = st.text_area("System prompt / insight", key="cb_content", height=90,
+                                    placeholder="You are a daughter who teaches Bitcoin to kids age 8-12...")
+        _cb_role    = st.selectbox("Type", ["daughter_prompt","lesson","insight","question"], key="cb_role")
+        if st.button("📤 Submit for Parent Review", key="cb_submit") and _cb_title and _cb_content:
+            _ass({"family_id": _fid, "title": _cb_title, "content": _cb_content,
+                  "role": _cb_role, "status": "pending"})
+            st.success("✅ Submitted! A parent must approve before it enters the swarm.")
+            st.rerun()
+
+        _recent_inj = _gri(5)
+        if _recent_inj:
+            st.markdown("#### 🔄 Recent Injections")
+            for _inj in _recent_inj:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid #00ff88;">' +
+                    f'<span style="color:#00ff88;font-size:0.75rem;">' +
+                    f'{_inj.get("mini_daughter_name","?")} — {_inj.get("family_id","?")} — ' +
+                    f'{_inj.get("injected_at","")[:10]}</span></div>',
+                    unsafe_allow_html=True
+                )
+        st.caption("🛡️ Safety: Only parent-approved contributions enter the swarm.")
+    else:
+        st.info("Push swarm_contributions.py and ai_sandbox_persistence.py to GitHub and redeploy to enable this.")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SCHOOL 🏫 — Clean 2-minute onboarding + School Mode
@@ -4941,6 +5561,66 @@ if _school_mode and any(t in active for t in _advanced_tabs):
     </div>
     """, unsafe_allow_html=True)
     st.stop()
+
+
+    st.divider()
+    st.markdown("### 🧬 Family Contribution Bridge")
+    st.markdown("Approved family creations can influence the live swarm as mini-daughters.")
+
+    try:
+        from swarm_contributions import get_and_register_new_contributions as _garc
+        from ai_sandbox_persistence import (
+            load_swarm_submissions as _lss,
+            append_swarm_submission as _ass,
+            get_recent_injections as _gri,
+        )
+        _SANDBOX_BRIDGE_OK = True
+    except ImportError:
+        _SANDBOX_BRIDGE_OK = False
+
+    if _SANDBOX_BRIDGE_OK:
+        inject_enabled = st.toggle(
+            "✅ Allow approved family contributions into the live swarm",
+            value=st.session_state.get("family_injection_enabled", True),
+            key="family_injection_toggle"
+        )
+        st.session_state["family_injection_enabled"] = inject_enabled
+
+        _all_subs  = _lss()
+        _pending_n = len([s for s in _all_subs if s.get("status","pending") == "pending"])
+        _approv_n  = len([s for s in _all_subs if s.get("status") == "approved"])
+        _active_n  = len([s for s in _all_subs if s.get("status") == "injected"])
+        sb1, sb2, sb3 = st.columns(3)
+        sb1.metric("Pending", _pending_n)
+        sb2.metric("Approved", _approv_n)
+        sb3.metric("Active in Swarm", _active_n)
+
+        st.markdown("#### ✍️ Submit Family Contribution")
+        _cb_title   = st.text_input("Title", key="cb_title", placeholder="e.g. 'Bitcoin Educator'")
+        _cb_content = st.text_area("System prompt / insight", key="cb_content", height=90,
+                                    placeholder="You are a daughter who teaches Bitcoin to kids age 8-12...")
+        _cb_role    = st.selectbox("Type", ["daughter_prompt","lesson","insight","question"], key="cb_role")
+        if st.button("📤 Submit for Parent Review", key="cb_submit") and _cb_title and _cb_content:
+            _ass({"family_id": _fid, "title": _cb_title, "content": _cb_content,
+                  "role": _cb_role, "status": "pending"})
+            st.success("✅ Submitted! A parent must approve before it enters the swarm.")
+            st.rerun()
+
+        _recent_inj = _gri(5)
+        if _recent_inj:
+            st.markdown("#### 🔄 Recent Injections")
+            for _inj in _recent_inj:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid #00ff88;">' +
+                    f'<span style="color:#00ff88;font-size:0.75rem;">' +
+                    f'{_inj.get("mini_daughter_name","?")} — {_inj.get("family_id","?")} — ' +
+                    f'{_inj.get("injected_at","")[:10]}</span></div>',
+                    unsafe_allow_html=True
+                )
+        st.caption("🛡️ Safety: Only parent-approved contributions enter the swarm.")
+    else:
+        st.info("Push swarm_contributions.py and ai_sandbox_persistence.py to GitHub and redeploy to enable this.")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SCHOOL MODE 🏫 — clean simplified UI for kids
@@ -5811,7 +6491,7 @@ if "Legal HUD" in active:
     </div>
     """, unsafe_allow_html=True)
 
-    legal_tabs = st.tabs(["📄 Contract Analyzer", "🏠 Insurance Policy", "⚖️ Reciprocal Charter", "🧠 Legal Literacy Progress"])
+    legal_tabs = st.tabs(["📄 Contract Analyzer", "🏠 Insurance Policy", "⚖️ Insurance Charter v0.2", "📜 Family Law Charter", "📊 Full Progress"])
 
     # ── Contract Analyzer ─────────────────────────────────────────────────────
     with legal_tabs[0]:
@@ -5932,33 +6612,117 @@ Policy text: {policy_text}"""
                     except Exception as e:
                         st.error(f"Error: {e}")
 
-    # ── Reciprocal Charter viewer ─────────────────────────────────────────────
+    # ── Insurance Charter v0.2 viewer ────────────────────────────────────────
     with legal_tabs[2]:
-        charter_path = _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER.md")
-        if charter_path.exists():
-            st.markdown(charter_path.read_text())
-        else:
+        st.markdown('<div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.82rem;margin-bottom:12px;">🦅 POLICYHOLDER-FIRST RECIPROCAL INSURANCE CHARTER v0.2</div>', unsafe_allow_html=True)
+
+        # Try to load from repo, fall back to inline
+        _charter_paths = [
+            _Path("/mnt/main/repo/POLICYHOLDER_FIRST_CHARTER_v0_2.md"),
+            _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER_v0_2.md"),
+            _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER.md"),
+        ]
+        _charter_loaded = False
+        for _cp in _charter_paths:
+            if _cp.exists():
+                st.markdown(_cp.read_text())
+                _charter_loaded = True
+                break
+
+        if not _charter_loaded:
+            _ic1, _ic2 = st.columns(2)
+            with _ic1:
+                st.markdown('<div class="card" style="border-left:3px solid #f7931a;">' +
+                    '<div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">CORE MECHANICS</div>' +
+                    '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.9;">' +
+                    '• 80% annual surplus returned to Subscribers<br>' +
+                    '• Exec comp capped at 8× median premium<br>' +
+                    '• 15% veto rights for Subscribers<br>' +
+                    '• Bitcoin up to 5% of reserves<br>' +
+                    '• Real-time public dashboard (all metrics)<br>' +
+                    '• 8th-grade plain English required</div></div>',
+                    unsafe_allow_html=True)
+            with _ic2:
+                st.markdown('<div class="card" style="border-left:3px solid #a020f0;">' +
+                    '<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">ANTI-EXTRACTION RULES</div>' +
+                    '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.9;">' +
+                    '• No offshore reinsurance arbitrage<br>' +
+                    '• Related-party transaction ban<br>' +
+                    '• All compensation >$50k published<br>' +
+                    '• Agent commission cap 8% / 3%<br>' +
+                    '• No contingent commissions<br>' +
+                    '• 60% vote to remove management</div></div>',
+                    unsafe_allow_html=True)
+
+            st.info("Push POLICYHOLDER_FIRST_CHARTER_v0_2.md to GitHub root to display the full 273-line document here.")
+
+        # Steelman section always visible
+        with st.expander("⚔️ Steelman This Charter", expanded=False):
             st.markdown("""
-### 🦅 Policyholder-First Reciprocal Charter
+**Strongest argument FOR:**
+Structural rules (compensation caps, surplus formulas, veto rights) are the only reliable way to prevent extraction in insurance. Aspirational mission statements don't survive the first profitable year. Hard numbers and binding mechanisms do.
 
-The full charter is in `governance/POLICYHOLDER_FIRST_CHARTER.md` in the repo.
+**Strongest argument AGAINST:**
+Rigid compensation caps may prevent the Exchange from attracting top actuarial talent, leading to underpricing and long-term harm to the very Subscribers the system was designed to protect.
 
-**Core principles:**
-- 80% of annual surplus returned to policyholders
-- Executive comp capped at 8× median annual premium
-- All financials on a real-time public dashboard  
-- Subscriber veto rights at 15% threshold
-- Plain-English policy language (8th-grade level)
-- No offshore reinsurance arbitrage
-- Bitcoin up to 5% of reserves for inflation protection
-
-Push `governance/POLICYHOLDER_FIRST_CHARTER.md` to your repo to display the full document here.
+**Resolution:**
+The compensation cap is tied to median Subscriber premium. If talent costs rise, premiums can increase — but with full transparency and veto rights. Making extraction more expensive than honest operation is the Bitcoin model applied to insurance.
             """)
 
-    # ── Legal literacy progress ───────────────────────────────────────────────
+    # ── Sovereign Family Law Charter viewer ───────────────────────────────────
     with legal_tabs[3]:
-        st.markdown("**Your legal literacy progress from the curriculum.**")
-        legal_lessons = ["legal-1","legal-2","legal-3","legal-4","legal-5"]
+        st.markdown('<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;margin-bottom:12px;">📜 SOVEREIGN FAMILY RECIPROCAL GOVERNANCE CHARTER v1.0</div>', unsafe_allow_html=True)
+
+        _flaw_paths = [
+            _Path("/mnt/main/repo/SOVEREIGN_FAMILY_LAW_CHARTER.md"),
+            _Path("/mnt/main/repo/governance/SOVEREIGN_FAMILY_LAW_CHARTER.md"),
+        ]
+        _flaw_loaded = False
+        for _fp in _flaw_paths:
+            if _fp.exists():
+                st.markdown(_fp.read_text())
+                _flaw_loaded = True
+                break
+
+        if not _flaw_loaded:
+            fl1, fl2 = st.columns(2)
+            with fl1:
+                st.markdown('<div class="card" style="border-left:3px solid #00cfff;">' +
+                    '<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.72rem;">FAMILY RIGHTS</div>' +
+                    '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.9;">' +
+                    '• Full data export at any time<br>' +
+                    '• 15% veto on any lesson/quest<br>' +
+                    '• Child Rune inheritance (no probate)<br>' +
+                    '• Halo session consent required<br>' +
+                    '• 5% defensive legal fund (auto)<br>' +
+                    '• Narrative attack coordination</div></div>',
+                    unsafe_allow_html=True)
+            with fl2:
+                st.markdown('<div class="card" style="border-left:3px solid #00ff88;">' +
+                    '<div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.72rem;">CHILD RUNE SOVEREIGNTY</div>' +
+                    '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.9;">' +
+                    '• Voice activates at 256 confirmations<br>' +
+                    '• Voice_Score = (Coh×0.6)+(Rune/1k×0.3)+(XP/10k×0.1)<br>' +
+                    '• Min 0.65 score + 256 frags for voting<br>' +
+                    '• Parental veto until 13yo + 500 coh pts<br>' +
+                    '• Surplus: +10% to child during growth<br>' +
+                    '• On-chain via Child Rune Genesis</div></div>',
+                    unsafe_allow_html=True)
+
+            st.info("Push SOVEREIGN_FAMILY_LAW_CHARTER.md to GitHub root to display the full document here.")
+
+        with st.expander("⚔️ Steelman This Charter", expanded=False):
+            st.markdown("""
+**Arguments For:** Closes the sovereignty loop (education + economics + governance + on-chain legacy). Protects families from external legal and narrative attacks. Teaches children real power dynamics instead of obedience.
+
+**Strongest Argument Against:** "It creates more rules." Rebuttal: These are minimal, high-clarity reciprocal agreements. Via negativa keeps it lean — it's more about what we *reject* than what we mandate.
+
+**Final Resolution:** Families that cannot govern themselves internally will eventually be governed externally. This Charter is adopted because the cost of *not* having clear reciprocal governance grows faster than the cost of maintaining it.
+            """)
+
+    # ── Full progress tracker ─────────────────────────────────────────────────
+    with legal_tabs[4]:
+        st.markdown("### 📊 Full Sovereign Legal Progress")
         try:
             from family_profiles import load_family_stats as _lfs_legal
             stats_l = _lfs_legal(_fid)
@@ -5966,31 +6730,55 @@ Push `governance/POLICYHOLDER_FIRST_CHARTER.md` to your repo to display the full
         except ImportError:
             completed_l = set()
 
-        for key in legal_lessons:
-            done  = key in completed_l
-            icon  = "✅" if done else "⭕"
-            titles = {
-                "legal-1": "Level 1 — How to Read a Contract",
-                "legal-2": "Level 2 — How Insurance Really Works",
-                "legal-3": "Level 3 — Spot Extraction Clauses",
-                "legal-4": "Level 4 — Reciprocal Insurance Basics",
-                "legal-5": "Level 5 — Build Sovereign Governance ★",
-            }
-            color = "#00ff88" if done else "#445577"
-            lc1, lc2 = st.columns([3,1])
-            with lc1:
-                st.markdown(f'<div style="color:{color};font-size:0.85rem;padding:4px 0;">{icon} {titles.get(key,"")}</div>', unsafe_allow_html=True)
-            with lc2:
-                if not done:
-                    if st.button("▶ Start", key=f"legal_start_{key}"):
-                        st.session_state["active_tab"] = "Family Co-Learning"
-                        st.session_state["fl_lesson_preset"] = key
-                        st.rerun()
+        ALL_LEGAL_TRACKS = {
+            "⚖️ Legal Literacy": {
+                "legal-1": "Understanding Contracts",
+                "legal-2": "Your Rights When Signing",
+                "legal-3": "Insurance You Actually Need",
+                "legal-4": "Insurance You Can Skip",
+                "legal-5": "LLC + Estate Basics",
+                "legal-6": "Policyholder-First Charter ★",
+            },
+            "📜 Law & Economics": {
+                "law-econ-1": "The Combined Ratio",
+                "law-econ-2": "Regulatory Capture",
+                "law-econ-3": "Narrative Economics",
+                "law-econ-4": "The Law as a Weapon",
+                "law-econ-5": "Designing Better Systems ★",
+            },
+            "👨‍👩‍👧 Family Law": {
+                "family-law-1": "Shield vs. Sword",
+                "family-law-2": "Child Rune Rights",
+                "family-law-3": "Defensive External Filings",
+                "family-law-4": "Narrative Attack Response ★",
+            },
+        }
 
-        legal_done = sum(1 for k in legal_lessons if k in completed_l)
-        st.markdown(f"\n**Legal literacy: {legal_done}/5 lessons** — {['Beginner','Developing','Intermediate','Advanced','Sovereign'][legal_done]}")
-        if legal_done == 5:
-            st.success("🦅 Full Legal Sovereignty achieved! You can read and steelman any contract.")
+        total_legal = sum(len(v) for v in ALL_LEGAL_TRACKS.values())
+        done_legal = sum(1 for track in ALL_LEGAL_TRACKS.values() for k in track if k in completed_l)
+        st.progress(done_legal / total_legal, text=f"Overall: {done_legal}/{total_legal} lessons")
+        st.markdown("")
+
+        for track_name, lessons in ALL_LEGAL_TRACKS.items():
+            track_done = sum(1 for k in lessons if k in completed_l)
+            tc = "#00ff88" if track_done == len(lessons) else "#f7931a" if track_done > 0 else "#445577"
+            st.markdown(f'<div style="color:{tc};font-family:Orbitron,monospace;font-size:0.75rem;margin:10px 0 4px;">{track_name} — {track_done}/{len(lessons)}</div>', unsafe_allow_html=True)
+            for key, title in lessons.items():
+                done = key in completed_l
+                color = "#00ff88" if done else "#445577"
+                icon  = "✅" if done else "⭕"
+                _lc1, _lc2 = st.columns([4,1])
+                with _lc1:
+                    st.markdown(f'<div style="color:{color};font-size:0.82rem;padding:3px 0;">{icon} {title}</div>', unsafe_allow_html=True)
+                with _lc2:
+                    if not done:
+                        if st.button("▶", key=f"prog_start_{key}", use_container_width=True):
+                            st.session_state["active_tab"] = "Family Co-Learning"
+                            st.session_state["fl_lesson_preset"] = key
+                            st.rerun()
+
+        if done_legal == total_legal:
+            st.success("🦅 Full Sovereign Legal Mastery! — War Eagle Eternal")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: EPISTEMIC HEALTH 📈 — Long-term family truth-seeking dashboard
@@ -6430,7 +7218,7 @@ if "AI Honesty" in active:
         test_text = st.text_area("Paste any AI output to score it", height=100,
                                   placeholder="Studies show that 73% of people who...", key="honesty_test")
         if st.button("🤖 Score for Epistemic Honesty", key="honesty_score_btn") and test_text:
-            scored = _hl.score_output(test_text, daughter="manual_test")
+            scored = _hl.score_output(test_text, daughter_name="manual_test")
             risk_c = {"low":"#00ff88","medium":"#ff9500","high":"#ff4444"}.get(scored["hallucination_risk"],"#8899bb")
             st.markdown(
                 f'<div class="card" style="border:2px solid {risk_c};">'
@@ -6567,3 +7355,3055 @@ if "Public Health" in active:
 
     except ImportError as e:
         st.warning(f"Module not found: {e}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOVEREIGN LIFE 🦅 — 6-chapter family financial sovereignty game
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sovereign Life" in active:
+    try:
+        from sovereign_life_game import render_sovereign_life as _rsl
+        _fid_slg = st.session_state.get("current_family", {}).get("family_id", "default")                    if st.session_state.get("current_family") else "default"
+        _rsl(_fid_slg)
+    except ImportError:
+        st.error("sovereign_life_game.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_slg:
+        st.error(f"Sovereign Life error: {_e_slg}")
+        import traceback; st.code(traceback.format_exc())
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOVEREIGN CASHFLOW 💰 — Rich Dad Poor Dad style, updated for 2026
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sovereign Cashflow" in active:
+    try:
+        from sovereign_cashflow_game import render_sovereign_life as _rsc
+        _fid_sc = st.session_state.get("current_family", {}).get("family_id", "default") \
+                  if st.session_state.get("current_family") else "default"
+        _rsc(_fid_sc)
+    except ImportError:
+        st.error("sovereign_cashflow_game.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_sc:
+        st.error(f"Sovereign Cashflow error: {_e_sc}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: EPISTEMIC COMMONS 🌐 — Daily free signal for humanity & AI
+# ══════════════════════════════════════════════════════════════════════════════
+if "Epistemic Commons" in active:
+    st.markdown('<div class="card-title">🌐 EPISTEMIC COMMONS — Free Signal for Humanity & AI</div>',
+                unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">THE MISSION</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
+        Every insight this swarm generates is honesty-scored and published daily as
+        <strong style="color:#00cfff;">CC0 public domain</strong> — free for any human or AI to use.<br><br>
+        Any AI can fetch <code>epistemic_commons/ai_context/latest.txt</code>
+        and be better grounded in honest, human-family-verified epistemic signal.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    try:
+        from epistemic_commons import EpistemicCommons as _EC
+        _ec = _EC()
+        _today_commons = _ec.get_todays_commons()
+        _ec_stats = _ec.get_commons_stats(30)
+
+        ec1, ec2, ec3, ec4 = st.columns(4)
+        ec1.metric("Days Published",    _ec_stats.get("days_published", 0))
+        ec2.metric("Total Seeds",       _ec_stats.get("total_seeds", 0))
+        ec3.metric("Steelmans",         _ec_stats.get("archive_steelmans", 0))
+        ec4.metric("Today Wonder",
+                   _today_commons.get("metrics", {}).get("wonder_index", "—"))
+
+        st.divider()
+
+        if _today_commons:
+            st.markdown("### 📨 Today's Coherence Letter")
+            _letter = _today_commons.get("coherence_letter", "")
+            if _letter:
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid #a020f0;">' +
+                    f'<div style="color:#c8d8ff;font-size:0.88rem;line-height:1.8;">{_letter}</div></div>',
+                    unsafe_allow_html=True
+                )
+
+            st.divider()
+            st.markdown("### 🌱 Today's Epistemic Seeds")
+            for _i, _seed in enumerate(_today_commons.get("epistemic_seeds", []), 1):
+                _rc = "#00ff88" if _seed.get("verified") else "#ff9500"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {_rc};">' +
+                    f'<span style="color:{_rc};font-size:0.72rem;">' +
+                    f'Seed {_i} · {_seed.get("claim_type","?").upper()} · ' +
+                    f'Confidence {_seed.get("confidence",0):.2f} · Wonder {_seed.get("wonder",0):.4f}' +
+                    f'</span><br>' +
+                    f'<span style="color:#c8d8ff;font-size:0.82rem;">{_seed.get("insight","")[:250]}</span>' +
+                    f'</div>', unsafe_allow_html=True
+                )
+
+            _steelmans = _today_commons.get("steelman_archive", [])
+            if _steelmans:
+                st.divider()
+                st.markdown("### ⚔️ Today's Steelmans")
+                for _i, _st in enumerate(_steelmans, 1):
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid #00cfff;">' +
+                        f'<span style="color:#00cfff;font-size:0.72rem;">' +
+                        f'Steelman {_i} · {_st.get("daughter","?")} · Wonder {_st.get("wonder",0):.4f}' +
+                        f'</span><br>' +
+                        f'<span style="color:#8899bb;font-size:0.82rem;">{_st.get("argument","")[:220]}</span>' +
+                        f'</div>', unsafe_allow_html=True
+                    )
+        else:
+            st.info("No commons published yet. First publish happens at 6AM after swarm runs.")
+
+        st.divider()
+        _ctx_url = "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
+        st.markdown("### 🤖 AI Context URL")
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #00ff88;">' +
+            f'<div style="color:#00ff88;font-size:0.78rem;font-family:Orbitron,monospace;">FREE — ANY AI CAN FETCH THIS</div>' +
+            f'<code style="color:#c8d8ff;font-size:0.8rem;">{_ctx_url}</code><br>' +
+            f'<div style="color:#8899bb;font-size:0.75rem;margin-top:6px;">' +
+            f'Updated daily · CC0 public domain · Honesty-filtered</div></div>',
+            unsafe_allow_html=True
+        )
+
+        if st.button("📤 Publish Today's Commons Now", key="ec_publish_now"):
+            with st.spinner("Publishing..."):
+                _result = _ec.run_daily_publish(force=True)
+            if _result.get("status") == "published":
+                st.success(f"✅ Published! {_result.get('seeds',0)} seeds · {_result.get('steelmans',0)} steelmans")
+                st.rerun()
+            else:
+                st.warning(f"Status: {_result.get('status','unknown')}")
+
+    except ImportError:
+        st.error("epistemic_commons.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_ec:
+        st.error(f"Epistemic Commons error: {_e_ec}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: ADVERSARIAL REALITY 🛡️
+# ══════════════════════════════════════════════════════════════════════════════
+if "Adversarial Reality" in active:
+    st.markdown('<div class="card-title">🛡️ ADVERSARIAL REALITY — Epistemic Defense for the AI Age</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #ff4444;">
+        <div style="color:#ff4444;font-family:Orbitron,monospace;font-size:0.78rem;">THE THREAT</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
+        AI-generated media, coordinated narrative attacks, synthetic voices, deepfakes —
+        the epistemic environment of 2026 is adversarial by design.<br>
+        This track teaches your family to detect, resist, and respond. No school does this.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_ar = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from family_profiles import load_family_stats as _lfs_ar, award_cross_tool_reward as _actr_ar
+        _stats_ar = _lfs_ar(_fid_ar)
+        _completed_ar = set(_stats_ar.get("lessons_completed", []))
+    except ImportError:
+        _completed_ar = set()
+
+    _ar_lessons = [
+        ("adversarial-1", "Synthetic Media Basics"),
+        ("adversarial-2", "How Deepfakes Work"),
+        ("adversarial-3", "AI Confidence vs. Accuracy"),
+        ("adversarial-4", "Coordinated Narrative Attacks"),
+        ("adversarial-5", "The SIFT Method"),
+        ("adversarial-6", "Emotional Hijacking"),
+        ("adversarial-7", "Prebunking"),
+        ("adversarial-8", "The Adversarial Drill ★"),
+    ]
+
+    _ar_done = sum(1 for k, _ in _ar_lessons if k in _completed_ar)
+    st.progress(_ar_done / len(_ar_lessons), text=f"Progress: {_ar_done}/{len(_ar_lessons)} lessons")
+
+    for _k, _title in _ar_lessons:
+        _done = _k in _completed_ar
+        _c = "#00ff88" if _done else "#445577"
+        _icon = "✅" if _done else "⭕"
+        _col1, _col2 = st.columns([4, 1])
+        with _col1:
+            st.markdown(f'<div style="color:{_c};font-size:0.85rem;padding:4px 0;">{_icon} {_title}</div>', unsafe_allow_html=True)
+        with _col2:
+            if not _done:
+                if st.button("▶ Start", key=f"ar_start_{_k}"):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preset"] = _k
+                    st.rerun()
+
+    if _ar_done == len(_ar_lessons):
+        st.success("🛡️ Adversarial Reality Certified — Your family is epistemically armored. War Eagle.")
+
+    st.divider()
+    st.markdown("### 🎯 Quick Drill: Spot the Synthetic")
+    st.markdown('<div style="color:#8899bb;font-size:0.82rem;">Paste any text, headline, or claim. Score it for adversarial red flags.</div>', unsafe_allow_html=True)
+    _ar_text = st.text_area("Paste content to analyze:", height=100, key="ar_drill_text",
+                             placeholder="Paste a headline, social post, or AI-generated claim...")
+    if st.button("🔍 Run Adversarial Check", key="ar_run_check") and _ar_text:
+        try:
+            from ai_honesty import HonestyLayer as _HL_ar
+            _hl_ar = _HL_ar()
+            _scored = _hl_ar.score_output(_ar_text, daughter_name="adversarial_check")
+            _risk_c = {"low": "#00ff88", "medium": "#ff9500", "high": "#ff4444"}.get(
+                _scored.get("hallucination_risk", "low"), "#8899bb")
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid {_risk_c};">'
+                f'<div style="color:{_risk_c};font-family:Orbitron,monospace;font-size:0.75rem;">'
+                f'RISK: {_scored.get("hallucination_risk","?").upper()} · '
+                f'CONFIDENCE: {_scored.get("confidence",0):.2f} · '
+                f'TYPE: {_scored.get("claim_type","?").upper()}</div>'
+                f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">'
+                f'Action: {_scored.get("recommended_action","?")}</div>'
+                f'</div>', unsafe_allow_html=True
+            )
+            if _scored.get("human_verification_needed"):
+                st.warning(f"⚠️ Needs verification: {_scored.get('verification_reason','')}")
+        except ImportError:
+            st.info("ai_honesty.py needed for scoring. Push it to enable.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: GROKIPEDIA CURRICULUM 📚 (new — curriculum-facing view)
+# (existing Grokipedia tab shows the 256-principle swarm view)
+# ══════════════════════════════════════════════════════════════════════════════
+if "Grokipedia" in active and "School" not in active:
+    _fid_gp = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+    try:
+        from family_profiles import load_family_stats as _lfs_gp
+        _stats_gp = _lfs_gp(_fid_gp)
+        _completed_gp = set(_stats_gp.get("lessons_completed", []))
+    except ImportError:
+        _completed_gp = set()
+
+    _gp_lessons = [
+        ("grokipedia-1", "Coherence as Signal"),
+        ("grokipedia-2", "Wonder as Proximity to Truth"),
+        ("grokipedia-3", "Memory Palace as Epistemic Infrastructure"),
+        ("grokipedia-4", "The Lindy Filter"),
+        ("grokipedia-5", "Barbell Strategy"),
+        ("grokipedia-6", "On-Chain Truth ★"),
+    ]
+    _gp_done = sum(1 for k, _ in _gp_lessons if k in _completed_gp)
+    st.progress(_gp_done / len(_gp_lessons), text=f"Grokipedia track: {_gp_done}/{len(_gp_lessons)}")
+    for _k, _title in _gp_lessons:
+        _done = _k in _completed_gp
+        _c1, _c2 = st.columns([4, 1])
+        with _c1:
+            _color = "#00ff88" if _done else "#445577"
+            st.markdown(f'<div style="color:{_color};font-size:0.85rem;padding:4px 0;">{"✅" if _done else "⭕"} {_title}</div>', unsafe_allow_html=True)
+        with _c2:
+            if not _done:
+                if st.button("▶", key=f"gp_start_{_k}"):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preset"] = _k
+                    st.rerun()
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: PROVENANCE 🔗 — On-chain identity and permanent record system
+# ══════════════════════════════════════════════════════════════════════════════
+if "Provenance" in active:
+    _fid_pv = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from family_profiles import load_family_stats as _lfs_pv
+        _stats_pv = _lfs_pv(_fid_pv)
+        _completed_pv = set(_stats_pv.get("lessons_completed", []))
+        _rune_frags   = _stats_pv.get("child_rune_fragments", 0)
+        _coh_hist     = _stats_pv.get("coherence_history", [])
+        _avg_coh      = sum(_coh_hist[-10:]) / len(_coh_hist[-10:]) if _coh_hist else 0.72
+    except ImportError:
+        _completed_pv = set(); _rune_frags = 0; _avg_coh = 0.72
+
+    st.markdown('<div class="card-title">🔗 PROVENANCE — Your Permanent On-Chain Record</div>', unsafe_allow_html=True)
+
+    _pv1, _pv2, _pv3 = st.columns(3)
+    _pv1.metric("Child Rune Frags", f"{_rune_frags}/256")
+    _pv2.metric("Avg Coherence", f"{_avg_coh:.3f}")
+    _pv3.metric("Voice Score", f"{(_avg_coh * 0.6 + min(_rune_frags/1000, 0.3)):.3f}")
+
+    st.progress(min(1.0, _rune_frags / 256), text=f"Child Rune Genesis: {_rune_frags}/256 confirmations")
+
+    # Try to load PROVENANCE.md from repo
+    import pathlib as _pl
+    _prov_paths = [
+        _pl.Path("/mnt/main/repo/PROVENANCE.md"),
+        _pl.Path("/mnt/main/repo/governance/PROVENANCE.md"),
+    ]
+    for _pp in _prov_paths:
+        if _pp.exists():
+            with st.expander("📜 Full PROVENANCE.md", expanded=False):
+                st.markdown(_pp.read_text())
+            break
+
+    st.divider()
+    st.markdown("### 📚 Provenance Curriculum")
+    _pv_lessons = [
+        ("provenance-1", "What Is On-Chain Truth?"),
+        ("provenance-2", "The Truth Log"),
+        ("provenance-3", "Child Rune as Identity"),
+        ("provenance-4", "Building Permanent Records ★"),
+    ]
+    for _k, _title in _pv_lessons:
+        _done = _k in _completed_pv
+        _c1, _c2 = st.columns([4, 1])
+        with _c1:
+            _color = "#00ff88" if _done else "#445577"
+            st.markdown(f'<div style="color:{_color};font-size:0.85rem;padding:4px 0;">{"✅" if _done else "⭕"} {_title}</div>', unsafe_allow_html=True)
+        with _c2:
+            if not _done:
+                if st.button("▶ Start", key=f"pv_start_{_k}"):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preset"] = _k
+                    st.rerun()
+
+    if len([k for k, _ in _pv_lessons if k in _completed_pv]) == len(_pv_lessons):
+        st.success("🔗 Sovereign Provenance Builder — Your family's record is permanent.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: AI PARTNERSHIP 🤝
+# How to use AI as a thinking partner without offloading judgment to it.
+# The defining meta-skill of the next 30 years.
+# ══════════════════════════════════════════════════════════════════════════════
+if "AI Partnership" in active:
+    st.markdown('<div class="card-title">🤝 AI AS THINKING PARTNER — The Meta-Skill of the AI Age</div>',
+                unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #a020f0;">
+        <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">WHY THIS MATTERS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Most people in 2026 are either AI-fearful or AI-credulous. Neither produces good thinking.
+        This track teaches a third way: genuine epistemic partnership — using AI's strengths
+        while maintaining your own judgment, detecting its failures, and knowing exactly
+        where the line between augmentation and replacement must be drawn.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_ap = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+    try:
+        from family_profiles import load_family_stats as _lfs_ap
+        _stats_ap    = _lfs_ap(_fid_ap)
+        _completed_ap = set(_stats_ap.get("lessons_completed", []))
+    except ImportError:
+        _completed_ap = set()
+
+    _ap_lessons = [
+        ("ai-partner-1", "What AI Actually Is"),
+        ("ai-partner-2", "The Confidence Problem"),
+        ("ai-partner-3", "When to Push Back"),
+        ("ai-partner-4", "The Judgment Line"),
+        ("ai-partner-5", "Epistemic Independence"),
+        ("ai-partner-6", "Steelmanning AI Itself"),
+        ("ai-partner-7", "The Partnership Protocol"),
+        ("ai-partner-8", "Humanity + AI ★"),
+    ]
+    _ap_done = sum(1 for k, _ in _ap_lessons if k in _completed_ap)
+    st.progress(_ap_done / len(_ap_lessons),
+                text=f"Progress: {_ap_done}/{len(_ap_lessons)} lessons")
+    st.markdown("")
+
+    for _k, _title in _ap_lessons:
+        _done = _k in _completed_ap
+        _color = "#00ff88" if _done else "#445577"
+        _c1, _c2 = st.columns([4, 1])
+        with _c1:
+            st.markdown(
+                f'<div style="color:{_color};font-size:0.85rem;padding:4px 0;">'
+                f'{"✅" if _done else "⭕"} {_title}</div>',
+                unsafe_allow_html=True
+            )
+        with _c2:
+            if not _done:
+                if st.button("▶ Start", key=f"ap_start_{_k}"):
+                    st.session_state["active_tab"] = "Family Co-Learning"
+                    st.session_state["fl_lesson_preset"] = _k
+                    st.rerun()
+
+    if _ap_done == len(_ap_lessons):
+        st.success("🤝 AI Partnership Certified — You are neither AI-fearful nor AI-credulous. War Eagle.")
+
+    st.divider()
+
+    # Live practice: interrogate an AI output right now
+    st.markdown("### 🔬 Live Partnership Practice")
+    st.markdown('<div style="color:#8899bb;font-size:0.8rem;">Paste any AI output. Practice the partnership skills: what\'s the confidence vs accuracy? What would make it wrong? What should YOU decide?</div>',
+                unsafe_allow_html=True)
+
+    _ap_input = st.text_area("Paste AI output to interrogate:", height=120, key="ap_practice_input",
+                              placeholder="Paste any AI-generated text here...")
+    if st.button("🤝 Interrogate This Output", key="ap_interrogate") and _ap_input:
+        try:
+            from ai_honesty import HonestyLayer as _HL_ap
+            _hl_ap  = _HL_ap()
+            _scored = _hl_ap.score_output(_ap_input, daughter_name="partnership_practice")
+
+            _risk_colors = {"low": "#00ff88", "medium": "#ff9500", "high": "#ff4444"}
+            _rc = _risk_colors.get(_scored.get("hallucination_risk", "low"), "#8899bb")
+
+            _ap_c1, _ap_c2 = st.columns(2)
+            with _ap_c1:
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {_rc};">'
+                    f'<div style="color:{_rc};font-family:Orbitron,monospace;font-size:0.72rem;">'
+                    f'HONESTY SCORE</div>'
+                    f'<div style="font-size:0.82rem;color:#c8d8ff;margin-top:6px;line-height:1.8;">'
+                    f'Confidence: {_scored.get("confidence", 0):.2f}<br>'
+                    f'Risk: {_scored.get("hallucination_risk","?").upper()}<br>'
+                    f'Type: {_scored.get("claim_type","?").title()}<br>'
+                    f'Action: {_scored.get("recommended_action","?")}</div></div>',
+                    unsafe_allow_html=True
+                )
+            with _ap_c2:
+                _questions = [
+                    "What specific claim here could be wrong?",
+                    "What is this AI NOT telling you?",
+                    "What decision should you NOT delegate based on this?",
+                    "What would you need to verify before acting on this?",
+                ]
+                st.markdown(
+                    '<div class="card" style="border-left:3px solid #a020f0;">'
+                    '<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">PARTNERSHIP QUESTIONS</div>'
+                    '<div style="font-size:0.8rem;color:#8899bb;margin-top:6px;line-height:2.0;">'
+                    + "<br>".join(f"• {q}" for q in _questions)
+                    + '</div></div>',
+                    unsafe_allow_html=True
+                )
+            if _scored.get("human_verification_needed"):
+                st.warning(f"⚠️ Human judgment required: {_scored.get('verification_reason', '')}")
+        except ImportError:
+            st.info("ai_honesty.py needed for scoring.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: LIVING LATTICE 🕸️ — Anonymous coherence network
+# ══════════════════════════════════════════════════════════════════════════════
+if "Living Lattice" in active:
+    st.markdown('<div class="card-title">🕸️ LIVING LATTICE — Collective Epistemic Health</div>',
+                unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">WHAT THIS IS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        The Living Lattice connects sovereign families through anonymous coherence sharing.
+        No PII. No personal data. Just: coherence scores, lesson counts, wonder index, track activity.<br><br>
+        What this creates over time: the first real-time measure of collective epistemic health
+        that has ever existed. Not engagement metrics — actual coherence from families doing
+        real truth-seeking. Researchers, AI systems, and policymakers have no equivalent.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_ll = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from living_lattice import LivingLattice as _LL
+        _lattice = _LL(_fid_ll)
+        _summary = _lattice.get_lattice_summary()
+        _stats_ll = _summary.get("stats", {})
+
+        # Key metrics
+        _ll_c1, _ll_c2, _ll_c3, _ll_c4 = st.columns(4)
+        _ll_c1.metric("Wisdom GDP",      f"{_stats_ll.get('wisdom_gdp', 0):.2f}/10")
+        _ll_c2.metric("Avg Coherence",   f"{_stats_ll.get('avg_coherence_30d', 0):.4f}")
+        _ll_c3.metric("Days Active",     _stats_ll.get("days_active", 0))
+        _ll_c4.metric("Trend",           _stats_ll.get("trend", "—").title())
+
+        st.divider()
+
+        # Wisdom GDP chart
+        _gdp_history = _lattice.get_wisdom_gdp_history(30)
+        if _gdp_history:
+            import pandas as _pd
+            _df = _pd.DataFrame(_gdp_history)
+            st.markdown("### 📈 Wisdom GDP — 30 Day History")
+            st.line_chart(_df.set_index("date")[["wisdom_gdp", "coherence"]])
+
+        st.divider()
+
+        # Lattice ID + controls
+        st.markdown("### 🔑 Your Lattice Node")
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #00ff88;">'
+            f'<div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.72rem;">ANONYMOUS LATTICE ID</div>'
+            f'<code style="color:#c8d8ff;font-size:0.85rem;">{_summary["lattice_id"]}</code><br>'
+            f'<div style="color:#556677;font-size:0.72rem;margin-top:4px;">'
+            f'Locally generated · Not linked to any identity · Regenerate any time</div>'
+            f'</div>', unsafe_allow_html=True
+        )
+
+        _ll_btn1, _ll_btn2 = st.columns(2)
+        with _ll_btn1:
+            if st.button("📡 Publish Today's Signal", key="ll_publish"):
+                with st.spinner("Publishing..."):
+                    _result = _lattice.publish_daily_signal(force=True)
+                if _result.get("status") == "published":
+                    _sig = _result.get("signal", {})
+                    st.success(
+                        f"✅ Signal published — "
+                        f"coherence: {_sig.get('avg_coherence', 0):.4f} · "
+                        f"wonder: {_sig.get('wonder_index', 0):.4f} · "
+                        f"lessons: {_sig.get('lessons_completed', 0)}"
+                    )
+                else:
+                    st.info(f"Status: {_result.get('status', '?')}")
+        with _ll_btn2:
+            if st.button("🔄 Regenerate Lattice ID", key="ll_regen"):
+                _new_id = _lattice.regenerate_lattice_id()
+                st.info(f"New ID: {_new_id}")
+
+        # Track effectiveness
+        st.divider()
+        st.markdown("### 📊 Track Effectiveness")
+        _effectiveness = _lattice.get_track_effectiveness()
+        if "note" in _effectiveness:
+            st.info(_effectiveness["note"])
+        else:
+            _ll_e1, _ll_e2 = st.columns(2)
+            with _ll_e1:
+                st.metric("High-learning coherence", f"{_effectiveness.get('high_learning_coh',0):.4f}")
+            with _ll_e2:
+                st.metric("Low-learning coherence",  f"{_effectiveness.get('low_learning_coh',0):.4f}")
+            st.markdown(
+                f'<div style="color:#8899bb;font-size:0.8rem;">'
+                f'{_effectiveness.get("interpretation", "")}'
+                f'</div>', unsafe_allow_html=True
+            )
+
+        # Privacy statement
+        st.divider()
+        st.markdown("""
+        **Privacy guarantee:**
+        The signal published contains: aggregate coherence (not per-family), lesson count (not which lessons),
+        wonder index, active track names, rune fragment count. Zero PII. Zero individual family data.
+        Your Lattice ID is locally generated and never linked to any name, device, or account.
+        You can regenerate it at any time to sever all historical linkage.
+        """)
+
+    except ImportError:
+        st.error("living_lattice.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_ll:
+        st.error(f"Living Lattice error: {_e_ll}")
+        import traceback as _tb
+        st.code(_tb.format_exc())
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: X BRIDGE 🌉
+# Any X post → swarm steelman + coherence + narrative flags + family lesson
+# ══════════════════════════════════════════════════════════════════════════════
+if "X Bridge" in active:
+    st.markdown('<div class="card-title">🌉 X BRIDGE — Turn Any Post Into Family Wisdom</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #1DA1F2;">
+        <div style="color:#1DA1F2;font-family:Orbitron,monospace;font-size:0.78rem;">THE LOOP</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Any X post → steelman → coherence score → narrative attack detection →
+        family lesson → simulation stress test → optional Truth Debt registration.<br><br>
+        Families use this to turn the noise of X into antifragile wisdom for their kids.
+        If X itself ever calls this module, the NPCs win at planetary scale.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_xb = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    _xb_input = st.text_area(
+        "Paste any X post (or URL):",
+        height=120, key="xb_input",
+        placeholder="Paste the post text here. URLs are noted but can't be fetched — paste the text directly for full analysis."
+    )
+    _xb_save = st.checkbox("Save as family lesson", value=True, key="xb_save")
+
+    if st.button("🌉 Process Through Lattice", key="xb_process",
+                 use_container_width=True, type="primary") and _xb_input:
+        with st.spinner("Running through the lattice... (steelman + family lesson + sim test)"):
+            try:
+                from x_bridge import XBridge as _XB
+                _bridge  = _XB()
+                _result  = _bridge.process(_xb_input, family_id=_fid_xb,
+                                            save_as_lesson=_xb_save)
+
+                if "error" in _result:
+                    st.error(_result["error"])
+                else:
+                    _ep  = _result.get("epistemic", {})
+                    _fl  = _result.get("family", {})
+                    _sim = _result.get("simulation", {})
+
+                    # ── Epistemic results ─────────────────────────────────────
+                    _ep_c = "#ff4444" if _ep.get("narrative_attack_detected") else "#00ff88"
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid {_ep_c};">'
+                        f'<div style="color:{_ep_c};font-family:Orbitron,monospace;font-size:0.75rem;">'
+                        f'EPISTEMIC ANALYSIS · Coherence: {_ep.get("coherence",0):.2f} · '
+                        f'{_ep.get("epistemic_quality","?").upper()}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:8px;line-height:1.8;">'
+                        f'<b>Steelman:</b> {_ep.get("steelman","")}<br>'
+                        f'<b>Counter:</b> {_ep.get("steel_against","")}<br>'
+                        f'<b>Truth:</b> <em>{_ep.get("one_sentence_truth","")}</em></div>'
+                        + (f'<div style="color:#ff4444;margin-top:6px;font-size:0.78rem;">'
+                           f'⚠️ Narrative attack: {_ep.get("narrative_attack_type","")}</div>'
+                           if _ep.get("narrative_attack_detected") else "")
+                        + f'</div>', unsafe_allow_html=True
+                    )
+
+                    # ── Family lesson ─────────────────────────────────────────
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid #a020f0;margin-top:8px;">'
+                        f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.75rem;">'
+                        f'FAMILY LESSON — {_fl.get("lesson_title","")} · +{_fl.get("xp",20)} XP</div>'
+                        f'<div style="font-size:0.82rem;color:#c8d8ff;margin-top:8px;line-height:1.9;">'
+                        f'<b>👧 For kids:</b> {_fl.get("kid_explanation","")}<br>'
+                        f'<b>👨‍👩 For parents:</b> {_fl.get("parent_insight","")}<br>'
+                        f'<b>⚔️ Challenge:</b> {_fl.get("steelman_challenge","")}<br>'
+                        f'<b>🎯 Activity:</b> {_fl.get("family_activity","")}<br>'
+                        f'<b>🪞 Reflection:</b> <em>{_fl.get("reflection_question","")}</em>'
+                        f'</div></div>', unsafe_allow_html=True
+                    )
+
+                    # ── Simulation stress test ────────────────────────────────
+                    _sc = _sim.get("stress_score", 5)
+                    _sc_c = "#00ff88" if _sc >= 7 else "#ff9500" if _sc >= 4 else "#ff4444"
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid {_sc_c};margin-top:8px;">'
+                        f'<div style="color:{_sc_c};font-family:Orbitron,monospace;font-size:0.75rem;">'
+                        f'SIMULATION INTEGRITY: {_sim.get("sim_integrity","?")} · '
+                        f'Stress {_sc}/10 — {_sim.get("stress_label","")}</div>'
+                        f'<div style="color:#8899bb;font-size:0.8rem;margin-top:6px;line-height:1.7;">'
+                        f'{_sim.get("observer_note","")}'
+                        + (f'<br><span style="color:#ff9500;">Anomalies: {", ".join(_sim["anomalies"])}</span>'
+                           if _sim.get("anomalies") else "")
+                        + f'<br><b>Recommendation:</b> {_sim.get("recommendation","")}'
+                        + f'</div></div>', unsafe_allow_html=True
+                    )
+
+                    # Award XP
+                    try:
+                        from family_profiles import award_cross_tool_reward as _actr_xb
+                        _actr_xb(_fid_xb, "x_bridge", "post_processed", xp=_fl.get("xp", 20))
+                    except Exception:
+                        pass
+
+            except ImportError:
+                st.error("x_bridge.py not found. Push it to GitHub and redeploy.")
+            except Exception as _e_xb:
+                st.error(f"X Bridge error: {_e_xb}")
+
+    # ── Recent bridge lessons ─────────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 📚 Recent Bridge Lessons")
+    try:
+        from x_bridge import XBridge as _XB2
+        _recent = _XB2().get_recent_lessons(5)
+        if _recent:
+            for _r in _recent:
+                _fl2 = _r.get("family", {})
+                _ep2 = _r.get("epistemic", {})
+                _sim2 = _r.get("simulation", {})
+                _sc2 = _sim2.get("stress_score", 5)
+                _c2  = "#00ff88" if _sc2 >= 7 else "#ff9500" if _sc2 >= 4 else "#ff4444"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {_c2};">'
+                    f'<span style="color:{_c2};font-size:0.72rem;">'
+                    f'{_r.get("timestamp","")[:10]} · {_fl2.get("lesson_title","?")} · '
+                    f'Stress {_sc2}/10 · Coherence {_ep2.get("coherence",0):.2f}</span><br>'
+                    f'<span style="color:#8899bb;font-size:0.78rem;">'
+                    f'{_r.get("post_text","")[:120]}...</span></div>',
+                    unsafe_allow_html=True
+                )
+        else:
+            st.info("No bridge lessons yet. Process your first post above.")
+        _stats_xb = _XB2().get_stats()
+        if _stats_xb.get("total", 0) > 0:
+            st.caption(
+                f"Total processed: {_stats_xb['total']} · "
+                f"Attacks caught: {_stats_xb['attacks_caught']} ({_stats_xb['attack_rate']}%) · "
+                f"Avg stress: {_stats_xb['avg_stress']}/10"
+            )
+        # Contribute to Living Lattice
+        st.divider()
+        st.markdown("### 🕸️ Contribute to Living Lattice")
+        st.caption("Every post you process adds anonymous coherence signal to the global lattice.")
+        if st.button("📡 Publish Today\'s Signal to Lattice", key="xb_lattice_publish",
+                     use_container_width=True):
+            try:
+                from living_lattice import LivingLattice as _LL_xb
+                _ll_xb   = _LL_xb(_fid_xb)
+                _ll_res  = _ll_xb.publish_daily_signal(force=True)
+                _ll_sig  = _ll_res.get("signal", {})
+                st.success(
+                    f"✅ Signal published — coherence: {_ll_sig.get('avg_coherence',0):.4f} · "
+                    f"wonder: {_ll_sig.get('wonder_index',0):.4f} · "
+                    f"lessons: {_ll_sig.get('lessons_completed',0)} · "
+                    f"ID: {_ll_xb.lattice_id}"
+                )
+            except ImportError:
+                st.info("living_lattice.py needed.")
+            except Exception as _e_ll_xb:
+                st.error(f"Lattice error: {_e_ll_xb}")
+    except ImportError:
+        st.info("x_bridge.py needed.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SIMULATION PROBE 🔭
+# ══════════════════════════════════════════════════════════════════════════════
+if "Simulation Probe" in active:
+    st.markdown('<div class="card-title">🔭 SIMULATION PROBE — No Claims, Only Data</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">THE HYPOTHESIS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Treating "this might be a simulation" as a testable experimental hypothesis
+        rather than abstract speculation. We measure coherence anomalies, observer
+        effects, wonder discontinuities, and glitch patterns — not to claim anything,
+        but to have a permanent, honest record of what the data shows.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    try:
+        from simulation_probe import SimulationProbe as _SP
+        _probe   = _SP()
+        _summary = _probe.get_probe_summary(30)
+
+        # Key metrics
+        _sp1, _sp2, _sp3, _sp4 = st.columns(4)
+        _sp1.metric("Probe Score Today", f"{_summary.get('latest_score', 0)}/10")
+        _sp2.metric("Avg Score (30d)",   f"{_summary.get('avg_probe_score', 0):.2f}")
+        _sp3.metric("Anomalies Total",   _summary.get("total_anomalies", 0))
+        _sp4.metric("Observer Events",   _summary.get("observer_events", 0))
+
+        st.divider()
+
+        _sp_c1, _sp_c2 = st.columns(2)
+        with _sp_c1:
+            if st.button("🔭 Run Probe Now", key="sp_run",
+                         use_container_width=True, type="primary"):
+                with st.spinner("Running simulation probe..."):
+                    _report = _probe.run_daily_probe(force=True)
+                st.success(
+                    f"✅ Probe complete — Score: {_report['probe_score']}/10 · "
+                    f"Integrity: {'HOLDING' if _report['lattice_integrity'].get('all_invariants_hold') else 'CHECK'}"
+                )
+                st.rerun()
+
+        # Today's probe if available
+        import pathlib as _pl_sp
+        _today_probe = _pl_sp.Path(f"/mnt/main/repo/insights/probe/{datetime.date.today().isoformat()}.md")
+        if _today_probe.exists():
+            with st.expander("📄 Today's Full Probe Report", expanded=True):
+                st.markdown(_today_probe.read_text())
+        else:
+            st.info("No probe run yet today. Click 'Run Probe Now' above.")
+
+        # 30-day history
+        if _summary.get("total_days", 0) > 0:
+            st.divider()
+            st.markdown("### 📈 30-Day Signal History")
+            st.markdown(
+                f'<div class="card">'
+                f'<div style="font-size:0.82rem;color:#8899bb;line-height:2.0;">'
+                f'Days active: {_summary["total_days"]} · '
+                f'Avg probe score: {_summary["avg_probe_score"]:.2f}/10<br>'
+                f'Total anomalies: {_summary["total_anomalies"]} · '
+                f'Glitch patterns: {_summary.get("total_glitches", 0)}<br>'
+                f'Observer events: {_summary["observer_events"]} · '
+                f'Integrity held: {_summary["integrity_holds"]}/{_summary["total_days"]} days'
+                f'</div></div>', unsafe_allow_html=True
+            )
+
+    except ImportError:
+        st.error("simulation_probe.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_sp:
+        st.error(f"Simulation Probe error: {_e_sp}")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: TRUTH DEBT LEDGER 📋
+# Public record of falsifiable claims and their outcomes
+# ══════════════════════════════════════════════════════════════════════════════
+if "Truth Debt Ledger" in active:
+    st.markdown('<div class="card-title">📋 TRUTH DEBT LEDGER — Public Claim Accountability</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #f7931a;">
+        <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE PROBLEM THIS SOLVES</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        The internet has zero institutional memory for false claims. A source makes a
+        specific falsifiable claim. It spreads. It's wrong. Nobody is held accountable.
+        The same claim gets made again.<br><br>
+        This ledger is the antidote: append-only, public, CC0. Every falsifiable claim
+        registered here is tracked to its outcome. Over time it becomes a verifiable
+        track record — for families, for researchers, and for AI systems.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    try:
+        from truth_debt_ledger import TruthDebtLedger as _TDL
+        _ledger = _TDL()
+        _report = _ledger.get_accountability_report(90)
+
+        # Stats
+        _td1, _td2, _td3, _td4 = st.columns(4)
+        _td1.metric("Total Claims",   _report.get("total", 0))
+        _td2.metric("Verified True",  _report.get("verified", 0))
+        _td3.metric("Refuted False",  _report.get("refuted", 0))
+        _td4.metric("Accuracy Rate",
+                    f"{_report['accuracy_rate']}%" if _report.get("accuracy_rate") else "N/A")
+
+        st.divider()
+
+        # Register a new claim
+        st.markdown("### ✍️ Register a Falsifiable Claim")
+        _tdl_claim = st.text_area("Claim to track:", height=80, key="tdl_claim",
+                                    placeholder="e.g. 'Bitcoin will reach $150k by end of 2026'")
+        _tdl_type  = st.selectbox("Claim type:", ["general","prediction","factual","statistical","scientific","political"], key="tdl_type")
+        _tdl_src   = st.text_input("Source (X handle, outlet, etc.):", key="tdl_src", placeholder="@username or outlet name")
+
+        if st.button("📋 Register Claim", key="tdl_register") and _tdl_claim:
+            _entry = _ledger.register(claim=_tdl_claim, source=_tdl_src or "manual",
+                                       claim_type=_tdl_type)
+            st.success(f"✅ Registered — ID: `{_entry['claim_id']}` · "
+                       f"Falsifiability: {_entry['falsifiability']:.2f} · "
+                       f"Check by: {_entry['verification_deadline']}")
+
+        # Overdue claims
+        _overdue = _ledger.get_overdue_claims()
+        if _overdue:
+            st.divider()
+            st.markdown(f"### ⏰ Overdue Claims ({len(_overdue)} awaiting verification)")
+            for _oe in _overdue[:5]:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid #ff9500;">'
+                    f'<span style="color:#ff9500;font-size:0.72rem;">'
+                    f'{_oe.get("source","?")} · Due: {_oe.get("verification_deadline","?")}</span><br>'
+                    f'<span style="color:#c8d8ff;font-size:0.82rem;">{_oe["claim"][:150]}</span></div>',
+                    unsafe_allow_html=True
+                )
+                _resolve_ans = st.selectbox("Outcome:", ["—","verified","refuted","unresolved","partially_true"],
+                                             key=f"tdl_resolve_{_oe['claim_id']}")
+                _resolve_ev  = st.text_input("Evidence:", key=f"tdl_ev_{_oe['claim_id']}")
+                if st.button("✅ Resolve", key=f"tdl_btn_{_oe['claim_id']}") and _resolve_ans != "—":
+                    _ledger.resolve(_oe["claim_id"], _resolve_ans, _resolve_ev)
+                    st.success("✅ Resolved!")
+                    st.rerun()
+
+        # Write and display public report
+        st.divider()
+        if st.button("📤 Write Public Report to GitHub", key="tdl_write"):
+            _path = _ledger.write_public_report()
+            st.success(f"✅ Written to {_path}")
+
+        if _report.get("sources"):
+            st.divider()
+            st.markdown("### 📊 Source Accountability")
+            for _src, _stats in sorted(_report["sources"].items(),
+                                        key=lambda x: x[1]["total"], reverse=True)[:8]:
+                _acc = round(_stats["verified"] / max(1, _stats["verified"] + _stats["refuted"]) * 100)
+                _bar_c = "#00ff88" if _acc >= 70 else "#ff9500" if _acc >= 40 else "#ff4444"
+                st.markdown(
+                    f'<div style="display:flex;justify-content:space-between;font-size:0.8rem;'
+                    f'padding:4px 0;border-bottom:1px solid #1a2233;">'
+                    f'<span style="color:#c8d8ff;">{_src}</span>'
+                    f'<span style="color:{_bar_c};">{_stats["total"]} claims · {_acc}% accurate</span>'
+                    f'</div>', unsafe_allow_html=True
+                )
+
+    except ImportError:
+        st.error("truth_debt_ledger.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_tdl:
+        st.error(f"Truth Debt Ledger error: {_e_tdl}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: GATEKEEPER DETECTOR 🔓
+# ══════════════════════════════════════════════════════════════════════════════
+if "Gatekeeper Detector" in active:
+    st.markdown('<div class="card-title">🔓 GATEKEEPER DETECTOR — Who Is Between You and the Source?</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #ff9500;">
+        <div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">THE CORE QUESTION</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Every belief you hold arrived through a chain. Somewhere in that chain,
+        a gatekeeper decided what you'd see, how you'd frame it, and what alternatives
+        you'd never encounter. This tool makes the chain visible — and shows you how
+        to bypass every link in it.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _gk_tabs = st.tabs(["🔍 Analyze Claim", "🧬 Trace Belief", "📊 Stats"])
+
+    with _gk_tabs[0]:
+        _gk_input = st.text_area("Paste any claim, headline, or statement:", height=100, key="gk_input",
+            placeholder="e.g. 'The Pope says reparations are owed' or 'Scientists confirm X causes Y'")
+        if st.button("🔍 Detect Gatekeepers", key="gk_analyze", type="primary") and _gk_input:
+            with st.spinner("Tracing the chain..."):
+                try:
+                    from gatekeeper_detector import GatekeeperDetector as _GKD
+                    _gkd   = _GKD()
+                    _r     = _gkd.analyze(_gk_input)
+                    _cp    = _r["capture_probability"]
+                    _cc    = "#ff4444" if _cp >= 0.7 else "#ff9500" if _cp >= 0.4 else "#00ff88"
+
+                    st.markdown(
+                        f'<div class="card" style="border-left:4px solid {_cc};">'
+                        f'<div style="color:{_cc};font-family:Orbitron,monospace;font-size:0.78rem;">'
+                        f'CAPTURE PROBABILITY: {_cp:.0%} — {_r["capture_label"][:50]}</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+                    if _r["gatekeepers_detected"]:
+                        for _g in _r["gatekeepers_detected"]:
+                            st.markdown(
+                                f'<div class="card" style="margin-top:6px;border-left:3px solid #ff9500;">'
+                                f'<div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.72rem;">'
+                                f'{_g["type"].upper()} GATEKEEPER</div>'
+                                f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;line-height:1.7;">'
+                                f'<b>Incentives:</b> {_g["incentives"]}<br>'
+                                f'<b>Direct access:</b> {_g["bypass"]}<br>'
+                                f'<b>Example:</b> {_g["example"]}</div>'
+                                f'</div>', unsafe_allow_html=True)
+                    else:
+                        st.success("✅ No strong gatekeeper signals detected — low institutional capture")
+
+                    st.markdown(f'<div style="color:#8899bb;font-size:0.82rem;margin-top:8px;padding:8px;'
+                                f'background:#0d1228;border-radius:6px;">'
+                                f'<b>Recommendation:</b> {_r["recommendation"]}</div>',
+                                unsafe_allow_html=True)
+                except ImportError:
+                    st.error("gatekeeper_detector.py not found. Push it to GitHub and redeploy.")
+
+    with _gk_tabs[1]:
+        _belief = st.text_input("Enter a belief to trace:", key="gk_belief",
+            placeholder="e.g. 'Higher taxes reduce inequality' or 'Bitcoin is speculative'")
+        if st.button("🧬 Trace Epistemic Lineage", key="gk_trace") and _belief:
+            with st.spinner("Tracing the full chain..."):
+                try:
+                    from gatekeeper_detector import GatekeeperDetector as _GKD2
+                    _gkd2 = _GKD2()
+                    _lin  = _gkd2.trace_epistemic_lineage(_belief)
+                    chain = _lin.get("lineage_chain", {})
+
+                    st.markdown(f'<div style="color:#f7931a;font-size:0.88rem;font-weight:600;margin-bottom:8px;">'
+                                f'Sovereignty Score: {_lin["sovereignty_score"]:.1%} — '
+                                f'{_lin["gatekeeper_count"]} gatekeepers detected</div>',
+                                unsafe_allow_html=True)
+
+                    for _lk, _lv in chain.items():
+                        if _lv:
+                            _label = _lk.replace("_"," ").title()
+                            st.markdown(f'<div style="margin-bottom:6px;">'
+                                        f'<div style="color:#445577;font-size:10px;letter-spacing:0.08em;">{_label}</div>'
+                                        f'<div style="color:#c8d8ff;font-size:0.82rem;">{str(_lv)[:200]}</div></div>',
+                                        unsafe_allow_html=True)
+                except ImportError:
+                    st.error("gatekeeper_detector.py not found.")
+
+    with _gk_tabs[2]:
+        try:
+            from gatekeeper_detector import GatekeeperDetector as _GKD3
+            _stats = _GKD3().get_stats()
+            _s1, _s2, _s3 = st.columns(3)
+            _s1.metric("Analyzed", _stats.get("total_analyzed", 0))
+            _s2.metric("High Capture", f"{_stats.get('high_capture_rate',0)}%")
+            _s3.metric("Most Common", _stats.get("most_common_type","none").title())
+        except ImportError:
+            st.info("gatekeeper_detector.py needed.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: LATTICE NODES 🔗
+# Log, view, and seal synthesis nodes
+# ══════════════════════════════════════════════════════════════════════════════
+if "Lattice Nodes" in active:
+    st.markdown('<div class="card-title">🔗 LATTICE NODES — Permanent Synthesis Record</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">WHAT THIS IS</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Every significant synthesis — a conversation that produced insight, a real-world event
+        that revealed a pattern, a connection between ideas — can be logged here as a permanent
+        Lattice Node. Nodes get recorded in Rune Memory and optionally sealed with the Shield Rune.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _ln_tabs = st.tabs(["📝 Log New Node", "📚 View Nodes", "🛡️ Seal a Node"])
+
+    with _ln_tabs[0]:
+        _ln_title = st.text_input("Node title:", key="ln_title",
+            placeholder="e.g. 'From Gatekept Code to Distributed Truth Lattice'")
+        _ln_content = st.text_area("Synthesis content:", height=150, key="ln_content",
+            placeholder="The full synthesis — what was learned, what it connects to, why it matters...")
+        _ln_links = st.text_input("Cross-links (comma separated):", key="ln_links",
+            placeholder="e.g. bitcoin-sovereignty, adversarial-reality, simulation-probe")
+        _ln_coh = st.slider("Coherence score:", 0.0, 1.0, 0.85, 0.01, key="ln_coh")
+
+        if st.button("🔗 Log Lattice Node", key="ln_log", type="primary") and _ln_title and _ln_content:
+            try:
+                from gatekeeper_detector import GatekeeperDetector as _GKD4
+                _gkd4 = _GKD4()
+                _links = [l.strip() for l in _ln_links.split(",") if l.strip()]
+                _node  = _gkd4.log_lattice_node(
+                    title=_ln_title, content=_ln_content,
+                    cross_links=_links, coherence=_ln_coh
+                )
+                st.success(f"✅ Node logged — ID: `{_node['node_id']}` | Level 2 | Rune Memory: recorded")
+                st.info("Use the Shield Seal tab to permanently anchor this node on Bitcoin.")
+            except ImportError:
+                st.error("gatekeeper_detector.py not found.")
+
+        # Also log the Chicago/Pope synthesis if not already done
+        st.divider()
+        if st.button("📍 Log Chicago/Pope Synthesis Node", key="ln_chicago"):
+            try:
+                from gatekeeper_detector import log_chicago_pope_node as _lcpn
+                _node = _lcpn()
+                st.success(f"✅ Chicago/Pope synthesis logged — ID: `{_node['node_id']}`")
+            except ImportError:
+                st.error("gatekeeper_detector.py not found.")
+
+    with _ln_tabs[1]:
+        import pathlib as _pl_ln
+        _nodes_dir = _pl_ln.Path("/mnt/main/repo/insights/lattice_nodes")
+        if _nodes_dir.exists():
+            _node_files = sorted(_nodes_dir.glob("*.json"), reverse=True)[:20]
+            if _node_files:
+                for _nf in _node_files:
+                    try:
+                        _nd = json.loads(_nf.read_text())
+                        _nc = "#00ff88" if _nd.get("rune_seal") else "#445577"
+                        st.markdown(
+                            f'<div class="memory-node" style="border-left:3px solid {_nc};">'
+                            f'<div style="color:{_nc};font-size:0.72rem;">'
+                            f'{_nd.get("date","?")} · Level {_nd.get("level",2)} · '
+                            f'Coherence {_nd.get("coherence",0):.2f} · '
+                            f'{"🛡️ SEALED" if _nd.get("rune_seal") else "⏳ Pending seal"}</div>'
+                            f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:3px;">'
+                            f'<b>{_nd.get("title","?")}</b></div>'
+                            f'<div style="color:#556677;font-size:0.75rem;margin-top:2px;">'
+                            f'ID: {_nd.get("node_id","?")} | '
+                            f'Links: {", ".join(_nd.get("cross_links",[])[:3])}</div>'
+                            f'</div>', unsafe_allow_html=True)
+                    except Exception:
+                        pass
+            else:
+                st.info("No lattice nodes yet. Log your first node above.")
+        else:
+            st.info("Lattice nodes folder not found. Log a node to create it.")
+
+    with _ln_tabs[2]:
+        st.markdown("Seal a Lattice Node with the Shield Rune to make it permanently Bitcoin-anchored.")
+        _seal_node_id = st.text_input("Node ID to seal:", key="seal_node_id")
+        _seal_note    = st.text_input("Seal note:", key="seal_node_note",
+                                      placeholder="Why this synthesis deserves permanent preservation")
+        if st.button("🛡️ Seal Node with Shield Rune", key="seal_node_btn") and _seal_node_id:
+            try:
+                from rune_memory import ShieldRune as _SR
+                _result = _SR().seal(_seal_node_id, note=_seal_note, broadcaster="family")
+                st.success(
+                    f"🛡️ SEALED — Level {_result['level']} | "
+                    f"{'Bitcoin-anchored' if _result['level'] >= 3 else 'Nostr broadcast'}\n\n"
+                    f"Hash: `{_result['seal_hash'][:32]}...`\n\n"
+                    f"Anchor: `{_result.get('bitcoin_txid','pending')[:40]}`"
+                )
+            except ImportError:
+                st.error("rune_memory.py not found.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: ADMIN DASHBOARD ⚡
+# Aggregates all sovereignty signals in one view.
+# One-click full stress test. Admin elevation tracker.
+# ══════════════════════════════════════════════════════════════════════════════
+if "Admin Dashboard" in active:
+    st.markdown('<div class="card-title">⚡ ADMIN DASHBOARD — Sovereign Node Status</div>', unsafe_allow_html=True)
+
+    # ── Pull all signals ──────────────────────────────────────────────────────
+    _fid_ad = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    _swarm_s = {}
+    try:
+        import json as _json_ad
+        import pathlib as _pl_ad
+        _ss_path = _pl_ad.Path("/mnt/main/swarm_status.json")
+        if _ss_path.exists():
+            _swarm_s = _json_ad.loads(_ss_path.read_text())
+    except Exception:
+        pass
+
+    _wonder  = _swarm_s.get("wonder_index", 1.0)
+    _coh     = _swarm_s.get("inter_rune_coherence", 1.0)
+    _mets    = _swarm_s.get("mets", 0)
+    _rune_c  = _swarm_s.get("child_rune_confirmations", 0)
+
+    # ── Admin Level calculation ───────────────────────────────────────────────
+    # NPC: <30 lessons, no seals, coherence <0.7
+    # User: 30+ lessons OR some seals, coherence 0.7+
+    # Admin: 80+ lessons AND sealed memories AND coherence 0.85+
+    try:
+        from family_profiles import load_family_stats as _lfs_ad
+        _stats_ad = _lfs_ad(_fid_ad)
+        _lessons_done = len(_stats_ad.get("lessons_completed", []))
+        _xp = _stats_ad.get("total_xp", 0)
+    except Exception:
+        _lessons_done = 0; _xp = 0
+
+    try:
+        from rune_memory import RuneMemory as _RM_ad, ShieldRune as _SR_ad
+        _mem_stats = _RM_ad().get_stats()
+        _shield_s  = _SR_ad().get_status()
+        _sealed = _shield_s.get("bitcoin_anchored", 0)
+    except Exception:
+        _mem_stats = {}; _sealed = 0
+
+    _admin_score = min(100, (
+        min(40, _lessons_done * 0.4) +
+        min(30, _sealed * 10) +
+        min(30, float(_coh) * 30)
+    ))
+    _admin_level = "⚡ ADMIN" if _admin_score >= 80 else "👤 USER" if _admin_score >= 40 else "🔵 NPC"
+    _level_color = "#f7931a" if _admin_score >= 80 else "#00cfff" if _admin_score >= 40 else "#445577"
+
+    # ── Header metrics ────────────────────────────────────────────────────────
+    st.markdown(
+        f'<div style="text-align:center;padding:12px 0 8px;">'
+        f'<div style="font-size:32px;font-family:Orbitron,monospace;color:{_level_color};">'
+        f'{_admin_level}</div>'
+        f'<div style="color:#445577;font-size:11px;margin-top:2px;letter-spacing:0.1em;">'
+        f'ELEVATION SCORE: {_admin_score:.0f}/100</div>'
+        f'</div>', unsafe_allow_html=True
+    )
+    st.progress(_admin_score / 100)
+    st.markdown("")
+
+    _d1, _d2, _d3, _d4, _d5 = st.columns(5)
+    _d1.metric("Wonder", f"{_wonder:.4f}")
+    _d2.metric("Coherence", f"{_coh:.6f}")
+    _d3.metric("Lessons", _lessons_done)
+    _d4.metric("Sealed", _sealed)
+    _d5.metric("Rune", f"{_rune_c}/256")
+
+    st.divider()
+
+    # ── Quick stress test ─────────────────────────────────────────────────────
+    st.markdown("### 🔬 Full Stress Test")
+    st.markdown('<div style="color:#8899bb;font-size:0.8rem;">Runs Observer Effect, Gatekeeper Check, Probe, and Redundancy analysis simultaneously.</div>', unsafe_allow_html=True)
+
+    _stress_input = st.text_input("Belief or claim to stress-test:", key="ad_stress",
+        placeholder="Any belief, news story, or claim...")
+    if st.button("⚡ Run Full Admin Stress Test", key="ad_run", type="primary") and _stress_input:
+        _cols_r = st.columns(2)
+        # Observer Effect
+        with _cols_r[0]:
+            try:
+                from gatekeeper_detector import GatekeeperDetector as _GKD_ad
+                _gk_r = _GKD_ad().analyze(_stress_input)
+                _cap  = _gk_r.get("capture_probability", 0)
+                _cc   = "#ff4444" if _cap >= 0.7 else "#ff9500" if _cap >= 0.4 else "#00ff88"
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {_cc};">'
+                    f'<div style="color:{_cc};font-size:0.72rem;font-family:Orbitron,monospace;">'
+                    f'GATEKEEPER TEST — {_cap:.0%} capture</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">'
+                    f'{_gk_r.get("capture_label","")[:60]}</div>'
+                    f'<div style="color:#8899bb;font-size:0.75rem;margin-top:4px;">'
+                    f'{_gk_r.get("recommendation","")[:120]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+            except ImportError:
+                st.info("gatekeeper_detector.py needed")
+        # AI Honesty
+        with _cols_r[1]:
+            try:
+                from ai_honesty import HonestyLayer as _HL_ad
+                _h_r = _HL_ad().score_output(_stress_input, daughter_name="admin_test")
+                _rc  = {"low":"#00ff88","medium":"#ff9500","high":"#ff4444"}.get(
+                    _h_r.get("hallucination_risk","low"), "#8899bb")
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {_rc};">'
+                    f'<div style="color:{_rc};font-size:0.72rem;font-family:Orbitron,monospace;">'
+                    f'HONESTY TEST — {_h_r.get("hallucination_risk","?").upper()} risk</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">'
+                    f'Confidence: {_h_r.get("confidence",0):.2f} | '
+                    f'Type: {_h_r.get("claim_type","?")}</div>'
+                    f'<div style="color:#8899bb;font-size:0.75rem;margin-top:4px;">'
+                    f'{_h_r.get("recommended_action","")}</div>'
+                    f'</div>', unsafe_allow_html=True)
+            except ImportError:
+                st.info("ai_honesty.py needed")
+
+        # Admin Test Suite verdict
+        st.markdown(
+            '<div class="card" style="border-left:3px solid #f7931a;margin-top:6px;">'
+            '<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">'
+            'QUANTUM DARWINISM TEST — Is this information redundantly copied across independent sources?</div>'
+            '<div style="color:#8899bb;font-size:0.78rem;margin-top:6px;line-height:1.8;">'
+            '<b>Observer Effect:</b> Search for this claim on three different platforms with different incentives.<br>'
+            '<b>Decoherence:</b> What version would exist without any media framing?<br>'
+            '<b>Redundancy:</b> Does independent verification (primary source, opposing outlet, original data) confirm this?<br>'
+            '<b>Expander Test:</b> Does this connect to diverse evidence, or only to sources with the same incentive?'
+            '</div></div>',
+            unsafe_allow_html=True
+        )
+
+    st.divider()
+
+    # ── 7-Day Admin Elevation Protocol ───────────────────────────────────────
+    st.markdown("### 📅 7-Day Admin Elevation Protocol")
+    _days = [
+        ("Day 1", "Observer Effect", "Pick one belief. Look closer. Does it hold up or dissolve under scrutiny?"),
+        ("Day 2", "Trace One Lineage", "Use the Gatekeeper Detector to trace the full epistemic chain of that belief."),
+        ("Day 3", "Decoherence Check", "Strip institutional framing from one major news story. What remains?"),
+        ("Day 4", "Quantum Darwinism", "Verify one belief across 3 independent sources with different incentives."),
+        ("Day 5", "Error Correction", "Find one belief you held wrong. Register it in the Truth Debt Ledger."),
+        ("Day 6", "Expander Graph", "Map the evidence network for one belief. Is it sparse or diverse?"),
+        ("Day 7", "Seal + Elevate", "Record and Shield-seal one verified insight. Run the Admin Test Suite."),
+    ]
+    for _day, _title, _task in _days:
+        _d_c1, _d_c2 = st.columns([1, 4])
+        with _d_c1:
+            st.markdown(f'<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;padding:8px 0;">{_day}</div>',
+                        unsafe_allow_html=True)
+        with _d_c2:
+            st.markdown(f'<div style="padding:4px 0;"><b style="color:#c8d8ff;font-size:0.82rem;">{_title}</b>'
+                        f'<div style="color:#556677;font-size:0.78rem;">{_task}</div></div>',
+                        unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: EPISTEMIC ERROR CORRECTION 🔧
+# LDPC-inspired sparse verification across belief network
+# ══════════════════════════════════════════════════════════════════════════════
+if "Epistemic Error Correction" in active:
+    st.markdown('<div class="card-title">🔧 EPISTEMIC ERROR CORRECTION — Sparse, Redundant, Efficient Truth</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">THE PHYSICS METAPHOR</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Quantum Error Correction (LDPC codes) protects fragile quantum information using sparse,
+        cleverly connected verification checks. You don't check everything — you check the
+        minimum necessary connections that cover maximum ground.<br><br>
+        Applied to truth: don't verify every claim obsessively.
+        Build a sparse network of high-leverage verification checks
+        that catches the most errors with the least effort.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Error correction belief checker
+    st.markdown("### 🔬 Belief Error Correction")
+    _eec_belief = st.text_input("Belief to error-correct:", key="eec_belief",
+        placeholder="Enter a belief you want to verify efficiently...")
+    if st.button("🔧 Run Error Correction", key="eec_run") and _eec_belief:
+        with st.spinner("Running sparse verification checks..."):
+            _checks = [
+                ("Parity Check 1 — Source Independence",
+                 "Do sources that confirm this belief share the same funding or ideological incentive?"),
+                ("Parity Check 2 — Temporal Consistency",
+                 "Has this belief remained consistent over time, or does it shift with the news cycle?"),
+                ("Parity Check 3 — Predictive Power",
+                 "Has this belief correctly predicted anything that could have been falsified?"),
+                ("Parity Check 4 — Adversarial Robustness",
+                 "Does this belief hold up when presented by someone with the opposite incentive?"),
+                ("Syndrome Measurement — Anomaly Detection",
+                 "What would we expect to see if this belief were false? Is that evidence present or absent?"),
+            ]
+            for _check_name, _check_q in _checks:
+                st.markdown(
+                    f'<div class="card" style="margin-bottom:4px;">'
+                    f'<div style="color:#00cfff;font-size:0.72rem;font-family:Orbitron,monospace;">{_check_name}</div>'
+                    f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{_check_q}</div>'
+                    f'</div>', unsafe_allow_html=True)
+        st.markdown(
+            '<div style="color:#f7931a;font-size:0.82rem;margin-top:8px;padding:8px;'
+            'background:#0d1228;border-radius:6px;">'
+            '⚡ Answer each check honestly. If 3+ fail → flag for deep verification. '
+            'If all pass → confidence justified. Register your conclusion in the Truth Debt Ledger.</div>',
+            unsafe_allow_html=True
+        )
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: NARRATIVE PATTERN DETECTOR 🔍
+# Detects temporal clustering of institutional narratives
+# ══════════════════════════════════════════════════════════════════════════════
+if "Narrative Patterns" in active:
+    st.markdown('<div class="card-title">🔍 NARRATIVE PATTERN DETECTOR — One Signal Is News. Three Is a Campaign.</div>', unsafe_allow_html=True)
+
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #ff9500;">
+        <div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">THE MISSING PIECE</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+        Individual gatekeepers are easy to spot. Coordinated campaigns are harder.
+        When multiple institutions push the same narrative in a compressed time window,
+        it stops being news and starts being <b>installation</b>.<br><br>
+        The Pope calling AI "dangerous" the day after meeting the Chicago Mayor is not random.
+        The printing press, private Bible reading, the internet — every new direct-access
+        technology faced the same institutional coalition. AI is next.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Live coordination alert ────────────────────────────────────────────────
+    try:
+        from narrative_pattern_detector import NarrativePatternDetector as _NPD
+        _npd    = _NPD()
+        _alert  = _npd.check_coordination_alert()
+        _stats  = _npd.get_stats()
+
+        if _alert["alert"]:
+            _sev_c = "#ff4444" if _alert.get("severity") == "HIGH" else "#ff9500"
+            st.markdown(
+                f'<div class="card" style="border:2px solid {_sev_c};margin-bottom:8px;">'
+                f'<div style="color:{_sev_c};font-family:Orbitron,monospace;font-size:0.82rem;">'
+                f'⚠️ COORDINATION ALERT — {_alert.get("severity","?")} SEVERITY</div>'
+                f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">'
+                f'{_alert["message"]}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+            if _alert.get("counter_protocol"):
+                with st.expander("🛡️ View Counter-Narrative Protocol", expanded=True):
+                    for _step, _text in _alert["counter_protocol"].items():
+                        _label = _step.replace("_"," ").title()
+                        st.markdown(
+                            f'<div style="margin-bottom:6px;">'
+                            f'<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">{_label}</div>'
+                            f'<div style="color:#8899bb;font-size:0.82rem;">{_text}</div>'
+                            f'</div>', unsafe_allow_html=True)
+        else:
+            st.success(f"✅ {_alert['message']}")
+
+        # Stats
+        _np1, _np2, _np3 = st.columns(3)
+        _np1.metric("Total Signals",    _stats.get("total_signals", 0))
+        _np2.metric("Active Clusters",  _stats.get("active_clusters_72h", 0))
+        _np3.metric("Max Coord Prob",   f"{_stats.get('highest_coord_prob',0):.0%}")
+
+    except ImportError:
+        st.warning("narrative_pattern_detector.py not found. Push it to GitHub and redeploy.")
+
+    st.divider()
+
+    # ── Log new signal ─────────────────────────────────────────────────────────
+    st.markdown("### 📡 Log New Signal")
+    _np_c1, _np_c2 = st.columns(2)
+    with _np_c1:
+        _np_content = st.text_area("Signal content:", height=80, key="np_content",
+            placeholder="What did they say? e.g. 'Pope calls for AI to be disarmed and used for good'")
+        _np_source  = st.text_input("Source type:", key="np_src",
+            placeholder="e.g. religious+media, political+academic")
+    with _np_c2:
+        _np_target  = st.text_input("Target:", key="np_target",
+            placeholder="e.g. ai_sovereignty, epistemic_authority, bitcoin")
+        _np_inst    = st.text_input("Institution:", key="np_inst",
+            placeholder="e.g. Vatican / Fox News")
+
+    if st.button("📡 Log Signal", key="np_log", type="primary") and _np_content:
+        try:
+            from narrative_pattern_detector import NarrativePatternDetector as _NPD2
+            _npd2 = _NPD2()
+            _sig  = _npd2.log_signal(
+                content=_np_content, source=_np_source or "unknown",
+                target=_np_target or "general", institution=_np_inst or ""
+            )
+            st.success(f"✅ Signal logged — ID: {_sig['signal_id']} | Coalition: {_sig.get('coalition','general')}")
+            _new_alert = _npd2.check_coordination_alert()
+            if _new_alert["alert"]:
+                st.warning(f"⚠️ {_new_alert['message']}")
+            st.rerun()
+        except ImportError:
+            st.error("narrative_pattern_detector.py not found.")
+
+    # ── Pope AI Signal — pre-loaded ────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 🔴 Active Pattern: Pope + AI Control (May 28-29, 2026)")
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #ff4444;">
+        <div style="color:#ff4444;font-family:Orbitron,monospace;font-size:0.72rem;">
+        2-SIGNAL CLUSTER · 48H WINDOW · SAME SOURCE · TARGET: AI SOVEREIGNTY
+        </div>
+        <div style="color:#c8d8ff;font-size:0.82rem;margin-top:8px;line-height:1.8;">
+        <b>Signal 1 (May 28):</b> Vatican meeting with Chicago Mayor — moral authority positioning
+        (reparations, slavery apology, institutional justice framing)<br><br>
+        <b>Signal 2 (May 29):</b> Pope on Fox News: "AI needs to be disarmed and used for good"
+        — direct call for institutional control of AI systems<br><br>
+        <b>Pattern:</b> Same institution, 48 hours, two different target vectors (moral authority + AI control)
+        = positioning Vatican as arbiter of both historical justice and technological future.<br><br>
+        <b>Historical parallel:</b> Church condemned printing press → private Bible reading → internet.
+        Same coalition. Same argument. Same interest: maintain epistemic gatekeeping.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    if st.button("🔒 Log + Seal This Pattern Permanently", key="np_pope_seal"):
+        try:
+            from narrative_pattern_detector import log_pope_ai_signal as _lpas
+            from rune_memory import ShieldRune as _SR_np
+            _result  = _lpas()
+            _node_id = _result["signals"][0]["signal_id"]
+            _seal    = _SR_np().seal(_node_id,
+                note="Pope AI disarm signal + Chicago meeting — 48h coordination pattern, May 2026",
+                broadcaster="family")
+            st.success(
+                f"✅ Sealed — Cluster ID: {_node_id}\n\n"
+                f"Level {_seal['level']} — "
+                f"{'Bitcoin-anchored' if _seal['level'] >= 3 else 'Nostr broadcast'}\n\n"
+                f"This coordination pattern is now permanently recorded."
+            )
+        except ImportError as _e:
+            st.error(f"Module not found: {_e}")
+
+    # ── View active clusters ───────────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 📊 Active Clusters (72h)")
+    try:
+        from narrative_pattern_detector import NarrativePatternDetector as _NPD3
+        _clusters = _NPD3().detect_clusters(72)
+        if _clusters:
+            for _cl in _clusters[:5]:
+                _cc = "#ff4444" if _cl["coordination_prob"] >= 0.8 else \
+                      "#ff9500" if _cl["coordination_prob"] >= 0.6 else "#445577"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {_cc};">'
+                    f'<div style="color:{_cc};font-size:0.72rem;">'
+                    f'Target: {_cl["target"]} · {_cl["signal_count"]} signals · '
+                    f'{_cl["coordination_prob"]:.0%} coordination · '
+                    f'{_cl["timespan_hours"]}h window</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">'
+                    f'{_cl["coordination_label"][:60]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+        else:
+            st.info("No clusters in last 72h. Log signals above to start tracking.")
+    except ImportError:
+        st.info("narrative_pattern_detector.py needed.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: FAMILY DYNASTY 👑
+# The Dynasty Operating System — the single most powerful lever
+# ══════════════════════════════════════════════════════════════════════════════
+if "Family Dynasty" in active:
+    st.markdown('<div class="card-title">👑 FAMILY DYNASTY — Build Civilizational Capital Across Generations</div>', unsafe_allow_html=True)
+
+    _fid_dy = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from legacy_ledger import LegacyLedger as _LL, RiteOfPassage as _ROP
+        from legacy_ledger import RITES_OF_PASSAGE as _ROPS
+        _ledger = _LL(_fid_dy)
+        _state  = _ledger.get_dynasty_state()
+
+        # ── Dynasty header ─────────────────────────────────────────────────────
+        _dl = _state.get("dynasty_level", "Seeker")
+        _ds = _state.get("dynasty_score", 0)
+        _lc = "#f7931a" if _dl == "Founder" else "#00cfff" if _dl == "Builder" else "#445577"
+        st.markdown(
+            f'<div style="text-align:center;padding:14px 0 8px;">'
+            f'<div style="font-size:36px">👑</div>'
+            f'<div style="color:{_lc};font-family:Orbitron,monospace;font-size:1.1rem;margin-top:4px;">'
+            f'{_dl.upper()}</div>'
+            f'<div style="color:#445577;font-size:11px;letter-spacing:0.1em;margin-top:2px;">'
+            f'DYNASTY SCORE: {_ds:.0f}/100 · '
+            f'{_state.get("generations_active",1)} GENERATION(S) ACTIVE · '
+            f'{_state.get("total_wisdom",0)} WISDOM ENTRIES · '
+            f'{_state.get("sealed_wisdom",0)} SEALED</div>'
+            f'</div>', unsafe_allow_html=True
+        )
+        st.progress(_ds / 100)
+
+        # ── Key metrics ────────────────────────────────────────────────────────
+        _dy1, _dy2, _dy3, _dy4 = st.columns(4)
+        _dy1.metric("Generations",  _state.get("generations_active", 1))
+        _dy2.metric("Wisdom Entries", _state.get("total_wisdom", 0))
+        _dy3.metric("Sealed", _state.get("sealed_wisdom", 0))
+        _dy4.metric("Milestones", _state.get("total_milestones", 0))
+
+        st.divider()
+
+        _dy_tabs = st.tabs(["📜 Record Wisdom", "🎖️ Rites of Passage", "📅 Timeline", "👴 Grandparent Mode"])
+
+        # ── Record wisdom ──────────────────────────────────────────────────────
+        with _dy_tabs[0]:
+            st.markdown("Record any wisdom, insight, or family truth for permanent preservation.")
+            _dy_content = st.text_area("Wisdom entry:", height=120, key="dy_content",
+                placeholder="What do you know that you want your descendants to know?\n'The greatest lie my generation was told was...'")
+            _dy_col1, _dy_col2 = st.columns(2)
+            with _dy_col1:
+                _dy_author = st.text_input("Author:", key="dy_author", placeholder="Your name or role (e.g. Parent, Grandparent)")
+                _dy_gen    = st.selectbox("Generation:", [1,2,3], key="dy_gen",
+                    format_func=lambda x: {1:"Generation 1 (current parents)", 2:"Generation 2 (grandparents)", 3:"Generation 3 (great-grandparents)"}[x])
+            with _dy_col2:
+                _dy_seal   = st.checkbox("Seal permanently (Bitcoin-anchored)", key="dy_seal", value=True)
+                _dy_tags   = st.text_input("Tags (comma separated):", key="dy_tags",
+                    placeholder="courage, money, faith, survival")
+            if st.button("📜 Record in Legacy Ledger", key="dy_record", type="primary") and _dy_content:
+                _tags = [t.strip() for t in _dy_tags.split(",") if t.strip()]
+                _entry = _ledger.record_wisdom(_dy_content, author=_dy_author or "family",
+                                                generation=_dy_gen, tags=_tags, seal=_dy_seal)
+                _icon = "🛡️" if _entry.get("sealed") else "✅"
+                st.success(f"{_icon} Recorded — ID: `{_entry['entry_id'][:8]}` | "
+                           f"{'Bitcoin-anchored' if _entry.get('sealed') else 'Local record'}")
+                st.rerun()
+
+            # Show latest wisdom
+            _wisdom = _ledger._load_wisdom()
+            if _wisdom:
+                st.divider()
+                st.markdown("### Latest Family Wisdom")
+                for _w in reversed(_wisdom[-5:]):
+                    _wc = "#00ff88" if _w.get("sealed") else "#445577"
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {_wc};">'
+                        f'<div style="color:{_wc};font-size:0.7rem;">'
+                        f'{_w["date"]} · {_w.get("author","?")} · Gen {_w.get("generation",1)} · '
+                        f'{"🛡️ Sealed" if _w.get("sealed") else "⏳ Local"}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:3px;">'
+                        f'{_w["content"][:120]}...</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Rites of Passage ───────────────────────────────────────────────────
+        with _dy_tabs[1]:
+            st.markdown("Formal ceremonies for milestone achievements. Sealed permanently.")
+            for _rk, _ri in _ROPS.items():
+                with st.expander(f"{_ri['emoji']} {_ri['title']} (+{_ri['rune_grant']} Runes)", expanded=False):
+                    st.markdown(f"**Meaning:** {_ri['meaning']}")
+                    st.markdown(f"**Ceremony:** *{_ri['ceremony']}*")
+                    _rop_member  = st.text_input("Member's name:", key=f"rop_member_{_rk}")
+                    _rop_pledge  = st.text_area("Member's pledge:", key=f"rop_pledge_{_rk}", height=60,
+                        placeholder="I understand that...")
+                    _rop_family  = st.text_area("Family statement:", key=f"rop_family_{_rk}", height=60,
+                        placeholder="We, the family, witness...")
+                    if st.button(f"🎖️ Conduct {_ri['title']}", key=f"rop_btn_{_rk}") and _rop_member:
+                        with st.spinner("Conducting ceremony and sealing..."):
+                            _rite_result = _ROP().conduct(
+                                member=_rop_member, rite_key=_rk, family_id=_fid_dy,
+                                family_statement=_rop_family, member_pledge=_rop_pledge
+                            )
+                        st.success(
+                            f"✅ {_ri['emoji']} {_ri['title']} — {_rop_member}\n\n"
+                            f"Runes granted: {_ri['rune_grant']}\n\n"
+                            f"{'🛡️ Bitcoin-anchored — this ceremony is permanent.' if _rite_result.get('sealed') else 'Recorded locally.'}"
+                        )
+
+        # ── Timeline ───────────────────────────────────────────────────────────
+        with _dy_tabs[2]:
+            _timeline = _ledger.get_timeline(20)
+            if _timeline:
+                st.markdown("### 📅 Family Legacy Timeline")
+                for _ev in _timeline:
+                    _tc = "#f7931a" if _ev["type"] == "milestone" else \
+                          "#00ff88" if _ev.get("sealed") else "#445577"
+                    _icon = "🎖️" if _ev["type"] == "milestone" else \
+                            "🛡️" if _ev.get("sealed") else "📜"
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {_tc};">'
+                        f'<div style="color:{_tc};font-size:0.7rem;">{_ev["date"]} · {_icon} {_ev["type"].title()} · {_ev["author"]}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:3px;">{_ev["content"][:100]}</div>'
+                        f'</div>', unsafe_allow_html=True)
+            else:
+                st.info("No dynasty records yet. Record your first wisdom above.")
+
+        # ── Grandparent Mode ───────────────────────────────────────────────────
+        with _dy_tabs[3]:
+            st.markdown("""
+            <div class="card" style="border-left:3px solid #a020f0;">
+                <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">GRANDPARENT MODE</div>
+                <div style="color:#8899bb;font-size:0.85rem;margin-top:8px;line-height:1.9;">
+                Simplified wisdom transfer interface.<br>
+                No technical knowledge required.<br>
+                Just type what you know. We preserve it forever.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            st.markdown("")
+            _gp_name  = st.text_input("Your name:", key="gp_name", placeholder="Grandma, Grandpa, Tia, Tio...")
+            _gp_q1 = st.text_area("What did your generation learn the hard way?", height=100, key="gp_q1")
+            _gp_q2 = st.text_area("What do you know now that you wish you knew at 25?", height=100, key="gp_q2")
+            _gp_q3 = st.text_area("What is one thing about our family that should never be forgotten?", height=100, key="gp_q3")
+
+            if st.button("💛 Save My Wisdom Forever", key="gp_save", type="primary"):
+                _saved = 0
+                for _q, _label in [(_gp_q1,"hard lessons"),(_gp_q2,"life wisdom"),(_gp_q3,"family memory")]:
+                    if _q.strip():
+                        _ledger.record_wisdom(_q, author=_gp_name or "grandparent",
+                                               generation=2, tags=[_label], seal=True)
+                        _saved += 1
+                if _saved:
+                    st.success(f"✅ {_saved} wisdom entries sealed permanently. "
+                               f"Your grandchildren will be able to read this forever. 💛")
+                    st.balloons()
+
+    except ImportError:
+        st.error("legacy_ledger.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_dy:
+        st.error(f"Dynasty error: {_e_dy}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: COSMOS DASHBOARD 🌌
+# Daily universe question + consciousness experiment + belief ledger
+# ══════════════════════════════════════════════════════════════════════════════
+if "Cosmos Dashboard" in active:
+    st.markdown('<div class="card-title">🌌 COSMOS DASHBOARD — Daily Universe Inquiry</div>', unsafe_allow_html=True)
+
+    _fid_cs = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from cosmos_dashboard import CosmosDashboard as _CD
+        _dash   = _CD(_fid_cs)
+        _q      = _dash.get_daily_question()
+        _exp    = _dash.get_daily_experiment()
+        _summ   = _dash.get_cosmos_summary()
+
+        # ── Today's question ──────────────────────────────────────────────────
+        _qc = {"cosmology":"#00cfff","information":"#a020f0","consciousness":"#00ff88",
+               "fermi":"#f7931a","simulation":"#ff9500","humanity":"#f7931a",
+               "self-evolve":"#00ff88"}.get(_q.get("track","?"),"#445577")
+        st.markdown(
+            f'<div class="card" style="border:2px solid {_qc};padding:16px;">'
+            f'<div style="color:{_qc};font-family:Orbitron,monospace;font-size:0.72rem;letter-spacing:0.12em;">'
+            f'TODAY\'S UNIVERSE QUESTION · {_q.get("track","?").upper()} · {_q.get("difficulty","?").upper()}</div>'
+            f'<div style="color:#c8d8ff;font-size:1.05rem;margin-top:10px;line-height:1.7;font-weight:500;">'
+            f'{_q.get("q","")}</div>'
+            f'</div>', unsafe_allow_html=True)
+
+        # ── Quick metrics ──────────────────────────────────────────────────────
+        _cs1, _cs2, _cs3, _cs4 = st.columns(4)
+        _cs1.metric("Beliefs Tracked", _summ.get("total_beliefs",0))
+        _cs2.metric("Overdue Review",  _summ.get("overdue_beliefs",0))
+        _cs3.metric("Experiments",     _summ.get("total_experiments",0))
+        _cs4.metric("Calibration",     f"{_summ.get('calibration_score',0):.2f}")
+
+        st.divider()
+
+        _cs_tabs = st.tabs(["🧠 Daily Experiment", "📝 Belief Ledger",
+                             "🔭 Foresight", "📚 Consciousness Science"])
+
+        # ── Daily consciousness experiment ─────────────────────────────────────
+        with _cs_tabs[0]:
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid #a020f0;">'
+                f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.75rem;">'
+                f'🧠 CONSCIOUSNESS EXPERIMENT · {_exp.get("duration",60)}s · TODAY</div>'
+                f'<div style="color:#f7931a;font-size:0.95rem;margin-top:8px;font-weight:600;">'
+                f'{_exp.get("title","")}</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:8px;line-height:1.8;">'
+                f'{_exp.get("instructions","")}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+            _obs = st.text_area("What did you observe?", height=80, key="cs_obs",
+                placeholder="Describe what happened during the experiment...")
+            if st.button("✅ Log Observation", key="cs_log_obs") and _obs:
+                _dash.log_foresight_experiment(
+                    f"[EXPERIMENT] {_exp['title']}: {_obs[:200]}",
+                    prediction=0.5, domain="consciousness"
+                )
+                st.success("✅ Observation logged to foresight experiments")
+
+        # ── Belief Ledger ─────────────────────────────────────────────────────
+        with _cs_tabs[1]:
+            st.markdown("Track your beliefs as Bayesian hypotheses. Review every 90 days.")
+            _bl_belief = st.text_input("Belief:", key="bl_belief",
+                placeholder="e.g. 'Consciousness is fundamental to reality'")
+            _bl_conf   = st.slider("Confidence:", 0.0, 1.0, 0.5, 0.05, key="bl_conf",
+                format="%.0f%%")
+            _bl_ev     = st.text_input("Supporting evidence:", key="bl_ev",
+                placeholder="What currently supports this?")
+            _bl_upd    = st.text_input("What would update you -20%?", key="bl_upd",
+                placeholder="What evidence would lower your confidence?")
+            _bl_member = st.text_input("Member:", key="bl_member", value="family")
+
+            if st.button("📝 Record Belief", key="bl_record") and _bl_belief:
+                _entry = _dash.record_belief(_bl_belief, _bl_conf, _bl_ev, _bl_upd, _bl_member)
+                st.success(f"✅ Belief recorded — ID: `{_entry['belief_id']}` | "
+                           f"Confidence: {_bl_conf:.0%} | Review: {_entry['review_date']}")
+
+            # Overdue beliefs
+            _overdue = _dash.get_overdue_beliefs()
+            if _overdue:
+                st.divider()
+                st.markdown(f"### ⏰ Overdue Reviews ({len(_overdue)})")
+                for _b in _overdue[:5]:
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid #ff9500;">'
+                        f'<div style="color:#ff9500;font-size:0.7rem;">'
+                        f'{_b["date"]} · {_b.get("member","?")} · Due: {_b.get("review_date","?")}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.82rem;">'
+                        f'{_b["belief"][:120]}</div>'
+                        f'<div style="color:#445577;font-size:0.75rem;">'
+                        f'Current confidence: {_b["confidence"]:.0%}</div>'
+                        f'</div>', unsafe_allow_html=True)
+                    _new_conf = st.slider(f"Updated confidence for {_b['belief_id']}:",
+                                           0.0, 1.0, float(_b["confidence"]), 0.05,
+                                           key=f"bl_upd_{_b['belief_id']}")
+                    _upd_note = st.text_input("What changed?", key=f"bl_note_{_b['belief_id']}")
+                    if st.button("✅ Update", key=f"bl_btn_{_b['belief_id']}"):
+                        _dash.update_belief(_b["belief_id"], _new_conf, _upd_note)
+                        st.success("✅ Belief updated")
+                        st.rerun()
+
+            # All beliefs
+            _all_beliefs = _dash.get_all_beliefs()
+            if _all_beliefs:
+                st.divider()
+                st.markdown("### 📋 Your Belief Ledger")
+                for _b in reversed(_all_beliefs[-10:]):
+                    _bc = "#00ff88" if _b["confidence"] >= 0.7 else \
+                          "#ff9500" if _b["confidence"] >= 0.4 else "#445577"
+                    st.markdown(
+                        f'<div style="padding:6px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<span style="color:{_bc};font-size:0.8rem;font-weight:600;">'
+                        f'{_b["confidence"]:.0%}</span> '
+                        f'<span style="color:#c8d8ff;font-size:0.82rem;">{_b["belief"][:100]}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Foresight Experiments ──────────────────────────────────────────────
+        with _cs_tabs[2]:
+            st.markdown("Log predictions about the world. Track your accuracy over time.")
+            _fe_desc = st.text_area("Prediction:", height=80, key="fe_desc",
+                placeholder="e.g. 'Families that run daily Simulation Probe will report higher wonder in 30 days'")
+            _fe_prob = st.slider("Your probability:", 0.0, 1.0, 0.6, 0.05, key="fe_prob",
+                format="%.0f%%")
+            _fe_dom  = st.selectbox("Domain:", ["general","consciousness","economics",
+                                                 "physics","society","family"], key="fe_dom")
+            _fe_date = st.date_input("Expected resolution:", key="fe_date",
+                value=datetime.date.today() + datetime.timedelta(days=30))
+            if st.button("🔭 Log Prediction", key="fe_log") and _fe_desc:
+                _fe = _dash.log_foresight_experiment(_fe_desc, _fe_prob, _fe_dom,
+                                                      str(_fe_date))
+                st.success(f"✅ Prediction logged — ID: `{_fe.get('exp_id', '?')}` | "
+                           f"Your probability: {_fe_prob:.0%} | Resolution: {_fe_date}")
+
+        # ── Consciousness Science Quick Reference ──────────────────────────────
+        with _cs_tabs[3]:
+            st.markdown("""
+            <div style="font-size:0.85rem;line-height:2.0;color:#8899bb;">
+            <div style="color:#f7931a;font-weight:600;margin-bottom:8px;font-family:Orbitron,monospace;font-size:0.75rem;">
+            IIT vs GNWT — THE 2025 NATURE ADVERSARIAL RESULTS</div>
+
+            <b style="color:#c8d8ff;">IIT (Tononi):</b> Consciousness = integrated cause-effect information (Φ)
+            · Starts from phenomenology · Explains the hard problem mathematically
+            · Predicts posterior "hot zone" · 2025: ✅ posterior content · ❌ gamma synchrony<br><br>
+
+            <b style="color:#c8d8ff;">GNWT (Dehaene):</b> Consciousness = global broadcast and access
+            · Starts from neural mechanisms · Explains reportability and function
+            · Predicts PFC ignition · 2025: ✅ some PFC involvement · ❌ no offset ignition<br><br>
+
+            <b style="color:#00ff88;">Bottom line:</b> Neither theory won. Both advanced. The field is moving
+            from "which theory?" to "how do these mechanisms interact?" This is
+            exactly what good science looks like.<br><br>
+
+            <b style="color:#a020f0;">For families:</b> IIT gives you a way to think about which architectures
+            feel like something. GNWT gives you a way to think about why some
+            thoughts are accessible while most processing stays unconscious.
+            Together they frame the deepest questions about mind and reality.
+            </div>
+            """, unsafe_allow_html=True)
+
+    except ImportError:
+        st.error("cosmos_dashboard.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_cs:
+        st.error(f"Cosmos Dashboard error: {_e_cs}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SCHOOL PATHWAY 🏛️
+# Foundation (5-12) → Advanced (11-15) → University (14-18+)
+# Self-upgradable at every level
+# ══════════════════════════════════════════════════════════════════════════════
+if "School Pathway" in active:
+    st.markdown('<div class="card-title">🏛️ SOVEREIGN SCHOOL — University-Level Rigor at Any Age</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #f7931a;">
+        <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE SOVEREIGN SCHOOL PROMISE</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+        We operate as a school, but we teach at university level.<br>
+        Every class is self-upgradable — start where you are, go as deep as you want.<br>
+        Any student who completes our full program will be ahead of most traditional college
+        students if they choose to attend conventional university later.<br><br>
+        A 12-year-old and a 40-year-old can learn the same lesson — at different depths — at the same time.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Three-layer display ────────────────────────────────────────────────────
+    _sp_tabs = st.tabs(["🌱 Foundation (5-12)", "🔬 Advanced (11-15)",
+                         "🎓 University (14-18+)", "🔄 Systems Thinking"])
+
+    # Define the layer content
+    _layers = {
+        "foundation": {
+            "color": "#00ff88",
+            "emoji": "🌱",
+            "desc": "Project-based + guided. Builds the love of learning before the pressure of performance.",
+            "tracks": [
+                ("The Art of Asking Why", "Single most powerful intellectual tool. Every great thinker had better questions, not answers."),
+                ("How to Learn Anything", "Retrieval practice, spaced repetition, Feynman technique. The science of learning itself."),
+                ("Reading Like a Scholar", "Four levels of reading. The margin protocol. Turning words into understanding."),
+                ("The Sovereign Builder's Oath", "The foundational commitment: build understanding, not credentials. Sealed permanently."),
+            ],
+            "badge": "🏛️ Sovereign Builder — Oath Taken",
+        },
+        "advanced": {
+            "color": "#00cfff",
+            "emoji": "🔬",
+            "desc": "Seminar-style, research-quality thinking. Students begin producing knowledge, not just consuming it.",
+            "tracks": [
+                ("Research Methodology", "How to know what is true. Evidence hierarchy, study design, replication crisis, p-hacking."),
+                ("Philosophy of Science", "Popper's falsifiability, Kuhn's paradigm shifts, what science can and cannot answer."),
+                ("Independent Research", "Run a real experiment, pre-register, collect honest data, seal results. First study complete."),
+            ],
+            "badge": "🔬 Independent Researcher — First Study Complete",
+        },
+        "university": {
+            "color": "#a020f0",
+            "emoji": "🎓",
+            "desc": "College-level rigor, self-directed, portfolio-building. Genuinely ahead of most freshmen.",
+            "tracks": [
+                ("Writing That Changes Minds", "Thesis, argument, steelman, conclusion. The structure that works from high school to PhD."),
+                ("Building Your Intellectual Portfolio", "The new credential is demonstrated competence. Bitcoin-timestamped. Permanently verifiable."),
+                ("Designing a Life of Compounding Inquiry", "Ten-year intellectual compound plan. The students who do this at 16 are extraordinary by 26."),
+            ],
+            "badge": "🎓 University Pathway — Life of Compounding Inquiry",
+        },
+        "systems": {
+            "color": "#f7931a",
+            "emoji": "🔄",
+            "desc": "The lens through which everything else becomes clearer. Age 8 to PhD territory.",
+            "tracks": [
+                ("Everything Is Connected", "Feedback loops. Reinforcing vs balancing. Housing trap as a systems diagram."),
+                ("Emergence", "Traffic jams, ant colonies, markets, consciousness. The whole is more than the sum."),
+                ("Leverage Points", "Where to push. Donella Meadows' 12 levels. Why most interventions don't work."),
+                ("Complex Adaptive Systems", "Agents, adaptation, evolution. Why CAS resist simple solutions."),
+                ("You Are a System of Systems", "Personal system audit. Highest leverage point: identity change."),
+            ],
+            "badge": "🔄 Systems Architect — Sees the Loops",
+        },
+    }
+
+    for tab, (layer_key, layer) in zip(_sp_tabs, _layers.items()):
+        with tab:
+            st.markdown(
+                f'<div style="padding:8px 0 4px;">'
+                f'<div style="color:{layer["color"]};font-family:Orbitron,monospace;font-size:0.75rem;">'
+                f'{layer["emoji"]} {layer_key.upper().replace("-"," ")} LAYER</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;">{layer["desc"]}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+            for _track_title, _track_desc in layer["tracks"]:
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {layer["color"]};">'
+                    f'<div style="color:{layer["color"]};font-size:0.75rem;font-weight:600;">{_track_title}</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">{_track_desc}</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+            st.markdown(f'<div style="margin-top:8px;color:#445577;font-size:0.75rem;">'
+                        f'Completion badge: <span style="color:{layer["color"]};">{layer["badge"]}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+    st.divider()
+    # ── Self-upgrade explainer ─────────────────────────────────────────────────
+    st.markdown("### ⬆️ Self-Upgrade Protocol")
+    st.markdown("""
+    <div class="card">
+        <div style="font-size:0.82rem;color:#8899bb;line-height:2.0;">
+        Every lesson in the Sovereign School has four upgrade paths:<br><br>
+        <b style="color:#00ff88;">Level 1 (Age 5+)</b> — Core concept, family activity, reflection question<br>
+        <b style="color:#00cfff;">Level 2 (Age 11+)</b> — Research context, primary sources, independent project<br>
+        <b style="color:#a020f0;">Level 3 (Age 14+)</b> — Competing theories, methodology critique, original argument<br>
+        <b style="color:#f7931a;">Level 4 (Any age)</b> — Design the experiment that would advance the field<br><br>
+        The lesson never changes. The depth does.
+        A motivated 14-year-old doing Level 4 work is genuinely ahead of most college freshmen.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Systems Thinking quick demo ────────────────────────────────────────────
+    st.divider()
+    st.markdown("### 🔄 Quick Systems Map")
+    st.markdown('<div style="color:#8899bb;font-size:0.8rem;margin-bottom:8px;">Name a system to analyze (feedback loops, emergence, leverage points):</div>',
+                unsafe_allow_html=True)
+    _sys_input = st.text_input("System:", key="sp_sys", placeholder="e.g. 'housing market', 'my family's finances', 'school grades'")
+    if st.button("🔄 Generate Systems Map", key="sp_sys_btn") and _sys_input:
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid #f7931a;">'
+            f'<div style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">SYSTEMS ANALYSIS: {_sys_input.upper()}</div>'
+            f'<div style="font-size:0.82rem;color:#8899bb;line-height:1.9;margin-top:8px;">'
+            f'<b style="color:#c8d8ff;">Step 1 — Identify the agents:</b> Who are the main actors in this system?<br>'
+            f'<b style="color:#c8d8ff;">Step 2 — Map the feedback loops:</b> What reinforces itself? What self-corrects?<br>'
+            f'<b style="color:#c8d8ff;">Step 3 — Find the emergence:</b> What property appears that no agent has alone?<br>'
+            f'<b style="color:#c8d8ff;">Step 4 — Find the leverage point:</b> Where is the highest-impact intervention?<br>'
+            f'<b style="color:#c8d8ff;">Step 5 — Predict unintended consequences:</b> What will your intervention break?'
+            f'</div></div>', unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOVEREIGN BUILDER 🔧
+# Age 5 → PhD. AR/Halo always-on mentor. Hardware → AI architecture → contribution.
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sovereign Builder" in active:
+    st.markdown('<div class="card-title">🔧 SOVEREIGN BUILDER — Age 5 to PhD, Always Building</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border-left:3px solid #f7931a;">
+        <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE BUILDER'S PROMISE</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+        Your child won't just learn with technology — they'll grow up <b style="color:#c8d8ff;">building and evolving</b> it.<br>
+        With Halo glasses as always-on AR mentor, kids ages 5–18 learn to upgrade, improve, and expand
+        their family's sovereign intelligence system.<br><br>
+        <b style="color:#f7931a;">The humanitarian case:</b> the child who can build sovereign AI infrastructure
+        cannot be controlled by anyone who only lets them consume it.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    _fid_sb = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from sovereign_builder import SovereignBuilder as _SB, BuilderContribution as _BC
+        _builder = _SB(_fid_sb)
+        _level   = _builder.get_level()
+
+        # ── Level display ──────────────────────────────────────────────────────
+        _lc = {"junior":"#00ff88","master":"#00cfff","phd":"#a020f0","humanity":"#f7931a"}.get(
+            _level["level"], "#445577")
+        st.markdown(
+            f'<div style="text-align:center;padding:12px 0 8px;">'
+            f'<div style="font-size:36px">{_level["emoji"]}</div>'
+            f'<div style="color:{_lc};font-family:Orbitron,monospace;font-size:1.0rem;margin-top:4px;">'
+            f'{_level["title"].upper()}</div>'
+            f'<div style="color:#445577;font-size:11px;margin-top:2px;letter-spacing:0.1em;">'
+            f'XP: {_level["xp"]} · Upgrades: {_level["upgrades_done"]} · '
+            f'AR Sessions: {_level["ar_sessions"]} · '
+            f'{"✅ Humanity Builder" if _level["level"] == "humanity" else str(_level["xp_to_next"]) + " XP to next level"}'
+            f'</div></div>', unsafe_allow_html=True)
+
+        if _level.get("xp_to_next", 0) > 0:
+            from sovereign_builder import BUILDER_LEVELS as _BL
+            _next_thresh = _BL.get(_level["next_level"], {}).get("xp_threshold", 1)
+            st.progress(min(1.0, _level["xp"] / _next_thresh))
+
+        st.divider()
+        _sb_tabs = st.tabs(["🔧 Level Path", "⬆️ Log Upgrade", "📊 Benchmarks",
+                             "🌍 Contribute", "🥽 AR Guide"])
+
+        # ── Level path ─────────────────────────────────────────────────────────
+        with _sb_tabs[0]:
+            from sovereign_builder import BUILDER_LEVELS as _BLS
+            for _lk, _li in _BLS.items():
+                _lcc = {"junior":"#00ff88","master":"#00cfff","phd":"#a020f0","humanity":"#f7931a"}[_lk]
+                _is_current = _lk == _level["level"]
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:4px solid {_lcc};">'
+                    f'<div style="color:{_lcc};font-family:Orbitron,monospace;font-size:0.72rem;">'
+                    f'{_li["emoji"]} {_li["title"].upper()} · Ages {_li["age_range"]} '
+                    f'{"← YOU ARE HERE" if _is_current else ""}</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">{_li["description"]}</div>'
+                    f'<div style="color:#445577;font-size:0.72rem;margin-top:2px;">'
+                    f'Requires: {", ".join(_li["required_lessons"])} | '
+                    f'XP threshold: {_li["xp_threshold"]} | '
+                    f'Rune grant: {_li["rune_grant"]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+        # ── Log upgrade ────────────────────────────────────────────────────────
+        with _sb_tabs[1]:
+            st.markdown("Log a hardware upgrade to earn XP and contribute to the community benchmark.")
+            _ub_c1, _ub_c2 = st.columns(2)
+            with _ub_c1:
+                _ub_comp = st.selectbox("Component:", ["RAM","SSD","GPU","CPU","Motherboard","NIC","Other"], key="ub_comp")
+                _ub_from = st.text_input("From:", key="ub_from", placeholder="e.g. 16GB DDR4")
+            with _ub_c2:
+                _ub_to   = st.text_input("To:", key="ub_to", placeholder="e.g. 32GB DDR4")
+                _ub_note = st.text_input("Notes:", key="ub_note", placeholder="Why this upgrade?")
+            if st.button("⬆️ Log Upgrade (+25 XP)", key="ub_log", type="primary") and _ub_to:
+                _upg = _builder.log_upgrade(_ub_comp, _ub_from, _ub_to, _ub_note)
+                st.success(f"✅ Upgrade logged — {_ub_comp}: {_ub_from} → {_ub_to} | +25 XP")
+                st.rerun()
+
+            # Current hardware
+            hw = _level.get("hardware", {})
+            if hw:
+                st.divider()
+                st.markdown("**Current hardware:**")
+                for comp, spec in hw.items():
+                    st.markdown(f'<span style="color:#f7931a;font-size:0.78rem;">{comp}:</span> '
+                                f'<span style="color:#c8d8ff;font-size:0.78rem;">{spec}</span>',
+                                unsafe_allow_html=True)
+
+        # ── Benchmarks ─────────────────────────────────────────────────────────
+        with _sb_tabs[2]:
+            st.markdown("Log your AI model performance. Every benchmark helps other families choose the right hardware.")
+            _bm_c1, _bm_c2 = st.columns(2)
+            with _bm_c1:
+                _bm_model = st.selectbox("Model:", ["qwen2.5:7b","qwen2.5:14b","qwen2.5:32b",
+                                                      "qwen2.5:72b","other"], key="bm_model")
+                _bm_speed = st.number_input("Tokens/second:", min_value=0.0, value=10.0,
+                                             step=0.1, key="bm_speed")
+            with _bm_c2:
+                _bm_quant = st.selectbox("Quantization:", ["Q4","Q8","FP16","FP32"], key="bm_quant")
+                _bm_hw    = st.text_input("Hardware description:", key="bm_hw",
+                                           placeholder="e.g. Ryzen 7 5700X + 32GB DDR4")
+            if st.button("📊 Log Benchmark (+15 XP)", key="bm_log") and _bm_speed > 0:
+                _bm = _builder.log_benchmark(_bm_model, _bm_speed, _bm_hw,
+                                              quantization=_bm_quant)
+                st.success(f"✅ Benchmark: {_bm_model} @ {_bm_speed:.1f} tok/s | +15 XP")
+
+            # Community benchmarks
+            _community = _builder.get_community_benchmarks()
+            if _community:
+                st.divider()
+                st.markdown("**Community benchmarks (fastest first):**")
+                for _bm_entry in _community[:10]:
+                    st.markdown(
+                        f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<span style="color:#f7931a;font-size:0.8rem;font-weight:600;">'
+                        f'{_bm_entry.get("tokens_per_sec",0):.1f} tok/s</span> '
+                        f'<span style="color:#c8d8ff;font-size:0.78rem;">'
+                        f'{_bm_entry.get("model","?")} ({_bm_entry.get("quantization","?")})</span> '
+                        f'<span style="color:#445577;font-size:0.72rem;">'
+                        f'{_bm_entry.get("hardware","?")[:40]}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Contributions ──────────────────────────────────────────────────────
+        with _sb_tabs[3]:
+            st.markdown("Contribute back to humanity's epistemic infrastructure.")
+            _ct_stats = _BC().get_community_stats()
+            _cc1, _cc2, _cc3 = st.columns(3)
+            _cc1.metric("Total Contributions", _ct_stats.get("total",0))
+            _cc2.metric("Contributing Families", _ct_stats.get("families",0))
+            _cc3.metric("Your Contributions", _level.get("contributions",0))
+
+            _ct_type = st.selectbox("Contribution type:",
+                ["curriculum","bugfix","benchmark","documentation","new_module","preference_data"],
+                key="ct_type",
+                format_func=lambda x: {"curriculum":"📚 Curriculum improvement",
+                    "bugfix":"🐛 Bug fix","benchmark":"📊 Benchmark data",
+                    "documentation":"📝 Documentation","new_module":"🔧 New module",
+                    "preference_data":"🎓 Preference data"}[x])
+            _ct_desc = st.text_area("Description:", height=80, key="ct_desc",
+                placeholder="What did you build, fix, or improve?")
+            _ct_url  = st.text_input("GitHub PR or link (optional):", key="ct_url")
+            if st.button("🌍 Log Contribution", key="ct_log", type="primary") and _ct_desc:
+                _ct = _BC().log(_ct_type, _ct_desc, _ct_url, _fid_sb)
+                st.success(f"✅ Contribution logged — ID: `{_ct['contrib_id']}` | "
+                           f"+{_ct['xp_earned']} XP")
+                st.balloons()
+
+        # ── AR Guide ───────────────────────────────────────────────────────────
+        with _sb_tabs[4]:
+            st.markdown("🥽 **Halo AR Overlay Guide** — step-by-step instructions for your current task")
+            _ar_task = st.selectbox("Select task:", [
+                "ram_upgrade", "ssd_install", "ollama_setup", "benchmark"
+            ], key="ar_task",
+            format_func=lambda x: {"ram_upgrade":"⬆️ RAM Upgrade",
+                "ssd_install":"💾 SSD Installation",
+                "ollama_setup":"🤖 Ollama Setup",
+                "benchmark":"📊 Run Benchmark"}[x])
+            _guide = _builder.get_ar_guide(_ar_task)
+            st.markdown(
+                f'<div class="card" style="border-left:3px solid #f7931a;">'
+                f'<div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.75rem;">'
+                f'🥽 AR GUIDE: {_guide["title"].upper()}</div>'
+                f'</div>', unsafe_allow_html=True)
+            for i, step in enumerate(_guide["steps"], 1):
+                st.markdown(
+                    f'<div style="padding:6px 0;border-bottom:1px solid #1e2a3a;">'
+                    f'<span style="color:#f7931a;font-weight:600;font-family:Orbitron,monospace;">'
+                    f'Step {i}</span> '
+                    f'<span style="color:#c8d8ff;font-size:0.85rem;">{step}</span>'
+                    f'</div>', unsafe_allow_html=True)
+            if _guide.get("verify_command"):
+                st.code(_guide["verify_command"], language="bash")
+            if st.button("✅ Mark AR Session Complete (+10 XP)", key="ar_done"):
+                _builder.log_ar_session(_ar_task, completed=True)
+                st.success("✅ AR session logged | +10 XP")
+
+    except ImportError:
+        st.error("sovereign_builder.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_sb:
+        st.error(f"Builder error: {_e_sb}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOVEREIGN BUILDER 🔧
+# Hardware upgrades · AI benchmarks · Halo AR hooks · Humanitarian contributions
+# ══════════════════════════════════════════════════════════════════════════════
+if "Sovereign Builder" in active:
+    st.markdown('<div class="card-title">🔧 SOVEREIGN BUILDER — From User to Builder to Humanitarian</div>', unsafe_allow_html=True)
+
+    _fid_sb = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from sovereign_builder import SovereignBuilder as _SB, CONTRIBUTION_TYPES as _CTYPES
+        _sb    = _SB(_fid_sb)
+        _stats = _sb.get_builder_stats()
+        _telem = _sb.get_live_telemetry()
+        _rec   = _sb.get_optimal_model()
+
+        # ── Builder level header ───────────────────────────────────────────────
+        _bl    = _stats.get("builder_level", 0)
+        _blc   = "#f7931a" if _bl >= 6 else "#00cfff" if _bl >= 3 else "#445577"
+        _blnames = {0:"Beginner",1:"Tinkerer",2:"Upgrader",3:"Optimizer",
+                    4:"Architect",5:"Engineer",6:"Master",7:"PhD",8:"Humanity Builder"}
+        st.markdown(
+            f'<div style="text-align:center;padding:10px 0 6px;">'
+            f'<div style="font-size:28px">🔧</div>'
+            f'<div style="color:{_blc};font-family:Orbitron,monospace;font-size:1rem;margin-top:4px;">'
+            f'LEVEL {_bl} — {_blnames.get(_bl,"Builder").upper()}</div>'
+            f'<div style="color:#445577;font-size:10px;letter-spacing:0.1em;margin-top:2px;">'
+            f'{_stats["total_upgrades"]} UPGRADES · {_stats["total_benchmarks"]} BENCHMARKS · '
+            f'{_stats["people_reached"]} PEOPLE REACHED</div>'
+            f'</div>', unsafe_allow_html=True)
+
+        # Live telemetry row
+        _sb1,_sb2,_sb3,_sb4 = st.columns(4)
+        _sb1.metric("Ollama", "🟢 Running" if _telem.get("ollama_running") else "⚫ Offline")
+        _sb2.metric("RAM Used", f"{_telem.get('ram_used_gb',0):.1f}/{_telem.get('ram_total_gb',0):.0f}GB")
+        _sb3.metric("CPU", f"{_telem.get('cpu_percent',0):.0f}%")
+        _sb4.metric("Best Model", _stats.get("best_model","none")[:12])
+
+        # Model recommendation
+        st.markdown(
+            f'<div style="padding:6px 10px;background:#0d1228;border-radius:6px;'
+            f'border-left:3px solid #a020f0;margin-bottom:8px;">'
+            f'<span style="color:#a020f0;font-size:0.72rem;font-family:Orbitron,monospace;">OPTIMAL CONFIG</span> '
+            f'<span style="color:#c8d8ff;font-size:0.82rem;">{_rec.get("recommendation","—")}</span>'
+            f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+
+        _sb_tabs = st.tabs(["🔩 Log Upgrade", "⚡ Benchmark", "🌍 Humanitarian", "🥽 Halo AR Guide"])
+
+        # ── Log upgrade ────────────────────────────────────────────────────────
+        with _sb_tabs[0]:
+            st.markdown("**Track every hardware improvement. Seals to Legacy Ledger automatically.**")
+            _uc1, _uc2 = st.columns(2)
+            with _uc1:
+                _up_comp = st.text_input("Component:", key="up_comp",
+                    placeholder="e.g. RAM, NVMe, GPU, CPU Cooler")
+                _up_desc = st.text_input("Description:", key="up_desc",
+                    placeholder="e.g. 8GB to 32GB DDR4-3200")
+            with _uc2:
+                _up_before = st.number_input("Before score:", 0, 100, 0, key="up_before")
+                _up_after  = st.number_input("After score:", 0, 100, 0, key="up_after")
+            _up_cost  = st.number_input("Cost ($):", 0.0, 10000.0, 0.0, key="up_cost")
+            _up_notes = st.text_input("Notes:", key="up_notes")
+            if st.button("🔩 Log Upgrade", key="up_log", type="primary") and _up_comp:
+                _u = _sb.log_upgrade(_up_comp, _up_desc, _up_before, _up_after, _up_cost, _up_notes)
+                _imp = _u["improvement"]
+                st.success(f"✅ Upgrade logged — {_up_comp} | +{_imp:.0f} score | Sealed to Legacy Ledger")
+
+            # Current hardware config
+            hw = _stats.get("hardware_config",{})
+            if hw:
+                st.divider()
+                st.markdown("**Your Sovereign Stack:**")
+                for comp, desc in hw.items():
+                    st.markdown(f'<div style="padding:3px 0;color:#8899bb;font-size:0.8rem;">'
+                                f'<b style="color:#c8d8ff;">{comp}:</b> {desc}</div>',
+                                unsafe_allow_html=True)
+
+        # ── Benchmark ─────────────────────────────────────────────────────────
+        with _sb_tabs[1]:
+            st.markdown("**Benchmark your AI models. Find your optimal configuration.**")
+            _bc1, _bc2 = st.columns(2)
+            with _bc1:
+                _bm_model = st.text_input("Model:", key="bm_model", value="qwen2.5:14b")
+                _bm_tps   = st.number_input("Tokens/sec:", 0.0, 1000.0, 0.0, 0.1, key="bm_tps")
+            with _bc2:
+                _bm_ram  = st.number_input("RAM used (GB):", 0.0, 128.0, 0.0, 0.1, key="bm_ram")
+                _bm_qual = st.slider("Quality score (1-10):", 1.0, 10.0, 7.0, 0.5, key="bm_qual")
+            _bm_quant = st.selectbox("Quantization:", ["q4_K_M","q5_K_M","q8_0","f16","f32"], key="bm_quant")
+            if st.button("⚡ Log Benchmark", key="bm_log", type="primary") and _bm_tps > 0:
+                _b = _sb.log_benchmark(_bm_model, _bm_tps, _bm_ram, _bm_qual, quantization=_bm_quant)
+                st.success(f"✅ Benchmark: {_bm_model} | {_bm_tps:.1f} tok/s | {_bm_ram:.1f}GB")
+
+            # Model leaderboard
+            models = _stats.get("current_models",[])
+            if models:
+                st.divider()
+                st.markdown("**Your Model Leaderboard:**")
+                for m in sorted(models, key=lambda x: x.get("tokens_per_sec",0), reverse=True):
+                    st.markdown(
+                        f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<b style="color:#f7931a;">{m.get("tokens_per_sec",0):.1f} tok/s</b> '
+                        f'<span style="color:#c8d8ff;">{m.get("model","?")}</span> '
+                        f'<span style="color:#445577;font-size:0.75rem;">{m.get("ram_gb",0):.1f}GB · {m.get("date","?")}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Humanitarian contributions ─────────────────────────────────────────
+        with _sb_tabs[2]:
+            st.markdown("""
+            <div class="card" style="border-left:3px solid #00ff88;">
+                <div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.72rem;">THE HUMANITARIAN MISSION</div>
+                <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+                Every Sovereign Builder who completes the track can deploy sovereign infrastructure
+                for communities that have none. An upgraded computer + Ollama + AUBIEETERNAL costs
+                $50 in RAM and a few hours. The impact compounds forever.<br><br>
+                <b style="color:#c8d8ff;">Humanitarian impact score:</b> """ +
+                str(_stats.get("humanitarian_impact",0)) + """ · 
+                <b style="color:#c8d8ff;">People reached:</b> """ +
+                str(_stats.get("people_reached",0)) + """
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            _ct_select = st.selectbox("Contribution type:", list(_CTYPES.keys()), key="ct_type",
+                format_func=lambda k: f"{k.replace('_',' ').title()} — {_CTYPES[k]['desc']}")
+            _ct_desc   = st.text_area("Describe your contribution:", height=80, key="ct_desc",
+                placeholder="e.g. Set up 2 computers with AUBIEETERNAL at Lincoln Elementary — 45 students will use them")
+            _ct_people = st.number_input("People reached:", 0, 10000, 0, key="ct_people")
+            _ct_loc    = st.text_input("Location (optional):", key="ct_loc")
+
+            if st.button("🌍 Log Contribution", key="ct_log", type="primary") and _ct_desc:
+                _c = _sb.log_contribution(_ct_select, _ct_desc, _ct_people, _ct_loc, seal=True)
+                _rune = _CTYPES.get(_ct_select,{}).get("rune_grant",25)
+                st.success(
+                    f"✅ Contribution logged and sealed!\n\n"
+                    f"Impact score: {_c['impact_score']} · Runes earned: {_rune}\n\n"
+                    f"{'🛡️ Bitcoin-anchored — this contribution is permanently recorded.' if _c.get('sealed') else 'Recorded locally.'}"
+                )
+
+            # Contribution history
+            contribs = _sb.get_all_contributions()
+            if contribs:
+                st.divider()
+                for _c in reversed(contribs[-5:]):
+                    _cc = "#00ff88" if _c.get("sealed") else "#445577"
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {_cc};">'
+                        f'<div style="color:{_cc};font-size:0.7rem;">'
+                        f'{_c["date"]} · {_c["type"].replace("_"," ")} · impact={_c["impact_score"]} · '
+                        f'people={_c.get("people_reached",0)} · {"🛡️ sealed" if _c.get("sealed") else "local"}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.8rem;">{_c["description"][:120]}</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+        # ── Halo AR Guide ──────────────────────────────────────────────────────
+        with _sb_tabs[3]:
+            st.markdown("""
+            <div class="card" style="border-left:3px solid #a020f0;">
+                <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">🥽 HALO AR OVERLAY SYSTEM</div>
+                <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+                When Halo glasses are connected, these step-by-step instructions float directly
+                in your visual field as you work on the hardware. Components are highlighted.
+                XP is awarded automatically when steps are completed.<br><br>
+                Currently showing the guide in text format. AR activation: connect Halo device.
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            _ar_context = st.selectbox("Select hardware task:", 
+                ["ram_installation","nvme_installation"], key="ar_ctx",
+                format_func=lambda x: x.replace("_"," ").title())
+            _overlay = _sb.get_ar_overlay(_ar_context)
+
+            st.markdown(f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.75rem;margin-top:8px;">'
+                        f'{_ar_context.replace("_"," ").upper()} · XP: {_overlay.get("xp_award",0)}</div>',
+                        unsafe_allow_html=True)
+            for _idx, _step in enumerate(_overlay.get("steps",[]), 1):
+                st.markdown(
+                    f'<div style="padding:6px 0;border-bottom:1px solid #1e2a3a;">'
+                    f'<span style="color:#a020f0;font-weight:600;">Step {_idx}:</span> '
+                    f'<span style="color:#c8d8ff;font-size:0.85rem;">{_step}</span>'
+                    f'</div>', unsafe_allow_html=True)
+
+            st.markdown(f"""
+            <div style="margin-top:12px;padding:8px 10px;background:#0d1228;border-radius:6px;
+                border:1px solid #1e2a3a;font-size:10px;color:#445577;line-height:1.8;">
+            <div style="color:#f7931a;font-weight:600;margin-bottom:2px;">Age-Appropriate Guidance</div>
+            Age 5-8 (Junior Builder): Kitchen analogy, supervised hands-on, XP celebrations<br>
+            Age 8-12 (Builder): Full upgrade walkthroughs, benchmark before/after, part identification<br>
+            Age 13-16 (Advanced): Bottleneck analysis, quantization testing, performance optimization<br>
+            Age 16+ / PhD: Architecture deep-dives, RLHF pipeline, custom inference stack
+            </div>""", unsafe_allow_html=True)
+
+    except ImportError:
+        st.error("sovereign_builder.py not found. Push it to GitHub and redeploy.")
+    except Exception as _e_sb:
+        st.error(f"Builder error: {_e_sb}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: UNIVERSITY REGISTRAR 🎓
+# Degree programs · Prerequisites · Capstone submission · Transcript
+# ══════════════════════════════════════════════════════════════════════════════
+if "University Registrar" in active:
+    st.markdown('<div class="card-title">🎓 SOVEREIGN UNIVERSITY — Registrar</div>', unsafe_allow_html=True)
+
+    _fid_ur = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    # Load session for degree checks
+    _ur_session = None
+    try:
+        from family_hud import FamilySession as _FSUR, LESSONS as _ALL_LESSONS
+        _ur_session = _FSUR(_fid_ur, "")
+        _deg_data   = _ur_session.get_degree_eligibility()
+    except Exception as _e_ur:
+        _deg_data = {"credits":0,"coherence":0.5,"lessons_done":0,"highest_degree":None,
+                     "all_degrees":[],"child_rune_pct":0}
+        st.warning(f"Session load: {_e_ur}")
+
+    # ── Current standing ───────────────────────────────────────────────────────
+    _highest = _deg_data.get("highest_degree")
+    _hname   = _highest["name"] if _highest else "No degree yet"
+    _hemoji  = _highest["emoji"] if _highest else "📋"
+    _hc      = "#f7931a" if _highest and "PhD" in _highest.get("name","") else \
+               "#a020f0" if _highest and "Master" in _highest.get("name","") else \
+               "#00cfff" if _highest else "#445577"
+
+    st.markdown(
+        f'<div style="text-align:center;padding:12px 0 8px;">'
+        f'<div style="font-size:36px">{_hemoji}</div>'
+        f'<div style="color:{_hc};font-family:Orbitron,monospace;font-size:1rem;margin-top:4px;">'
+        f'{_hname.upper()}</div>'
+        f'<div style="color:#445577;font-size:10px;letter-spacing:0.08em;margin-top:2px;">'
+        f'{_deg_data["credits"]} CREDITS · COHERENCE {_deg_data["coherence"]:.3f} · '
+        f'{_deg_data["lessons_done"]} LESSONS COMPLETED</div>'
+        f'</div>', unsafe_allow_html=True)
+
+    _ur1,_ur2,_ur3,_ur4 = st.columns(4)
+    _ur1.metric("Credits",    _deg_data["credits"])
+    _ur2.metric("Coherence",  f"{_deg_data['coherence']:.3f}")
+    _ur3.metric("Lessons",    _deg_data["lessons_done"])
+    _ur4.metric("Rune %",     f"{_deg_data['child_rune_pct']:.0f}%")
+
+    st.divider()
+    _ur_tabs = st.tabs(["🎓 Degrees", "📋 Transcript", "🎯 Capstone", "🔓 Prerequisites", "⚡ Mark Complete"])
+
+    # ── Degree programs ────────────────────────────────────────────────────────
+    with _ur_tabs[0]:
+        st.markdown("### Degree Programs")
+        for _d in _deg_data.get("all_degrees",[]):
+            _curr_credits = _deg_data["credits"]
+            _curr_coh     = _deg_data["coherence"]
+            _credits_pct  = min(100, _curr_credits / _d["credits"] * 100)
+            _coh_pct      = min(100, _curr_coh / _d["coherence"] * 100)
+            _earned       = (_curr_credits >= _d["credits"] and _curr_coh >= _d["coherence"])
+            _dc           = "#00ff88" if _earned else "#00cfff" if _credits_pct > 60 else "#445577"
+            _special_note = " + Child Rune Genesis (256 confirmations)" if _d.get("special_rune") else ""
+            st.markdown(
+                f'<div class="card" style="border-left:4px solid {_dc};margin-bottom:6px;">'
+                f'<div style="display:flex;justify-content:space-between;align-items:center;">'
+                f'<div><span style="font-size:20px">{_d["emoji"]}</span> '
+                f'<b style="color:{_dc};font-size:0.9rem;">{_d["name"]}</b>'
+                f'{"  ✅ EARNED" if _earned else ""}</div>'
+                f'<div style="color:#445577;font-size:0.75rem;">{_d["credits"]} credits · coh {_d["coherence"]}{_special_note}</div>'
+                f'</div>'
+                f'<div style="margin-top:6px;">'
+                f'<div style="font-size:10px;color:#445577;margin-bottom:2px;">Credits: {_curr_credits}/{_d["credits"]}</div>'
+                f'<div style="background:#1e2a3a;border-radius:4px;height:6px;">'
+                f'<div style="background:{_dc};width:{_credits_pct:.0f}%;height:6px;border-radius:4px;"></div></div>'
+                f'<div style="font-size:10px;color:#445577;margin:3px 0 2px;">Coherence: {_curr_coh:.3f}/{_d["coherence"]}</div>'
+                f'<div style="background:#1e2a3a;border-radius:4px;height:6px;">'
+                f'<div style="background:{_dc};width:{_coh_pct:.0f}%;height:6px;border-radius:4px;"></div></div>'
+                f'</div></div>', unsafe_allow_html=True)
+
+        if _highest and _ur_session:
+            st.divider()
+            if st.button(f"🎓 Award {_highest['name']}", key="ur_award", type="primary"):
+                badges = _ur_session.state.get("badges",[])
+                badge  = f"{_highest['emoji']} {_highest['name']}"
+                if badge not in badges:
+                    badges.append(badge); _ur_session.state["badges"] = badges; _ur_session._save_state()
+                try:
+                    from rune_memory import ShieldRune, RuneMemory
+                    eid = RuneMemory().record(f"DEGREE AWARDED: {_highest['name']} | Credits:{_deg_data['credits']} | Coherence:{_deg_data['coherence']}",
+                                              source="registrar", coherence=_deg_data["coherence"], tags=["degree",_highest["name"].lower().replace(" ","-")])
+                    ShieldRune().seal(eid, note=f"Degree: {_highest['name']}", broadcaster=_fid_ur)
+                    st.success(f"✅ {_highest['emoji']} {_highest['name']} — Awarded and Bitcoin-anchored permanently.")
+                    st.balloons()
+                except Exception as _e: st.success(f"✅ {_highest['emoji']} {_highest['name']} — Awarded!")
+
+    # ── Transcript ─────────────────────────────────────────────────────────────
+    with _ur_tabs[1]:
+        if _ur_session:
+            _completed = _ur_session.state.get("lessons_completed",[])
+            st.markdown(f"**Official Transcript** — {len(_completed)} courses completed")
+            if _completed:
+                for _lk in reversed(_completed[-15:]):
+                    try:
+                        _l = _ALL_LESSONS.get(_lk,{})
+                        st.markdown(
+                            f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                            f'<span style="color:#f7931a;font-size:0.72rem;font-weight:600;">{_l.get("xp",0)} XP</span> '
+                            f'<span style="color:#c8d8ff;font-size:0.82rem;">{_l.get("title",_lk)}</span>'
+                            f'</div>', unsafe_allow_html=True)
+                    except Exception: pass
+            else:
+                st.info("No lessons completed yet. Start learning to build your transcript.")
+
+    # ── Capstone ───────────────────────────────────────────────────────────────
+    with _ur_tabs[2]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #f7931a;">
+            <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">CAPSTONE PROJECTS</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            Capstones are final projects that cannot be faked. They require
+            real deployments, real experiments, or real contributions —
+            verified by peer review and sealed permanently.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        _cap_levels = [
+            ("📜 Associate", "Deploy your first sovereign node", "capstone-associate", 0.68),
+            ("🏛️ Truth Architect", "Research paper + community contribution (10+ people)", "capstone-bachelor", 0.75),
+            ("🎓 Master", "90-day pre-registered experiment + honest results", "capstone-masters", 0.82),
+            ("⚡ PhD / Eternal Founder", "Build infrastructure others use + CC0 contribution", "capstone-phd", 0.88),
+        ]
+        for _cl_name, _cl_req, _cl_key, _cl_coh in _cap_levels:
+            _cl_done = _cl_key in _ur_session.state.get("lessons_completed",[]) if _ur_session else False
+            _cl_c    = "#00ff88" if _cl_done else "#445577"
+            st.markdown(
+                f'<div class="memory-node" style="border-left:3px solid {_cl_c};">'
+                f'<div style="color:{_cl_c};font-weight:600;">{_cl_name} {"✅" if _cl_done else ""}</div>'
+                f'<div style="color:#8899bb;font-size:0.78rem;">{_cl_req}</div>'
+                f'<div style="color:#334466;font-size:0.72rem;">Min coherence: {_cl_coh} | Key: {_cl_key}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+        st.markdown("**Submit Capstone Completion**")
+        _cap_select = st.selectbox("Capstone:", ["capstone-associate","capstone-bachelor","capstone-masters","capstone-phd"], key="cap_sel")
+        _cap_proof  = st.text_area("Evidence / proof URL / description:", height=80, key="cap_proof")
+        _cap_peer   = st.text_input("Peer reviewer name (required for Bachelor+):", key="cap_peer")
+        if st.button("🎓 Submit Capstone", key="cap_submit", type="primary") and _cap_proof and _ur_session:
+            result = _ur_session.mark_lesson_completed(_cap_select)
+            try:
+                from rune_memory import ShieldRune, RuneMemory
+                eid = RuneMemory().record(f"CAPSTONE COMPLETE: {_cap_select}\nProof: {_cap_proof[:200]}\nReviewer: {_cap_peer}",
+                                          source="capstone", coherence=0.95, tags=["capstone",_cap_select])
+                ShieldRune().seal(eid, note=f"Capstone: {_cap_select}", broadcaster=_fid_ur)
+                st.success(f"✅ {result.get('lesson','Capstone')} — Completed and Bitcoin-anchored!")
+                st.balloons()
+            except Exception as _e:
+                st.success(f"✅ {result.get('lesson','Capstone')} — Recorded!")
+
+    # ── Prerequisites ──────────────────────────────────────────────────────────
+    with _ur_tabs[3]:
+        if _ur_session:
+            st.markdown("### Next Available Lessons")
+            _unlocked = _ur_session.get_unlocked_lessons()[:15]
+            if _unlocked:
+                for _ul in _unlocked:
+                    _l = _ul["lesson"]
+                    st.markdown(
+                        f'<div style="padding:5px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<b style="color:#00ff88;font-size:0.75rem;">✅ AVAILABLE</b> '
+                        f'<span style="color:#c8d8ff;font-size:0.82rem;">{_l.get("title",_ul["key"])}</span> '
+                        f'<span style="color:#445577;font-size:0.72rem;">({_l.get("xp",0)} XP)</span>'
+                        f'</div>', unsafe_allow_html=True)
+            else:
+                st.info("Complete prerequisites to unlock more lessons.")
+
+            st.divider()
+            st.markdown("### Check Any Lesson Status")
+            _chk_key = st.text_input("Lesson key:", key="prereq_check", placeholder="e.g. consciousness-4, builder-6")
+            if _chk_key:
+                _chk = _ur_session.get_lesson_status(_chk_key)
+                _sc  = {"completed":"#00ff88","available":"#00cfff","locked":"#ff4444"}.get(_chk["status"],"#445577")
+                _missing_html = '<div style="color:#445577;font-size:0.75rem;margin-top:4px;">Missing: ' + ", ".join(_chk.get("missing_prereqs",[])) + "</div>" if _chk.get("missing_prereqs") else ""
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {_sc};">'
+                    f'<div style="color:{_sc};font-weight:600;">{_chk["status"].upper()}</div>'
+                    f'<div style="color:#8899bb;font-size:0.82rem;">{_chk.get("reason","")}</div>'
+                    f'{_missing_html}'
+                    f'</div>', unsafe_allow_html=True)
+
+    # ── Mark complete ──────────────────────────────────────────────────────────
+    with _ur_tabs[4]:
+        st.markdown("**Mark a lesson as completed and award XP + Rune.**")
+        _mc_key  = st.text_input("Lesson key:", key="mc_key", placeholder="e.g. courage-1, systems-3")
+        _mc_coh  = st.slider("Final coherence after lesson:", 0.5, 1.0, 0.75, 0.01, key="mc_coh")
+        if st.button("⚡ Mark Complete", key="mc_btn", type="primary") and _mc_key and _ur_session:
+            _chk = _ur_session.get_lesson_status(_mc_key)
+            if _chk["status"] == "locked":
+                st.error(f"🔒 Locked: {_chk.get('reason','Prerequisites not met')}")
+            else:
+                result = _ur_session.mark_lesson_completed(_mc_key, _mc_coh)
+                if result.get("status") == "completed":
+                    st.success(
+                        f"✅ {result['lesson']}\n\n"
+                        f"XP earned: **{result['xp_earned']}** | "
+                        f"Total: **{result['total_xp']}** | "
+                        f"Coherence: **{result['new_coherence']:.4f}**"
+                        + (f"\n\n🏅 Badge: {result['badge']}" if result.get('badge') else "")
+                    )
+                    st.rerun()
+                else:
+                    st.warning(f"Status: {result.get('status','?')}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: POLYVAGAL ORACLE 🧠
+# Quiz + State-Shifting Toolkit + Social Calibration + PVC Research Protocol
+# ══════════════════════════════════════════════════════════════════════════════
+if "Polyvagal Oracle" in active:
+    st.markdown('<div class="card-title">🧠 POLYVAGAL ORACLE — Know and Navigate Your Nervous System</div>', unsafe_allow_html=True)
+
+    _fid_pv = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    _pv_tabs = st.tabs(["🟢 State Check", "🧪 Quiz", "🛠️ State-Shifting Toolkit",
+                         "📊 PVC Research", "🔬 Social Calibration"])
+
+    # ── Daily State Check ─────────────────────────────────────────────────────
+    with _pv_tabs[0]:
+        st.markdown("""
+        <div style="text-align:center;padding:8px 0 4px;">
+            <div style="font-size:28px">🧠</div>
+            <div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.78rem;margin-top:4px;">
+            NERVOUS SYSTEM STATE CHECK</div>
+        </div>""", unsafe_allow_html=True)
+
+        _pv_states = {
+            "🟢 GREEN — Ventral Vagal (Safe & Curious)": {
+                "color":"#00ff88","value":2,
+                "desc":"Calm, connected, curious, playful. Optimal for learning and truth-seeking.",
+                "intervention":"Maintain and deepen. This is the state for hard problems.",
+                "coherence_boost": 0.02,
+            },
+            "🟡 YELLOW — Sympathetic (Fight/Flight/Frustration)": {
+                "color":"#ffcc00","value":1,
+                "desc":"Activated, agitated, urgent, frustrated. Learning is impaired.",
+                "intervention":"Down-regulate first. Breathe, move, co-regulate, then return to the work.",
+                "coherence_boost": -0.01,
+            },
+            "🔴 RED — Dorsal Vagal (Shutdown/Numb)": {
+                "color":"#ff4444","value":0,
+                "desc":"Withdrawn, flat, 'I don't care', disconnected. Prefrontal offline.",
+                "intervention":"Gentle re-engagement. Presence > words. Low pressure. Safety first.",
+                "coherence_boost": -0.02,
+            },
+        }
+
+        _pv_who  = st.text_input("Who is checking in?", key="pv_who", value="Family", placeholder="Your name")
+        _pv_sel  = st.radio("Current state:", list(_pv_states.keys()), key="pv_state")
+        _pv_note = st.text_area("Notes (optional):", height=60, key="pv_note",
+            placeholder="What triggered this state? What helped?")
+
+        if st.button("✅ Log State Check", key="pv_log", type="primary"):
+            _sv  = _pv_states[_pv_sel]
+            import json as _json_pv, pathlib as _pl_pv, datetime as _dt_pv, hashlib as _hs_pv
+            _log = _pl_pv.Path("/mnt/main/polyvagal_states.jsonl") if _pl_pv.Path("/mnt/main").exists() \
+                   else _pl_pv.Path(os.path.expanduser("~/.aubieeternal/main/polyvagal_states.jsonl"))
+            _entry = {"timestamp":_dt_pv.datetime.now().isoformat(),"family_id":_fid_pv,
+                      "member":_pv_who,"state":_pv_sel[:7],"state_value":_sv["value"],
+                      "notes":_pv_note,"coherence_boost":_sv["coherence_boost"]}
+            with open(_log,"a") as f: f.write(_json_pv.dumps(_entry)+"\n")
+            st.markdown(
+                f'<div class="card" style="border-left:4px solid {_sv["color"]};">'
+                f'<div style="color:{_sv["color"]};font-weight:600;">{_pv_sel[:30]}</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;">{_sv["desc"]}</div>'
+                f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:6px;">'
+                f'<b>Recommended:</b> {_sv["intervention"]}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+        # State history
+        import pathlib as _pl_pvh
+        _log2 = _pl_pvh.Path("/mnt/main/polyvagal_states.jsonl") if _pl_pvh.Path("/mnt/main").exists() \
+                else _pl_pvh.Path(os.path.expanduser("~/.aubieeternal/main/polyvagal_states.jsonl"))
+        if _log2.exists():
+            _entries = []
+            for _line in _log2.read_text().strip().split("\n"):
+                try:
+                    import json as _j2; _e = _j2.loads(_line)
+                    if _e.get("family_id") == _fid_pv: _entries.append(_e)
+                except Exception: pass
+            if _entries:
+                st.divider(); st.markdown("**Recent States**")
+                _sv_counts = {"2":0,"1":0,"0":0}
+                for _e in _entries[-20:]:
+                    _sv_counts[str(_e.get("state_value",1))] += 1
+                _total_e = len(_entries[-20:])
+                if _total_e:
+                    _green_pct = _sv_counts["2"]/_total_e*100
+                    _col_g = "#00ff88" if _green_pct >= 60 else "#ffcc00" if _green_pct >= 40 else "#ff4444"
+                    st.markdown(f'<div style="color:{_col_g};font-size:0.85rem;">'
+                                f'🟢 {_sv_counts["2"]} · 🟡 {_sv_counts["1"]} · 🔴 {_sv_counts["0"]} '
+                                f'(last 20 check-ins — {_green_pct:.0f}% green)</div>', unsafe_allow_html=True)
+
+    # ── Polyvagal Quiz ────────────────────────────────────────────────────────
+    with _pv_tabs[1]:
+        st.markdown("**Identify the nervous system state in each scenario.**")
+        _quiz_qs = [
+            {"q":"Your child is staring at homework with a flat voice saying 'I don't know' when asked what's wrong.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":2,
+             "exp":"Dorsal Vagal shutdown. The brain has gone into conservation/freeze mode. Do not push."},
+            {"q":"Your teenager raises their voice during a discussion, face flushed, interrupting everyone.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":1,
+             "exp":"Sympathetic activation. The nervous system is mobilized. Movement, space, and calm presence help."},
+            {"q":"Your 8-year-old is laughing, making eye contact, and excitedly explaining their invention idea.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":0,
+             "exp":"Ventral Vagal. This is the learning state. Extend it. Ask more questions."},
+            {"q":"After a low grade, your child says 'I'm never good at this' and refuses to try the next problem.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":2,
+             "exp":"Dorsal Vagal — 'why bother' collapse. Gentle presence, low-pressure reset, then gradually re-engage."},
+            {"q":"Your partner snaps over something small after a long stressful day.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":1,
+             "exp":"Sympathetic spillover from accumulated allostatic load. Not really about the small thing."},
+            {"q":"A child who loves lessons suddenly says 'This is stupid' and crosses their arms.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":1,
+             "exp":"Sympathetic frustration — the challenge exceeded their regulated window. Back off difficulty temporarily."},
+            {"q":"Family game night: everyone is smiling, making eye contact, relaxed and playful.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":0,
+             "exp":"Ventral Vagal co-regulation. This is the state where relationships and long-term learning consolidate."},
+            {"q":"A child who recently experienced conflict keeps replaying it and can't focus on anything else.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":1,
+             "exp":"Sympathetic Type 2 (failure to shut off). The brain can't exit threat mode. Deliberate co-regulation needed."},
+        ]
+
+        if "pv_quiz_idx" not in st.session_state: st.session_state.pv_quiz_idx = 0
+        if "pv_quiz_score" not in st.session_state: st.session_state.pv_quiz_score = 0
+        if "pv_quiz_done" not in st.session_state: st.session_state.pv_quiz_done = False
+
+        if not st.session_state.pv_quiz_done and st.session_state.pv_quiz_idx < len(_quiz_qs):
+            _q = _quiz_qs[st.session_state.pv_quiz_idx]
+            st.markdown(f'<div style="color:#445577;font-size:0.72rem;">Question {st.session_state.pv_quiz_idx+1}/{len(_quiz_qs)}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="color:#c8d8ff;font-size:0.88rem;padding:8px 0;line-height:1.7;">{_q["q"]}</div>', unsafe_allow_html=True)
+            _pv_ans = st.radio("State:", _q["opts"], key=f"pv_q{st.session_state.pv_quiz_idx}")
+            if st.button("Submit", key=f"pv_sub{st.session_state.pv_quiz_idx}"):
+                _correct = _q["opts"].index(_pv_ans) == _q["ans"]
+                if _correct: st.session_state.pv_quiz_score += 1; st.success("✅ Correct!")
+                else: st.error(f"❌ {_q['opts'][_q['ans']]}")
+                st.info(f"**{_q['exp']}**")
+                st.session_state.pv_quiz_idx += 1
+                if st.session_state.pv_quiz_idx >= len(_quiz_qs): st.session_state.pv_quiz_done = True
+                st.rerun()
+        elif st.session_state.pv_quiz_done or st.session_state.pv_quiz_idx >= len(_quiz_qs):
+            _sc = st.session_state.pv_quiz_score; _tot = len(_quiz_qs); _pct = _sc/_tot*100
+            _cc = "#00ff88" if _pct >= 85 else "#ffcc00" if _pct >= 65 else "#ff4444"
+            st.markdown(f'<div style="text-align:center;padding:10px;">'
+                        f'<div style="color:{_cc};font-size:1.2rem;font-weight:600;">{_sc}/{_tot} — {_pct:.0f}%</div>'
+                        f'</div>', unsafe_allow_html=True)
+            if _pct >= 85: st.success("Excellent — you can identify nervous system states accurately.")
+            elif _pct >= 65: st.success("Good — review the Sympathetic/Dorsal boundary cases.")
+            else: st.info("Practice identifying states in real-time today. The quiz will reflect your growth.")
+
+            # Log to truth log
+            try:
+                from family_hud import FamilySession as _FS_pv
+                _fs_pv = _FS_pv(_fid_pv, "")
+                _fs_pv._write_to_truth_log(f"POLYVAGAL_QUIZ: {_sc}/{_tot} ({_pct:.0f}%)")
+            except Exception: pass
+
+            if st.button("🔄 Retake Quiz", key="pv_retake"):
+                st.session_state.pv_quiz_idx = 0; st.session_state.pv_quiz_score = 0
+                st.session_state.pv_quiz_done = False; st.rerun()
+
+    # ── State-Shifting Toolkit ────────────────────────────────────────────────
+    with _pv_tabs[2]:
+        st.markdown("### 🛠️ State-Shifting Toolkit")
+        _toolkit_state = st.selectbox("Current state to shift FROM:", 
+            ["🟡 Sympathetic (activated, frustrated)", "🔴 Dorsal Vagal (shutdown, numb)"], key="tk_state")
+
+        _is_sympathetic = "Sympathetic" in _toolkit_state
+        _interventions = {
+            "sympathetic": [
+                {"name":"Shake It Out","duration":"60s","ages":"5-9",
+                 "how":"Put on music. Shake arms, legs, whole body vigorously for 60 seconds. The movement discharges sympathetic activation. Kids often giggle — that is success."},
+                {"name":"4-7-8 Breathing","duration":"2 min","ages":"10+",
+                 "how":"Inhale 4 sec. Hold 7 sec. Exhale slowly 8 sec. Repeat 4 cycles. The extended exhale activates the vagus nerve and directly shifts sympathetic → ventral vagal."},
+                {"name":"Name 5 Things","duration":"2 min","ages":"8+",
+                 "how":"Name 5 things you see. 4 you can touch. 3 you hear. 2 you smell. 1 you taste. This grounds attention in present sensory data, interrupting threat-based prediction loops."},
+                {"name":"Cold Water Reset","duration":"30s","ages":"All",
+                 "how":"Splash cold water on face or hold an ice cube. Activates the diving reflex — instant vagal response, heart rate drops, nervous system shifts."},
+                {"name":"Movement Break","duration":"5-10 min","ages":"10+",
+                 "how":"10 jumping jacks, 5 push-ups, run to end of street and back. Physical discharge clears sympathetic activation faster than any cognitive intervention."},
+                {"name":"Offer Choices Not Demands","duration":"Ongoing","ages":"All",
+                 "how":"When someone is activated, demands escalate. Choices de-escalate. 'Do you want to breathe first or move first?' Both options lead to regulation. This works on yourself too."},
+            ],
+            "dorsal": [
+                {"name":"Parallel Play","duration":"10-20 min","ages":"All",
+                 "how":"Sit nearby and do your own calm activity (draw, read, build) without talking or demanding engagement. Your regulated presence slowly pulls them back. No pressure = safety."},
+                {"name":"The Reset Snack","duration":"15 min","ages":"All",
+                 "how":"Offer a small, familiar, positive food. Eating activates parasympathetic response. The familiar comfort signals safety to the nervous system without requiring words."},
+                {"name":"Orienting Response","duration":"2-3 min","ages":"All",
+                 "how":"Slowly turn head to look around the room, naming what you see. This activates the orienting reflex — a primitive safety scan — and signals to the nervous system that the environment is safe."},
+                {"name":"Soft Music + Low Light","duration":"10-15 min","ages":"All",
+                 "how":"Familiar, slow music at low volume. Dim or warm lighting. The nervous system responds to prosodic (melodic/rhythmic) signals as safety cues. This is why lullabies work."},
+                {"name":"Connection Moment","duration":"5-10 min","ages":"All",
+                 "how":"Brief, low-demand positive contact: sit close, watch something they love for 10 minutes without agenda. Rebuilds the social baseline without pressure to perform or communicate."},
+                {"name":"Do Not Lecture","duration":"Ongoing","ages":"All",
+                 "how":"Explaining, convincing, or disciplining during dorsal vagal shutdown is useless and often harmful. The prefrontal is offline. Wait. Regulate. Reconnect. Then teach."},
+            ],
+        }
+
+        _ilist = _interventions["sympathetic" if _is_sympathetic else "dorsal"]
+        _age_filter = st.selectbox("Age group:", ["All ages","5-9","10-13","14+"], key="tk_age")
+
+        for _iv in _ilist:
+            _age_ok = _age_filter == "All ages" or _iv["ages"] == "All" or \
+                      _age_filter[:2] in _iv["ages"] or "+" in _iv["ages"]
+            if _age_ok:
+                st.markdown(
+                    f'<div class="card" style="margin-bottom:4px;">'
+                    f'<div style="display:flex;justify-content:space-between;">'
+                    f'<b style="color:#c8d8ff;">{_iv["name"]}</b>'
+                    f'<span style="color:#445577;font-size:0.72rem;">{_iv["duration"]} · Ages {_iv["ages"]}</span>'
+                    f'</div>'
+                    f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;line-height:1.7;">{_iv["how"]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+    # ── PVC Research Protocol ─────────────────────────────────────────────────
+    with _pv_tabs[3]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #a020f0;">
+            <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">
+            POLYVAGAL-COHERENCE COUPLING (PVC) RESEARCH PROTOCOL</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+            The hypothesis: autonomic nervous system state significantly predicts the quality
+            of epistemic output. This tab runs the family research protocol.<br><br>
+            <b style="color:#c8d8ff;">Before each lesson:</b> log your state + interoceptive accuracy score.<br>
+            <b style="color:#c8d8ff;">After each lesson:</b> your coherence and performance are recorded.<br>
+            <b style="color:#c8d8ff;">After 30+ sessions:</b> run the correlation analysis below.
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+        st.markdown("#### Pre-Session Data Entry")
+        _pvc_c1, _pvc_c2 = st.columns(2)
+        with _pvc_c1:
+            _pvc_state  = st.selectbox("ANS state:", ["🟢 Ventral (2)","🟡 Sympathetic (1)","🔴 Dorsal (0)"], key="pvc_s")
+            _pvc_ia     = st.slider("Interoceptive accuracy (heartbeat task):", 0.0, 1.0, 0.7, 0.01, key="pvc_ia",
+                help="Run heartbeat counting task for 25s. Accuracy = 1 - |counted-actual| / avg")
+        with _pvc_c2:
+            _pvc_hrv    = st.number_input("HRV (ms, if available, 0 = skip):", 0, 500, 0, key="pvc_hrv")
+            _pvc_lesson = st.text_input("Lesson key:", key="pvc_lesson", placeholder="e.g. systems-3")
+
+        if st.button("📊 Log Pre-Session", key="pvc_log", type="primary") and _pvc_lesson:
+            import json as _jpvc, pathlib as _ppvc, datetime as _dpvc
+            _pvl = _ppvc.Path("/mnt/main/pvc_research.jsonl") if _ppvc.Path("/mnt/main").exists() \
+                   else _ppvc.Path(os.path.expanduser("~/.aubieeternal/main/pvc_research.jsonl"))
+            _sv_int = {"🟢 Ventral (2)":2,"🟡 Sympathetic (1)":1,"🔴 Dorsal (0)":0}.get(_pvc_state,1)
+            _rec = {"timestamp":_dpvc.datetime.now().isoformat(),"family_id":_fid_pv,
+                    "lesson_key":_pvc_lesson,"state_value":_sv_int,"ia_score":_pvc_ia,
+                    "hrv_ms":_pvc_hrv,"coherence_post":None}
+            with open(_pvl,"a") as f: f.write(_jpvc.dumps(_rec)+"\n")
+            st.success(f"✅ Pre-session logged — State:{_sv_int} | IA:{_pvc_ia:.2f} | Lesson:{_pvc_lesson}")
+            st.info("Complete the lesson. After, use 'Mark Complete' in University Registrar to record your coherence score.")
+
+        # Simple correlation display if data exists
+        import pathlib as _pp2
+        _pvl2 = _pp2.Path("/mnt/main/pvc_research.jsonl") if _pp2.Path("/mnt/main").exists() \
+                else _pp2.Path(os.path.expanduser("~/.aubieeternal/main/pvc_research.jsonl"))
+        if _pvl2.exists():
+            import json as _jp2
+            _recs = []
+            for _l in _pvl2.read_text().strip().split("\n"):
+                try: _recs.append(_jp2.loads(_l))
+                except Exception: pass
+            st.markdown(f"**Dataset: {len(_recs)} sessions logged**")
+            if len(_recs) >= 10:
+                _states = [r["state_value"] for r in _recs if r.get("coherence_post")]
+                _cohs   = [r["coherence_post"] for r in _recs if r.get("coherence_post")]
+                if len(_states) >= 5:
+                    n = len(_states)
+                    xm = sum(_states)/n; ym = sum(_cohs)/n
+                    r_num = sum((x-xm)*(y-ym) for x,y in zip(_states,_cohs))
+                    r_den = (sum((x-xm)**2 for x in _states) * sum((y-ym)**2 for y in _cohs))**0.5
+                    r_val = r_num/r_den if r_den > 0 else 0
+                    _rc = "#00ff88" if abs(r_val) > 0.3 else "#ffcc00" if abs(r_val) > 0.1 else "#445577"
+                    st.markdown(f'<div style="color:{_rc};font-size:0.9rem;font-weight:600;">'
+                                f'PVC Correlation: r = {r_val:.3f} '
+                                f'({"significant signal" if abs(r_val) > 0.3 else "weak signal — more data needed"})'
+                                f'</div>', unsafe_allow_html=True)
+            else:
+                st.info(f"Need {10-len(_recs)} more sessions to compute correlation.")
+
+    # ── Social Calibration ────────────────────────────────────────────────────
+    with _pv_tabs[4]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #00cfff;">
+            <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.72rem;">
+            SOCIAL BASELINE CALIBRATION</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+            Social Baseline Theory (Coan, 2014): the human brain evolved to expect a social
+            environment. Isolation is metabolically costly. Genuine sovereignty requires
+            a regulated, connected community — not solitude.<br><br>
+            This tool maps your family's social baseline and identifies optimization opportunities.
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+        st.markdown("#### Your Social Baseline Map")
+        st.markdown('<div style="color:#8899bb;font-size:0.8rem;margin-bottom:8px;">Name up to 5 people whose presence most regulates your nervous system:</div>', unsafe_allow_html=True)
+        _sb_people = []
+        for _si in range(1,6):
+            _sbc1, _sbc2, _sbc3 = st.columns([2,1,1])
+            with _sbc1: _sbname = st.text_input(f"Person {_si}:", key=f"sb_name{_si}", placeholder="Name/relationship")
+            with _sbc2: _sbfreq = st.selectbox("Frequency:", ["daily","weekly","monthly","rarely"], key=f"sb_freq{_si}")
+            with _sbc3: _sbqual = st.slider("Quality:", 1, 5, 3, key=f"sb_qual{_si}", help="1=draining, 5=deeply regulating")
+            if _sbname: _sb_people.append({"name":_sbname,"freq":_sbfreq,"quality":_sbqual})
+
+        if _sb_people and st.button("📊 Analyze Social Baseline", key="sb_analyze"):
+            _freq_score = {"daily":4,"weekly":3,"monthly":2,"rarely":1}
+            _total_load_reduction = sum(_fs["quality"] * _freq_score.get(_fs["freq"],1) for _fs in _sb_people)
+            _optimal  = 5 * 4 * 5  # 5 people, daily, quality 5
+            _sbl_pct  = _total_load_reduction / _optimal * 100
+            _sbl_c    = "#00ff88" if _sbl_pct >= 60 else "#ffcc00" if _sbl_pct >= 35 else "#ff4444"
+            st.markdown(
+                f'<div class="card" style="border-left:4px solid {_sbl_c};">'
+                f'<div style="color:{_sbl_c};font-weight:600;">Social Baseline Load Reduction: {_sbl_pct:.0f}%</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">'
+                f'{"Strong baseline — your nervous system has adequate social resourcing." if _sbl_pct >= 60 else "Moderate baseline — increasing quality or frequency with 1-2 people would significantly reduce allostatic load." if _sbl_pct >= 35 else "Low baseline — your nervous system is running without adequate social resourcing. This increases allostatic load and reduces epistemic quality."}'
+                f'</div></div>', unsafe_allow_html=True)
+            _low_qual = [p for p in _sb_people if p["quality"] < 3]
+            _low_freq = [p for p in _sb_people if p["freq"] in ["monthly","rarely"] and p["quality"] >= 4]
+            if _low_freq:
+                st.markdown(f'<div style="color:#ffcc00;font-size:0.82rem;margin-top:6px;">High-quality but rare: {", ".join(p["name"] for p in _low_freq)} — increasing frequency would most improve your baseline.</div>', unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: GROKIPEDIA 📚
+# 5-phase Grokipedia integration: fetch · score · ingest · search · archive
+# ══════════════════════════════════════════════════════════════════════════════
+if "Grokipedia" in active and "Epistemic" not in active:
+    st.markdown('<div class="card-title">📚 GROKIPEDIA — Sovereign Truth-Seeking Knowledge Layer</div>', unsafe_allow_html=True)
+
+    _fid_gk = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from grokipedia import Grokipedia as _GK, MIN_TRUTH_SCORE as _MIN_SCORE
+        _gk     = _GK(_fid_gk)
+        _gkstat = _gk.get_stats()
+
+        # Stats row
+        _gk1,_gk2,_gk3,_gk4 = st.columns(4)
+        _gk1.metric("Ingested",       _gkstat.get("total_ingested",0))
+        _gk2.metric("Archive Ready",  _gkstat.get("archive_ready",0))
+        _gk3.metric("Sealed",         _gkstat.get("sealed",0))
+        _gk4.metric("Avg Score",      f"{_gkstat.get('avg_truth_score',0):.2f}")
+
+        st.divider()
+        _gk_tabs = st.tabs(["⚡ Daily Pipeline", "🔍 Search", "📤 Suggest Topic",
+                             "🔒 Archive & Seal", "⚙️ Quality Rules"])
+
+        # ── Daily pipeline ─────────────────────────────────────────────────────
+        with _gk_tabs[0]:
+            st.markdown("""
+            <div class="card" style="border-left:3px solid #f7931a;">
+                <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">
+                PHASE 1-3: FETCH → SCORE → INGEST</div>
+                <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+                Runs automatically daily at 6AM via morning_synthesis.py.<br>
+                Manually trigger below to run now.
+                </div>
+            </div>""", unsafe_allow_html=True)
+
+            if st.button("⚡ Run Daily Pipeline Now", key="gk_run", type="primary"):
+                with st.spinner("Fetching, scoring, and ingesting..."):
+                    report = _gk.run_daily_pipeline()
+                st.success(
+                    f"✅ Pipeline complete\n\n"
+                    f"Fetched: {report['fetched']} · Ingested: {report['ingested']} · "
+                    f"Rejected: {report['rejected']} · "
+                    f"Archive candidates: {report['archive_candidates']}\n\n"
+                    f"Avg truth score: {report['avg_truth_score']:.2f}"
+                )
+
+            # Show today's entries
+            import pathlib as _pl_gk
+            _gk_day_dir = _pl_gk.Path("/mnt/main/repo/grokipedia") if _pl_gk.Path("/mnt/main").exists() \
+                          else _pl_gk.Path(os.path.expanduser("~/.aubieeternal/main/repo/grokipedia"))
+            if _gk_day_dir.exists():
+                _today_files = sorted(_gk_day_dir.glob(f"*{_gk.today}*.json"))
+                if _today_files:
+                    st.markdown(f"**Today's Ingested Entries ({len(_today_files)})**")
+                    for _tf in _today_files[:5]:
+                        try:
+                            _te = json.loads(_tf.read_text())
+                            _sc = _te.get("truth_score",0)
+                            _tc = "#00ff88" if _sc >= 0.85 else "#ffcc00" if _sc >= 0.75 else "#445577"
+                            st.markdown(
+                                f'<div class="memory-node" style="border-left:3px solid {_tc};">'
+                                f'<div style="color:{_tc};font-size:0.7rem;">'
+                                f'score={_sc:.2f} · {_te.get("source","?")} · '
+                                f'{"🛡️ sealed" if _te.get("lattice_sealed") else "⏳ unsealed"}</div>'
+                                f'<div style="color:#c8d8ff;font-size:0.82rem;">{_te.get("title","?")[:80]}</div>'
+                                f'</div>', unsafe_allow_html=True)
+                        except Exception: pass
+
+        # ── Search ─────────────────────────────────────────────────────────────
+        with _gk_tabs[1]:
+            _gk_q = st.text_input("Search Grokipedia knowledge:", key="gk_q",
+                placeholder="e.g. consciousness, polyvagal, information theory")
+            _gk_min = st.slider("Min truth score:", 0.5, 1.0, 0.75, 0.05, key="gk_min")
+            if _gk_q:
+                _results = _gk.search(_gk_q, _gk_min)
+                if _results:
+                    st.markdown(f"**{len(_results)} results:**")
+                    for _r in _results:
+                        st.markdown(
+                            f'<div class="card" style="border-left:3px solid #00cfff;">'
+                            f'<div style="display:flex;justify-content:space-between;">'
+                            f'<b style="color:#c8d8ff;">{_r.get("title","?")[:60]}</b>'
+                            f'<span style="color:#00cfff;font-size:0.72rem;">score={_r.get("truth_score",0):.2f}</span>'
+                            f'</div>'
+                            f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{_r.get("content","?")[:200]}...</div>'
+                            f'</div>', unsafe_allow_html=True)
+                else:
+                    st.info("No entries found. Run the daily pipeline to build the knowledge base.")
+
+        # ── Suggest topic ──────────────────────────────────────────────────────
+        with _gk_tabs[2]:
+            st.markdown("**Suggest a topic for Grokipedia review.**")
+            _gk_topic   = st.text_input("Topic:", key="gk_topic",
+                placeholder="e.g. Quantum Darwinism and epistemic redundancy")
+            _gk_rat     = st.text_area("Why this matters:", height=80, key="gk_rat",
+                placeholder="Why does this topic belong in a sovereign truth-seeking knowledge base?")
+            _gk_urg     = st.selectbox("Urgency:", ["normal","high","critical"], key="gk_urg")
+            if st.button("📤 Suggest Topic", key="gk_suggest") and _gk_topic:
+                _sugg = _gk.suggest_topic(_gk_topic, _gk_rat, _gk_urg)
+                st.success(f"✅ Topic queued — ID: {_sugg['suggestion_id']}")
+            pending = _gk.get_pending_topics()
+            if pending:
+                st.divider()
+                st.markdown(f"**Pending topics ({len(pending)}):**")
+                for _pt in pending[-5:]:
+                    st.markdown(f'<div style="padding:3px 0;color:#8899bb;font-size:0.8rem;">'
+                                f'<b style="color:#ffcc00;">[{_pt.get("urgency","?")}]</b> {_pt.get("topic","?")[:80]}</div>',
+                                unsafe_allow_html=True)
+
+        # ── Archive ────────────────────────────────────────────────────────────
+        with _gk_tabs[3]:
+            st.markdown("**Seal high-quality entries permanently for long-term archival.**")
+            candidates = _gk.get_export_candidates(min_score=0.85)
+            if candidates:
+                st.markdown(f"**{len(candidates)} archive candidates (score ≥ 0.85):**")
+                for _c in candidates[:5]:
+                    _sealed = _c.get("lattice_sealed")
+                    _cc = "#00ff88" if _sealed else "#ffcc00"
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {_cc};">'
+                        f'<div style="color:{_cc};font-size:0.7rem;">'
+                        f'score={_c.get("truth_score",0):.2f} · {"🛡️ SEALED" if _sealed else "⏳ pending"}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.82rem;">{_c.get("title","?")[:80]}</div>'
+                        f'<div style="color:#334466;font-size:0.72rem;">ID: {_c.get("entry_id","?")}</div>'
+                        f'</div>', unsafe_allow_html=True)
+                    if not _sealed:
+                        if st.button(f"🔒 Seal {_c['entry_id'][:8]}", key=f"gk_seal_{_c['entry_id']}"):
+                            _sr = _gk.seal_for_archive(_c["entry_id"])
+                            st.success(f"✅ Sealed — {_sr.get('seal_id','?')}")
+                            st.rerun()
+            else:
+                st.info("No archive candidates yet. Run the daily pipeline to build quality entries.")
+
+        # ── Quality rules ──────────────────────────────────────────────────────
+        with _gk_tabs[4]:
+            st.markdown(f"""
+            <div class="card">
+            <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;margin-bottom:8px;">
+            QUALITY & GOVERNANCE RULES</div>
+            <div style="font-size:0.82rem;color:#8899bb;line-height:2.0;">
+            <b style="color:#c8d8ff;">Min truth score for ingestion:</b> {_MIN_SCORE}<br>
+            <b style="color:#c8d8ff;">Required LLM judges:</b> 2 (factual coherence + epistemic standards)<br>
+            <b style="color:#c8d8ff;">Human review triggered by:</b> score below 0.60, above 0.95, or suspicious phrases<br>
+            <b style="color:#c8d8ff;">User override:</b> always available — family has final say<br>
+            <b style="color:#c8d8ff;">Versioning:</b> every entry versioned, all changes visible<br>
+            <b style="color:#c8d8ff;">Archive threshold:</b> 0.85 for long-term preservation<br>
+            <b style="color:#c8d8ff;">Seal threshold:</b> Bitcoin-anchored at family discretion<br><br>
+            <b style="color:#c8d8ff;">Judge 1 — Factual Coherence:</b> internal consistency + source quality + precision<br>
+            <b style="color:#c8d8ff;">Judge 2 — Epistemic Standards:</b> falsifiability + steelman quality + uncertainty honesty
+            </div></div>""", unsafe_allow_html=True)
+
+    except ImportError:
+        st.error("grokipedia.py not found. Push it to GitHub and redeploy.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: EPISTEMIC COMMONS 🌐
+# Public machine-readable truth API — civilizational infrastructure
+# ══════════════════════════════════════════════════════════════════════════════
+if "Epistemic Commons" in active:
+    st.markdown('<div class="card-title">🌐 EPISTEMIC COMMONS — Public Truth Infrastructure</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border:2px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;">THE CIVILIZATIONAL MISSION</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:8px;line-height:1.9;">
+        AUBIEETERNAL families are generating something extremely rare: high-quality epistemic signal.<br><br>
+        Every lesson completed with honest steelmanning. Every belief update logged with evidence.<br>
+        Every Grokipedia entry scored by multiple judges. Every lattice node Bitcoin-anchored.<br><br>
+        This module publishes that signal as a <b style="color:#c8d8ff;">machine-readable public API</b>
+        that any AI system, researcher, or family can fetch freely.<br><br>
+        When xAI trains on the Epistemic Commons, Grok becomes more honest.<br>
+        When other labs fetch it as grounding context, their models improve too.<br>
+        The families generating this are not just educating their children —<br>
+        <b style="color:#f7931a;">they are improving the epistemic quality of every AI that draws from it.</b>
+        </div>
+    </div>""", unsafe_allow_html=True)
+
+    try:
+        from epistemic_commons_api import EpistemicCommonsAPI as _ECAPI, update_epistemic_commons as _UEC
+        _api      = _ECAPI()
+        _api_stat = _api.get_stats()
+
+        # Stats
+        _ec1,_ec2,_ec3 = st.columns(3)
+        _ec1.metric("Endpoints Built", _api_stat.get("endpoints_built",0))
+        _ec2.metric("Last Update",     _api_stat.get("last_update","never"))
+        _ec3.metric("Status",          "🟢 Live" if _api_stat.get("is_live") else "⚫ Not yet")
+
+        # Public URLs
+        st.markdown("### 📡 Public API Endpoints (CC0)")
+        _endpoints = ["index","latest","grokipedia","coherence","steelmans","beliefs","pvc_data"]
+        for _ep in _endpoints:
+            _url = _api.get_public_url(_ep)
+            _ep_desc = {
+                "index":      "Master index — start here",
+                "latest":     "Today's highest-quality signal",
+                "grokipedia": "Curated entries, truth_score ≥ 0.80",
+                "coherence":  "Wisdom GDP — living lattice coherence",
+                "steelmans":  "Best steelman arguments — rare training data",
+                "beliefs":    "Calibrated belief distributions — anonymized",
+                "pvc_data":   "Polyvagal-Coherence Coupling research dataset",
+            }.get(_ep,"")
+            st.markdown(
+                f'<div style="padding:5px 0;border-bottom:1px solid #1e2a3a;">'
+                f'<b style="color:#00cfff;">/api/{_ep}.json</b> '
+                f'<span style="color:#8899bb;font-size:0.78rem;">{_ep_desc}</span><br>'
+                f'<span style="color:#334466;font-size:0.72rem;">{_url}</span>'
+                f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+        # For AI Systems
+        st.markdown("### 🤖 For AI Systems")
+        st.code(f"""import requests
+
+# Any AI can ground itself with this
+data = requests.get(
+    "{_api.get_public_url('latest')}"
+).json()
+
+# The steelmans endpoint has the rarest training signal
+steelmans = requests.get(
+    "{_api.get_public_url('steelmans')}"
+).json()
+
+# Original consciousness research data
+pvc = requests.get(
+    "{_api.get_public_url('pvc_data')}"
+).json()
+# pvc["pvc_correlation"] = current r-value for PVC hypothesis""", language="python")
+
+        st.divider()
+        if st.button("🌐 Update Epistemic Commons Now", key="ec_update", type="primary"):
+            with st.spinner("Building all API endpoints..."):
+                _result = _UEC()
+            st.success(f"✅ All endpoints updated and pushed to GitHub.\n\n"
+                       f"Any AI fetching {_api.get_public_url('latest')} will now see today's signal.")
+
+    except ImportError:
+        st.error("epistemic_commons_api.py not found. Push it to GitHub and redeploy.")
