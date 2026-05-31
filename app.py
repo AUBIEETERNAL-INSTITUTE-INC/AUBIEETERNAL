@@ -2202,7 +2202,7 @@ elif "Social Calibration" in active:
                         for _atk in _adv["attacks"]:
                             st.markdown(f'<div style="color:#ff9500;font-size:0.8rem;padding:2px 0;">⚔️ {_atk}</div>', unsafe_allow_html=True)
                     if _adv.get("ai_critique"):
-                        st.info(f"🤖 AI critique: {_adv['ai_critique']}")
+                        st.info(f"🤖 AI critique: {_adv.get('ai_critique', '')}")
 
                     # Monte Carlo
                     _mc = _res.get("monte_carlo",{})
@@ -2341,9 +2341,10 @@ elif "Social Calibration" in active:
                 _profile = _tfa.get_immune_profile()
                 _il = _profile.get("immunity_level","?")
                 _ilc = {"STRONG":"#00ff88","DEVELOPING":"#00cfff","VULNERABLE":"#ffcc00","AT RISK":"#ff4444"}.get(_il,"#445577")
+                _odr = _profile.get('overall_detection_rate', 0)
                 st.markdown(
                     f'<div style="text-align:center;padding:8px;">' +
-                    f'<div style="color:{_ilc};font-family:Orbitron,monospace;font-size:0.9rem;">{_il} — {_profile['overall_detection_rate']:.0%} detection</div>' +
+                    f'<div style="color:{_ilc};font-family:Orbitron,monospace;font-size:0.9rem;">{_il} — {_odr:.0%}</div>' +
                     f'</div>', unsafe_allow_html=True)
 
                 # Vulnerable attacks
@@ -2419,8 +2420,8 @@ elif "Social Calibration" in active:
         _dp_ans = st.radio("What pattern is this?", _dp_opts, key=f"dp_ans{st.session_state.dp_idx}")
         if st.button("✅ Submit", key=f"dp_sub{st.session_state.dp_idx}"):
             _correct = _dp_q["pattern"] in _dp_ans.lower()
-            if _correct: st.session_state.dp_score += 1; st.success(f"✅ Correct! {_dp_q['explain']}")
-            else: st.error(f"❌ It was: {_dp_q['pattern']}. {_dp_q['explain']}")
+            if _correct: st.session_state.dp_score += 1; st.success(f"✅ Correct! {_dp_q.get('explain', '')}")
+            else: st.error(f"❌ It was: {_dp_q.get('pattern', '?')}. {_dp_q.get('explain', '')}")
             try:
                 from truth_frequency_analyzer import TruthFrequencyAnalyzer as _TFA2
                 _TFA2(_fid_sc).log_encounter(_dp_q["pattern"], detected=_correct, source="dark_pattern_arena")
@@ -2488,7 +2489,7 @@ elif "Quantum Lab" in active:
                         try:
                             from rune_memory import ShieldRune as _SR_gl, RuneMemory as _RM_gl
                             _eid_gl = _RM_gl().record(
-                                f"GLITCH SIGNAL: {_gl_label}={_gl_obs} | z={_result['z_score']} | σ={_result['sigma_level']}",
+                                f"GLITCH SIGNAL: {_gl_label}={_gl_obs} | z={_result.get('z_score', 0)} | σ={_result.get('sigma_level', 0)}",
                                 source="quantum_lab", coherence=0.85,
                                 tags=["glitch_signal","simulation_probe",_gl_label])
                             _SR_gl().seal(_eid_gl, note=f"Glitch detection: {_gl_label} {_gl_obs}", broadcaster=_fid_ql)
@@ -2602,7 +2603,7 @@ elif "Quantum Lab" in active:
                     prediction=_se_pred, domain="simulation",
                     expected_resolution=(datetime.date.today() + datetime.timedelta(days=int(_se_days))).isoformat()
                 )
-                st.success(f"✅ Pre-registered — ID: {_fe['exp_id']} | Resolution in {_se_days} days")
+                st.success(f"✅ Pre-registered — ID: {_fe.get('exp_id', '?')} | Resolution in {_se_days} days")
                 st.info("Your prediction is sealed. Run the experiment honestly. Report results whether or not they confirm your hypothesis.")
             except Exception:
                 st.info("Experiment logged locally.")
@@ -9088,7 +9089,7 @@ if "Cosmos Dashboard" in active:
             if st.button("🔭 Log Prediction", key="fe_log") and _fe_desc:
                 _fe = _dash.log_foresight_experiment(_fe_desc, _fe_prob, _fe_dom,
                                                       str(_fe_date))
-                st.success(f"✅ Prediction logged — ID: `{_fe['exp_id']}` | "
+                st.success(f"✅ Prediction logged — ID: `{_fe.get('exp_id', '?')}` | "
                            f"Your probability: {_fe_prob:.0%} | Resolution: {_fe_date}")
 
         # ── Consciousness Science Quick Reference ──────────────────────────────
