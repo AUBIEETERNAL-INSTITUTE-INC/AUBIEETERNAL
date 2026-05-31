@@ -926,12 +926,13 @@ with st.sidebar:
     # ── Categorized Navigation ────────────────────────────────────────────────
     _NAV_CATEGORIES = {
         "🏠 HOME": [
-            "📊 Dashboard", "🌅 Digest",
+            "🌍 Welcome", "📊 Dashboard", "🌅 Digest", "🏫 Community Mode",
         ],
         "🤖 AI": [
             "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace",
             "🧪 Sandbox Lab",
             "🌌 Cosmos Dashboard",
+            "⚡ xAI Alignment Lab",
         ],
         "👾 SWARM": [
             "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "📚 Grokipedia", "🌐 Epistemic Commons",
@@ -951,6 +952,7 @@ with st.sidebar:
             "🏛️ School Pathway",
             "🔧 Sovereign Builder",
             "🎓 University Registrar",
+            "🌌 Cosmos Dashboard",
         ],
         "🛡️ ADVERSARIAL": [
             "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
@@ -10407,3 +10409,620 @@ pvc = requests.get(
 
     except ImportError:
         st.error("epistemic_commons_api.py not found. Push it to GitHub and redeploy.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: COSMOS DASHBOARD 🌌
+# Daily universe question + belief ledger + consciousness experiments
+# + foresight tracker + 35 rotating cosmological questions
+# ══════════════════════════════════════════════════════════════════════════════
+if "Cosmos Dashboard" in active:
+    st.markdown('<div class="card-title">🌌 COSMOS DASHBOARD — Daily Questions About Reality</div>', unsafe_allow_html=True)
+
+    _fid_cd = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    # 35 rotating universe questions
+    import datetime as _dt_cd, hashlib as _hs_cd, json as _jcd, pathlib as _pcd
+
+    UNIVERSE_QUESTIONS = [
+        {"q":"Is the universe infinite?","hint":"The observable universe is 93 billion light-years. The total universe is likely much larger — possibly infinite. How do we reason about what we cannot observe?","domain":"cosmology"},
+        {"q":"Why is there something rather than nothing?","hint":"Leibniz called this the fundamental question. Physicists have proposed that 'nothing' is unstable and something must emerge from it. Is that a real answer?","domain":"metaphysics"},
+        {"q":"Is consciousness fundamental to the universe or emergent from matter?","hint":"IIT says it is fundamental. Most materialists say emergent. The 2025 Cogitate study found neither theory fully correct. What does the evidence say?","domain":"consciousness"},
+        {"q":"Are the laws of physics the same everywhere in the universe?","hint":"We assume so, but we can only verify locally. CPT violation in kaon decay shows some asymmetry already exists.","domain":"physics"},
+        {"q":"Could there be life in a universe with different physical constants?","hint":"This is the anthropic reasoning question. What kinds of complexity require 'our' constants vs. what might work differently?","domain":"fine_tuning"},
+        {"q":"Is time travel physically possible?","hint":"GR permits closed timelike curves. Chronology protection conjecture (Hawking) says quantum effects prevent them. What would falsify this?","domain":"physics"},
+        {"q":"What is entropy and why does it always increase?","hint":"The Second Law may be the most important law in physics. It explains time's direction, the heat death of the universe, and why we age.","domain":"thermodynamics"},
+        {"q":"Are there other universes?","hint":"The multiverse has four levels (Tegmark): same laws different regions, different initial conditions, different mathematical structures, different everything. Which are science?","domain":"cosmology"},
+        {"q":"What happened before the Big Bang?","hint":"This may be a category error — time began with the Big Bang. But Penrose's CCC proposes aeons preceding ours. Is a timeless 'before' coherent?","domain":"cosmology"},
+        {"q":"Why are there exactly three dimensions of space?","hint":"String theory requires 10 or 11. The other dimensions may be compactified below detection. Or three may be the only value permitting stable atoms and orbits.","domain":"physics"},
+        {"q":"Is mathematics discovered or invented?","hint":"Wigner called the unreasonable effectiveness of mathematics a mystery. Tegmark says the universe IS mathematics. Formalists say we invent it. Which best explains Wigner?","domain":"philosophy"},
+        {"q":"What is dark matter made of?","hint":"WIMPs, axions, sterile neutrinos, primordial black holes — dozens of candidates, zero direct detections after 40 years of searching. Does this suggest MOND instead?","domain":"dark_matter"},
+        {"q":"Will the universe end?","hint":"Heat death (entropy maximum), Big Rip (dark energy accelerates), Big Crunch (gravity wins), vacuum decay (metastable false vacuum). Which does evidence favor?","domain":"cosmology"},
+        {"q":"Is quantum mechanics complete?","hint":"Hidden variables (de Broglie-Bohm), many-worlds, QBism, Copenhagen. Bell's theorem rules out local hidden variables. What does the evidence leave open?","domain":"quantum"},
+        {"q":"Is there a theory of everything?","hint":"String theory, loop quantum gravity, causal set theory — none yet tested. What would a ToE even mean? Would it explain consciousness?","domain":"physics"},
+        {"q":"How did life first emerge?","hint":"RNA world, metabolism-first, panspermia. The hardest step: from chemistry to self-replication. We have no confirmed mechanism. What does the fossil record constrain?","domain":"origins"},
+        {"q":"Is free will compatible with physics?","hint":"Determinism vs. quantum indeterminacy vs. compatibilism. If the brain is a physical system, in what sense can choices be free? Does it matter?","domain":"philosophy"},
+        {"q":"What is the relationship between mind and brain?","hint":"Identity theory, functionalism, IIT, dualism. The hard problem: why does physical processing feel like anything? This is genuinely unsolved.","domain":"consciousness"},
+        {"q":"Are we living in a simulation?","hint":"Bostrom's trilemma: either civilizations go extinct before simulation-capability, or they don't run simulations, or we are in a simulation. How do we assign probabilities?","domain":"simulation"},
+        {"q":"Is the universe fine-tuned for life?","hint":"Physical constants within narrow ranges permitting complexity. Design, multiverse, or necessity? None is fully satisfying. What's your credence and why?","domain":"fine_tuning"},
+        {"q":"Could aliens exist without carbon-based chemistry?","hint":"Silicon has similar bonding properties but forms solids at life-relevant temperatures. Information-processing life in plasma? Electromagnetic life?","domain":"astrobiology"},
+        {"q":"What would it mean to detect alien intelligence?","hint":"SETI searches narrow-band radio and optical lasers. But a sufficiently advanced civilization might communicate in ways we can't conceive. What would unambiguous detection require?","domain":"fermi"},
+        {"q":"Is the universe computable?","hint":"Church-Turing thesis + digital physics: is reality fundamentally computational? What would a non-computable universe look like? Penrose says consciousness requires it.","domain":"information"},
+        {"q":"What is the smallest thing that exists?","hint":"String theory: 1D strings at Planck scale. Loop quantum gravity: discrete spacetime. Are these testable? What happens below the Planck length?","domain":"physics"},
+        {"q":"Does spacetime have an ultimate structure?","hint":"GR: continuous and geometric. QFT: fields on a background. The incompatibility at singularities suggests both are incomplete. What's more fundamental?","domain":"physics"},
+        {"q":"How probable is the existence of intelligent life on Earth?","hint":"If fl, fi, fc in Drake's equation are all very small, Earth might be extraordinarily lucky. The Great Filter question: is our existence evidence for the filter being behind us?","domain":"fermi"},
+        {"q":"What would falsify the Standard Model of particle physics?","hint":"The Standard Model has passed every test. But it doesn't include gravity, dark matter, or explain matter-antimatter asymmetry. What experiments probe beyond it?","domain":"physics"},
+        {"q":"Can information be destroyed?","hint":"Hawking's information paradox: does information fall into black holes forever? His final resolution (2016) says no. But the mechanism remains debated.","domain":"information"},
+        {"q":"Is the universe fundamentally random or deterministic?","hint":"Copenhagen QM: truly random. Many-worlds: deterministic at the level of the wavefunction, random from within. Hidden variables: deterministic underneath. Which best explains experiments?","domain":"quantum"},
+        {"q":"What is the nature of mathematical truth?","hint":"Gödel showed any consistent formal system has true but unprovable statements. Does this mean mathematical truth transcends formal systems? What does this imply for AI?","domain":"mathematics"},
+        {"q":"How do you measure the quality of a scientific theory?","hint":"Popper: falsifiability. Kuhn: paradigm fit. Bayesian: likelihood ratio. Lakatos: progressive research programs. Which best describes how science actually works?","domain":"philosophy_of_science"},
+        {"q":"What is the relationship between entropy and information?","hint":"Shannon entropy and thermodynamic entropy are mathematically identical. Maxwell's Demon was exorcised by Landauer's principle. What does this reveal about the nature of information?","domain":"information"},
+        {"q":"Could a sufficiently complex universe simulate itself?","hint":"Hofstadter's strange loops. A universe that contains a complete simulation of itself. Is this logically coherent? What would Gödel say?","domain":"simulation"},
+        {"q":"What would it take for you to change your view on consciousness being fundamental?","hint":"This is the meta-question: what is your update condition? Pre-register it. The most important epistemic habit in consciousness science.","domain":"consciousness"},
+        {"q":"In 1,000 years, what do you think humanity will know that we don't today?","hint":"Not a prediction game — a perspective exercise. What categories of knowledge seem most likely to transform? This is the foresight question.","domain":"foresight"},
+    ]
+
+    import random as _rcd
+    # Daily question rotates by date
+    _today_cd = _dt_cd.date.today()
+    _q_idx = _today_cd.toordinal() % len(UNIVERSE_QUESTIONS)
+    _today_q = UNIVERSE_QUESTIONS[_q_idx]
+
+    st.markdown(
+        f'<div class="card" style="border:2px solid #a020f0;padding:16px;">'
+        f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;margin-bottom:8px;">'
+        f'TODAY\'S UNIVERSE QUESTION — {_today_cd.strftime("%B %d, %Y")}</div>'
+        f'<div style="color:#c8d8ff;font-size:1.05rem;font-weight:600;line-height:1.5;">'
+        f'{_today_q["q"]}</div>'
+        f'<div style="color:#8899bb;font-size:0.8rem;margin-top:8px;line-height:1.7;">'
+        f'{_today_q["hint"]}</div>'
+        f'</div>', unsafe_allow_html=True)
+
+    _cd_tabs = st.tabs(["🔭 Today's Question", "📚 Cosmos Deep Track",
+                         "🧠 Consciousness Experiments", "📊 Belief Ledger",
+                         "🔮 Foresight Tracker"])
+
+    # ── Today's question ───────────────────────────────────────────────────────
+    with _cd_tabs[0]:
+        _cd_ans = st.text_area("Your answer (think before writing — this gets sealed):",
+            height=120, key="cd_ans",
+            placeholder="Take the question seriously. Your answer today will be readable in 50 years.")
+        _cd_conf = st.slider("Confidence in your current view:", 0.05, 0.95, 0.5, 0.05, key="cd_conf",
+            help="0.5 = complete uncertainty. Only go higher if you can defend it.")
+
+        if st.button("🌌 Seal Today's Answer", key="cd_seal", type="primary") and _cd_ans.strip():
+            _seal_content = {
+                "date":     str(_today_cd),
+                "question": _today_q["q"],
+                "domain":   _today_q["domain"],
+                "answer":   _cd_ans,
+                "confidence": _cd_conf,
+                "family_id": _fid_cd,
+            }
+            _cd_log = _pcd.Path("/mnt/main/cosmos_answers.jsonl") if _pcd.Path("/mnt/main").exists() \
+                      else _pcd.Path(os.path.expanduser("~/.aubieeternal/main/cosmos_answers.jsonl"))
+            with open(_cd_log, "a") as f:
+                f.write(_jcd.dumps(_seal_content) + "\n")
+            try:
+                from rune_memory import RuneMemory as _RM_cd
+                _RM_cd().record(
+                    f"COSMOS ANSWER [{_today_q['domain']}]: {_today_q['q']}\n\n{_cd_ans}",
+                    source="cosmos_dashboard", coherence=_cd_conf,
+                    tags=["cosmos","universe","daily_question",_today_q["domain"]]
+                )
+                st.success(f"✅ Sealed permanently.\n\nConfidence: {_cd_conf:.0%} | Domain: {_today_q['domain']}\n\n"
+                           "Your grandchildren can read this. Make it honest.")
+            except Exception:
+                st.success(f"✅ Saved — {_today_q['domain']} | confidence: {_cd_conf:.0%}")
+
+        # Browse all 35 questions
+        with st.expander("🔭 Browse All 35 Universe Questions"):
+            _domains = sorted(set(q["domain"] for q in UNIVERSE_QUESTIONS))
+            _dom_filter = st.selectbox("Filter by domain:", ["all"] + _domains, key="cd_dom")
+            for _qi, _q in enumerate(UNIVERSE_QUESTIONS):
+                if _dom_filter == "all" or _q["domain"] == _dom_filter:
+                    _is_today = _qi == _q_idx
+                    _qc = "#a020f0" if _is_today else "#445577"
+                    st.markdown(
+                        f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<span style="color:{_qc};font-size:0.75rem;">[{_q["domain"]}{"  ← TODAY" if _is_today else ""}]</span> '
+                        f'<span style="color:#8899bb;font-size:0.82rem;">{_q["q"]}</span>'
+                        f'</div>', unsafe_allow_html=True)
+
+    # ── Cosmos Deep Track ──────────────────────────────────────────────────────
+    with _cd_tabs[1]:
+        st.markdown("**Cosmos Deep Track — 6 lessons from scale to the Fermi Paradox**")
+        cosmos_lessons_info = [
+            ("cosmos-1", "How Big Is Everything?", "Cognitive confrontation with scale. The Pale Blue Dot calculation.", "All ages", 40),
+            ("cosmos-2", "What the Big Bang Actually Claims", "Four lines of evidence + the Hubble Tension (unresolved at 5σ, 2026).", "9+", 45),
+            ("cosmos-3", "Dark Matter and Dark Energy — 95% Unknown", "Real anomalies, honest uncertainty. The 10^120-orders-of-magnitude problem.", "11+", 50),
+            ("cosmos-4", "Fine-Tuning and the Anthropic Principle", "Design vs multiverse vs necessity. Pre-register your credences.", "13+", 55),
+            ("cosmos-5", "Information, Entropy, and the Arrow of Time", "Why time flows one way. Penrose's 10^(10^123) initial entropy.", "13+", 58),
+            ("cosmos-6", "The Fermi Paradox — Where Is Everyone?", "Great Filter: behind or ahead? The Great Filter Credence Map.", "12+", 62),
+        ]
+        for _ck, _ct, _cdesc, _cage, _cxp in cosmos_lessons_info:
+            _status = "?"
+            try:
+                from family_hud import FamilySession as _FS_cd
+                _fs_cd = _FS_cd(_fid_cd, "")
+                _status = _fs_cd.get_lesson_status(_ck).get("status","?")
+            except Exception: pass
+            _cc = "#00ff88" if _status == "completed" else "#00cfff" if _status == "available" else "#445577"
+            st.markdown(
+                f'<div class="memory-node" style="border-left:3px solid {_cc};">'
+                f'<div style="display:flex;justify-content:space-between;">'
+                f'<b style="color:{_cc};">{_ct}</b>'
+                f'<span style="color:#445577;font-size:0.72rem;">{_cxp} XP · Age {_cage} · {_status}</span>'
+                f'</div>'
+                f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">{_cdesc}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+    # ── Consciousness Experiments ──────────────────────────────────────────────
+    with _cd_tabs[2]:
+        st.markdown("**Design and run consciousness experiments. Pre-register predictions.**")
+        _exp_list = [
+            ("Introspection Accuracy", "Pick a mental state. Describe it in writing. 24 hours later, try to recall the state from your description. How accurate is introspection?"),
+            ("Attention Collapse", "Focus on a single word for 10 minutes. Log when attention drifts. Plot frequency over 30 days. Does practice change the distribution?"),
+            ("Predictive Processing", "Pick a strong expectation. Notice it before it's confirmed. Log: was the expectation conscious before or only after confirmation?"),
+            ("PVC Protocol", "Before a lesson: log ANS state + IA score. After: log coherence. After 30+ sessions, compute Pearson r (state vs coherence). This tests the PVC hypothesis."),
+            ("Metacognitive Accuracy", "Predict your score on 10 quiz questions before taking them. Compare predicted vs actual. Calculate calibration score (|predicted - actual|)."),
+        ]
+        for _exp_name, _exp_desc in _exp_list:
+            st.markdown(
+                f'<div class="card" style="margin-bottom:4px;">'
+                f'<div style="color:#00cfff;font-weight:600;font-size:0.85rem;">{_exp_name}</div>'
+                f'<div style="color:#8899bb;font-size:0.8rem;margin-top:3px;">{_exp_desc}</div>'
+                f'</div>', unsafe_allow_html=True)
+        st.divider()
+        _exp_pred = st.text_area("Pre-register a prediction:", height=80, key="exp_pred",
+            placeholder="I predict that my ANS state (Green/Yellow/Red) will correlate with coherence score with r > 0.3 over 30 sessions.")
+        _exp_prob = st.slider("Your confidence:", 0.05, 0.95, 0.6, 0.05, key="exp_prob")
+        if st.button("🔬 Pre-Register", key="exp_reg") and _exp_pred:
+            _exp_log = _pcd.Path("/mnt/main/consciousness_experiments.jsonl") if _pcd.Path("/mnt/main").exists() \
+                       else _pcd.Path(os.path.expanduser("~/.aubieeternal/main/consciousness_experiments.jsonl"))
+            with open(_exp_log, "a") as f:
+                f.write(_jcd.dumps({"date":str(_today_cd),"prediction":_exp_pred,"confidence":_exp_prob,"family_id":_fid_cd}) + "\n")
+            st.success(f"✅ Pre-registered at {_exp_prob:.0%} confidence. Cannot be changed. Run honestly.")
+
+    # ── Belief Ledger ──────────────────────────────────────────────────────────
+    with _cd_tabs[3]:
+        st.markdown("**Track your beliefs about the universe. Calibrate over time.**")
+        _bl_belief = st.text_input("Belief:", key="bl_belief",
+            placeholder="e.g. 'The multiverse is real and contains at least 10^500 universes'")
+        _bl_c1, _bl_c2 = st.columns(2)
+        with _bl_c1:
+            _bl_conf = st.slider("Confidence:", 0.01, 0.99, 0.5, 0.01, key="bl_conf")
+            _bl_update = st.text_input("Update condition:", key="bl_update",
+                placeholder="What evidence would change this?")
+        with _bl_c2:
+            _bl_domain = st.selectbox("Domain:", ["cosmology","consciousness","fine_tuning","quantum","simulation","fermi","physics","philosophy","other"], key="bl_domain")
+            _bl_review = st.date_input("Review date:", key="bl_review")
+        if st.button("📊 Log Belief", key="bl_log") and _bl_belief:
+            _bl_log = _pcd.Path("/mnt/main/belief_ledger.jsonl") if _pcd.Path("/mnt/main").exists() \
+                      else _pcd.Path(os.path.expanduser("~/.aubieeternal/main/belief_ledger.jsonl"))
+            with open(_bl_log, "a") as f:
+                f.write(_jcd.dumps({"date":str(_today_cd),"belief":_bl_belief,"confidence":_bl_conf,
+                                    "domain":_bl_domain,"update_condition":_bl_update,
+                                    "review_date":str(_bl_review),"family_id":_fid_cd}) + "\n")
+            st.success(f"✅ Logged — {_bl_conf:.0%} confidence | review: {_bl_review}")
+
+    # ── Foresight Tracker ──────────────────────────────────────────────────────
+    with _cd_tabs[4]:
+        st.markdown("**Long-range epistemic predictions. Science's best tool is prediction.**")
+        _ft_pred = st.text_area("Prediction:", height=80, key="ft_pred",
+            placeholder="e.g. 'The Hubble tension will be resolved by new physics by 2030'")
+        _ft_c1, _ft_c2 = st.columns(2)
+        with _ft_c1:
+            _ft_conf = st.slider("Confidence:", 0.05, 0.95, 0.5, 0.05, key="ft_conf")
+            _ft_resolve = st.date_input("Expected resolution date:", key="ft_resolve")
+        with _ft_c2:
+            _ft_domain = st.selectbox("Domain:", ["physics","cosmology","biology","AI","civilization","consciousness","other"], key="ft_domain")
+            _ft_falsify = st.text_input("What would falsify this?", key="ft_falsify")
+        if st.button("🔮 Register Foresight", key="ft_reg", type="primary") and _ft_pred:
+            _ft_log = _pcd.Path("/mnt/main/foresight_tracker.jsonl") if _pcd.Path("/mnt/main").exists() \
+                      else _pcd.Path(os.path.expanduser("~/.aubieeternal/main/foresight_tracker.jsonl"))
+            with open(_ft_log, "a") as f:
+                f.write(_jcd.dumps({"date":str(_today_cd),"prediction":_ft_pred,"confidence":_ft_conf,
+                                    "domain":_ft_domain,"falsification":_ft_falsify,
+                                    "resolution_date":str(_ft_resolve),"family_id":_fid_cd}) + "\n")
+            st.success(f"✅ Sealed — {_ft_conf:.0%} | resolves: {_ft_resolve}\nYour descendants will score this.")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: WELCOME 🌍 — First page any new user (child or adult) sees
+# Designed for: kids in orphanages, families with no prior tech education,
+# anyone on any device. Works with NO glasses, NO hardware, NO prior knowledge.
+# ══════════════════════════════════════════════════════════════════════════════
+if "Welcome" in active:
+    # Clean, warm, large-text welcome — no jargon
+    st.markdown("""
+    <style>
+    .welcome-big { font-size: 2.2rem; color: #c8d8ff; font-weight: 700; line-height: 1.4; margin-bottom: 12px; }
+    .welcome-sub { font-size: 1.1rem; color: #8899bb; line-height: 1.9; margin-bottom: 16px; }
+    .welcome-card { background: #0d1228; border-radius: 12px; padding: 20px; margin-bottom: 12px; border-left: 4px solid #f7931a; }
+    .welcome-step { font-size: 1rem; color: #c8d8ff; padding: 8px 0; border-bottom: 1px solid #1e2a3a; }
+    .big-btn { font-size: 1.1rem !important; padding: 14px 28px !important; }
+    </style>
+    <div class="welcome-big">🦅 Welcome to AUBIEETERNAL</div>
+    <div class="welcome-sub">
+    A free school for anyone, anywhere in the world.<br>
+    You do not need special glasses. You do not need to pay anything.<br>
+    You do not need to be good at school already.<br><br>
+    <b style="color:#f7931a;">You just need to be curious.</b>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Path selector — the most important UX decision
+    st.markdown("### Who are you starting as?")
+    _wc1, _wc2, _wc3 = st.columns(3)
+
+    with _wc1:
+        st.markdown("""
+        <div class="welcome-card">
+        <div style="font-size:2rem;text-align:center;">👧</div>
+        <div style="color:#f7931a;font-weight:700;text-align:center;margin-top:6px;">I am a child</div>
+        <div style="color:#8899bb;font-size:0.85rem;text-align:center;margin-top:4px;">Ages 5–15<br>Start with fun lessons</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Start as a Child →", key="w_child", use_container_width=True):
+            st.session_state.welcome_mode = "child"
+            st.session_state.active_tab = "Community Mode"
+            st.rerun()
+
+    with _wc2:
+        st.markdown("""
+        <div class="welcome-card" style="border-left-color:#00cfff;">
+        <div style="font-size:2rem;text-align:center;">👨‍👩‍👧</div>
+        <div style="color:#00cfff;font-weight:700;text-align:center;margin-top:6px;">I am a family</div>
+        <div style="color:#8899bb;font-size:0.85rem;text-align:center;margin-top:4px;">Learn together<br>All ages welcome</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Start as a Family →", key="w_family", use_container_width=True):
+            st.session_state.welcome_mode = "family"
+            st.rerun()
+
+    with _wc3:
+        st.markdown("""
+        <div class="welcome-card" style="border-left-color:#a020f0;">
+        <div style="font-size:2rem;text-align:center;">🏫</div>
+        <div style="color:#a020f0;font-weight:700;text-align:center;margin-top:6px;">I run a school</div>
+        <div style="color:#8899bb;font-size:0.85rem;text-align:center;margin-top:4px;">Orphanage, community<br>center, or group</div>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button("Deploy for my school →", key="w_school", use_container_width=True):
+            st.session_state.welcome_mode = "school"
+            st.rerun()
+
+    st.divider()
+    # What you'll learn
+    st.markdown("### What you will learn here (for free, forever)")
+    _tracks_preview = [
+        ("🤔", "How to think clearly", "Ask good questions. Find the truth. Spot when someone is lying."),
+        ("🌌", "How the universe works", "From atoms to black holes to whether we are in a simulation."),
+        ("🧠", "How your brain works", "Why you feel what you feel. How to calm down. How to focus."),
+        ("💰", "How money actually works", "Why inflation steals from you and how Bitcoin changes that."),
+        ("🔧", "How to build things", "Fix computers. Set up AI. Deploy sovereign infrastructure."),
+        ("📖", "How to learn anything", "Study techniques that actually work. Backed by real science."),
+        ("⚖️", "How to be fair", "Ethics, law, and why justice matters."),
+        ("🌍", "How to help people", "Deploy a free school for your community when you graduate."),
+    ]
+    _pc1, _pc2 = st.columns(2)
+    for _idx, (_emoji, _title, _desc) in enumerate(_tracks_preview):
+        with (_pc1 if _idx % 2 == 0 else _pc2):
+            st.markdown(
+                f'<div style="padding:8px 0;border-bottom:1px solid #1e2a3a;">'
+                f'<span style="font-size:1.2rem">{_emoji}</span> '
+                f'<b style="color:#c8d8ff;">{_title}</b><br>'
+                f'<span style="color:#8899bb;font-size:0.82rem;">{_desc}</span>'
+                f'</div>', unsafe_allow_html=True)
+
+    st.divider()
+    # Orphanage / community note
+    st.markdown("""
+    <div style="background:#0a0f1e;border:2px solid #00ff88;border-radius:12px;padding:20px;margin-top:8px;">
+    <div style="color:#00ff88;font-size:1rem;font-weight:700;margin-bottom:8px;">🌍 For orphanages and community centers</div>
+    <div style="color:#8899bb;font-size:0.9rem;line-height:2.0;">
+    This entire school runs on a $200 computer — or even less.<br>
+    You do not need the internet after setup.<br>
+    You do not need glasses or special equipment.<br>
+    Everything works on any tablet, phone, or old laptop.<br><br>
+    <b style="color:#c8d8ff;">The AI tutor works offline</b> — it runs directly on your computer.<br>
+    All 250 lessons are free forever. No subscription. No ads. No data collection.<br><br>
+    See the <b style="color:#00ff88;">Community Mode</b> tab for the setup guide.
+    </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: COMMUNITY MODE 🏫
+# Stripped-down, large-text, warm interface for orphanages, schools,
+# and any learner who needs maximum accessibility
+# ══════════════════════════════════════════════════════════════════════════════
+if "Community Mode" in active:
+    # Large, readable, warm — no dark-tech jargon
+    _wmode = st.session_state.get("welcome_mode", "child")
+
+    st.markdown(f"""
+    <style>
+    .cm-title {{ font-size: 1.8rem; color: #f7931a; font-weight: 700; margin-bottom: 8px; }}
+    .cm-lesson {{ background: #0d1228; border-radius: 10px; padding: 18px; margin-bottom: 10px; border-left: 5px solid #f7931a; }}
+    .cm-lesson-title {{ font-size: 1.1rem; color: #c8d8ff; font-weight: 600; margin-bottom: 6px; }}
+    .cm-lesson-body {{ font-size: 0.95rem; color: #8899bb; line-height: 1.9; }}
+    .cm-state-btn {{ padding: 16px; border-radius: 8px; text-align: center; font-size: 1rem; font-weight: 600; cursor: pointer; }}
+    </style>
+    <div class="cm-title">🏫 Learning Mode — Everyone Welcome</div>
+    """, unsafe_allow_html=True)
+
+    _cm_tabs = st.tabs(["🎯 Start Here", "🌡️ How Do You Feel?",
+                         "📚 Pick a Lesson", "🏗️ Set Up Your School",
+                         "🌍 Deploy Guide"])
+
+    # ── Start Here ──────────────────────────────────────────────────────────
+    with _cm_tabs[0]:
+        st.markdown("""
+        <div style="font-size:1rem;color:#c8d8ff;line-height:2.2;padding:8px 0;">
+        Welcome. You are in the right place.<br><br>
+        This school has <b style="color:#f7931a;">250 lessons</b> across 48 topics.<br>
+        You can start at any age. You can go as deep as you want.<br>
+        A 7-year-old and a university professor can learn the same lesson — at different depths.<br><br>
+        <b>How it works:</b><br>
+        1. Tell us how you feel right now (the next tab)<br>
+        2. Pick a lesson that interests you<br>
+        3. Read it. Think about it. Try the activity at the end.<br>
+        4. Come back tomorrow and do another one.<br><br>
+        <b style="color:#00ff88;">That is the whole thing. No tests. No grades. No fees.</b>
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Simple name input
+        _cm_name = st.text_input("What is your name? (optional — this is just for you)", 
+                                  key="cm_name", placeholder="e.g. Maria, or leave blank")
+        _cm_age  = st.selectbox("How old are you?", 
+                                 ["I prefer not to say", "Under 8", "8-11", "12-15", "16-18", "Adult"],
+                                 key="cm_age")
+        if st.button("✅ Let's Start", key="cm_start", type="primary") and _cm_name:
+            st.success(f"Great, {_cm_name}! Go to 'How Do You Feel?' to begin.")
+
+    # ── How Do You Feel — No Glasses Needed ────────────────────────────────
+    with _cm_tabs[1]:
+        st.markdown("""
+        <div style="font-size:1rem;color:#c8d8ff;line-height:1.9;margin-bottom:16px;">
+        Before you learn anything, check in with yourself.<br>
+        Your brain learns better when you know how you feel.<br>
+        Pick the one that is closest to how you feel <b>right now</b>:
+        </div>
+        """, unsafe_allow_html=True)
+
+        _states = [
+            ("🟢", "CALM and READY", "I feel okay. I'm curious. I want to learn.", "#00ff88", 2),
+            ("🟡", "A BIT NERVOUS or FRUSTRATED", "I feel unsettled, worried, or annoyed.", "#ffcc00", 1),
+            ("🔴", "TIRED, NUMB, or 'I DON'T CARE'", "I feel empty, shut down, or don't want to be here.", "#ff4444", 0),
+        ]
+
+        for _emoji, _state_name, _state_desc, _color, _val in _states:
+            st.markdown(
+                f'<div style="background:#0d1228;border-radius:10px;padding:16px;'
+                f'margin-bottom:10px;border-left:5px solid {_color};">'
+                f'<div style="font-size:1.4rem">{_emoji} <b style="color:{_color};">{_state_name}</b></div>'
+                f'<div style="color:#8899bb;margin-top:4px;">{_state_desc}</div>'
+                f'</div>', unsafe_allow_html=True)
+            if st.button(f"I feel like this right now", key=f"cm_state_{_val}", use_container_width=True):
+                st.session_state.cm_state = _val
+                st.session_state.cm_state_name = _state_name
+                if _val == 2:
+                    st.success("Great! You are ready to learn. Go to 'Pick a Lesson'.")
+                elif _val == 1:
+                    st.warning("That is okay. Try this: take 3 slow breaths. In for 4 counts, out for 6. Then try a lesson when you feel a bit calmer.")
+                else:
+                    st.info("That is okay too. Sometimes we just need a rest. Come back when you are ready. You can also try a very easy lesson — just reading, no pressure.")
+
+    # ── Pick a Lesson ───────────────────────────────────────────────────────
+    with _cm_tabs[2]:
+        st.markdown("### Choose what you want to learn today")
+        st.markdown('<div style="color:#8899bb;font-size:0.9rem;margin-bottom:12px;">Start with anything that sounds interesting. There is no wrong answer.</div>', unsafe_allow_html=True)
+
+        # Organized by interest, not by academic track
+        _interest_groups = {
+            "🤔 I want to think more clearly": ["steelmanning-1","layer-zero-1","decision-1","adversarial-robustness-1"],
+            "🌌 I want to understand the universe": ["cosmos-1","universe-1","simulation-1","information-1"],
+            "🧠 I want to understand myself": ["polyvagal-1","identity-1","self-evolving-1","consciousness-1"],
+            "💰 I want to understand money": ["bitcoin-sovereignty-1","economic-trap-1","antifragility-1","money-1"],
+            "🔧 I want to build things": ["builder-1","builder-2","tech-sovereignty-1","sovereign-builder-1"],
+            "🌍 I want to help people": ["helping-humanity-1","network-1","layer-zero-6","expertise-1"],
+            "📖 I want to learn how to learn": ["school-foundation-2","school-foundation-1","knowledge-evolution-1","decision-2"],
+            "🎭 I want to understand power and stories": ["narrative-warfare-1","gatekeeper-1","language-1","expertise-2"],
+        }
+
+        try:
+            from family_hud import LESSONS as _CM_LESSONS
+            for _group, _lesson_keys in _interest_groups.items():
+                with st.expander(_group, expanded=False):
+                    for _lk in _lesson_keys:
+                        _l = _CM_LESSONS.get(_lk, {})
+                        if _l:
+                            st.markdown(
+                                f'<div style="padding:10px;background:#0d1228;border-radius:8px;'
+                                f'margin-bottom:6px;border-left:3px solid #f7931a;">'
+                                f'<div style="color:#c8d8ff;font-size:0.95rem;font-weight:600;">'
+                                f'{_l.get("title","?")}</div>'
+                                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:3px;">'
+                                f'Age {_l.get("age_hint","all")} · {_l.get("xp",0)} XP</div>'
+                                f'<div style="color:#556688;font-size:0.78rem;margin-top:2px;">'
+                                f'{str(_l.get("topic",""))[:120]}...</div>'
+                                f'</div>', unsafe_allow_html=True)
+                            if st.button(f"📖 Start this lesson", key=f"cm_start_{_lk}"):
+                                st.session_state.cm_active_lesson = _lk
+                                st.rerun()
+
+            # Show active lesson if selected
+            _active_l = st.session_state.get("cm_active_lesson")
+            if _active_l:
+                _l = _CM_LESSONS.get(_active_l, {})
+                if _l:
+                    st.divider()
+                    st.markdown(f'<div style="font-size:1.2rem;color:#f7931a;font-weight:700;padding:8px 0;">'
+                                f'{_l.get("title","")}</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div style="color:#8899bb;font-size:0.9rem;line-height:1.8;margin-bottom:12px;">'
+                                f'<b style="color:#c8d8ff;">What this is about:</b><br>{_l.get("topic","")}</div>',
+                                unsafe_allow_html=True)
+                    if _l.get("example"):
+                        st.markdown(f'<div style="background:#0d1228;border-radius:8px;padding:14px;'
+                                    f'border-left:4px solid #00cfff;margin-bottom:10px;">'
+                                    f'<div style="color:#00cfff;font-size:0.75rem;font-weight:600;margin-bottom:6px;">LESSON</div>'
+                                    f'<div style="color:#c8d8ff;font-size:0.9rem;line-height:1.9;">'
+                                    f'{str(_l.get("example","")).replace(chr(10),"<br>")}</div></div>',
+                                    unsafe_allow_html=True)
+                    if _l.get("activity"):
+                        st.markdown(f'<div style="background:#071810;border-radius:8px;padding:14px;'
+                                    f'border-left:4px solid #00ff88;margin-bottom:10px;">'
+                                    f'<div style="color:#00ff88;font-size:0.75rem;font-weight:600;margin-bottom:6px;">TRY THIS</div>'
+                                    f'<div style="color:#c8d8ff;font-size:0.9rem;line-height:1.9;">'
+                                    f'{str(_l.get("activity","")).replace(chr(10),"<br>")}</div></div>',
+                                    unsafe_allow_html=True)
+                    if _l.get("steelman"):
+                        with st.expander("🤔 Hard Question to Think About"):
+                            st.markdown(f'<div style="color:#8899bb;font-size:0.9rem;line-height:1.8;">'
+                                        f'{_l.get("steelman","")}</div>', unsafe_allow_html=True)
+                    if st.button("✅ I finished this lesson!", key="cm_done", type="primary"):
+                        xp = _l.get("xp", 15)
+                        st.balloons()
+                        st.success(f"Amazing! You earned {xp} XP. Come back tomorrow for another lesson.")
+                        st.session_state.cm_active_lesson = None
+
+        except ImportError:
+            st.error("family_hud.py not found. Make sure it is in the same folder as app.py.")
+
+    # ── Set Up Your School ───────────────────────────────────────────────────
+    with _cm_tabs[3]:
+        st.markdown("""
+        <div style="font-size:1rem;color:#c8d8ff;line-height:2.2;">
+        <b style="font-size:1.2rem;color:#f7931a;">You can run this school anywhere.</b><br><br>
+        What you need:
+        </div>
+        """, unsafe_allow_html=True)
+
+        _reqs = [
+            ("💻", "One computer", "Any laptop or desktop from the last 10 years. Even old ones work.\n8GB RAM minimum. 16GB is better for the AI tutor."),
+            ("🌐", "Internet (once)", "You only need internet to download everything the first time.\nAfter that, it works completely offline."),
+            ("📺", "A screen", "Any monitor, TV, or projector. Even an old phone works for one person."),
+            ("🆓", "Zero cost", "Everything is free. The software, the lessons, the AI tutor — all free forever."),
+        ]
+        for _icon, _title, _desc in _reqs:
+            st.markdown(
+                f'<div style="background:#0d1228;border-radius:10px;padding:14px;margin-bottom:8px;">'
+                f'<span style="font-size:1.5rem">{_icon}</span> '
+                f'<b style="color:#c8d8ff;">{_title}</b><br>'
+                f'<span style="color:#8899bb;font-size:0.85rem;">{_desc.replace(chr(10),"<br>")}</span>'
+                f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+        st.markdown("### Step-by-step setup for first time")
+        _steps = [
+            ("1", "Download everything", "Go to github.com/hodlmateo/AUBIEETERNAL\nClick the green 'Code' button → 'Download ZIP'\nUnzip the folder"),
+            ("2", "Install the AI (Ollama)", "Go to ollama.com/download and download Ollama.\nInstall it. This is the offline AI brain."),
+            ("3", "Download the AI model", 'Open a terminal and type:\nollama pull qwen2.5:7b\nThis downloads the AI that will answer questions. Takes ~15 minutes on first setup.'),
+            ("4", "Install Python", "Go to python.org/downloads and install Python 3.11.\nThis runs the school software."),
+            ("5", "Install the school", "In the AUBIEETERNAL folder, double-click install_windows.bat (Windows)\nor run: bash install_mac_linux.sh (Mac/Linux)"),
+            ("6", "Open the school", "Double-click launcher.py or run: python launcher.py\nThe school opens in your web browser."),
+        ]
+        for _num, _title, _desc in _steps:
+            st.markdown(
+                f'<div style="background:#071810;border-radius:8px;padding:14px;margin-bottom:8px;border-left:4px solid #00ff88;">'
+                f'<div style="color:#00ff88;font-weight:700;">Step {_num}: {_title}</div>'
+                f'<div style="color:#8899bb;font-size:0.85rem;margin-top:4px;">{_desc.replace(chr(10),"<br>")}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+    # ── Deploy Guide for Orphanages ─────────────────────────────────────────
+    with _cm_tabs[4]:
+        st.markdown("""
+        <div style="background:#0d1228;border:2px solid #00ff88;border-radius:12px;padding:20px;margin-bottom:16px;">
+        <div style="color:#00ff88;font-size:1.1rem;font-weight:700;margin-bottom:8px;">
+        🌍 Deploying for an Orphanage or Community Center
+        </div>
+        <div style="color:#8899bb;font-size:0.9rem;line-height:2.0;">
+        This guide is for teachers, staff, or volunteers who want to bring this school
+        to children who need it most.<br><br>
+        <b style="color:#c8d8ff;">One computer can serve an entire classroom.</b><br>
+        Run it on a projector — 30 children at once.<br>
+        Or let each child take turns at the screen.<br>
+        Or if you have tablets, they can all connect to one computer over local WiFi.
+        </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        _deploy_sections = [
+            ("📦 What hardware to get (on any budget)", """
+Minimum (works, slow AI): $100-150 computer + 8GB RAM
+Better (smooth AI): Any computer with 16GB RAM — usually $200-300 used
+Best (fast AI): 32-64GB RAM computer — usually $400-600 used
+
+The AI tutor (Ollama + qwen2.5:7b) runs on the computer itself.
+No internet needed once set up. No monthly fees.
+Old donated computers from businesses or schools often work perfectly."""),
+            ("🌐 Setting up for multiple children (local WiFi)", """
+1. Set up the school on the main computer (follow Step-by-step setup)
+2. Connect all devices to the same WiFi network (or a cheap router — no internet needed)
+3. On each child's device, open a browser and go to: http://[main-computer-ip]:8501
+4. All children can use the school at the same time from any device
+
+This works with: old tablets, old phones, old laptops, Chromebooks, Raspberry Pis.
+The browser is the only requirement."""),
+            ("📚 How to run lessons with a group", """
+Option A — Teacher-led (projector): Teacher opens a lesson on the projector.
+Read it together. Do the activity as a class discussion.
+Ask the steelman question. Debate. Think together.
+
+Option B — Individual pace: Each child works at their own speed.
+The system tracks progress per person.
+No one is left behind. No one is held back.
+
+Option C — Mixed: Start together, let advanced learners go deeper,
+support learners who need more time with the simpler questions."""),
+            ("🌍 Reporting your deployment (earn the PhD capstone)", """
+If you deploy this school for a community:
+1. Document it: photos, number of children served, date
+2. Submit it as a humanitarian contribution in the Sovereign Builder tab
+3. This counts toward the PhD capstone requirement
+4. It contributes to the Living Lattice — the global network of sovereign schools
+
+Every deployment is permanent. Every child you teach is part of the chain."""),
+            ("📞 Getting help", """
+GitHub: github.com/hodlmateo/AUBIEETERNAL (file an issue)
+Twitter/X: @MateoVanhorn
+Everything is open source — someone will help.
+
+If you need a setup translated into another language:
+submit a PR or contact us — translation is the second-highest-impact contribution."""),
+        ]
+
+        for _sec_title, _sec_body in _deploy_sections:
+            with st.expander(_sec_title, expanded=False):
+                st.markdown(f'<div style="color:#8899bb;font-size:0.88rem;line-height:2.0;">'
+                            f'{_sec_body.replace(chr(10),"<br>")}</div>', unsafe_allow_html=True)
+
+        # Contact form stub
+        st.divider()
+        st.markdown("### Need help deploying?")
+        _dc1, _dc2 = st.columns(2)
+        with _dc1:
+            _deploy_loc = st.text_input("Where are you deploying?", key="dl_loc",
+                placeholder="e.g. Nairobi, Kenya — orphanage, 45 children")
+        with _dc2:
+            _deploy_contact = st.text_input("How to reach you?", key="dl_contact",
+                placeholder="email or Twitter/X handle")
+        _deploy_notes = st.text_area("What do you need help with?", height=80, key="dl_notes",
+            placeholder="e.g. We have old Windows laptops and no tech person — need step by step help")
+        if st.button("🌍 Submit Deployment Request", key="dl_submit", type="primary") and _deploy_loc:
+            import json as _jdl, pathlib as _pdl, datetime as _ddl, socket as _sdl
+            try:
+                _sdl.gethostbyname("ollama.startos")
+                _dl = _pdl.Path("/mnt/main/deployment_requests.jsonl")
+            except Exception:
+                _dl = _pdl.Path(os.path.expanduser("~/.aubieeternal/main/deployment_requests.jsonl"))
+            with open(_dl, "a") as f:
+                f.write(_jdl.dumps({"date":str(_ddl.date.today()),"location":_deploy_loc,
+                                    "contact":_deploy_contact,"notes":_deploy_notes}) + "\n")
+            st.success(f"✅ Deployment request logged!\n\n"
+                       f"Location: {_deploy_loc}\n\n"
+                       f"We will do our best to support you. Check GitHub issues for help from the community.\n\n"
+                       f"Every deployment matters. War Eagle 🦅")
