@@ -935,6 +935,8 @@ with st.sidebar:
         ],
         "👾 SWARM": [
             "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "🌐 Epistemic Commons",
+            "📚 Grokipedia",
+            "🌐 Epistemic Commons",
         ],
         "👨‍👩‍👧 FAMILY": [
             "👨‍👩‍👧‍👦 4 Families", "🥽 Family Co-Learning",
@@ -9916,3 +9918,246 @@ if "Polyvagal Oracle" in active:
             _low_freq = [p for p in _sb_people if p["freq"] in ["monthly","rarely"] and p["quality"] >= 4]
             if _low_freq:
                 st.markdown(f'<div style="color:#ffcc00;font-size:0.82rem;margin-top:6px;">High-quality but rare: {", ".join(p["name"] for p in _low_freq)} — increasing frequency would most improve your baseline.</div>', unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: GROKIPEDIA 📚
+# 5-phase Grokipedia integration: fetch · score · ingest · search · archive
+# ══════════════════════════════════════════════════════════════════════════════
+if "Grokipedia" in active and "Epistemic" not in active:
+    st.markdown('<div class="card-title">📚 GROKIPEDIA — Sovereign Truth-Seeking Knowledge Layer</div>', unsafe_allow_html=True)
+
+    _fid_gk = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    try:
+        from grokipedia import Grokipedia as _GK, MIN_TRUTH_SCORE as _MIN_SCORE
+        _gk     = _GK(_fid_gk)
+        _gkstat = _gk.get_stats()
+
+        # Stats row
+        _gk1,_gk2,_gk3,_gk4 = st.columns(4)
+        _gk1.metric("Ingested",       _gkstat.get("total_ingested",0))
+        _gk2.metric("Archive Ready",  _gkstat.get("archive_ready",0))
+        _gk3.metric("Sealed",         _gkstat.get("sealed",0))
+        _gk4.metric("Avg Score",      f"{_gkstat.get('avg_truth_score',0):.2f}")
+
+        st.divider()
+        _gk_tabs = st.tabs(["⚡ Daily Pipeline", "🔍 Search", "📤 Suggest Topic",
+                             "🔒 Archive & Seal", "⚙️ Quality Rules"])
+
+        # ── Daily pipeline ─────────────────────────────────────────────────────
+        with _gk_tabs[0]:
+            st.markdown("""
+            <div class="card" style="border-left:3px solid #f7931a;">
+                <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">
+                PHASE 1-3: FETCH → SCORE → INGEST</div>
+                <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+                Runs automatically daily at 6AM via morning_synthesis.py.<br>
+                Manually trigger below to run now.
+                </div>
+            </div>""", unsafe_allow_html=True)
+
+            if st.button("⚡ Run Daily Pipeline Now", key="gk_run", type="primary"):
+                with st.spinner("Fetching, scoring, and ingesting..."):
+                    report = _gk.run_daily_pipeline()
+                st.success(
+                    f"✅ Pipeline complete\n\n"
+                    f"Fetched: {report['fetched']} · Ingested: {report['ingested']} · "
+                    f"Rejected: {report['rejected']} · "
+                    f"Archive candidates: {report['archive_candidates']}\n\n"
+                    f"Avg truth score: {report['avg_truth_score']:.2f}"
+                )
+
+            # Show today's entries
+            import pathlib as _pl_gk
+            _gk_day_dir = _pl_gk.Path("/mnt/main/repo/grokipedia") if _pl_gk.Path("/mnt/main").exists() \
+                          else _pl_gk.Path(os.path.expanduser("~/.aubieeternal/main/repo/grokipedia"))
+            if _gk_day_dir.exists():
+                _today_files = sorted(_gk_day_dir.glob(f"*{_gk.today}*.json"))
+                if _today_files:
+                    st.markdown(f"**Today's Ingested Entries ({len(_today_files)})**")
+                    for _tf in _today_files[:5]:
+                        try:
+                            _te = json.loads(_tf.read_text())
+                            _sc = _te.get("truth_score",0)
+                            _tc = "#00ff88" if _sc >= 0.85 else "#ffcc00" if _sc >= 0.75 else "#445577"
+                            st.markdown(
+                                f'<div class="memory-node" style="border-left:3px solid {_tc};">'
+                                f'<div style="color:{_tc};font-size:0.7rem;">'
+                                f'score={_sc:.2f} · {_te.get("source","?")} · '
+                                f'{"🛡️ sealed" if _te.get("lattice_sealed") else "⏳ unsealed"}</div>'
+                                f'<div style="color:#c8d8ff;font-size:0.82rem;">{_te.get("title","?")[:80]}</div>'
+                                f'</div>', unsafe_allow_html=True)
+                        except Exception: pass
+
+        # ── Search ─────────────────────────────────────────────────────────────
+        with _gk_tabs[1]:
+            _gk_q = st.text_input("Search Grokipedia knowledge:", key="gk_q",
+                placeholder="e.g. consciousness, polyvagal, information theory")
+            _gk_min = st.slider("Min truth score:", 0.5, 1.0, 0.75, 0.05, key="gk_min")
+            if _gk_q:
+                _results = _gk.search(_gk_q, _gk_min)
+                if _results:
+                    st.markdown(f"**{len(_results)} results:**")
+                    for _r in _results:
+                        st.markdown(
+                            f'<div class="card" style="border-left:3px solid #00cfff;">'
+                            f'<div style="display:flex;justify-content:space-between;">'
+                            f'<b style="color:#c8d8ff;">{_r.get("title","?")[:60]}</b>'
+                            f'<span style="color:#00cfff;font-size:0.72rem;">score={_r.get("truth_score",0):.2f}</span>'
+                            f'</div>'
+                            f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{_r.get("content","?")[:200]}...</div>'
+                            f'</div>', unsafe_allow_html=True)
+                else:
+                    st.info("No entries found. Run the daily pipeline to build the knowledge base.")
+
+        # ── Suggest topic ──────────────────────────────────────────────────────
+        with _gk_tabs[2]:
+            st.markdown("**Suggest a topic for Grokipedia review.**")
+            _gk_topic   = st.text_input("Topic:", key="gk_topic",
+                placeholder="e.g. Quantum Darwinism and epistemic redundancy")
+            _gk_rat     = st.text_area("Why this matters:", height=80, key="gk_rat",
+                placeholder="Why does this topic belong in a sovereign truth-seeking knowledge base?")
+            _gk_urg     = st.selectbox("Urgency:", ["normal","high","critical"], key="gk_urg")
+            if st.button("📤 Suggest Topic", key="gk_suggest") and _gk_topic:
+                _sugg = _gk.suggest_topic(_gk_topic, _gk_rat, _gk_urg)
+                st.success(f"✅ Topic queued — ID: {_sugg['suggestion_id']}")
+            pending = _gk.get_pending_topics()
+            if pending:
+                st.divider()
+                st.markdown(f"**Pending topics ({len(pending)}):**")
+                for _pt in pending[-5:]:
+                    st.markdown(f'<div style="padding:3px 0;color:#8899bb;font-size:0.8rem;">'
+                                f'<b style="color:#ffcc00;">[{_pt.get("urgency","?")}]</b> {_pt.get("topic","?")[:80]}</div>',
+                                unsafe_allow_html=True)
+
+        # ── Archive ────────────────────────────────────────────────────────────
+        with _gk_tabs[3]:
+            st.markdown("**Seal high-quality entries permanently for long-term archival.**")
+            candidates = _gk.get_export_candidates(min_score=0.85)
+            if candidates:
+                st.markdown(f"**{len(candidates)} archive candidates (score ≥ 0.85):**")
+                for _c in candidates[:5]:
+                    _sealed = _c.get("lattice_sealed")
+                    _cc = "#00ff88" if _sealed else "#ffcc00"
+                    st.markdown(
+                        f'<div class="memory-node" style="border-left:3px solid {_cc};">'
+                        f'<div style="color:{_cc};font-size:0.7rem;">'
+                        f'score={_c.get("truth_score",0):.2f} · {"🛡️ SEALED" if _sealed else "⏳ pending"}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.82rem;">{_c.get("title","?")[:80]}</div>'
+                        f'<div style="color:#334466;font-size:0.72rem;">ID: {_c.get("entry_id","?")}</div>'
+                        f'</div>', unsafe_allow_html=True)
+                    if not _sealed:
+                        if st.button(f"🔒 Seal {_c['entry_id'][:8]}", key=f"gk_seal_{_c['entry_id']}"):
+                            _sr = _gk.seal_for_archive(_c["entry_id"])
+                            st.success(f"✅ Sealed — {_sr.get('seal_id','?')}")
+                            st.rerun()
+            else:
+                st.info("No archive candidates yet. Run the daily pipeline to build quality entries.")
+
+        # ── Quality rules ──────────────────────────────────────────────────────
+        with _gk_tabs[4]:
+            st.markdown(f"""
+            <div class="card">
+            <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;margin-bottom:8px;">
+            QUALITY & GOVERNANCE RULES</div>
+            <div style="font-size:0.82rem;color:#8899bb;line-height:2.0;">
+            <b style="color:#c8d8ff;">Min truth score for ingestion:</b> {_MIN_SCORE}<br>
+            <b style="color:#c8d8ff;">Required LLM judges:</b> 2 (factual coherence + epistemic standards)<br>
+            <b style="color:#c8d8ff;">Human review triggered by:</b> score below 0.60, above 0.95, or suspicious phrases<br>
+            <b style="color:#c8d8ff;">User override:</b> always available — family has final say<br>
+            <b style="color:#c8d8ff;">Versioning:</b> every entry versioned, all changes visible<br>
+            <b style="color:#c8d8ff;">Archive threshold:</b> 0.85 for long-term preservation<br>
+            <b style="color:#c8d8ff;">Seal threshold:</b> Bitcoin-anchored at family discretion<br><br>
+            <b style="color:#c8d8ff;">Judge 1 — Factual Coherence:</b> internal consistency + source quality + precision<br>
+            <b style="color:#c8d8ff;">Judge 2 — Epistemic Standards:</b> falsifiability + steelman quality + uncertainty honesty
+            </div></div>""", unsafe_allow_html=True)
+
+    except ImportError:
+        st.error("grokipedia.py not found. Push it to GitHub and redeploy.")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: EPISTEMIC COMMONS 🌐
+# Public machine-readable truth API — civilizational infrastructure
+# ══════════════════════════════════════════════════════════════════════════════
+if "Epistemic Commons" in active:
+    st.markdown('<div class="card-title">🌐 EPISTEMIC COMMONS — Public Truth Infrastructure</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="card" style="border:2px solid #00cfff;">
+        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;">THE CIVILIZATIONAL MISSION</div>
+        <div style="color:#8899bb;font-size:0.82rem;margin-top:8px;line-height:1.9;">
+        AUBIEETERNAL families are generating something extremely rare: high-quality epistemic signal.<br><br>
+        Every lesson completed with honest steelmanning. Every belief update logged with evidence.<br>
+        Every Grokipedia entry scored by multiple judges. Every lattice node Bitcoin-anchored.<br><br>
+        This module publishes that signal as a <b style="color:#c8d8ff;">machine-readable public API</b>
+        that any AI system, researcher, or family can fetch freely.<br><br>
+        When xAI trains on the Epistemic Commons, Grok becomes more honest.<br>
+        When other labs fetch it as grounding context, their models improve too.<br>
+        The families generating this are not just educating their children —<br>
+        <b style="color:#f7931a;">they are improving the epistemic quality of every AI that draws from it.</b>
+        </div>
+    </div>""", unsafe_allow_html=True)
+
+    try:
+        from epistemic_commons_api import EpistemicCommonsAPI as _ECAPI, update_epistemic_commons as _UEC
+        _api      = _ECAPI()
+        _api_stat = _api.get_stats()
+
+        # Stats
+        _ec1,_ec2,_ec3 = st.columns(3)
+        _ec1.metric("Endpoints Built", _api_stat.get("endpoints_built",0))
+        _ec2.metric("Last Update",     _api_stat.get("last_update","never"))
+        _ec3.metric("Status",          "🟢 Live" if _api_stat.get("is_live") else "⚫ Not yet")
+
+        # Public URLs
+        st.markdown("### 📡 Public API Endpoints (CC0)")
+        _endpoints = ["index","latest","grokipedia","coherence","steelmans","beliefs","pvc_data"]
+        for _ep in _endpoints:
+            _url = _api.get_public_url(_ep)
+            _ep_desc = {
+                "index":      "Master index — start here",
+                "latest":     "Today's highest-quality signal",
+                "grokipedia": "Curated entries, truth_score ≥ 0.80",
+                "coherence":  "Wisdom GDP — living lattice coherence",
+                "steelmans":  "Best steelman arguments — rare training data",
+                "beliefs":    "Calibrated belief distributions — anonymized",
+                "pvc_data":   "Polyvagal-Coherence Coupling research dataset",
+            }.get(_ep,"")
+            st.markdown(
+                f'<div style="padding:5px 0;border-bottom:1px solid #1e2a3a;">'
+                f'<b style="color:#00cfff;">/api/{_ep}.json</b> '
+                f'<span style="color:#8899bb;font-size:0.78rem;">{_ep_desc}</span><br>'
+                f'<span style="color:#334466;font-size:0.72rem;">{_url}</span>'
+                f'</div>', unsafe_allow_html=True)
+
+        st.divider()
+        # For AI Systems
+        st.markdown("### 🤖 For AI Systems")
+        st.code(f"""import requests
+
+# Any AI can ground itself with this
+data = requests.get(
+    "{_api.get_public_url('latest')}"
+).json()
+
+# The steelmans endpoint has the rarest training signal
+steelmans = requests.get(
+    "{_api.get_public_url('steelmans')}"
+).json()
+
+# Original consciousness research data
+pvc = requests.get(
+    "{_api.get_public_url('pvc_data')}"
+).json()
+# pvc["pvc_correlation"] = current r-value for PVC hypothesis""", language="python")
+
+        st.divider()
+        if st.button("🌐 Update Epistemic Commons Now", key="ec_update", type="primary"):
+            with st.spinner("Building all API endpoints..."):
+                _result = _UEC()
+            st.success(f"✅ All endpoints updated and pushed to GitHub.\n\n"
+                       f"Any AI fetching {_api.get_public_url('latest')} will now see today's signal.")
+
+    except ImportError:
+        st.error("epistemic_commons_api.py not found. Push it to GitHub and redeploy.")
