@@ -936,6 +936,7 @@ with st.sidebar:
         ],
         "👾 SWARM": [
             "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "📚 Grokipedia", "🌐 Epistemic Commons",
+            "⚡ Reliability",
         ],
         "👨‍👩‍👧 FAMILY": [
             "👨‍👩‍👧‍👦 4 Families", "🥽 Family Co-Learning",
@@ -11026,3 +11027,189 @@ submit a PR or contact us — translation is the second-highest-impact contribut
                        f"Location: {_deploy_loc}\n\n"
                        f"We will do our best to support you. Check GitHub issues for help from the community.\n\n"
                        f"Every deployment matters. War Eagle 🦅")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: RELIABILITY ⚡
+# HermesBench integration + Epistemic Drift Detector dashboard
+# ══════════════════════════════════════════════════════════════════════════════
+if "Reliability" in active:
+    st.markdown('<div class="card-title">⚡ RELIABILITY DASHBOARD — Swarm Quality + Epistemic Drift</div>', unsafe_allow_html=True)
+
+    _rel_tabs = st.tabs(["🎯 Drift Detector", "🧪 HermesBench", "📊 History", "⚙️ Setup"])
+
+    # ── Drift Detector ─────────────────────────────────────────────────────
+    with _rel_tabs[0]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #f7931a;">
+            <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">
+            EPISTEMIC DRIFT DETECTOR</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            Monitors whether the swarm's output quality is drifting over time.
+            A swarm that runs 24/7 can gradually produce lower-quality signal
+            without any single obvious failure — until it compounds.
+            This catches that before it damages the Epistemic Commons.
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+        if st.button("🔍 Run Drift Analysis", key="drift_run", type="primary"):
+            with st.spinner("Analyzing epistemic signals over last 30 days..."):
+                try:
+                    from epistemic_drift_detector import EpistemicDriftDetector as _EDD
+                    _det    = _EDD(window_days=30)
+                    _report = _det.run_full_analysis()
+
+                    _level  = _report["alert_level"]
+                    _lc     = {"GREEN":"#00ff88","YELLOW":"#ffcc00","RED":"#ff9500","ALARM":"#ff4444"}.get(_level,"#445577")
+                    _icons  = {"GREEN":"🟢","YELLOW":"🟡","RED":"🔴","ALARM":"🚨"}
+
+                    st.markdown(
+                        f'<div style="text-align:center;padding:12px;background:#0d1228;'
+                        f'border-radius:10px;border:2px solid {_lc};">'
+                        f'<div style="font-size:2rem">{_icons.get(_level,"?")}</div>'
+                        f'<div style="color:{_lc};font-family:Orbitron,monospace;font-size:1rem;margin-top:4px;">'
+                        f'{_level}</div>'
+                        f'<div style="color:#445577;font-size:0.75rem;margin-top:2px;">'
+                        f'{_report["n_flags"]} drift flag(s) detected</div>'
+                        f'</div>', unsafe_allow_html=True)
+
+                    if _report["drift_flags"]:
+                        st.markdown("**Drift flags:**")
+                        for _flag in _report["drift_flags"]:
+                            st.markdown(f'<div style="color:#ff9500;font-size:0.82rem;padding:2px 0;">⚠️ {_flag}</div>',
+                                        unsafe_allow_html=True)
+
+                    st.markdown("**Signal summary:**")
+                    for _sname, _sig in _report["signals"].items():
+                        _tc = "#00ff88" if not _sig["drifting_down"] and not _sig["high_variance"] else "#ff9500"
+                        st.markdown(
+                            f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                            f'<b style="color:{_tc};">{_sname}</b> '
+                            f'mean={_sig["mean"]:.3f} · trend={_sig["trend"]:+.5f} · '
+                            f'n={_sig["n_samples"]} · '
+                            f'{"⚠️ drifting" if _sig["drifting_down"] else "✅ stable"}'
+                            f'</div>', unsafe_allow_html=True)
+
+                    st.markdown("**Recommendations:**")
+                    for _rec in _report["recommendations"]:
+                        st.markdown(f'<div style="color:#8899bb;font-size:0.82rem;padding:3px 0;">→ {_rec}</div>',
+                                    unsafe_allow_html=True)
+
+                    if st.button("💾 Save as Baseline", key="drift_baseline"):
+                        _det.save_baseline()
+                        st.success("✅ Current signal means saved as baseline. Future runs will compare against today.")
+
+                except ImportError:
+                    st.error("epistemic_drift_detector.py not found. Copy it to the repo root.")
+
+    # ── HermesBench ────────────────────────────────────────────────────────
+    with _rel_tabs[1]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #00cfff;">
+            <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.72rem;">
+            HERMESBENCH — SWARM RELIABILITY EVALUATION</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            7 AUBIEETERNAL-specific recipes testing: tutor handoff integrity,
+            Epistemic Commons provenance, polyvagal safety boundaries,
+            Bitcoin anchor integrity, state persistence, wonder spike detection,
+            and zero-drift output consistency.
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+        _hb_c1, _hb_c2 = st.columns(2)
+        with _hb_c1:
+            _run_drift = st.checkbox("Include zero-drift test (slow — Ollama)", key="hb_drift", value=False)
+        with _hb_c2:
+            _single_recipe = st.selectbox("Or run single recipe:", [
+                "all", "tutor_handoff", "epistemic_provenance", "polyvagal_safety",
+                "bitcoin_integrity", "state_persistence", "wonder_spike", "zero_drift"
+            ], key="hb_recipe")
+
+        if st.button("🧪 Run HermesBench", key="hb_run", type="primary"):
+            with st.spinner("Running reliability evaluation..."):
+                try:
+                    from hermesbench_integration import AUBIEBenchSuite as _HBS
+                    _suite = _HBS()
+
+                    if _single_recipe != "all":
+                        _fn = getattr(_suite, f"recipe_{_single_recipe}", None)
+                        if _fn:
+                            _r = _fn()
+                            _rc = "#00ff88" if _r.passed else "#ff4444"
+                            st.markdown(
+                                f'<div class="card" style="border-left:4px solid {_rc};">'
+                                f'<div style="color:{_rc};font-size:0.9rem;font-weight:600;">'
+                                f'{"✅ PASSED" if _r.passed else "❌ FAILED"} — {_r.name}</div>'
+                                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;">'
+                                f'Score: {_r.score:.2f} · Latency: {_r.latency_ms:.0f}ms</div>'
+                                f'</div>', unsafe_allow_html=True)
+                            st.json(_r.details)
+                    else:
+                        _summary = _suite.run_all(skip_drift=not _run_drift)
+                        _sc = "#00ff88" if _summary["pass_rate"] >= 0.8 else "#ffcc00" if _summary["pass_rate"] >= 0.6 else "#ff4444"
+                        _hbc1, _hbc2, _hbc3 = st.columns(3)
+                        _hbc1.metric("Overall Score", f"{_summary['overall_score']:.2f}")
+                        _hbc2.metric("Pass Rate", f"{_summary['pass_rate']:.0%}")
+                        _hbc3.metric("Passed", f"{_summary['passed']}/{_summary['total']}")
+
+                        for _r_dict in _summary["recipes"]:
+                            _rc2 = "#00ff88" if _r_dict["passed"] else "#ff4444"
+                            st.markdown(
+                                f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                                f'<b style="color:{_rc2};">{"✅" if _r_dict["passed"] else "❌"} {_r_dict["recipe"]}</b> '
+                                f'score={_r_dict["score"]:.2f} · {_r_dict["latency_ms"]:.0f}ms'
+                                f'</div>', unsafe_allow_html=True)
+
+                except ImportError:
+                    st.error("hermesbench_integration.py not found.")
+
+    # ── History ────────────────────────────────────────────────────────────
+    with _rel_tabs[2]:
+        st.markdown("**Reliability evaluation history — track quality over time.**")
+        try:
+            from epistemic_drift_detector import EpistemicDriftDetector as _EDD2
+            _hist = _EDD2().get_drift_history(30)
+            if _hist:
+                for _h in reversed(_hist[-10:]):
+                    _hc = {"GREEN":"#00ff88","YELLOW":"#ffcc00","RED":"#ff9500","ALARM":"#ff4444"}.get(_h.get("alert_level","?"),"#445577")
+                    st.markdown(
+                        f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                        f'<b style="color:{_hc};">{_h.get("alert_level","?")}</b> '
+                        f'<span style="color:#445577;font-size:0.75rem;">{_h.get("timestamp","")[:16]}</span> '
+                        f'<span style="color:#8899bb;font-size:0.78rem;">{_h.get("n_flags",0)} flags</span>'
+                        f'</div>', unsafe_allow_html=True)
+            else:
+                st.info("No drift analysis history yet. Run the Drift Detector to build history.")
+        except ImportError:
+            st.info("epistemic_drift_detector.py not found.")
+
+    # ── Setup ──────────────────────────────────────────────────────────────
+    with _rel_tabs[3]:
+        st.markdown("### Setup and CI Integration")
+        st.code("""# Install HermesBench
+pip install git+https://github.com/verkyyi/hermesbench.git
+
+# Copy these files to your repo root:
+# hermesbench_integration.py
+# epistemic_drift_detector.py
+
+# Run manually
+python hermesbench_integration.py
+python epistemic_drift_detector.py
+
+# Save a baseline after a known-good period
+python epistemic_drift_detector.py --baseline
+
+# Wire into nightly CI (add to COMMIT_EPISTEMIC.sh)
+python hermesbench_integration.py --nightly || echo "⚠️ Reliability check failed"
+python epistemic_drift_detector.py --ci --fail-on RED || echo "⚠️ Drift detected"
+""", language="bash")
+
+        st.markdown("### Add to COMMIT_EPISTEMIC.sh")
+        st.code("""# Add these lines before git push:
+echo "Running reliability checks..."
+python hermesbench_integration.py --nightly
+python epistemic_drift_detector.py --ci
+
+# The checks exit nonzero on failure but don't block the push
+# They log results to /mnt/main/hermesbench_evals/ for review
+""", language="bash")
