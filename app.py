@@ -2147,248 +2147,495 @@ elif "Polyvagal Oracle" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SOCIAL CALIBRATION ORACLE
 # ══════════════════════════════════════════════════════════════════════════════
+# TAB: SOCIAL CALIBRATION ⚖️
+# Epistemic Social Calibration Engine — steelman analyzer, adversarial testing,
+# belief update tracker, dark pattern resistance, truth frequency analyzer
+# ══════════════════════════════════════════════════════════════════════════════
 elif "Social Calibration" in active:
-    st.markdown('<div class="card-title">⚖️ SOCIAL CALIBRATION ORACLE — EQ Training Engine</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">⚖️ SOCIAL CALIBRATION ENGINE — Maximum Truth in Social Context</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="card">
-        <div style="font-size:0.85rem;color:#aabbcc;line-height:1.9;">
-        The Social Calibration Oracle scores interactions for emotional safety using
-        <b style="color:#00cfff;">Attachment Theory</b> (Bowlby) +
-        <b style="color:#a020f0;">Polyvagal Theory</b> (Porges) +
-        <b style="color:#ff6b35;">Dark Pattern Detection</b> (gaslighting, DARVO, love-bombing).
-        <br><br>
-        ⚠️ <b>Educational EQ training only — not licensed therapy.</b> For clinical needs, consult a licensed professional.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    _fid_sc = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
 
-    col1, col2 = st.columns(2)
-    with col1:
-        prompt_text = st.text_area("What was said / the situation", value="I feel like I'm failing at everything lately.", height=100)
-    with col2:
-        response_text = st.text_area("The response given", value="Just push through it, you'll be fine.", height=100)
+    _sc_tabs = st.tabs(["🛡️ Steelman Analyzer", "🎲 Monte Carlo", "🧬 Epistemic Immune System",
+                         "🔍 Belief Calibration", "⚔️ Dark Pattern Arena"])
 
-    person_name = st.text_input("Person's name", value=st.session_state.family_profile["kid"]["name"])
+    # ── Steelman Analyzer ─────────────────────────────────────────────────────
+    with _sc_tabs[0]:
+        st.markdown("**Score steelmans across 5 epistemic dimensions. Adversarial testing + Monte Carlo robustness.**")
+        _sc_claim = st.text_input("Original claim:", key="sc_claim",
+            placeholder="e.g. 'Bitcoin is the best form of money'")
+        _sc_steel = st.text_area("Your steelman:", height=140, key="sc_steel",
+            placeholder="Write the STRONGEST possible case for the opposing view or defending this claim...")
+        _sc_mc    = st.checkbox("Run Monte Carlo robustness (5,000 trials)", key="sc_mc", value=True)
+        _sc_ai    = st.checkbox("AI adversarial critique", key="sc_ai", value=True)
 
-    if st.button("⚖️ Run Social Calibration Oracle", type="primary"):
-        # Local scoring
-        attachment = random.choice(["secure", "anxious-preoccupied", "avoidant-dismissive", "disorganized"])
-        polyvagal = random.choice(["ventral-vagal (safe)", "sympathetic (mobilized)", "dorsal (shutdown)"])
-        mentalization = round(random.uniform(3.2, 4.8), 1)
-        dark_patterns = []
-        resp_lower = response_text.lower()
-        if any(w in resp_lower for w in ["you always","you never","you're crazy","that didn't happen"]):
-            dark_patterns.append("gaslighting")
-        if any(w in resp_lower for w in ["push through","just","fine","stop"]):
-            dark_patterns.append("emotional dismissal")
-        if any(w in resp_lower for w in ["i love you","you're amazing","perfect"]):
-            dark_patterns.append("love-bombing risk")
-        calibration_score = round(random.uniform(1.8, 4.9), 1)
-        is_safe = calibration_score >= 3.5
-
-        score_color = "#00ff88" if is_safe else "#ff4444"
-        st.markdown(f'''
-        <div class="card" style="border:2px solid {score_color};">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-                <div style="font-family:Orbitron,monospace;color:{score_color};font-size:1rem;">CALIBRATION SCORE</div>
-                <div style="font-family:Orbitron,monospace;color:{score_color};font-size:2rem;">{calibration_score}/5.0</div>
-            </div>
-            <div class="xp-bar-bg" style="margin-top:8px;"><div class="xp-bar-fill" style="width:{calibration_score/5*100:.0f}%;background:linear-gradient(90deg,#ff4444,#00ff88);"></div></div>
-        </div>
-        ''', unsafe_allow_html=True)
-
-        col_a, col_b, col_c = st.columns(3)
-        with col_a:
-            st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:0.9rem;">{attachment}</div><div class="stat-lbl">Attachment Style</div></div>', unsafe_allow_html=True)
-        with col_b:
-            st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:0.9rem;">{polyvagal}</div><div class="stat-lbl">Polyvagal State</div></div>', unsafe_allow_html=True)
-        with col_c:
-            st.markdown(f'<div class="stat-box"><div class="stat-val">{mentalization}</div><div class="stat-lbl">Mentalization Level</div></div>', unsafe_allow_html=True)
-
-        if dark_patterns:
-            st.markdown(f'<div class="card" style="border-left:3px solid #ff4444;"><div style="color:#ff4444;font-size:0.8rem;font-family:Orbitron,monospace;">⚠️ PATTERNS DETECTED</div><div style="color:#ffaaaa;font-size:0.85rem;margin-top:6px;">{" · ".join(dark_patterns)}</div></div>', unsafe_allow_html=True)
-
-        recommended = "mirroring + boundary-setting" if calibration_score < 3.5 else "deep validation + co-regulation"
-        st.markdown(f'<div class="card" style="border-left:3px solid #00cfff;"><div style="color:#00cfff;font-size:0.75rem;font-family:Orbitron,monospace;">RECOMMENDED APPROACH</div><div style="color:#c8d8ff;font-size:0.88rem;margin-top:6px;">{recommended}</div></div>', unsafe_allow_html=True)
-
-        if st.session_state.get("key_xai") or st.session_state.get("active_provider"):
-            with st.spinner("Generating calibrated rewrite..."):
+        if st.button("🛡️ Analyze Steelman", key="sc_analyze", type="primary") and _sc_claim and _sc_steel:
+            with st.spinner("Scoring + adversarial testing..."):
                 try:
-                    client, model, _p, _pn = get_ai_client()
-                    resp = client.chat.completions.create(
-                        model=model,
-                        messages=[{"role": "system", "content": "You are a polyvagal-informed EQ coach. Rewrite the given response to be emotionally safe, validating, and co-regulating. Then explain what you changed and why, referencing attachment theory and polyvagal principles."},
-                                   {"role": "user", "content": f"Situation: {prompt_text}\nOriginal response: {response_text}\nPerson: {person_name}"}],
-                        max_tokens=500
-                    )
-                    st.markdown(f'<div class="card" style="border-left:3px solid #a020f0;"><div style="color:#a020f0;font-size:0.75rem;font-family:Orbitron,monospace;">🔮 CALIBRATED REWRITE</div><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;margin-top:6px;">{resp.choices[0].message.content}</div></div>', unsafe_allow_html=True)
-                    award_xp(20)
-                except Exception as e:
-                    st.error(str(e))
+                    from steelman_analyzer import SteelmanAnalyzer as _SA
+                    _sa  = _SA(use_ai=_sc_ai, use_monte_carlo=_sc_mc)
+                    _res = _sa.analyze(_sc_claim, _sc_steel, family_id=_fid_sc)
 
-        save_memory(f"Calibration: {person_name}", f"Score:{calibration_score} | {prompt_text[:80]}", tags=["calibration","eq","polyvagal"])
+                    # Grade display
+                    _gc = {"A":"#00ff88","B":"#00cfff","C":"#ffcc00","D":"#ff9500","F":"#ff4444"}.get(_res.get("grade","F"),"#445577")
+                    _col1, _col2, _col3, _col4 = st.columns(4)
+                    _col1.metric("Grade",       _res.get("grade","?"))
+                    _col2.metric("Score",       f"{_res.get('overall_score',0):.2f}")
+                    _col3.metric("Resistance",  f"{_res.get('adversarial',{}).get('resistance_score',0):.2f}")
+                    _col4.metric("Commons",     "✅ Eligible" if _res.get("epistemic_commons_eligible") else "⚠️ Not yet")
 
-    st.markdown("---")
-    st.markdown("### 📚 Dark Pattern Recognition Guide")
-    patterns = [
-        ("🎭 Gaslighting", "Making someone doubt their own reality. 'That never happened.' 'You're too sensitive.'", "#ff4444"),
-        ("🔄 DARVO", "Deny, Attack, Reverse Victim and Offender. Turns accountability into counter-attack.", "#ff6b35"),
-        ("💝 Love-Bombing", "Overwhelming affection to gain trust/control before switching to harm.", "#a020f0"),
-        ("😰 Concern-Trolling", "Framing control or criticism as 'I'm just worried about you.'", "#ff9500"),
-        ("🚫 Emotional Dismissal", "'Just push through it.' 'You're overreacting.' Invalidates real feelings.", "#4444ff"),
-    ]
-    for name, desc, color in patterns:
-        st.markdown(f'''
-        <div class="card" style="border-left:3px solid {color};">
-            <div style="color:{color};font-size:0.85rem;font-weight:bold;">{name}</div>
-            <div style="font-size:0.8rem;color:#8899bb;margin-top:4px;">{desc}</div>
-        </div>
-        ''', unsafe_allow_html=True)
+                    # Dimension breakdown
+                    st.markdown("**Dimension Scores:**")
+                    for dim, score in _res.get("dimension_scores",{}).items():
+                        _bar_c = "#00ff88" if score >= 0.18 else "#ffcc00" if score >= 0.12 else "#ff4444"
+                        st.markdown(
+                            f'<div style="padding:3px 0;">' +
+                            f'<span style="color:#8899bb;font-size:0.75rem;width:200px;display:inline-block;">{dim.replace("_"," ").title()}</span>' +
+                            f'<span style="color:{_bar_c};font-weight:600;">{score:.3f}</span>' +
+                            f'</div>', unsafe_allow_html=True)
 
-    st.markdown("""
-    <div class="card" style="border:1px solid #334466;margin-top:1rem;">
-        <div style="font-size:0.75rem;color:#445577;text-align:center;">
-        ⚠️ EDUCATIONAL EQ TRAINING ONLY — NOT LICENSED THERAPY<br>
-        For clinical needs, consult a licensed mental health professional.<br>
-        Crisis? Call emergency services or your local crisis line.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+                    # Adversarial attacks
+                    _adv = _res.get("adversarial",{})
+                    if _adv.get("attacks"):
+                        st.markdown("**Adversarial attacks found:**")
+                        for _atk in _adv["attacks"]:
+                            st.markdown(f'<div style="color:#ff9500;font-size:0.8rem;padding:2px 0;">⚔️ {_atk}</div>', unsafe_allow_html=True)
+                    if _adv.get("ai_critique"):
+                        st.info(f"🤖 AI critique: {_adv['ai_critique']}")
+
+                    # Monte Carlo
+                    _mc = _res.get("monte_carlo",{})
+                    if _mc and not _mc.get("error"):
+                        st.markdown(
+                            f'<div class="card" style="border-left:3px solid #a020f0;margin-top:6px;">' +
+                            f'<div style="color:#a020f0;font-size:0.72rem;font-family:Orbitron,monospace;">MONTE CARLO (5,000 TRIALS)</div>' +
+                            f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{_mc.get("interpretation","")}</div>' +
+                            f'</div>', unsafe_allow_html=True)
+
+                    st.markdown(f'<div style="color:#c8d8ff;margin-top:6px;font-size:0.85rem;">💬 {_res.get("feedback","")}</div>', unsafe_allow_html=True)
+                    if _res.get("ai_insight"):
+                        st.success(f"💡 {_res['ai_insight']}")
+
+                except ImportError:
+                    st.error("steelman_analyzer.py not found. Push to GitHub and redeploy.")
+
+        # History stats
+        try:
+            from steelman_analyzer import SteelmanAnalyzer as _SA2
+            _hist = _SA2(use_ai=False).get_history_stats(_fid_sc)
+            if _hist.get("total",0) > 0:
+                st.divider()
+                _hs1,_hs2,_hs3 = st.columns(3)
+                _hs1.metric("Total Steelmans", _hist["total"])
+                _hs2.metric("Avg Score",       f"{_hist.get('avg_score',0):.2f}")
+                _hs3.metric("Published",        _hist.get("commons_published",0))
+        except Exception: pass
+
+    # ── Monte Carlo Truth Engine ──────────────────────────────────────────────
+    with _sc_tabs[1]:
+        st.markdown("**Run probabilistic simulations across 10,000 possible worlds.**")
+        _mc_mode = st.selectbox("Simulation type:", [
+            "Steelman Robustness",
+            "Belief Update (with cognitive biases)",
+            "Long-Term Coherence Evolution",
+            "Epistemic Strategy Comparison",
+        ], key="mc_mode")
+        _mc_trials = st.slider("Trials:", 1000, 50000, 10000, 1000, key="mc_trials")
+
+        if _mc_mode == "Steelman Robustness":
+            _mc_base  = st.slider("Base steelman score:", 0.3, 1.0, 0.75, 0.01, key="mc_base")
+            _mc_adv   = st.slider("Adversarial strength:", 0.1, 0.8, 0.3, 0.05, key="mc_adv",
+                help="0.1=mild critic, 0.8=expert adversary")
+        elif _mc_mode == "Belief Update (with cognitive biases)":
+            _mc_conf  = st.slider("Initial confidence:", 0.1, 0.9, 0.6, 0.05, key="mc_conf")
+            _mc_evid  = st.slider("Evidence strength:", -0.5, 0.5, 0.2, 0.05, key="mc_evid")
+            _mc_bias  = st.slider("Confirmation bias:", 0.0, 0.6, 0.2, 0.05, key="mc_bias")
+        elif _mc_mode == "Long-Term Coherence Evolution":
+            _mc_coh   = st.slider("Starting coherence:", 0.4, 1.0, 0.85, 0.01, key="mc_coh_start")
+            _mc_yrs   = st.slider("Years:", 1, 30, 10, 1, key="mc_years")
+        # Strategy comparison has no extra params
+
+        if st.button("🎲 Run Monte Carlo", key="mc_run", type="primary"):
+            with st.spinner(f"Running {_mc_trials:,} simulations..."):
+                try:
+                    from monte_carlo_simulator import MonteCarloSimulator as _MCS
+                    _sim = _MCS(n_trials=_mc_trials)
+
+                    if _mc_mode == "Steelman Robustness":
+                        _r = _sim.simulate_steelman_robustness(_mc_base, _mc_adv)
+                        _rr1,_rr2,_rr3,_rr4 = st.columns(4)
+                        _rr1.metric("Mean Survival",  f"{_r.mean:.1%}")
+                        _rr2.metric("Std Dev",         f"{_r.std:.1%}")
+                        _rr3.metric("Tail Risk (<40%)", f"{_r.tail_risk:.1%}")
+                        _rr4.metric("95% CI Lower",    f"{_r.confidence_interval_95[0]:.1%}")
+                        _tail_c = "#00ff88" if _r.tail_risk < 0.05 else "#ffcc00" if _r.tail_risk < 0.15 else "#ff4444"
+                        st.markdown(f'<div style="color:{_tail_c};font-size:0.85rem;margin-top:8px;">Catastrophic failure rate: {_r.tail_risk:.1%} {"✅ Robust" if _r.tail_risk < 0.05 else "⚠️ Moderate risk" if _r.tail_risk < 0.15 else "❌ High risk"}</div>', unsafe_allow_html=True)
+
+                    elif _mc_mode == "Belief Update (with cognitive biases)":
+                        _r_biased = _sim.simulate_belief_update(_mc_conf, _mc_evid, confirmation_bias=_mc_bias)
+                        _r_ideal  = _sim.simulate_bayesian_ideal(_mc_conf, 1 + _mc_evid * 3)
+                        _bb1,_bb2 = st.columns(2)
+                        _bb1.metric("Biased Update (mean)", f"{_r_biased.mean:.1%}")
+                        _bb2.metric("Bayesian Ideal (mean)", f"{_r_ideal.mean:.1%}")
+                        _gap = abs(_r_ideal.mean - _r_biased.mean)
+                        st.markdown(f'<div style="color:#ffcc00;font-size:0.82rem;margin-top:6px;">Bias gap: {_gap:.1%} — this is how much cognitive biases cost your reasoning accuracy.</div>', unsafe_allow_html=True)
+
+                    elif _mc_mode == "Long-Term Coherence Evolution":
+                        _r = _sim.simulate_coherence_evolution(_mc_coh, years=_mc_yrs)
+                        _cc1,_cc2,_cc3 = st.columns(3)
+                        _cc1.metric(f"After {_mc_yrs} years (mean)", f"{_r.mean:.3f}")
+                        _cc2.metric("Best case (90th pct)",  f"{_r.percentile_90:.3f}")
+                        _cc3.metric("Worst case (10th pct)", f"{_r.percentile_10:.3f}")
+                        _drift = _r.mean - _mc_coh
+                        _dc = "#00ff88" if _drift >= 0 else "#ff4444"
+                        st.markdown(f'<div style="color:{_dc};font-size:0.82rem;margin-top:6px;">Expected drift: {_drift:+.3f} over {_mc_yrs} years without intervention.</div>', unsafe_allow_html=True)
+
+                    elif _mc_mode == "Epistemic Strategy Comparison":
+                        _strats = _sim.compare_epistemic_strategies()
+                        st.markdown("**Decision accuracy after 50 decisions:**")
+                        for _sname, _sr in sorted(_strats.items(), key=lambda x: x[1].mean, reverse=True):
+                            _sc_c = "#00ff88" if _sr.mean >= 0.65 else "#ffcc00" if _sr.mean >= 0.55 else "#ff4444"
+                            st.markdown(
+                                f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">' +
+                                f'<b style="color:{_sc_c};">{_sr.mean:.1%}</b> ' +
+                                f'<span style="color:#c8d8ff;">{_sname.replace("_"," ").title()}</span> ' +
+                                f'<span style="color:#445577;font-size:0.75rem;">±{_sr.std:.1%}</span>' +
+                                f'</div>', unsafe_allow_html=True)
+                        st.caption("The calibrated Bayesian strategy should outperform all others.")
+
+                except ImportError:
+                    st.error("monte_carlo_simulator.py not found.")
+
+    # ── Epistemic Immune System ────────────────────────────────────────────────
+    with _sc_tabs[2]:
+        try:
+            from truth_frequency_analyzer import TruthFrequencyAnalyzer as _TFA, ATTACK_VECTORS as _AVS
+            _tfa    = _TFA(_fid_sc)
+            _tfa_st = _tfa.get_stats()
+
+            st.markdown("**Log epistemic attacks you encounter. Build your family's immune profile.**")
+
+            # Log encounter
+            _av_keys = list(_AVS.keys())
+            _av_labels = {k: f"{_AVS[k]['name']} ({_AVS[k]['category'].replace('_',' ')})" for k in _av_keys}
+            _log_attack = st.selectbox("Attack encountered:", _av_keys, key="tfa_attack",
+                format_func=lambda k: _av_labels.get(k, k))
+            _tfa_c1, _tfa_c2 = st.columns(2)
+            with _tfa_c1:
+                _did_detect = st.radio("Did you detect it in real-time?", ["✅ Yes", "❌ No"], key="tfa_det")
+                _tfa_source = st.text_input("Source:", key="tfa_src", placeholder="news, social media, conversation")
+            with _tfa_c2:
+                _tfa_conf   = st.slider("Confidence:", 0.3, 1.0, 0.8, 0.1, key="tfa_conf")
+                _tfa_notes  = st.text_input("Notes:", key="tfa_notes", placeholder="brief context")
+
+            if st.button("🧬 Log Encounter", key="tfa_log", type="primary") and _log_attack:
+                _tfa.log_encounter(_log_attack, "Yes" in _did_detect, _tfa_source or "unknown",
+                                   _tfa_notes, _tfa_conf)
+                st.success(f"✅ Logged: {_AVS[_log_attack]['name']} | {'Detected' if 'Yes' in _did_detect else 'Missed'}")
+                st.rerun()
+
+            # Show profile if data exists
+            if _tfa_st.get("total_encounters",0) >= 3:
+                st.divider()
+                _profile = _tfa.get_immune_profile()
+                _il = _profile.get("immunity_level","?")
+                _ilc = {"STRONG":"#00ff88","DEVELOPING":"#00cfff","VULNERABLE":"#ffcc00","AT RISK":"#ff4444"}.get(_il,"#445577")
+                st.markdown(
+                    f'<div style="text-align:center;padding:8px;">' +
+                    f'<div style="color:{_ilc};font-family:Orbitron,monospace;font-size:0.9rem;">{_il} — {_profile['overall_detection_rate']:.0%} detection</div>' +
+                    f'</div>', unsafe_allow_html=True)
+
+                # Vulnerable attacks
+                if _profile.get("most_vulnerable"):
+                    st.markdown("**⚠️ Most vulnerable (prioritize these):**")
+                    for _vk, _vd in _profile["most_vulnerable"]:
+                        _av = _AVS.get(_vk,{})
+                        st.markdown(
+                            f'<div class="memory-node" style="border-left:3px solid #ff4444;">' +
+                            f'<div style="color:#ff4444;font-size:0.72rem;">{_vd["detection_rate"]:.0%} detection · {_vd["total"]} encounters</div>' +
+                            f'<div style="color:#c8d8ff;font-size:0.82rem;font-weight:600;">{_av.get("name",_vk)}</div>' +
+                            f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">Counter: {_av.get("counter","")[:100]}</div>' +
+                            f'</div>', unsafe_allow_html=True)
+
+                # Training protocol
+                _prot = _tfa.get_training_protocol()
+                if _prot.get("goal"):
+                    st.markdown(f'<div style="color:#f7931a;font-size:0.82rem;margin-top:6px;">🎯 30-day goal: {_prot["goal"]}</div>', unsafe_allow_html=True)
+
+            elif _tfa_st.get("total_encounters",0) == 0:
+                st.info("No encounters logged yet. Start logging attacks you notice this week.")
+
+            # Attack reference
+            with st.expander("📚 All 20 Attack Vectors Reference"):
+                for _avk, _avi in _AVS.items():
+                    st.markdown(
+                        f'<div style="padding:5px 0;border-bottom:1px solid #1e2a3a;">' +
+                        f'<b style="color:#c8d8ff;">{_avi["name"]}</b> ' +
+                        f'<span style="color:#445577;font-size:0.72rem;">[{_avi["category"]}]</span><br>' +
+                        f'<span style="color:#8899bb;font-size:0.78rem;">{_avi["description"]}</span>' +
+                        f'</div>', unsafe_allow_html=True)
+
+        except ImportError:
+            st.error("truth_frequency_analyzer.py not found.")
+
+    # ── Belief Calibration ────────────────────────────────────────────────────
+    with _sc_tabs[3]:
+        st.markdown("**Track how your beliefs update over time. Build calibration data.**")
+        st.markdown('<div style="color:#8899bb;font-size:0.8rem;margin-bottom:8px;">A well-calibrated reasoner: 70% confidence = correct 70% of the time. Log predictions to measure yours.</div>', unsafe_allow_html=True)
+        _bc_claim   = st.text_input("Belief/prediction:", key="bc_claim",
+            placeholder="e.g. 'Bitcoin will exceed $200k by end of 2026'")
+        _bc_conf    = st.slider("Confidence:", 0.05, 0.95, 0.65, 0.05, key="bc_conf",
+            format="%.0f%%")
+        _bc_resolve = st.date_input("Resolution date:", key="bc_resolve")
+        if st.button("📝 Register Prediction", key="bc_reg") and _bc_claim:
+            try:
+                from cosmos_dashboard import CosmosDashboard as _CD_sc
+                _eid = _CD_sc(_fid_sc).record_belief(_bc_claim, _bc_conf,
+                    update_condition="Market price data or verifiable outcome")
+                st.success(f"✅ Registered — confidence: {_bc_conf:.0%} | review: {_bc_resolve}")
+            except Exception as _e:
+                st.info(f"Saved locally. cosmos_dashboard.py needed for full tracking.")
+
+    # ── Dark Pattern Arena ────────────────────────────────────────────────────
+    with _sc_tabs[4]:
+        st.markdown("**Practice identifying manipulation in simulated scenarios.**")
+        _scenarios = [
+            {"title": "The Policy Reversal", "scenario": "You present evidence that a policy didn't work. The official responds: 'I can't believe you would say that. My grandmother died because of the old policy. How dare you question the people who are trying to help?'", "pattern": "darvo", "explain": "DARVO: Deny (ignoring evidence), Attack (moral accusation), Reverse Victim (positions themselves as victim/protector)."},
+            {"title": "The Study Request", "scenario": "You argue vaccines have side effects. The response: 'Show me a study.' You provide one. 'Show me a systematic review.' You provide one. 'Show me a replication.' You provide one. 'Those studies are funded by...'", "pattern": "moving_goalposts", "explain": "Moving Goalposts: criteria for evidence keep shifting. Pre-register what would satisfy the question."},
+            {"title": "The Real Concern", "scenario": "You propose a new approach to education. A colleague says: 'I totally support the goal, but I'm just worried that the timing isn't right, and the community might not be ready, and we should study it more first.'", "pattern": "concern_trolling", "explain": "Concern Trolling: expressing concern indefinitely without offering alternative paths forward. Ask: what specific evidence would make them ready to act?"},
+            {"title": "The Tribal Test", "scenario": "During a family discussion about housing policy, someone says: 'A real [your political group] would never support that idea. If you support it, you're betraying everything we stand for.'", "pattern": "in_group_appeal", "explain": "In-Group Appeal: framing disagreement as tribal betrayal. Evaluate the policy argument, not the tribal claim."},
+        ]
+        if "dp_idx" not in st.session_state: st.session_state.dp_idx = 0
+        if "dp_score" not in st.session_state: st.session_state.dp_score = 0
+
+        _dp_q = _scenarios[st.session_state.dp_idx % len(_scenarios)]
+        st.markdown(f'<div class="card" style="border-left:3px solid #ff9500;"><div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.72rem;">SCENARIO {st.session_state.dp_idx+1}</div><div style="color:#c8d8ff;font-size:0.88rem;margin-top:8px;line-height:1.7;">{_dp_q["scenario"]}</div></div>', unsafe_allow_html=True)
+        _dp_patterns = sorted(ATTACK_VECTORS.keys()) if "ATTACK_VECTORS" in dir() else ["darvo","moving_goalposts","concern_trolling","in_group_appeal"]
+        try:
+            from truth_frequency_analyzer import ATTACK_VECTORS as _AVS2
+            _dp_opts = [f"{_AVS2[k]['name']} ({k})" for k in ["darvo","moving_goalposts","concern_trolling","in_group_appeal","straw_man","ad_hominem"]]
+        except Exception: _dp_opts = ["darvo","moving_goalposts","concern_trolling","in_group_appeal"]
+        _dp_ans = st.radio("What pattern is this?", _dp_opts, key=f"dp_ans{st.session_state.dp_idx}")
+        if st.button("✅ Submit", key=f"dp_sub{st.session_state.dp_idx}"):
+            _correct = _dp_q["pattern"] in _dp_ans.lower()
+            if _correct: st.session_state.dp_score += 1; st.success(f"✅ Correct! {_dp_q['explain']}")
+            else: st.error(f"❌ It was: {_dp_q['pattern']}. {_dp_q['explain']}")
+            try:
+                from truth_frequency_analyzer import TruthFrequencyAnalyzer as _TFA2
+                _TFA2(_fid_sc).log_encounter(_dp_q["pattern"], detected=_correct, source="dark_pattern_arena")
+            except Exception: pass
+            st.session_state.dp_idx += 1
+            st.rerun()
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: QUANTUM LAB
 # ══════════════════════════════════════════════════════════════════════════════
+# TAB: QUANTUM LAB 🌀
+# Quantum Epistemology Lab — belief superposition, glitch detection,
+# simulation testing, Monte Carlo integration, coherence signal analysis
+# ══════════════════════════════════════════════════════════════════════════════
 elif "Quantum Lab" in active:
-    st.markdown('<div class="card-title">🌀 QUANTUM LAB — Simulator v3.5</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">🌀 QUANTUM EPISTEMOLOGY LAB — Testing the Fabric of Reality</div>', unsafe_allow_html=True)
 
-    try:
-        import numpy as np
-        import plotly.graph_objects as go
+    _fid_ql = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
 
+    _ql_tabs = st.tabs(["🎲 Glitch Detector", "🌀 Belief Superposition", "📊 Coherence Signal",
+                         "⚗️ Simulation Experiments", "🔬 Epistemic Strategy Sim"])
+
+    # ── Glitch Detector ────────────────────────────────────────────────────────
+    with _ql_tabs[0]:
         st.markdown("""
-        <div class="card">
-            <div style="font-size:0.85rem;color:#aabbcc;line-height:1.8;">
-            Quantum computing simulator built into AUBIEETERNAL. Explore quantum gates, superposition,
-            entanglement, and the Shor error-correction code. All running locally — no cloud needed.
+        <div class="card" style="border-left:3px solid #a020f0;">
+            <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">SIMULATION GLITCH DETECTION</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            If we are in a simulation, statistical anomalies in coherence, wonder, or belief
+            updates would appear as "glitch signals" — values outside the expected distribution.
+            This detector tests observed values against Monte Carlo null distributions.<br><br>
+            <b>No claims. Only data. The record compounds over years.</b>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+        </div>""", unsafe_allow_html=True)
 
-        class QuantumSystem:
-            def __init__(self, num_qubits=3):
-                self.num_qubits = num_qubits
-                self.state = np.zeros(2**num_qubits, dtype=complex)
-                self.state[0] = 1.0
+        _gl_c1, _gl_c2 = st.columns(2)
+        with _gl_c1:
+            _gl_obs   = st.number_input("Observed value:", 0.0, 2.0, 0.97, 0.01, key="gl_obs")
+            _gl_label = st.selectbox("What are you measuring?",
+                ["coherence","wonder_index","steelman_score","belief_update","interoceptive_accuracy"], key="gl_label")
+        with _gl_c2:
+            _gl_mean  = st.number_input("Expected mean:", 0.0, 2.0, 0.72, 0.01, key="gl_mean")
+            _gl_std   = st.number_input("Expected std dev:", 0.01, 1.0, 0.12, 0.01, key="gl_std")
+            _gl_n     = st.select_slider("Monte Carlo trials:", [1000,5000,10000,50000], 10000, key="gl_n")
 
-            def apply_hadamard(self, target):
-                H = np.array([[1,1],[1,-1]]) / np.sqrt(2)
-                self.apply_single_qubit_gate(H, target)
+        if st.button("🔬 Run Glitch Detection", key="gl_run", type="primary"):
+            try:
+                from monte_carlo_simulator import MonteCarloSimulator as _MCS_gl
+                _sim_gl = _MCS_gl(n_trials=_gl_n)
+                _result = _sim_gl.run_glitch_detection(_gl_obs, _gl_mean, _gl_std, _gl_label)
+                _rc = "#ff4444" if _result["glitch_signal"] else "#ffcc00" if _result["is_statistical_anomaly"] else "#00ff88"
+                st.markdown(
+                    f'<div class="card" style="border:2px solid {_rc};">' +
+                    f'<div style="color:{_rc};font-family:Orbitron,monospace;font-size:0.82rem;">{"🚨 GLITCH SIGNAL" if _result["glitch_signal"] else "⚠️ ANOMALY" if _result["is_statistical_anomaly"] else "✅ NORMAL"}</div>' +
+                    f'<div style="color:#c8d8ff;margin-top:6px;font-size:0.85rem;">' +
+                    f'z = {_result["z_score"]} | σ = {_result["sigma_level"]} | p = {_result["p_value"]}</div>' +
+                    f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{_result["interpretation"]}</div>' +
+                    f'</div>', unsafe_allow_html=True)
 
-            def apply_pauli_x(self, target):
-                X = np.array([[0,1],[1,0]])
-                self.apply_single_qubit_gate(X, target)
+                # Auto-seal if glitch signal
+                if _result["glitch_signal"]:
+                    if st.button("🛡️ Seal This Glitch Signal", key="gl_seal"):
+                        try:
+                            from rune_memory import ShieldRune as _SR_gl, RuneMemory as _RM_gl
+                            _eid_gl = _RM_gl().record(
+                                f"GLITCH SIGNAL: {_gl_label}={_gl_obs} | z={_result['z_score']} | σ={_result['sigma_level']}",
+                                source="quantum_lab", coherence=0.85,
+                                tags=["glitch_signal","simulation_probe",_gl_label])
+                            _SR_gl().seal(_eid_gl, note=f"Glitch detection: {_gl_label} {_gl_obs}", broadcaster=_fid_ql)
+                            st.success("🛡️ Glitch signal sealed on Bitcoin. Permanent record.")
+                        except Exception: pass
+            except ImportError:
+                st.error("monte_carlo_simulator.py not found.")
 
-            def apply_single_qubit_gate(self, gate, target):
-                if self.num_qubits == 1:
-                    self.state = np.dot(gate, self.state)
-                else:
-                    dim = 2**self.num_qubits
-                    new_state = np.zeros(dim, dtype=complex)
-                    for i in range(dim):
-                        bit = (i >> (self.num_qubits - target - 1)) & 1
-                        for j in range(2):
-                            target_idx = i ^ ((bit ^ j) << (self.num_qubits - target - 1))
-                            new_state[target_idx] += gate[j, bit] * self.state[i]
-                    self.state = new_state
+    # ── Belief Superposition ──────────────────────────────────────────────────
+    with _ql_tabs[1]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #00cfff;">
+            <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.72rem;">BELIEF SUPERPOSITION TOOL</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            Quantum superposition: a system exists in multiple states until observed.
+            Applied epistemically: you can hold two conflicting hypotheses simultaneously,
+            assign probabilities, and simulate what new evidence would "collapse" each.
+            This is Bayesian reasoning made visceral.
+            </div>
+        </div>""", unsafe_allow_html=True)
 
-            def apply_toffoli(self):
-                TOFFOLI = np.eye(8, dtype=complex)
-                TOFFOLI[6,6] = 0; TOFFOLI[6,7] = 1
-                TOFFOLI[7,7] = 0; TOFFOLI[7,6] = 1
-                self.state = np.dot(TOFFOLI, self.state)
+        _bs_q = st.text_input("The question:", key="bs_q",
+            placeholder="e.g. 'Is the universe fine-tuned by design?'")
+        _bs_h1 = st.text_input("Hypothesis A:", key="bs_h1", placeholder="e.g. 'Yes — physical constants are designed'")
+        _bs_h2 = st.text_input("Hypothesis B:", key="bs_h2", placeholder="e.g. 'No — anthropic selection explains it'")
+        _bs_p1 = st.slider("P(Hypothesis A):", 0.01, 0.99, 0.5, 0.01, key="bs_p1",
+            help="Your current credence")
+        st.caption(f"P(Hypothesis B) = {1-_bs_p1:.2f}")
 
-            def get_probabilities(self):
-                return np.abs(self.state) ** 2
+        st.markdown("**What evidence would update you?**")
+        _bs_ev = st.text_area("Evidence type:", height=60, key="bs_ev",
+            placeholder="e.g. 'Discovery of a second universe with different constants'")
+        _bs_lr = st.slider("Likelihood ratio if evidence confirmed:", 0.1, 20.0, 3.0, 0.1, key="bs_lr",
+            help="How much more likely is this evidence under A vs B?")
 
-        col1, col2 = st.columns([1, 2])
-        with col1:
-            n_qubits = st.slider("Number of Qubits", 1, 3, 3)
-            st.markdown("**Apply Gates:**")
-            target_q = st.selectbox("Target Qubit", list(range(n_qubits)))
-            gate_choice = st.selectbox("Gate", ["Hadamard (H)", "Pauli-X (NOT)", "Toffoli (3-qubit CCX)"])
+        if st.button("🌀 Simulate Belief Collapse", key="bs_run") and _bs_q:
+            from monte_carlo_simulator import MonteCarloSimulator as _MCS_bs
+            _sim_bs = _MCS_bs(n_trials=5000)
+            _r_bs   = _sim_bs.simulate_bayesian_ideal(_bs_p1, _bs_lr)
+            _post_a = _r_bs.mean
+            st.markdown(
+                f'<div class="card" style="margin-top:8px;">' +
+                f'<div style="color:#c8d8ff;font-size:0.88rem;font-weight:600;">{_bs_q or "Your question"}</div>' +
+                f'<div style="margin-top:8px;">' +
+                f'<div style="color:#00cfff;">P(A) before: {_bs_p1:.2f} → after evidence: <b>{_post_a:.2f}</b></div>' +
+                f'<div style="color:#a020f0;margin-top:4px;">P(B) before: {1-_bs_p1:.2f} → after evidence: <b>{1-_post_a:.2f}</b></div>' +
+                f'</div>' +
+                f'<div style="color:#8899bb;font-size:0.78rem;margin-top:8px;">' +
+                f'{"The evidence would strongly update you toward A." if _post_a > _bs_p1 + 0.15 else "Modest update toward A." if _post_a > _bs_p1 else "Evidence favors B."}' +
+                f' 95% CI: {_r_bs.confidence_interval_95}' +
+                f'</div></div>', unsafe_allow_html=True)
 
-            if "qsys" not in st.session_state or st.session_state.get("q_nqubits") != n_qubits:
-                st.session_state.qsys = QuantumSystem(n_qubits)
-                st.session_state.q_nqubits = n_qubits
-                st.session_state.q_gates_applied = []
+    # ── Coherence Signal Analysis ──────────────────────────────────────────────
+    with _ql_tabs[2]:
+        st.markdown("**Live coherence + wonder signal analysis. Is high coherence itself anomalous?**")
+        import json as _jql, pathlib as _plql
+        _status_path = _plql.Path("/mnt/main/swarm_status.json") if _plql.Path("/mnt/main").exists() \
+                       else _plql.Path(os.path.expanduser("~/.aubieeternal/main/swarm_status.json"))
+        _swarm_s = {}
+        if _status_path.exists():
+            try: _swarm_s = _jql.loads(_status_path.read_text())
+            except Exception: pass
 
-            if st.button("⚡ Apply Gate"):
-                qs = st.session_state.qsys
-                if gate_choice == "Hadamard (H)":
-                    qs.apply_hadamard(target_q)
-                    st.session_state.q_gates_applied.append(f"H(q{target_q})")
-                elif gate_choice == "Pauli-X (NOT)":
-                    qs.apply_pauli_x(target_q)
-                    st.session_state.q_gates_applied.append(f"X(q{target_q})")
-                elif gate_choice == "Toffoli (3-qubit CCX)" and n_qubits == 3:
-                    qs.apply_toffoli()
-                    st.session_state.q_gates_applied.append("Toffoli")
-                st.rerun()
+        _cur_coh = float(_swarm_s.get("inter_rune_coherence", 1.0))
+        _cur_wnd = float(_swarm_s.get("wonder_index", 1.0))
 
-            if st.button("🔄 Reset System"):
-                st.session_state.qsys = QuantumSystem(n_qubits)
-                st.session_state.q_gates_applied = []
-                st.rerun()
+        _cq1,_cq2,_cq3 = st.columns(3)
+        _cq1.metric("Current Coherence", f"{_cur_coh:.6f}")
+        _cq2.metric("Wonder Index",      f"{_cur_wnd:.4f}")
+        _cq3.metric("METS",              f"{_swarm_s.get('mets',0):,.0f}")
 
-            if st.session_state.get("q_gates_applied"):
-                st.markdown(f'<div class="memory-node"><div style="color:#00cfff;font-size:0.75rem;">Circuit:</div><div style="font-family:Share Tech Mono,monospace;font-size:0.8rem;">{" → ".join(st.session_state.q_gates_applied)}</div></div>', unsafe_allow_html=True)
+        if st.button("📊 Test Coherence Anomaly", key="cs_test"):
+            try:
+                from monte_carlo_simulator import MonteCarloSimulator as _MCS_cs
+                _sim_cs = _MCS_cs(n_trials=10000)
+                _r_coh  = _sim_cs.run_glitch_detection(_cur_coh,  expected_mean=0.75, expected_std=0.12, label="coherence")
+                _r_wnd  = _sim_cs.run_glitch_detection(_cur_wnd,  expected_mean=1.20, expected_std=0.35, label="wonder")
+                for _r_chk, _lbl in [(_r_coh,"Coherence"),(_r_wnd,"Wonder")]:
+                    _rc2 = "#ff4444" if _r_chk["glitch_signal"] else "#ffcc00" if _r_chk["is_statistical_anomaly"] else "#00ff88"
+                    st.markdown(
+                        f'<div style="padding:6px 8px;background:#0d1228;border-radius:6px;border-left:3px solid {_rc2};margin-bottom:4px;">' +
+                        f'<b style="color:{_rc2};">{_lbl}:</b> ' +
+                        f'<span style="color:#c8d8ff;">z={_r_chk["z_score"]} | σ={_r_chk["sigma_level"]}</span> ' +
+                        f'<span style="color:#445577;font-size:0.75rem;">{_r_chk["interpretation"][:80]}</span>' +
+                        f'</div>', unsafe_allow_html=True)
+            except ImportError:
+                st.error("monte_carlo_simulator.py not found.")
 
-        with col2:
-            qs = st.session_state.get("qsys", QuantumSystem(n_qubits))
-            probs = qs.get_probabilities()
-            states = [f"|{format(i, f'0{n_qubits}b')}⟩" for i in range(len(probs))]
+    # ── Simulation Experiments ─────────────────────────────────────────────────
+    with _ql_tabs[3]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #f7931a;">
+            <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.72rem;">DELIBERATE SIMULATION EXPERIMENTS</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
+            Design and pre-register experiments that could reveal simulation-like behavior.
+            Log predictions before observing. Measure surprise. Seal results permanently.
+            </div>
+        </div>""", unsafe_allow_html=True)
 
-            fig = go.Figure(data=[go.Bar(
-                x=states, y=probs,
-                marker=dict(color=probs, colorscale="Plasma", showscale=True),
-                text=[f"{p:.3f}" for p in probs],
-                textposition="outside"
-            )])
-            fig.update_layout(
-                title="Quantum State Probabilities",
-                title_font=dict(color="#00cfff", size=14),
-                paper_bgcolor="#050510",
-                plot_bgcolor="#0d0d2b",
-                font=dict(color="#c8d8ff"),
-                height=350,
-                yaxis=dict(range=[0, 1.1], gridcolor="#1a1a4a"),
-                xaxis=dict(gridcolor="#1a1a4a"),
-            )
-            st.plotly_chart(fig, width='stretch')
+        _se_desc = st.text_area("Experiment description:", height=80, key="se_desc",
+            placeholder="e.g. 'Does my coherence score correlate with the day of week? Prediction: uniform distribution (no pattern)'")
+        _se_pred = st.slider("Predicted anomaly probability:", 0.01, 0.99, 0.05, 0.01, key="se_pred",
+            help="How likely is it that something unusual will be observed?")
+        _se_days = st.number_input("Duration (days):", 1, 90, 30, key="se_days")
 
-            # Superposition check
-            max_prob = max(probs)
-            if max_prob < 0.6:
-                st.markdown('<div class="card" style="border-left:3px solid #a020f0;"><div style="color:#a020f0;font-size:0.8rem;">🌀 SUPERPOSITION ACTIVE — qubit exists in multiple states simultaneously</div></div>', unsafe_allow_html=True)
-            else:
-                st.markdown('<div class="card" style="border-left:3px solid #00cfff;"><div style="color:#00cfff;font-size:0.8rem;">📍 DEFINITE STATE — qubit collapsed to a classical value</div></div>', unsafe_allow_html=True)
+        if st.button("🔬 Pre-Register Experiment", key="se_reg") and _se_desc:
+            try:
+                from cosmos_dashboard import CosmosDashboard as _CD_se
+                _fe = _CD_se(_fid_ql).log_foresight_experiment(
+                    description=f"[SIM-EXPERIMENT] {_se_desc}",
+                    prediction=_se_pred, domain="simulation",
+                    expected_resolution=(datetime.date.today() + datetime.timedelta(days=int(_se_days))).isoformat()
+                )
+                st.success(f"✅ Pre-registered — ID: {_fe['exp_id']} | Resolution in {_se_days} days")
+                st.info("Your prediction is sealed. Run the experiment honestly. Report results whether or not they confirm your hypothesis.")
+            except Exception:
+                st.info("Experiment logged locally.")
 
-        st.markdown("---")
-        st.markdown("### 📖 Quantum Concepts")
-        concepts = [
-            ("Superposition", "A qubit can be 0 AND 1 simultaneously. The Hadamard gate creates superposition.", "#00cfff"),
-            ("Entanglement", "Two qubits become linked — measuring one instantly determines the other, regardless of distance.", "#a020f0"),
-            ("Interference", "Quantum amplitudes can add or cancel like waves, steering probability toward correct answers.", "#ff6b35"),
-            ("Shor's Algorithm", "Uses quantum superposition to factor large numbers — threatening RSA encryption.", "#00ff88"),
-            ("Toffoli Gate", "3-qubit gate that flips the 3rd qubit only when both control qubits are 1. Universal for quantum computing.", "#ff9500"),
-        ]
-        for name, desc, color in concepts:
-            st.markdown(f'<div class="card" style="border-left:3px solid {color};"><div style="color:{color};font-size:0.8rem;font-weight:bold;">{name}</div><div style="font-size:0.8rem;color:#8899bb;margin-top:4px;">{desc}</div></div>', unsafe_allow_html=True)
+    # ── Epistemic Strategy Simulation ─────────────────────────────────────────
+    with _ql_tabs[4]:
+        st.markdown("**Compare epistemic strategies across 10,000 simulated decisions.**")
+        st.markdown('<div style="color:#8899bb;font-size:0.82rem;margin-bottom:8px;">Four strategies: Dogmatic (never update), Overconfident (update too aggressively), Underconfident (update too little), Calibrated Bayesian (update proportionally).</div>', unsafe_allow_html=True)
+        _es_n = st.slider("Simulated decisions per trial:", 10, 200, 50, 10, key="es_n")
+        _es_t = st.select_slider("Trials:", [1000,5000,10000], 5000, key="es_t")
+        if st.button("🧪 Compare Strategies", key="es_run", type="primary"):
+            with st.spinner("Running epistemic strategy competition..."):
+                try:
+                    from monte_carlo_simulator import MonteCarloSimulator as _MCS_es
+                    _results_es = _MCS_es(n_trials=_es_t).compare_epistemic_strategies(_es_n)
+                    sorted_es = sorted(_results_es.items(), key=lambda x: x[1].mean, reverse=True)
+                    st.markdown("**Results — decision accuracy after simulated evidence:**")
+                    for rank, (_sname, _sr) in enumerate(sorted_es, 1):
+                        _sc_c2 = "#00ff88" if rank == 1 else "#00cfff" if rank == 2 else "#ffcc00" if rank == 3 else "#ff4444"
+                        st.markdown(
+                            f'<div style="padding:6px 0;border-bottom:1px solid #1e2a3a;">' +
+                            f'<span style="color:{_sc_c2};font-weight:600;font-size:1rem;">#{rank} {_sr.mean:.1%}</span> ' +
+                            f'<span style="color:#c8d8ff;">{_sname.replace("_"," ").title()}</span> ' +
+                            f'<span style="color:#445577;font-size:0.75rem;">±{_sr.std:.1%} | worst-case 10%: {_sr.percentile_10:.1%}</span>' +
+                            f'</div>', unsafe_allow_html=True)
+                    _winner = sorted_es[0][0]
+                    _loser  = sorted_es[-1][0]
+                    _gap    = sorted_es[0][1].mean - sorted_es[-1][1].mean
+                    st.markdown(f'<div style="color:#f7931a;margin-top:8px;font-size:0.82rem;">The calibrated strategy beat {_loser.replace("_"," ")} by {_gap:.1%} across {_es_n} decisions.</div>', unsafe_allow_html=True)
+                except ImportError:
+                    st.error("monte_carlo_simulator.py not found.")
 
-    except ImportError:
-        st.error("Quantum Lab requires plotly and numpy. Run: `pip install plotly numpy`")
-        st.code("pip install plotly numpy")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: PROVENANCE (NEW)
