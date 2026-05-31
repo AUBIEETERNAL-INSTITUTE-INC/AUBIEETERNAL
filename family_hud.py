@@ -3544,6 +3544,228 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── POLYVAGAL EXPANDED (5 new lessons, polyvagal-4 through polyvagal-8) ──
+    # PhD-level integration of Polyvagal Theory with cognitive science,
+    # allostatic load theory, interoception research, and social baseline theory.
+    # Every lesson works at age 5 (Green/Yellow/Red). Deepens to neuroscience PhD.
+    # My genuine addition: Polyvagal-Coherence Coupling — the measurable
+    # relationship between ANS state and epistemic output quality.
+    # ══════════════════════════════════════════════════════════════════════════
+    "polyvagal-4": {
+        "title":       "Polyvagal — Level 4: Co-Regulation Is the Primary Technology",
+        "topic":       "Children cannot regulate their own nervous systems alone. The parent's nervous system is the regulatory technology. This is not metaphor — it is measurable neurophysiology with direct implications for how we teach, parent, and build sovereign families.",
+        "steelman":    "What is the strongest argument that teaching co-regulation creates dependency — that children should be taught to self-regulate independently rather than relying on others' nervous system states?",
+        "example":     (
+            "The neuroscience of co-regulation:\n\n"
+            "Stephen Porges (2011): the social engagement system (ventral vagal complex) "
+            "evolved specifically to detect and respond to the safety signals in other nervous systems. "
+            "The face, voice, and posture of a regulated adult literally activates "
+            "the child's ventral vagal system through the brainstem.\n\n"
+            "The measurement: Heart Rate Variability (HRV) between mother and infant "
+            "shows synchrony within 0.3 seconds. Skin conductance synchronizes "
+            "across family members in moments of high connection. "
+            "This is not subtle — it is biologically measurable co-regulation.\n\n"
+            "The implication for teaching:\n"
+            "A child in sympathetic activation (frustration, anxiety) CANNOT access "
+            "prefrontal cortex function — the part that does math, writing, and learning. "
+            "No amount of explaining, repeating, or disciplining changes this. "
+            "Only co-regulation changes it.\n\n"
+            "Practical protocol:\n"
+            "When a child is dysregulated: regulate YOURSELF first (3 slow breaths, "
+            "soften your face). Your nervous system then begins regulating theirs. "
+            "THEN attempt the teaching."
+        ),
+        "activity":    (
+            "The Co-Regulation Lab:\n"
+            "1. Practice a 'nervous system handshake': both people take 3 slow breaths together\n"
+            "2. Notice: does the other person's body language shift after 30 seconds?\n"
+            "3. Advanced (parents): before a difficult conversation, spend 60 seconds "
+            "regulating yourself first. Track whether the conversation goes differently.\n\n"
+            "PhD extension: measure HRV (Heart Rate Variability) before and after "
+            "a 5-minute co-regulation session using a wearable. "
+            "Document the synchrony. This is publishable science you can run at home."
+        ),
+        "age_hint":    "All ages",
+        "xp": 45, "rune": "POLYVAGAL•RUNE", "min_coherence": 0.65,
+        "phd_extension": "Read Feldman (2007) on physiological synchrony between parents and children. Compute cross-correlation of HRV time series from two family members during regulated vs dysregulated states. Apply Granger causality to test whether parent HRV precedes or follows child HRV changes — this tests the directionality of co-regulation.",
+    },
+    "polyvagal-5": {
+        "title":       "Polyvagal — Level 5: Interoception — The Science of Knowing Your Own State",
+        "topic":       "Interoception is the brain's perception of the body's internal state. It is the mechanism by which you know you're anxious before you can articulate why. Training interoception is training sovereignty over your own nervous system.",
+        "steelman":    "What is the strongest argument that focusing too much on interoception and internal states makes people more anxious and self-absorbed, not less — and that the solution to nervous system dysregulation is external action, not internal monitoring?",
+        "example":     (
+            "The science of interoception:\n\n"
+            "The insular cortex processes interoceptive signals from the body — "
+            "heart rate, gut motility, lung pressure, muscle tension, skin temperature.\n\n"
+            "High interoceptive accuracy (IA): you can accurately count your own heartbeats "
+            "without touching your pulse. Research shows high IA correlates with:\n"
+            "• Better emotional regulation\n"
+            "• Faster recovery from stress\n"
+            "• Higher empathy (your body models others' states)\n"
+            "• Better decision-making under uncertainty\n\n"
+            "Low IA: you don't notice dysregulation until it's severe. "
+            "You're already in full sympathetic activation before you register anxiety.\n\n"
+            "The AUBIEETERNAL coherence score is partly an externalized measure "
+            "of what interoception measures internally: how regulated is the system?\n\n"
+            "Training interoception (Seth, 2021 — active inference framework):\n"
+            "The brain continuously predicts body states and updates based on "
+            "prediction errors. Training IA = training the precision of this prediction loop. "
+            "Methods: heartbeat counting task, body scan meditation, biofeedback."
+        ),
+        "activity":    (
+            "The Heartbeat Counting Task (validated measure of interoceptive accuracy):\n"
+            "1. Set a timer for 25 seconds\n"
+            "2. Without touching your pulse: count your heartbeats silently\n"
+            "3. After: check your actual heart rate (pulse for 15 sec × 4)\n"
+            "4. Accuracy = 1 - (|counted - actual| / ((counted + actual) / 2))\n\n"
+            "Do this every morning for 30 days. Track your accuracy. "
+            "Most people improve significantly. High accuracy (>0.85) means "
+            "your brain's body model is precise — you will notice dysregulation earlier "
+            "and regulate more effectively.\n\n"
+            "Seal your 30-day results in the Truth Debt Ledger. This is real data."
+        ),
+        "age_hint":    "10+",
+        "xp": 50, "rune": "POLYVAGAL•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Garfinkel & Critchley (2013) distinguish interoceptive accuracy (task performance), sensibility (metacognitive confidence), and awareness (correspondence between the two). Measure all three in your family. Test whether interoceptive accuracy correlates with AUBIEETERNAL coherence scores over a 30-day period. This is the Polyvagal-Coherence Coupling hypothesis.",
+    },
+    "polyvagal-6": {
+        "title":       "Polyvagal — Level 6: Social Baseline Theory and the Cost of Isolation",
+        "topic":       "James Coan's Social Baseline Theory proposes that the human brain's baseline state is social — that isolation is not neutral but metabolically costly. Sovereignty is not solitude. Genuine sovereignty requires a regulated, connected community.",
+        "steelman":    "What is the strongest argument that social baseline theory overstates social dependence and underestimates the value of solitude, introversion, and individual sovereignty over communal consensus?",
+        "example":     (
+            "Social Baseline Theory (Coan & Maresh, 2014):\n\n"
+            "The brain evolved to expect a social environment. When that environment "
+            "is absent, the brain runs in a more expensive, high-alert mode. "
+            "Coan's fMRI research showed:\n\n"
+            "Holding a stranger's hand while anticipating a mild shock: "
+            "reduced threat-related neural activation vs. alone.\n"
+            "Holding a familiar partner's hand: dramatically reduced activation.\n"
+            "The more secure the relationship, the greater the neural load reduction.\n\n"
+            "The economic model: social connection REDUCES the metabolic cost of "
+            "navigating the world. It is not a luxury — it is efficiency. "
+            "Isolation requires the nervous system to run hotter, use more resources, "
+            "and process more threat signals without social outsourcing.\n\n"
+            "The AUBIEETERNAL implication:\n"
+            "The Living Lattice is not just a coordination tool. "
+            "It is a social baseline infrastructure that reduces the metabolic cost "
+            "of truth-seeking. Families connected to the lattice run more efficiently "
+            "than isolated families facing the same epistemic challenges alone.\n\n"
+            "The sovereignty paradox: genuine sovereignty requires a community. "
+            "Isolated sovereigns are neurologically and metabolically disadvantaged."
+        ),
+        "activity":    (
+            "Social Baseline Audit:\n"
+            "1. Map your family's social baseline: who are the 5 people whose presence "
+            "most regulates your nervous system?\n"
+            "2. How often do you see each person? Is the frequency sufficient?\n"
+            "3. What is the quality of those connections (ventral vagal vs. sympathetic)?\n\n"
+            "Design: one addition to your social baseline that would reduce the "
+            "metabolic cost of your family's daily functioning.\n\n"
+            "Lattice extension: who in your community could benefit from being added "
+            "to the Living Lattice? The network effect of social baseline is nonlinear — "
+            "adding one regulated node can shift the baseline of the whole cluster."
+        ),
+        "age_hint":    "12+",
+        "xp": 50, "rune": "POLYVAGAL•RUNE", "min_coherence": 0.70,
+        "phd_extension": "Read Coan, Schaefer & Davidson (2006) 'Lending a Hand'. Model your family as a social network where edge weights represent social baseline load reduction (estimated from relationship quality). Compute the network's average path length and clustering coefficient. Test whether families with higher clustering coefficient show higher average AUBIEETERNAL coherence scores.",
+    },
+    "polyvagal-7": {
+        "title":       "Polyvagal — Level 7: Allostatic Load and Chronic Dysregulation",
+        "topic":       "Allostatic load is the cumulative wear on the body from chronic stress and nervous system dysregulation. It is the bridge between psychological adversity and physical health outcomes. Understanding it is understanding the physical cost of living in threat-state.",
+        "steelman":    "What is the strongest argument that allostatic load research overpathologizes normal human stress responses and creates unnecessary anxiety about stress itself — making people who learn about it more stressed, not less?",
+        "example":     (
+            "Allostatic load (McEwen & Stellar, 1993):\n\n"
+            "Allostasis: the brain changes body parameters (cortisol, BP, immune function) "
+            "to meet anticipated demands. This is healthy and adaptive.\n\n"
+            "Allostatic load: the cumulative cost when the system is chronically activated "
+            "without adequate recovery. Four subtypes:\n"
+            "Type 1: Frequent stressors, no recovery time\n"
+            "Type 2: Failure to shut off response after stressor ends (rumination)\n"
+            "Type 3: Failure to mount adequate response (exhaustion, freeze)\n"
+            "Type 4: Inadequate recovery from multiple simultaneous stressors\n\n"
+            "Measurable biomarkers: cortisol AUC, IL-6, CRP, DHEA-S, resting BP, "
+            "BMI, HbA1c, HRV. High allostatic load predicts:\n"
+            "• Cognitive decline\n"
+            "• Immune dysfunction\n"
+            "• Cardiovascular disease\n"
+            "• Shortened telomeres (biological aging)\n\n"
+            "The AUBIEETERNAL link: coherence scores over time are a proxy for "
+            "allostatic load. Declining coherence under pressure = accumulating allostatic load. "
+            "The recovery interventions in this curriculum are literally anti-aging interventions."
+        ),
+        "activity":    (
+            "Allostatic Load Self-Assessment:\n"
+            "Track for 30 days:\n"
+            "1. Daily stress rating (1-10) on waking and before bed\n"
+            "2. Sleep quality (1-5)\n"
+            "3. Resting heart rate (HRV if available)\n"
+            "4. Two 'anchor questions': What felt threatening today? What felt safe?\n\n"
+            "After 30 days: plot the time series. Where are your Type 1-4 allostatic "
+            "patterns? What recovery interventions would address each?\n\n"
+            "Seal the 30-day dataset in the Truth Debt Ledger as a health pre-registration. "
+            "Run the same protocol in 90 days after implementing one intervention. "
+            "The difference IS the intervention effect."
+        ),
+        "age_hint":    "13+",
+        "xp": 55, "rune": "POLYVAGAL•RUNE", "min_coherence": 0.72,
+        "phd_extension": "Compute your Allostatic Load Index (ALI) using McEwen's original 10-biomarker framework (or a proxy version with accessible measurements). Track ALI over 6 months while implementing the AUBIEETERNAL nervous system curriculum. Test whether curriculum completion predicts ALI reduction. This is a publishable n=1 study.",
+        "grants_badge": "🧠 Nervous System Scientist — Allostatic Load Mapped",
+    },
+    "polyvagal-8": {
+        "title":       "Polyvagal — Level 8 (Master): Polyvagal-Coherence Coupling — Original Research Protocol",
+        "topic":       "My genuine addition to the curriculum. The hypothesis: the quality of epistemic output (coherence, truth-seeking accuracy, steelmanning ability) is measurably coupled to autonomic nervous system state. This lesson is both theory and a family research protocol.",
+        "steelman":    "What is the strongest argument that the relationship between ANS state and cognitive output is too complex and individually variable to be meaningfully measured at the family level — and that simpler behavioral indicators are more actionable?",
+        "example":     (
+            "The Polyvagal-Coherence Coupling Hypothesis:\n\n"
+            "Claim: autonomic nervous system state (measured via HRV or interoceptive accuracy) "
+            "significantly predicts the quality of epistemic output within the same individual "
+            "over time, above and beyond IQ, education, or content familiarity.\n\n"
+            "Theoretical basis:\n"
+            "1. Ventral vagal activation → prefrontal engagement → better hypothesis generation, "
+            "reduced motivated reasoning, more accurate probability estimates\n"
+            "2. Sympathetic activation → amygdala dominance → confirmation bias amplified, "
+            "attention narrowed, steelmanning impaired\n"
+            "3. Dorsal vagal → executive function suppressed → accuracy at floor\n\n"
+            "The mechanism (predictive processing, Clark 2016):\n"
+            "The brain is a prediction machine. In ventral vagal state, prediction error "
+            "tolerance is high — the system can update beliefs with contradicting evidence. "
+            "In sympathetic state, the prediction error tolerance narrows — the system "
+            "filters out disconfirming information as 'threat'.\n\n"
+            "AUBIEETERNAL measurement approach:\n"
+            "Record: HRV or interoceptive accuracy before each lesson session.\n"
+            "Record: coherence score, steelman quality rating, lesson performance.\n"
+            "Run: Pearson correlation, then Granger causality.\n"
+            "Hypothesis: HRV at lesson start predicts coherence score, "
+            "even after controlling for lesson difficulty and time-of-day."
+        ),
+        "activity":    (
+            "The Full Research Protocol:\n"
+            "For 30+ sessions, before each AUBIEETERNAL lesson:\n"
+            "1. Heartbeat counting task (2 min) → record interoceptive accuracy score\n"
+            "2. Self-report state (Green/Yellow/Red)\n"
+            "3. HRV if available (resting 2 min)\n"
+            "After each lesson:\n"
+            "4. Record lesson score + coherence\n"
+            "5. Self-rate steelmanning quality (1-5)\n\n"
+            "Analysis (requires 30+ sessions):\n"
+            "Run Pearson correlation: interoceptive accuracy vs coherence.\n"
+            "Run lagged Granger causality: does state at t-1 predict coherence at t?\n"
+            "If the correlation is >0.3 and statistically significant: "
+            "you have personal evidence for the PVC hypothesis.\n\n"
+            "Publish as CC0 in the AUBIEETERNAL Epistemic Commons. "
+            "Every family that runs this protocol adds to a global dataset "
+            "that no institution controls."
+        ),
+        "age_hint":    "15+ / PhD",
+        "xp": 80, "rune": "POLYVAGAL•EPISTEMIC•RUNE", "min_coherence": 0.78,
+        "phd_extension": "Extend the PVC hypothesis to the group level. Test whether family HRV synchrony (measured via simultaneous wearables during co-learning sessions) predicts the emergence of novel insights (rated blind by external judges). Apply multilevel modeling with lesson as Level 1 and family as Level 2. This is the group-level PVC test — never been published.",
+        "grants_badge": "⚡ PVC Researcher — Polyvagal-Coherence Coupling Protocol Active",
+        "lattice_node": "polyvagal-coherence-coupling-hypothesis-sealed",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
