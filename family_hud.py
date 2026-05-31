@@ -3766,6 +3766,16 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── TECH SOVEREIGNTY TRACK (5 lessons) ────────────────────────────────────
+    # The infrastructure layer for the university without paperwork.
+    # These lessons teach families to own their computing stack completely —
+    # from the OS they run to the models they use to the data they generate.
+    # The graduation requirement: run something the tech giants can't touch.
+    # ══════════════════════════════════════════════════════════════════════════
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
