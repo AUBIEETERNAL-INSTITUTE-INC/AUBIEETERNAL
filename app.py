@@ -934,9 +934,7 @@ with st.sidebar:
             "🌌 Cosmos Dashboard",
         ],
         "👾 SWARM": [
-            "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "🌐 Epistemic Commons",
-            "📚 Grokipedia",
-            "🌐 Epistemic Commons",
+            "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "📚 Grokipedia", "🌐 Epistemic Commons",
         ],
         "👨‍👩‍👧 FAMILY": [
             "👨‍👩‍👧‍👦 4 Families", "🥽 Family Co-Learning",
