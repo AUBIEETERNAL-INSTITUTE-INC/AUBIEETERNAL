@@ -969,6 +969,7 @@ with st.sidebar:
         "🧬 TRUTH": [
             "🔮 Truth Lattice", "🧬 Family Lattice",
             "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
+            "🧠 Polyvagal Oracle",
         ],
         "🌉 X BRIDGE": [
             "🌉 X Bridge",
@@ -9598,3 +9599,320 @@ if "University Registrar" in active:
                     st.rerun()
                 else:
                     st.warning(f"Status: {result.get('status','?')}")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: POLYVAGAL ORACLE 🧠
+# Quiz + State-Shifting Toolkit + Social Calibration + PVC Research Protocol
+# ══════════════════════════════════════════════════════════════════════════════
+if "Polyvagal Oracle" in active:
+    st.markdown('<div class="card-title">🧠 POLYVAGAL ORACLE — Know and Navigate Your Nervous System</div>', unsafe_allow_html=True)
+
+    _fid_pv = st.session_state.get("current_family", {}).get("family_id", "default") \
+              if st.session_state.get("current_family") else "default"
+
+    _pv_tabs = st.tabs(["🟢 State Check", "🧪 Quiz", "🛠️ State-Shifting Toolkit",
+                         "📊 PVC Research", "🔬 Social Calibration"])
+
+    # ── Daily State Check ─────────────────────────────────────────────────────
+    with _pv_tabs[0]:
+        st.markdown("""
+        <div style="text-align:center;padding:8px 0 4px;">
+            <div style="font-size:28px">🧠</div>
+            <div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.78rem;margin-top:4px;">
+            NERVOUS SYSTEM STATE CHECK</div>
+        </div>""", unsafe_allow_html=True)
+
+        _pv_states = {
+            "🟢 GREEN — Ventral Vagal (Safe & Curious)": {
+                "color":"#00ff88","value":2,
+                "desc":"Calm, connected, curious, playful. Optimal for learning and truth-seeking.",
+                "intervention":"Maintain and deepen. This is the state for hard problems.",
+                "coherence_boost": 0.02,
+            },
+            "🟡 YELLOW — Sympathetic (Fight/Flight/Frustration)": {
+                "color":"#ffcc00","value":1,
+                "desc":"Activated, agitated, urgent, frustrated. Learning is impaired.",
+                "intervention":"Down-regulate first. Breathe, move, co-regulate, then return to the work.",
+                "coherence_boost": -0.01,
+            },
+            "🔴 RED — Dorsal Vagal (Shutdown/Numb)": {
+                "color":"#ff4444","value":0,
+                "desc":"Withdrawn, flat, 'I don't care', disconnected. Prefrontal offline.",
+                "intervention":"Gentle re-engagement. Presence > words. Low pressure. Safety first.",
+                "coherence_boost": -0.02,
+            },
+        }
+
+        _pv_who  = st.text_input("Who is checking in?", key="pv_who", value="Family", placeholder="Your name")
+        _pv_sel  = st.radio("Current state:", list(_pv_states.keys()), key="pv_state")
+        _pv_note = st.text_area("Notes (optional):", height=60, key="pv_note",
+            placeholder="What triggered this state? What helped?")
+
+        if st.button("✅ Log State Check", key="pv_log", type="primary"):
+            _sv  = _pv_states[_pv_sel]
+            import json as _json_pv, pathlib as _pl_pv, datetime as _dt_pv, hashlib as _hs_pv
+            _log = _pl_pv.Path("/mnt/main/polyvagal_states.jsonl") if _pl_pv.Path("/mnt/main").exists() \
+                   else _pl_pv.Path(os.path.expanduser("~/.aubieeternal/main/polyvagal_states.jsonl"))
+            _entry = {"timestamp":_dt_pv.datetime.now().isoformat(),"family_id":_fid_pv,
+                      "member":_pv_who,"state":_pv_sel[:7],"state_value":_sv["value"],
+                      "notes":_pv_note,"coherence_boost":_sv["coherence_boost"]}
+            with open(_log,"a") as f: f.write(_json_pv.dumps(_entry)+"\n")
+            st.markdown(
+                f'<div class="card" style="border-left:4px solid {_sv["color"]};">'
+                f'<div style="color:{_sv["color"]};font-weight:600;">{_pv_sel[:30]}</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;">{_sv["desc"]}</div>'
+                f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:6px;">'
+                f'<b>Recommended:</b> {_sv["intervention"]}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+        # State history
+        import pathlib as _pl_pvh
+        _log2 = _pl_pvh.Path("/mnt/main/polyvagal_states.jsonl") if _pl_pvh.Path("/mnt/main").exists() \
+                else _pl_pvh.Path(os.path.expanduser("~/.aubieeternal/main/polyvagal_states.jsonl"))
+        if _log2.exists():
+            _entries = []
+            for _line in _log2.read_text().strip().split("\n"):
+                try:
+                    import json as _j2; _e = _j2.loads(_line)
+                    if _e.get("family_id") == _fid_pv: _entries.append(_e)
+                except Exception: pass
+            if _entries:
+                st.divider(); st.markdown("**Recent States**")
+                _sv_counts = {"2":0,"1":0,"0":0}
+                for _e in _entries[-20:]:
+                    _sv_counts[str(_e.get("state_value",1))] += 1
+                _total_e = len(_entries[-20:])
+                if _total_e:
+                    _green_pct = _sv_counts["2"]/_total_e*100
+                    _col_g = "#00ff88" if _green_pct >= 60 else "#ffcc00" if _green_pct >= 40 else "#ff4444"
+                    st.markdown(f'<div style="color:{_col_g};font-size:0.85rem;">'
+                                f'🟢 {_sv_counts["2"]} · 🟡 {_sv_counts["1"]} · 🔴 {_sv_counts["0"]} '
+                                f'(last 20 check-ins — {_green_pct:.0f}% green)</div>', unsafe_allow_html=True)
+
+    # ── Polyvagal Quiz ────────────────────────────────────────────────────────
+    with _pv_tabs[1]:
+        st.markdown("**Identify the nervous system state in each scenario.**")
+        _quiz_qs = [
+            {"q":"Your child is staring at homework with a flat voice saying 'I don't know' when asked what's wrong.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":2,
+             "exp":"Dorsal Vagal shutdown. The brain has gone into conservation/freeze mode. Do not push."},
+            {"q":"Your teenager raises their voice during a discussion, face flushed, interrupting everyone.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":1,
+             "exp":"Sympathetic activation. The nervous system is mobilized. Movement, space, and calm presence help."},
+            {"q":"Your 8-year-old is laughing, making eye contact, and excitedly explaining their invention idea.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":0,
+             "exp":"Ventral Vagal. This is the learning state. Extend it. Ask more questions."},
+            {"q":"After a low grade, your child says 'I'm never good at this' and refuses to try the next problem.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":2,
+             "exp":"Dorsal Vagal — 'why bother' collapse. Gentle presence, low-pressure reset, then gradually re-engage."},
+            {"q":"Your partner snaps over something small after a long stressful day.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":1,
+             "exp":"Sympathetic spillover from accumulated allostatic load. Not really about the small thing."},
+            {"q":"A child who loves lessons suddenly says 'This is stupid' and crosses their arms.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":1,
+             "exp":"Sympathetic frustration — the challenge exceeded their regulated window. Back off difficulty temporarily."},
+            {"q":"Family game night: everyone is smiling, making eye contact, relaxed and playful.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":0,
+             "exp":"Ventral Vagal co-regulation. This is the state where relationships and long-term learning consolidate."},
+            {"q":"A child who recently experienced conflict keeps replaying it and can't focus on anything else.",
+             "opts":["🟢 Ventral Vagal","🟡 Sympathetic","🔴 Dorsal Vagal"],"ans":1,
+             "exp":"Sympathetic Type 2 (failure to shut off). The brain can't exit threat mode. Deliberate co-regulation needed."},
+        ]
+
+        if "pv_quiz_idx" not in st.session_state: st.session_state.pv_quiz_idx = 0
+        if "pv_quiz_score" not in st.session_state: st.session_state.pv_quiz_score = 0
+        if "pv_quiz_done" not in st.session_state: st.session_state.pv_quiz_done = False
+
+        if not st.session_state.pv_quiz_done and st.session_state.pv_quiz_idx < len(_quiz_qs):
+            _q = _quiz_qs[st.session_state.pv_quiz_idx]
+            st.markdown(f'<div style="color:#445577;font-size:0.72rem;">Question {st.session_state.pv_quiz_idx+1}/{len(_quiz_qs)}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="color:#c8d8ff;font-size:0.88rem;padding:8px 0;line-height:1.7;">{_q["q"]}</div>', unsafe_allow_html=True)
+            _pv_ans = st.radio("State:", _q["opts"], key=f"pv_q{st.session_state.pv_quiz_idx}")
+            if st.button("Submit", key=f"pv_sub{st.session_state.pv_quiz_idx}"):
+                _correct = _q["opts"].index(_pv_ans) == _q["ans"]
+                if _correct: st.session_state.pv_quiz_score += 1; st.success("✅ Correct!")
+                else: st.error(f"❌ {_q['opts'][_q['ans']]}")
+                st.info(f"**{_q['exp']}**")
+                st.session_state.pv_quiz_idx += 1
+                if st.session_state.pv_quiz_idx >= len(_quiz_qs): st.session_state.pv_quiz_done = True
+                st.rerun()
+        elif st.session_state.pv_quiz_done or st.session_state.pv_quiz_idx >= len(_quiz_qs):
+            _sc = st.session_state.pv_quiz_score; _tot = len(_quiz_qs); _pct = _sc/_tot*100
+            _cc = "#00ff88" if _pct >= 85 else "#ffcc00" if _pct >= 65 else "#ff4444"
+            st.markdown(f'<div style="text-align:center;padding:10px;">'
+                        f'<div style="color:{_cc};font-size:1.2rem;font-weight:600;">{_sc}/{_tot} — {_pct:.0f}%</div>'
+                        f'</div>', unsafe_allow_html=True)
+            if _pct >= 85: st.success("Excellent — you can identify nervous system states accurately.")
+            elif _pct >= 65: st.success("Good — review the Sympathetic/Dorsal boundary cases.")
+            else: st.info("Practice identifying states in real-time today. The quiz will reflect your growth.")
+
+            # Log to truth log
+            try:
+                from family_hud import FamilySession as _FS_pv
+                _fs_pv = _FS_pv(_fid_pv, "")
+                _fs_pv._write_to_truth_log(f"POLYVAGAL_QUIZ: {_sc}/{_tot} ({_pct:.0f}%)")
+            except Exception: pass
+
+            if st.button("🔄 Retake Quiz", key="pv_retake"):
+                st.session_state.pv_quiz_idx = 0; st.session_state.pv_quiz_score = 0
+                st.session_state.pv_quiz_done = False; st.rerun()
+
+    # ── State-Shifting Toolkit ────────────────────────────────────────────────
+    with _pv_tabs[2]:
+        st.markdown("### 🛠️ State-Shifting Toolkit")
+        _toolkit_state = st.selectbox("Current state to shift FROM:", 
+            ["🟡 Sympathetic (activated, frustrated)", "🔴 Dorsal Vagal (shutdown, numb)"], key="tk_state")
+
+        _is_sympathetic = "Sympathetic" in _toolkit_state
+        _interventions = {
+            "sympathetic": [
+                {"name":"Shake It Out","duration":"60s","ages":"5-9",
+                 "how":"Put on music. Shake arms, legs, whole body vigorously for 60 seconds. The movement discharges sympathetic activation. Kids often giggle — that is success."},
+                {"name":"4-7-8 Breathing","duration":"2 min","ages":"10+",
+                 "how":"Inhale 4 sec. Hold 7 sec. Exhale slowly 8 sec. Repeat 4 cycles. The extended exhale activates the vagus nerve and directly shifts sympathetic → ventral vagal."},
+                {"name":"Name 5 Things","duration":"2 min","ages":"8+",
+                 "how":"Name 5 things you see. 4 you can touch. 3 you hear. 2 you smell. 1 you taste. This grounds attention in present sensory data, interrupting threat-based prediction loops."},
+                {"name":"Cold Water Reset","duration":"30s","ages":"All",
+                 "how":"Splash cold water on face or hold an ice cube. Activates the diving reflex — instant vagal response, heart rate drops, nervous system shifts."},
+                {"name":"Movement Break","duration":"5-10 min","ages":"10+",
+                 "how":"10 jumping jacks, 5 push-ups, run to end of street and back. Physical discharge clears sympathetic activation faster than any cognitive intervention."},
+                {"name":"Offer Choices Not Demands","duration":"Ongoing","ages":"All",
+                 "how":"When someone is activated, demands escalate. Choices de-escalate. 'Do you want to breathe first or move first?' Both options lead to regulation. This works on yourself too."},
+            ],
+            "dorsal": [
+                {"name":"Parallel Play","duration":"10-20 min","ages":"All",
+                 "how":"Sit nearby and do your own calm activity (draw, read, build) without talking or demanding engagement. Your regulated presence slowly pulls them back. No pressure = safety."},
+                {"name":"The Reset Snack","duration":"15 min","ages":"All",
+                 "how":"Offer a small, familiar, positive food. Eating activates parasympathetic response. The familiar comfort signals safety to the nervous system without requiring words."},
+                {"name":"Orienting Response","duration":"2-3 min","ages":"All",
+                 "how":"Slowly turn head to look around the room, naming what you see. This activates the orienting reflex — a primitive safety scan — and signals to the nervous system that the environment is safe."},
+                {"name":"Soft Music + Low Light","duration":"10-15 min","ages":"All",
+                 "how":"Familiar, slow music at low volume. Dim or warm lighting. The nervous system responds to prosodic (melodic/rhythmic) signals as safety cues. This is why lullabies work."},
+                {"name":"Connection Moment","duration":"5-10 min","ages":"All",
+                 "how":"Brief, low-demand positive contact: sit close, watch something they love for 10 minutes without agenda. Rebuilds the social baseline without pressure to perform or communicate."},
+                {"name":"Do Not Lecture","duration":"Ongoing","ages":"All",
+                 "how":"Explaining, convincing, or disciplining during dorsal vagal shutdown is useless and often harmful. The prefrontal is offline. Wait. Regulate. Reconnect. Then teach."},
+            ],
+        }
+
+        _ilist = _interventions["sympathetic" if _is_sympathetic else "dorsal"]
+        _age_filter = st.selectbox("Age group:", ["All ages","5-9","10-13","14+"], key="tk_age")
+
+        for _iv in _ilist:
+            _age_ok = _age_filter == "All ages" or _iv["ages"] == "All" or \
+                      _age_filter[:2] in _iv["ages"] or "+" in _iv["ages"]
+            if _age_ok:
+                st.markdown(
+                    f'<div class="card" style="margin-bottom:4px;">'
+                    f'<div style="display:flex;justify-content:space-between;">'
+                    f'<b style="color:#c8d8ff;">{_iv["name"]}</b>'
+                    f'<span style="color:#445577;font-size:0.72rem;">{_iv["duration"]} · Ages {_iv["ages"]}</span>'
+                    f'</div>'
+                    f'<div style="color:#8899bb;font-size:0.8rem;margin-top:4px;line-height:1.7;">{_iv["how"]}</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+    # ── PVC Research Protocol ─────────────────────────────────────────────────
+    with _pv_tabs[3]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #a020f0;">
+            <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">
+            POLYVAGAL-COHERENCE COUPLING (PVC) RESEARCH PROTOCOL</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+            The hypothesis: autonomic nervous system state significantly predicts the quality
+            of epistemic output. This tab runs the family research protocol.<br><br>
+            <b style="color:#c8d8ff;">Before each lesson:</b> log your state + interoceptive accuracy score.<br>
+            <b style="color:#c8d8ff;">After each lesson:</b> your coherence and performance are recorded.<br>
+            <b style="color:#c8d8ff;">After 30+ sessions:</b> run the correlation analysis below.
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+        st.markdown("#### Pre-Session Data Entry")
+        _pvc_c1, _pvc_c2 = st.columns(2)
+        with _pvc_c1:
+            _pvc_state  = st.selectbox("ANS state:", ["🟢 Ventral (2)","🟡 Sympathetic (1)","🔴 Dorsal (0)"], key="pvc_s")
+            _pvc_ia     = st.slider("Interoceptive accuracy (heartbeat task):", 0.0, 1.0, 0.7, 0.01, key="pvc_ia",
+                help="Run heartbeat counting task for 25s. Accuracy = 1 - |counted-actual| / avg")
+        with _pvc_c2:
+            _pvc_hrv    = st.number_input("HRV (ms, if available, 0 = skip):", 0, 500, 0, key="pvc_hrv")
+            _pvc_lesson = st.text_input("Lesson key:", key="pvc_lesson", placeholder="e.g. systems-3")
+
+        if st.button("📊 Log Pre-Session", key="pvc_log", type="primary") and _pvc_lesson:
+            import json as _jpvc, pathlib as _ppvc, datetime as _dpvc
+            _pvl = _ppvc.Path("/mnt/main/pvc_research.jsonl") if _ppvc.Path("/mnt/main").exists() \
+                   else _ppvc.Path(os.path.expanduser("~/.aubieeternal/main/pvc_research.jsonl"))
+            _sv_int = {"🟢 Ventral (2)":2,"🟡 Sympathetic (1)":1,"🔴 Dorsal (0)":0}.get(_pvc_state,1)
+            _rec = {"timestamp":_dpvc.datetime.now().isoformat(),"family_id":_fid_pv,
+                    "lesson_key":_pvc_lesson,"state_value":_sv_int,"ia_score":_pvc_ia,
+                    "hrv_ms":_pvc_hrv,"coherence_post":None}
+            with open(_pvl,"a") as f: f.write(_jpvc.dumps(_rec)+"\n")
+            st.success(f"✅ Pre-session logged — State:{_sv_int} | IA:{_pvc_ia:.2f} | Lesson:{_pvc_lesson}")
+            st.info("Complete the lesson. After, use 'Mark Complete' in University Registrar to record your coherence score.")
+
+        # Simple correlation display if data exists
+        import pathlib as _pp2
+        _pvl2 = _pp2.Path("/mnt/main/pvc_research.jsonl") if _pp2.Path("/mnt/main").exists() \
+                else _pp2.Path(os.path.expanduser("~/.aubieeternal/main/pvc_research.jsonl"))
+        if _pvl2.exists():
+            import json as _jp2
+            _recs = []
+            for _l in _pvl2.read_text().strip().split("\n"):
+                try: _recs.append(_jp2.loads(_l))
+                except Exception: pass
+            st.markdown(f"**Dataset: {len(_recs)} sessions logged**")
+            if len(_recs) >= 10:
+                _states = [r["state_value"] for r in _recs if r.get("coherence_post")]
+                _cohs   = [r["coherence_post"] for r in _recs if r.get("coherence_post")]
+                if len(_states) >= 5:
+                    n = len(_states)
+                    xm = sum(_states)/n; ym = sum(_cohs)/n
+                    r_num = sum((x-xm)*(y-ym) for x,y in zip(_states,_cohs))
+                    r_den = (sum((x-xm)**2 for x in _states) * sum((y-ym)**2 for y in _cohs))**0.5
+                    r_val = r_num/r_den if r_den > 0 else 0
+                    _rc = "#00ff88" if abs(r_val) > 0.3 else "#ffcc00" if abs(r_val) > 0.1 else "#445577"
+                    st.markdown(f'<div style="color:{_rc};font-size:0.9rem;font-weight:600;">'
+                                f'PVC Correlation: r = {r_val:.3f} '
+                                f'({"significant signal" if abs(r_val) > 0.3 else "weak signal — more data needed"})'
+                                f'</div>', unsafe_allow_html=True)
+            else:
+                st.info(f"Need {10-len(_recs)} more sessions to compute correlation.")
+
+    # ── Social Calibration ────────────────────────────────────────────────────
+    with _pv_tabs[4]:
+        st.markdown("""
+        <div class="card" style="border-left:3px solid #00cfff;">
+            <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.72rem;">
+            SOCIAL BASELINE CALIBRATION</div>
+            <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
+            Social Baseline Theory (Coan, 2014): the human brain evolved to expect a social
+            environment. Isolation is metabolically costly. Genuine sovereignty requires
+            a regulated, connected community — not solitude.<br><br>
+            This tool maps your family's social baseline and identifies optimization opportunities.
+            </div>
+        </div>""", unsafe_allow_html=True)
+
+        st.markdown("#### Your Social Baseline Map")
+        st.markdown('<div style="color:#8899bb;font-size:0.8rem;margin-bottom:8px;">Name up to 5 people whose presence most regulates your nervous system:</div>', unsafe_allow_html=True)
+        _sb_people = []
+        for _si in range(1,6):
+            _sbc1, _sbc2, _sbc3 = st.columns([2,1,1])
+            with _sbc1: _sbname = st.text_input(f"Person {_si}:", key=f"sb_name{_si}", placeholder="Name/relationship")
+            with _sbc2: _sbfreq = st.selectbox("Frequency:", ["daily","weekly","monthly","rarely"], key=f"sb_freq{_si}")
+            with _sbc3: _sbqual = st.slider("Quality:", 1, 5, 3, key=f"sb_qual{_si}", help="1=draining, 5=deeply regulating")
+            if _sbname: _sb_people.append({"name":_sbname,"freq":_sbfreq,"quality":_sbqual})
+
+        if _sb_people and st.button("📊 Analyze Social Baseline", key="sb_analyze"):
+            _freq_score = {"daily":4,"weekly":3,"monthly":2,"rarely":1}
+            _total_load_reduction = sum(_fs["quality"] * _freq_score.get(_fs["freq"],1) for _fs in _sb_people)
+            _optimal  = 5 * 4 * 5  # 5 people, daily, quality 5
+            _sbl_pct  = _total_load_reduction / _optimal * 100
+            _sbl_c    = "#00ff88" if _sbl_pct >= 60 else "#ffcc00" if _sbl_pct >= 35 else "#ff4444"
+            st.markdown(
+                f'<div class="card" style="border-left:4px solid {_sbl_c};">'
+                f'<div style="color:{_sbl_c};font-weight:600;">Social Baseline Load Reduction: {_sbl_pct:.0f}%</div>'
+                f'<div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">'
+                f'{"Strong baseline — your nervous system has adequate social resourcing." if _sbl_pct >= 60 else "Moderate baseline — increasing quality or frequency with 1-2 people would significantly reduce allostatic load." if _sbl_pct >= 35 else "Low baseline — your nervous system is running without adequate social resourcing. This increases allostatic load and reduces epistemic quality."}'
+                f'</div></div>', unsafe_allow_html=True)
+            _low_qual = [p for p in _sb_people if p["quality"] < 3]
+            _low_freq = [p for p in _sb_people if p["freq"] in ["monthly","rarely"] and p["quality"] >= 4]
+            if _low_freq:
+                st.markdown(f'<div style="color:#ffcc00;font-size:0.82rem;margin-top:6px;">High-quality but rare: {", ".join(p["name"] for p in _low_freq)} — increasing frequency would most improve your baseline.</div>', unsafe_allow_html=True)
