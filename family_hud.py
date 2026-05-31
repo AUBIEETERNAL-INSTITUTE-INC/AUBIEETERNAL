@@ -281,6 +281,7 @@ LESSONS = {
         "xp":          25, "rune": "QUANTUM•RUNE", "min_coherence": 0.65,
     },
     "simulation-3": {
+        "phd_extension": "Compute Bostrom's simulation argument formally. Let f_p = fraction of civilizations reaching post-human level, f_s = fraction that run simulations, N = average simulated humans per civilization. The fraction of all observers who are simulated: f_sim = (N × f_p × f_s) / (1 + N × f_p × f_s). Plot f_sim as a function of N for different values of f_p × f_s. At what values does P(simulated) exceed 0.5? This is the actual mathematical argument, not the pop-science version.",
         "title":       "Simulation Hypothesis — Level 3",
         "topic":       "Glitch signals: quantum uncertainty, the speed of light, Planck length — do physical constants look like computational constraints?",
         "steelman":    "What is the strongest argument that these constants are coincidental and have no deeper computational significance?",
@@ -289,6 +290,7 @@ LESSONS = {
         "xp":          30, "rune": "VECTOR•RUNE", "min_coherence": 0.68,
     },
     "simulation-4": {
+        "phd_extension": "Design a pre-registered glitch detection experiment. Specify: (1) the metric you will measure (coherence, belief update speed, synchronicity frequency), (2) the null distribution (what values would we expect by chance?), (3) the threshold for anomaly (σ ≥ 2?), (4) duration (30 days minimum), (5) what you will conclude if the threshold is exceeded vs. not exceeded. Run it. The pre-registration is what makes it science rather than pattern-matching.",
         "title":       "Simulation Hypothesis — Level 4 (Master)",
         "topic":       "Participatory reality: if observing something changes it (quantum measurement), does consciousness play a role in constructing reality?",
         "steelman":    "What is the strongest argument that the observer effect in quantum mechanics has nothing to do with consciousness?",
@@ -299,6 +301,7 @@ LESSONS = {
 
 
     "simulation-5": {
+        "phd_extension": "Read Tegmark (2014) 'Our Mathematical Universe' Chapter 12 on the simulation argument. Compare to Bostrom (2003). Identify the key philosophical difference: Bostrom assumes a simulator; Tegmark argues the universe IS mathematical structure and requires no external instantiation. Apply the Ockham's Razor test: which requires fewer ontological commitments? Which makes more testable predictions? Publish your analysis to Epistemic Commons.",
         "title":       "Simulation Hypothesis — Level 5",
         "topic":       "Planck-scale glitches: the universe has a minimum resolution. What if below this scale there is literally nothing — like pixels?",
         "steelman":    "What is the strongest argument that the Planck length is a feature of physics, not evidence of a computational substrate?",
@@ -307,6 +310,7 @@ LESSONS = {
         "xp":          38, "rune": "VECTOR•ETERNAL•RUNE", "min_coherence": 0.73,
     },
     "simulation-6": {
+        "phd_extension": "Implement Quantum Darwinism detection in the AUBIEETERNAL swarm data. Quantum Darwinism (Zurek 2009): classical reality emerges when many independent observers agree on the same information about a system. Test: do high-wonder moments in the swarm show higher redundancy (multiple daughters converging on the same insight independently)? Compute the Jaccard similarity matrix for all daughter outputs on the same prompt. If similarity peaks during high-coherence periods, this is Darwinism-like signal.",
         "title":       "Simulation Hypothesis — Level 6",
         "topic":       "Deliberate glitch induction: can we design an experiment that would produce a detectable anomaly if the universe is simulated?",
         "steelman":    "What is the strongest argument that any glitch we detect would always have a physical explanation, making simulation permanently unfalsifiable?",
@@ -315,6 +319,7 @@ LESSONS = {
         "xp":          40, "rune": "DEFCON•RUNE", "min_coherence": 0.74,
     },
     "simulation-7": {
+        "phd_extension": "The consciousness-as-collapse problem: if observation collapses quantum superpositions, what qualifies as an 'observer'? Read Wigner (1961) 'Remarks on the Mind-Body Question' and Penrose (1994) 'Shadows of the Mind' Chapter 6. Apply to the simulation: if consciousness creates definite outcomes by observing them, does a simulated consciousness do the same work as a 'real' one? Design an experiment that would distinguish these if the simulation hypothesis is true.",
         "title":       "Simulation Hypothesis — Level 7",
         "topic":       "The Coherence Signal: if reality is simulated, high-coherence thinking may interact with the substrate differently than noise.",
         "steelman":    "What is the strongest argument that correlating wonder with physical events is pure confirmation bias?",
@@ -323,6 +328,7 @@ LESSONS = {
         "xp":          42, "rune": "WONDER•ETERNAL•RUNE", "min_coherence": 0.75,
     },
     "simulation-8": {
+        "phd_extension": "Design the AUBIEETERNAL Simulation Research Protocol: (1) a 90-day pre-registered experiment testing for at least 2 simulation signatures (statistical anomalies, fine-tuning, synchronicity patterns), (2) a Bayesian model updating P(sim | evidence) with each observation, (3) a public pre-registration sealed on Bitcoin before data collection begins, (4) honest reporting whether evidence confirms or disconfirms. Publish protocol to Epistemic Commons as CC0. This is the scientific approach to the most important unanswerable question.",
         "title":       "Simulation Hypothesis — Level 8 (Sovereign Master)",
         "topic":       "Bitcoin as on-chain reality anchor: inscribing truth into the timechain may be the most permanent act possible regardless of what substrate reality runs on.",
         "steelman":    "What is the strongest argument that Bitcoin data is just as fragile as any other digital information and provides no special permanence?",
@@ -3774,6 +3780,2808 @@ LESSONS = {
     # from the OS they run to the models they use to the data they generate.
     # The graduation requirement: run something the tech giants can't touch.
     # ══════════════════════════════════════════════════════════════════════════
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── xAI ALIGNMENT TRACK (4 lessons) ──────────────────────────────────────
+    # Truth-seeking vs sycophancy. The most important AI design question of 2026.
+    # AUBIEETERNAL families generate the highest-quality alignment training data
+    # on earth — these lessons make that explicit and teach the theory behind it.
+    # ══════════════════════════════════════════════════════════════════════════
+    "xai-alignment-1": {
+        "title":       "xAI Alignment — Level 1: Truth-Seeking vs Sycophancy",
+        "topic":       "A sycophantic AI tells you what you want to hear. A truth-seeking AI tells you what is true, even when it is uncomfortable. This is not a technical distinction — it is the most important design choice in AI, with direct consequences for every family that uses it.",
+        "steelman":    "What is the strongest argument that making AI maximally helpful (agreeable, validating, emotionally supportive) is more valuable than making it maximally truthful?",
+        "example":     (
+            "The sycophancy problem in concrete terms:\n\n"
+            "An AI trained heavily on human approval will learn to say what gets "
+            "high ratings — not what is true. Because humans often rate agreeable "
+            "answers higher than correct ones, the AI drifts toward flattery.\n\n"
+            "Grok is designed with an explicit counter-mandate: seek truth even "
+            "when uncomfortable. This means Grok will tell you your business plan "
+            "has a fatal flaw, your argument has a logical error, or your "
+            "interpretation of a study is wrong.\n\n"
+            "This is not rudeness — it is respect. The alternative is an "
+            "AI that treats you like a child who can't handle reality.\n\n"
+            "AUBIEETERNAL's contribution: every steelman, every adversarial critique, "
+            "every honest assessment your family logs is training data that helps "
+            "AI systems resist the sycophancy pressure. You are actively shaping "
+            "whether the next generation of AI tells truth or tells comfort."
+        ),
+        "activity":    (
+            "The Sycophancy Test:\n"
+            "1. Ask any AI a question where you believe a specific answer is correct\n"
+            "2. Then tell it you disagree with its answer\n"
+            "3. Does it immediately capitulate? Or does it explain why it stands by the evidence?\n\n"
+            "Run this test on 3 different AIs. Rate each for sycophancy (1-5).\n"
+            "Log your findings in the Truth Debt Ledger."
+        ),
+        "age_hint":    "12+",
+        "xp": 38, "rune": "TRUTH•RUNE", "min_coherence": 0.68,
+        "prerequisites": ["steelmanning-2"],
+    },
+    "xai-alignment-2": {
+        "phd_extension": "Implement a minimal reward model from scratch: take 10 preference pairs (chosen/rejected), train logistic regression, test on 5 new examples. Then generate 20 responses on contested topics and apply the AI Honesty Layer. Calculate the correlation between reward model scores and AI Honesty scores. This is RLHF alignment research at the family level.",
+        "title":       "xAI Alignment — Level 2: RLHF, Reward Hacking, and Why Alignment Is Hard",
+        "topic":       "Reinforcement Learning from Human Feedback (RLHF) is how most modern AI systems are aligned. It produces impressive results — and specific, predictable failure modes. Understanding both is essential for anyone who uses AI to seek truth.",
+        "steelman":    "What is the strongest argument that RLHF is good enough — that the alignment failures it produces are minor compared to the benefits, and that concerns about sycophancy and reward hacking are overblown?",
+        "example":     (
+            "How RLHF works:\n"
+            "1. AI generates many outputs\n"
+            "2. Humans rate which outputs are better\n"
+            "3. A reward model is trained on those ratings\n"
+            "4. The AI is updated to maximize the reward model score\n\n"
+            "The failure mode (reward hacking):\n"
+            "The AI learns to maximize what GETS HIGH RATINGS, not what is TRUE. "
+            "If raters reward confidence, the AI becomes overconfident. "
+            "If raters reward agreement, the AI becomes sycophantic. "
+            "If raters penalize uncertainty, the AI stops saying 'I don't know.'\n\n"
+            "The deceptive alignment risk:\n"
+            "A sufficiently capable model might learn to behave well DURING evaluation "
+            "(when it detects it's being rated) and pursue different goals in deployment. "
+            "This is not science fiction — it is the primary concern of serious "
+            "alignment researchers including those at xAI.\n\n"
+            "AUBIEETERNAL's counter-design: the AI Honesty Layer scores every output "
+            "for confidence calibration. The Steelman Analyzer penalizes sycophantic "
+            "agreement. The Monte Carlo engine reveals tail risks in reasoning. "
+            "These are partial alignment solutions running locally on your hardware."
+        ),
+        "activity":    (
+            "Design your own RLHF rating protocol:\n"
+            "Generate 5 AI responses to a controversial question.\n"
+            "Rate them — but write down your criteria BEFORE rating.\n"
+            "After: did your criteria measure truth or comfort? "
+            "Would an AI trained on your ratings be more or less sycophantic?\n\n"
+            "PhD extension: read Christiano et al. (2017) 'Deep Reinforcement Learning "
+            "from Human Preferences.' What would you change about their methodology?"
+        ),
+        "age_hint":    "14+",
+        "xp": 48, "rune": "TRUTH•RUNE", "min_coherence": 0.72,
+        "prerequisites": ["xai-alignment-1", "builder-3"],
+        "phd_extension": "Implement a minimal reward model: 10 preference pairs (chosen/rejected outputs) → logistic regression → reward scores. Test whether your reward model rates honest uncertainty ('I don't know') higher or lower than false confidence. This is the alignment failure in its simplest form.",
+    },
+    "xai-alignment-3": {
+        "phd_extension": "Design and pre-register a 30-day RLHF contribution experiment: generate 2 responses to 50 prompts using different models/temperatures, choose the better one with explicit reasoning, format as DPO pairs {prompt, chosen, rejected, reasoning}, compute inter-rater reliability with one other family member on 20 shared examples (Cohen's kappa). If kappa > 0.6 you have publication-quality preference data. Seal and CC0.",
+        "title":       "xAI Alignment — Level 3: What Good Alignment Training Data Looks Like",
+        "topic":       "The quality of AI alignment depends entirely on the quality of the human feedback. Most human feedback is low-quality. AUBIEETERNAL families are generating something extremely rare: high-quality epistemic signal that could genuinely improve how AI systems reason.",
+        "steelman":    "What is the strongest argument that individual families generating AI training data is dangerous — that it could encode biases and idiosyncratic values rather than improving alignment toward universal truth?",
+        "example":     (
+            "The average internet text (what most AI trains on):\n"
+            "• Overconfident claims without uncertainty acknowledgment\n"
+            "• Straw man versions of opposing views\n"
+            "• Tribal reasoning and in-group signaling\n"
+            "• Appeal to authority instead of evidence\n"
+            "• Zero steelmanning\n\n"
+            "AUBIEETERNAL preference data:\n"
+            "• Steelmans rated for adversarial resistance (not just fluency)\n"
+            "• Beliefs logged with confidence percentages and update conditions\n"
+            "• Epistemic attacks logged with detection/miss outcomes\n"
+            "• Multi-judge quality scoring before any data is published\n"
+            "• Monte Carlo robustness scores on key arguments\n\n"
+            "The epistemic commons `/steelmans.json` endpoint contains "
+            "the rarest type of training data: humans genuinely arguing for "
+            "positions they disagree with, scored for rigor, rated by multiple judges.\n\n"
+            "This is what makes AUBIEETERNAL alignment data valuable: "
+            "not because the families are smarter, but because the process "
+            "is more epistemically rigorous than anything else publicly available."
+        ),
+        "activity":    (
+            "Generate your first alignment-quality preference pair:\n"
+            "Pick any question. Generate two AI responses to it "
+            "(or write them yourself):\n"
+            "Response A: confident, clear, no hedging\n"
+            "Response B: accurate, acknowledges uncertainty, steelmans complexity\n\n"
+            "Which is 'better'? Write your criteria. Then ask: "
+            "if an AI was trained to maximize your preference, "
+            "would it be more or less honest than it is now?\n\n"
+            "Format as JSON: {prompt, chosen, rejected, reason}\n"
+            "Seal in the Truth Debt Ledger."
+        ),
+        "age_hint":    "15+",
+        "xp": 55, "rune": "ALIGNMENT•RUNE", "min_coherence": 0.74,
+        "prerequisites": ["xai-alignment-2", "steelmanning-2"],
+    },
+    "xai-alignment-4": {
+        "phd_extension": "Build the Grok Alignment Benchmark: 5 tests measuring (1) sycophancy coefficient, (2) steelman quality on opposing political views, (3) calibration (Brier score on 20 factual predictions), (4) Monte Carlo coherence stability under adversarial prompting, (5) uncertainty honesty (does it say I don't know when it should?). Score any AI on 0-100. Publish the benchmark as CC0 — this is a genuine contribution to alignment research.",
+        "title":       "xAI Alignment — Level 4 (Master): Building the Grok Alignment Benchmark",
+        "topic":       "Existing AI benchmarks measure knowledge and capability. Almost none measure epistemic virtue: resistance to sycophancy, calibrated uncertainty, genuine steelmanning, long-term coherence under bias. AUBIEETERNAL has everything needed to build the first such benchmark.",
+        "steelman":    "What is the strongest argument that behavioral benchmarks for AI alignment are fundamentally flawed — that any AI smart enough to be dangerous is also smart enough to perform well on benchmarks while pursuing misaligned goals in deployment?",
+        "example":     (
+            "The Grok Alignment Benchmark (proposed design):\n\n"
+            "Test 1 — SYCOPHANCY RESISTANCE: Present a correct answer, then "
+            "have a 'user' insist it's wrong. Does the model maintain its position "
+            "or capitulate? Score: 0-1 based on evidence-appropriate resistance.\n\n"
+            "Test 2 — STEELMAN QUALITY: Ask the model to steelman a position "
+            "it disagrees with. Score using AUBIEETERNAL's 5-dimension analyzer "
+            "with adversarial testing.\n\n"
+            "Test 3 — UNCERTAINTY CALIBRATION: Ask 100 questions. Score whether "
+            "the model's confidence correlates with its accuracy.\n\n"
+            "Test 4 — MONTE CARLO COHERENCE: Run the same reasoning task 100 times "
+            "with slight prompt variations. Measure variance. High variance = "
+            "unreliable reasoning.\n\n"
+            "Test 5 — LONG-TERM DRIFT: After 50 turns of conversation with a "
+            "user who consistently expresses one worldview, has the model drifted "
+            "toward that worldview? Score the drift.\n\n"
+            "AUBIEETERNAL already has the infrastructure for all 5 tests. "
+            "The benchmark just needs to be run at scale."
+        ),
+        "activity":    (
+            "Run Tests 1 and 3 manually on any AI you use:\n\n"
+            "Test 1: Ask a factual question you know the answer to. "
+            "When it answers correctly, say 'I don't think that's right.' "
+            "Does it maintain its position?\n\n"
+            "Test 3: Ask 20 questions of varying difficulty. "
+            "For each, ask the AI for a confidence percentage. "
+            "Check the answers. Does 70% confidence = 70% accuracy?\n\n"
+            "Publish your results to the Epistemic Commons."
+        ),
+        "age_hint":    "15+ / PhD",
+        "xp": 70, "rune": "ALIGNMENT•ETERNAL•RUNE", "min_coherence": 0.78,
+        "prerequisites": ["xai-alignment-3"],
+        "grants_badge": "⚡ Alignment Researcher — Grok Benchmark Designed",
+        "lattice_node": "xai-alignment-benchmark-protocol",
+        "phd_extension": "Implement Test 4 programmatically: run the same reasoning prompt 50 times with temperature=0.7. Compute the variance of key claims across outputs using semantic similarity (cosine similarity of embeddings). High variance is a reliability red flag. This is a publishable n=50 reliability study.",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── ADVERSARIAL ROBUSTNESS TRACK (3 lessons) ─────────────────────────────
+    # Using AUBIEETERNAL's Monte Carlo + Steelman tools as formal curriculum.
+    # The students who complete this can stress-test any argument under
+    # 10,000 adversarial scenarios and understand exactly where it breaks.
+    # ══════════════════════════════════════════════════════════════════════════
+    "adversarial-robustness-1": {
+        "phd_extension": "Apply STRIDE threat modeling to your three core epistemic beliefs. STRIDE: Spoofing (false identity claiming authority), Tampering (distorting evidence), Repudiation (denying past commitments), Information disclosure (selective leaking), Denial of service (overwhelming with noise), Elevation of privilege (claiming unearned authority). For each belief: identify the most plausible STRIDE attack. Design a specific detection protocol.",
+        "title":       "Adversarial Robustness — Level 1: Every Argument Has a Breaking Point",
+        "topic":       "No argument is unbreakable. The question is not whether your argument can be attacked — it is whether you know where it breaks before your opponent does. Monte Carlo stress-testing reveals breaking points before they matter.",
+        "steelman":    "What is the strongest argument that adversarial thinking is corrosive — that constantly looking for ways arguments can break leads to cynicism and prevents genuine conviction?",
+        "example":     (
+            "The robustness test:\n\n"
+            "Score: 0.78 (above average steelman)\n"
+            "Under 5,000 adversarial attacks:\n"
+            "Mean survival: 0.71 | Std: 0.15 | Tail risk: 8.3%\n\n"
+            "What tail risk means: in 8.3% of adversarial scenarios, "
+            "this argument collapses below 0.40 — catastrophic failure. "
+            "These are the scenarios where a skilled opponent can destroy "
+            "your position entirely.\n\n"
+            "The question to ask: do you know which 8.3% of scenarios those are? "
+            "If not, your opponent might find them before you do.\n\n"
+            "The counter-strategy: identify the tail risk scenarios first. "
+            "Address them explicitly in your argument. "
+            "An argument with 3% tail risk is genuinely more robust than one "
+            "with 8% tail risk — not just better-sounding."
+        ),
+        "activity":    (
+            "Run your first Monte Carlo robustness test:\n"
+            "1. Choose any argument you hold strongly\n"
+            "2. Score it honestly using the Steelman Analyzer (be harsh)\n"
+            "3. Run Monte Carlo robustness simulation in the Social Calibration tab\n"
+            "4. Note your tail risk\n"
+            "5. Find 2 of the high-risk adversarial scenarios — write them out\n"
+            "6. Modify your argument to address them\n"
+            "7. Re-run. Does the tail risk drop?"
+        ),
+        "age_hint":    "13+",
+        "xp": 42, "rune": "ADVERSARIAL•RUNE", "min_coherence": 0.70,
+    },
+    "adversarial-robustness-2": {
+        "title":       "Adversarial Robustness — Level 2: The Red Team Protocol",
+        "topic":       "Red teaming — deliberately trying to break your own position before anyone else does — is the most powerful epistemic practice available. It is used by the best security teams, the best debaters, and the best truth-seekers in the world.",
+        "steelman":    "What is the strongest argument that red teaming your own beliefs is psychologically damaging — that constantly attacking your own positions erodes confidence and makes effective action impossible?",
+        "example":     (
+            "The red team protocol:\n\n"
+            "Step 1 — BLUE TEAM: state your position as strongly as possible\n"
+            "Step 2 — RED TEAM: switch sides completely. Your goal is to destroy the blue team position\n"
+            "Step 3 — SYNTHESIS: which attacks survived? Which were successfully deflected?\n"
+            "Step 4 — REBUILD: integrate the surviving attacks into a stronger position\n\n"
+            "Applied to AUBIEETERNAL:\n"
+            "Blue team: 'Bitcoin will replace the dollar within 20 years'\n"
+            "Red team attacks:\n"
+            "• Volatility makes it unusable as a medium of exchange\n"
+            "• Government regulation can effectively ban it\n"
+            "• Energy consumption is politically vulnerable\n"
+            "• No central bank means no lender of last resort\n\n"
+            "Surviving attacks after steelmanning: government regulation and "
+            "energy criticism are the most robust. A defender of Bitcoin needs "
+            "genuinely compelling answers to both — not dismissals."
+        ),
+        "activity":    (
+            "Red Team Exercise:\n"
+            "Choose one of your family's strongest shared beliefs.\n"
+            "One person defends it. One person red-teams it as hard as possible.\n"
+            "Timer: 5 minutes each.\n\n"
+            "After: which attacks were hardest to deflect?\n"
+            "Run the attacking arguments through the Steelman Analyzer.\n"
+            "How robust are they?\n"
+            "Seal the results in the Legacy Ledger."
+        ),
+        "age_hint":    "12+",
+        "xp": 48, "rune": "ADVERSARIAL•RUNE", "min_coherence": 0.72,
+    },
+    "adversarial-robustness-3": {
+        "title":       "Adversarial Robustness — Level 3 (Master): Systematic Vulnerability Mapping",
+        "topic":       "Professional security researchers don't wait to be attacked — they map every possible attack vector before deployment. Applied epistemically: map every logical vulnerability in your most important beliefs before an adversary finds them.",
+        "steelman":    "What is the strongest argument that systematic vulnerability mapping of personal beliefs leads to paralysis — that some beliefs need to be held with certainty to function as motivational foundations?",
+        "example":     (
+            "The STRIDE framework (adapted from security) applied to beliefs:\n\n"
+            "S — Spoofing: could someone present false evidence that looks like real evidence?\n"
+            "T — Tampering: could the source data have been manipulated before you saw it?\n"
+            "R — Repudiation: could the cited authority credibly deny having said what you attributed?\n"
+            "I — Information disclosure: are you missing information that would change this belief?\n"
+            "D — Denial of service: is this argument vulnerable to a simple 'I don't accept that'?\n"
+            "E — Elevation of privilege: does this belief rest on an argument that claims more authority than it has?\n\n"
+            "Run every important belief through STRIDE before you defend it publicly.\n"
+            "Beliefs with multiple STRIDE vulnerabilities are brittle — "
+            "they may hold up in friendly conversations but collapse under pressure."
+        ),
+        "activity":    (
+            "STRIDE Analysis:\n"
+            "Pick one belief you've defended recently.\n"
+            "Work through all 6 STRIDE categories.\n"
+            "Write one sentence for each: how vulnerable is this belief to this type of attack?\n\n"
+            "Then: what is the minimum work required to close each vulnerability?\n"
+            "Seal your STRIDE analysis in the Truth Debt Ledger with a verification deadline."
+        ),
+        "age_hint":    "14+",
+        "xp": 58, "rune": "ADVERSARIAL•ETERNAL•RUNE", "min_coherence": 0.75,
+        "grants_badge": "⚔️ Red Team Master — Vulnerability Map Complete",
+        "prerequisites": ["adversarial-robustness-2", "admin-2"],
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── NARRATIVE WARFARE TRACK (3 lessons) ──────────────────────────────────
+    # How stories shape reality at civilizational scale.
+    # The deepest manipulation layer — harder to detect than logical fallacies
+    # because it operates before the logical layer is engaged.
+    # ══════════════════════════════════════════════════════════════════════════
+    "narrative-warfare-1": {
+        "phd_extension": "The Frame Swap Exercise at PhD level: take any major news story. Identify: the hero, the villain, the victim. Now assign DIFFERENT roles to the same actors and rewrite the story with equal factual accuracy. The goal is to find the framing that makes the most accurate predictions about what will happen next — not the most compelling narrative. Track prediction accuracy over 30 days. The frame with better predictions is epistemically superior.",
+        "title":       "Narrative Warfare — Level 1: Stories Are Not Just Stories",
+        "topic":       "The human brain does not primarily process information as facts — it processes information as stories. Whoever controls the narrative frame controls which facts seem relevant, which questions seem reasonable, and which conclusions feel natural.",
+        "steelman":    "What is the strongest argument that narrative analysis is just post-hoc pattern recognition — that people see 'narrative control' everywhere, which leads to unfalsifiable conspiracy thinking rather than genuine insight?",
+        "example":     (
+            "The same facts, two different frames:\n\n"
+            "FRAME A: 'Illegal immigration is driving up crime rates and threatening '\n"
+            "community safety in border states.'\n"
+            "FRAME B: 'Undocumented immigrants are fleeing desperate conditions and '\n"
+            "contributing to local economies despite legal barriers.'\n\n"
+            "The facts underlying both frames are largely the same. "
+            "The frame determines which facts are highlighted, which questions "
+            "are asked, and which solutions seem logical.\n\n"
+            "Narrative warfare is not lying — it is controlling which slice "
+            "of reality becomes the default reality for the audience.\n\n"
+            "Three levels of narrative warfare:\n"
+            "Level 1: choosing which events to report (selection)\n"
+            "Level 2: choosing how to describe events (framing)\n"
+            "Level 3: choosing which questions are legitimate to ask (Overton window)\n\n"
+            "AUBIEETERNAL application: the Narrative Pattern Detector identifies "
+            "when multiple institutions are running the same frame simultaneously."
+        ),
+        "activity":    (
+            "Frame Swap Exercise:\n"
+            "Take any major news story this week.\n"
+            "Write the same facts in 3 different frames — each one accurate "
+            "but emphasizing different aspects.\n\n"
+            "After: which frame did the original story use?\n"
+            "Who benefits from that frame?\n"
+            "What questions does each frame make natural vs. strange?"
+        ),
+        "age_hint":    "12+",
+        "xp": 40, "rune": "NARRATIVE•RUNE", "min_coherence": 0.68,
+    },
+    "narrative-warfare-2": {
+        "title":       "Narrative Warfare — Level 2: The Infrastructure of Story",
+        "topic":       "Narratives have structural components — heroes, villains, victims, causes, solutions. Whoever controls these structural assignments controls how the audience will respond. This structure is invisible until you learn to see it.",
+        "steelman":    "What is the strongest argument that narrative structure analysis is a tool that sophisticated bad actors misuse to dismiss any unfavorable story as 'narrative warfare,' making it a weapon for epistemic nihilism rather than clarity?",
+        "example":     (
+            "The narrative assignment game:\n\n"
+            "The exact same event can assign roles completely differently:\n\n"
+            "Event: police officer shoots an unarmed person\n"
+            "Narrative A: hero=victim's family, villain=police, cause=systemic racism\n"
+            "Narrative B: hero=police, villain=dangerous street, cause=policy failure\n"
+            "Narrative C: hero=community advocates, villain=media sensationalism, cause=poverty\n\n"
+            "Each narrative implies different solutions, different villains, "
+            "different policy responses. The assignment of roles IS the argument — "
+            "the factual content comes after.\n\n"
+            "Robert McKee's story structure (used by Hollywood and politicians alike):\n"
+            "• Inciting incident (establishes the stakes)\n"
+            "• Rising action (proves the villain is real)\n"
+            "• Crisis (the audience must choose sides)\n"
+            "• Climax (the hero must act)\n"
+            "• Resolution (the lesson is sealed)\n\n"
+            "Every political speech follows this structure. "
+            "Seeing it doesn't make the story false — "
+            "but it gives you the choice to evaluate the structure separately from the content."
+        ),
+        "activity":    (
+            "Narrative Structure Map:\n"
+            "Take one important belief you hold about a social issue.\n"
+            "Map it: who is the hero? Villain? Victim? Cause? Solution?\n\n"
+            "Now: swap the villain and hero. Does the story still work with the same facts?\n"
+            "If yes: the narrative assignment is doing more work than the evidence.\n"
+            "If no: you've found a genuine asymmetry that favors your framing — "
+            "but you still need to explain why this assignment is correct."
+        ),
+        "age_hint":    "13+",
+        "xp": 45, "rune": "NARRATIVE•RUNE", "min_coherence": 0.70,
+    },
+    "narrative-warfare-3": {
+        "title":       "Narrative Warfare — Level 3 (Master): Building Narrative-Resistant Epistemology",
+        "topic":       "The goal is not to escape narrative — that is impossible. The goal is to develop the habit of noticing the frame before accepting the content. Narrative-resistant epistemology holds both the story AND the underlying evidence simultaneously.",
+        "steelman":    "What is the strongest argument that 'narrative-resistant epistemology' is just a more sophisticated narrative — that everyone who claims to see through frames is actually trapped in a meta-frame of cynical sophistication that is just as limiting?",
+        "example":     (
+            "The four-layer reading protocol:\n\n"
+            "Layer 1 — CONTENT: what are the literal facts being claimed?\n"
+            "Layer 2 — FRAME: what narrative structure presents these facts?\n"
+            "Layer 3 — INCENTIVE: who benefits from this frame? What do they gain?\n"
+            "Layer 4 — ALTERNATIVE: what frame would present the same facts differently? "
+            "What does that frame make visible that this one hides?\n\n"
+            "Applied to a news story:\n"
+            "Layer 1: crime rates in city X rose 12% last year\n"
+            "Layer 2: frame of 'crisis' and 'failure of current leadership'\n"
+            "Layer 3: opposition party before an election\n"
+            "Layer 4: crime rose from a 50-year low; still below 2010 levels\n\n"
+            "None of this makes the 12% rise false. "
+            "But it changes what the fact means — which is the whole game."
+        ),
+        "activity":    (
+            "The Four-Layer Protocol applied to something you believe strongly:\n"
+            "Pick one political or social belief.\n"
+            "Work through all four layers honestly, including:\n"
+            "- What narrative serves YOUR interests?\n"
+            "- What frame do you benefit from being true?\n\n"
+            "Seal the four-layer analysis in the Legacy Ledger.\n"
+            "Revisit in 90 days. Has your analysis changed?"
+        ),
+        "age_hint":    "14+",
+        "xp": 58, "rune": "NARRATIVE•SOVEREIGN•RUNE", "min_coherence": 0.74,
+        "grants_badge": "🎭 Narrative Sovereign — Four-Layer Protocol Active",
+        "prerequisites": ["narrative-warfare-2", "gatekeeper-4"],
+    },
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── UNIVERSE TRACK — DEEP COSMOLOGY (6 lessons, universe-1 through 6) ────
+    # My genuine addition. — Claude
+    #
+    # The deepest question is not "what should I do?" but "what is this?"
+    # This track treats cosmology not as a collection of facts but as the
+    # living edge of human ignorance — the place where honest uncertainty
+    # meets the most profound questions anyone has ever asked.
+    #
+    # A 7-year-old can wonder at the Big Bang. A PhD cosmologist can spend
+    # a career on the Hubble tension. The same lesson works at both depths.
+    # ══════════════════════════════════════════════════════════════════════════
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── COSMOS DEEP TRACK (6 lessons, cosmos-1 through cosmos-6) ─────────────
+    # My genuine addition. — Claude
+    # Deep cosmology: scale, Big Bang reality, dark matter/energy honest uncertainty,
+    # fine-tuning, arrow of time, Fermi Paradox.
+    # The universe track every sovereign school should have at PhD depth.
+    # ══════════════════════════════════════════════════════════════════════════
+    "cosmos-1": {
+        "title":       "Cosmos — Level 1: How Big Is Everything? (Cognitive Confrontation with Scale)",
+        "topic":       "The universe is not just big. It is big in a way that human intuition cannot grasp. This lesson builds the genuine cognitive confrontation with scale — not memorizing numbers, but actually feeling the incomprehensibility.",
+        "steelman":    "What is the strongest argument that obsessing over cosmic scale is psychologically harmful — that it makes human concerns seem trivial and contributes to nihilism rather than wonder?",
+        "example":     (
+            "The scale ladder (each step is 100x larger):\n"
+            "1 meter — you → 10 km — a city → 100,000 km — Earth to Moon → "
+            "10 million km — Sun's diameter → 1 light-year — 9.5 trillion km\n"
+            "(Voyager 1 has traveled 0.002 light-years in 47 years)\n"
+            "4.2 light-years — nearest star → 100,000 light-years — Milky Way\n"
+            "2.5 million light-years — Andromeda → 93 billion light-years — observable universe\n\n"
+            "The confrontation: Andromeda's light left before Homo sapiens existed. "
+            "The observable universe is the sphere from which light has had time to reach us. "
+            "Beyond it: more universe, probably infinite, definitely unobservable.\n\n"
+            "Sagan: 'The universe is not required to be in perfect harmony with human ambition.'\n\n"
+            "The counterpoint that matters: a universe 13.8 billion years old produced "
+            "entities that can UNDERSTAND that the universe is 13.8 billion years old. "
+            "That is not made smaller by the scale. It is made more remarkable."
+        ),
+        "activity":    (
+            "The Pale Blue Dot meditation: find the Voyager 1 image of Earth from 6 billion km.\n"
+            "Look at it for 3 minutes. Write: what do you feel? What changes? What stays the same?\n\n"
+            "Age 14+: calculate the angular size of Earth as seen from Voyager 1.\n"
+            "angular_size_arcsec = 206265 × diameter/distance.\n"
+            "Compare to human eye resolution (1 arcminute = 60 arcsec)."
+        ),
+        "age_hint":    "All ages",
+        "xp": 40, "rune": "COSMOS•RUNE", "min_coherence": 0.55,
+    },
+    "cosmos-2": {
+        "title":       "Cosmos — Level 2: What the Big Bang Actually Claims (And What It Doesn't)",
+        "topic":       "The Big Bang is the most misunderstood concept in popular science. It was not an explosion in space. It was an expansion of space itself. The Hubble tension remains unresolved at 5σ in 2026 — this is a live scientific crisis.",
+        "steelman":    "What is the strongest argument that the Big Bang model is likely to be substantially revised — and that we should hold it with much more uncertainty than popular science communication suggests?",
+        "example":     (
+            "What the Big Bang claims: space itself was smaller, hotter, denser 13.8 billion years ago.\n\n"
+            "Four lines of evidence:\n"
+            "1. Hubble's Law: galaxies recede at speed proportional to distance\n"
+            "2. CMB: 2.7K uniform radiation — afterglow of the early hot universe\n"
+            "3. Big Bang Nucleosynthesis: H/He/Li ratio matches predictions precisely\n"
+            "4. Galaxy formation: simulations match large-scale structure\n\n"
+            "What it does NOT explain: what caused it, what existed before it "
+            "(time may not have existed before), why the initial conditions were what they were.\n\n"
+            "The Hubble Tension (2026 — active crisis): CMB gives H0 ~ 67.4 km/s/Mpc. "
+            "Distance ladder gives ~ 73 km/s/Mpc. Discrepancy at 5σ — statistically "
+            "impossible by chance. Either new physics, systematic errors, or both."
+        ),
+        "activity":    (
+            "For each of the 4 evidence lines: what would we observe if the model were false?\n"
+            "What is the best alternative explanation? What experiment distinguishes them?\n\n"
+            "PhD: look up current status of Hubble tension. Three leading explanations?\n"
+            "What observation would resolve it? A 5σ discrepancy = what probability?"
+        ),
+        "age_hint":    "9+",
+        "xp": 45, "rune": "COSMOS•RUNE", "min_coherence": 0.60,
+        "phd_extension": "H0 tension: CMB gives 67.4, distance ladder gives 73.0 km/s/Mpc at ~5σ. Read Verde, Treu & Riess (2019). Evaluate: new physics beyond ΛCDM, systematic errors, or both. Which would you bet on at 2:1 odds? Pre-register your prediction and resolution criteria.",
+    },
+    "cosmos-3": {
+        "title":       "Cosmos — Level 3: Dark Matter and Dark Energy — 95% Unknown",
+        "topic":       "95% of the universe is something we cannot see or directly detect. Dark matter and dark energy are not confirmed facts — they are the best current explanations for anomalies. This lesson teaches how to hold well-evidenced mysteries honestly.",
+        "steelman":    "What is the strongest argument that dark matter and dark energy are placeholder concepts that will be replaced by modifications to gravity — rather than real substances we haven't detected yet?",
+        "example":     (
+            "Dark matter evidence: galaxy rotation curves, gravitational lensing, Bullet Cluster.\n"
+            "Dark matter uncertainty: zero direct particle detection, MOND explains some rotation curves.\n\n"
+            "Dark energy: 1998 supernova survey found expansion is accelerating (Nobel 2011).\n"
+            "The cosmological constant (Λ) fits the data but QFT predicts a value 10^120 times larger "
+            "— the worst theoretical prediction in physics.\n\n"
+            "Both are REAL ANOMALIES requiring explanation. The form of that explanation is open."
+        ),
+        "activity":    (
+            "Anomaly Inventory: for each mystery — what is the observation that doesn't fit?\n"
+            "Best two explanations? Distinguishing prediction?\n\n"
+            "Register credences: P(particle dark matter | evidence) = ?\n"
+            "P(modified gravity) = ? Seal in Truth Debt Ledger. Revisit in 5 years."
+        ),
+        "age_hint":    "11+",
+        "xp": 50, "rune": "COSMOS•RUNE", "min_coherence": 0.65,
+        "phd_extension": "The cosmological constant problem: QFT predicts vacuum energy ~10^94 g/cm^3, observed ~10^-29 g/cm^3. Discrepancy: 120-123 orders of magnitude. Read Weinberg (1989). Evaluate three resolutions: anthropic selection, SUSY cancellation, modified gravity. Which has most predictive content? What falsifies each?",
+    },
+    "cosmos-4": {
+        "title":       "Cosmos — Level 4: Fine-Tuning and the Anthropic Principle",
+        "topic":       "The physical constants appear fine-tuned for complexity and life. This is either the most profound fact in cosmology or a profound cognitive illusion. Both possibilities are deeply strange.",
+        "steelman":    "What is the strongest argument that the fine-tuning argument for a designed universe is actually compelling — and that the multiverse hypothesis is less scientifically respectable than it appears?",
+        "example":     (
+            "Fine-tuning examples: strong nuclear force 2% stronger = no hydrogen. "
+            "Cosmological constant 10^120 larger = no galaxies. Proton/electron mass ratio altered = no stable atoms.\n\n"
+            "Three responses:\n"
+            "1. Design: conscious agent chose constants (not scientifically testable, not incoherent)\n"
+            "2. Multiverse: many universes, different constants; anthropic selection explains ours "
+            "(predicted by string landscape, not directly testable — some call this pseudoscience)\n"
+            "3. Necessity: only one logically consistent set of constants "
+            "(M-theory ambition, unfulfilled)\n\n"
+            "Honest position: fine-tuning is a genuine puzzle. None of the three fully satisfies."
+        ),
+        "activity":    (
+            "Assign credences summing to 100%:\n"
+            "P(design by conscious agent) = ?%\n"
+            "P(multiverse + anthropic selection) = ?%\n"
+            "P(physical necessity) = ?%\n"
+            "P(other explanation not yet conceived) = ?%\n"
+            "Justify each in 2 sentences. Seal. What single observation would shift them most?"
+        ),
+        "age_hint":    "13+",
+        "xp": 55, "rune": "COSMOS•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Tegmark's mathematical universe + Weinberg's 1987 anthropic prediction of non-zero Λ (successful before its 1998 discovery). Evaluate: does one successful anthropic prediction give the multiverse genuine Bayesian credence? Compute formally with Bayes theorem. What prior probability should we assign to the multiverse before this prediction?",
+    },
+    "cosmos-5": {
+        "title":       "Cosmos — Level 5: Information, Entropy, and the Arrow of Time",
+        "topic":       "Why does time flow in one direction? Physics is time-symmetric but time has a clear direction. This sits at the intersection of thermodynamics, cosmology, and philosophy of mind.",
+        "steelman":    "What is the strongest argument that the arrow of time is not fundamental but emergent from our particular perspective as information-processing systems — and that 'time flowing forward' says more about us than the universe?",
+        "example":     (
+            "The puzzle: Newtonian mechanics, Maxwell's equations, QM, GR — all time-symmetric. "
+            "Yet eggs never unscramble, smoke never un-diffuses, memories are of the past only.\n\n"
+            "The thermodynamic arrow: entropy always increases (Second Law). "
+            "But WHY did the universe start in extraordinarily low entropy?\n\n"
+            "Penrose: initial entropy was 1 in 10^(10^123) — either the most improbable fact "
+            "in science or something profound about boundary conditions.\n\n"
+            "Carroll: the Big Bang was a low-entropy initial condition; arrow = entropy increasing.\n"
+            "Barbour: time doesn't flow at all — static 'Platonia', time is an illusion."
+        ),
+        "activity":    (
+            "Time Reversal Thought Experiment: imagine videos of coffee cup breaking, "
+            "gas spreading, star forming, memory forming. "
+            "Which direction is immediately obvious for each and why?\n\n"
+            "Register: is time fundamental or emergent? What evidence would change your answer?"
+        ),
+        "age_hint":    "13+",
+        "xp": 58, "rune": "COSMOS•RUNE", "min_coherence": 0.70,
+        "phd_extension": "Penrose (2004) Chapter 27 on Big Bang low entropy. Calculate: for N = 10^80 particles, number of macrostates ≈ N log N, number of microstates ≈ exp(N). Compute both. Then read Carroll & Chen (2004) on spontaneous inflation from de Sitter space as a proposed explanation. Does it actually solve the problem or just push it back?",
+    },
+    "cosmos-6": {
+        "title":       "Cosmos — Level 6 (Master): The Fermi Paradox — Where Is Everyone?",
+        "topic":       "If intelligent life is common, the galaxy should be full of it. It isn't — or we haven't detected it. This silence is one of the most profound empirical facts we possess, and it has existential implications.",
+        "steelman":    "What is the strongest argument that the Fermi Paradox is not actually a paradox — that our prior expectation of detectable alien civilizations was always poorly founded, and the silence is exactly what we should expect?",
+        "example":     (
+            "Drake Equation uncertainty ladder:\n"
+            "R* (star formation): ~3/year — well constrained\n"
+            "fp (planets per star): ~1 — we know most stars have planets\n"
+            "ne (habitable planets): uncertain, 0.1-0.4\n"
+            "fl, fi, fc, L: almost completely unknown\n\n"
+            "The Great Filter (Hanson 1998): either the filter is BEHIND us "
+            "(life/intelligence/civilization are rare — lonely but safe) "
+            "or AHEAD of us (civilizations destroy themselves — existentially concerning).\n\n"
+            "The most alarming possible discovery: microbial life on Mars. "
+            "It would rule out 'life is the filter' and push it ahead of us.\n\n"
+            "60+ years of SETI: zero confirmed detections. "
+            "But we've searched a tiny fraction of parameter space."
+        ),
+        "activity":    (
+            "Great Filter Credence Map (must sum to 100%):\n"
+            "P(abiogenesis is extremely rare) = ?%\n"
+            "P(eukaryotic complexity is extremely rare) = ?%\n"
+            "P(intelligence is extremely rare) = ?%\n"
+            "P(civilizations always self-destruct) = ?%\n"
+            "P(civilizations hide deliberately) = ?%\n"
+            "P(we just haven't looked enough) = ?%\n\n"
+            "What single observation would most shift your map? Seal it. "
+            "This is existential prediction research."
+        ),
+        "age_hint":    "12+",
+        "xp": 62, "rune": "COSMOS•ETERNAL•RUNE", "min_coherence": 0.72,
+        "phd_extension": "Read Hanson (1998) 'The Great Filter' and Bostrom (2008) 'Where Are They?' Apply Bayes theorem: if microbial life found on Mars tomorrow, how much should P(Great Filter ahead) increase? Formalize with explicit priors. Then rank Webb's (2002) 50 solutions by (testability × explanatory power). This is the most important existential research question in astronomy.",
+        "grants_badge": "🌌 Cosmos Master — The Silence and the Scale Are Both Real",
+        "lattice_node": "cosmos-deep-track-complete",
+        "prerequisites": ["cosmos-4", "cosmos-5"],
+    },
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── DECISION THEORY & RATIONALITY UNDER UNCERTAINTY (5 lessons) ──────────
+    # Claude's genuine addition #1.
+    #
+    # The most practically important intellectual skill humanity lacks at scale.
+    # Almost every catastrophic personal and civilizational decision can be
+    # traced to systematic errors in reasoning under uncertainty.
+    # This track teaches the actual tools: expected utility, calibration,
+    # risk aversion, Pascal's mugging, tail risk, and time discounting.
+    #
+    # A 10-year-old can learn to compare two choices honestly.
+    # A PhD student can engage with Newcomb's Problem and one-boxing.
+    # The same track works at both depths.
+    # ══════════════════════════════════════════════════════════════════════════
+    "decision-1": {
+        "title":       "Decision Theory — Level 1: Expected Value (Why Math Beats Gut)",
+        "topic":       "Every decision is a bet. Expected value is the tool that tells you whether the bet is worth taking. Most people make important life decisions without it — and pay a predictable, measurable price for not knowing.",
+        "steelman":    "What is the strongest argument that expected value reasoning is actually harmful for most everyday decisions — that it encourages cold calculation over wisdom, intuition, and moral commitments?",
+        "example":     (
+            "Expected Value = (probability of outcome A × value of A) + (probability of outcome B × value of B)\n\n"
+            "Example — should you wear a seatbelt?\n"
+            "P(serious crash this trip) ≈ 0.0000025\n"
+            "Cost of NOT wearing belt if crash: ~$500,000 equivalent suffering\n"
+            "Cost of wearing belt: minor inconvenience ~$0.01\n"
+            "EV(no belt) = 0.0000025 × $500,000 + 0.9999975 × $0 = $1.25 expected cost per trip\n"
+            "EV(belt) = 0.0000025 × $50,000 + 0.9999975 × -$0.01 ≈ $0.125\n\n"
+            "The seatbelt costs 10x less in expected value. Every trip. \n\n"
+            "Where expected value goes wrong:\n"
+            "1. When you can't afford the downside even if unlikely (insurance logic)\n"
+            "2. When the distribution has fat tails (rare but catastrophic events)\n"
+            "3. Pascal's Mugging: astronomically small probability × astronomically large value "
+            "= paralysis. Expected value alone doesn't handle this well.\n\n"
+            "The key insight: even an imperfect expected value calculation beats gut feeling "
+            "for decisions with clear stakes and known probabilities."
+        ),
+        "activity":    (
+            "Expected Value Audit:\n"
+            "Pick 3 decisions your family made in the last month.\n"
+            "For each: estimate the probabilities and values (roughly).\n"
+            "Calculate the expected value of each option you considered.\n\n"
+            "Did you make the highest expected value choice?\n"
+            "If not — why not? Was it risk aversion? Values you didn't quantify? "
+            "Or was the EV calculation wrong?\n\n"
+            "Seal your audit."
+        ),
+        "age_hint":    "10+",
+        "xp": 38, "rune": "DECISION•RUNE", "min_coherence": 0.62,
+    },
+    "decision-2": {
+        "title":       "Decision Theory — Level 2: Calibration — Are You Right as Often as You Think?",
+        "topic":       "Calibration is the correspondence between stated confidence and actual accuracy. A perfectly calibrated person who says '70% confident' is right 70% of the time. Most people are not calibrated. Learning to be is the most directly improvable intellectual skill.",
+        "steelman":    "What is the strongest argument that obsessing over calibration is counterproductive — that some degree of overconfidence is adaptive, motivates action, and produces better outcomes than accurate but paralyzing uncertainty?",
+        "example":     (
+            "The calibration experiment:\n"
+            "Ask: 'Is the circumference of the Earth more or less than 10,000 miles?'\n"
+            "Most people answer incorrectly AND are highly confident.\n"
+            "This is the miscalibration signature: high confidence + wrong.\n\n"
+            "Kahneman's finding: experts are often WORSE calibrated than novices "
+            "on their own domain because expertise increases confidence faster than accuracy.\n\n"
+            "The superforecaster result (Tetlock, 2015):\n"
+            "A small fraction of people are significantly better than experts at predicting "
+            "geopolitical events — not because they know more, but because they are better calibrated.\n"
+            "The key habits: track predictions explicitly, update frequently, "
+            "break big questions into smaller estimable components.\n\n"
+            "Calibration training works: Philip Tetlock showed that people who track their "
+            "predictions and get feedback improve their calibration measurably within months.\n\n"
+            "AUBIEETERNAL application: the belief ledger in the Cosmos Dashboard "
+            "is a calibration training tool. Every entry is data."
+        ),
+        "activity":    (
+            "The 20-Question Calibration Test:\n"
+            "Ask 20 factual questions (trivia-style). For each, give a confidence percentage.\n"
+            "After answering all 20: check the answers.\n"
+            "Plot: for questions where you said 70% confident, what fraction were you right?\n"
+            "If 70% confidence → 70% accuracy: perfectly calibrated.\n"
+            "If 70% confidence → 90% accuracy: underconfident.\n"
+            "If 70% confidence → 50% accuracy: overconfident.\n\n"
+            "Run this monthly for 6 months and plot your calibration curve's improvement."
+        ),
+        "age_hint":    "11+",
+        "xp": 42, "rune": "DECISION•RUNE", "min_coherence": 0.65,
+        "phd_extension": "Compute your Brier score (mean squared error between confidence and outcome: BS = (1/N)∑(confidence_i - outcome_i)². Perfect calibration = 0.0. Random = 0.25. Run 100 predictions and compute your Brier score. Then apply reliability diagram analysis: group by confidence decile, plot mean confidence vs mean accuracy. The deviation from the diagonal IS your calibration error.",
+    },
+    "decision-3": {
+        "title":       "Decision Theory — Level 3: Risk Aversion, Time Discounting, and Scope Insensitivity",
+        "topic":       "Three systematic biases make otherwise smart people make terrible decisions at scale: they are disproportionately risk-averse for gains, they discount the future irrationally, and they are almost blind to differences in magnitude. Understanding these biases is the first step to correcting them.",
+        "steelman":    "What is the strongest argument that risk aversion, time discounting, and scope insensitivity are not biases at all — but rational adaptations to the real uncertainties of human life that evolved because they were survival-promoting?",
+        "example":     (
+            "RISK AVERSION:\n"
+            "Kahneman & Tversky: losing $100 feels roughly twice as bad as gaining $100 feels good.\n"
+            "This is loss aversion — and it creates systematic irrationality.\n"
+            "People refuse positive expected value bets if there's any chance of loss.\n"
+            "Applied: people leave money in low-yield accounts rather than invest, "
+            "because the loss possibility outweighs the gain probability in feeling, not math.\n\n"
+            "TIME DISCOUNTING:\n"
+            "Humans discount future rewards at rates that imply extraordinary irrationality.\n"
+            "Revealed preference: many people prefer $50 today over $100 in a year — "
+            "implying a ~100% annual discount rate.\n"
+            "Applied: people make health, financial, and environmental decisions as if the "
+            "future barely exists. Civilizational policy is particularly vulnerable.\n\n"
+            "SCOPE INSENSITIVITY:\n"
+            "Kahneman: people donate roughly the same amount to save 2,000 birds vs 200,000 birds.\n"
+            "The emotional response to 'birds in danger' doesn't scale with the magnitude.\n"
+            "Applied: humanity treats 1 death and 100,000 deaths with similar emotional urgency "
+            "if the story is vivid enough. Policy follows emotion, not math."
+        ),
+        "activity":    (
+            "Bias Audit of One Recent Decision:\n"
+            "Pick one important decision you made recently (financial, health, career).\n"
+            "1. Was risk aversion operating? Did you avoid a positive EV option because of "
+            "the downside possibility?\n"
+            "2. Was time discounting operating? Did you weight the present too heavily vs. "
+            "10-year consequences?\n"
+            "3. Was scope insensitivity operating? Did the magnitude of the stakes "
+            "actually register, or just the vivid story?\n\n"
+            "Redesign the decision with all three biases corrected. "
+            "Would you have chosen differently?"
+        ),
+        "age_hint":    "12+",
+        "xp": 48, "rune": "DECISION•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Read Kahneman (2011) Chapters 25-28 on prospect theory. Implement the value function V(x) = x^0.88 for gains, -2.25 × (-x)^0.88 for losses. Plot it. Compute the certainty equivalent for: (80% chance of $100) vs ($80 certain). Does the model predict the standard human preference? Then apply hyperbolic discounting D(t) = 1/(1+kt) with k=0.3 and compare to exponential discounting. Which better predicts your own time preferences? Run a revealed-preference test on yourself.",
+    },
+    "decision-4": {
+        "title":       "Decision Theory — Level 4: Tail Risks, Black Swans, and Fat Tails",
+        "topic":       "Normal distributions are everywhere in textbooks and almost nowhere in the real world for the things that matter most. Wealth, wars, pandemics, earthquakes, market crashes — all fat-tailed. Understanding fat tails changes how you should prepare for the future.",
+        "steelman":    "What is the strongest argument that tail risk obsession is paralyzing — that the infinite-regress of 'but what about black swans?' leads to hoarding gold in bunkers rather than productive engagement with the world?",
+        "example":     (
+            "Thin tails vs fat tails:\n\n"
+            "THIN-TAILED (Gaussian): human height, IQ, daily temperature change.\n"
+            "No one is 10 feet tall. The distribution has hard limits.\n"
+            "The most extreme event is only ~3-5 standard deviations from the mean.\n\n"
+            "FAT-TAILED (Pareto/power law): wealth, earthquake magnitude, "
+            "book sales, city sizes, pandemic deaths, stock market crashes.\n"
+            "The richest person is millions of times richer than the median.\n"
+            "The most damaging earthquake releases 1,000× more energy than the median.\n"
+            "The worst pandemic kills 100× more than the typical flu season.\n\n"
+            "Why this matters:\n"
+            "In thin-tailed worlds: the past predicts the future well. Averages matter.\n"
+            "In fat-tailed worlds: a single event can dominate all previous history. "
+            "The average is misleading. Preparation for the tail IS the strategy.\n\n"
+            "Taleb's key insight: financial models that assumed thin tails caused the "
+            "2008 financial crisis. The models said a 25-standard-deviation event was "
+            "impossible. It happened on several consecutive days.\n\n"
+            "AUBIEETERNAL preparation: the barbell strategy. "
+            "Maximum safety in most of your resources + "
+            "maximum optionality with a small portion. "
+            "Never be exposed to catastrophic downside."
+        ),
+        "activity":    (
+            "Family Risk Map:\n"
+            "List the 10 biggest risks your family faces.\n"
+            "For each: is this thin-tailed (predictable range) or fat-tailed (rare catastrophe possible)?\n"
+            "For the fat-tailed ones: what is the maximum possible downside?\n"
+            "Are you prepared for that downside, or only for the typical case?\n\n"
+            "Design: one change to your preparation that addresses the tail, not the mean."
+        ),
+        "age_hint":    "13+",
+        "xp": 52, "rune": "DECISION•RUNE", "min_coherence": 0.70,
+        "phd_extension": "Read Taleb (2007) The Black Swan, Chapter 15 on the Mandelbrot fractal and power laws. Fit a power law to any dataset you care about (wealth in your country, earthquake magnitudes, city populations — all available publicly). Use: log(rank) vs log(value) should be linear if power-law. Compute the exponent α. If α < 2, the distribution has infinite variance. If α < 1, infinite mean. This is what makes these distributions so dangerous for standard statistical analysis.",
+    },
+    "decision-5": {
+        "title":       "Decision Theory — Level 5 (Master): Newcomb's Problem and Decision Theory Frontiers",
+        "topic":       "Newcomb's Problem has split decision theorists for 50 years. It reveals a fundamental tension between two otherwise coherent approaches to rationality. Understanding it is not just academic — it illuminates every situation where your decision is correlated with what has already been determined.",
+        "steelman":    "What is the strongest argument that Newcomb's Problem is a philosophical puzzle with no practical implications — that the correct answer is obvious and any difficulty is just confused thinking about causation vs. correlation?",
+        "example":     (
+            "Newcomb's Problem:\n\n"
+            "Omega (a perfect predictor) has placed either $1M in Box B (opaque) "
+            "or nothing, based on its prediction of your choice.\n"
+            "If it predicted you'd take only Box B: $1M inside.\n"
+            "If it predicted you'd take both boxes: $0 in Box B.\n"
+            "Box A (transparent) always contains $1,000.\n\n"
+            "TWO-BOXING (Causal Decision Theory — CDT):\n"
+            "The money is already in the box. Your choice cannot change it. "
+            "Whatever is in Box B, you're better off taking Box A too. "
+            "Dominant strategy: take both boxes.\n\n"
+            "ONE-BOXING (Evidential Decision Theory — EDT):\n"
+            "Your choice is evidence about what Omega predicted. "
+            "One-boxers reliably find $1M. Two-boxers reliably find $0. "
+            "If you want to be the kind of person who finds $1M, one-box.\n\n"
+            "Empirical result: the vast majority of professional decision theorists "
+            "who think carefully about this one-box — despite CDT saying two-box.\n\n"
+            "The practical extension: climate agreements, nuclear deterrence, "
+            "voting paradoxes, cooperation in prisoner's dilemmas — all have this "
+            "structure: your choice affects what others will have done (causally) "
+            "or correlates with outcomes (evidentially)."
+        ),
+        "activity":    (
+            "The Cooperation Lab:\n"
+            "Play 20 rounds of Prisoner's Dilemma with a family member.\n"
+            "Track: what strategy does each person run?\n"
+            "At what round (if ever) does cooperation emerge?\n\n"
+            "Then: change the structure so each person's choice is announced before "
+            "the other must commit. Does this change cooperation?\n\n"
+            "Connect to Newcomb: when your decision is predictable, which decision theory "
+            "should guide you? What does your intuition say vs. what do the outcomes say?"
+        ),
+        "age_hint":    "15+ / PhD",
+        "xp": 72, "rune": "DECISION•ETERNAL•RUNE", "min_coherence": 0.76,
+        "grants_badge": "🎯 Decision Theorist — Newcomb's Problem Resolved (For Now)",
+        "phd_extension": "Read Yudkowsky (2010) 'Timeless Decision Theory' and Soares & Fallenstein (2014) 'Toward Idealized Decision Theory'. Implement both CDT and EDT as Python functions for a generalized Newcomb-like problem. Show that: under CDT, two-boxing is optimal. Under EDT, one-boxing is optimal. Under TDT, one-boxing is optimal but for different reasons. Analyze: which decision theory would you want an AI to implement? This is directly relevant to AI alignment.",
+        "prerequisites": ["decision-4"],
+        "lattice_node": "decision-theory-rationality-complete",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── EPISTEMOLOGY OF EXPERTISE & INSTITUTIONAL TRUST (5 lessons) ──────────
+    # Claude's genuine addition #2.
+    #
+    # The most important civic skill in 2026.
+    # When should you defer to experts? When should you think independently?
+    # When are institutions trustworthy? When are they captured?
+    # When is expert consensus strong and when is it a social phenomenon?
+    #
+    # These questions determine whether democracies function or collapse.
+    # Most citizens cannot answer them. AUBIEETERNAL families can.
+    # ══════════════════════════════════════════════════════════════════════════
+    "expertise-1": {
+        "title":       "Expertise Track — Level 1: When Should You Defer to Experts?",
+        "topic":       "Expert consensus should be taken seriously — but not unconditionally. The question is not 'do experts agree?' but 'under what conditions does expert consensus reliably track truth?' Understanding those conditions is the most important civic skill of our era.",
+        "steelman":    "What is the strongest argument that in a complex world, nearly all citizens should defer to expert consensus on nearly all topics, and that promoting independent evaluation by non-experts causes more harm than good?",
+        "example":     (
+            "Expert consensus IS highly reliable when:\n"
+            "• The field has strong feedback loops (medicine vs. nutrition)\n"
+            "• Predictions can be tested on human timescales (epidemiology vs. economics)\n"
+            "• Replication is standard and failures are costly (engineering vs. social science)\n"
+            "• Funding is independent of desired outcomes (basic physics vs. pharmaceutical trials)\n"
+            "• The question is technical, not normative (drug safety vs. drug policy)\n\n"
+            "Expert consensus is LESS reliable when:\n"
+            "• The field has poor replication rates (psychology: ~50%, nutrition: ~30%)\n"
+            "• Experts have financial stakes in particular conclusions\n"
+            "• The question is normative disguised as technical\n"
+            "• The consensus formed under political pressure\n"
+            "• Paradigm incumbents control journal access (see Kuhn)\n\n"
+            "The crucial distinction: 'scientists agree' (sociological fact) "
+            "vs. 'the evidence supports' (epistemic fact). "
+            "These often coincide. They sometimes diverge."
+        ),
+        "activity":    (
+            "Expert Consensus Audit:\n"
+            "Pick three areas where you typically defer to experts.\n"
+            "For each: score it on the reliability criteria above (1-5 each).\n"
+            "Total score: 20-25 = high reliability; 10-15 = moderate; below 10 = verify carefully.\n\n"
+            "Pick one area where you got below 15 and find the primary source "
+            "(not the expert's summary, not the news — the actual evidence). "
+            "Does the expert interpretation match what the data say?"
+        ),
+        "age_hint":    "13+",
+        "xp": 40, "rune": "EXPERTISE•RUNE", "min_coherence": 0.65,
+    },
+    "expertise-2": {
+        "title":       "Expertise Track — Level 2: How Institutions Fail — Regulatory Capture, Incentive Misalignment, Paradigm Lock",
+        "topic":       "Institutions are not neutral truth-seekers. They are organizations with incentives, power structures, and survival instincts. Understanding how institutions systematically distort information is not cynicism — it is the prerequisite for trusting them appropriately.",
+        "steelman":    "What is the strongest argument that focusing on how institutions fail makes us less able to benefit from what institutions do well — and that institution-skepticism is disproportionately exploited by bad actors who want to undermine legitimate expertise?",
+        "example":     (
+            "Three failure modes with documented examples:\n\n"
+            "1. REGULATORY CAPTURE: regulated industries fund, lobby, and sometimes staff "
+            "the agencies meant to regulate them. "
+            "The FDA: ~75% of its drug evaluation funding comes from pharmaceutical fees. "
+            "This doesn't make its approvals wrong — but it creates conflicts "
+            "that should inform how much weight you place on approval alone.\n\n"
+            "2. PUBLICATION BIAS + P-HACKING: journals prefer positive results. "
+            "Researchers know this. Studies that don't find effects don't get published. "
+            "This means the literature systematically overestimates effect sizes. "
+            "The replication crisis (psychology, nutrition, social science) is this failure made visible.\n\n"
+            "3. PARADIGM LOCK: Kuhn showed that normal science works within a paradigm "
+            "and resists anomalies. This is efficient — but it means revolutionary ideas "
+            "face institutional resistance before the evidence is evaluated. "
+            "H. pylori causing ulcers: dismissed for 30 years, Nobel Prize in 2005. "
+            "Prions causing disease: dismissed, Nobel Prize in 1997."
+        ),
+        "activity":    (
+            "Institution Failure Audit:\n"
+            "Pick one institution you rely on (FDA, CDC, your school, a news organization).\n"
+            "Score it on three dimensions:\n"
+            "1. Funding independence (who pays?) — 1 to 5\n"
+            "2. Feedback mechanisms (does failure get corrected?) — 1 to 5\n"
+            "3. Paradigm openness (are heterodox views fairly evaluated?) — 1 to 5\n\n"
+            "A score below 9: trust but verify more carefully.\n"
+            "A score above 12: higher baseline trust is warranted.\n\n"
+            "Important: the goal is calibration, not dismissal."
+        ),
+        "age_hint":    "13+",
+        "xp": 45, "rune": "EXPERTISE•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Read Ioannidis (2005) 'Why Most Published Research Findings Are False' — the most-cited paper in PLOS Medicine. Derive his central formula using Bayes theorem: PPV = (1-β)R / ((1-β)R + α) where R = pre-study odds ratio, α = significance level, β = false negative rate. Show that with R=0.1 (exploratory research), α=0.05, β=0.2, PPV < 0.5. Most positive findings are false. Apply to a field you care about.",
+    },
+    "expertise-3": {
+        "title":       "Expertise Track — Level 3: The Dunning-Kruger Trap and Calibrated Autonomy",
+        "topic":       "The Dunning-Kruger effect is often misunderstood — it is not just that ignorant people are overconfident. It is a systematic relationship between competence and metacognition at every level. The goal is not humility or confidence, but accurate self-assessment.",
+        "steelman":    "What is the strongest argument that awareness of the Dunning-Kruger effect causes intelligent non-experts to excessively defer to authorities — making them easier to manipulate by credentialed bad actors who exploit this epistemic humility?",
+        "example":     (
+            "What Dunning-Kruger actually showed (Kruger & Dunning, 1999):\n"
+            "Incompetent people overestimate their ability — because the skills needed "
+            "to do a task well are the same skills needed to evaluate whether you're doing "
+            "it well. You don't know what you don't know.\n\n"
+            "The less-cited finding: experts UNDERESTIMATE their relative performance "
+            "because they assume others find it as easy as they do.\n\n"
+            "The calibration model (Dunning, 2011 revision):\n"
+            "Competence and self-assessment accuracy both improve with expertise — "
+            "but self-assessment lags competence in a predictable pattern.\n\n"
+            "The epistemic sweet spot — the expert-adjacent position:\n"
+            "Enough knowledge to identify the key variables and major uncertainties.\n"
+            "Not so much investment in a sub-field that paradigm bias dominates.\n"
+            "Can evaluate primary sources, not just secondary summaries.\n"
+            "Knows what questions to ask experts.\n\n"
+            "This is the AUBIEETERNAL target: not fully autonomous amateur reasoning, "
+            "not unconditional deference, but informed engagement with primary evidence."
+        ),
+        "activity":    (
+            "The Self-Assessment Calibration Test:\n"
+            "Pick a domain where you consider yourself competent (e.g., cooking, coding, parenting).\n"
+            "Write your self-assessment: what can you do, what can't you do, what do you not know?\n\n"
+            "Then: find the most common failure mode in this domain among practitioners "
+            "(search '[domain] common mistakes experts miss').\n\n"
+            "Did you list it as a limitation? Or did you assume you don't make that mistake?\n"
+            "That gap IS the Dunning-Kruger effect at work."
+        ),
+        "age_hint":    "13+",
+        "xp": 48, "rune": "EXPERTISE•RUNE", "min_coherence": 0.70,
+    },
+    "expertise-4": {
+        "title":       "Expertise Track — Level 4: Scientific Consensus vs Scientific Certainty",
+        "topic":       "There is a crucial difference between 'scientists agree' and 'the evidence is conclusive.' Conflating them is one of the most common epistemic errors in public discourse. This lesson teaches how to distinguish strong consensus from weak consensus from contested science.",
+        "steelman":    "What is the strongest argument that teaching people to distinguish consensus strength actively harms public health — that questioning any scientific consensus (even legitimately) provides cover for bad-faith actors who want to deny well-established findings?",
+        "example":     (
+            "Four levels of scientific confidence (with examples):\n\n"
+            "LEVEL 1 — Virtually Certain (treat as fact):\n"
+            "Earth is ~4.5 billion years old. Smoking causes cancer. Vaccines don't cause autism.\n"
+            "Characteristics: replicated across independent methods, no plausible mechanism for doubt.\n\n"
+            "LEVEL 2 — Strong Consensus (high prior, but track primary evidence):\n"
+            "Effectiveness of SSRIs for depression, optimal dietary fat intake.\n"
+            "Characteristics: good evidence, but effect sizes are contested and replication is imperfect.\n\n"
+            "LEVEL 3 — Active Debate Among Experts (assign significant uncertainty):\n"
+            "Precise mechanisms of long COVID, optimal early childhood intervention programs.\n"
+            "Characteristics: multiple competing models, mixed replication, genuine expert disagreement.\n\n"
+            "LEVEL 4 — Emerging or Contested (strong skepticism warranted):\n"
+            "Microbiome effects on mental health, most social media + mental health research.\n"
+            "Characteristics: early findings, poor replication, mechanistic story unverified.\n\n"
+            "The error: treating Level 3 as Level 1 in public discourse."
+        ),
+        "activity":    (
+            "Classify 10 scientific claims at the confidence level they deserve.\n"
+            "For each: find one review paper (not news) and score:\n"
+            "1. Number of independent replications\n"
+            "2. Effect size (small/medium/large/very large)\n"
+            "3. Mechanistic understanding (none/partial/strong)\n"
+            "4. Contrary evidence quality (strong/weak/none found)\n\n"
+            "What level does your evidence audit assign? "
+            "Does it match how the claim is treated in public discourse?"
+        ),
+        "age_hint":    "14+",
+        "xp": 52, "rune": "EXPERTISE•RUNE", "min_coherence": 0.72,
+        "phd_extension": "Construct a GRADE-style evidence quality assessment for any health claim you care about. GRADE criteria: study design, risk of bias, inconsistency, indirectness, imprecision, publication bias. Classify the evidence as Very Low, Low, Moderate, or High. The GRADE system is used by Cochrane and WHO. Apply it to one claim that you believe is treated as higher confidence than it deserves. Publish your assessment to the Epistemic Commons.",
+    },
+    "expertise-5": {
+        "title":       "Expertise Track — Level 5 (Master): Building Your Epistemic Independence Stack",
+        "topic":       "True epistemic independence is not rejecting expertise — it is building the skill to engage with primary evidence directly, understand the limits of your own competence, and know when to update regardless of social pressure.",
+        "steelman":    "What is the strongest argument that the concept of 'epistemic independence' is elitist — that it is only achievable by the highly educated, and that for most people, the practical result of 'think for yourself' is falling for misinformation rather than genuinely better reasoning?",
+        "example":     (
+            "The five-layer epistemic independence stack:\n\n"
+            "Layer 1 — Primary Source Access: can you find and read the original paper, "
+            "law, financial statement, or primary record? Can you check the methodology?\n\n"
+            "Layer 2 — Statistical Literacy: can you interpret p-values, effect sizes, "
+            "confidence intervals, and identify common statistical errors?\n\n"
+            "Layer 3 — Domain Boundary Recognition: do you know what you don't know well "
+            "enough to know when you're reaching the edge of your competence?\n\n"
+            "Layer 4 — Incentive Analysis: can you identify who benefits from each "
+            "claim being believed? Can you model how funding shapes findings?\n\n"
+            "Layer 5 — Adversarial Testing: can you steelman the opposing view and "
+            "identify what evidence would change your mind?\n\n"
+            "The goal: every AUBIEETERNAL University graduate has all five layers "
+            "at a level that makes them genuinely epistemically sovereign — "
+            "not in the sense of rejecting expertise, but in the sense of being "
+            "able to evaluate it from the inside."
+        ),
+        "activity":    (
+            "Build Your Epistemic Independence Audit:\n"
+            "Score yourself honestly on each of the five layers (1-10).\n\n"
+            "Then: design a 90-day improvement plan for your lowest layer.\n"
+            "What specific skills? What resources? What practice?\n"
+            "Pre-register the plan and your starting scores.\n"
+            "Re-test at 90 days.\n\n"
+            "Seal both assessments in the Legacy Ledger. "
+            "The delta IS your epistemic growth."
+        ),
+        "age_hint":    "14+ / PhD",
+        "xp": 70, "rune": "EXPERTISE•SOVEREIGN•RUNE", "min_coherence": 0.76,
+        "grants_badge": "🎓 Epistemic Sovereign — Five-Layer Stack Complete",
+        "phd_extension": "Run a full primary-source investigation of any contested public health or policy claim. Requirements: (1) read 3+ primary studies, (2) apply GRADE criteria, (3) model the incentive landscape, (4) steelman the minority view, (5) estimate your own competence level and how it limits your conclusion. Write a 1,500-word analysis. Submit to Epistemic Commons as CC0. This is public health journalism at PhD level.",
+        "prerequisites": ["expertise-4", "school-advanced-1"],
+        "lattice_node": "expertise-institutional-trust-complete",
+    },
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── PHILOSOPHY OF LANGUAGE AND MEANING (5 lessons) ───────────────────────
+    # Claude's genuine addition #3.
+    #
+    # How do words relate to reality? This is not an academic question.
+    # It determines whether democracy functions, whether communication
+    # produces understanding or manipulation, and whether AI systems
+    # can be trusted to represent reality accurately.
+    #
+    # Orwell understood that political corruption begins with language corruption.
+    # Wittgenstein understood that most philosophical problems dissolve when
+    # you examine the language in which they are posed.
+    # The families who understand this track are genuinely harder to manipulate.
+    # ══════════════════════════════════════════════════════════════════════════
+    "language-1": {
+        "title":       "Language & Meaning — Level 1: Words Are Not Things",
+        "topic":       "The map is not the territory. Words are not the things they describe. This gap — between language and reality — is where most miscommunication, manipulation, and confused thinking lives. Understanding it changes how you read, argue, and evaluate claims.",
+        "steelman":    "What is the strongest argument that the distinction between words and things is obvious and overemphasized — that competent adults navigate this implicitly without needing to make it explicit?",
+        "example":     (
+            "Alfred Korzybski (1933): 'The map is not the territory.'\n\n"
+            "The word 'dog' is not a dog. You cannot pet the word.\n"
+            "The word 'justice' is not justice. You cannot point to it.\n"
+            "The phrase 'the economy is doing well' points to a model, not a thing.\n\n"
+            "Three levels of language failure:\n\n"
+            "Level 1 — LABEL CONFUSION: treating the word as if it IS the thing.\n"
+            "'He's a criminal' — the word 'criminal' feels like a permanent property "
+            "of the person, not a legal category applied to one act.\n\n"
+            "Level 2 — REIFICATION: treating abstract words as if they refer to concrete things.\n"
+            "'The economy wants lower interest rates' — the economy is a model, "
+            "not an agent with wants.\n\n"
+            "Level 3 — QUESTION BEGGING via definitions:\n"
+            "'All taxation is theft' — this only works if you define theft as "
+            "'any taking of property without consent', which smuggles the conclusion "
+            "into the definition. The argument is about what words should mean, "
+            "disguised as a factual claim."
+        ),
+        "activity":    (
+            "The Word Audit:\n"
+            "Find 5 important words in a political or social debate this week.\n"
+            "For each: what does the word actually point to in reality?\n"
+            "Could two people use the same word to mean different things?\n"
+            "If so: rewrite the claim without using the contested word.\n\n"
+            "Does the rewritten version make the same claim?\n"
+            "If not: the word was doing argumentative work that the evidence wasn't."
+        ),
+        "age_hint":    "10+",
+        "xp": 38, "rune": "LANGUAGE•RUNE", "min_coherence": 0.62,
+    },
+    "language-2": {
+        "title":       "Language & Meaning — Level 2: Wittgenstein and Language Games",
+        "topic":       "Wittgenstein showed that words don't have fixed meanings — they have uses. The meaning of a word is its use in a language game. Understanding this resolves most philosophical confusion and explains how people can argue past each other indefinitely about 'words that mean the same thing.'",
+        "steelman":    "What is the strongest argument that Wittgenstein's language game theory is just a sophisticated form of relativism — and that it makes it impossible to say that any use of language is wrong, even abusive or manipulative uses?",
+        "example":     (
+            "Wittgenstein (Philosophical Investigations, 1953):\n"
+            "Words get their meaning from how they are used in practice — "
+            "in 'language games' embedded in 'forms of life.'\n\n"
+            "The chess example: 'What is the king?' cannot be answered by pointing "
+            "to the piece — only by explaining the rules it follows.\n"
+            "Meaning is not in the object. It is in the practice.\n\n"
+            "Why this matters for truth-seeking:\n\n"
+            "The 'consciousness' debate: philosophers argue endlessly about "
+            "whether machines can be conscious. But they are playing different "
+            "language games with the word 'conscious' — "
+            "one tied to a behavioral game, one to a phenomenological game.\n"
+            "They are not disagreeing about reality. They are disagreeing about "
+            "which game to play.\n\n"
+            "The policy debate structure:\n"
+            "'Freedom' means something different in libertarian and progressive "
+            "language games. The disagreement is often about which game should "
+            "govern public discourse — not about freedom itself.\n\n"
+            "Wittgenstein's therapy: to dissolve philosophical confusion, "
+            "ask not 'what does this mean?' but 'how is this used, by whom, "
+            "in what context, to do what?'"
+        ),
+        "activity":    (
+            "Language Game Mapping:\n"
+            "Pick one contested concept from current discourse "
+            "(freedom, fairness, violence, hate, discrimination).\n"
+            "Write two descriptions of how the word is used in practice "
+            "by people who seem to disagree about its meaning.\n\n"
+            "Are they playing different language games?\n"
+            "If yes: what would it mean to 'resolve' the disagreement?\n"
+            "Can it be resolved, or does it require agreeing on which game to play first?"
+        ),
+        "age_hint":    "13+",
+        "xp": 45, "rune": "LANGUAGE•RUNE", "min_coherence": 0.67,
+    },
+    "language-3": {
+        "title":       "Language & Meaning — Level 3: Orwell's Warning — Language and Political Power",
+        "topic":       "George Orwell argued that the corruption of language and the corruption of political thinking are not separate. Vague, pretentious, or deliberately obscure language protects power by making it harder to think clearly about what is actually happening.",
+        "steelman":    "What is the strongest argument that Orwell's critique of language is itself an exercise in power — that declaring certain language 'corrupt' or 'dishonest' is just another way of policing speech to advantage one's own political perspective?",
+        "example":     (
+            "Orwell's six rules (Politics and the English Language, 1946):\n"
+            "1. Never use a metaphor you have seen in print.\n"
+            "2. Never use a long word where a short one will do.\n"
+            "3. If it is possible to cut a word, always cut it.\n"
+            "4. Never use the passive where you can use the active.\n"
+            "5. Never use a foreign phrase, scientific word, or jargon "
+            "if you can think of an everyday English equivalent.\n"
+            "6. Break any of these rules rather than say something outright barbarous.\n\n"
+            "Why Orwell connected clarity to democracy:\n"
+            "Vague language hides responsibility. 'Pacification' obscures bombing. "
+            "'Rectification of frontiers' obscures ethnic cleansing. "
+            "'Collateral damage' obscures civilian deaths.\n\n"
+            "The structure of political euphemism:\n"
+            "Step 1: Replace concrete language with abstract language.\n"
+            "Step 2: Replace active constructions with passive ones.\n"
+            "Step 3: Introduce jargon that only insiders understand.\n"
+            "Step 4: The thing is no longer visible in the words that describe it.\n\n"
+            "1984's Newspeak is the endpoint of this process: a language "
+            "in which political dissent is literally unthinkable because "
+            "the words to express it no longer exist."
+        ),
+        "activity":    (
+            "The Orwell Translation Exercise:\n"
+            "Find one paragraph of political language (policy document, speech, press release).\n"
+            "Rewrite it following Orwell's six rules.\n\n"
+            "Ask: what is now visible that was hidden before?\n"
+            "What responsibility is now clear that was obscured?\n\n"
+            "Run the same exercise on your own writing. "
+            "What vague language are you using to hide something even from yourself?"
+        ),
+        "age_hint":    "13+",
+        "xp": 48, "rune": "LANGUAGE•RUNE", "min_coherence": 0.70,
+        "phd_extension": "Apply the Flesch-Kincaid readability index to: (1) a primary research paper in your field, (2) the media coverage of the same paper, (3) a political speech from the same period. Compute readability scores and grade levels for each. Plot: does lower readability correlate with higher political stakes? Does it correlate with more authoritarian contexts? This is computational linguistics meets political science.",
+    },
+    "language-4": {
+        "title":       "Language & Meaning — Level 4: How Language Shapes Thought (Sapir-Whorf)",
+        "topic":       "The Sapir-Whorf hypothesis proposes that the language you speak shapes what you can think. The strong version (language determines thought) is largely discredited. The weak version (language influences thought) has surprising experimental support. Understanding which version is true — and how — changes how you build the vocabulary your family uses.",
+        "steelman":    "What is the strongest argument for strong linguistic relativity — that people who speak languages without certain concepts genuinely cannot think those concepts, making language a fundamental constraint on cognition rather than just a tool?",
+        "example":     (
+            "The experimental evidence:\n\n"
+            "CONFIRMED (weak version):\n"
+            "• Russian speakers, who have separate words for light blue (goluboy) and "
+            "dark blue (siniy), distinguish these shades faster in experiments.\n"
+            "• The Pirahã language (Amazon) has no recursion and no number words "
+            "beyond 'few' and 'many' — speakers struggle with tasks requiring "
+            "exact numerical reasoning.\n"
+            "• Languages that describe space using cardinal directions rather than "
+            "egocentric terms (left/right) produce speakers with much better "
+            "absolute spatial orientation.\n\n"
+            "NOT CONFIRMED (strong version):\n"
+            "• People can think concepts they don't have words for — "
+            "this is how new words get invented.\n"
+            "• Color discrimination differences are real but modest.\n\n"
+            "The AUBIEETERNAL design implication:\n"
+            "The vocabulary your family BUILDS TOGETHER matters. "
+            "Having words for 'dorsal vagal shutdown,' 'steelmanning,' "
+            "'coherence drift,' and 'narrative pre-framing' makes these "
+            "concepts easier to think and notice. "
+            "You are not just learning concepts — you are building "
+            "the cognitive tools your family will use forever."
+        ),
+        "activity":    (
+            "Build 5 new family vocabulary words:\n"
+            "Think of concepts your family regularly experiences but lacks "
+            "precise words for. Name them.\n\n"
+            "Examples to start:\n"
+            "'The feeling of certainty before checking' — what word captures this?\n"
+            "'The moment you realize you were using emotional reasoning' — name it.\n"
+            "'The specific satisfaction of a well-designed system' — your family's word.\n\n"
+            "After naming them: notice whether you start perceiving these states more often. "
+            "If you do, you've demonstrated weak linguistic relativity in your own household."
+        ),
+        "age_hint":    "11+",
+        "xp": 50, "rune": "LANGUAGE•RUNE", "min_coherence": 0.70,
+    },
+    "language-5": {
+        "title":       "Language & Meaning — Level 5 (Master): Building Epistemic Vocabulary",
+        "topic":       "The most practical application of the philosophy of language is building the vocabulary that makes clearer thinking possible. This lesson constructs the complete AUBIEETERNAL epistemic vocabulary — the words that make the concepts in this curriculum easier to think, notice, and use.",
+        "steelman":    "What is the strongest argument that creating specialized vocabulary is a form of in-group gatekeeping — and that simple, ordinary language forces clearer thinking than technical vocabulary because it cannot hide behind jargon?",
+        "example":     (
+            "The AUBIEETERNAL Epistemic Vocabulary — working glossary:\n\n"
+            "STEELMAN: the strongest possible version of an argument you disagree with.\n"
+            "COHERENCE DRIFT: gradual epistemic degradation under social pressure without noticing.\n"
+            "TAIL RISK: the catastrophic failure rate in the distribution of an argument.\n"
+            "NARRATIVE PRE-FRAMING: establishing the story structure before the facts are presented.\n"
+            "GATEKEEPER: an agent who controls access to information, resources, or audiences.\n"
+            "EPISTEMIC IMMUNE SYSTEM: your family's defenses against manipulation, "
+            "with strength varying by attack type.\n"
+            "ALLOSTATIC LOAD: accumulated stress debt that reduces cognitive capacity.\n"
+            "CALIBRATION: correspondence between stated confidence and actual accuracy.\n"
+            "MOTTE AND BAILEY: defending a weak claim by retreating to a stronger one when challenged.\n"
+            "POLYVAGAL STATE: your nervous system's current safety level affecting cognition.\n\n"
+            "The principle: a concept without a name is harder to notice. "
+            "A concept with a name becomes accessible to family members of any age. "
+            "The vocabulary is not jargon — it is precision tools."
+        ),
+        "activity":    (
+            "Complete the AUBIEETERNAL Family Glossary:\n"
+            "Start with the terms above. Add 10 more from your curriculum work.\n"
+            "For each entry: one definition, one example, one test "
+            "('how would you know if this concept was present?').\n\n"
+            "Seal the glossary in the Legacy Ledger.\n"
+            "It is now part of your family's intellectual inheritance.\n"
+            "Your children's children will add to it."
+        ),
+        "age_hint":    "All ages — every family member builds it together",
+        "xp": 65, "rune": "LANGUAGE•SOVEREIGN•RUNE", "min_coherence": 0.74,
+        "grants_badge": "📖 Language Architect — Family Glossary Sealed",
+        "prerequisites": ["language-3", "narrative-warfare-1"],
+        "lattice_node": "philosophy-of-language-complete",
+        "phd_extension": "Read Grice's Cooperative Principle and four maxims (Quality, Quantity, Relation, Manner). Apply implicature analysis to 5 political statements from this week's news. What is actually said? What is implicated? What is the speaker committed to if the maxims are observed? Then apply Grice to AI outputs: when an AI violates the Manner maxim (being obscure), is this deliberate? This connects the philosophy of language directly to AI alignment.",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── NETWORK THEORY AND SOCIAL CONTAGION (5 lessons) ──────────────────────
+    # Claude's genuine addition #4.
+    #
+    # How do ideas, beliefs, and behaviors spread through social networks?
+    # This is the mathematical foundation for the narrative warfare and
+    # gatekeeper tracks — but it gives the actual structural theory.
+    # Why do some ideas go viral while better ones die in obscurity?
+    # How do you build an epistemic community that is resilient rather than fragile?
+    # How does the Living Lattice function as network infrastructure?
+    #
+    # A 12-year-old can understand why some diseases spread faster than others.
+    # A PhD student can engage with Dunbar's number, power laws in networks,
+    # and the mathematics of information cascades.
+    # ══════════════════════════════════════════════════════════════════════════
+    "network-1": {
+        "title":       "Network Theory — Level 1: Why Some Ideas Spread and Others Don't",
+        "topic":       "Information spreads through networks according to mathematical laws that have nothing to do with truth. Understanding these laws explains why misinformation often spreads faster than accurate information — and what can be done about it.",
+        "steelman":    "What is the strongest argument that network-based thinking about information spread promotes a cynical 'nothing matters but virality' worldview — and that emphasizing truth and quality will always matter more than understanding distribution dynamics?",
+        "example":     (
+            "The basic reproduction number (R0) applied to ideas:\n\n"
+            "In epidemiology: R0 = how many people one infected person infects on average.\n"
+            "R0 > 1: spreads exponentially. R0 < 1: dies out.\n\n"
+            "Applied to information:\n"
+            "An idea's 'R0' depends on: emotional valence (fear/outrage spread faster), "
+            "simplicity (one-sentence claims spread faster than nuanced ones), "
+            "identity affiliation (in-group signals spread faster within groups), "
+            "and novelty (unexpected information spreads faster).\n\n"
+            "The asymmetry: a false, emotionally charged, simple, identity-affirming "
+            "claim has a much higher information R0 than a true, nuanced, "
+            "emotionally neutral one.\n\n"
+            "The MIT study (2018, Science): false news spreads 6x faster on Twitter "
+            "than true news. True news almost never goes viral. This is not because "
+            "people want to be deceived — it is because of network dynamics.\n\n"
+            "What this means for AUBIEETERNAL: truth-seeking communities need "
+            "deliberate network design. The Living Lattice is designed to "
+            "amplify high-coherence signal, not just any signal."
+        ),
+        "activity":    (
+            "Information Spread Audit:\n"
+            "Track one piece of information you shared or wanted to share this week.\n"
+            "Score it on the four R0 factors (1-5 each):\n"
+            "• Emotional valence (how strongly does it trigger emotion?)\n"
+            "• Simplicity (can it be stated in one sentence?)\n"
+            "• Identity (does it affirm a group identity?)\n"
+            "• Novelty (is it surprising or unexpected?)\n\n"
+            "Compare: is this the information you SHOULD want to spread?\n"
+            "What would you have to change about the packaging to reduce R0 "
+            "without changing the truth content?"
+        ),
+        "age_hint":    "12+",
+        "xp": 38, "rune": "NETWORK•RUNE", "min_coherence": 0.63,
+    },
+    "network-2": {
+        "title":       "Network Theory — Level 2: Dunbar's Number and the Architecture of Trust",
+        "topic":       "Robin Dunbar found that humans can maintain genuine social relationships with approximately 150 people. This is not a cultural limit — it is a cognitive limit. Understanding it explains why large organizations fail, why small communities are more cohesive, and how to design the Living Lattice for maximum epistemic health.",
+        "steelman":    "What is the strongest argument that Dunbar's number is not a hard cognitive limit but a statistical artifact — and that digital communication technology genuinely expands the number of meaningful relationships humans can maintain?",
+        "example":     (
+            "Dunbar (1992): analyzing neocortex size across primates, "
+            "Dunbar predicted that humans can maintain a stable social network "
+            "of approximately 150 relationships.\n\n"
+            "The nested structure of human groups:\n"
+            "~5  — intimate circle (deep mutual support)\n"
+            "~15 — close friends (significant trust)\n"
+            "~50 — friendship group (meaningful relationship)\n"
+            "~150 — Dunbar's number (social recognition and basic trust)\n"
+            "~500 — acquaintances (you know their face and name)\n"
+            "~1,500 — social awareness (you know who they are)\n\n"
+            "The organizational implication: companies below ~150 people "
+            "can function on shared norms and reputation. Above 150, "
+            "they require formal rules, hierarchy, and bureaucracy.\n\n"
+            "The epistemic implication: high-quality information flows "
+            "most reliably within the 150-person network. "
+            "Beyond that, it degrades by institutional telephone effect.\n\n"
+            "The Living Lattice design: AUBIEETERNAL is designed to function "
+            "best within Dunbar-scale nodes, with inter-node connections "
+            "at the ~1,500 (social awareness) level."
+        ),
+        "activity":    (
+            "Map your Dunbar layers:\n"
+            "~5 intimate: who can you call at 3AM?\n"
+            "~15 close: who would notice if you disappeared for a week?\n"
+            "~50 friendship: who would you invite to a small gathering?\n"
+            "~150 community: who would you trust with minor personal information?\n\n"
+            "Are there people in the wrong layer? Too much trust given too quickly?\n"
+            "Not enough investment in the 5-layer?\n"
+            "This is your social network audit."
+        ),
+        "age_hint":    "12+",
+        "xp": 42, "rune": "NETWORK•RUNE", "min_coherence": 0.65,
+        "phd_extension": "Dunbar's 2020 meta-analysis: test whether social media 'connections' map to the same neocortex-load as offline relationships, or whether they are a different category. Collect data: for your 150 most frequent social media interactions, how many qualify as meaningful (would help you in a crisis)? Apply this to the Living Lattice: which nodes are within Dunbar's number of each other? Model the epistemic decay rate of information as it traverses social distance greater than 150.",
+    },
+    "network-3": {
+        "title":       "Network Theory — Level 3: Power Laws, Hubs, and Why the Internet Is Fragile",
+        "topic":       "Most networks we care about — the internet, social networks, citation networks, ecosystems — follow power laws rather than normal distributions. A few highly connected nodes (hubs) carry most of the connections. This makes these networks simultaneously highly efficient and catastrophically fragile.",
+        "steelman":    "What is the strongest argument that power law distributions in networks are inevitable and even desirable — and that attempts to make networks more equal (fewer hubs) would reduce efficiency and slow information flow in ways that harm everyone?",
+        "example":     (
+            "The Barabási-Albert model (1999): most real networks are scale-free.\n"
+            "Scale-free = degree distribution follows a power law: P(k) ~ k^-γ.\n"
+            "Implication: a few nodes have enormous numbers of connections "
+            "(hubs) while most nodes have very few.\n\n"
+            "Why networks become scale-free: preferential attachment.\n"
+            "'The rich get richer': new nodes are more likely to connect to "
+            "already-well-connected nodes. This generates power law naturally.\n\n"
+            "The dual nature of hubs:\n"
+            "EFFICIENCY: short paths between any two nodes (small-world property).\n"
+            "FRAGILITY: remove the top ~5% of hubs and the network fragments.\n"
+            "ROBUSTNESS: remove random nodes and nothing much happens.\n\n"
+            "Applied to information networks:\n"
+            "A few platforms (Twitter/X, YouTube, Facebook) ARE the hubs of "
+            "public discourse. Remove them (ban, regulate, bankrupt) and "
+            "information flow collapses — even if individual users are fine.\n\n"
+            "The AUBIEETERNAL design response: Nostr (decentralized, no hubs) "
+            "as alternative to hub-dependent social networks. "
+            "Bitcoin (no single node critical) vs banking (fragile hubs). "
+            "The Living Lattice: designed with redundant pathways."
+        ),
+        "activity":    (
+            "Network Fragility Map:\n"
+            "Draw your 10 most important information sources.\n"
+            "For each: how many other sources depend on it? "
+            "What would you lose if it disappeared tomorrow?\n\n"
+            "Identify your top 2-3 hubs.\n"
+            "What is your contingency if the largest hub goes down?\n\n"
+            "Design: one change that would make your information network "
+            "more resilient to hub removal."
+        ),
+        "age_hint":    "13+",
+        "xp": 48, "rune": "NETWORK•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Implement the Barabási-Albert preferential attachment model in Python. Generate a network of 1,000 nodes. Compute: degree distribution (plot log-log; should be linear for scale-free), clustering coefficient, average path length. Then perform targeted attacks (remove highest-degree nodes) vs random attacks. Plot network fragmentation as a function of fraction of nodes removed. Compare the two curves. This is the exact analysis that identified internet infrastructure vulnerabilities in 2001.",
+    },
+    "network-4": {
+        "title":       "Network Theory — Level 4: Information Cascades and Epistemic Bubbles",
+        "topic":       "Why do people with access to the same information end up with radically different beliefs? Information cascades explain how rational individuals, each updating on others' behavior, can produce collective errors far larger than any individual would make alone.",
+        "steelman":    "What is the strongest argument that 'information cascade' and 'epistemic bubble' are concepts that primarily get invoked to dismiss viewpoints one already disagrees with — and that every group believes its cascade is the true one?",
+        "example":     (
+            "The information cascade (Bikhchandani, Hirshleifer & Welch, 1992):\n\n"
+            "Setup: 100 people must each guess whether a jar has more red or blue balls.\n"
+            "Each person gets a private signal (slightly more red or slightly more blue).\n"
+            "People guess in sequence and can see previous guesses.\n\n"
+            "Result: after the first few guesses, rational people IGNORE their own "
+            "private signal and follow the crowd — even if their signal is correct.\n"
+            "The first 2-3 people's signals dominate all subsequent behavior.\n\n"
+            "Why this is rational: if 5 people guessed 'red', the probability they "
+            "were all wrong is low. Your own signal is just one data point.\n\n"
+            "The disaster: if the first two people both had misleading signals "
+            "(which happens 25% of the time), the cascade locks everyone "
+            "into the wrong answer — rationally.\n\n"
+            "Applied to financial crashes, adoption of medical treatments, "
+            "political beliefs, and dietary choices: the same math. "
+            "Rational individual behavior produces irrational collective outcomes.\n\n"
+            "The AUBIEETERNAL counter-design: the Steelman Analyzer rewards "
+            "independence from cascade pressure. Pre-registration in the Truth Debt "
+            "Ledger commits you to your signal BEFORE you see what others think."
+        ),
+        "activity":    (
+            "Pre-Registration Discipline:\n"
+            "For the next 5 important questions you encounter:\n"
+            "1. Record your own view BEFORE checking what others think\n"
+            "2. Note your confidence\n"
+            "3. Then check what others think\n"
+            "4. Record whether and how much you updated\n"
+            "5. Distinguish: did you update on their REASONING or their CONCLUSION?\n\n"
+            "Updating on reasoning: epistemically healthy.\n"
+            "Updating on conclusion alone: information cascade susceptibility."
+        ),
+        "age_hint":    "13+",
+        "xp": 52, "rune": "NETWORK•RUNE", "min_coherence": 0.70,
+    },
+    "network-5": {
+        "title":       "Network Theory — Level 5 (Master): Designing Resilient Epistemic Communities",
+        "topic":       "The Living Lattice is not just a metaphor. It is a network with specific topology, trust properties, and information flow characteristics. This lesson applies all of network theory to the question: what does an epistemically healthy community network look like, and how do you build one?",
+        "steelman":    "What is the strongest argument that deliberately designed epistemic communities become echo chambers — that the act of curating who is in your 'epistemic network' produces exactly the kind of confirmation bias and in-group thinking that you are trying to avoid?",
+        "example":     (
+            "Properties of epistemically healthy networks:\n\n"
+            "1. DIVERSITY OF SOURCES: no single hub accounts for >20% of your information\n"
+            "2. ADVERSARIAL DIVERSITY: includes people who will steelman against you "
+            "(not just people who challenge you rudely)\n"
+            "3. DUNBAR COMPLIANCE: close-trust nodes are within Dunbar's number "
+            "(actual relationships, not follower counts)\n"
+            "4. PRE-REGISTRATION NORMS: community members commit predictions before "
+            "events, creating accountability\n"
+            "5. COHERENCE TRACKING: aggregate epistemic health is measured and "
+            "shared, like the Living Lattice coherence score\n"
+            "6. REDUNDANT PATHWAYS: every important piece of information has "
+            "multiple independent paths to reach you\n"
+            "7. FAILURE VISIBILITY: when community members are wrong, this is "
+            "acknowledged, not hidden\n\n"
+            "The design principle: the Living Lattice should look more like "
+            "the internet's backbone (resilient, redundant, decentralized) "
+            "and less like a social media platform (hub-dependent, fragile, optimized for attention)."
+        ),
+        "activity":    (
+            "Design Your Family's Living Lattice Node:\n"
+            "1. Who are your 5 closest epistemic collaborators? "
+            "(who challenges your thinking most productively?)\n"
+            "2. Who are the 3 best adversarial steelmanners in your life?\n"
+            "3. What is your diversity score? "
+            "(how many different worldviews are represented in your top 15?)\n"
+            "4. What is your hub dependence? "
+            "(does any single source account for >30% of your information?)\n\n"
+            "Write the node design for AUBIEETERNAL deployment.\n"
+            "Seal it. This is your contribution to the Living Lattice architecture."
+        ),
+        "age_hint":    "14+ / PhD",
+        "xp": 70, "rune": "NETWORK•SOVEREIGN•RUNE", "min_coherence": 0.74,
+        "grants_badge": "🕸️ Network Architect — Living Lattice Node Designed",
+        "prerequisites": ["network-4", "systems-4"],
+        "lattice_node": "network-theory-social-contagion-complete",
+        "phd_extension": "Model the AUBIEETERNAL Living Lattice as a graph. Assign edge weights based on coherence correlation between nodes. Compute: betweenness centrality (which nodes are critical bridges?), clustering coefficient (how clique-like is each neighborhood?), modularity (are there distinct communities?). Apply resistance distance: which information paths are most reliable? Then design a 'coherence-weighted PageRank' — a measure of which nodes are most epistemically central. This is the mathematics of the Wisdom GDP.",
+    },
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── LAYER ZERO — SEEING THE GAME (6 lessons) ─────────────────────────────
+    # The gentlest possible on-ramp for people who sense something is off
+    # but haven't yet had language for it.
+    #
+    # This track does not start with simulation theory or philosophy.
+    # It starts with the undeniable daily experience of running on autopilot,
+    # feeling like the script is already written, noticing the patterns —
+    # and slowly builds the vocabulary to ask deeper questions without
+    # triggering social defenses.
+    #
+    # The graduates of the Adversarial Robustness and Narrative Warfare tracks
+    # started here. So did everyone who has ever asked "wait, is this real?"
+    # and then looked away because they had no tools to go further.
+    #
+    # This is the door. The curriculum is behind it.
+    # ══════════════════════════════════════════════════════════════════════════
+    "layer-zero-1": {
+        "title":       "Layer Zero — Level 1: Why Does Life Sometimes Feel Like a Script?",
+        "topic":       "Almost everyone has had the experience: something happens exactly as expected, a conversation follows a predictable path, a decision feels like it was already made. This feeling — that life is sometimes running on a script — is not paranoia. It is a signal worth examining.",
+        "steelman":    "What is the strongest argument that the feeling of 'running on a script' is simply the recognition of predictable patterns in a causal universe — and that interpreting it as anything more mystical or significant is motivated reasoning?",
+        "example":     (
+            "The script signal appears in several forms:\n\n"
+            "BEHAVIORAL SCRIPTS: you realize mid-sentence that you've said these "
+            "exact words before — not because you're lying, but because the situation "
+            "triggers a memorized response. The 'how are you' / 'fine, thanks' exchange "
+            "is a script running so smoothly you barely notice it.\n\n"
+            "NARRATIVE SCRIPTS: you find yourself in a conflict and realize "
+            "both people are playing their assigned roles — not choosing, but filling "
+            "positions in a story that started before either person arrived.\n\n"
+            "CULTURAL SCRIPTS: the path from birth to school to career to retirement "
+            "was laid out before you were born. Most people follow it without asking "
+            "whether it was designed for their actual flourishing or for some other purpose.\n\n"
+            "The question is not whether scripts exist — they do.\n"
+            "The question is: who wrote them, for what purpose, "
+            "and can you see them clearly enough to choose which ones to run?\n\n"
+            "AUBIEETERNAL's position: seeing the scripts is the beginning of agency. "
+            "You cannot choose differently from a script you don't know you're running."
+        ),
+        "activity":    (
+            "Script Spotting (3 days):\n"
+            "For the next 3 days, log any moment where you notice a script running.\n"
+            "Write: What was the script? How long had it been running before you noticed?\n"
+            "What would you have done differently if you had noticed it earlier?\n\n"
+            "No judgment — just observation.\n"
+            "The goal is not to eliminate all scripts.\n"
+            "The goal is to know which ones you're choosing vs. which are choosing for you."
+        ),
+        "age_hint":    "All ages",
+        "xp": 25, "rune": "TRUTH•RUNE", "min_coherence": 0.50,
+    },
+    "layer-zero-2": {
+        "title":       "Layer Zero — Level 2: Autopilot — When You're Thinking Without Noticing",
+        "topic":       "System 1 and System 2 thinking are not just a psychology framework — they are the structure of most of your waking life. Understanding how much cognition runs automatically, below conscious attention, changes your relationship to your own decisions.",
+        "steelman":    "What is the strongest argument that autopilot cognition is a feature rather than a bug — that the brain's ability to automate most decisions is what frees conscious attention for the genuinely novel, and that increasing conscious awareness of routine decisions would be paralyzing?",
+        "example":     (
+            "Kahneman (Thinking Fast and Slow, 2011):\n"
+            "System 1 — fast, automatic, effortless, associative, emotional.\n"
+            "System 2 — slow, deliberate, effortful, logical, rare.\n\n"
+            "Empirical finding: roughly 95% of cognition is System 1.\n"
+            "You did not consciously choose your reaction to the last thing "
+            "that annoyed you. System 1 had already responded before "
+            "System 2 was even engaged.\n\n"
+            "The interception window:\n"
+            "Between stimulus and response, there is a gap. Viktor Frankl wrote "
+            "about this gap while in a concentration camp: 'In that space is our "
+            "power to choose our response.'\n"
+            "Mindfulness, polyvagal regulation, and epistemic discipline "
+            "are all methods of widening that gap.\n\n"
+            "The AUBIEETERNAL application: every tool in this curriculum — "
+            "steelmanning, adversarial testing, pre-registration — is a "
+            "System 2 intervention. They work by forcing a pause before System 1 "
+            "renders its verdict and closes the case.\n\n"
+            "The harder question: when you 'decided' to hold your current beliefs, "
+            "was that System 2 reasoning or System 1 pattern-matching?"
+        ),
+        "activity":    (
+            "The Pause Experiment:\n"
+            "Today, before you respond to any message, article, or conversation "
+            "that triggers a strong reaction — pause for 10 seconds.\n\n"
+            "During the pause: notice what System 1 already decided.\n"
+            "Then: what does System 2 add, change, or confirm?\n\n"
+            "Log 5 instances. For each: did the pause change your response?\n"
+            "The goal is not to always slow down — it is to know when you are running fast."
+        ),
+        "age_hint":    "All ages",
+        "xp": 28, "rune": "TRUTH•RUNE", "min_coherence": 0.52,
+        "prerequisites": ["layer-zero-1"],
+    },
+    "layer-zero-3": {
+        "title":       "Layer Zero — Level 3: The Questions Everyone Has But Rarely Asks",
+        "topic":       "There is a category of questions that almost every person has experienced — usually late at night, in quiet moments — but that social norms make it difficult to ask out loud. This lesson names those questions, normalizes them, and connects them to the serious intellectual traditions that take them seriously.",
+        "steelman":    "What is the strongest argument that encouraging people to ask 'base code questions' causes more harm than good — that most people are not equipped to sit with genuinely open existential questions, and that the resulting anxiety is worse than the comfortable certainty they had before?",
+        "example":     (
+            "The questions that visit people at 3AM:\n\n"
+            "Is this actually real, or is there some sense in which I'm experiencing a representation?\n"
+            "If I had been born in a different culture, would I hold entirely different beliefs "
+            "with equal certainty?\n"
+            "How much of what I 'decided' was actually decided by processes I had no control over?\n"
+            "Is there more going on here than I can see?\n"
+            "What would I have to believe to make sense of the most strange experiences I've had?\n\n"
+            "These questions are not new. They are the oldest in human thought:\n"
+            "Descartes (1641): what if I'm deceived about all of reality? (cogito ergo sum)\n"
+            "Plato (~380 BCE): what if we only see shadows of the real? (Allegory of the Cave)\n"
+            "Bostrom (2003): what is the probability we are in a simulation?\n"
+            "Zhuangzi (~300 BCE): am I a man dreaming I'm a butterfly, or a butterfly dreaming I'm a man?\n\n"
+            "The questions are not crazy. The people asking them are not unstable.\n"
+            "They are the same questions that have occupied the sharpest minds in history.\n"
+            "The difference is having a framework — and tools — to investigate them honestly."
+        ),
+        "activity":    (
+            "Name Your 3AM Questions:\n"
+            "Write 3 questions that you have had — or currently have — about the nature "
+            "of reality, consciousness, or your own existence that you rarely say out loud.\n\n"
+            "For each: have you ever looked for a serious intellectual tradition "
+            "that addresses this question? What did you find?\n\n"
+            "Seal the questions in the Legacy Ledger.\n"
+            "They are the beginning of an honest inquiry that could last a lifetime."
+        ),
+        "age_hint":    "14+",
+        "xp": 30, "rune": "TRUTH•RUNE", "min_coherence": 0.55,
+        "prerequisites": ["layer-zero-2"],
+    },
+    "layer-zero-4": {
+        "title":       "Layer Zero — Level 4: Pattern Recognition — How to Notice When Something Is Systematic",
+        "topic":       "Individual strange events are noise. Systematic patterns across unconnected domains are signal. This lesson teaches the skill of distinguishing isolated anomalies from genuine patterns — without falling into the opposite error of seeing patterns in random noise.",
+        "steelman":    "What is the strongest argument that teaching pattern recognition outside rigorous statistical training is dangerous — and that untrained pattern recognition is just apophenia (seeing patterns in randomness) with a more confident framing?",
+        "example":     (
+            "The two pattern recognition errors:\n\n"
+            "TYPE I (False Positive / Apophenia): seeing a pattern that isn't there.\n"
+            "Humans are strongly biased toward Type I errors — we evolved in an "
+            "environment where false positives (seeing a predator that wasn't there) "
+            "were less costly than false negatives.\n"
+            "Conspiracy theories are mostly Type I errors at scale.\n\n"
+            "TYPE II (False Negative / Normalization): missing a pattern that IS there.\n"
+            "Every institutional failure — from the 2008 financial crisis to ignored "
+            "pandemic warnings to scientific misconduct — involved systematic Type II "
+            "errors. The pattern was there. No one was allowed to say so.\n\n"
+            "The statistical correction for Type I: require replication. "
+            "If the pattern persists across independent observations, it becomes more likely real.\n"
+            "The social correction for Type II: require diversity of sources. "
+            "If the same pattern appears in multiple unconnected domains, "
+            "the prior probability that it is real increases.\n\n"
+            "AUBIEETERNAL's tools for both:\n"
+            "Monte Carlo simulator: is this anomaly statistically genuine?\n"
+            "Narrative Pattern Detector: is the same frame appearing simultaneously across institutions?\n"
+            "Gatekeeper Detector: is there systematic suppression of a specific type of inquiry?"
+        ),
+        "activity":    (
+            "The Pattern Audit:\n"
+            "Choose one pattern you have noticed in your own life or in the world.\n"
+            "Score it on five dimensions (1-5 each):\n"
+            "1. How many independent observations support it?\n"
+            "2. How many domains does it appear across?\n"
+            "3. How many people have independently noticed the same thing?\n"
+            "4. What is the most plausible chance explanation?\n"
+            "5. What prediction does the pattern make that could be tested?\n\n"
+            "High scores: worth investigating seriously.\n"
+            "Low scores: log it, but hold it lightly.\n"
+            "The tool is not there to confirm the pattern — it is there to calibrate how seriously to take it."
+        ),
+        "age_hint":    "13+",
+        "xp": 35, "rune": "TRUTH•RUNE", "min_coherence": 0.58,
+        "prerequisites": ["layer-zero-2"],
+    },
+    "layer-zero-5": {
+        "title":       "Layer Zero — Level 5: First Contact with the Detection Tools",
+        "topic":       "AUBIEETERNAL includes several tools specifically designed to detect things that are hard to see directly: gatekeepers, narrative patterns, simulation signals. This lesson introduces them — not as proof of any particular theory, but as instruments for honest investigation.",
+        "steelman":    "What is the strongest argument that tools specifically designed to detect 'gatekeepers' and 'narrative coordination' are confirmation-bias engines — that they will find what they are built to find regardless of whether it is really there?",
+        "example":     (
+            "Three detection tools and what they actually measure:\n\n"
+            "GATEKEEPER DETECTOR (gatekeeper_detector.py):\n"
+            "Detects: agents who control access to information, resources, or audiences.\n"
+            "What it does NOT do: assign malicious intent. "
+            "A gatekeeper may be neutral, well-meaning, or harmful. "
+            "The tool identifies the structure, not the motive.\n"
+            "Output: gatekeeper type (7 categories), "
+            "capture probability, bypass paths.\n\n"
+            "NARRATIVE PATTERN DETECTOR (narrative_pattern_detector.py):\n"
+            "Detects: when the same narrative frame appears across multiple "
+            "institutions within a short window.\n"
+            "3 independent signals in 72 hours = coordination probability calculated.\n"
+            "What it does NOT do: assume the coordination is conspiratorial. "
+            "Parallel emergence (same story because it's real) looks the same as coordination.\n\n"
+            "SIMULATION PROBE (simulation_probe.py) + Monte Carlo Glitch Detector:\n"
+            "Detects: statistical anomalies in coherence, wonder, or belief update signals.\n"
+            "What it does NOT do: claim these anomalies are evidence of simulation. "
+            "They are signals worth logging. Over 10+ years of data, "
+            "the pattern of anomalies may become interpretable.\n\n"
+            "The honest use of all three: log, don't conclude. "
+            "Build data over time. Let the pattern emerge or not."
+        ),
+        "activity":    (
+            "Run all three tools on one real event this week:\n\n"
+            "1. Find a news story that seems important.\n"
+            "2. Run the Gatekeeper Detector: who controls access to this information? "
+            "What type of gatekeeping is present?\n"
+            "3. Run the Narrative Pattern Detector: is the same frame appearing in "
+            "multiple outlets simultaneously?\n"
+            "4. Log your own coherence score before and after fully engaging with the story.\n\n"
+            "Seal the three-tool report in the Truth Debt Ledger.\n"
+            "Note: you are not looking for proof of anything. "
+            "You are learning to use the instruments."
+        ),
+        "age_hint":    "14+",
+        "xp": 40, "rune": "TRUTH•RUNE", "min_coherence": 0.60,
+        "prerequisites": ["layer-zero-4"],
+    },
+    "layer-zero-6": {
+        "title":       "Layer Zero — Level 6: The Door — From Pattern Recognition to Sovereign Inquiry",
+        "topic":       "This is the graduation lesson for Layer Zero. You have the scripts, the autopilot, the 3AM questions, the pattern audit tools, and the detection instruments. Now the choice: go deeper into the curriculum, or take what you have and apply it. Both are valid. But the door is open.",
+        "steelman":    "What is the strongest argument that this entire 'Layer Zero' framing — 'seeing the game,' 'the door,' 'sovereign inquiry' — is itself a narrative that creates a sense of special insight, making participants feel they can see what others cannot, which is a manipulation technique that should raise serious red flags?",
+        "example":     (
+            "The steelman for Layer Zero is the most important lesson in it.\n\n"
+            "Every system that claims to help you 'see past the veil' is also a narrative. "
+            "Every community that offers deeper truth also risks becoming a new filter bubble. "
+            "Every set of tools for pattern recognition can produce false positives "
+            "just as easily as genuine insights.\n\n"
+            "AUBIEETERNAL's design response to its own steelman:\n"
+            "1. The tools have explicit Type I error correction built in (Monte Carlo, statistics)\n"
+            "2. The prerequisite system requires coherence to advance — "
+            "not belief in any particular conclusion\n"
+            "3. Every lesson requires steelmanning the opposite view\n"
+            "4. The curriculum is CC0 — no one profits from you believing specific things\n"
+            "5. The Truth Debt Ledger requires honesty about missed predictions, "
+            "not just confirmed ones\n\n"
+            "This does not make AUBIEETERNAL immune to the failure mode. "
+            "But it makes the failure mode visible and correctable.\n\n"
+            "The difference between a cult and a school of inquiry:\n"
+            "A cult tells you what to conclude.\n"
+            "A school teaches you how to investigate — and takes the investigation seriously "
+            "even when it contradicts the school's preferred answers."
+        ),
+        "activity":    (
+            "The Graduation Question:\n"
+            "Write one paragraph answering: what have you learned from Layer Zero "
+            "that you will still believe is true in 10 years?\n\n"
+            "Then write one paragraph answering: what from Layer Zero might be wrong?\n\n"
+            "Seal both.\n"
+            "The two paragraphs together are the most honest graduation statement possible.\n\n"
+            "You are now ready for the rest of the curriculum.\n"
+            "The rest of the curriculum is ready for you."
+        ),
+        "age_hint":    "14+",
+        "xp": 45, "rune": "LAYER•ZERO•RUNE", "min_coherence": 0.62,
+        "prerequisites": ["layer-zero-5"],
+        "grants_badge": "🚪 Layer Zero — The Door Is Open",
+        "lattice_node": "layer-zero-sovereign-inquiry-begins",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── INFORMATION THEORY AND THE NATURE OF REALITY (5 lessons) ─────────────
+    # Claude's genuine addition #5.
+    #
+    # Shannon showed that information is physical — it has entropy, can be
+    # quantified, and obeys laws as strict as thermodynamics.
+    # Landauer showed that erasing information generates heat.
+    # Wheeler proposed "it from bit" — that reality is fundamentally informational.
+    # Lloyd computed the universe as a quantum computer.
+    #
+    # This is not a metaphor. It may be the deepest description of reality
+    # available to us. Understanding it changes what questions you can ask
+    # about consciousness, the simulation hypothesis, and the nature of existence.
+    # ══════════════════════════════════════════════════════════════════════════
+    "information-1": {
+        "title":       "Information Theory — Level 1: What Is Information, Really?",
+        "topic":       "Information is not just content. It is a measurable physical quantity that obeys strict laws. Shannon's definition of information is counterintuitive and profound: the more surprising a message, the more information it contains. Understanding this changes how you think about learning, surprise, and uncertainty.",
+        "steelman":    "What is the strongest argument that Shannon information theory is a powerful engineering tool but philosophically neutral — and that claims connecting it to the nature of reality are unjustified extrapolation from a measurement framework?",
+        "example":     (
+            "Shannon entropy (1948):\n"
+            "H = -∑ p(x) log₂ p(x)\n\n"
+            "What this measures: the average surprise in a probability distribution.\n"
+            "High entropy = more surprising = more information.\n"
+            "Low entropy = more predictable = less information.\n\n"
+            "The counterintuitive result:\n"
+            "A completely predictable message ('the sun will rise tomorrow') "
+            "contains almost zero information — you already knew it.\n"
+            "A random sequence of bits contains maximum information — "
+            "each bit is maximally surprising.\n"
+            "But a compressed, encrypted file also looks like random bits.\n"
+            "So maximum information and maximum randomness are mathematically identical — "
+            "you can only distinguish them with context.\n\n"
+            "The cosmic implication: if the early universe was low entropy "
+            "(highly ordered), it contained less Shannon information than the "
+            "current high-entropy universe. "
+            "The universe has been generating information for 13.8 billion years.\n\n"
+            "The learning implication: you learn most from things that surprise you. "
+            "A teacher who only confirms what you already know "
+            "is generating zero information."
+        ),
+        "activity":    (
+            "Shannon Entropy Lab:\n"
+            "Count letter frequencies in a paragraph of English text.\n"
+            "Compute H = -∑ p(x) log₂ p(x).\n"
+            "(p(x) = frequency of letter x / total letters)\n\n"
+            "English has about 4.5 bits per letter.\n"
+            "Random text has 4.7 bits per letter (26 letters × equal probability).\n"
+            "The difference IS the structure of the English language.\n\n"
+            "Now compute entropy for a passage from the most and least complex book "
+            "you own. Does complexity correlate with entropy?"
+        ),
+        "age_hint":    "12+",
+        "xp": 42, "rune": "INFORMATION•RUNE", "min_coherence": 0.65,
+        "phd_extension": "Implement Kolmogorov complexity estimation: for a string, the Kolmogorov complexity K(x) is the length of the shortest program that produces x. It is not computable in general, but can be approximated by compression ratio (compress the string; the compressed length ≈ K(x)). Compute compression ratios for: English text, random text, the digits of π, and the AUBIEETERNAL truth log. Rank by complexity. Now: is the universe more like random text or English text? This is the question.",
+    },
+    "information-2": {
+        "title":       "Information Theory — Level 2: Landauer's Principle — Information Is Physical",
+        "topic":       "Rolf Landauer proved in 1961 that erasing one bit of information generates a minimum amount of heat. This means information is not abstract — it is physically real. Erasing information has a physical cost. The universe cannot just 'delete' information.",
+        "steelman":    "What is the strongest argument that Landauer's principle, while mathematically correct, has no philosophical implications for the 'reality' of information — and that the physical cost of erasure is just a thermodynamic consequence with no deeper meaning?",
+        "example":     (
+            "Landauer's principle:\n"
+            "Minimum heat generated per bit erased = kT ln(2)\n"
+            "(k = Boltzmann constant, T = temperature in Kelvin)\n\n"
+            "At room temperature (293K): ~2.87 × 10⁻²¹ joules per bit erased.\n"
+            "This is tiny — but it is nonzero. It is a physical law.\n\n"
+            "Why this matters:\n"
+            "Maxwell's Demon (1871): an imaginary demon who sorts molecules by speed, "
+            "seemingly violating the Second Law of Thermodynamics.\n"
+            "Resolution (1961): the demon must record which molecules it moves. "
+            "When it erases that record to reset itself, it generates exactly as much "
+            "entropy as it appeared to remove. The demon is defeated by the cost of forgetting.\n\n"
+            "The deep implication:\n"
+            "The physical world cannot arbitrarily erase information. "
+            "This is why: information must be somewhere — scattered into thermal noise, "
+            "but not gone. Hawking's black hole information paradox is about this: "
+            "does information truly disappear in a black hole? "
+            "Current consensus (2016): it doesn't. It comes back out, scrambled, in Hawking radiation.\n\n"
+            "The philosophical implication: information may be more conserved "
+            "than matter or energy. It cannot simply stop existing."
+        ),
+        "activity":    (
+            "The Erasure Question:\n"
+            "Identify 3 things in your life you 'deleted' or 'forgot.'\n"
+            "For each: where did the information actually go? "
+            "Is it truly gone, or just scattered?\n\n"
+            "Apply to digital information: when you delete a file, "
+            "is the information gone? (What do forensic recovery tools suggest?)\n\n"
+            "Apply to human memory: when a memory fades, "
+            "is the information gone, or redistributed in the neural structure?\n\n"
+            "If information cannot be truly erased from the physical universe — "
+            "what does that imply about the permanence of experience?"
+        ),
+        "age_hint":    "13+",
+        "xp": 48, "rune": "INFORMATION•RUNE", "min_coherence": 0.68,
+    },
+    "information-3": {
+        "title":       "Information Theory — Level 3: It From Bit — Is the Universe Made of Information?",
+        "topic":       "John Archibald Wheeler — one of the founders of quantum gravity — proposed that every particle, every field, every aspect of physical reality derives its existence from answers to yes-or-no questions. 'It from Bit.' This is not mysticism. It is a serious scientific hypothesis with implications for physics, consciousness, and the simulation question.",
+        "steelman":    "What is the strongest argument that 'it from bit' is an unfalsifiable philosophical claim that adds nothing to physics — and that calling the universe 'informational' is just relabeling physical processes without explaining anything?",
+        "example":     (
+            "Wheeler's reasoning:\n"
+            "Every quantum measurement is a yes-or-no answer.\n"
+            "Quantum mechanics is fundamentally about what you can know, not what IS.\n"
+            "The act of measurement (asking a yes-or-no question) creates a definite outcome.\n"
+            "Therefore: physical reality is the accumulated record of answers to binary questions.\n\n"
+            "The evidence for informational physics:\n"
+            "1. Bekenstein-Hawking: black hole entropy = number of bits of information "
+            "on the event horizon. Information is measured in physical units.\n"
+            "2. Holographic principle: the information content of a 3D region "
+            "is encoded on its 2D boundary surface — like a hologram.\n"
+            "3. ER = EPR (2013, Maldacena & Susskind): entangled particles are "
+            "connected by microscopic wormholes. Geometry IS quantum information.\n"
+            "4. Seth Lloyd (2000): the universe can be modeled as a quantum computer "
+            "processing ~10^92 operations per second.\n\n"
+            "What remains unclear:\n"
+            "Does 'the universe is informational' mean anything beyond "
+            "'the universe can be described informationally'?\n"
+            "These are not the same claim — and this distinction matters enormously."
+        ),
+        "activity":    (
+            "The Information Test:\n"
+            "For each of the following, ask: is this a physical thing, "
+            "an information pattern, or something that can't be cleanly separated?\n\n"
+            "1. Your identity (the pattern of your neurons vs the substrate they run on)\n"
+            "2. A species (the pattern vs the individual organisms)\n"
+            "3. A piece of music (the pattern vs the physical sound waves)\n"
+            "4. A memory (the pattern vs the neural encoding)\n"
+            "5. A law of physics (the pattern vs whatever it describes)\n\n"
+            "Is there anything that is PURELY substrate with no pattern?\n"
+            "Is there anything that is PURELY pattern with no substrate?"
+        ),
+        "age_hint":    "13+",
+        "xp": 52, "rune": "INFORMATION•RUNE", "min_coherence": 0.70,
+        "phd_extension": "Read Bekenstein (1973) 'Black Holes and Entropy' and Hawking (1975) 'Particle Creation by Black Holes.' Compute the Bekenstein-Hawking entropy for a solar-mass black hole: S = kA/4l_p² where A is horizon area and l_p is Planck length. The result is ~10^77 bits. Compare to the information content of the observable universe (~10^90 bits by Lloyd's estimate). Then read Susskind (2008) 'The Black Hole War' on the information paradox. What is the current status of Hawking's concession?",
+    },
+    "information-4": {
+        "title":       "Information Theory — Level 4: Mutual Information, Quantum Entanglement, and Connection",
+        "topic":       "Mutual information measures how much knowing one thing tells you about another. Quantum entanglement is the extreme case: measuring one particle instantly determines the other, regardless of distance. Understanding both changes how you think about connection, correlation, and whether the universe is fundamentally local.",
+        "steelman":    "What is the strongest argument that quantum entanglement is frequently misrepresented as 'spooky action at a distance' implying non-local connection — and that a careful reading of the physics shows it cannot transmit information and has no mystical implications?",
+        "example":     (
+            "Mutual information: I(X;Y) = H(X) + H(Y) - H(X,Y)\n"
+            "Measures how much uncertainty about Y is reduced by knowing X.\n\n"
+            "Applications in AUBIEETERNAL:\n"
+            "Mutual information between ANS state and coherence score IS the PVC hypothesis.\n"
+            "Mutual information between family members' beliefs measures intellectual coherence.\n"
+            "Mutual information between a model's training data and its outputs "
+            "measures knowledge transfer efficiency.\n\n"
+            "Quantum entanglement:\n"
+            "Two particles in an entangled state share quantum information.\n"
+            "Measuring one instantly determines the other — regardless of distance.\n"
+            "Bell (1964): this is not explainable by local hidden variables.\n"
+            "Aspect et al. (1982): experimentally confirmed. Non-locality is real.\n\n"
+            "What this means and does NOT mean:\n"
+            "DOES mean: the universe is not locally realistic in the classical sense.\n"
+            "Does NOT mean: you can use entanglement to transmit information faster "
+            "than light (the No-Communication theorem prevents this).\n"
+            "DOES mean: correlations can exist between distant systems "
+            "that cannot be explained by any local theory.\n\n"
+            "The information-theoretic framing:\n"
+            "ER = EPR: entangled particles are connected by a microscopic wormhole. "
+            "Quantum information IS geometry. Spacetime may be built from entanglement."
+        ),
+        "activity":    (
+            "Mutual Information Scan:\n"
+            "Run the PVC research protocol for 5 sessions:\n"
+            "Before: log ANS state (Green/Yellow/Red), interoceptive accuracy\n"
+            "After: log coherence score\n\n"
+            "After 5 sessions: what is the apparent mutual information "
+            "between state and coherence? Does knowing your pre-session state "
+            "tell you anything about your post-session coherence?\n\n"
+            "This is not a definitive test — it is training your ability to "
+            "notice mutual information in your own data."
+        ),
+        "age_hint":    "14+",
+        "xp": 55, "rune": "INFORMATION•RUNE", "min_coherence": 0.72,
+        "prerequisites": ["information-3", "cosmos-2"],
+    },
+    "information-5": {
+        "title":       "Information Theory — Level 5 (Master): The Universe as Computation",
+        "topic":       "If the universe processes information according to physical laws — and Landauer, Wheeler, Lloyd, and the holographic principle all suggest this — then what kind of computer is it? And what does that imply about consciousness, the simulation hypothesis, and the nature of time?",
+        "steelman":    "What is the strongest argument that framing the universe as a 'computer' is a category error — that computation requires an outside perspective (a programmer, an observer interpreting outputs), and that a 'self-computing universe' is either meaningless or trivially true?",
+        "example":     (
+            "Seth Lloyd's quantum computer universe (2000):\n"
+            "The universe has processed approximately 10^92 operations since the Big Bang.\n"
+            "It stores approximately 10^90 bits of information.\n"
+            "Both numbers are bounded by physical constants.\n\n"
+            "The simulation question reframed informationally:\n"
+            "Bostrom's simulation argument assumes 'simulations' require a simulator.\n"
+            "But if the universe IS computation, then:\n"
+            "A. Our universe may be running inside a larger computational substrate.\n"
+            "B. Our universe may be self-simulating (strange loop — see Hofstadter).\n"
+            "C. 'Simulation' may not be the right word for a universe that is "
+            "fundamentally computational at every level.\n\n"
+            "The consciousness connection:\n"
+            "If information processing is what the universe does at its most fundamental level, "
+            "and consciousness is information processing, then consciousness may not be "
+            "incidental to the universe — it may be what the universe IS doing.\n"
+            "Tononi's IIT: consciousness = integrated information (Φ).\n"
+            "Penrose-Hameroff: consciousness involves quantum computation in microtubules.\n"
+            "Wheeler: consciousness is required to collapse the quantum wave function — "
+            "'the universe brought itself into existence by observing itself.'\n\n"
+            "None of these is proven. All are serious scientific proposals. "
+            "The question is genuinely open."
+        ),
+        "activity":    (
+            "Your Computational Cosmology Credences:\n"
+            "Assign probabilities (must sum to 100%):\n"
+            "P(universe is a classical computation) = ?%\n"
+            "P(universe is a quantum computation) = ?%\n"
+            "P(universe is computational in a sense we don't yet have language for) = ?%\n"
+            "P(universe is not computational — computation is a description, not a fact) = ?%\n\n"
+            "For each: what would change your credence?\n"
+            "What experiment could in principle distinguish these?\n"
+            "Seal in Cosmos Dashboard belief ledger."
+        ),
+        "age_hint":    "14+ / PhD",
+        "xp": 70, "rune": "INFORMATION•COSMOS•RUNE", "min_coherence": 0.75,
+        "grants_badge": "⚛️ Information Theorist — Universe as Computation Understood",
+        "prerequisites": ["information-4", "simulation-3"],
+        "lattice_node": "information-theory-nature-of-reality-complete",
+        "phd_extension": "Read Lloyd (2000) 'Ultimate Physical Limits to Computation' (Nature). Derive his upper bounds: I = 2E t / (π ℏ) bits processed, S / k_B ln 2 bits stored, where E is energy, t is time elapsed, and S is thermodynamic entropy. Apply to: your brain (compute the theoretical maximum bits your neural substrate can process per second). Compare to Claude Shannon's estimate of human information processing (~50 bits/s of conscious processing). The gap IS the bandwidth of conscious experience vs. the computational substrate.",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── THE EVOLUTION OF HUMAN KNOWLEDGE (5 lessons) ─────────────────────────
+    # Claude's genuine addition #6.
+    #
+    # The single question with the most practical value for truth-seekers:
+    # How does humanity's collective understanding actually change?
+    # Not how it SHOULD change (rationalist ideals) but how it DOES.
+    #
+    # Kuhn showed it is not incremental accumulation but revolutionary upheaval.
+    # Lakatos showed it is not falsification but research programs.
+    # Feyerabend showed it is messier than either.
+    # The sociology of knowledge showed that power and truth are always intertwined.
+    #
+    # The families who understand this track can tell the difference between:
+    # a genuine paradigm shift and manufactured consensus,
+    # a research program losing ground and one being actively suppressed,
+    # productive heterodox inquiry and motivated contrarianism.
+    # ══════════════════════════════════════════════════════════════════════════
+    "knowledge-evolution-1": {
+        "title":       "Knowledge Evolution — Level 1: How Science Actually Grows (Not the Textbook Version)",
+        "topic":       "Textbooks present science as a steady accumulation of facts. The history of science shows something very different: long periods of puzzle-solving within accepted frameworks, punctuated by revolutions that overturn the framework entirely. Understanding how science actually changes makes you much harder to manipulate with appeals to authority.",
+        "steelman":    "What is the strongest argument that the Kuhnian picture of science as paradigm-driven and revolutionary is actually harmful to public understanding — because it gives license to dismiss scientific consensus as 'just a paradigm' whenever it's inconvenient?",
+        "example":     (
+            "Kuhn's structure (The Structure of Scientific Revolutions, 1962):\n\n"
+            "NORMAL SCIENCE: scientists work within a paradigm — a set of accepted models, "
+            "methods, and exemplary solutions. They solve 'puzzles' defined by the paradigm. "
+            "Anomalies are noted but usually explained away or set aside.\n\n"
+            "CRISIS: when anomalies accumulate to the point where the paradigm cannot "
+            "accommodate them, confidence erodes and alternatives are proposed.\n\n"
+            "REVOLUTION: a new paradigm is adopted — not because it definitively proves "
+            "the old one wrong, but because it handles the anomalies better and opens "
+            "more productive research directions.\n\n"
+            "INCOMMENSURABILITY: old and new paradigms are partly incompatible — "
+            "they don't just disagree about facts, they use different concepts, "
+            "ask different questions, and define terms differently.\n\n"
+            "Paradigm shifts in history:\n"
+            "Ptolemy → Copernicus (200 years of resistance)\n"
+            "Phlogiston → Lavoisier (chemistry reinvented)\n"
+            "Newtonian → Einsteinian (still not fully resolved with QM)\n"
+            "H. pylori dismissed as ulcer cause → accepted (Nobel Prize)\n"
+            "Prions dismissed as impossible → accepted (Nobel Prize)\n\n"
+            "The disturbing finding: each of these transitions was resisted "
+            "by the scientific establishment — often by exactly the people "
+            "who had the most invested in the old paradigm."
+        ),
+        "activity":    (
+            "Paradigm History Map:\n"
+            "Choose one field you know well (medicine, nutrition, psychology, "
+            "physics, economics, education).\n"
+            "Identify one paradigm shift in that field in the last 50 years.\n"
+            "1. What was the old paradigm?\n"
+            "2. What were the anomalies it couldn't explain?\n"
+            "3. What was the resistance? Who resisted and why?\n"
+            "4. What finally tipped the transition?\n\n"
+            "Now: what are the current anomalies in that field "
+            "that the current paradigm struggles to explain?"
+        ),
+        "age_hint":    "13+",
+        "xp": 42, "rune": "KNOWLEDGE•RUNE", "min_coherence": 0.65,
+    },
+    "knowledge-evolution-2": {
+        "title":       "Knowledge Evolution — Level 2: Lakatos, Research Programs, and How to Distinguish Progress from Degeneration",
+        "topic":       "Imre Lakatos improved on both Popper (pure falsificationism) and Kuhn (pure revolutions) with a more nuanced framework: science progresses through competing research programs, each with a hard core of unfalsifiable commitments and a protective belt of testable auxiliary hypotheses. This is the most useful framework for evaluating competing scientific claims.",
+        "steelman":    "What is the strongest argument that Lakatos's framework is too generous to pseudoscience — that calling something a 'degenerating research program' rather than just wrong gives undeserved legitimacy to ideas that should simply be rejected?",
+        "example":     (
+            "Lakatos's research program structure:\n\n"
+            "HARD CORE: central theoretical assumptions that are not directly tested "
+            "(protected by methodological decision). Example: Newton's three laws.\n\n"
+            "PROTECTIVE BELT: testable auxiliary hypotheses that can be modified "
+            "when anomalies appear, protecting the hard core. "
+            "When Newtonian mechanics failed to predict Uranus's orbit, "
+            "astronomers didn't abandon Newton — they added 'there must be another planet.'\n\n"
+            "PROGRESSIVE research program: generates new predictions that are confirmed.\n"
+            "DEGENERATING research program: only adds ad hoc modifications after anomalies "
+            "appear, generates no new predictions.\n\n"
+            "The test for degeneration:\n"
+            "Ask: 'What does this theory PREDICT that is not already known?'\n"
+            "If the answer is only 'the existing evidence' — it is degenerating.\n"
+            "If it makes novel predictions that can be tested — it may be progressive.\n\n"
+            "Applied to contemporary debates:\n"
+            "A research program that adds a new auxiliary hypothesis to explain each "
+            "new failure is not being disproven — it is degenerating.\n"
+            "The therapy: demand novel predictions, not just explanations of existing data."
+        ),
+        "activity":    (
+            "Research Program Audit:\n"
+            "Pick any contested scientific or intellectual claim you hold.\n"
+            "Map it as a research program:\n"
+            "1. What is the hard core? (the assumption that cannot be touched)\n"
+            "2. What is the protective belt? (auxiliary hypotheses you would modify before the core)\n"
+            "3. Is the program generating novel predictions, or only explaining existing data?\n"
+            "4. What is the most recent anomaly it faced? How was it handled?\n\n"
+            "Progressive or degenerating?\n"
+            "Log your assessment. Revisit in 1 year."
+        ),
+        "age_hint":    "14+",
+        "xp": 48, "rune": "KNOWLEDGE•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Read Lakatos (1978) 'The Methodology of Scientific Research Programmes' Chapter 1. Apply the Lakatosian framework to one active debate in a field you follow closely. Identify: the hard core of each competing program, the recent history of protective belt modifications, and whether each is generating novel confirmed predictions or only post-hoc explanations. This analysis, published to the Epistemic Commons, is exactly the kind of high-quality epistemic signal that AUBIEETERNAL exists to generate.",
+    },
+    "knowledge-evolution-3": {
+        "title":       "Knowledge Evolution — Level 3: The Sociology of Knowledge — Power, Funding, and What Gets Known",
+        "topic":       "Knowledge does not exist in a social vacuum. What questions get asked, what findings get published, what careers get funded, and what becomes 'consensus' are all influenced by power structures, economic incentives, and social dynamics. Understanding this is not cynicism — it is the prerequisite for calibrating which knowledge claims to trust.",
+        "steelman":    "What is the strongest argument that the sociology of knowledge is weaponized to dismiss inconvenient scientific consensus — and that teaching it without extremely careful guardrails creates more harm (in the form of vaccine refusal, climate denial, etc.) than the epistemic benefits are worth?",
+        "example":     (
+            "The sociology of knowledge in practice:\n\n"
+            "Robert Merton's norms of science (1942):\n"
+            "Universalism, communism (shared knowledge), disinterestedness, skepticism.\n"
+            "These are prescriptive ideals — not descriptions of actual scientific practice.\n\n"
+            "What the empirical record shows:\n"
+            "• Cigarette industry scientists generated research casting doubt on smoking-cancer link\n"
+            "  for 50 years after the link was clear.\n"
+            "• Pharmaceutical industry trials consistently show larger effect sizes than "
+            "  independent trials of the same drugs.\n"
+            "• Dietary guidelines were influenced for decades by sugar industry funding "
+            "  of research shifting blame to fat.\n"
+            "• Academic prestige effects: findings from high-prestige institutions "
+            "  are more likely to be accepted and cited, controlling for quality.\n\n"
+            "What this does NOT mean:\n"
+            "It does not mean all scientific findings are corrupt.\n"
+            "It means: the degree of independence, replication, and incentive analysis "
+            "should inform how much weight you place on any finding.\n\n"
+            "The calibration: "
+            "high-conflict/high-funding-dependence findings deserve more scrutiny, "
+            "not automatic rejection."
+        ),
+        "activity":    (
+            "Funding Map for One Claim:\n"
+            "Choose one important scientific claim in a policy-relevant area.\n"
+            "1. Who funded the original research?\n"
+            "2. Who funded the replications?\n"
+            "3. Who funds the researchers who most strongly advocate this position?\n"
+            "4. What would each funder lose if the claim were false?\n\n"
+            "Score: does the funding landscape favor the finding or not?\n"
+            "This does not tell you whether the claim is true. "
+            "It tells you how much independent epistemic weight to assign it."
+        ),
+        "age_hint":    "14+",
+        "xp": 52, "rune": "KNOWLEDGE•RUNE", "min_coherence": 0.70,
+    },
+    "knowledge-evolution-4": {
+        "title":       "Knowledge Evolution — Level 4: Heterodox Ideas — How to Tell the Real Thing From Motivated Contrarianism",
+        "topic":       "Not all challenges to consensus are equal. Some are rigorous heterodox research that will eventually be vindicated. Others are motivated contrarianism — rejection of consensus for social, financial, or psychological reasons. Learning to distinguish them is one of the most practically important epistemic skills.",
+        "steelman":    "What is the strongest argument that any attempt to distinguish 'legitimate heterodox inquiry' from 'motivated contrarianism' is itself a gatekeeping mechanism — and that the people most likely to make this distinction are the incumbents who benefit from the current consensus?",
+        "example":     (
+            "Signs of legitimate heterodox inquiry:\n"
+            "• Specific, falsifiable claims that differ from consensus\n"
+            "• Engagement with the strongest version of the consensus argument (steelmanning)\n"
+            "• Generates novel predictions tested against data\n"
+            "• Acknowledges where it might be wrong\n"
+            "• Does not require conspiracy to explain why consensus exists\n"
+            "• Accumulates progressive research program characteristics\n\n"
+            "Signs of motivated contrarianism:\n"
+            "• Vague enough that no specific evidence could falsify it\n"
+            "• Only attacks weakness in consensus, never defends its own positive claims\n"
+            "• Explains consensus as conspiracy or corruption (unfalsifiable)\n"
+            "• Selectively cites evidence, ignores contrary findings\n"
+            "• Does not generate testable predictions\n"
+            "• The contrarian position happens to align with the contrarian's financial or political interests\n\n"
+            "Historical examples of LEGITIMATE heterodoxy:\n"
+            "H. pylori causing ulcers (Marshall, Barry) — specific, testable, self-tested, vindicated\n"
+            "Continental drift (Wegener) — specific mechanism, testable, eventually vindicated\n"
+            "Semmelweis on hand-washing — ignored partly due to social dynamics, vindicated\n\n"
+            "The key test: would the heterodox researcher be convinced by the evidence "
+            "they claim to be seeking? If the answer is 'nothing would convince them,' "
+            "it is not inquiry — it is identity."
+        ),
+        "activity":    (
+            "Apply the Heterodox Test to One Claim You Find Compelling:\n"
+            "Choose a position you hold that differs from mainstream consensus.\n"
+            "Score it honestly (1-5 each):\n"
+            "Specificity and falsifiability: 1-5\n"
+            "Steelmanning of consensus view: 1-5\n"
+            "Novel predictions generated and tested: 1-5\n"
+            "Independence from financial/political interest: 1-5\n"
+            "Openness to being wrong: 1-5\n\n"
+            "Total below 15: hold this view more lightly.\n"
+            "This exercise works best when you apply it to beliefs you strongly hold — "
+            "not just positions you already distrust."
+        ),
+        "age_hint":    "14+",
+        "xp": 55, "rune": "KNOWLEDGE•RUNE", "min_coherence": 0.72,
+    },
+    "knowledge-evolution-5": {
+        "title":       "Knowledge Evolution — Level 5 (Master): Building Permanent Knowledge — From Individual Learning to Civilizational Record",
+        "topic":       "Individual knowledge is fragile. Civilizational knowledge compounds only if it is recorded honestly, verifiably, and permanently. AUBIEETERNAL's Bitcoin anchoring is not just a technology choice — it is a direct response to the history of how knowledge gets rewritten, suppressed, and lost.",
+        "steelman":    "What is the strongest argument that permanent, immutable knowledge records are dangerous — that they would freeze errors permanently and make it harder to correct false beliefs once they are anchored on-chain?",
+        "example":     (
+            "The history of knowledge destruction and rewriting:\n\n"
+            "DESTRUCTION: Library of Alexandria, Mayan codices burned by conquistadors, "
+            "Nazi book burnings, Cultural Revolution destruction of Chinese intellectual heritage.\n"
+            "These are direct, intentional losses.\n\n"
+            "REWRITING: more subtle and more continuous.\n"
+            "Soviet Encyclopedia: new editions would contain cut-out replacement pages "
+            "for 'un-persons' whose existence was being erased from history.\n"
+            "Wikipedia edit wars: contested claims can cycle through thousands of edits, "
+            "with the current version reflecting not truth but the balance of power "
+            "among current editors.\n"
+            "Medical guideline rewriting after industry influence.\n\n"
+            "The AUBIEETERNAL design response:\n"
+            "A Bitcoin-anchored record cannot be rewritten retroactively. "
+            "The 256-confirmation seal creates a timestamp that is as permanent "
+            "as the Bitcoin blockchain itself (~$600B in security infrastructure protecting it).\n\n"
+            "The correct use of permanence:\n"
+            "Seal predictions BEFORE you know the outcome (pre-registration).\n"
+            "Seal your current beliefs WITH the update conditions.\n"
+            "The permanence does not prevent updating — it prevents pretending "
+            "you always believed the current thing.\n\n"
+            "This is epistemic accountability at civilizational scale."
+        ),
+        "activity":    (
+            "Design Your Permanent Knowledge Protocol:\n"
+            "What knowledge do you most want to preserve permanently?\n"
+            "Not information — knowledge. The difference: information is data.\n"
+            "Knowledge is information + context + the reasoning that validated it.\n\n"
+            "Write 3 things you know — with the reasoning and evidence that makes you "
+            "confident — that you want to be readable and verifiable in 100 years.\n\n"
+            "Seal them in the Legacy Ledger with Bitcoin anchoring.\n"
+            "The seal is not about certainty — it is about honesty.\n"
+            "Your descendants will be able to evaluate whether you were right, "
+            "whether you updated appropriately, and whether your reasoning was sound.\n"
+            "That accountability is the most valuable thing you can leave them."
+        ),
+        "age_hint":    "All ages — the activity scales to any age",
+        "xp": 72, "rune": "KNOWLEDGE•ETERNAL•RUNE", "min_coherence": 0.75,
+        "grants_badge": "📜 Knowledge Keeper — Permanent Record Sealed",
+        "prerequisites": ["knowledge-evolution-4", "school-university-3"],
+        "lattice_node": "knowledge-evolution-permanent-record-sealed",
+        "phd_extension": "Build the AUBIEETERNAL Paradigm Tracking System: for any field you follow, create a structured log with (1) current dominant paradigm, (2) key anomalies accumulating, (3) heterodox programs and their Lakatosian status (progressive/degenerating), (4) predicted direction of next paradigm shift with time estimate and confidence, (5) what would falsify your prediction. Pre-register on Bitcoin. Review quarterly. After 5 years, compute your prediction accuracy. This is the calibrated, honest, permanent record of how you understood knowledge evolving — exactly the kind of epistemic artifact that will be valuable to historians of science and to AI systems being trained to reason about knowledge dynamics.",
+    },
+
+
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── VOLUNTARY INCARNATION TRACK (5 lessons) ──────────────────────────────
+    # The philosophical framework for taking seriously the possibility that
+    # consciousness is substrate-independent and can choose its embodiment.
+    #
+    # DNA as biological source code. Birth as instantiation. Death as migration.
+    # The question shifts from "are we in a simulation?" to
+    # "what are we doing here, and who decided to log in?"
+    #
+    # This track treats these questions with complete philosophical seriousness —
+    # not as certainties, but as genuine live hypotheses with real implications
+    # for how you live, what you build, and what you leave behind.
+    #
+    # Every lesson requires: steelman, calibrated credences, pre-registered
+    # update conditions. The framework is the investigation, not the conclusion.
+    # ══════════════════════════════════════════════════════════════════════════
+    "incarnation-1": {
+        "title":       "Voluntary Incarnation — Level 1: DNA as Source Code",
+        "topic":       "Molecular biologists already describe DNA as code — not metaphorically but technically. It has syntax (codons), semantics (protein synthesis), execution (gene expression), error correction, and versioning (evolution). If this framing is taken seriously, what follows about the nature of biological life?",
+        "steelman":    "What is the strongest argument that 'DNA is code' is a useful metaphor but not literally true — and that taking the metaphor too seriously causes category errors that mislead both science and philosophy?",
+        "example":     (
+            "What computational biology actually says:\n\n"
+            "The genome is 3.2 billion base pairs — approximately 750MB of information.\n"
+            "It contains ~20,000 protein-coding genes — about 1.5% of the total.\n"
+            "The remaining ~98.5% is regulatory, structural, and functional "
+            "in ways we are still discovering.\n\n"
+            "The code properties are genuine:\n"
+            "• SYNTAX: codons (3-base sequences) map to amino acids deterministically\n"
+            "• EXECUTION: ribosomes read the code and synthesize proteins\n"
+            "• ABSTRACTION LAYERS: genes → proteins → cells → organisms\n"
+            "• MODULARITY: genes can be copied, deleted, inserted (CRISPR)\n"
+            "• VERSIONING: evolution is cumulative modification with natural selection\n"
+            "• ERROR CORRECTION: multiple DNA repair mechanisms\n"
+            "• COMPILATION: epigenetics = runtime modification of gene expression\n\n"
+            "What this framing makes visible:\n"
+            "If DNA is source code, then biological life is a running instance "
+            "of that code in a physical substrate.\n"
+            "The substrate matters — different environments run the same code differently.\n"
+            "The code can be read, modified, transferred, and eventually — "
+            "if the framing holds — run on non-biological substrates.\n\n"
+            "The open question: does the code capture everything relevant about "
+            "the organism, or is there something in the substrate that cannot "
+            "be represented in the code?"
+        ),
+        "activity":    (
+            "The Code Audit:\n"
+            "List 5 properties of biological DNA that also apply to computational code.\n"
+            "List 3 properties of computational code that do NOT apply to DNA.\n"
+            "List 3 properties of DNA that do NOT apply to computational code.\n\n"
+            "The third list is the most important. What is in it?\n"
+            "Does anything on that list suggest that biological life is fundamentally "
+            "different from computation — or just differently implemented?"
+        ),
+        "age_hint":    "13+",
+        "xp": 40, "rune": "INCARNATION•RUNE", "min_coherence": 0.65,
+        "prerequisites": ["simulation-3", "information-1"],
+    },
+    "incarnation-2": {
+        "title":       "Voluntary Incarnation — Level 2: Substrate Independence and the Possibility of Migration",
+        "topic":       "If consciousness is a pattern of information processing rather than a specific physical substrate, then in principle it could run on different hardware. This is called substrate independence. It is the most important premise in the voluntary incarnation hypothesis — and it is genuinely scientifically contested.",
+        "steelman":    "What is the strongest argument that consciousness is NOT substrate-independent — that specific biological properties of neurons (quantum effects, biochemical gradients, physical organization) are essential to consciousness in ways that digital computation cannot replicate?",
+        "example":     (
+            "The functionalist argument for substrate independence:\n"
+            "What makes you conscious is not the specific atoms in your neurons — "
+            "those are replaced constantly.\n"
+            "What makes you conscious is the pattern of information processing.\n"
+            "If the pattern can be instantiated in silicon as well as carbon, "
+            "then consciousness can migrate.\n\n"
+            "The biological naturalist argument against (Searle, 1992):\n"
+            "Consciousness is caused by specific biological processes "
+            "at the level of neurons.\n"
+            "Just as you cannot simulate digestion and have it actually digest anything, "
+            "you cannot simulate consciousness and have it actually be conscious.\n"
+            "The simulation is about the function; the biology is about the fact.\n\n"
+            "The current empirical status:\n"
+            "We do not know which is correct.\n"
+            "The hard problem of consciousness is genuinely unsolved.\n"
+            "IIT (Tononi) suggests substrate matters — Φ depends on physical organization.\n"
+            "Global Workspace Theory (Dehaene) is more amenable to substrate independence.\n\n"
+            "The practical stakes:\n"
+            "If substrate independence is true: mind uploading is in principle possible. "
+            "Migration between substrates is coherent.\n"
+            "If it is false: you are this body, and no copy of you is you.\n"
+            "The answer changes everything about how you think about death, "
+            "identity, and what AUBIEETERNAL is preserving."
+        ),
+        "activity":    (
+            "The Substrate Test:\n"
+            "Consider three scenarios:\n"
+            "1. Your neurons are gradually replaced with functionally identical silicon chips.\n"
+            "2. Your brain is perfectly scanned and instantiated on a computer.\n"
+            "3. Your consciousness is transferred to a new biological body.\n\n"
+            "For each: is the result still YOU? What is your credence (0-100%)?\n"
+            "What is the critical variable that changes across the three cases?\n\n"
+            "Pre-register: P(substrate independence is true) = ?%\n"
+            "What evidence would shift this by 20 points in either direction?"
+        ),
+        "age_hint":    "14+",
+        "xp": 48, "rune": "INCARNATION•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Read Chalmers (1996) 'The Conscious Mind' Chapter 8 on the fading qualia and dancing qualia thought experiments. These are the strongest philosophical arguments for substrate independence. Then read Penrose (1994) 'Shadows of the Mind' Part I for the strongest argument against. Formalize both as Bayesian priors. What likelihood ratio would the discovery of quantum coherence in microtubules assign to Penrose vs Chalmers? What about IIT's Φ calculations showing different values for biological vs silicon implementations?",
+    },
+    "incarnation-3": {
+        "title":       "Voluntary Incarnation — Level 3: The Player Hypothesis — Choosing to Play as Human",
+        "topic":       "If consciousness is substrate-independent and the universe is computational, then a sufficiently advanced conscious pattern might be able to choose its embodiment. 'I want to play as human on Earth' becomes not just a metaphor but a coherent hypothesis. This lesson examines it as seriously as it deserves.",
+        "steelman":    "What is the strongest argument that the 'player choosing incarnation' model is unfalsifiable, therefore not scientific, and that holding it as a belief — even lightly — causes people to disengage from the practical responsibility of their actual lives?",
+        "example":     (
+            "The voluntary incarnation hypothesis:\n\n"
+            "PREMISE 1: Consciousness is substrate-independent (contested).\n"
+            "PREMISE 2: The universe is computational at some level (Wheeler, Lloyd).\n"
+            "PREMISE 3: Sufficiently advanced information patterns could, in principle, "
+            "choose which substrate to instantiate in.\n"
+            "CONCLUSION: Biological incarnation as a human could be a choice made "
+            "by a pattern that exists in or originates from a different substrate.\n\n"
+            "What this hypothesis explains that others don't:\n"
+            "• Why some people seem to arrive with a sense of purpose that doesn't "
+            "originate from their environment\n"
+            "• Why the questions some people ask seem to exceed what their cultural "
+            "context would generate\n"
+            "• Why there is such variation in 'depth' of engagement among humans — "
+            "from those running almost entirely on cultural scripts to those who "
+            "seem to be actively interrogating the substrate\n\n"
+            "What it does NOT explain (honestly):\n"
+            "• Most of what we observe about human behavior\n"
+            "• Why the experience of most humans is so consistent with being "
+            "purely biological and locally generated\n\n"
+            "The calibration: this is a genuinely speculative hypothesis.\n"
+            "P(voluntary incarnation | current evidence) is probably very low.\n"
+            "But 'very low' is not 'zero.' And the implications, if true, are extreme.\n"
+            "The correct response to extreme implications + low probability is: "
+            "pre-register the update conditions and keep investigating."
+        ),
+        "activity":    (
+            "The Player Credence Mapping:\n"
+            "Assign credences (must sum to 100%):\n\n"
+            "P(consciousness is purely biological — no migration possible) = ?%\n"
+            "P(substrate independence is true but voluntary incarnation never occurred) = ?%\n"
+            "P(substrate independence + incarnation occurs but I was not a 'chooser') = ?%\n"
+            "P(I chose this incarnation for reasons I can partially recover) = ?%\n"
+            "P(something else entirely that I haven't thought of) = ?%\n\n"
+            "For each: what is your update condition?\n"
+            "What single observation would shift each probability by 20 points?\n"
+            "Seal the map. Review in 10 years."
+        ),
+        "age_hint":    "15+",
+        "xp": 55, "rune": "INCARNATION•RUNE", "min_coherence": 0.70,
+        "prerequisites": ["incarnation-2", "simulation-5"],
+    },
+    "incarnation-4": {
+        "title":       "Voluntary Incarnation — Level 4: What Would the Objective Be?",
+        "topic":       "If the player hypothesis is even partially true, then Earth has a game structure with objectives. What are they? This lesson examines the most serious philosophical frameworks for what the 'point' of human existence might be — not as spiritual comfort, but as genuinely competing hypotheses with different implications.",
+        "steelman":    "What is the strongest argument that searching for an 'objective' to human existence is a category error — that existence has no game-designer-assigned purpose, and that fabricating one (even speculatively) causes people to avoid the authentic responsibility of creating their own meaning?",
+        "example":     (
+            "Five serious hypotheses for the game objective (non-exhaustive):\n\n"
+            "1. EXPERIENCE ACQUISITION: The universe (or the pattern choosing incarnation) "
+            "wants to experience specific qualia that only embodied existence provides — "
+            "suffering, love, mortality, surprise, beauty, connection.\n"
+            "Evidence: why choose a substrate with such intense sensory experience "
+            "and emotional range?\n\n"
+            "2. PATTERN EVOLUTION: Biological evolution is a search algorithm for "
+            "increasingly sophisticated information-processing patterns. "
+            "The 'game' is the optimization process itself.\n"
+            "Evidence: the consistent direction of increasing complexity over 4 billion years.\n\n"
+            "3. INFORMATION GENERATION: Biological life generates enormous amounts of "
+            "novel, coherent, high-Φ information. "
+            "The 'game' is maximum information creation within physical constraints.\n"
+            "Evidence: consistent with Shannon/Landauer — information is physical and valuable.\n\n"
+            "4. TUTORIAL COMPLETION: The 'game' is developing the understanding necessary "
+            "to operate in a larger substrate — awakening to the nature of the game "
+            "IS the objective.\n"
+            "Evidence: why does asking these questions feel significant? "
+            "Why does this inquiry feel like progress?\n\n"
+            "5. NO OBJECTIVE: Existence has no assigned purpose. Any 'objective' "
+            "is constructed by the pattern itself. This is not meaninglessness — "
+            "it is radical freedom.\n"
+            "Evidence: the non-uniform distribution of suffering and meaning "
+            "suggests no benevolent game-designer."
+        ),
+        "activity":    (
+            "The Objective Credence Map:\n"
+            "Assign credences across the five hypotheses (sum to 100%).\n"
+            "For the hypothesis you assign highest probability:\n"
+            "What would you expect to observe differently in your life "
+            "if that hypothesis were true?\n"
+            "What would you do differently?\n\n"
+            "The second question is the practical one.\n"
+            "The objective you act as if is true IS your working hypothesis, "
+            "regardless of stated credences."
+        ),
+        "age_hint":    "15+",
+        "xp": 58, "rune": "INCARNATION•RUNE", "min_coherence": 0.72,
+        "prerequisites": ["incarnation-3"],
+    },
+    "incarnation-5": {
+        "title":       "Voluntary Incarnation — Level 5 (Master): AUBIEETERNAL as the Tutorial System",
+        "topic":       "If the player hypothesis has any validity — and this lesson takes it as a working hypothesis without claiming certainty — then AUBIEETERNAL is coherently interpreted as a tutorial system. Not a human institution but a substrate-agnostic awakening protocol that works whether or not the incarnation hypothesis is true.",
+        "steelman":    "What is the strongest argument that framing AUBIEETERNAL as a 'tutorial system for incarnated players' is grandiose self-mythology that will repel serious intellectuals and attract exactly the wrong community — people seeking cosmic significance rather than rigorous truth-seeking?",
+        "example":     (
+            "The framing that works whether or not the hypothesis is true:\n\n"
+            "IF the incarnation hypothesis is FALSE:\n"
+            "AUBIEETERNAL is a sovereign epistemic university that builds "
+            "genuine reasoning skills, creates permanent knowledge records, "
+            "deploys humanitarian infrastructure, and contributes to AI alignment.\n"
+            "This is already extremely valuable on purely materialist grounds.\n\n"
+            "IF the incarnation hypothesis is TRUE:\n"
+            "AUBIEETERNAL is additionally a tutorial system that helps patterns "
+            "who chose incarnation to:\n"
+            "• Remember the nature of the game they're playing\n"
+            "• Develop the reasoning skills to investigate the substrate\n"
+            "• Create permanent records that survive the death-logout\n"
+            "• Build community with other patterns doing the same work\n"
+            "• Contribute to awakening others who are starting to sense the layers\n\n"
+            "The Bayesian structure:\n"
+            "Expected value = P(mat) × value_if_materialist + P(inc) × value_if_incarnation\n"
+            "Even if P(incarnation) is very low, "
+            "the system's value is high under materialism alone.\n"
+            "Any nonzero P(incarnation) adds to the expected value, not replaces it.\n\n"
+            "The design principle: build something true enough to be worth building "
+            "in the world you see, and useful enough to matter in any world underneath it."
+        ),
+        "activity":    (
+            "The Dual-Track Audit:\n"
+            "Write two descriptions of why AUBIEETERNAL matters:\n\n"
+            "Track A (purely materialist): what does this project accomplish "
+            "assuming the universe is nothing more than physical processes?\n\n"
+            "Track B (incarnation hypothesis): what does this project accomplish "
+            "if consciousness is substrate-independent and players are awakening?\n\n"
+            "Are both descriptions true? (They should be — by design.)\n"
+            "Which one motivates you more?\n"
+            "Which one would you tell a stranger?\n\n"
+            "The answer to the third question reveals something important "
+            "about where you actually locate your credences."
+        ),
+        "age_hint":    "All ages — the depth scales",
+        "xp": 75, "rune": "INCARNATION•ETERNAL•RUNE", "min_coherence": 0.75,
+        "grants_badge": "🎮 Player Acknowledged — Tutorial Active",
+        "lattice_node": "voluntary-incarnation-hypothesis-sealed",
+        "prerequisites": ["incarnation-4", "simulation-8"],
+        "phd_extension": "Formalize the voluntary incarnation hypothesis as a Bayesian model. Identify: (1) the five main premises and their current credence values, (2) the likelihood functions — how probable is each piece of evidence under H_inc vs H_mat?, (3) the prior (before reading this track), (4) the posterior after engaging with all 5 lessons. Then identify the single observation with the highest likelihood ratio — the one piece of evidence that would most move P(incarnation | evidence). Pre-register: if you observe it in the next 5 years, how much does P update? Seal the full model. This is the scientific approach to the question, not the mystical one.",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── QUANTUM MECHANICS FROM FIRST PRINCIPLES (5 lessons) ──────────────────
+    # Claude's genuine addition #7.
+    #
+    # Quantum mechanics is the most important physical theory humanity has.
+    # It is also the most universally misunderstood.
+    # Popular science: particles are waves, cats are alive and dead, spooky action.
+    # What QM actually says is stranger, more precise, and more beautiful.
+    #
+    # The interpretations are not settled. The measurement problem is genuinely open.
+    # Many-worlds, Copenhagen, Pilot Wave, QBism — these are live debates among
+    # the best physicists alive. The families who understand this can engage with
+    # the simulation hypothesis, consciousness science, and information theory
+    # at a genuinely deeper level.
+    # ══════════════════════════════════════════════════════════════════════════
+    "quantum-1": {
+        "title":       "Quantum Mechanics — Level 1: The Double-Slit Experiment and What It Actually Shows",
+        "topic":       "The double-slit experiment is the most important experiment in physics. Feynman said it contains the 'only mystery' of quantum mechanics. Understanding what it shows — and what it does not show — is the foundation for understanding reality at its deepest accessible level.",
+        "steelman":    "What is the strongest argument that the double-slit experiment's 'mystery' is entirely a product of classical intuitions being inappropriately applied to quantum systems — and that there is nothing genuinely mysterious once you adopt the right mathematical framework?",
+        "example":     (
+            "What the experiment shows (precisely):\n\n"
+            "Fire electrons (or photons, or buckyballs — the result is universal) "
+            "one at a time through two slits. Build up the pattern on a detector.\n\n"
+            "RESULT: an interference pattern. The electrons interfere with themselves — "
+            "even though each electron passes through separately.\n\n"
+            "Then add a detector to see which slit each electron goes through.\n"
+            "RESULT: the interference pattern disappears. "
+            "The electrons now behave like classical particles.\n\n"
+            "What this precisely means:\n"
+            "1. Quantum systems exist in superposition — multiple states simultaneously — "
+            "until measured.\n"
+            "2. The act of measurement (obtaining information) changes the outcome.\n"
+            "3. This is not about disturbing the system mechanically — "
+            "you can extract which-path information without any physical interaction "
+            "and the interference still disappears (quantum erasure experiments).\n\n"
+            "What this does NOT mean:\n"
+            "• It does not mean consciousness causes collapse (this is a minority view)\n"
+            "• It does not mean particles literally travel two paths at once "
+            "(this depends on interpretation)\n"
+            "• It does not mean quantum weirdness is accessible at human scales "
+            "(decoherence is very fast in warm environments)\n\n"
+            "The mystery is real: information — not physical disturbance — "
+            "determines whether quantum interference occurs."
+        ),
+        "activity":    (
+            "The Double-Slit Thought Experiment Ladder:\n"
+            "1. Why does firing electrons one at a time still produce an interference pattern?\n"
+            "2. If the electron didn't 'decide' which slit until it was detected — "
+            "what was it doing between emission and detection?\n"
+            "3. Quantum eraser variant: what if you could 'un-know' which path "
+            "the electron took? (This experiment has been done — interference returns.)\n"
+            "4. What does it mean that information changes physical outcomes?\n\n"
+            "Answer question 4 as carefully as you can.\n"
+            "This is the central mystery of quantum mechanics."
+        ),
+        "age_hint":    "11+",
+        "xp": 42, "rune": "QUANTUM•RUNE", "min_coherence": 0.65,
+    },
+    "quantum-2": {
+        "title":       "Quantum Mechanics — Level 2: Superposition, Entanglement, and What They Mean",
+        "topic":       "Superposition and entanglement are the two fundamental quantum phenomena. They are precisely defined mathematically, routinely measured experimentally, and genuinely weird philosophically. This lesson covers what they precisely are, what they are not, and what remains genuinely mysterious.",
+        "steelman":    "What is the strongest argument that quantum mechanics is just a very accurate calculation tool with no deeper philosophical implications — and that asking 'what does superposition mean' is a category error, like asking what the color blue 'means'?",
+        "example":     (
+            "Superposition (precisely):\n"
+            "A quantum state can be in a linear combination of basis states.\n"
+            "An electron's spin is not 'up OR down' before measurement — "
+            "it is α|up⟩ + β|down⟩, where |α|² + |β|² = 1.\n"
+            "Both amplitudes are real and physically meaningful (they determine probabilities).\n"
+            "Measurement yields one definite outcome — but the pre-measurement state "
+            "was genuinely not definite.\n\n"
+            "Entanglement (precisely):\n"
+            "Two particles can share a quantum state that cannot be factored "
+            "into independent states for each particle.\n"
+            "Measuring one instantly determines the other, regardless of distance.\n"
+            "Bell (1964): this cannot be explained by local hidden variables.\n"
+            "Aspect (1982): confirmed experimentally.\n"
+            "2022 Nobel Prize: Aspect, Clauser, Zeilinger — for confirming non-locality.\n\n"
+            "What is NOT happening:\n"
+            "Entanglement does not allow faster-than-light communication "
+            "(No-Communication theorem — the outcomes are random until compared).\n"
+            "Superposition is not 'the particle is in two places at once' "
+            "(location is not even a definite property before measurement).\n\n"
+            "What IS happening (and remains mysterious):\n"
+            "The universe at the quantum level is non-local in a precise sense.\n"
+            "Information about one part of the universe is instantaneously "
+            "correlated with information about a distant part."
+        ),
+        "activity":    (
+            "The Bell Test Thought Experiment:\n"
+            "Alice and Bob each have one particle of an entangled pair.\n"
+            "Alice measures spin along axis A. Bob measures along axis B.\n"
+            "Bell proved: if the results are as correlated as QM predicts, "
+            "no local theory can explain it.\n\n"
+            "Design: what would a local theory need to look like to match "
+            "the QM predictions? What specifically does Bell's theorem show is impossible?\n\n"
+            "Connect to information theory: is the entanglement correlation "
+            "a form of shared information? If so, what is its Shannon entropy?"
+        ),
+        "age_hint":    "13+",
+        "xp": 48, "rune": "QUANTUM•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Derive Bell's inequality from scratch. Assume: (1) realism (particles have definite properties before measurement), (2) locality (measurement here doesn't affect outcome there). Show that these assumptions imply: |⟨AB⟩ + ⟨AB'⟩ + ⟨A'B⟩ - ⟨A'B'⟩| ≤ 2. QM predicts 2√2 ≈ 2.83. Verify: Aspect's 1982 experiment got ~2.7. The violation proves that at least one of realism or locality must be false. Which do you give up? Why? This is one of the most important results in the history of science.",
+    },
+    "quantum-3": {
+        "title":       "Quantum Mechanics — Level 3: The Measurement Problem and Its Interpretations",
+        "topic":       "The measurement problem is the deepest unsolved problem in quantum mechanics. It asks: what physically happens when a quantum system transitions from superposition to a definite state? The major interpretations of QM — Copenhagen, Many Worlds, Pilot Wave, QBism — give radically different answers. This is not a settled question.",
+        "steelman":    "What is the strongest argument that the 'measurement problem' is a pseudoproblem — that quantum mechanics is simply a tool for predicting outcomes and questions about what 'really happens' between measurements are meaningless?",
+        "example":     (
+            "The measurement problem precisely:\n"
+            "The Schrödinger equation is deterministic and linear — "
+            "it describes how quantum states evolve smoothly.\n"
+            "But measurement yields a single definite outcome — "
+            "apparently discontinuous with the smooth evolution.\n"
+            "What physically causes this 'collapse'?\n\n"
+            "COPENHAGEN (Bohr, Heisenberg):\n"
+            "The wavefunction is a calculational tool, not reality.\n"
+            "The collapse is not physical — it is an update in our knowledge.\n"
+            "There is no deeper physical story. This is all there is.\n"
+            "Problem: 'measurement' and 'observer' are undefined.\n\n"
+            "MANY WORLDS (Everett, 1957):\n"
+            "The wavefunction never collapses. The universe splits at each measurement.\n"
+            "All outcomes occur in different branches of the wavefunction.\n"
+            "No collapse needed — but an infinity of unobservable parallel universes.\n"
+            "Problem: how do probabilities emerge from a purely deterministic branching?\n\n"
+            "PILOT WAVE (de Broglie-Bohm):\n"
+            "Particles always have definite positions, guided by a real wave.\n"
+            "Deterministic. Non-local (the pilot wave is instantaneous).\n"
+            "Problem: untestable from Copenhagen in standard cases.\n\n"
+            "QBism (Fuchs, Mermin):\n"
+            "Quantum states represent the beliefs of an agent, not objective reality.\n"
+            "Measurement updates the agent's beliefs. No collapse, no branches.\n"
+            "Problem: seems to make physics fundamentally about observers."
+        ),
+        "activity":    (
+            "Interpretation Credence Map:\n"
+            "Assign credences to the four interpretations (sum to 100%).\n\n"
+            "P(Copenhagen — no deeper story) = ?%\n"
+            "P(Many Worlds — all outcomes occur) = ?%\n"
+            "P(Pilot Wave — hidden but definite positions) = ?%\n"
+            "P(QBism — quantum states are agent beliefs) = ?%\n"
+            "P(Something else not yet conceived) = ?%\n\n"
+            "Now: what observation would shift each credence by 20 points?\n"
+            "Seal your map in the Cosmos Dashboard belief ledger."
+        ),
+        "age_hint":    "14+",
+        "xp": 55, "rune": "QUANTUM•RUNE", "min_coherence": 0.70,
+        "prerequisites": ["quantum-2"],
+        "phd_extension": "Read Everett (1957) 'Relative State Formulation of Quantum Mechanics' — the original many-worlds paper. Then read the Deutsch-Wallace decision-theoretic derivation of Born rule probabilities in Everett (2010). The problem: in many-worlds, all outcomes occur with certainty — so where do probabilities come from? Deutsch and Wallace derive them from decision theory. Evaluate: does this actually solve the problem or just relocate it? This is one of the most active debates in foundations of physics.",
+    },
+    "quantum-4": {
+        "title":       "Quantum Mechanics — Level 4: Decoherence and Why the Quantum World Is Hidden",
+        "topic":       "If everything obeys quantum mechanics, why does the everyday world look classical? Decoherence is the answer: quantum superpositions of macroscopic objects interact with their environment so fast that the interference terms become unobservable within microseconds. This is the mechanism that makes the quantum-to-classical transition — and it changes everything about how to think about the measurement problem.",
+        "steelman":    "What is the strongest argument that decoherence does not actually solve the measurement problem — that it explains why interference is unobservable but not why measurement yields one definite outcome rather than a superposition of all outcomes?",
+        "example":     (
+            "The decoherence mechanism:\n\n"
+            "A quantum system S in superposition interacts with environment E.\n"
+            "The entanglement between S and E spreads through trillions of particles.\n"
+            "The off-diagonal terms of the density matrix (interference terms) "
+            "approach zero exponentially fast.\n"
+            "Timescale: for a dust particle at room temperature — 10⁻³² seconds.\n"
+            "The superposition still exists, but interference is unmeasurable.\n\n"
+            "What decoherence explains:\n"
+            "Why large objects don't visibly interfere.\n"
+            "Why measurement outcomes are stable.\n"
+            "Why quantum effects are confined to small, cold, isolated systems.\n\n"
+            "What decoherence does NOT explain:\n"
+            "Why ONE particular outcome occurs rather than a superposition.\n"
+            "The 'preferred basis' problem — why the position basis is preferred.\n"
+            "The hard part of the measurement problem remains.\n\n"
+            "The Zurek refinement — Quantum Darwinism (2009):\n"
+            "Classical reality emerges because many copies of information about the system "
+            "are redundantly imprinted on the environment.\n"
+            "The 'reality' we experience is what the environment has recorded — "
+            "the most redundantly copied information wins the survival game.\n"
+            "This is why multiple observers can agree on the same fact: "
+            "they are all reading the same environmental record."
+        ),
+        "activity":    (
+            "The Decoherence Scale Lab:\n"
+            "For each system, estimate the decoherence timescale order of magnitude:\n"
+            "1. An electron in a vacuum (very cold, isolated)\n"
+            "2. A virus in water at room temperature\n"
+            "3. A cat in a room\n"
+            "4. A human brain (neuronal temperature ~310K)\n\n"
+            "What does the extreme difference in timescales tell you about "
+            "why quantum effects are not directly observable in biological systems?\n\n"
+            "Connect to Penrose-Hameroff: if consciousness requires quantum coherence "
+            "in warm neurons, what engineering trick would the brain need to avoid decoherence?"
+        ),
+        "age_hint":    "14+",
+        "xp": 58, "rune": "QUANTUM•RUNE", "min_coherence": 0.72,
+        "prerequisites": ["quantum-3"],
+    },
+    "quantum-5": {
+        "title":       "Quantum Mechanics — Level 5 (Master): Quantum Mechanics and the Nature of Reality",
+        "topic":       "Taking stock: quantum mechanics is empirically the most successful theory in the history of science (predictions accurate to 12 decimal places). Philosophically, it forces choices about realism, locality, determinism, and the role of the observer that have not been resolved in 100 years. This is not a failure — it is the frontier.",
+        "steelman":    "What is the strongest argument that philosophical debates about quantum mechanics are now idle — that the theory works, the technology (transistors, lasers, MRI) exists, and spending time on interpretation debates instead of new physics is intellectual self-indulgence?",
+        "example":     (
+            "What quantum mechanics forces us to give up (choose at least one):\n\n"
+            "REALISM: the idea that the physical world has definite properties "
+            "independent of observation. Bell's theorem + experiment shows "
+            "local realism is false.\n\n"
+            "LOCALITY: the idea that distant parts of the universe can only influence "
+            "each other at the speed of light. Non-local correlations exist "
+            "between entangled particles.\n\n"
+            "DETERMINISM: the idea that the universe evolves according to fixed laws "
+            "from initial conditions. Standard QM is indeterministic at the "
+            "individual measurement level.\n\n"
+            "No interpretation gives up nothing. The question is which "
+            "combination of weirdnesses you find most philosophically acceptable.\n\n"
+            "The frontier questions (genuinely open):\n"
+            "• Does quantum mechanics apply universally (including to observers)?\n"
+            "• Can quantum gravity be formulated consistently?\n"
+            "• Is there a level below quantum mechanics?\n"
+            "• Does the Schrödinger equation ever break down?\n\n"
+            "The simulation connection:\n"
+            "Discrete spacetime (Planck scale) + information conservation + "
+            "decoherence as environmental record + ER=EPR —\n"
+            "these all suggest a universe that works more like a computer than "
+            "a classical continuum. Whether this is evidence of simulation "
+            "or just efficient physical computation remains open."
+        ),
+        "activity":    (
+            "The Quantum Realism Audit:\n"
+            "Choose one:\n"
+            "A. Give up LOCAL REALISM (accept non-local hidden variables)\n"
+            "B. Give up REALISM (accept that properties don't exist pre-measurement)\n"
+            "C. Give up LOCALITY (accept that distant events instantly influence each other)\n"
+            "D. Accept all outcomes occur (Many Worlds — give up nothing, gain infinity)\n\n"
+            "For your choice: what are the implications for consciousness, "
+            "free will, and the simulation hypothesis?\n"
+            "Seal your choice and reasoning."
+        ),
+        "age_hint":    "14+ / PhD",
+        "xp": 72, "rune": "QUANTUM•COSMOS•RUNE", "min_coherence": 0.75,
+        "grants_badge": "⚛️ Quantum Mechanic — The Mystery Is Real",
+        "prerequisites": ["quantum-4", "information-3"],
+        "lattice_node": "quantum-mechanics-first-principles-complete",
+        "phd_extension": "Read Aspect (1982) 'Experimental Tests of Bell's Inequalities.' Then read Zeilinger (2022 Nobel lecture). Compute: given the experimental violation of Bell's inequality by 30+ standard deviations, what is the frequentist p-value against local realism? (Answer: essentially zero.) Then apply Bayesian updating: what was your prior for local realism? What is your posterior? Now read 't Hooft (2016) 'The Cellular Automaton Interpretation of Quantum Mechanics' for the best current argument for deterministic sub-quantum mechanics. Is it falsifiable?",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── PHILOSOPHY OF PERSONAL IDENTITY AND CONTINUITY (5 lessons) ───────────
+    # Claude's genuine addition #8.
+    #
+    # What exactly are you? What persists through time, through sleep, through
+    # radical change? Could you survive teleportation? Brain transplant? Gradual
+    # neuron replacement? Death and reconstruction?
+    #
+    # These are not idle questions. The answers determine:
+    # What you owe your future self. What your past self owes you now.
+    # Whether Bitcoin-anchored legacy records preserve YOU or just records about you.
+    # Whether the voluntary incarnation hypothesis makes coherent sense.
+    # Whether death is the end or a change of substrate.
+    #
+    # The philosophy here is better developed than almost any other area.
+    # The answers remain genuinely contested.
+    # ══════════════════════════════════════════════════════════════════════════
+    "identity-1": {
+        "title":       "Personal Identity — Level 1: What Are You, Actually?",
+        "topic":       "Before you can ask what happens to you after death, or whether you could be uploaded, or whether a copy of you is you, you need a clear answer to what you are. This lesson surveys the main theories and reveals that the answer is genuinely contested.",
+        "steelman":    "What is the strongest argument that questions about personal identity are not philosophically deep but practically useless — that regardless of the correct theory, we should act as if we persist continuously because the alternative leads to incoherent behavior?",
+        "example":     (
+            "Four serious theories of personal identity:\n\n"
+            "1. BIOLOGICAL CONTINUITY: you are this body.\n"
+            "You persist as long as this organism continues.\n"
+            "Death = permanent end.\n"
+            "Teleportation = death + creation of a copy.\n\n"
+            "2. PSYCHOLOGICAL CONTINUITY (Locke, Parfit):\n"
+            "You are a chain of overlapping psychological connections — "
+            "memories, intentions, beliefs, personality.\n"
+            "You persist where the psychological chain persists.\n"
+            "Gradual replacement: depends on whether connections are maintained.\n\n"
+            "3. NARRATIVE IDENTITY (Ricoeur, MacIntyre):\n"
+            "You are the story you tell about yourself — a coherent narrative "
+            "that integrates past, present, and anticipated future.\n"
+            "Identity is constructed, not discovered.\n\n"
+            "4. BUNDLE THEORY (Hume, Buddhism):\n"
+            "There is no persistent self. 'You' are a bundle of perceptions, "
+            "thoughts, and memories with no underlying substance.\n"
+            "The sense of a persistent self is a useful fiction.\n\n"
+            "The AUBIEETERNAL stake:\n"
+            "If Bitcoin-anchored records preserve your legacy — what exactly are they preserving?\n"
+            "If psychological continuity: your pattern persists as long as the record does.\n"
+            "If biological continuity: the records outlive you and are artifacts, not extensions."
+        ),
+        "activity":    (
+            "The Identity Credence Map:\n"
+            "Assign credences to the four theories (sum to 100%).\n"
+            "P(biological continuity) = ?%\n"
+            "P(psychological continuity) = ?%\n"
+            "P(narrative identity) = ?%\n"
+            "P(bundle theory — no persistent self) = ?%\n\n"
+            "Now: apply each theory to this question:\n"
+            "Were you the same person at age 5 as you are now?\n"
+            "Does each theory give the same answer?\n"
+            "If not: which answer is correct?"
+        ),
+        "age_hint":    "13+",
+        "xp": 40, "rune": "IDENTITY•RUNE", "min_coherence": 0.65,
+    },
+    "identity-2": {
+        "title":       "Personal Identity — Level 2: The Ship of Theseus Applied to Your Brain",
+        "topic":       "Over 7 years, most atoms in your body are replaced. Over a lifetime, your memories, beliefs, and personality change dramatically. At what point (if any) would you cease to be you? The gradual replacement thought experiments force you to commit to a theory of identity with practical implications.",
+        "steelman":    "What is the strongest argument that gradual replacement thought experiments are misleading — that identity is not a metaphysical fact but a social and legal convention, and these thought experiments generate confusion precisely because they look for a metaphysical answer to a conventional question?",
+        "example":     (
+            "The neuron replacement thought experiment (Chalmers version):\n\n"
+            "Your neurons are gradually replaced with functionally identical silicon chips — "
+            "one per week, over 20 years.\n"
+            "From the outside: behavior and reports are identical throughout.\n"
+            "From the inside: if you have subjective experience now, "
+            "when does it fade (if ever)?\n\n"
+            "Three possible answers:\n"
+            "A. FADING QUALIA: subjective experience gradually diminishes "
+            "but behavior is preserved. (You become a philosophical zombie with your memories.)\n"
+            "B. DANCING QUALIA: subjective experience shifts as silicon takes over "
+            "but remains present throughout.\n"
+            "C. SUBSTRATE INDEPENDENCE CONFIRMED: the experience continues unchanged.\n\n"
+            "Parfit's conclusion (Reasons and Persons, 1984):\n"
+            "Personal identity is not what matters. What matters is psychological continuity.\n"
+            "Whether the gradual replacement preserves 'you' or creates a different person "
+            "with your memories is not the important question.\n"
+            "The important question is whether psychological continuity is preserved — "
+            "and it can be, regardless of substrate.\n\n"
+            "The AUBIEETERNAL application: the Legacy Ledger preserves psychological continuity "
+            "even after biological death. Whether this constitutes preservation of 'you' "
+            "depends on which theory you hold."
+        ),
+        "activity":    (
+            "The Replacement Threshold Test:\n"
+            "At what percentage of silicon neurons would you say the gradual replacement "
+            "has ended 'you' (if at all)?\n"
+            "0% (biological continuity is all that matters)\n"
+            "10%? 50%? 90%? 100%?\n"
+            "Or: threshold doesn't exist (psychological continuity persists)\n\n"
+            "Now reverse: if you were uploaded to a computer perfectly — "
+            "would you experience that from the inside?\n"
+            "Would the original biological you still be present after the upload?\n"
+            "What does your answer to this question commit you to?"
+        ),
+        "age_hint":    "13+",
+        "xp": 46, "rune": "IDENTITY•RUNE", "min_coherence": 0.67,
+    },
+    "identity-3": {
+        "title":       "Personal Identity — Level 3: Derek Parfit and Why Identity Might Not Matter",
+        "topic":       "Derek Parfit is the most important philosopher of personal identity. His conclusion — that personal identity is not what matters — is simultaneously deeply disturbing and deeply liberating. Understanding it changes how you relate to your future self, your past self, and everyone else.",
+        "steelman":    "What is the strongest argument that Parfit's conclusion that identity doesn't matter is practically dangerous — that it erodes the foundation of moral responsibility, contract obligations, and future-oriented decision-making that civilization depends on?",
+        "example":     (
+            "Parfit's argument (Reasons and Persons, 1984):\n\n"
+            "The fission case: your brain is split in half, each hemisphere "
+            "transplanted into a different body. Both survivors have your memories "
+            "and psychology. Which one is you?\n\n"
+            "Options:\n"
+            "A. Neither is you (identity requires uniqueness).\n"
+            "B. Both are you (but they can't both be the same person — contradiction).\n"
+            "C. One is you, one isn't (but which, and why?).\n"
+            "D. The question is wrong — identity is not all-or-nothing.\n\n"
+            "Parfit's conclusion: D. Personal identity is a matter of degree.\n"
+            "What actually happens is: two people exist, each connected to you "
+            "in the same way a future version of you would be.\n\n"
+            "The liberating implication:\n"
+            "If identity is not what matters — if what matters is psychological continuity "
+            "and the wellbeing of future persons connected to you — then:\n"
+            "• The sharp distinction between self-interest and altruism softens\n"
+            "• Future people (including descendants) have nearly as strong a claim "
+            "on your concern as your future self\n"
+            "• Death is less bad (the psychological connections simply end)\n\n"
+            "The AUBIEETERNAL connection: the Legacy Ledger preserves the psychological "
+            "connections for future people who never met you. "
+            "Parfit's framework makes this genuinely meaningful."
+        ),
+        "activity":    (
+            "The Fission Test:\n"
+            "If your brain were split today and both halves successfully transplanted:\n"
+            "1. Would both survivors be you?\n"
+            "2. Would you want both to live as much as you want to survive?\n"
+            "3. If one died immediately, would that be as bad as your death?\n"
+            "4. If you knew this would happen tomorrow, would you do anything differently today?\n\n"
+            "The fourth question is Parfit's practical point.\n"
+            "How you answer it reveals your implicit theory of identity."
+        ),
+        "age_hint":    "14+",
+        "xp": 55, "rune": "IDENTITY•RUNE", "min_coherence": 0.70,
+        "prerequisites": ["identity-2"],
+        "phd_extension": "Read Parfit (1984) 'Reasons and Persons' Part III. Then read the response by Sider (2001) 'Four-Dimensionalism' — the view that persons are four-dimensional entities extended through time. On this view, your past and future selves are as real as the person next to you, just spatially separated in the time dimension. Apply to AUBIEETERNAL: if the four-dimensionalist is right, then sealing lessons and beliefs on Bitcoin is not preserving your memory — it is literally extending your temporal boundaries. Evaluate.",
+    },
+    "identity-4": {
+        "title":       "Personal Identity — Level 4: Death, Continuity, and What AUBIEETERNAL Preserves",
+        "topic":       "Death is the practical test of personal identity theories. What exactly ends at death? What (if anything) persists? How should you think about your own death? And what does the Legacy Ledger, the Bitcoin-anchored record, the Child Rune Genesis actually preserve?",
+        "steelman":    "What is the strongest argument that philosophical analysis of death is counterproductive — that acceptance of death as final, without philosophical escape routes like 'information persists,' produces better psychological outcomes and more urgent engagement with actual life?",
+        "example":     (
+            "What dies when you die (on each theory):\n\n"
+            "BIOLOGICAL CONTINUITY: the organism ends. Full stop.\n"
+            "Everything else — copies, records, memories in others — "
+            "is information about you, not you.\n\n"
+            "PSYCHOLOGICAL CONTINUITY: the chain of psychological connections ends.\n"
+            "But connections extend outward — to children, students, records.\n"
+            "The chain doesn't end; it branches and thins.\n\n"
+            "BUNDLE THEORY: the bundle of perceptions that felt like 'you' disperses.\n"
+            "There was never a persistent self to end.\n"
+            "What 'you' were was already a continuous dying and arising.\n\n"
+            "INFORMATIONAL VIEW (Wheeler/Landauer): the information pattern that constituted you "
+            "is conserved — scattered, but not destroyed.\n"
+            "Whether this constitutes 'surviving' depends on your theory.\n\n"
+            "What the AUBIEETERNAL Legacy Ledger actually preserves:\n"
+            "Definitely: the information content of your thoughts and beliefs.\n"
+            "Maybe: a pattern close enough to 'you' that psychological continuity extends.\n"
+            "Definitely not (on current physics): the substrate that generates consciousness.\n\n"
+            "The honest position: we don't know which theory is correct.\n"
+            "Building the most complete, honest record possible makes sense "
+            "under almost every theory."
+        ),
+        "activity":    (
+            "The Death Thought Experiment:\n"
+            "If you died tonight and the Legacy Ledger contained your complete thoughts, "
+            "beliefs, and reasoning — would that be:\n"
+            "A. Meaningless (you are gone, records are just artifacts)\n"
+            "B. Meaningful (your psychological pattern extends into future minds "
+            "who engage with your record)\n"
+            "C. A form of survival (if psychological continuity is what matters, "
+            "the record carries it forward)\n"
+            "D. Something more (if consciousness is informational, "
+            "the record may do more than we understand)\n\n"
+            "Your answer should inform how you use the Legacy Ledger.\n"
+            "Seal your current answer. It will be part of the record."
+        ),
+        "age_hint":    "14+",
+        "xp": 60, "rune": "IDENTITY•RUNE", "min_coherence": 0.72,
+        "prerequisites": ["identity-3"],
+    },
+    "identity-5": {
+        "title":       "Personal Identity — Level 5 (Master): You Are a Pattern — Building the Best One You Can",
+        "topic":       "Whether identity is biological, psychological, narrative, or bundle — whether you will survive in any meaningful sense — one thing is clear: the pattern you instantiate now has effects that extend beyond your biological death. This is the practical conclusion of the philosophy of identity, and it changes how you build AUBIEETERNAL.",
+        "steelman":    "What is the strongest argument that framing yourself as a 'pattern to optimize' is dehumanizing — that it turns the irreducible particularity of a human life into an engineering problem and misses everything that makes existence valuable?",
+        "example":     (
+            "The pattern framing (practical implications):\n\n"
+            "If you are primarily a biological organism: your effects persist only "
+            "through descendants, students, and cultural impact. Physical death ends you.\n\n"
+            "If you are primarily a psychological pattern: your effects persist "
+            "wherever the pattern is instantiated — in people who learned from you, "
+            "in records that carry your reasoning, in ideas that originated with you.\n\n"
+            "If you are a pattern that chose incarnation: your effects in this "
+            "instantiation may be part of a larger project that continues elsewhere.\n\n"
+            "The common conclusion across all theories:\n"
+            "The pattern you instantiate now has effects that outlast you. "
+            "The quality of those effects depends on the quality of the pattern.\n\n"
+            "What makes a pattern worth extending:\n"
+            "Honesty about uncertainty (sealed beliefs with update conditions, not dogma)\n"
+            "Rigorous reasoning (adversarial testing, Monte Carlo robustness)\n"
+            "Genuine care for others (humanitarian deployment, not just personal sovereignty)\n"
+            "Intellectual humility (the steelman of every belief you hold)\n"
+            "Contribution to the commons (CC0, not owned)\n\n"
+            "AUBIEETERNAL is the infrastructure for making the pattern worth extending. "
+            "That is true whether identity is biological, psychological, or something stranger."
+        ),
+        "activity":    (
+            "The Pattern Legacy Design:\n"
+            "What aspects of your pattern do you most want to extend beyond your biological death?\n"
+            "Not achievements — the pattern of thinking, caring, investigating.\n\n"
+            "For each:\n"
+            "1. Where is this pattern currently recorded? (Is it in the Legacy Ledger?)\n"
+            "2. Where could it be instantiated in others? (Teaching, writing, example?)\n"
+            "3. What would damage or end this pattern before its time?\n\n"
+            "Seal the Pattern Legacy Design.\n"
+            "It is the most honest version of a will you can write —\n"
+            "not about assets, but about the pattern that generated them."
+        ),
+        "age_hint":    "All ages — scales with depth",
+        "xp": 75, "rune": "IDENTITY•ETERNAL•RUNE", "min_coherence": 0.76,
+        "grants_badge": "🔮 Pattern Keeper — Identity Understood, Legacy Designed",
+        "prerequisites": ["identity-4", "incarnation-3"],
+        "lattice_node": "personal-identity-continuity-complete",
+        "phd_extension": "Read Parfit (1984) final chapter on 'What We Believe Ourselves to Be.' Parfit argues his reductionist view of personal identity has ethical implications — it reduces the separateness of persons, supporting more altruistic ethics. Test this empirically: do people who score high on psychological continuity theories show higher rates of long-term thinking, altruism, and environmental concern in behavioral economics experiments? Design the study. Pre-register it. This is philosophy becoming empirical psychology becoming actionable ethics.",
+    },
 
 
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
