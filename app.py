@@ -1035,7 +1035,7 @@ with st.sidebar:
                 _btn_style = "primary" if _is_active_tab else "secondary"
                 if st.button(
                     f"  {_tab}",
-                    key=f"nav_{_tab}",
+                    key=f"nav_{_cat}_{_tab}",
                     use_container_width=True,
                     type=_btn_style,
                 ):
