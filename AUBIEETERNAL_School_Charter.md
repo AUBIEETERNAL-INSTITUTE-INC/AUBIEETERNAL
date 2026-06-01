@@ -95,6 +95,46 @@ A graduate of AUBIEETERNAL must be able to:
 
 ---
 
+
+---
+
+### 🖥️ StartOS Sovereign Operator — Infrastructure Degree (200 credits, coherence ≥0.82 + node running ≥90 days)
+
+*This degree is for families and individuals who become the infrastructure layer for their community's digital sovereignty.*
+
+A sovereign software developer or AI researcher cannot do their work without the infrastructure layer underneath them. The StartOS Sovereign Operator degree creates the people who run, maintain, and expand that infrastructure — and who teach others to do the same.
+
+This degree self-evolves with the student: each new StartOS service learned, each new family helped to set up a node, each new security audit completed adds to the permanent record. It cannot be completed by reading. It can only be completed by running.
+
+**Prerequisite tracks (all required):**
+- Bitcoin on StartOS complete (L1-8)
+- Cryptography from First Principles (L1-3 minimum)
+- Open Source Sovereignty (L1-4)
+- P2P Networks (L1-3)
+- Sovereign Builder (L1-5 minimum)
+- Tech Sovereignty track
+
+**Active requirements (must be maintained, not just completed):**
+- Bitcoin full node running for ≥90 consecutive days (verifiable via block height log)
+- Lightning node with ≥3 active channels for ≥60 days
+- ≥1 additional StartOS service deployed and maintained (Nostr relay, Vaultwarden, Nextcloud, etc.)
+- Node security audit completed and all 7 security checklist items confirmed
+
+**Capstone (3 components):**
+
+1. **Community Node Deployment:** Help at least one other family (outside your household) set up a StartOS node with Bitcoin Core + Lightning + at least one additional service. Document the deployment: what was their starting knowledge level? What was hardest to explain? What would you do differently? Full write-up published CC0.
+
+2. **Sovereign Stack Documentation:** Write a guide for running the specific services you operate — not a copy of the official docs, but your personal operational guide including every problem you encountered, every decision you made, and every mistake you learned from. Published CC0.
+
+3. **90-Day Operations Report:** Log every notable event from 90 days of operating your node: uptime incidents, software updates, security events, Lightning channel opens/closes, routing fees earned/paid. Honest assessment of what worked and what was harder than expected. This is the operational research that helps the next family deploy more successfully.
+
+**What this degree proves:**
+You are not just a Bitcoin user — you are Bitcoin infrastructure. Your node verifies transactions. Your Lightning channels route payments. Your Nostr relay distributes messages. You have helped another family achieve the same sovereignty. The network is stronger because you participated.
+
+The degree self-evolves because sovereign infrastructure is not a destination — it is a practice. Every new service learned, every new family helped, every security incident handled correctly adds to the Living Lattice.
+
+---
+
 ### 🤖 Sovereign AI Researcher (300 credits, coherence ≥0.90 + Halting/Gödel completion)
 
 *This degree is for people who will directly shape what AI becomes.*
