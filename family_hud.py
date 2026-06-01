@@ -6584,6 +6584,668 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── MATHEMATICAL THINKING AND PROOF (5 lessons) ───────────────────────────
+    # Claude's genuine addition #9.
+    #
+    # Mathematics is not calculation. It is the art of establishing
+    # certainty — the only domain where humans can prove things are
+    # definitively true or false, not just more or less probable.
+    #
+    # The families who understand this track can:
+    # - Recognize a valid proof from an invalid one
+    # - Understand why mathematical truth is different from empirical truth
+    # - Apply logical rigor to non-mathematical domains
+    # - Understand Gödel's incompleteness — the most important result in
+    #   the history of mathematics, with direct implications for AI, truth,
+    #   and the limits of any formal system
+    #
+    # A 10-year-old can understand what a proof is and why it matters.
+    # A PhD student can engage with formal logic, Gödel, and the foundations.
+    # ══════════════════════════════════════════════════════════════════════════
+    "math-thinking-1": {
+        "title":       "Mathematical Thinking — Level 1: What Is a Proof?",
+        "topic":       "A mathematical proof is not a very strong argument. It is a demonstration that something cannot be otherwise. This is categorically different from all other forms of knowing — and understanding the difference changes how you think about certainty, evidence, and truth.",
+        "steelman":    "What is the strongest argument that mathematical proof is overrated as an epistemic standard — that its certainty comes at the cost of saying almost nothing about the real world, making it far less useful than calibrated empirical reasoning?",
+        "example":     (
+            "The difference between proof and evidence:\n\n"
+            "EVIDENCE: 'We have tested 10,000 people and aspirin relieves "
+            "headaches in 78% of cases.' Strong evidence. Not proof.\n"
+            "Aspirin might fail on the 10,001st person in a way we haven't seen.\n\n"
+            "PROOF: 'There are infinitely many prime numbers.'\n"
+            "Euclid proved this ~300 BCE. It cannot be otherwise.\n"
+            "We do not need to check the next prime. We know.\n\n"
+            "Euclid's proof (simplified):\n"
+            "Assume there are finitely many primes: p₁, p₂, ..., pₙ.\n"
+            "Multiply them all together and add 1: N = (p₁ × p₂ × ... × pₙ) + 1.\n"
+            "N is either prime (contradicting our list) or divisible by a prime "
+            "not on our list (also contradicting it).\n"
+            "Therefore our assumption was false. There are infinitely many primes.\n\n"
+            "Why this matters for truth-seeking:\n"
+            "Proof establishes certainty through logic alone — no observation needed.\n"
+            "But it only works within formal systems with defined axioms.\n"
+            "The power and limit of mathematics is the same thing: "
+            "it is perfectly certain about what it can reach, "
+            "and completely silent about what it cannot."
+        ),
+        "activity":    (
+            "Find and verify a simple proof:\n"
+            "Prove: the sum of any two odd numbers is even.\n\n"
+            "Hint: any odd number can be written as 2k+1 for some integer k.\n"
+            "Let the two odd numbers be (2a+1) and (2b+1).\n"
+            "Add them. What do you get? Is it always even?\n\n"
+            "Write it out in one paragraph. The key is: "
+            "not 'I checked many examples' but 'here is why it cannot be otherwise.'"
+        ),
+        "age_hint":    "10+",
+        "xp": 38, "rune": "MATH•RUNE", "min_coherence": 0.62,
+    },
+    "math-thinking-2": {
+        "title":       "Mathematical Thinking — Level 2: Logic, Implication, and the Rules of Inference",
+        "topic":       "Formal logic is the grammar of rigorous reasoning. You use it implicitly every time you argue — but making it explicit reveals the structure of valid arguments, the specific ways arguments fail, and the difference between 'this seems to follow' and 'this must follow.'",
+        "steelman":    "What is the strongest argument that formal logic education produces worse reasoning in practice — that it trains people to evaluate argument structure over content, making them skilled at technically valid nonsense?",
+        "example":     (
+            "The four forms of conditional argument:\n\n"
+            "P → Q means 'If P then Q'\n\n"
+            "MODUS PONENS (valid): P → Q; P is true; therefore Q is true.\n"
+            "'If it rains, the ground gets wet. It is raining. Therefore the ground is wet.'\n\n"
+            "MODUS TOLLENS (valid): P → Q; Q is false; therefore P is false.\n"
+            "'If it rains, the ground gets wet. The ground is not wet. Therefore it is not raining.'\n\n"
+            "AFFIRMING THE CONSEQUENT (invalid): P → Q; Q is true; therefore P is true.\n"
+            "'If it rains, the ground gets wet. The ground is wet. Therefore it is raining.'\n"
+            "WRONG — a sprinkler could have run.\n\n"
+            "DENYING THE ANTECEDENT (invalid): P → Q; P is false; therefore Q is false.\n"
+            "'If it rains, the ground gets wet. It is not raining. Therefore the ground is not wet.'\n"
+            "WRONG — again, the sprinkler.\n\n"
+            "Why this matters: most bad arguments are invalid in one of these ways.\n"
+            "Most conspiracy theories are affirming the consequent: "
+            "'If there was a conspiracy, we'd see anomalies. We see anomalies. "
+            "Therefore there was a conspiracy.' This does not follow."
+        ),
+        "activity":    (
+            "Argument Audit:\n"
+            "Find 5 arguments from news, social media, or conversations this week.\n"
+            "For each: write it as P → Q form.\n"
+            "Identify which of the four argument forms it uses.\n"
+            "Is it valid or invalid?\n\n"
+            "For the invalid ones: what alternative explanation (sprinkler) "
+            "would produce the same observed conclusion without the implied cause?"
+        ),
+        "age_hint":    "11+",
+        "xp": 44, "rune": "MATH•RUNE", "min_coherence": 0.65,
+        "phd_extension": "Construct a formal proof in propositional logic using only Modus Ponens and the axioms of propositional calculus. Prove: (P → Q) → ((Q → R) → (P → R)) — the chain rule. This is the foundation of transitivity of implication. Then read Frege (1879) Begriffsschrift — the first formal logical system. Why does Frege's notation fail? What did Russell fix? What did Gödel then break?",
+    },
+    "math-thinking-3": {
+        "title":       "Mathematical Thinking — Level 3: Infinity, Paradox, and the Foundations Crisis",
+        "topic":       "The late 19th century saw mathematicians discover that the most basic concept — infinity — was far stranger and more dangerous than expected. The Foundations Crisis produced paradoxes that threatened to collapse all of mathematics. Understanding how it was resolved reveals something profound about the nature of formal systems.",
+        "steelman":    "What is the strongest argument that the Foundations Crisis was an internal mathematical drama with no practical implications — and that teaching it to non-specialists produces a false sense that mathematics is fragile or uncertain when it is, in practice, extraordinarily reliable?",
+        "example":     (
+            "Cantor's discovery (1874): not all infinities are the same size.\n\n"
+            "Countable infinity: integers, fractions — can be listed in a sequence.\n"
+            "Uncountable infinity: real numbers — provably cannot be listed.\n"
+            "Cantor's diagonal argument: assume the reals can be listed. "
+            "Construct a number that differs from every number on the list "
+            "in at least one decimal place. This number is not on the list — "
+            "contradiction. The reals are a strictly larger infinity than the integers.\n\n"
+            "Russell's Paradox (1901): let R = the set of all sets that don't contain themselves.\n"
+            "Does R contain itself?\n"
+            "If yes: R contains itself, but R only contains sets that DON'T contain themselves. Contradiction.\n"
+            "If no: R doesn't contain itself, so by definition it should be in R. Contradiction.\n"
+            "Either way: contradiction. The naive concept of 'set' is inconsistent.\n\n"
+            "The resolution: Zermelo-Fraenkel set theory restricts which sets can exist.\n"
+            "Not all collections are sets — a hierarchy is imposed.\n\n"
+            "The lesson: even the most foundational mathematical concepts can "
+            "harbor hidden contradictions. Rigorous examination of foundations "
+            "is not pedantry — it is what prevents everything built on them from collapsing."
+        ),
+        "activity":    (
+            "The Russell's Paradox Translation:\n"
+            "Express Russell's Paradox in social terms:\n"
+            "The barber in a town shaves all men who don't shave themselves. "
+            "Does the barber shave himself?\n\n"
+            "Work through both options. Where does the contradiction arise?\n\n"
+            "Now: what was the 'fix' that mathematicians applied (restricting "
+            "which sets can exist)? What is the analogous fix in the barber paradox?\n\n"
+            "Is there a principle here about self-reference that applies beyond mathematics?"
+        ),
+        "age_hint":    "13+",
+        "xp": 50, "rune": "MATH•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Read Cantor's diagonal argument in full. Then implement it in Python: generate any proposed listing of real numbers in [0,1]. Construct the diagonal number (differs from the nth number in the nth decimal place). Verify it is not in the list. Then read Hilbert (1900) 'Mathematical Problems' — his second problem asks whether arithmetic is consistent. Gödel answered it. Read Nagel & Newman (1958) 'Gödel's Proof' Chapter 5. Why does Gödel's result mean Hilbert's program cannot succeed?",
+    },
+    "math-thinking-4": {
+        "title":       "Mathematical Thinking — Level 4: Gödel's Incompleteness — The Hardest Truth in Mathematics",
+        "topic":       "Kurt Gödel proved in 1931 that any consistent formal system powerful enough to express basic arithmetic contains true statements that cannot be proved within that system. This is not a limitation of our cleverness — it is a fundamental property of formal systems. It is the most important result in the history of mathematics.",
+        "steelman":    "What is the strongest argument that Gödel's incompleteness theorems are routinely misused by non-mathematicians to justify anti-rational conclusions — and that the theorems have essentially no implications outside very specific formal systems?",
+        "example":     (
+            "Gödel's construction (simplified):\n\n"
+            "In any formal system F, you can encode statements about F itself "
+            "using numbers (Gödel numbering).\n\n"
+            "Gödel constructs statement G: 'This statement is not provable in F.'\n\n"
+            "Case 1: G is provable. Then G is false (it says it's not provable). "
+            "F proves a false statement → F is inconsistent.\n\n"
+            "Case 2: G is not provable. Then G is true (it correctly says it's not provable). "
+            "F has a true statement it cannot prove → F is incomplete.\n\n"
+            "Therefore: any consistent F is incomplete.\n\n"
+            "The Second Incompleteness Theorem: F cannot prove its own consistency.\n\n"
+            "What this means:\n"
+            "Every formal system that is consistent has true things it cannot say.\n"
+            "No formal system can fully verify itself.\n"
+            "This is NOT saying 'anything goes' or 'truth is relative.'\n"
+            "It is saying: truth outruns proof. G is true. We know it. "
+            "We just can't prove it inside F.\n\n"
+            "The AI alignment implication:\n"
+            "Any AI system based on a formal reasoning framework is subject to Gödel. "
+            "There are truths about its own behavior it cannot verify internally. "
+            "This is a hard limit, not a temporary gap in capability."
+        ),
+        "activity":    (
+            "The Gödel Intuition Pump:\n"
+            "Think of a rule system you live by (legal, moral, organizational).\n"
+            "Can you construct a statement within it that the system itself "
+            "cannot resolve — neither provably required nor provably forbidden?\n\n"
+            "Most real rule systems have such gaps. They are handled by:\n"
+            "a. Judicial interpretation (extending the system)\n"
+            "b. New rules (expanding the system)\n"
+            "c. Acknowledging incompleteness\n\n"
+            "How does your rule system handle its Gödel statements?\n"
+            "Which approach is most honest? Which is most dangerous?"
+        ),
+        "age_hint":    "14+",
+        "xp": 62, "rune": "MATH•RUNE", "min_coherence": 0.72,
+        "prerequisites": ["math-thinking-3"],
+        "phd_extension": "Read the original Gödel (1931) paper via the Meltzer translation. Construct the Gödel numbering scheme: assign prime numbers to symbols, represent formulas as products of primes. Show how 'this formula is provable' becomes an arithmetic statement. Then read Chaitin (1982) on algorithmic information theory and incompleteness: Chaitin proved that most mathematical truths are random — they cannot be compressed into a shorter proof than their statement. This extends Gödel from 'some truths are unprovable' to 'most truths have no reason.' Evaluate what this implies for the limits of science.",
+        "grants_badge": "∞ Gödel Witness — Incompleteness Understood",
+        "lattice_node": "mathematical-thinking-proof-complete",
+    },
+    "math-thinking-5": {
+        "title":       "Mathematical Thinking — Level 5 (Master): Applied Mathematical Thinking — Fermi Estimation and Order-of-Magnitude Reasoning",
+        "topic":       "The most practical application of mathematical thinking is not computation — it is estimation. Fermi problems (named for physicist Enrico Fermi) develop the ability to reason from first principles to within an order of magnitude of the right answer, with no data. This is the skill that separates systematic thinkers from guessers.",
+        "steelman":    "What is the strongest argument that Fermi estimation is a parlor trick that builds overconfidence in rough approximations — and that actual decision-making requires precise data, making order-of-magnitude reasoning a dangerous substitute?",
+        "example":     (
+            "Fermi's most famous problem: How many piano tuners are in Chicago?\n\n"
+            "Step 1 — Population: Chicago has ~2.7 million people.\n"
+            "Step 2 — Households: ~2.5 people/household = ~1 million households.\n"
+            "Step 3 — Pianos: Perhaps 1 in 20 households has a piano = ~50,000 pianos.\n"
+            "Step 4 — Tunings per year: Most pianos tuned once a year = ~50,000 tunings/year.\n"
+            "Step 5 — Tunings per tuner per day: A tuner does ~4 tunings/day, "
+            "~250 work days/year = 1,000 tunings/year.\n"
+            "Step 6 — Tuners needed: 50,000 / 1,000 = ~50 piano tuners.\n"
+            "Actual answer: ~50-60 piano tuners in Chicago.\n\n"
+            "Why this matters:\n"
+            "The estimate was built from reasoning, not data.\n"
+            "Every step can be challenged and refined.\n"
+            "The answer is within a factor of 2 of reality.\n"
+            "This is far better than 'I don't know.'\n\n"
+            "The decision-making application:\n"
+            "Before any major decision: build a Fermi model.\n"
+            "It forces explicit assumptions — which is where most bad decisions hide.\n"
+            "It tells you which assumptions most affect the answer — "
+            "which is where to get more data."
+        ),
+        "activity":    (
+            "Solve 3 Fermi problems from first principles (no searching):\n\n"
+            "1. How many heartbeats does a human have in a lifetime?\n"
+            "2. How many words are in all the books in the AUBIEETERNAL curriculum?\n"
+            "3. How many neurons fire in your brain every second?\n\n"
+            "For each: write out every assumption explicitly.\n"
+            "Then check your answer against reality.\n"
+            "Calculate your error factor (your answer / actual answer).\n"
+            "Which assumption was furthest off? What does this tell you?"
+        ),
+        "age_hint":    "10+",
+        "xp": 55, "rune": "MATH•SOVEREIGN•RUNE", "min_coherence": 0.68,
+        "grants_badge": "🔢 Fermi Estimator — Order of Magnitude Achieved",
+        "phd_extension": "Read Weinstein & Blundell (2012) 'Guesstimation 2.0'. Build a Fermi model for a policy question you care about: e.g., 'How much CO2 does the average American meal produce?' or 'How many person-hours are lost to commuting in the US per year?' Make every assumption explicit, run a Monte Carlo sensitivity analysis (which assumptions dominate the answer?), and compare to the best available empirical estimates. The gap between your model and reality IS the lesson.",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── EVOLUTIONARY BIOLOGY AND HUMAN NATURE (5 lessons) ────────────────────
+    # Claude's genuine addition #10.
+    #
+    # Understanding why we are the way we are at the deepest level.
+    # Evolution is not just biology — it is the context for everything
+    # in the psychology, decision theory, polyvagal, and consciousness tracks.
+    # You cannot fully understand human cognition, emotion, social behavior,
+    # or moral intuitions without understanding the evolutionary pressures
+    # that shaped them.
+    #
+    # This is not genetic determinism. It is the opposite:
+    # understanding the pressures that shaped us is the first step
+    # to being genuinely free from their automatic influence.
+    # ══════════════════════════════════════════════════════════════════════════
+    "evolution-1": {
+        "title":       "Evolutionary Biology — Level 1: Natural Selection and the Logic of Design Without a Designer",
+        "topic":       "Natural selection is the most powerful explanatory idea in the history of science. It explains the apparent design in biological organisms without invoking a designer. Understanding it precisely — not as 'survival of the fittest' but as differential reproductive success — changes how you see every behavior, instinct, and emotion you have.",
+        "steelman":    "What is the strongest argument that evolutionary biology is systematically misapplied to human behavior — and that 'evolutionary explanations' for social phenomena are often unfalsifiable just-so stories that reinforce existing prejudices?",
+        "example":     (
+            "Natural selection precisely stated:\n\n"
+            "If there is: (1) variation in a trait, (2) the variation is heritable, "
+            "(3) the variation affects reproductive success — "
+            "then the trait will change in the population over time.\n\n"
+            "This is not a hypothesis. It follows necessarily from these three premises.\n"
+            "It is more like a mathematical theorem than an empirical claim.\n\n"
+            "What 'fittest' actually means: not strongest, not smartest, not healthiest.\n"
+            "Fitness = reproductive success in a specific environment.\n"
+            "A highly 'fit' organism in one environment may be unfit in another.\n\n"
+            "The key insight for human self-understanding:\n"
+            "Your emotions, biases, and instincts were designed by selection "
+            "to maximize reproductive success of your ancestors in the Pleistocene — "
+            "not to make you happy, rational, or accurate.\n\n"
+            "Fear of snakes (common) but not of cars (which kill far more): "
+            "snakes were a threat for millions of years; cars for 100.\n"
+            "Status anxiety: reproductive success in ancestral environments "
+            "tracked social status closely.\n"
+            "In-group/out-group bias: small band living = survival depended on group cooperation."
+        ),
+        "activity":    (
+            "The Evolutionary Audit:\n"
+            "List 5 emotions or instincts you experience regularly.\n"
+            "For each: what would have been the reproductive advantage in a "
+            "Pleistocene hunter-gatherer environment?\n\n"
+            "Then: in your current environment, does the same instinct serve you well?\n"
+            "Or does it misfire (fear of public speaking, sugar craving, status anxiety)?\n\n"
+            "The gap between 'what evolution selected for' and "
+            "'what actually makes you thrive now' — that gap IS your work to do."
+        ),
+        "age_hint":    "12+",
+        "xp": 40, "rune": "EVOLUTION•RUNE", "min_coherence": 0.63,
+    },
+    "evolution-2": {
+        "title":       "Evolutionary Biology — Level 2: Kin Selection, Reciprocity, and the Origins of Cooperation",
+        "topic":       "How does cooperation evolve when natural selection favors individuals who maximize their own reproductive success? This is one of the deepest puzzles in evolutionary biology — and its resolution, through kin selection and reciprocal altruism, explains most of human social behavior including family loyalty, friendship, and moral intuitions.",
+        "steelman":    "What is the strongest argument that evolutionary explanations for cooperation and altruism reduce ethics to selfishness — and that a society that fully believes in evolutionary origins of moral behavior will have systematically worse moral outcomes than one that believes in non-evolutionary moral foundations?",
+        "example":     (
+            "The puzzle of altruism:\n"
+            "If natural selection maximizes individual reproductive success, "
+            "why do organisms ever help others at cost to themselves?\n\n"
+            "KIN SELECTION (Hamilton, 1964):\n"
+            "An organism shares 50% of genes with a sibling, 25% with a cousin.\n"
+            "Hamilton's Rule: altruism evolves when rB > C, where r = genetic "
+            "relatedness, B = benefit to recipient, C = cost to altruist.\n"
+            "J.B.S. Haldane: 'I would lay down my life for two brothers "
+            "or eight cousins.'\n\n"
+            "RECIPROCAL ALTRUISM (Trivers, 1971):\n"
+            "Help non-relatives if you expect help in return.\n"
+            "Iterated Prisoner's Dilemma: Tit-for-Tat strategy is stable.\n"
+            "This explains friendship, trade, and most social contracts.\n\n"
+            "COSTLY SIGNALING:\n"
+            "Generosity can be a signal of quality — 'I have enough resources "
+            "to give some away.' Explains philanthropy, conspicuous generosity.\n\n"
+            "The moral implication:\n"
+            "Our moral intuitions (fairness, loyalty, outrage at cheaters) are "
+            "not arbitrary — they are evolved responses to the game-theoretic "
+            "structure of cooperation. Understanding them doesn't make them less real "
+            "or less binding. It explains why they are universal across cultures."
+        ),
+        "activity":    (
+            "The Reciprocity Audit:\n"
+            "Map your 5 closest relationships on two dimensions:\n"
+            "X-axis: genetic relatedness (sibling > cousin > friend > acquaintance)\n"
+            "Y-axis: how much you'd sacrifice for them\n\n"
+            "Does the pattern match Hamilton's Rule roughly?\n"
+            "Where does it deviate? What explains the deviations "
+            "(reciprocal altruism? cultural bonds? love?)\n\n"
+            "This is not to reduce your relationships to biology — "
+            "it is to understand the structure underneath them."
+        ),
+        "age_hint":    "13+",
+        "xp": 46, "rune": "EVOLUTION•RUNE", "min_coherence": 0.66,
+        "phd_extension": "Implement Axelrod's (1984) tournament in Python. Run Round-Robin Prisoner's Dilemma between strategies: Always Cooperate, Always Defect, Tit-for-Tat, Tit-for-Two-Tats, Random, Grudger. Over 200 rounds. Which strategy wins? Now add noise (5% error in execution). Does Tit-for-Tat still dominate? Read Axelrod & Hamilton (1981) 'The Evolution of Cooperation' in Science. This is the mathematical foundation for why morality exists.",
+    },
+    "evolution-3": {
+        "title":       "Evolutionary Biology — Level 3: The Adapted Mind — What Your Brain Was Built For",
+        "topic":       "Evolutionary psychology applies evolutionary reasoning to the human mind. The brain is not a general-purpose learning machine — it is a collection of specialized adaptations built to solve specific problems faced by our ancestors. Understanding these adaptations reveals why humans are consistently excellent at some things and systematically wrong about others.",
+        "steelman":    "What is the strongest argument that evolutionary psychology is a pseudoscience that uses unfalsifiable post-hoc narratives to explain any behavior — and that the discipline has done more harm than good by providing scientific cover for sexism, racism, and other biases?",
+        "example":     (
+            "The Pleistocene Environment of Evolutionary Adaptedness (EEA):\n"
+            "~200,000 years of Homo sapiens evolution as hunter-gatherers in Africa.\n"
+            "The brain was shaped to solve EEA problems, not 2026 problems.\n\n"
+            "What our brains are exceptionally good at (from EEA):\n"
+            "• Face recognition (social group = survival; 100,000+ faces remembered)\n"
+            "• Cheater detection (reciprocal altruism requires catching defectors)\n"
+            "• Statistical reasoning about frequencies, not probabilities "
+            "(we evolved counting events, not percentages)\n"
+            "• Spatial navigation and tracking\n"
+            "• Language acquisition (universal across all human cultures)\n\n"
+            "What our brains are systematically poor at (EEA mismatch):\n"
+            "• Abstract probability and statistics (no natural referents)\n"
+            "• Long-term thinking beyond ~5 years\n"
+            "• Evaluating large-number suffering (scope insensitivity)\n"
+            "• Risk assessment in novel environments (cars, radiation, microbes)\n"
+            "• Resisting supernormal stimuli (sugar, porn, social media engineered "
+            "to hijack evolved preferences)\n\n"
+            "The application: knowing your brain's factory settings lets you "
+            "use them when they serve you and override them when they don't."
+        ),
+        "activity":    (
+            "The Supernormal Stimuli Audit:\n"
+            "A supernormal stimulus is an artificial exaggeration of a natural cue "
+            "that hijacks an evolved response — beyond what any natural stimulus provided.\n\n"
+            "List 5 things in your daily environment that are supernormal stimuli:\n"
+            "(examples: processed food, social media likes, pornography, "
+            "news designed for outrage, gambling)\n\n"
+            "For each: what evolved response is being hijacked?\n"
+            "What was the natural version of this stimulus?\n"
+            "How does the supernormal version change your behavior vs. the natural one?\n\n"
+            "This is the map of where your evolved hardware is being exploited."
+        ),
+        "age_hint":    "13+",
+        "xp": 52, "rune": "EVOLUTION•RUNE", "min_coherence": 0.68,
+    },
+    "evolution-4": {
+        "title":       "Evolutionary Biology — Level 4: Cultural Evolution and Memetics",
+        "topic":       "Ideas, beliefs, and practices also evolve — but by different rules than genes. Cultural evolution is faster, can be directed, and can override genetic evolution. Understanding how culture evolves explains why some ideas persist for millennia while others die within a generation — and what makes an idea genuinely fit vs. merely viral.",
+        "steelman":    "What is the strongest argument that the 'meme' concept (ideas as replicators) is a misleading metaphor that distorts more than it illuminates — and that treating culture as Darwinian evolution obscures the intentional, rational, and normative dimensions of human cultural life?",
+        "example":     (
+            "Dawkins (1976) coined 'meme': a unit of cultural information that "
+            "replicates, mutates, and is selected.\n\n"
+            "Meme fitness ≠ truth or usefulness.\n"
+            "A meme spreads if it is: memorable, emotionally engaging, identity-affirming, "
+            "easily transmitted, and provides selective advantage to its host.\n\n"
+            "Memetically fit but false: many conspiracy theories. They are emotionally "
+            "engaging, identity-affirming, memorable, and easy to transmit.\n"
+            "Memetically unfit but true: statistical correction of base rates. "
+            "Boring, non-identity-affirming, requires effort to transmit.\n\n"
+            "Cultural evolution mechanisms:\n"
+            "IMITATION: copy successful individuals\n"
+            "PRESTIGE BIAS: copy high-status individuals\n"
+            "CONTENT BIAS: prefer memorable, coherent, useful content\n"
+            "CONFORMITY BIAS: adopt the majority practice\n\n"
+            "The AUBIEETERNAL application:\n"
+            "The Epistemic Commons is a designed memetic environment — "
+            "one that rewards truth-tracking ideas with high multi-judge scores "
+            "and filters out merely viral but false content.\n"
+            "The steelman requirement is a direct counter to conformity bias.\n"
+            "Pre-registration is a direct counter to prestige bias."
+        ),
+        "activity":    (
+            "Track one meme through its evolutionary history:\n"
+            "Choose any widely-held belief, practice, or institution.\n"
+            "Trace: how did it originate? How did it spread?\n"
+            "Which of the four cultural evolution mechanisms drove it?\n\n"
+            "Then: what is its actual fitness advantage to its hosts?\n"
+            "Is the advantage truth-tracking? Or does it spread for other reasons?\n\n"
+            "Compare two competing memes on the same topic — one truer, one more viral.\n"
+            "Why does the viral one win? What would it take for the truer one to win?"
+        ),
+        "age_hint":    "13+",
+        "xp": 55, "rune": "EVOLUTION•RUNE", "min_coherence": 0.70,
+        "phd_extension": "Read Henrich (2015) 'The Secret of Our Success' Chapters 1-4. Henrich argues humans are not the smartest individual animals — we are the best cultural learners. Our intelligence is mostly borrowed from accumulated cultural knowledge, not generated individually. Test this: try to solve a practical survival problem (start a fire, navigate by stars, treat a common illness) with only your individual reasoning, no cultural knowledge. What fraction of your 'intelligence' is actually borrowed? Apply to AUBIEETERNAL: the curriculum IS accumulated cultural intelligence made explicit.",
+    },
+    "evolution-5": {
+        "title":       "Evolutionary Biology — Level 5 (Master): Evolution, Free Will, and the Possibility of Genuine Agency",
+        "topic":       "If your values, desires, and decision-making processes were shaped by evolutionary pressures to maximize reproductive success in the Pleistocene — in what sense, if any, are your choices freely yours? This question sits at the intersection of biology, philosophy, and the practical project of living deliberately.",
+        "steelman":    "What is the strongest argument that evolutionary debunking of human nature is self-defeating — that if evolution shaped our reasoning faculties to track reproductive success rather than truth, we cannot trust evolutionary theory itself?",
+        "example":     (
+            "The evolutionary debunking argument:\n"
+            "Our moral intuitions were selected to maximize reproductive success, "
+            "not to track moral truth.\n"
+            "Therefore: our moral intuitions are unreliable guides to what is actually right.\n\n"
+            "The self-refuting objection (Sharon Street, 2006):\n"
+            "If evolution shaped our cognitive faculties for reproduction, not truth, "
+            "then the cognitive faculties we use to accept evolutionary theory "
+            "were also shaped for reproduction, not truth.\n"
+            "Can we trust evolutionary theory if our reasoning is unreliable?\n\n"
+            "The response (Kitcher, Joyce):\n"
+            "Evolution selects for cognitive faculties that track certain truths "
+            "(medium-sized objects, social dynamics, causation) "
+            "because those truths affect survival.\n"
+            "Abstract moral truth and long-run statistical truth are different — "
+            "we can be reliable about one domain and unreliable about another.\n\n"
+            "The agency question:\n"
+            "Genuine agency doesn't require being outside causation.\n"
+            "It requires: (1) understanding your causal history, "
+            "(2) having values that survive reflection, "
+            "(3) being able to act from those values rather than automatic impulses.\n\n"
+            "AUBIEETERNAL's claim: epistemic training is the technology of agency.\n"
+            "Understanding evolution doesn't eliminate choice — "
+            "it reveals where automatic responses live so you can choose differently."
+        ),
+        "activity":    (
+            "The Agency Audit:\n"
+            "Identify 3 automatic responses you have that you don't endorse on reflection.\n"
+            "(status anxiety, tribal thinking, sugar craving, scope insensitivity)\n\n"
+            "For each: what is the evolutionary origin?\n"
+            "What would you choose if you acted from your reflective values instead?\n"
+            "What specific habit or practice would shift your behavior toward the reflective choice?\n\n"
+            "Seal this as a pre-registered behavioral commitment.\n"
+            "Revisit in 90 days. The gap between intention and behavior IS the data."
+        ),
+        "age_hint":    "14+ / PhD",
+        "xp": 68, "rune": "EVOLUTION•SOVEREIGN•RUNE", "min_coherence": 0.73,
+        "grants_badge": "🧬 Evolutionary Self-Aware — Agency Understood",
+        "prerequisites": ["evolution-3", "decision-3"],
+        "lattice_node": "evolutionary-biology-human-nature-complete",
+        "phd_extension": "Read Street (2006) 'A Darwinian Dilemma for Realist Theories of Value' and Joyce (2006) 'The Evolution of Morality' Chapter 6. These are the two best contemporary treatments of the evolutionary debunking argument. Then read Parfit (2011) 'On What Matters' Appendix J on whether evolutionary origins debunk moral beliefs. Formalize the argument and the best response as a Bayesian model: given evolutionary origins of moral intuitions, what is your posterior probability that those intuitions track moral truth? What likelihood ratio does the evolutionary origin assign to the realist vs. anti-realist position?",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── ETHICS FROM FIRST PRINCIPLES (5 lessons) ─────────────────────────────
+    # Claude's genuine addition #11.
+    #
+    # Not moralizing. Not a list of rules. Not a cultural tradition.
+    # Genuine philosophical inquiry into what actually matters and why.
+    #
+    # The most important questions get the least rigorous treatment in most
+    # education. "Be good" is not an answer to "what is goodness?"
+    # "Follow the rules" is not an answer to "why should I follow rules?"
+    #
+    # This track treats ethics the way physics treats nature:
+    # as a domain with real structure, where reasoning and evidence
+    # constrain the space of possible answers, and where better and
+    # worse answers genuinely exist — even where certainty does not.
+    # ══════════════════════════════════════════════════════════════════════════
+    "ethics-1": {
+        "title":       "Ethics — Level 1: Why Should I Be Good? The Foundational Question",
+        "topic":       "Before asking what is right, we should ask why it matters to do right. This is not a trick question — it is the hardest question in ethics. The answers shape everything else: whether morality is about consequences, duties, character, or agreements between agents.",
+        "steelman":    "What is the strongest argument for psychological egoism — the view that humans always act to maximize their own perceived self-interest, making genuine altruism impossible and ethics therefore a sophisticated rationalization of self-interest?",
+        "example":     (
+            "The Thrasymachus challenge (Plato's Republic, ~375 BCE):\n"
+            "'Justice is whatever is in the interest of the stronger party.'\n"
+            "Why be just? Because the powerful enforce it.\n"
+            "If you could get away with injustice perfectly, only a fool wouldn't.\n\n"
+            "This is one of the oldest and strongest challenges to ethics.\n"
+            "Plato spent 9 books of the Republic trying to defeat it.\n\n"
+            "Four types of answer:\n\n"
+            "1. CONSEQUENTIALIST: Being good produces better outcomes — "
+            "for you (enlightened self-interest) and everyone. "
+            "Morality is the optimization of wellbeing.\n\n"
+            "2. DEONTOLOGICAL: Some acts are right or wrong regardless of consequences. "
+            "You should be good because duty requires it.\n\n"
+            "3. VIRTUE: The question misunderstands the goal. "
+            "The goal is to flourish as a human being. "
+            "Virtue is what constitutes flourishing. "
+            "Being good IS the good life, not a cost to it.\n\n"
+            "4. CONTRACTARIAN: Morality is what rational agents would agree to "
+            "under fair conditions. You should be good because it is what you "
+            "would choose if you didn't know your position in society.\n\n"
+            "None is obviously correct. All have serious defenders. "
+            "The question is not whether to choose — it is to choose with open eyes."
+        ),
+        "activity":    (
+            "The Thrasymachus Test:\n"
+            "Think of the last moral decision you faced where being good cost you something.\n"
+            "Apply each of the four frameworks:\n"
+            "1. Did consequentialism support the moral choice? (Did it lead to better outcomes?)\n"
+            "2. Did deontology? (Was it a duty regardless of outcomes?)\n"
+            "3. Did virtue ethics? (Was it part of who you want to be?)\n"
+            "4. Did contractarianism? (Would you choose this rule from behind a veil of ignorance?)\n\n"
+            "Which framework actually motivated your choice?\n"
+            "Were any in conflict? How did you resolve it?"
+        ),
+        "age_hint":    "13+",
+        "xp": 42, "rune": "ETHICS•RUNE", "min_coherence": 0.65,
+    },
+    "ethics-2": {
+        "title":       "Ethics — Level 2: Consequentialism — Maximizing Wellbeing and Its Limits",
+        "topic":       "Consequentialism holds that the morality of an act depends entirely on its consequences. Utilitarianism — its most developed form — says we should maximize total wellbeing. This is the most influential ethical theory in public policy and AI alignment. It is also deeply counterintuitive in some cases. Understanding both is essential.",
+        "steelman":    "What is the strongest argument that consequentialism is the only defensible ethical theory — that any framework that prohibits maximizing wellbeing when you can is not a moral system but a collection of arbitrary taboos?",
+        "example":     (
+            "Bentham (1789): maximize pleasure, minimize pain. "
+            "The greatest good for the greatest number.\n\n"
+            "Mill (1863): not all pleasures are equal. "
+            "Higher pleasures (intellectual, aesthetic) outweigh lower ones.\n\n"
+            "Singer (1972): if we can prevent something bad without sacrificing "
+            "anything of comparable moral importance, we ought to do it.\n"
+            "Implication: most people in wealthy countries have a moral obligation "
+            "to give until giving more would cost them as much as it benefits others.\n\n"
+            "The classic counterexamples:\n\n"
+            "THE TRANSPLANT CASE: A surgeon could save 5 patients by killing one healthy "
+            "person for organs. Pure consequentialism seems to require this.\n\n"
+            "THE UTILITY MONSTER: an entity that gains vastly more utility from "
+            "resources than others. Pure consequentialism might require giving it everything.\n\n"
+            "THE REPUGNANT CONCLUSION (Parfit): a world of 10 billion very happy people "
+            "might have less total utility than a world of 100 trillion people with lives "
+            "barely worth living. Should we maximize the second?\n\n"
+            "The responses: rule consequentialism, average vs. total utility, "
+            "person-affecting principles. Each fixes some problems and creates others.\n\n"
+            "The honest position: consequentialism captures something genuinely important. "
+            "Outcomes matter. But it doesn't capture everything."
+        ),
+        "activity":    (
+            "The Triage Thought Experiment:\n"
+            "You must choose which 3 of 5 people to save in an emergency.\n"
+            "Given only: (1) their ages, (2) their relationships to you, "
+            "(3) their social contributions.\n\n"
+            "Pure consequentialism: save whoever has most future utility.\n"
+            "Apply it. Who do you save?\n\n"
+            "Now: does the answer feel right? If not, what consideration are you "
+            "adding that pure consequentialism excludes?\n"
+            "Name that consideration. That is your implicit ethical commitment."
+        ),
+        "age_hint":    "13+",
+        "xp": 46, "rune": "ETHICS•RUNE", "min_coherence": 0.67,
+    },
+    "ethics-3": {
+        "title":       "Ethics — Level 3: Deontology — Rights, Duties, and Kant's Categorical Imperative",
+        "topic":       "Deontological ethics holds that some actions are right or wrong independent of their consequences. Kant's categorical imperative — act only on principles you could will to be universal laws — is the most rigorous attempt to ground morality in reason rather than consequences or tradition.",
+        "steelman":    "What is the strongest argument that deontological ethics is ultimately incoherent — that any system of duties and rights either collapses into consequentialism (because the reason to follow duties is the good outcomes that result) or degenerates into arbitrary taboo without rational foundation?",
+        "example":     (
+            "Kant's Categorical Imperative — three formulations:\n\n"
+            "FORMULA 1 — Universal Law: 'Act only according to that maxim "
+            "whereby you can at the same time will that it should become a universal law.'\n"
+            "Lying: if everyone lied, the concept of truth would collapse "
+            "and lying would become impossible. Contradiction → lying is wrong.\n\n"
+            "FORMULA 2 — Humanity: 'Act so that you treat humanity, whether in "
+            "your own person or in that of another, always as an end and never "
+            "as a means only.'\n"
+            "Slavery: treats persons as mere means. Always wrong.\n"
+            "Using someone: wrong if you treat them ONLY as a means, "
+            "not wrong if you also respect their ends.\n\n"
+            "FORMULA 3 — Kingdom of Ends: 'Act according to maxims of a "
+            "universally legislating member of a merely possible kingdom of ends.'\n"
+            "A community of rational beings who treat each other as ends.\n\n"
+            "The classic objection: a murderer asks where your friend is hiding.\n"
+            "Kant says: do not lie, even then.\n"
+            "Most people's intuition says: lie.\n"
+            "This is where strict deontology and intuition part ways most sharply.\n\n"
+            "Ross's (1930) partial response: we have prima facie duties "
+            "(don't lie, keep promises, don't harm) that can be overridden "
+            "when they conflict. This is more flexible but less rigorous."
+        ),
+        "activity":    (
+            "The Means Test:\n"
+            "Identify 5 actions you took this week that involved other people.\n"
+            "For each: were you treating them as ends in themselves, "
+            "or merely as means to your ends?\n\n"
+            "Most actions involve both — the question is whether you also "
+            "respected their ends, not whether you used them at all.\n\n"
+            "Which of your five actions had the clearest violation of Formula 2?\n"
+            "What would you do differently if you applied Kant rigorously?"
+        ),
+        "age_hint":    "14+",
+        "xp": 50, "rune": "ETHICS•RUNE", "min_coherence": 0.69,
+        "phd_extension": "Read Kant (1785) Groundwork of the Metaphysics of Morals Section II. Derive the categorical imperative from the concept of rational agency alone — Kant's argument is that any rational agent who understands what it means to be rational is committed to the categorical imperative. Evaluate: is this derivation valid? Then read Korsgaard (1996) 'Creating the Kingdom of Ends' for the best contemporary defense. Apply to AI: should an AI follow deontological constraints even when violating them would produce better consequences? This is the core AI alignment question.",
+    },
+    "ethics-4": {
+        "title":       "Ethics — Level 4: Virtue Ethics and Moral Character — What Kind of Person Should You Be?",
+        "topic":       "Virtue ethics asks not 'what should I do?' but 'what kind of person should I be?' Aristotle's answer — develop virtues that constitute human flourishing — is in many ways the most practical ethical framework. It is also deeply connected to modern psychology and the polyvagal research on what enables humans to function at their best.",
+        "steelman":    "What is the strongest argument that virtue ethics is a conservative framework that naturalizes existing social hierarchies — and that defining 'virtues' almost always reflects the values of the powerful, making 'flourishing' code for conformity to dominant norms?",
+        "example":     (
+            "Aristotle's eudaimonia (often translated as 'happiness' but better as "
+            "'flourishing' or 'living and doing well'): the telos of human life.\n\n"
+            "Virtues are character traits that constitute flourishing.\n"
+            "They are means between extremes (the 'golden mean'):\n"
+            "Courage = between cowardice and recklessness\n"
+            "Generosity = between miserliness and prodigality\n"
+            "Honesty = between deception and tactless bluntness\n\n"
+            "How virtues develop: through practice, not instruction.\n"
+            "'We become just by doing just acts, temperate by doing temperate acts, "
+            "brave by doing brave acts.'\n"
+            "This is the behavioral psychology insight 2,300 years before BF Skinner.\n\n"
+            "The phronesis requirement: practical wisdom — knowing which virtue "
+            "applies in which situation. Rules are insufficient. "
+            "You need cultivated judgment.\n\n"
+            "The AUBIEETERNAL connection:\n"
+            "Epistemic virtues (intellectual courage, honesty, calibration, "
+            "openness to revision) are virtues in Aristotle's sense — "
+            "character traits constituted by practice, aimed at a specific telos "
+            "(truth-seeking and flourishing), requiring phronesis "
+            "(knowing when to update vs. stand firm)."
+        ),
+        "activity":    (
+            "The Virtue Profile:\n"
+            "List the 10 virtues you most want to embody.\n"
+            "For each: on the Aristotelian spectrum between two vices, "
+            "where are you currently?\n\n"
+            "Pick the 2 virtues where you are furthest from the golden mean.\n"
+            "For each: what specific practice, done daily, would move you toward the mean?\n\n"
+            "Pre-register the practices. Review in 90 days.\n"
+            "Aristotle's key claim is testable: practice changes character.\n"
+            "Is it true for you?"
+        ),
+        "age_hint":    "13+",
+        "xp": 55, "rune": "ETHICS•RUNE", "min_coherence": 0.70,
+    },
+    "ethics-5": {
+        "title":       "Ethics — Level 5 (Master): Moral Uncertainty and Making Decisions Under Ethical Disagreement",
+        "topic":       "Thoughtful people disagree about ethics. The frameworks we have — consequentialism, deontology, virtue ethics, contractarianism — often give different verdicts. What should you do when you are genuinely uncertain which ethical framework is correct? This is the practical meta-ethics question that every honest moral agent faces.",
+        "steelman":    "What is the strongest argument that moral uncertainty is a dangerous concept — that treating ethics as uncertain in the same way we treat factual claims licenses people to waffle on clear moral questions and provides intellectual cover for moral cowardice?",
+        "example":     (
+            "MacAskill's (2014) approach to moral uncertainty:\n\n"
+            "When multiple ethical theories have credence, act to maximize "
+            "expected choiceworthiness across theories (weighted by their probability).\n\n"
+            "Example: climate policy\n"
+            "Consequentialism (P=0.5): massive future harm demands action now\n"
+            "Deontology (P=0.3): rights of future generations create strong duties\n"
+            "Virtue (P=0.2): prudence and care for others require action\n"
+            "All three point the same direction → high confidence in action\n\n"
+            "Example: abortion (where theories diverge)\n"
+            "Consequentialism: depends on empirical facts about wellbeing\n"
+            "Deontology: depends on theory of personhood and rights\n"
+            "Virtue: depends on what constitutes flourishing for the mother and society\n"
+            "All three give different, uncertain verdicts → appropriate humility\n\n"
+            "The moral parliament metaphor (Ord, 2020):\n"
+            "Imagine different ethical theories as parties in a parliament.\n"
+            "Each has a number of seats proportional to your credence in it.\n"
+            "Vote on each moral question. Require a large majority for controversial actions.\n\n"
+            "The practical principle: under moral uncertainty, "
+            "avoid actions that multiple frameworks condemn — "
+            "especially irreversible ones. The asymmetry of catastrophe applies to ethics."
+        ),
+        "activity":    (
+            "The Moral Parliament on One Hard Case:\n"
+            "Choose one genuinely contested moral question you face or care about.\n"
+            "Assign credences to your top 3 ethical frameworks (sum to 100%).\n"
+            "Apply each framework to the question. What does each recommend?\n\n"
+            "Then: run the moral parliament vote.\n"
+            "Is there a majority? A supermajority?\n"
+            "Or do the frameworks genuinely conflict?\n\n"
+            "If they conflict: what additional information would resolve the conflict?\n"
+            "Pre-register your current credences. Revisit when you have that information.\n\n"
+            "This is how an honest moral agent navigates genuine uncertainty — "
+            "not with false confidence, not with paralysis, but with calibrated humility."
+        ),
+        "age_hint":    "14+ / PhD",
+        "xp": 72, "rune": "ETHICS•SOVEREIGN•RUNE", "min_coherence": 0.74,
+        "grants_badge": "⚖️ Moral Philosopher — Ethics Under Uncertainty",
+        "prerequisites": ["ethics-3", "ethics-4", "decision-2"],
+        "lattice_node": "ethics-first-principles-complete",
+        "phd_extension": "Read MacAskill (2014) 'Normative Uncertainty' Chapters 3-5. Implement the 'maximize expected choiceworthiness' approach as a Python function: takes a list of (theory, credence, choiceworthiness_score) tuples and returns the expected choiceworthiness of an action. Apply to a real policy question using your actual credences. Then read Parfit (2011) 'On What Matters' Part Three on the Convergence Thesis: that consequentialism, deontology, and virtue ethics converge in their verdicts when properly understood. Evaluate: does Parfit's convergence actually hold, or is it wishful thinking? This is the frontier of moral philosophy.",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
