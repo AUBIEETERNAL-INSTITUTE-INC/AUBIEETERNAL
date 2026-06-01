@@ -244,7 +244,7 @@ class AppState(BaseModel):
     app_version:      str  = "69.0"
 
     # Runtime cache (not persisted)
-    _runtime_cache:   Dict[str, Any] = Field(default_factory=dict, exclude=True)
+    runtime_cache:    Dict[str, Any] = Field(default_factory=dict, exclude=True)
 
     # ── Computed properties ────────────────────────────────────────────────────
 
