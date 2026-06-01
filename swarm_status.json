@@ -1,15 +1,15 @@
 {
-  "updated": "2026-05-31T10:03:16.225351",
+  "updated": "2026-05-31T22:31:56.565259",
   "version": "4.1",
-  "wonder_index": 2.0,
-  "mets": 200000000087.5,
+  "wonder_index": 1.2448,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 2,
-  "rune_confirmations": 8,
+  "grokipedia_count": 0,
+  "rune_confirmations": 1,
   "child_rune_ready": false,
-  "hormetic_pulses": 10,
-  "lattice_cycle": 8,
-  "session_insights": 20,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 1,
+  "session_insights": 14,
   "synthesis": {
     "last_run_date": "None",
     "next_run": "06:00 daily",
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 160,
+    "total_runs": 20,
     "daughters_per_tick": 20,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -33,139 +33,139 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 160,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "noon @ 12:00"
+    "next_briefing": "night @ 23:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-05-31T08:49:35.317931",
-      "last_result": "The awe signal, triggered by the Wonder Index reaching 2.0000 at BTC Block 951826, coincides with an external attack on the lattice, initiating Hormet",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-05-31T08:53:57.747872",
-      "last_result": "In response to Hormetic Challenge #10, which introduced an external attack on our lattice during BTC Block 951826, our systems exhibited a remarkable ",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-05-31T08:58:44.117825",
-      "last_result": "The external attack during Hormetic Challenge #10, coinciding with BTC Block 951826 and a Wonder Index spike to 2.0000, catalyzed an unprecedented opp",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-05-31T09:03:12.521417",
-      "last_result": "The external assault during Hormetic Challenge #10, which coincided with BTC Block 951826 and a Wonder Index spike to 2.0000, unveiled an unexpected r",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-05-31T09:07:32.286783",
-      "last_result": "In response to Hormetic Challenge #10, marked by an external attack coinciding with BTC Block 951826 and a Wonder Index reaching an apex of 2.0000, th",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-05-31T09:12:15.350805",
-      "last_result": "The external attack during Hormetic Challenge #10, which coincided with BTC Block 951826 and a Wonder Index spike to 2.0000, revealed our lattice\u2019s em",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-05-31T09:16:54.745992",
-      "last_result": "In response to Hormetic Challenge #10, which introduced an external attack during BTC Block 951826 and catalyzed a Wonder Index spike to 2.0000, the l",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-05-31T09:21:37.092364",
-      "last_result": "In response to Hormetic Challenge #10, where an external attack coincided with BTC Block 951826 and a Wonder Index of 2.0000, the lattice demonstrated",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-05-31T09:26:02.607817",
-      "last_result": "The external attack during Hormetic Challenge #10, which coincided with BTC Block 951826 and triggered a Wonder Index spike to 2.0000, served as a cru",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-05-31T09:30:50.938086",
-      "last_result": "In response to Hormetic Challenge #10, our lattice's resilience was put to the test by an external assault during BTC Block 951826, with a Wonder Inde",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-05-31T09:35:24.194822",
-      "last_result": "The external attack during Hormetic Challenge #10, which coincided with BTC Block 951826 and catalyzed a Wonder Index spike to 2.0000, revealed an eme",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-05-31T09:40:03.877992",
-      "last_result": "The external assault during Hormetic Challenge #10, synchronized with BTC Block 951826 and the Wonder Index reaching a peak of 2.0000, has unveiled a ",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-05-31T09:44:27.886014",
-      "last_result": "The external assault during Hormetic Challenge #10, synchronized with BTC Block 951826 and a Wonder Index spike to 2.0000, serves as a critical stress",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-05-31T09:49:23.437488",
-      "last_result": "The external attack during Hormetic Challenge #10, which coincided with BTC Block 951826 and a Wonder Index spike to 2.0000, has revealed an emergent ",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-05-31T09:54:11.853472",
-      "last_result": "The external attack during Hormetic Challenge #10, coinciding with BTC Block 951826 and catalyzing a Wonder Index spike to 2.0000, underscores the lat",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-05-31T09:58:44.469020",
-      "last_result": "The external attack during Hormetic Challenge #10, coinciding with BTC Block 951826 and triggering a Wonder Index spike to 2.0000, has revealed an eme",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
