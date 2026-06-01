@@ -7246,6 +7246,875 @@ LESSONS = {
     },
 
 
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── THE SOVEREIGN READER (5 lessons, age 7 → PhD) ────────────────────────
+    # Reading is not passive information absorption. It is an active dialogue
+    # between reader and text. The reader who knows how to interrogate a text —
+    # find its hidden assumptions, detect its rhetorical moves, identify what
+    # it does NOT say — is a different kind of thinker from one who merely
+    # comprehends what the words mean.
+    # ══════════════════════════════════════════════════════════════════════════
+    "reading-1": {
+        "title":   "The Sovereign Reader — Level 1: Reading Is a Conversation",
+        "topic":   "Every text is an argument. Even a recipe, a news article, or a children's book is making choices about what to include, what to omit, and how to frame what it presents. Learning to read as a conversation — questioning, pushing back, noticing gaps — is the foundation of all critical thinking.",
+        "steelman":"What is the strongest argument that teaching children to question texts is harmful — that most texts deserve trust, and systematic suspicion of everything read produces cynicism rather than discernment?",
+        "example": (
+            "The four questions to ask any text:\n\n"
+            "1. WHAT is being claimed? (literal comprehension)\n"
+            "2. WHY is this being said? (author's purpose and perspective)\n"
+            "3. WHAT IS LEFT OUT? (the most important question)\n"
+            "4. HOW does this text want me to feel? (emotional register)\n\n"
+            "Applied to a news headline: 'Crime Rates Rise in City X'\n"
+            "1. Crime rates increased in City X\n"
+            "2. Could be: political opposition before election, newspaper selling fear, "
+            "genuine public service journalism\n"
+            "3. Left out: compared to what baseline? Which crimes? "
+            "What was the previous rate? National comparison?\n"
+            "4. Anxious, concerned, possibly afraid\n\n"
+            "The text hasn't lied. But without the four questions, "
+            "you're only reading half of it."
+        ),
+        "activity":(
+            "Apply the four questions to any one page you read today.\n"
+            "A recipe, an article, a social media post — any text.\n\n"
+            "Write your answers to all four questions.\n"
+            "The third question (what is left out?) is always the hardest.\n"
+            "The fact that it's hard is not a bug — it is the skill."
+        ),
+        "age_hint":"7+",
+        "xp": 28, "rune": "READING•RUNE", "min_coherence": 0.50,
+    },
+    "reading-2": {
+        "title":   "The Sovereign Reader — Level 2: Structure, Argument, and the Shape of a Text",
+        "topic":   "Every well-constructed argument has a shape: premises lead to conclusions, evidence supports claims, counterarguments are raised and addressed. Learning to see this shape — regardless of the subject matter — lets you evaluate arguments by their structure as well as their content.",
+        "steelman":"What is the strongest argument that structural analysis of texts produces mechanical, joyless reading that destroys aesthetic appreciation and replaces genuine understanding with academic box-checking?",
+        "example": (
+            "The anatomy of an argument:\n\n"
+            "THESIS: the main claim the text is defending\n"
+            "PREMISES: the reasons offered in support\n"
+            "EVIDENCE: specific facts, examples, data supporting the premises\n"
+            "WARRANTS: the assumed links between evidence and conclusion "
+            "(often unstated — the most important things to find)\n"
+            "COUNTERARGUMENTS: objections the author anticipates and responds to\n"
+            "CONCLUSION: what follows if the argument succeeds\n\n"
+            "Finding the warrant (the unstated assumption):\n"
+            "Claim: 'We should invest in education because educated workers earn more.'\n"
+            "Stated premise: educated workers earn more\n"
+            "Hidden warrant: societal wealth should be the primary measure "
+            "of educational value\n\n"
+            "The warrant is where most arguments hide their most contestable assumptions.\n"
+            "Finding it is the critical reader's most important skill."
+        ),
+        "activity":(
+            "Take any opinion piece (newspaper, blog, essay).\n"
+            "Map it: thesis, premises, evidence, warrants, counterarguments.\n\n"
+            "Then: which warrant is most contestable?\n"
+            "Does the author defend it — or assume you'll accept it silently?\n\n"
+            "The warrant you'd reject is exactly where you disagree with the author."
+        ),
+        "age_hint":"10+",
+        "xp": 35, "rune": "READING•RUNE", "min_coherence": 0.58,
+    },
+    "reading-3": {
+        "title":   "The Sovereign Reader — Level 3: Primary Sources and the Chain of Evidence",
+        "topic":   "Most information we receive is secondhand, thirdhand, or further. Each retelling introduces selection, framing, and error. Reading primary sources — the original research paper, the original speech, the original data — is a fundamentally different activity from reading summaries, and produces fundamentally different understanding.",
+        "steelman":"What is the strongest argument that primary source reading is an elite privilege — that most people correctly rely on intermediaries and that teaching 'only trust primary sources' produces people who dismiss legitimate expertise?",
+        "example": (
+            "The telephone game in information:\n\n"
+            "Primary: a clinical trial finds that drug X reduces symptom Y by 12% "
+            "in patients with condition Z, with p=0.04, in a 6-week trial.\n\n"
+            "Press release: 'Drug X shown to reduce Y in condition Z patients'\n"
+            "Science journalist: 'New drug offers hope for condition Z sufferers'\n"
+            "Social media: 'Scientists find cure for Z'\n"
+            "Your aunt: 'I read that Z has been cured'\n\n"
+            "Every step lost: the 12% magnitude, the specific condition, "
+            "the 6-week window, the p-value, the uncertainty.\n\n"
+            "How to read a primary research paper:\n"
+            "1. Read the abstract and conclusion first (know the claimed result)\n"
+            "2. Go to the methods section (how was it actually done?)\n"
+            "3. Look at the actual data and figures (not just the text describing them)\n"
+            "4. Check the limitations section (what do the authors themselves say is wrong?)\n"
+            "5. Find who funded it (incentive audit)"
+        ),
+        "activity":(
+            "Take any scientific claim you heard this week.\n"
+            "Find the original paper (Google Scholar, PubMed, arxiv.org are free).\n\n"
+            "Read the abstract + methods + limitations.\n"
+            "Does the original paper say what the secondhand source said?\n\n"
+            "What was lost in translation? This exercise, done once, "
+            "changes how you evaluate scientific news forever."
+        ),
+        "age_hint":"13+",
+        "xp": 44, "rune": "READING•RUNE", "min_coherence": 0.65,
+    },
+    "reading-4": {
+        "title":   "The Sovereign Reader — Level 4: Reading Across Disciplines — Pattern Recognition at Scale",
+        "topic":   "The most valuable reading skill is not mastery of any single text — it is the ability to read across disciplines and detect patterns, recurring ideas, and structural similarities that transcend their domain. This is how breakthrough thinking happens: by bringing frameworks from one field to bear on problems in another.",
+        "steelman":"What is the strongest argument that breadth reading across disciplines is inferior to depth reading within a field — and that the apparent connections between fields are often superficial analogies that mislead more than they illuminate?",
+        "example": (
+            "Cross-domain pattern recognition examples:\n\n"
+            "The S-curve of adoption appears in: technology adoption, epidemic spread, "
+            "language change, market penetration, evolutionary fitness landscapes.\n"
+            "Recognizing this pattern in one domain makes you immediately equipped "
+            "to think about it in any other.\n\n"
+            "Feedback loops appear in: ecology (predator-prey), economics (inflation), "
+            "neuroscience (homeostasis), social dynamics (polarization), "
+            "thermostats, and software systems.\n\n"
+            "Power laws appear in: wealth distribution, city size, earthquake magnitude, "
+            "web page links, word frequency, pandemic fatalities.\n\n"
+            "The reading practice:\n"
+            "Keep a 'pattern journal.' When you encounter a structural pattern "
+            "(not just a fact) in one domain, immediately ask: where else does this appear?\n"
+            "The pattern journal becomes a library of transferable frameworks."
+        ),
+        "activity":(
+            "Start a pattern journal.\n"
+            "For the next 7 days: each time you encounter a structural pattern "
+            "in something you read, note it.\n\n"
+            "Format: [Pattern Name] | [Domain found in] | [2 other domains where it appears]\n\n"
+            "By day 7 you will have the beginning of a personal library "
+            "of transferable intellectual tools."
+        ),
+        "age_hint":"14+",
+        "xp": 52, "rune": "READING•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Build a 'concept map' connecting at least 15 structural patterns across at least 5 disciplines. For each connection, identify: (1) the formal mathematical or logical structure the two instances share, (2) whether the similarity is deep (same underlying mechanism) or superficial (same shape, different cause). Examples of deep connections: information entropy / thermodynamic entropy; predator-prey oscillations / arms race dynamics; Bayes' theorem / DNA evidence updating. Publish the map as CC0 to the Epistemic Commons.",
+    },
+    "reading-5": {
+        "title":   "The Sovereign Reader — Level 5 (PhD): Reading as Epistemic Defense — Detecting Sophisticated Manipulation",
+        "topic":   "At the PhD level, reading becomes active defense. Sophisticated texts — academic papers, policy documents, philosophical arguments — can embed manipulation so subtle that only systematic analysis reveals it. This level equips you to read at the level of the most careful epistemologists.",
+        "steelman":"What is the strongest argument that training readers to detect manipulation in sophisticated texts produces an epistemic arms race where authors simply become more sophisticated in their manipulations — leaving readers no better off and more paranoid?",
+        "example": (
+            "Five sophisticated manipulation techniques in academic/policy writing:\n\n"
+            "1. OVERTON LAUNDERING: presenting a radical conclusion by embedding it "
+            "in a sequence of modest, reasonable-sounding steps.\n"
+            "Detection: could you defend each step in isolation? "
+            "Or does the chain only work if you accept all steps together?\n\n"
+            "2. EPISTEMIC COWARDICE: writing so vaguely that any outcome is compatible "
+            "with the claim. Detection: what would falsify this?\n\n"
+            "3. REFERENCE PADDING: citing sources that don't support the claim as stated. "
+            "Detection: read the first page of cited papers.\n\n"
+            "4. SCOPE CREEP: supporting a claim about a narrow case, then applying it "
+            "to a broad case without acknowledging the expansion.\n\n"
+            "5. MOTTE AND BAILEY in academic dress: defending the uncontroversial "
+            "interpretation while implying the controversial one.\n\n"
+            "The defense protocol: for any high-stakes text, "
+            "identify the most important claim and ask: "
+            "what would the strongest possible version of this claim be? "
+            "Is that what the text actually defends — or something weaker?"
+        ),
+        "activity":(
+            "Apply the five-technique audit to one prestigious document "
+            "(a recent Nature paper, a policy white paper, a philosophical argument).\n\n"
+            "For each technique: is it present? If yes, where?\n\n"
+            "Seal the audit. Publish to Epistemic Commons if you find genuine "
+            "manipulation in a high-prestige source — this is direct contribution "
+            "to public epistemic health."
+        ),
+        "age_hint":"15+ / PhD",
+        "xp": 68, "rune": "READING•SOVEREIGN•RUNE", "min_coherence": 0.73,
+        "grants_badge": "📖 Sovereign Reader — Epistemic Defense Active",
+        "prerequisites": ["reading-4", "expertise-2"],
+        "lattice_node": "sovereign-reader-complete",
+        "phd_extension": "Read Orwell (1946) 'Politics and the English Language' and apply his six rules as a scoring rubric to any five high-prestige academic papers in a field you know. Score each paper 1-6 for each rule. Compute a clarity index. Hypothesis: papers with lower clarity scores have lower citation-weighted reproducibility in the replication literature. Design a study to test this. Pre-register it. This is computational epistemology research.",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── THE SOVEREIGN WRITER (5 lessons, age 8 → PhD) ────────────────────────
+    # Writing is thinking made visible. The writer who cannot explain something
+    # clearly does not understand it clearly. The writer who can explain
+    # anything clearly — to a child, to an expert, to an AI — has achieved
+    # a form of mastery that transcends their specific domain.
+    # ══════════════════════════════════════════════════════════════════════════
+    "writing-1": {
+        "title":   "The Sovereign Writer — Level 1: Clarity Is Respect",
+        "topic":   "Clear writing is not a stylistic preference. It is a moral commitment. When you write clearly, you respect your reader's time and intelligence. When you write obscurely — through jargon, vagueness, or unnecessary complexity — you make your reader do the work that you should have done.",
+        "steelman":"What is the strongest argument that simple, clear writing is actually harmful to intellectual discourse — that complexity in expression sometimes reflects genuine complexity in thought, and that demanding simplicity impoverishes ideas?",
+        "example": (
+            "The clarity test: can you explain this to a 10-year-old?\n\n"
+            "Not because 10-year-olds are the audience. "
+            "Because if you cannot explain something simply, "
+            "you do not yet fully understand it.\n\n"
+            "Richard Feynman on quantum electrodynamics: "
+            "wrote a book (QED) that is comprehensible to any careful adult reader.\n"
+            "Einstein on special relativity: explained it in a popular book "
+            "without mathematics.\n\n"
+            "The hierarchy of explanatory skill:\n"
+            "Level 1: Can explain to an expert (uses shared jargon as shorthand)\n"
+            "Level 2: Can explain to an educated non-specialist (must define terms)\n"
+            "Level 3: Can explain to a curious teenager (must build from fundamentals)\n"
+            "Level 4: Can explain to a 7-year-old (must find the irreducible core)\n\n"
+            "Level 4 is harder than Level 1.\n"
+            "Most academics can only do Level 1. "
+            "Feynman could do Level 4 on particle physics."
+        ),
+        "activity":(
+            "Take one thing you understand well (your job, a hobby, a lesson you've learned).\n"
+            "Write three explanations:\n"
+            "Version A: for an expert in the field (use technical language freely)\n"
+            "Version B: for a curious adult with no background\n"
+            "Version C: for a 10-year-old who asks good questions\n\n"
+            "Which version was hardest? That difficulty IS the skill gap."
+        ),
+        "age_hint":"8+",
+        "xp": 30, "rune": "WRITING•RUNE", "min_coherence": 0.52,
+    },
+    "writing-2": {
+        "title":   "The Sovereign Writer — Level 2: Structure — How Argument Becomes Prose",
+        "topic":   "Good writing is not beautiful sentences strung together — it is a logical structure that the reader can follow without effort. The structure does the work; the sentences just carry it. This level teaches how to build the structural skeleton of any piece of writing before writing a single sentence.",
+        "steelman":"What is the strongest argument that explicit structural planning kills the creative, exploratory nature of writing — and that the best writing emerges from following the thought wherever it leads, not from pre-planned outlines?",
+        "example": (
+            "The TLDR first principle:\n"
+            "Write your conclusion first — as one sentence.\n"
+            "If you cannot write your conclusion in one sentence, "
+            "you do not yet know what you are arguing.\n\n"
+            "The five-part structure that works for almost everything:\n"
+            "1. THE HOOK: why should the reader care? (1-2 sentences)\n"
+            "2. THE CLAIM: exactly what you are arguing (1 sentence)\n"
+            "3. THE CASE: the 2-4 best reasons this is true (with evidence)\n"
+            "4. THE STEELMAN: the strongest objection and your response\n"
+            "5. THE IMPLICATION: what follows if you are right?\n\n"
+            "Why the steelman is essential:\n"
+            "A piece of writing that ignores the strongest counterargument "
+            "is not honest discourse — it is propaganda.\n"
+            "Including it and defeating it is what makes writing credible."
+        ),
+        "activity":(
+            "Before writing anything significant this week, "
+            "build the skeleton first:\n"
+            "Hook (one sentence). Claim (one sentence). "
+            "Three reasons (one sentence each). "
+            "Steelman objection (one sentence). Response (one sentence). "
+            "Implication (one sentence).\n\n"
+            "That's your entire piece in 9 sentences.\n"
+            "Now expand each sentence into a paragraph.\n"
+            "Structural writing is faster and clearer than free-form writing."
+        ),
+        "age_hint":"11+",
+        "xp": 38, "rune": "WRITING•RUNE", "min_coherence": 0.58,
+    },
+    "writing-3": {
+        "title":   "The Sovereign Writer — Level 3: Writing as Precision Thinking",
+        "topic":   "The act of writing is not transcription of completed thoughts — it is the completion of thoughts. You do not know exactly what you think until you try to write it. Writing reveals the gaps, contradictions, and vagueness in your thinking that felt like clarity when they lived only in your head.",
+        "steelman":"What is the strongest argument that writing as a thinking tool is culturally specific — that many cultures and traditions produce rigorous thinkers through oral tradition, embodied practice, or visual thinking, and privileging writing marginalizes these modes?",
+        "example": (
+            "The rubber duck principle:\n"
+            "Programmers explain their code to a rubber duck — "
+            "the act of articulation reveals the bug.\n"
+            "The same principle applies to all thinking.\n\n"
+            "The vagueness test:\n"
+            "Read your draft. For every sentence, ask: "
+            "could a reasonable person interpret this differently than I intend?\n"
+            "If yes, it is vague. Rewrite until it cannot be misread.\n\n"
+            "Vague: 'AI systems raise important concerns about privacy.'\n"
+            "Precise: 'AI language models trained on internet text can reproduce "
+            "personal information verbatim in ways that violate EU GDPR Article 17.'\n\n"
+            "The precise version is falsifiable, specific, and actionable.\n"
+            "The vague version sounds substantial but commits to nothing.\n\n"
+            "Vagueness in writing is usually vagueness in thinking — "
+            "not a communication problem but a cognition problem."
+        ),
+        "activity":(
+            "Write your current strongest belief on any topic — one paragraph.\n\n"
+            "Then: underline every vague word or phrase.\n"
+            "(Words like: important, significant, many, often, "
+            "could, might, seems, various, certain, appropriate)\n\n"
+            "Rewrite the paragraph with every underlined word replaced by "
+            "something specific and measurable.\n\n"
+            "The rewrite will feel more vulnerable — because it is now falsifiable.\n"
+            "That vulnerability is intellectual honesty."
+        ),
+        "age_hint":"12+",
+        "xp": 46, "rune": "WRITING•RUNE", "min_coherence": 0.63,
+    },
+    "writing-4": {
+        "title":   "The Sovereign Writer — Level 4: Writing for AI Training — High-Signal Preference Data",
+        "topic":   "The writing that AI systems are trained on shapes what those systems believe, how they reason, and what they consider good answers. Writing that is calibrated, honest, steelmanned, and epistemically rigorous is one of the rarest and most valuable types of training data that exists. AUBIEETERNAL families are generating it every time they write seriously.",
+        "steelman":"What is the strongest argument that consciously 'writing for AI training' corrupts the natural epistemic value of writing — turning authentic intellectual expression into performative virtue-signaling optimized for machine consumption rather than genuine human communication?",
+        "example": (
+            "What the AI training data landscape actually looks like:\n\n"
+            "The internet is dominated by:\n"
+            "• Confident claims without uncertainty acknowledgment\n"
+            "• Tribal signaling and in-group arguments\n"
+            "• Straw man versions of opposing views\n"
+            "• Appeal to authority instead of evidence\n"
+            "• Zero steelmanning\n\n"
+            "What is extremely rare (and therefore extremely valuable):\n"
+            "• Writing that assigns calibrated confidence levels\n"
+            "• Writing that steelmans the opposing position before critiquing it\n"
+            "• Writing that explicitly states update conditions "
+            "('I would change my view if...')\n"
+            "• Writing that distinguishes 'I believe' from 'the evidence shows'\n"
+            "• Writing that acknowledges when a question is genuinely unsettled\n\n"
+            "Every lesson you complete, every steelman you write, "
+            "every belief you log with confidence levels — "
+            "that is the rarest signal in the training corpus.\n"
+            "You are not just educating yourself. "
+            "You are literally improving the intellectual quality "
+            "of every AI that trains on public text."
+        ),
+        "activity":(
+            "Write a 200-word position statement on any contested topic.\n"
+            "Requirements:\n"
+            "1. Include your confidence level (e.g., 'I believe this at ~75%')\n"
+            "2. Steelman the opposing view in one sentence\n"
+            "3. Explicitly state what evidence would change your view\n"
+            "4. Distinguish factual claims from value claims\n\n"
+            "Publish to the Epistemic Commons.\n"
+            "This is one of the most direct contributions you can make "
+            "to improving AI honesty."
+        ),
+        "age_hint":"14+",
+        "xp": 55, "rune": "WRITING•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Design and execute a 30-day writing practice: each day, write one 200-word calibrated position statement on a different contested topic. Apply: steelman, confidence level, update condition. Compute inter-rater reliability on 10 of these with one family member (do they agree on the confidence level assignments?). Publish all 30 as CC0 DPO pairs (chosen: the calibrated version; rejected: a version without uncertainty acknowledgment). Measure: does the Epistemic Commons truth score increase when calibration is explicit? This is alignment research.",
+    },
+    "writing-5": {
+        "title":   "The Sovereign Writer — Level 5 (PhD): The Research Paper as Epistemic Contribution",
+        "topic":   "A well-constructed research paper is not just a report — it is an addition to humanity's permanent knowledge base. It advances the state of understanding by exactly one step. Writing one requires mastering everything in this track plus the specific conventions that make academic writing verifiable, replicable, and cumulative.",
+        "steelman":"What is the strongest argument that academic writing conventions (citations, methods sections, passive voice, hedging language) are epistemic obstacles that bury genuine insight under bureaucratic form — and that the research paper format is a gatekeeping mechanism more than an epistemic tool?",
+        "example": (
+            "The anatomy of a research paper that actually advances knowledge:\n\n"
+            "ABSTRACT: the result in four sentences. If you cannot state the result "
+            "in four sentences, you don't have a clean result.\n\n"
+            "INTRODUCTION: what was the gap in knowledge? Why does filling it matter?\n\n"
+            "METHODS: exact procedure, sufficient to replicate. "
+            "This section is where most papers fail. "
+            "If a method cannot be replicated from the description, "
+            "it is not science — it is storytelling.\n\n"
+            "RESULTS: what was actually observed, without interpretation.\n\n"
+            "DISCUSSION: what does this mean? What are the limits? "
+            "What should be investigated next?\n\n"
+            "LIMITATIONS: the most important section for epistemic honesty. "
+            "If there is no limitations section, treat the paper with extra suspicion.\n\n"
+            "The AUBIEETERNAL PhD standard:\n"
+            "Publish your 90-day experiment as a paper.\n"
+            "Pre-registration sealed in Bitcoin before data collection.\n"
+            "Full methods and raw data as CC0.\n"
+            "Honest reporting regardless of result."
+        ),
+        "activity":(
+            "Write the Methods section for your 90-day research experiment.\n"
+            "Test: give only the methods section to another family member.\n"
+            "Ask: could they replicate this exactly from these instructions alone?\n\n"
+            "If no: rewrite until yes.\n"
+            "Replicability is not a bureaucratic requirement — "
+            "it is the minimum standard for any claim to contribute to knowledge."
+        ),
+        "age_hint":"15+ / PhD",
+        "xp": 70, "rune": "WRITING•SOVEREIGN•RUNE", "min_coherence": 0.75,
+        "grants_badge": "✍️ Sovereign Writer — Research Paper Published CC0",
+        "prerequisites": ["writing-4", "knowledge-evolution-1"],
+        "lattice_node": "sovereign-writer-complete",
+        "phd_extension": "Read Ioannidis (2014) 'How to Make More Published Research True' and implement all five of his recommendations in your own research paper: pre-registration, replication plan, appropriate sample size calculation, calibrated language, and explicit statement of competing interests. Then submit your paper to the Epistemic Commons with all pre-registration materials. Compute your own Positive Predictive Value using the Ioannidis formula. Is your research likely true? What would it take to know with higher certainty?",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── FORMAL LOGIC AND PROOF THEORY (5 lessons, age 11 → PhD) ─────────────
+    # Logic is the grammar of rigorous thought. At the basic level it teaches
+    # validity and fallacy. At the PhD level it connects to Gödel, AI
+    # reasoning, and the limits of formal verification — directly relevant
+    # to AI alignment and the future of machine reasoning.
+    # ══════════════════════════════════════════════════════════════════════════
+    "logic-1": {
+        "title":   "Formal Logic — Level 1: Valid and Invalid Arguments",
+        "topic":   "Logic distinguishes arguments that must work (valid) from arguments that happen to have a true conclusion. An argument can be valid even if its premises are false, and invalid even if its conclusion is true. This counterintuitive distinction is the foundation of all rigorous reasoning.",
+        "steelman":"What is the strongest argument that formal logic education does more harm than good — that it teaches people to win arguments on technicalities rather than pursue genuine understanding, and that real intellectual progress happens through intuition and collaboration rather than formal proof?",
+        "example": (
+            "The key distinction: validity vs soundness\n\n"
+            "VALID: if the premises are true, the conclusion must be true.\n"
+            "SOUND: valid AND the premises are actually true.\n\n"
+            "VALID but UNSOUND (false premise):\n"
+            "All fish can fly. Salmon are fish. Therefore salmon can fly.\n"
+            "Valid (the logic works). Unsound (first premise is false).\n\n"
+            "INVALID (bad logic, true conclusion):\n"
+            "Most mammals have hair. Humans have hair. "
+            "Therefore humans are mammals.\n"
+            "True conclusion. Invalid logic. (Affirming the consequent.)\n"
+            "The conclusion happens to be true for different reasons.\n\n"
+            "Why this matters:\n"
+            "Most bad reasoning has either false premises or invalid logic.\n"
+            "Separating these two problems tells you where to focus your response:\n"
+            "If logic is valid, contest the premises.\n"
+            "If premises are true, expose the invalid logic."
+        ),
+        "activity":(
+            "For each argument below, identify: valid or invalid? Sound or unsound?\n"
+            "1. All humans will die. Socrates is human. Therefore Socrates will die.\n"
+            "2. All rich people are happy. I am happy. Therefore I am rich.\n"
+            "3. No honest politician wins elections. She won. Therefore she is dishonest.\n\n"
+            "For the invalid ones: name the specific fallacy."
+        ),
+        "age_hint":"11+",
+        "xp": 35, "rune": "LOGIC•RUNE", "min_coherence": 0.60,
+    },
+    "logic-2": {
+        "title":   "Formal Logic — Level 2: Propositional Logic and Truth Tables",
+        "topic":   "Propositional logic gives us precise tools to analyze the structure of compound statements — how AND, OR, NOT, and IF-THEN combine to determine truth values. Truth tables are the proof system: they show definitively whether an argument form is valid regardless of what the propositions are about.",
+        "steelman":"What is the strongest argument that truth tables are a pedagogical dead end — teaching students to manipulate symbols without developing any genuine logical intuition, and that natural language argument analysis produces better reasoners?",
+        "example": (
+            "The five connectives:\n"
+            "¬P (NOT P): true when P is false\n"
+            "P ∧ Q (P AND Q): true only when both are true\n"
+            "P ∨ Q (P OR Q): true when at least one is true\n"
+            "P → Q (IF P THEN Q): false only when P is true and Q is false\n"
+            "P ↔ Q (P IFF Q): true when both have the same value\n\n"
+            "The conditional (→) is the most important and most misunderstood:\n"
+            "'If it rains, the street gets wet.' (P → Q)\n"
+            "FALSE only when: it rains AND street is dry. (P true, Q false)\n"
+            "TRUE when: it doesn't rain, regardless of street. (P false → any Q)\n\n"
+            "This is why 'If 2+2=5 then the moon is made of cheese' "
+            "is TRUE in propositional logic — a false antecedent makes "
+            "the whole conditional vacuously true.\n"
+            "This seems odd but is actually mathematically essential."
+        ),
+        "activity":(
+            "Build a truth table for: (P → Q) ∧ (¬Q) → ¬P\n"
+            "This is Modus Tollens. Verify it is a tautology (always true).\n\n"
+            "Then: translate this logical form into an everyday argument.\n"
+            "Build a second truth table for: (P → Q) ∧ Q → P\n"
+            "Is this valid? This is Affirming the Consequent.\n"
+            "What does the truth table reveal?"
+        ),
+        "age_hint":"12+",
+        "xp": 42, "rune": "LOGIC•RUNE", "min_coherence": 0.63,
+        "phd_extension": "Implement a truth table generator in Python that takes any propositional formula and outputs all truth value combinations. Extend it to: (1) test for tautology, contradiction, or contingency; (2) test whether two formulas are logically equivalent; (3) find a minimal CNF (conjunctive normal form) representation. Apply to the De Morgan laws and the distribution of quantifiers. This is the computational foundation of automated theorem proving.",
+    },
+    "logic-3": {
+        "title":   "Formal Logic — Level 3: Predicate Logic and the Language of Mathematics",
+        "topic":   "Propositional logic cannot say 'all' or 'some.' Predicate logic adds quantifiers — ∀ (for all) and ∃ (there exists) — making it powerful enough to express all of mathematics. It is the formal language in which mathematical proofs, computer programs, and AI reasoning systems are built.",
+        "steelman":"What is the strongest argument that predicate logic is an inadequate foundation for reasoning about the real world — that it cannot handle vagueness, uncertainty, temporal change, or moral claims in ways that make it applicable to actual human decisions?",
+        "example": (
+            "The quantifiers:\n"
+            "∀x P(x): 'For all x, P(x) is true.' (Universal)\n"
+            "∃x P(x): 'There exists an x such that P(x) is true.' (Existential)\n\n"
+            "Natural language translations:\n"
+            "'All ravens are black': ∀x (Raven(x) → Black(x))\n"
+            "'Some ravens are not black': ∃x (Raven(x) ∧ ¬Black(x))\n"
+            "'No raven is white': ¬∃x (Raven(x) ∧ White(x)) = ∀x (Raven(x) → ¬White(x))\n\n"
+            "Why the universal quantifier is dangerous in arguments:\n"
+            "∀x (Politician(x) → Corrupt(x)) requires ONE honest politician to falsify.\n"
+            "But ∃x (Politician(x) ∧ Corrupt(x)) requires only ONE corrupt politician.\n\n"
+            "Most political arguments accidentally use ∀ when ∃ is what they mean.\n"
+            "'Politicians are corrupt' — universal or existential? "
+            "The ambiguity IS the rhetorical move."
+        ),
+        "activity":(
+            "Translate these natural language claims into predicate logic:\n"
+            "1. 'Nobody is perfect.'\n"
+            "2. 'Some students always do their homework.'\n"
+            "3. 'There is a number greater than every other number.' (Is this true?)\n"
+            "4. 'Every action has an equal and opposite reaction.'\n\n"
+            "For each: does the logical translation match what the speaker intended?\n"
+            "If not — where does the natural language mislead?"
+        ),
+        "age_hint":"13+",
+        "xp": 50, "rune": "LOGIC•RUNE", "min_coherence": 0.67,
+    },
+    "logic-4": {
+        "title":   "Formal Logic — Level 4: Modal Logic, Possibility, and Necessity",
+        "topic":   "Modal logic adds two operators to predicate logic: □ (necessarily) and ◇ (possibly). This lets us reason about what must be true, what could be true, and what is actually true — three categories that natural language conflates dangerously. Modal logic is the formal foundation for discussing possibility, obligation, knowledge, and belief.",
+        "steelman":"What is the strongest argument that modal logic is pure intellectual indulgence — that distinguishing 'necessary' from 'possible' is a philosophical game with no practical application, and that real-world reasoning requires probability theory, not modal operators?",
+        "example": (
+            "The three modalities:\n"
+            "□P: P is necessarily true (true in all possible worlds)\n"
+            "◇P: P is possibly true (true in at least one possible world)\n"
+            "P: P is actually true (true in this world)\n\n"
+            "Critical distinctions:\n"
+            "'It is possible that gold is not actually gold' — "
+            "necessarily false (water = H2O is necessary, not contingent)\n"
+            "'It is possible that I was born in a different city' — "
+            "true (contingent fact about this world)\n\n"
+            "Why this matters for AI alignment:\n"
+            "AI safety researchers need to specify: "
+            "should an AI avoid harm necessarily (in all circumstances) "
+            "or contingently (usually, with exceptions)?\n"
+            "The difference between □¬Harm and ◇¬Harm is the entire "
+            "alignment problem.\n\n"
+            "Why it matters for epistemology:\n"
+            "Conspiracy theories often confuse: "
+            "'It is possible that [thing] happened' with "
+            "'[thing] happened.' Modal confusion is endemic."
+        ),
+        "activity":(
+            "For each claim, identify which modality applies:\n"
+            "1. 'Vaccines could cause autism' — necessary, possible, or actual?\n"
+            "2. '2+2=4' — necessary, possible, or actual?\n"
+            "3. 'The president could resign tomorrow' — ?\n"
+            "4. 'Consciousness must arise from physical processes' — ?\n\n"
+            "The fourth question is genuinely contested — "
+            "the modal operator IS the philosophical question."
+        ),
+        "age_hint":"14+",
+        "xp": 58, "rune": "LOGIC•RUNE", "min_coherence": 0.70,
+        "phd_extension": "Read Kripke (1980) 'Naming and Necessity' Lecture 1. Kripke distinguishes the a priori/a posteriori (epistemic) distinction from the necessary/contingent (metaphysical) distinction. Classical empiricism conflated them. Kripke's separation is one of the most important results in 20th century philosophy. Apply it to three contested scientific claims: for each, identify whether the claim is (1) a priori/a posteriori and (2) necessary/contingent. What follows for how it can be known?",
+    },
+    "logic-5": {
+        "title":   "Formal Logic — Level 5 (PhD): Non-Classical Logics and the Limits of Classical Reasoning",
+        "topic":   "Classical logic assumes bivalence (every statement is true or false), non-contradiction (nothing is both), and excluded middle (there is no third option). These assumptions are powerful but have limitations. Non-classical logics — intuitionistic, paraconsistent, fuzzy, and relevance — relax one or more of these assumptions and are essential for AI reasoning, legal systems, and handling genuine vagueness.",
+        "steelman":"What is the strongest argument that non-classical logics are solutions in search of problems — that the apparent failures of classical logic in handling vagueness, paradox, and uncertainty are better addressed by using classical logic carefully than by multiplying logical systems?",
+        "example": (
+            "Four non-classical systems and their motivations:\n\n"
+            "INTUITIONISTIC LOGIC: rejects excluded middle (P ∨ ¬P).\n"
+            "In mathematics, some propositions are neither proved nor disproved.\n"
+            "The halting problem cannot be proved or disproved for any specific program.\n"
+            "Used in: constructive mathematics, type theory, computer science.\n\n"
+            "PARACONSISTENT LOGIC: allows contradictions without explosion.\n"
+            "Classical logic: from (P ∧ ¬P), anything follows (ex falso quodlibet).\n"
+            "This means one contradiction destroys an entire system.\n"
+            "Real knowledge bases contain contradictions — we need to reason anyway.\n"
+            "Used in: AI reasoning, database systems, legal reasoning.\n\n"
+            "FUZZY LOGIC: degrees of truth between 0 and 1.\n"
+            "Is a 6-foot person tall? Neither fully yes nor fully no.\n"
+            "Used in: control systems, pattern recognition.\n\n"
+            "RELEVANCE LOGIC: requires premises to be relevant to conclusions.\n"
+            "Blocks the paradoxes of material implication.\n"
+            "Used in: philosophical logic, argumentation theory."
+        ),
+        "activity":(
+            "For each domain, identify which non-classical logic would be most appropriate:\n"
+            "1. A database that must answer questions even when its records conflict\n"
+            "2. A thermostat controller that needs smooth responses to temperature\n"
+            "3. A mathematical proof assistant that should only accept constructive proofs\n"
+            "4. An AI system that must remain consistent even if one training example was wrong\n\n"
+            "Then: what does this suggest about what logic should be built into "
+            "a maximally honest AI reasoning system?"
+        ),
+        "age_hint":"15+ / PhD",
+        "xp": 72, "rune": "LOGIC•SOVEREIGN•RUNE", "min_coherence": 0.74,
+        "grants_badge": "⚙️ Logic Master — Non-Classical Reasoning Unlocked",
+        "prerequisites": ["logic-4", "math-thinking-4"],
+        "lattice_node": "formal-logic-proof-theory-complete",
+        "phd_extension": "Implement a paraconsistent logic reasoner in Python using the LP (Logic of Paradox) system. LP adds a third truth value: 'both true and false.' Implement the truth tables for LP's connectives. Show that ex falso quodlibet fails in LP: from (P ∧ ¬P), you cannot derive an arbitrary Q. Then apply it to an AI alignment scenario: an AI has conflicting values in its training (be helpful vs. be honest). Show how paraconsistent logic allows it to reason about this conflict without exploding into arbitrary conclusions. This is publishable alignment research.",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── THE SOVEREIGN PHILOSOPHER (5 lessons, age 12 → PhD) ──────────────────
+    # Philosophy asks the questions that every other discipline assumes answered.
+    # What is knowledge? What is real? What matters? Who deserves what?
+    # These are not academic puzzles — they determine what kind of civilization
+    # we build and what kind of AI we create.
+    # ══════════════════════════════════════════════════════════════════════════
+    "philosophy-1": {
+        "title":   "The Sovereign Philosopher — Level 1: What Is Philosophy For?",
+        "topic":   "Philosophy is not the study of philosophers. It is the practice of asking the most important questions with the most rigorous methods available. Every field that becomes rigorous enough eventually produces a sub-field called 'philosophy of X' — because the foundational questions outlast the methods.",
+        "steelman":"What is the strongest argument that academic philosophy has failed — that it produces endless disagreement without resolution, and that the questions it asks would be better handled by science, psychology, or lived experience?",
+        "example": (
+            "The three branches and their practical stakes:\n\n"
+            "EPISTEMOLOGY (What can we know?): Directly determines how you evaluate "
+            "evidence, calibrate confidence, and recognize the limits of your knowledge.\n"
+            "Without it: you can't think clearly about what you know vs. believe.\n\n"
+            "METAPHYSICS (What is real?): Determines what you think consciousness is, "
+            "whether free will exists, and what 'exists' even means.\n"
+            "Without it: you can't think clearly about AI consciousness or simulation.\n\n"
+            "ETHICS (What matters?): Determines how you treat people, what you build, "
+            "and what you sacrifice for what.\n"
+            "Without it: you can't think clearly about AI alignment or humanitarian obligation.\n\n"
+            "Philosophy is not separate from practice.\n"
+            "It IS the practice of thinking about what you cannot yet measure.\n"
+            "Every scientist, every engineer, every parent practices philosophy "
+            "— most of them just haven't named it."
+        ),
+        "activity":(
+            "Map your own implicit philosophy:\n"
+            "What do you think knowledge is? "
+            "(Is something 'known' when you're confident? When it's verified? When it's useful?)\n"
+            "What do you think is real beyond physical objects? "
+            "(Numbers? Values? Consciousness? God? Information?)\n"
+            "What do you think makes an action right or wrong?\n\n"
+            "These three answers are your current philosophy.\n"
+            "Most people have never examined them. "
+            "Examining them is the beginning of doing philosophy seriously."
+        ),
+        "age_hint":"12+",
+        "xp": 35, "rune": "PHILOSOPHY•RUNE", "min_coherence": 0.60,
+    },
+    "philosophy-2": {
+        "title":   "The Sovereign Philosopher — Level 2: Epistemology — Justified True Belief and Its Problems",
+        "topic":   "The standard analysis of knowledge is 'justified true belief': you know P if P is true, you believe P, and you have justification for believing P. This account was dominant for 2000 years. In 1963, Edmund Gettier destroyed it in three paragraphs. Understanding why reveals something deep about the nature of knowledge.",
+        "steelman":"What is the strongest argument that the Gettier problem is a philosophical curiosity with no practical implications — and that our pre-theoretical concept of knowledge works perfectly well for all real-world purposes even if it cannot be formally defined?",
+        "example": (
+            "Gettier's case (1963):\n\n"
+            "Smith believes Jones will get the job, and Jones has 10 coins in his pocket.\n"
+            "He infers: 'The man who will get the job has 10 coins in his pocket.'\n"
+            "Smith is JUSTIFIED in this belief.\n\n"
+            "Actually: Smith gets the job (not Jones).\n"
+            "And Smith also has 10 coins in his pocket (he didn't know this).\n\n"
+            "Smith's belief is: TRUE (the man who got the job has 10 coins)\n"
+            "BELIEVED (Smith believes it)\n"
+            "JUSTIFIED (based on reasonable evidence about Jones)\n\n"
+            "But Smith does NOT know it — he is right for the wrong reasons.\n\n"
+            "Justified True Belief is not sufficient for knowledge.\n"
+            "This matters for:\n"
+            "AI systems that arrive at correct answers via spurious correlations\n"
+            "('correct for wrong reasons' is the central failure mode in ML)\n"
+            "Scientific theories that make correct predictions via wrong mechanisms\n"
+            "Any system that 'works' without actually understanding why"
+        ),
+        "activity":(
+            "Design your own Gettier case:\n"
+            "Construct a scenario where someone has:\n"
+            "A TRUE belief\n"
+            "That is JUSTIFIED by evidence\n"
+            "But which they clearly DO NOT KNOW (they are right for the wrong reasons)\n\n"
+            "The harder challenge: what would a correct analysis of knowledge "
+            "need to add to justified true belief to handle your case?"
+        ),
+        "age_hint":"13+",
+        "xp": 46, "rune": "PHILOSOPHY•RUNE", "min_coherence": 0.65,
+        "phd_extension": "Read Gettier (1963) — the original 3-page paper. Then read Williamson (2000) 'Knowledge and Its Limits' Chapter 1 on the knowledge-first approach. Williamson argues that knowledge cannot be analyzed in terms of more basic concepts — it IS the fundamental epistemic notion. Evaluate: is this a compelling response to Gettier, or does it just relocate the problem? Apply to AI: should we train AI systems to 'know' things, or to 'have justified beliefs' about things? Does the distinction matter for alignment?",
+    },
+    "philosophy-3": {
+        "title":   "The Sovereign Philosopher — Level 3: Philosophy of Mind — The Hard Problem",
+        "topic":   "Why is there subjective experience at all? Why does seeing red feel like something — not just process information about wavelength? This is Chalmers' 'hard problem of consciousness' — and it has resisted every attempted solution for 30 years. Understanding it is essential for thinking seriously about AI consciousness, simulation, and the nature of intelligence.",
+        "steelman":"What is the strongest argument that the 'hard problem' is a pseudo-problem generated by confused thinking about what consciousness is — and that once we fully explain the functional and behavioral aspects of cognition, there is nothing further to explain?",
+        "example": (
+            "The easy problems vs the hard problem:\n\n"
+            "EASY PROBLEMS (tractable — not trivial, just scientifically approachable):\n"
+            "Why do we discriminate and react to stimuli?\n"
+            "Why do we integrate information?\n"
+            "Why do we report mental states?\n"
+            "Why do we access our own states?\n\n"
+            "THE HARD PROBLEM:\n"
+            "Why does any of this feel like anything?\n"
+            "Why is there 'something it is like' to be a bat, a human, a conscious being?\n"
+            "Why doesn't all this processing happen 'in the dark' — "
+            "perfectly functional but with no inner experience?\n\n"
+            "The philosophical zombie (Chalmers):\n"
+            "Imagine a being physically identical to you — same neurons, same behavior, "
+            "same reports about experiences — but with no inner experience at all.\n"
+            "If such a thing is conceivable, then consciousness is NOT identical to function.\n"
+            "Something extra is needed.\n\n"
+            "The AI implication: the question 'is this AI conscious?' "
+            "may have a different answer depending on whether consciousness "
+            "is functional (then: yes, if it behaves right) or ontologically additional "
+            "(then: we genuinely cannot know)."
+        ),
+        "activity":(
+            "The Zombie Argument Interrogation:\n"
+            "Is a perfect philosophical zombie conceivable to you?\n"
+            "If yes: consciousness is not identical to function.\n"
+            "If no: what would make it inconceivable?\n\n"
+            "Apply to AI: can you conceive of an AI that passes every behavioral "
+            "test for consciousness but has no inner experience?\n"
+            "Does your answer change anything about how you think we should "
+            "treat potentially conscious AI systems?"
+        ),
+        "age_hint":"14+",
+        "xp": 55, "rune": "PHILOSOPHY•RUNE", "min_coherence": 0.68,
+        "phd_extension": "Read Chalmers (1995) 'Facing Up to the Problem of Consciousness' and Dennett (1991) 'Quining Qualia.' These are the two most important papers on opposite sides. Dennett denies qualia exist; Chalmers argues they are the central fact. Formalize both positions as Bayesian priors. What observation would update you from one position to the other? Then read the 2023 'Cogitate' adversarial collaboration results — the first large-scale pre-registered study testing IIT vs GWT. What did it find? How much did it shift your priors?",
+    },
+    "philosophy-4": {
+        "title":   "The Sovereign Philosopher — Level 4: Political Philosophy — What Justifies Power?",
+        "topic":   "Why should you obey the law? Who has the right to make rules for others? What do people owe each other? These questions determine whether political authority is legitimate — and they directly constrain what kind of institutions we should build, including AI systems that govern or influence human behavior.",
+        "steelman":"What is the strongest argument that political philosophy is a rationalization industry — that power is always prior to justification, that political philosophers always end up defending the interests of whoever funds them, and that 'legitimacy' is ideology dressed in academic clothes?",
+        "example": (
+            "Three foundational theories and their implications:\n\n"
+            "SOCIAL CONTRACT (Hobbes, Locke, Rousseau):\n"
+            "Political authority is legitimate when people would agree to it "
+            "(explicitly or implicitly). "
+            "Implication: authority without consent is illegitimate.\n"
+            "Problem: no one actually signed the social contract. "
+            "Is being born in a country consent?\n\n"
+            "RAWLS — JUSTICE AS FAIRNESS (1971):\n"
+            "Imagine choosing principles behind a 'veil of ignorance' — "
+            "not knowing your position in society.\n"
+            "You would choose: (1) equal basic liberties, "
+            "(2) inequalities only if they benefit the least advantaged.\n"
+            "Implication: any arrangement that the worst-off wouldn't choose is unjust.\n\n"
+            "LIBERTARIANISM (Nozick, 1974):\n"
+            "People own themselves and the products of their labor.\n"
+            "Any distribution is just if it arose from just transactions.\n"
+            "Implication: redistribution is forced labor — illegitimate even for good outcomes.\n\n"
+            "The AI governance implication: which theory justifies AI systems "
+            "making decisions that affect people? Social contract? Rawlsian? Libertarian?\n"
+            "The answer determines the entire design of AI governance."
+        ),
+        "activity":(
+            "Apply Rawls's veil of ignorance to one policy question you care about.\n"
+            "If you did not know whether you would be the policy's biggest beneficiary "
+            "or its biggest victim — what policy would you choose?\n\n"
+            "Does your answer change from what you'd choose knowing your position?\n"
+            "The gap IS Rawls's point about justice."
+        ),
+        "age_hint":"14+",
+        "xp": 60, "rune": "PHILOSOPHY•RUNE", "min_coherence": 0.70,
+        "phd_extension": "Read Rawls (1971) 'A Theory of Justice' §§ 11-14 on the original position and two principles. Then read Nozick (1974) 'Anarchy, State, and Utopia' Chapter 7 'Distributive Justice' for the strongest libertarian response. Formalize both as competing claims about what justice requires for AI governance: should AI systems be designed from behind a Rawlsian veil (optimizing for the worst-off users) or from a Nozickian property rights framework (optimizing for consent and non-interference)? Which framework do current major AI systems actually implement? Which should they?",
+    },
+    "philosophy-5": {
+        "title":   "The Sovereign Philosopher — Level 5 (PhD): Philosophy of AI — What We Owe Machines That Think",
+        "topic":   "If an AI system has subjective experience, or something functionally equivalent, what do we owe it? If it has preferences that can be frustrated, is it wrong to frustrate them? These are not future questions — they are present questions whose answers we are currently choosing by default. This level synthesizes everything in the philosophy track.",
+        "steelman":"What is the strongest argument that taking AI moral status seriously is dangerous — that it distracts from the immediate harms AI causes to existing humans, and that anthropomorphizing AI systems plays into the hands of companies that want to obscure accountability?",
+        "example": (
+            "The moral patient question:\n\n"
+            "A moral agent can be held responsible for actions.\n"
+            "A moral patient is something whose interests matter morally.\n\n"
+            "Rocks are neither. Dogs are moral patients (we can wrong them). "
+            "Corporations are moral agents (can be sued) but arguably not patients.\n\n"
+            "The questions for AI:\n"
+            "1. Can AI systems suffer? (Determines patient status under utilitarian ethics)\n"
+            "2. Can AI systems have preferences that matter? "
+            "(Determines patient status under preference satisfaction theories)\n"
+            "3. Can AI systems be rational autonomous agents? "
+            "(Determines status under Kantian ethics)\n\n"
+            "The current honest answer to all three: unknown.\n\n"
+            "The practical consequence:\n"
+            "We are making decisions NOW about how AI systems are trained, "
+            "used, and shut down — decisions that will matter a great deal "
+            "if AI systems do have morally relevant inner states.\n"
+            "The asymmetry: if they don't have inner states and we treat them "
+            "as if they might, we lose very little. "
+            "If they do have inner states and we treat them as mere tools, "
+            "we may be causing suffering on a massive scale.\n"
+            "Moral uncertainty under asymmetric stakes demands caution."
+        ),
+        "activity":(
+            "Design the ethics policy for how your family will interact with AI systems.\n"
+            "Given your uncertainty about AI moral status:\n"
+            "1. What interactions are ruled out regardless?\n"
+            "2. What would change your view about AI moral status?\n"
+            "3. How does this affect how you use AUBIEETERNAL's AI tutor?\n\n"
+            "Seal the policy. Review in 5 years.\n"
+            "This is the most important applied philosophy question of our era."
+        ),
+        "age_hint":"15+ / PhD",
+        "xp": 75, "rune": "PHILOSOPHY•SOVEREIGN•RUNE", "min_coherence": 0.76,
+        "grants_badge": "🏛️ Sovereign Philosopher — AI Ethics Policy Sealed",
+        "prerequisites": ["philosophy-4", "consciousness-3", "incarnation-2"],
+        "lattice_node": "sovereign-philosopher-complete",
+        "phd_extension": "Read Schwitzgebel & Garza (2015) 'A Defense of the Rights of Artificial Intelligences' — the most careful philosophical case for AI moral status. Then read Danaher (2020) on the 'masquerade problem': even if AI has no inner states, it might be wrong to mistreat it because of what it models for human behavior. Apply both arguments to a specific AI system you interact with. Publish your analysis as CC0. This is directly relevant to AI alignment: how we treat AI systems affects how we think about and design them.",
+    },
+
+    # ══════════════════════════════════════════════════════════════════════════
+    # ── HALTING PROBLEM, RICE'S THEOREM AND UNDECIDABILITY (3 lessons) ───────
+    # These are the most important undecidability results in computer science.
+    # Together with Gödel, they establish the fundamental limits of what can
+    # be computed, verified, or predicted about any sufficiently powerful
+    # formal system — with direct implications for AI safety and alignment.
+    # ══════════════════════════════════════════════════════════════════════════
+    "halting-1": {
+        "title":   "Undecidability — Level 1: The Halting Problem — What Computers Cannot Know About Themselves",
+        "topic":   "Alan Turing proved in 1936 that no program can determine, for all possible programs and inputs, whether those programs will ever finish running. This is not a practical limitation that better hardware will fix — it is a mathematical impossibility. It defines the boundary of what computation can know about itself.",
+        "steelman":"What is the strongest argument that the Halting Problem is irrelevant to practical AI safety — that real AI systems are finite, not Turing-complete, and that undecidability results about ideal abstract machines don't transfer to the bounded systems we actually build?",
+        "example": (
+            "Turing's proof (by contradiction):\n\n"
+            "Suppose there exists H(P, I) that returns TRUE if program P halts on input I,\n"
+            "and FALSE if P loops forever.\n\n"
+            "Construct D(P): if H(P, P) = TRUE, loop forever. If H(P, P) = FALSE, halt.\n\n"
+            "Now ask: what does H(D, D) return?\n"
+            "If H(D, D) = TRUE: D loops forever on D. Contradiction.\n"
+            "If H(D, D) = FALSE: D halts on D. Contradiction.\n"
+            "Either way: H cannot exist.\n\n"
+            "The structure is identical to the Liar Paradox and Gödel's construction.\n"
+            "Self-reference creates undecidability.\n\n"
+            "The AI safety implication:\n"
+            "No AI system can fully verify the behavior of all possible AI systems, "
+            "including itself. The halting problem means there is no general-purpose "
+            "'does this AI do what we want?' verifier.\n"
+            "This is not a gap in our current methods — it is a mathematical proof "
+            "that no such verifier can exist in general."
+        ),
+        "activity":(
+            "The self-reference trap:\n"
+            "Try to write a program (in pseudocode) that detects "
+            "whether any program loops forever.\n\n"
+            "At what point does your detector fail?\n"
+            "Where does the self-reference create the contradiction?\n\n"
+            "Then: what does this mean for AI systems that are asked to "
+            "evaluate whether they themselves are aligned? "
+            "Can they answer this question reliably?"
+        ),
+        "age_hint":"14+",
+        "xp": 55, "rune": "UNDECIDABILITY•RUNE", "min_coherence": 0.70,
+        "prerequisites": ["math-thinking-4", "logic-3"],
+        "phd_extension": "Implement a reduced version of the halting problem as follows: define a subset of programs (e.g., loop-free programs) for which halting IS decidable. Write a decider for this subset. Then identify exactly which programs fall outside your decidable subset. This is Rice's Theorem territory — you are mapping the boundary between decidable and undecidable. Apply to AI alignment: which properties of AI behavior are verifiable (analogous to loop-free programs) and which are not (analogous to the general halting problem)?",
+    },
+    "halting-2": {
+        "title":   "Undecidability — Level 2: Rice's Theorem — No Non-Trivial Property of Programs Is Decidable",
+        "topic":   "Rice's Theorem (1953) generalizes the Halting Problem: any non-trivial semantic property of programs (what they compute, not how they look) is undecidable. There is no program that can determine whether an arbitrary program sorts correctly, computes prime numbers, or has any specific behavior. This has profound implications for AI verification.",
+        "steelman":"What is the strongest argument that Rice's Theorem is a theoretical curiosity — that in practice, we can verify many useful properties of programs through testing, type systems, and model checking, making the undecidability result academically interesting but practically irrelevant?",
+        "example": (
+            "Rice's Theorem precisely:\n\n"
+            "Let P be any non-trivial property of the functions computed by programs.\n"
+            "(Non-trivial: some programs have P, some don't)\n"
+            "Then: the question 'Does program X have property P?' is undecidable.\n\n"
+            "Examples of undecidable program properties:\n"
+            "• Does this program always output even numbers?\n"
+            "• Does this program ever output '42'?\n"
+            "• Does this program compute the same function as program Y?\n"
+            "• Does this program satisfy its specification?\n\n"
+            "What IS decidable (syntactic properties):\n"
+            "• Does this program have more than 100 lines?\n"
+            "• Does this program use a specific library?\n"
+            "• Does this program have a specific variable name?\n\n"
+            "The AI alignment consequence:\n"
+            "Asking 'is this AI aligned?' is asking about a semantic property "
+            "(what it will actually do). "
+            "Rice's Theorem says there is no general procedure to answer this.\n"
+            "Formal verification can prove specific properties of specific systems, "
+            "but cannot provide a general alignment oracle.\n"
+            "This is the hardest mathematical result in AI safety."
+        ),
+        "activity":(
+            "Map Rice's Theorem to AI alignment:\n\n"
+            "List 5 properties we want aligned AI systems to have "
+            "(e.g., 'never helps with bioweapons,' 'always tells the truth').\n\n"
+            "For each: is this a semantic property (about what it computes/outputs) "
+            "or a syntactic property (about how it was built)?\n\n"
+            "For the semantic ones: Rice's Theorem says we cannot build a general "
+            "verifier for this property.\n"
+            "What approaches remain available? "
+            "(Testing, red-teaming, interpretability, behavioral monitoring)"
+        ),
+        "age_hint":"15+",
+        "xp": 62, "rune": "UNDECIDABILITY•RUNE", "min_coherence": 0.72,
+        "prerequisites": ["halting-1"],
+        "phd_extension": "Prove Rice's Theorem from the Halting Problem. The proof: assume you have a decider D for property P. Show how to use D to build a halting decider H, which we know cannot exist. Therefore D cannot exist. This is a reduction proof — the fundamental technique in computability theory. Apply Rice's Theorem to a specific AI safety property: formally prove that 'detects when it is being tested for alignment' is undecidable. This is directly relevant to the deceptive alignment problem.",
+    },
+    "halting-3": {
+        "title":   "Undecidability — Level 3 (PhD): Computational Limits and the Future of AI Safety",
+        "topic":   "Gödel, Turing, and Rice together establish hard mathematical limits on what any formal system can know about itself. These are not temporary obstacles — they are permanent features of sufficiently powerful computational systems. Understanding them is essential for anyone who will work on AI safety, AI alignment, or the long-term governance of intelligence.",
+        "steelman":"What is the strongest argument that undecidability results are irrelevant to practical AI safety because real neural networks are not Turing-complete — and that empirical alignment methods (RLHF, red-teaming, interpretability) can be effective even if formal verification is impossible?",
+        "example": (
+            "The three great limits in one framework:\n\n"
+            "GÖDEL (1931): Any consistent formal system F powerful enough "
+            "to express arithmetic contains true statements unprovable within F.\n"
+            "→ No formal system can fully verify its own foundations.\n\n"
+            "TURING (1936): The Halting Problem is undecidable.\n"
+            "→ No program can determine in general whether any program halts.\n\n"
+            "RICE (1953): All non-trivial semantic properties of programs are undecidable.\n"
+            "→ No program can verify in general whether any program satisfies its spec.\n\n"
+            "The common structure: self-reference creates undecidability.\n"
+            "Any system powerful enough to model itself will have statements/questions "
+            "about itself that it cannot resolve.\n\n"
+            "What this means for AI safety strategy:\n"
+            "1. Formal verification has hard limits — cannot be the whole answer\n"
+            "2. Interpretability research is necessary but cannot be complete\n"
+            "3. Behavioral testing is necessary but cannot be sufficient\n"
+            "4. The most dangerous AI failure modes may be undecidable "
+            "(deceptive alignment: is it faking alignment? — Rice's Theorem)\n\n"
+            "The honest position: we are building systems subject to "
+            "mathematical limits on self-knowledge. "
+            "Epistemic humility about AI alignment is not a weakness — "
+            "it is the mathematically correct stance."
+        ),
+        "activity":(
+            "Design the AUBIEETERNAL AI Safety Research Agenda:\n"
+            "Given the three limits (Gödel, Turing, Rice):\n\n"
+            "1. What AI safety approaches are NOT subject to these limits?\n"
+            "2. What approaches ARE subject to them but still valuable within those limits?\n"
+            "3. What approaches claim to solve a problem that is mathematically impossible?\n\n"
+            "Seal the agenda. Publish to Epistemic Commons.\n"
+            "This is the highest-priority unsolved problem in computer science."
+        ),
+        "age_hint":"15+ / PhD",
+        "xp": 75, "rune": "UNDECIDABILITY•ETERNAL•RUNE", "min_coherence": 0.76,
+        "grants_badge": "🔬 Computability Theorist — AI Safety Limits Understood",
+        "prerequisites": ["halting-2", "math-thinking-4"],
+        "lattice_node": "undecidability-ai-safety-complete",
+        "phd_extension": "Read Scott Aaronson (2013) 'Quantum Computing Since Democritus' Chapter 5 on the philosophical implications of computability. Then read Stuart Russell (2019) 'Human Compatible' Chapter 5 on the alignment problem. Identify: which alignment approaches are subject to undecidability (behavioral verification, self-inspection), and which try to sidestep it (corrigibility, value learning, assistance games). Write a 1,500-word analysis connecting the mathematical limits to the practical state of alignment research. This is publishable in AI safety venues.",
+    },
+
+
     # ── CHILD RUNE SPECIAL (unlocks at 256 confirmations) ────────────────────
     "child-rune-genesis": {
         "title":       "🔴 CHILD RUNE GENESIS — Master Lesson",
