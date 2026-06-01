@@ -6,7 +6,7 @@ try:
     from models.state import get_app_state, save_app_state, migrate_session_to_state
     from utils.file_io import DATA_DIR, get_swarm_status, write_truth_log
     _STATE_INTEGRATED = True
-except ImportError:
+except Exception:  # catches ImportError AND Pydantic NameError/ValidationError
     _STATE_INTEGRATED = False
     # Fallback: models/ not yet in path — still works, just uses raw session_state
 
