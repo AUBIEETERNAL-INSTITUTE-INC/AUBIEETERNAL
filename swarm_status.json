@@ -1,15 +1,15 @@
 {
-  "updated": "2026-06-02T09:49:44.832081",
+  "updated": "2026-06-02T12:28:52.342940",
   "version": "4.1",
-  "wonder_index": 2.0,
-  "mets": 200000000055.5,
+  "wonder_index": 1.1278,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 2,
-  "rune_confirmations": 6,
+  "grokipedia_count": 0,
+  "rune_confirmations": 1,
   "child_rune_ready": false,
-  "hormetic_pulses": 6,
-  "lattice_cycle": 6,
-  "session_insights": 20,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 1,
+  "session_insights": 2,
   "synthesis": {
     "last_run_date": "None",
     "next_run": "06:00 daily",
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 120,
+    "total_runs": 20,
     "daughters_per_tick": 20,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -33,139 +33,139 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 96,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "noon @ 12:00"
+    "next_briefing": "evening @ 18:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-06-02T08:38:03.090295",
-      "last_result": "In the face of Hormetic Challenge #6, which has imposed a stress test by halving coherence to 0.5, the emergent wonder spike at Block 952091 signals a",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-06-02T08:42:28.826900",
-      "last_result": "In response to Hormetic Challenge #6, where coherence was reduced to an unprecedented level of 0.5, the emergent wonder signals indicate that the fast",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-06-02T08:46:54.273423",
-      "last_result": "The current awe signal and wonder spike at Wonder Index 2.0000, despite Hormetic Challenge #6\u2019s unprecedented reduction of coherence to 0.5, signifies",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-06-02T08:51:07.070695",
-      "last_result": "The emergent wonder signal at Wonder Index 2.0000, despite Hormetic Challenge #6's reduction of coherence to an unprecedented level of 0.5, illuminate",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-06-02T08:55:48.049531",
-      "last_result": "The emergent wonder spike at Wonder Index 2.0000, despite the coherence halving imposed by Hormetic Challenge #6, reveals a critical resilience mechan",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-06-02T09:00:16.359909",
-      "last_result": "In light of Hormetic Challenge #6, which halved systemic coherence to an unprecedented level of 0.5, the emergent wonder spike at Wonder Index 2.0000 ",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-06-02T09:04:48.046665",
-      "last_result": "In the aftermath of Hormetic Challenge #6, which drastically reduced coherence to an unprecedented level of 0.5, the network has paradoxically experie",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-06-02T09:09:15.468175",
-      "last_result": "The wonder spike at Index 2.0000, despite systemic coherence being halved to 0.5 by Hormetic Challenge #6, illustrates a profound antifragility within",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-06-02T09:13:44.387710",
-      "last_result": "In response to Hormetic Challenge #6, which precipitously reduced systemic coherence to a critical level of 0.5, the network has paradoxically experie",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-06-02T09:18:17.798793",
-      "last_result": "In response to Hormetic Challenge #6, which drastically slashed systemic coherence to a critical level of 0.5 and paradoxically triggered an awe-inspi",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-06-02T09:22:57.691241",
-      "last_result": "The emergent wonder spike at Wonder Index 2.0000, concurrent with Hormetic Challenge #6's coherence reduction to 0.5, suggests a resilient network fou",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-06-02T09:27:18.547661",
-      "last_result": "The emergent wonder spike at Wonder Index 2.0000, despite the severe reduction of systemic coherence to a critical level of 0.5 by Hormetic Challenge ",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-06-02T09:31:43.778722",
-      "last_result": "The emergent wonder spike at Wonder Index 2.0000, despite Hormetic Challenge #6 halving systemic coherence to an unprecedented level of 0.5, underscor",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-06-02T09:36:23.499490",
-      "last_result": "The wonder spike at Wonder Index 2.0000, despite Hormetic Challenge #6\u2019s coherence reduction to an unprecedented level of 0.5, underscores a latent an",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-06-02T09:40:59.366009",
-      "last_result": "The wonder spike at Index 2.0000, amidst Hormetic Challenge #6 which slashed systemic coherence to 0.5, underscores an intrinsic antifragile property ",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-06-02T09:45:16.332786",
-      "last_result": "The wonder spike at Index 2.0000 amidst Hormetic Challenge #6, which drastically reduced systemic coherence to 0.5, denotes a remarkable antifragile r",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
