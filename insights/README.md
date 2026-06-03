@@ -13,6 +13,7 @@ Every morning (or as needed), a strong local model (such as `qwen3:32b` or `llam
 ## Latest Syntheses
 | Date       | Title                                              | Link |
 |------------|----------------------------------------------------|------|
+| 2026-06-03 | Antifragility, Via Negativa & Stress-Induced Emergence — Hormetic Challenges #5 & #6 | [View](2026-06-03-antifragility-via-negativa-stress-emergence.md) |
 | 2026-06-02 | Antifragility, Via Negativa & Stress-Induced Emergence — Hormetic Challenges #5 & #6 | [View](2026-06-02-antifragility-via-negativa-stress-emergence.md) |
 | 2026-06-01 | Hormesis, Via Negativa & Adaptive Pulses — Hormetic Challenge #2 | [View](2026-06-01-hormesis-via-negativa-adaptive-pulses.md) |
 | 2026-05-30 | Post-Subsidy Antifragility & The Five Lindy Principles — Hormetic Challenges #5 & #6 | [View](2026-05-30-post-subsidy-antifragility-lindy-principles.md) |
