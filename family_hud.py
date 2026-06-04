@@ -1,10 +1,14 @@
 """
-family_hud.py — AUBIEETERNAL Family Co-Learning Session Handler
-==============================================================
+family_hud.py — AUBIEETERNAL Family Co-Learning Session Handler (Core v67)
+==========================================================================
 Manages shared real-time state for dual Halo HUD sessions.
 
 Kid HUD:  lesson content, coherence meter, steelman prompt, XP
 Parent HUD: live stats panel, polyvagal state, parent actions
+
+Core v67 lessons (core-v67-*) are now the required foundation and are automatically
+surfaced as priority options. They implement the distributional requirements
+from the School Charter Article VI.
 
 Writes every session to master_truth_log.jsonl so the swarm
 learns from family interactions and improves future lessons.
@@ -12,6 +16,8 @@ learns from family interactions and improves future lessons.
 Usage:
     from family_hud import FamilySession
     session = FamilySession(kid_name="Gaby", kid_age=9, parent_name="Sarah")
+    session.start_lesson("core-v67-1")   # Start with Core v67 foundation
+    ...
     session.start_lesson("Courage — Level 1")
     result = session.submit_answer("The strongest argument against courage is...")
     session.end()
@@ -46,6 +52,50 @@ OLLAMA_MODEL   = "qwen3:32b"
 
 # ── Lesson Library ────────────────────────────────────────────────────────────
 LESSONS = {
+
+    # ── AUBIEETERNAL CORE v67 (Foundational — surfaces in HUD for all families) ─
+    # These are the non-negotiable starting lessons per School Charter v3.1 Distributional Requirements.
+    # Every session should prioritize or offer these before specialized tracks.
+    "core-v67-1": {
+        "title":       "Core v67 — Epistemic Rigor First",
+        "topic":       "Every claim must be steelmanned, simulation-tested, and coherence-scored before acceptance.",
+        "steelman":    "What is the strongest argument that requiring steelmans for everything slows down learning and kills wonder?",
+        "example":     "A 7-year-old says 'the sky is blue because God painted it.' Parent helps: 'What's the strongest evidence against that? What would prove it true or false?'",
+        "age_hint":    "All ages — foundation of everything",
+        "xp":          25, "rune": "CORE•V67", "min_coherence": 0.70,
+    },
+    "core-v67-2": {
+        "title":       "Core v67 — Family Sovereignty & Local-First",
+        "topic":       "Your data, your progress, your lessons live with you. Offline by default. Fork at will.",
+        "steelman":    "What is the strongest argument that relying on a shared global curriculum (even CC0) creates hidden dependencies?",
+        "example":     "After setup, the entire Core runs from a laptop with no internet for 6 months. Child completes 40 lessons. Parent verifies via local coherence logs and Child Rune fragments.",
+        "age_hint":    "All ages",
+        "xp":          22, "rune": "CORE•V67", "min_coherence": 0.68,
+    },
+    "core-v67-3": {
+        "title":       "Core v67 — Antifragility Through Simulation",
+        "topic":       "We don't just learn facts. We run simulations, stress-test beliefs, and practice getting stronger from disorder.",
+        "steelman":    "What is the strongest argument that simulation practice is just playing and doesn't produce real knowledge?",
+        "example":     "Family runs a 10-person Monte Carlo on 'what if the power grid fails for 14 days?' They update their 72-hour plan based on the weakest links the sim revealed.",
+        "age_hint":    "8+",
+        "xp":          28, "rune": "CORE•V67", "min_coherence": 0.72,
+    },
+    "core-v67-4": {
+        "title":       "Core v67 — Distribution & Propagation Duty",
+        "topic":       "Knowledge that stays in one house is not yet sovereign. Core graduates have a duty to help plant it elsewhere.",
+        "steelman":    "What is the strongest argument that requiring 'distribution' turns education into missionary work instead of personal growth?",
+        "example":     "After completing Core v67, the family helps their neighbors (the Garcias) clone the repo onto a used laptop, run the first courage lesson together, and log the first coherence score. This counts toward the parent's capstone.",
+        "age_hint":    "10+ (with parent)",
+        "xp":          30, "rune": "CORE•V67•PROPAGATE", "min_coherence": 0.75,
+    },
+    "core-v67-5": {
+        "title":       "Core v67 — On-Chain Identity (Child Runes)",
+        "topic":       "Your learning record is yours forever on Bitcoin. 256 fragments = genesis of your Child Rune. No institution can take it away or rewrite it.",
+        "steelman":    "What is the strongest argument that putting education on a public blockchain exposes children or creates surveillance risks?",
+        "example":     "A child reaches 33/256 confirmations. The family publishes a CC0 note on Nostr anchoring the hash of their first 10 coherence-scored lessons. The rune is born.",
+        "age_hint":    "All ages (ceremony at milestones)",
+        "xp":          18, "rune": "RUNE•GENESIS", "min_coherence": 0.65,
+    },
 
     # ── COURAGE (5 levels) ────────────────────────────────────────────────────
     "courage-1": {
@@ -3870,6 +3920,15 @@ class FamilySession:
         self._save_state()
         return self.lesson
 
+    def get_core_v67_lessons(self) -> dict:
+        """Return the Core v67 foundational lessons (for HUD 'Core Curriculum' tab / priority queue)."""
+        return {k: v for k, v in LESSONS.items() if k.startswith("core-v67-")}
+
+    def start_core_lesson(self, index: int = 1) -> dict:
+        """Convenience for HUDs: start the nth Core v67 lesson."""
+        key = f"core-v67-{index}"
+        return self.start_lesson(key)
+
     # ── Submit answer ─────────────────────────────────────────────────────────
     def submit_answer(self, answer: str, use_ai: bool = True) -> dict:
         """
@@ -3962,6 +4021,8 @@ class FamilySession:
             "next_lesson":        self._suggest_next(),
             "parent_note":        f"{self.kid_name}'s coherence improved {delta:+.3f}. "
                                   f"{'Ready for the next level.' if delta >= 0.1 else 'Another session will help consolidate this.'}",
+            "core_v67_available": list(self.get_core_v67_lessons().keys()),
+            "core_v67_note":      "Core v67 lessons (distributional foundation) are priority for all new sessions per Charter v3.1.",
         }
 
         # ── Child Rune spawn check ────────────────────────────────────────────
@@ -4324,10 +4385,19 @@ for the swarm to process. The **Child Rune Genesis lesson** is now unlocked.
 
 # ── Standalone test ───────────────────────────────────────────────────────────
 if __name__ == "__main__":
-    print("🦅 FamilyHUD test run")
+    print("🦅 FamilyHUD test run — Core v67 enabled")
     session = FamilySession("Gaby", 9, "Sarah", "Co-Learner")
+
+    # Surface the new Core v67 first (as required by distributional rules)
+    core_lessons = session.get_core_v67_lessons()
+    print(f"Core v67 lessons surfaced in HUD: {list(core_lessons.keys())}")
+    lesson = session.start_core_lesson(1)
+    print(f"Started Core lesson: {lesson['title']}")
+    print(f"Steelman prompt: {lesson['steelman']}")
+
+    # Then a traditional one
     lesson  = session.start_lesson("courage-1")
-    print(f"Lesson: {lesson['title']}")
+    print(f"\nAlso available — traditional: {lesson['title']}")
     print(f"Steelman prompt: {lesson['steelman']}")
 
     result = session.submit_answer(

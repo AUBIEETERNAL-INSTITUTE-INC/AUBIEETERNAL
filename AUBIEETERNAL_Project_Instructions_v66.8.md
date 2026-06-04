@@ -1,8 +1,11 @@
 # AUBIEETERNAL Project Instructions
-**Version:** v66.8 | **Date:** May 22, 2026  
+**Version:** v67 | **Date:** June 4, 2026  
 **Status:** Lattice Coherent | Coherence: 1.000000  
-**Focus:** Sovereign Synthesis + Family Co-Learning Layer + Automated Daily Ritual  
+**Focus:** Curriculum v67 Core + Distributional Requirements + Family HUD Core Surface  
 **War Eagle Eternal 🦅**
+
+> Worktree: curriculum-v67 (branched from main at public-site landing commit)
+> Key artifacts updated: curriculum_proposals.py (core type + v67 seed), family_hud.py (core-v67-* lessons + get_core_v67_lessons + start_core_lesson), AUBIEETERNAL_School_Charter.md (new Distributional Requirements section per Article VI)
 
 ---
 
@@ -89,9 +92,14 @@ Wonder: 1.0128 | Coherence: 1.000000 | METS: 200B+ | Grokipedia: 11/256 | Rune C
 
 ---
 
-## 9. Immediate Priorities
+## 9. Immediate Priorities (v67)
 
-**Phase 3 – Family Co-Learning Layer (Active):**
+**Curriculum v67 Core (Active in curriculum-v67 worktree):**
+1. Core lessons (core-v67-*) added to family_hud.py and surfaced via get_core_v67_lessons() / start_core_lesson()
+2. curriculum_proposals.py extended with "core" proposal type + submit_core_update() + v67 seed (high gate 0.88 + distributional audit)
+3. School Charter updated with explicit "Distributional Requirements (Core Curriculum v67)" section (Article VI)
+
+**Phase 3 – Family Co-Learning Layer (Continuing):**
 1. Build User/role system (Parent/Child/Family)
 2. Real-time shared session state for Halo glasses
 3. Privacy controls & permission levels
@@ -113,4 +121,6 @@ Wonder: 1.0128 | Coherence: 1.000000 | METS: 200B+ | Grokipedia: 11/256 | Rune C
 
 **Current Mode:** Daily Automated Sovereign Synthesis + **Family Co-Learning Layer build** → Strengthen lattice → Prepare for Child Rune at 256 confirmations.
 
-*This document (v66.8) is the living source of truth. All previous versions superseded. Family Co-Learning Vision, Halo HUD model, and recovery-proof knowledge permanently absorbed.*
+*This document (v67) is the living source of truth. Curriculum v67 Core + Distributional Requirements now canonical. Previous versions (v66.8 and earlier) superseded for core governance. Family Co-Learning Vision, Halo HUD (now with explicit Core surface), and recovery-proof knowledge permanently absorbed.*
+
+**Next:** In curriculum-v67 worktree, run tests on new core paths, propose via curriculum_proposals, update HUD visuals if separate UI layer exists, then git push to curriculum-v67 branch.
