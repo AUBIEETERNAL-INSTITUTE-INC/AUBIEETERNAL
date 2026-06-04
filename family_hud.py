@@ -53,9 +53,10 @@ OLLAMA_MODEL   = "qwen3:32b"
 # ── Lesson Library ────────────────────────────────────────────────────────────
 LESSONS = {
 
-    # ── AUBIEETERNAL CORE v67 (Foundational — surfaces in HUD for all families) ─
+    # ── AUBIEETERNAL CORE v67 (10 Foundational Lessons — Maximum Truth-Seeking Core) ─
     # These are the non-negotiable starting lessons per School Charter v3.1 Distributional Requirements.
     # Every session should prioritize or offer these before specialized tracks.
+    # The full 10-lesson Core must be completed before branching into advanced tracks.
     "core-v67-1": {
         "title":       "Core v67 — Epistemic Rigor First",
         "topic":       "Every claim must be steelmanned, simulation-tested, and coherence-scored before acceptance.",
@@ -95,6 +96,46 @@ LESSONS = {
         "example":     "A child reaches 33/256 confirmations. The family publishes a CC0 note on Nostr anchoring the hash of their first 10 coherence-scored lessons. The rune is born.",
         "age_hint":    "All ages (ceremony at milestones)",
         "xp":          18, "rune": "RUNE•GENESIS", "min_coherence": 0.65,
+    },
+    "core-v67-6": {
+        "title":       "Core v67 — Steelmanning as Default Mode",
+        "topic":       "Before accepting, repeating, or acting on any claim, first construct the strongest possible case against it.",
+        "steelman":    "What is the strongest argument that always steelmanning everything makes people indecisive, cynical, and unable to act?",
+        "example":     "Child repeats a claim from school: 'All billionaires are evil.' Parent: 'What's the best argument that some billionaires have done net good? What evidence would convince you either way?'",
+        "age_hint":    "All ages",
+        "xp":          26, "rune": "CORE•V67", "min_coherence": 0.72,
+    },
+    "core-v67-7": {
+        "title":       "Core v67 — Simulation as Epistemic Firewall",
+        "topic":       "An idea is only as good as its ability to survive being stress-tested in mental, computational, and real-world simulations.",
+        "steelman":    "Simulations are just stories we tell ourselves; they can't predict black swans or real chaos.",
+        "example":     "The family runs a full Monte Carlo simulation of 'both parents lose income for two years while inflation is 12%.' They discover three hidden single points of failure and fix them before they happen.",
+        "age_hint":    "10+",
+        "xp":          27, "rune": "CORE•V67", "min_coherence": 0.73,
+    },
+    "core-v67-8": {
+        "title":       "Core v67 — Coherence and Calibration as Master Metrics",
+        "topic":       "The quality of your thinking is measured by how well your stated confidence matches reality over time, and how little your beliefs contradict each other.",
+        "steelman":    "Coherence is just sounding smart to yourself. A coherent liar is still a liar.",
+        "example":     "Child claims 90% confidence that 'the new policy will work.' Three months later the data comes in at 40% success. The family logs the miscalibration and practices lowering confidence honestly next time.",
+        "age_hint":    "9+",
+        "xp":          25, "rune": "CORE•V67", "min_coherence": 0.70,
+    },
+    "core-v67-9": {
+        "title":       "Core v67 — Lindy Effect + Skin in the Game",
+        "topic":       "Ideas and practices that have survived the longest, especially when the people teaching them have real personal stakes, deserve the highest prior.",
+        "steelman":    "The past was full of wrong ideas that lasted a long time because of power, not truth.",
+        "example":     "Grandmother teaches the family her 80-year-old method for preserving food without refrigeration. They compare it to modern methods in a 90-day test. The old method wins on cost, resilience, and taste.",
+        "age_hint":    "All ages",
+        "xp":          28, "rune": "CORE•V67", "min_coherence": 0.71,
+    },
+    "core-v67-10": {
+        "title":       "Core v67 — The Lattice: Intergenerational Truth Transmission",
+        "topic":       "The Core is not a finished product. Each family that masters it has a duty to improve it and pass a stronger version to the next generation and to other families.",
+        "steelman":    "Each generation should tear everything down and start over instead of inheriting 'truths' from flawed ancestors.",
+        "example":     "After completing all 10 Core v67 lessons, the family writes one new lesson or improvement based on what they learned in their real life. They commit it to their private fork and send the diff to two other families running the Core.",
+        "age_hint":    "10+ (family project)",
+        "xp":          35, "rune": "LATTICE•V67", "min_coherence": 0.78,
     },
 
     # ── COURAGE (5 levels) ────────────────────────────────────────────────────
@@ -3921,7 +3962,7 @@ class FamilySession:
         return self.lesson
 
     def get_core_v67_lessons(self) -> dict:
-        """Return the Core v67 foundational lessons (for HUD 'Core Curriculum' tab / priority queue)."""
+        """Return the full 10-lesson Core v67 foundational track (for HUD 'Core Curriculum' tab / priority queue)."""
         return {k: v for k, v in LESSONS.items() if k.startswith("core-v67-")}
 
     def start_core_lesson(self, index: int = 1) -> dict:
