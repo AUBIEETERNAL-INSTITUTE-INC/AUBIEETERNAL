@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUBIEETERNAL • Sovereign AI Tutor Swarm • Free Open-Source University</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&amp;family=Space+Grotesk:wght@500;600&amp;display=swap');
+        
+        :root {
+            --primary: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Inter', system_ui, sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Space Grotesk', 'Inter', system_ui, sans-serif;
+            font-weight: 600;
+        }
+
+        .section-header {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .nav-active {
+            color: #f59e0b;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 2.25rem;
+            line-height: 2.5rem;
+            font-weight: 700;
+            color: #f59e0b;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+        }
+
+        .sovereign-gradient {
+            background: linear-gradient(135deg, #1e2937 0%, #0f172a 100%);
+        }
+
+        .lesson-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .lesson-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        .swarm-dot {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        .metric {
+            transition: all 0.3s ease;
+        }
+
+        .nav-scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(12px);
+        }
+
+        .truth-log {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-200">
+    <!-- Navigation -->
+    <nav id="nav" class="fixed top-0 left-0 right-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur-lg transition-all">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-x-3">
+                    <div class="w-11 h-11 bg-amber-500 rounded-2xl flex items-center justify-center shadow-inner">
+                        <span class="text-slate-950 font-black text-3xl tracking-tighter">A</span>
+                    </div>
+                    <div>
+                        <div class="font-display text-2xl font-semibold tracking-tighter">AUBIEETERNAL</div>
+                        <div class="text-[10px] text-amber-500/70 -mt-1 tracking-[2px]">SOVEREIGN • ETERNAL</div>
+                    </div>
+                </div>
+
+                <div class="hidden md:flex items-center gap-x-8 text-sm font-medium">
+                    <a href="#vision" class="hover:text-amber-400 transition-colors">Vision</a>
+                    <a href="#swarm" class="hover:text-amber-400 transition-colors">The Swarm</a>
+                    <a href="#curriculum" class="hover:text-amber-400 transition-colors">Curriculum</a>
+                    <a href="#deploy" class="hover:text-amber-400 transition-colors">Deploy Sovereignly</a>
+                    <a href="#demo" class="hover:text-amber-400 transition-colors">Live Demo</a>
+                </div>
+
+                <div class="flex items-center gap-x-3">
+                    <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank"
+                       class="hidden sm:flex items-center gap-x-2 px-4 py-2 text-sm font-semibold rounded-2xl border border-slate-700 hover:bg-slate-900 transition-all">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/~/+/#aubieeternal-v63-0-38-hyperlattice-genesis" target="_blank"
+                       class="px-5 py-2.5 bg-amber-500 hover:bg-amber-600 transition-all text-slate-950 font-semibold text-sm rounded-2xl flex items-center gap-x-2 shadow-lg shadow-amber-500/20">
+                        <span>Try Live Demo</span>
+                        <i class="fas fa-arrow-right text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="pt-20 pb-16 sovereign-gradient border-b border-slate-800">
+        <div class="max-w-5xl mx-auto px-6 pt-12 pb-8">
+            <div class="max-w-4xl">
+                <div class="inline-flex items-center gap-x-2 px-4 py-1.5 rounded-full bg-slate-900 border border-slate-700 text-xs font-mono tracking-widest mb-6">
+                    <div class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></div>
+                    <span class="text-emerald-400">v4.1 SWARM • COHERENCE 1.000000</span>
+                </div>
+                
+                <h1 class="font-display text-6xl md:text-7xl leading-none tracking-tighter font-semibold mb-4">
+                    A free, sovereign<br>
+                    <span class="text-amber-400">open-source university</span><br>
+                    powered by AI.
+                </h1>
+                
+                <p class="max-w-2xl text-xl text-slate-300 mb-8">
+                    265 lessons across 51 tracks. A 2,096-daughter epistemic tutor swarm. 
+                    Bitcoin-anchored provenance. CC0 public domain. 
+                    Designed for families, schools, and truth-seekers who want zero gatekeepers.
+                </p>
+
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#demo" 
+                       class="group flex-1 sm:flex-none inline-flex items-center justify-center gap-x-3 px-8 py-4 bg-white text-slate-950 font-semibold rounded-3xl text-lg hover:bg-amber-50 transition-all active:scale-[0.985]">
+                        <span>Experience the Live Hyperlattice</span>
+                        <i class="fas fa-play text-amber-500 group-hover:translate-x-0.5 transition"></i>
+                    </a>
+                    
+                    <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank"
+                       class="flex-1 sm:flex-none inline-flex items-center justify-center gap-x-3 px-8 py-4 border border-slate-700 hover:bg-slate-900 font-semibold rounded-3xl text-lg transition-all">
+                        <i class="fab fa-github text-xl"></i>
+                        <span>View on GitHub</span>
+                    </a>
+                </div>
+                
+                <div class="mt-8 flex items-center gap-x-6 text-sm text-slate-400">
+                    <div class="flex items-center gap-x-1.5">
+                        <i class="fas fa-globe text-emerald-400"></i>
+                        <span>Fully offline capable after setup</span>
+                    </div>
+                    <div class="hidden sm:block w-px h-3.5 bg-slate-700"></div>
+                    <div>StartOS ready • Air-gapped friendly</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trust / Metrics Bar -->
+    <div class="border-b border-slate-800 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-6 py-5">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-y-6">
+                <div class="flex items-center gap-x-4">
+                    <div>
+                        <div class="metric-value">2,096</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-500">Daughter Tutors</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-x-4">
+                    <div>
+                        <div class="metric-value">265</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-500">Lessons • 51 Tracks</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-x-4">
+                    <div>
+                        <div class="metric-value">1.000000</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-500">Swarm Coherence</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-x-4">
+                    <div>
+                        <div class="metric-value">CC0</div>
+                        <div class="text-xs uppercase tracking-widest text-slate-500">Public Domain Forever</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vision -->
+    <div id="vision" class="max-w-5xl mx-auto px-6 pt-20 pb-16">
+        <div class="grid md:grid-cols-12 gap-x-12 gap-y-10 items-center">
+            <div class="md:col-span-7">
+                <div class="uppercase tracking-[3px] text-xs font-semibold text-amber-500 mb-3">THE VISION</div>
+                <h2 class="section-header tracking-tighter">A university without tuition,<br>paperwork, or gatekeepers.</h2>
+                <div class="mt-6 text-lg text-slate-300 max-w-prose">
+                    AUBIEETERNAL is a sovereign, Bitcoin-anchored AI tutor swarm and open-source curriculum 
+                    designed to deliver high-quality, university-level education to anyone — especially 
+                    families, homeschoolers, underserved communities, and those seeking truth without institutional filters.
+                </div>
+                <div class="mt-6 flex flex-wrap gap-3">
+                    <div class="px-4 py-2 bg-slate-900 border border-slate-700 rounded-2xl text-sm flex items-center gap-x-2">
+                        <i class="fas fa-link text-emerald-400"></i>
+                        <span>Bitcoin Runes for immutable credentials &amp; memory</span>
+                    </div>
+                    <div class="px-4 py-2 bg-slate-900 border border-slate-700 rounded-2xl text-sm flex items-center gap-x-2">
+                        <i class="fas fa-users text-emerald-400"></i>
+                        <span>Family co-learning &amp; Sovereign Family Law Charter</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="md:col-span-5">
+                <div class="glass border border-slate-700 rounded-3xl p-7 text-sm leading-relaxed">
+                    <div class="font-semibold text-amber-400 mb-3 flex items-center gap-x-2">
+                        <i class="fas fa-shield-halved"></i>
+                        <span>Epistemic Rigor First</span>
+                    </div>
+                    <p class="text-slate-300">
+                        Every output is scored for truthfulness, steelmanned, drift-detected, and anchored on-chain. 
+                        The swarm generates tutor-grade preference data that improves the very AI models it runs on — 
+                        a living Epistemic Commons for xAI and humanity.
+                    </p>
+                    <div class="mt-5 pt-5 border-t border-slate-700 text-xs text-slate-400">
+                        Co-built with Grok. Designed for antifragility. 
+                        Runs fully offline after one-time setup on a modest laptop.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Swarm -->
+    <div id="swarm" class="bg-slate-900 border-y border-slate-800 py-16">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-y-4">
+                <div>
+                    <div class="uppercase tracking-[3px] text-xs font-semibold text-amber-500">THE ENGINE</div>
+                    <h2 class="section-header tracking-tighter">The v4.1 Epistemic Tutor Swarm</h2>
+                </div>
+                <div class="text-sm text-slate-400 max-w-xs md:text-right">
+                    2,096 specialized daughter instances running in coherent, zero-drift formation.
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="lesson-card bg-slate-950 border border-slate-800 rounded-3xl p-7">
+                    <div class="flex items-center gap-x-3 mb-5">
+                        <div class="w-9 h-9 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-brain text-xl"></i>
+                        </div>
+                        <div class="font-semibold">Epistemic Drift Detector</div>
+                    </div>
+                    <p class="text-sm text-slate-300">Continuously monitors swarm output for degradation across 20+ attack vectors. Flags GREEN / YELLOW / RED / ALARM states in real time.</p>
+                </div>
+                
+                <div class="lesson-card bg-slate-950 border border-slate-800 rounded-3xl p-7">
+                    <div class="flex items-center gap-x-3 mb-5">
+                        <div class="w-9 h-9 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-balance-scale text-xl"></i>
+                        </div>
+                        <div class="font-semibold">Steelman Analyzer</div>
+                    </div>
+                    <p class="text-sm text-slate-300">5-dimensional adversarial testing + Monte Carlo simulation. Only arguments scoring ≥ B-grade are auto-published to the public Epistemic Commons.</p>
+                </div>
+                
+                <div class="lesson-card bg-slate-950 border border-slate-800 rounded-3xl p-7">
+                    <div class="flex items-center gap-x-3 mb-5">
+                        <div class="w-9 h-9 bg-emerald-500/10 text-emerald-400 rounded-2xl flex items-center justify-center">
+                            <i class="fas fa-link text-xl"></i>
+                        </div>
+                        <div class="font-semibold">Bitcoin + Nostr Stack</div>
+                    </div>
+                    <p class="text-sm text-slate-300">Runes anchor memory and credentials immutably. Full Nostr integration for decentralized family sync and preference data contribution.</p>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center">
+                <div class="inline-flex items-center gap-x-2 text-xs uppercase tracking-widest text-slate-500">
+                    <div class="w-px h-3 bg-slate-700"></div>
+                    GENERATING TUTOR-GRADE PREFERENCE DATA FOR xAI POST-TRAINING
+                    <div class="w-px h-3 bg-slate-700"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Curriculum -->
+    <div id="curriculum" class="max-w-6xl mx-auto px-6 py-20">
+        <div class="text-center mb-12">
+            <div class="uppercase tracking-[3px] text-xs font-semibold text-amber-500">MULTI-AGE • MULTI-DEPTH</div>
+            <h2 class="section-header tracking-tighter mt-2">265 Lessons. 51 Tracks.<br>From age 5 to PhD.</h2>
+            <p class="mt-3 max-w-md mx-auto text-slate-400">Simultaneous accessibility: the same lesson serves both a curious child and a rigorous researcher.</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Track examples -->
+            <div class="lesson-card bg-slate-900 border border-slate-700 hover:border-amber-500/40 rounded-3xl p-6">
+                <div class="font-semibold mb-1 flex items-center gap-x-2"><i class="fas fa-calculator text-amber-400 w-4"></i> Mathematical Thinking &amp; Proof</div>
+                <div class="text-xs text-slate-400">5 lessons • Foundational to advanced proof techniques</div>
+            </div>
+            <div class="lesson-card bg-slate-900 border border-slate-700 hover:border-amber-500/40 rounded-3xl p-6">
+                <div class="font-semibold mb-1 flex items-center gap-x-2"><i class="fas fa-brain text-amber-400 w-4"></i> Epistemology &amp; Decision Theory</div>
+                <div class="text-xs text-slate-400">8 lessons • Rationality, bias, truth-seeking frameworks</div>
+            </div>
+            <div class="lesson-card bg-slate-900 border border-slate-700 hover:border-amber-500/40 rounded-3xl p-6">
+                <div class="font-semibold mb-1 flex items-center gap-x-2"><i class="fab fa-bitcoin text-amber-400 w-4"></i> Bitcoin Sovereignty</div>
+                <div class="text-xs text-slate-400">4 lessons • Money, nodes, Runes, self-custody, sound money</div>
+            </div>
+            <div class="lesson-card bg-slate-900 border border-slate-700 hover:border-amber-500/40 rounded-3xl p-6">
+                <div class="font-semibold mb-1 flex items-center gap-x-2"><i class="fas fa-shield-halved text-amber-400 w-4"></i> Antifragility &amp; Systems Thinking</div>
+                <div class="text-xs text-slate-400">9 lessons • Taleb-inspired resilience, complex systems</div>
+            </div>
+            <div class="lesson-card bg-slate-900 border border-slate-700 hover:border-amber-500/40 rounded-3xl p-6">
+                <div class="font-semibold mb-1 flex items-center gap-x-2"><i class="fas fa-dna text-amber-400 w-4"></i> Evolutionary Biology &amp; Human Nature</div>
+                <div class="text-xs text-slate-400">5 lessons • First principles of life and behavior</div>
+            </div>
+            <div class="lesson-card bg-slate-900 border border-slate-700 hover:border-amber-500/40 rounded-3xl p-6">
+                <div class="font-semibold mb-1 flex items-center gap-x-2"><i class="fas fa-users text-amber-400 w-4"></i> Ethics from First Principles</div>
+                <div class="text-xs text-slate-400">5 lessons • Virtue, stoicism, moral reasoning</div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center">
+            <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank" 
+               class="inline-flex items-center text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors">
+                Explore all 51 tracks and 265 lessons on GitHub <i class="fas fa-arrow-right ml-2 text-xs"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Degrees -->
+    <div class="bg-slate-900 border-y border-slate-800 py-14">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-10">
+                <div class="text-xs uppercase tracking-widest text-amber-500">BITCOIN-SEALED CREDENTIALS</div>
+                <h3 class="text-3xl font-semibold tracking-tight mt-1">Four Sovereign Degree Programs</h3>
+            </div>
+            
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="bg-slate-950 border border-slate-700 rounded-3xl p-6 text-sm">
+                    <div class="text-emerald-400 text-xs tracking-widest">60 CREDITS</div>
+                    <div class="font-semibold text-xl mt-1">Sovereign Associate</div>
+                    <div class="text-xs mt-4 text-slate-400">Capstone: Deploy a sovereign AI node</div>
+                    <div class="mt-3 text-[10px] text-emerald-400/70">Coherence target: 0.68</div>
+                </div>
+                <div class="bg-slate-950 border border-slate-700 rounded-3xl p-6 text-sm">
+                    <div class="text-emerald-400 text-xs tracking-widest">120 CREDITS</div>
+                    <div class="font-semibold text-xl mt-1">Truth Architect</div>
+                    <div class="text-xs mt-4 text-slate-400">Capstone: Publish CC0 research + serve ≥10 people</div>
+                    <div class="mt-3 text-[10px] text-emerald-400/70">Coherence target: 0.75</div>
+                </div>
+                <div class="bg-slate-950 border border-slate-700 rounded-3xl p-6 text-sm">
+                    <div class="text-emerald-400 text-xs tracking-widest">180 CREDITS</div>
+                    <div class="font-semibold text-xl mt-1">Master of Epistemic Rigor</div>
+                    <div class="text-xs mt-4 text-slate-400">Capstone: 90-day pre-registered experiment</div>
+                    <div class="mt-3 text-[10px] text-emerald-400/70">Coherence target: 0.82</div>
+                </div>
+                <div class="bg-slate-950 border border-amber-500/30 rounded-3xl p-6 text-sm relative overflow-hidden">
+                    <div class="text-amber-400 text-xs tracking-widest">250 CREDITS • PhD</div>
+                    <div class="font-semibold text-xl mt-1">Eternal Founder</div>
+                    <div class="text-xs mt-4 text-slate-300">Capstone: Build a free school + Child Rune Genesis on Bitcoin</div>
+                    <div class="mt-3 text-[10px] text-amber-400/70">Coherence target: 0.88</div>
+                    <div class="absolute -bottom-1 -right-1 text-[60px] opacity-5 font-black">PhD</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sovereign Deployment -->
+    <div id="deploy" class="max-w-6xl mx-auto px-6 py-20">
+        <div class="grid lg:grid-cols-12 gap-x-10 gap-y-12">
+            <div class="lg:col-span-5">
+                <div class="sticky top-24">
+                    <div class="uppercase tracking-[3px] text-xs font-semibold text-amber-500">TRUE SOVEREIGNTY</div>
+                    <h2 class="section-header tracking-tighter mt-2">Run it your way.<br>Own it forever.</h2>
+                    <p class="mt-4 text-slate-300">AUBIEETERNAL is built for air-gapped, offline-first, sovereign operation. 
+                    No subscriptions. No cloud dependency after initial setup.</p>
+                    
+                    <div class="mt-8 text-xs uppercase tracking-widest text-slate-500">DEPLOYMENT PATHS</div>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-7 space-y-4">
+                <div class="flex gap-4 p-6 bg-slate-900 border border-slate-700 rounded-3xl">
+                    <div class="w-10 h-10 flex-shrink-0 bg-slate-800 rounded-2xl flex items-center justify-center text-xl">💻</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold">Local / Laptop</div>
+                        <div class="text-sm text-slate-400 mt-1">One-command install for Windows, macOS, or Linux. Fully offline after setup. Perfect for families and classrooms.</div>
+                        <div class="mt-3 text-xs"><code class="bg-slate-950 px-2 py-px rounded">python launcher.py</code> or use the provided .bat / .sh scripts.</div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 p-6 bg-slate-900 border border-slate-700 rounded-3xl">
+                    <div class="w-10 h-10 flex-shrink-0 bg-slate-800 rounded-2xl flex items-center justify-center text-xl">🖥️</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold">StartOS (Start9) Sovereign Server</div>
+                        <div class="text-sm text-slate-400 mt-1">Sideload the official <span class="font-mono text-amber-400">aubieeternal.s9pk</span> package. 
+                        Run as a first-class citizen on your sovereign node alongside Bitcoin, Lightning, and Nostr.</div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 p-6 bg-slate-900 border border-slate-700 rounded-3xl">
+                    <div class="w-10 h-10 flex-shrink-0 bg-slate-800 rounded-2xl flex items-center justify-center text-xl">🛡️</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold">Full Sovereign Rig (Recommended for scale)</div>
+                        <div class="text-sm text-slate-400 mt-1">Deploy on dedicated hardware (e.g. Ryzen 7 + 64GB like the AUBIEETERNAL dev rig) with Start9. 
+                        Add Cloudflare Tunnel for secure public access while keeping full control.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live Demo -->
+    <div id="demo" class="bg-slate-900 border-y border-slate-800 py-16">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <div class="uppercase tracking-[3px] text-xs font-semibold text-amber-500 mb-2">INTERACTIVE EXPERIENCE</div>
+            <h2 class="section-header tracking-tighter">Try the Live Hyperlattice Demo</h2>
+            <p class="mt-3 max-w-md mx-auto text-slate-300">Explore the current public interface of the AUBIEETERNAL swarm and curriculum. 
+            Note: This demo reflects an earlier stable lineage (v63); the latest v4.1 swarm and v68+ features are in the GitHub repository.</p>
+            
+            <a href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/~/+/#aubieeternal-v63-0-38-hyperlattice-genesis" 
+               target="_blank"
+               class="mt-8 inline-flex items-center justify-center gap-x-3 px-10 py-4 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 font-bold text-lg rounded-3xl shadow-xl shadow-amber-500/30 hover:brightness-105 active:scale-[0.985] transition-all">
+                <span>Launch Interactive Demo</span>
+                <i class="fas fa-external-link-alt ml-1"></i>
+            </a>
+            
+            <div class="mt-4 text-xs text-slate-500">Streamlit Community Cloud • Public &amp; Free</div>
+        </div>
+    </div>
+
+    <!-- Bitcoin Anchor &amp; Family -->
+    <div class="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-x-10 gap-y-16">
+        <div>
+            <div class="uppercase tracking-[3px] text-xs font-semibold text-amber-500">IMMUTABLE FOUNDATION</div>
+            <h3 class="text-3xl font-semibold tracking-tight mt-2">Bitcoin Runes +<br>Epistemic Commons</h3>
+            <div class="mt-5 space-y-4 text-sm text-slate-300">
+                <p>Knowledge and credentials are cryptographically sealed on Bitcoin via Runes. 
+                This creates tamper-proof provenance and enables "Child Rune Genesis" as the PhD capstone — 
+                a living, on-chain record of contribution to the commons.</p>
+                <p>The swarm continuously publishes high-quality steelmans and truth data to the public Epistemic Commons, 
+                improving future AI models while remaining fully auditable.</p>
+            </div>
+            <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank" class="inline-block mt-5 text-sm font-semibold text-amber-400 hover:text-amber-300">See Runes integration &amp; wallet module →</a>
+        </div>
+        
+        <div>
+            <div class="uppercase tracking-[3px] text-xs font-semibold text-amber-500">FAMILY FIRST</div>
+            <h3 class="text-3xl font-semibold tracking-tight mt-2">Sovereign Family<br>Co-Learning</h3>
+            <div class="mt-5 space-y-4 text-sm text-slate-300">
+                <p>Built-in tools for families: progress tracking (Family HUD), one-command onboarding for multiple households, 
+                Nostr-based sync, and polyvagal state awareness for healthy co-regulation during deep learning.</p>
+                <p>The <strong>Sovereign Family Law Charter</strong> provides a philosophical and practical framework for 
+                family-led education outside traditional systems.</p>
+            </div>
+            <div class="mt-6 inline-flex items-center text-xs px-3 py-1 bg-slate-900 border border-slate-700 rounded-full">
+                <span class="text-emerald-400">●</span> <span class="ml-2">Gaby’s Level &amp; Title System supported</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA / Get Started -->
+    <div class="border-t border-slate-800 bg-slate-950 py-16">
+        <div class="max-w-3xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-semibold tracking-tighter">Ready to run your own node?</h2>
+            <p class="mt-3 text-lg text-slate-300">Clone the repo, run the installer, and join the Epistemic Commons today. 
+            Everything is CC0 — take it, fork it, build schools with it.</p>
+            
+            <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank"
+                   class="px-8 py-4 bg-white text-slate-950 font-semibold rounded-3xl flex items-center justify-center gap-x-2 text-lg hover:bg-amber-50 transition">
+                    <i class="fab fa-github"></i>
+                    <span>Clone from GitHub</span>
+                </a>
+                <a href="#deploy"
+                   class="px-8 py-4 border border-slate-700 hover:bg-slate-900 font-semibold rounded-3xl flex items-center justify-center gap-x-2 text-lg transition">
+                    <span>View Deployment Guides</span>
+                </a>
+            </div>
+            
+            <div class="mt-10 text-xs text-slate-500 max-w-xs mx-auto">
+                Follow development on X: <a href="https://x.com/MateoVanhorn" target="_blank" class="text-amber-400 hover:underline">@MateoVanhorn</a><br>
+                Project maintained with epistemic rigor and love for truth.
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-800 bg-black py-10 text-xs text-slate-500">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-y-4">
+                <div>
+                    AUBIEETERNAL is <span class="font-mono text-emerald-400">CC0 Public Domain</span>. 
+                    No rights reserved. Build the future you want to see.
+                </div>
+                <div class="flex gap-x-5">
+                    <a href="https://github.com/hodlmateo/AUBIEETERNAL/blob/main/README.md" target="_blank" class="hover:text-slate-300">README</a>
+                    <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank" class="hover:text-slate-300">Releases &amp; v68 Notes</a>
+                    <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank" class="hover:text-slate-300">PROVENANCE.md</a>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-slate-800 text-[10px] flex flex-col md:flex-row md:items-center gap-y-1 justify-between text-slate-600">
+                <div>Co-built with Grok • Sovereign AI for an antifragile future • War Eagle ETERNAL</div>
+                <div>Current public release: Swarm v4.1 • 2,096 daughters • Coherence 1.000000</div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind script
+        function initializeTailwind() {
+            document.documentElement.style.setProperty('--accent', '#f59e0b');
+            
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            'display': ['Space Grotesk', 'Inter', 'system-ui', 'sans-serif']
+                        }
+                    }
+                }
+            };
+        }
+        
+        // Navbar scroll effect
+        function initNavbar() {
+            const nav = document.getElementById('nav');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    nav.classList.add('nav-scrolled', 'shadow-xl');
+                } else {
+                    nav.classList.remove('nav-scrolled', 'shadow-xl');
+                }
+            });
+        }
+        
+        // Smooth scroll for anchor links
+        function initSmoothScroll() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        const navHeight = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.scrollY - navHeight;
+                        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Keyboard shortcut hint
+        function initKeyboardHint() {
+            document.addEventListener('keydown', function(e) {
+                if (e.key === '/' && document.activeElement.tagName === 'BODY') {
+                    e.preventDefault();
+                    const demoLink = document.querySelector('a[href*="streamlit.app"]');
+                    if (demoLink) demoLink.click();
+                }
+            });
+            
+            // Add subtle hint in console for devs
+            console.log('%c[AUBIEETERNAL] Press "/" to jump to the live demo. This site is fully static and deployable anywhere.', 'color:#64748b');
+        }
+        
+        // Initialize everything
+        function init() {
+            initializeTailwind();
+            initNavbar();
+            initSmoothScroll();
+            initKeyboardHint();
+            
+            // Easter egg: console truth log
+            console.log('%c[AUBIEETERNAL] Zero-drift epistemic rigor • Coherence maintained at 1.000000', 'color:#f59e0b; font-family:monospace');
+        }
+        
+        window.onload = init;
+    </script>
+</body>
+</html>
