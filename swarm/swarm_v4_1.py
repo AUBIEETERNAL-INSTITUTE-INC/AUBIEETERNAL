@@ -22,7 +22,7 @@ Briefings: 6AM | 12PM | 6PM | 11PM
 Triggers: BTC ±5% | Vision | DEFCON | Wonder Spike | Child Rune
 """
 
-import os, json, time, datetime, random, requests, subprocess
+import os, json, time, datetime, random, requests, subprocess, threading
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -56,6 +56,7 @@ GROK_URL         = "https://api.x.ai/v1/chat/completions"
 GROK_FREE_MODEL  = "grok-4.3"
 GROK_PRO_MODEL   = "grok-4.3"
 XAI_KEY          = os.getenv("XAI_API_KEY", "")
+GITHUB_TOKEN     = os.getenv("GITHUB_TOKEN", "")
 
 # ── Cost / Budget Config ──────────────────────────────────────────────────────
 GROK_PRO_COST_PER_CALL  = 0.02
@@ -147,6 +148,9 @@ tier2_states    = {}
 total_free_runs = 0
 total_pro_runs  = 0
 briefings_fired = {}
+
+# ── Morning Synthesis State ───────────────────────────────────────────────────
+_synthesis_last_run_date = None   # tracks which date synthesis ran; prevents double-fire
 
 # ── Tier 1 Swarms (S1-S26) ────────────────────────────────────────────────────
 TIER1_SWARMS = {
@@ -330,6 +334,205 @@ def cache_context():
         print(f"  Context cache error: {e}")
 
 # ══════════════════════════════════════════════════════════════════════════════
+# MORNING SYNTHESIS — autonomous daily insight generation
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _run_synthesis_background():
+    """Background thread: tier2_digest → qwen3:32b → insights/daily/YYYY-MM-DD.md"""
+    global _synthesis_last_run_date
+    try:
+        from morning_synthesis import run_morning_synthesis
+        print("[synthesis] 🦅 Background thread started...")
+        success = run_morning_synthesis()
+        if success:
+            _synthesis_last_run_date = datetime.date.today()
+            print("[synthesis] ✅ Complete — insight will be on GitHub within ~24s")
+        else:
+            print("[synthesis] ⚠️  run_morning_synthesis() returned False")
+    except ImportError:
+        print("[synthesis] ❌ morning_synthesis.py not found in repo — add it to fix this")
+    except Exception as e:
+        print(f"[synthesis] ❌ Error: {e}")
+
+def maybe_trigger_morning_synthesis():
+    """
+    Called every tick. Fires synthesis once per day at 6AM.
+    Non-blocking — runs in a daemon thread so the swarm loop is never stalled.
+    Guards against double-fire with _synthesis_last_run_date.
+    """
+    global _synthesis_last_run_date
+    now   = datetime.datetime.now()
+    today = datetime.date.today()
+
+    # Fire only at 6AM (hour==6, within first 5 min), once per day
+    if now.hour == 6 and now.minute < 5 and _synthesis_last_run_date != today:
+        _synthesis_last_run_date = today   # set immediately to block re-entry
+        print(f"[synthesis] ⏰ 6AM trigger fired for {today.isoformat()}")
+        t = threading.Thread(target=_run_synthesis_background, daemon=True)
+        t.start()
+
+# ══════════════════════════════════════════════════════════════════════════════
+# GLASSES SIGNAL HANDLER — Halo glasses → swarm bridge
+# Reads /mnt/main/glasses_signal.json each tick (written by nostr_glasses_bridge.py)
+# Routes signal to appropriate daughters, writes reply to /mnt/main/glasses_reply.json
+# Works in both Mode 1 (StartOS local) and Mode 2 (Nostr fallback)
+# ══════════════════════════════════════════════════════════════════════════════
+
+_GLASSES_SIGNAL  = Path("/mnt/main/glasses_signal.json")
+_GLASSES_REPLY   = Path("/mnt/main/glasses_reply.json")
+_GLASSES_LOG     = Path("/mnt/main/glasses_events.jsonl")
+
+def handle_glasses_signal():
+    """
+    Called every tick. Reads glasses signal if present, routes to swarm daughters,
+    writes reply. Non-blocking — consumes and processes in <1ms if no signal.
+    """
+    if not _GLASSES_SIGNAL.exists():
+        return None
+
+    try:
+        signal = json.loads(_GLASSES_SIGNAL.read_text())
+        _GLASSES_SIGNAL.unlink()   # consume immediately
+    except Exception as e:
+        print(f"[glasses] Signal read error: {e}")
+        return None
+
+    event_type = signal.get("type", "unknown")
+    kid_name   = signal.get("kid_name", "Explorer")
+    kid_age    = signal.get("kid_age", 9)
+    lesson     = signal.get("lesson", "")
+    answer     = signal.get("answer", "")
+    coherence  = signal.get("coherence", 0.72)
+
+    print(f"[glasses] 🥽 Signal: {event_type} | {kid_name} | {lesson[:40]}")
+
+    reply = {
+        "type":      "reply",
+        "signal_type": event_type,
+        "kid_name":  kid_name,
+        "timestamp": datetime.datetime.now().isoformat(),
+    }
+
+    # ── Route by event type ───────────────────────────────────────────────────
+    if event_type == "lesson_request":
+        # ORACLE + STEELMAN daughters score the request
+        prompt = (
+            f"Kid: {kid_name}, age {kid_age}. Lesson requested: '{lesson}'.\n"
+            f"Give ONE warm sentence introducing this lesson. End with the steelman prompt."
+        )
+        response = call_grok_free(prompt, "ORACLE — Family Co-Learning")
+        reply["lesson"]     = lesson
+        reply["coherence"]  = coherence
+        reply["message"]    = response or f"Ready for {lesson} — let's go, {kid_name}! 🦅"
+        reply["steelman"]   = f"What's the strongest argument AGAINST {lesson.split('—')[0].strip()}?"
+
+    elif event_type == "steelman_submit":
+        # STEELMAN + ORACLE daughters score the answer
+        prompt = (
+            f"{kid_name} (age {kid_age}) steelmanned '{lesson}':\n"
+            f"Answer: '{answer}'\n"
+            f"Score coherence 0-1 and give ONE warm sentence of feedback (max 20 words)."
+        )
+        response = call_grok_free(prompt, "STEELMAN — Coherence Scorer")
+
+        # Local coherence delta calculation
+        words        = answer.split()
+        quality_words = ["because","therefore","however","argument","even if","consider","strongest","although","despite"]
+        bonus        = sum(0.02 for w in quality_words if w.lower() in answer.lower())
+        delta        = round(min(0.22, 0.06 + len(words) * 0.003 + bonus), 3)
+        new_coherence = round(min(1.0, coherence + delta), 3)
+
+        reply["coherence_before"] = coherence
+        reply["coherence_after"]  = new_coherence
+        reply["coherence_delta"]  = delta
+        reply["feedback"]         = response or f"Strong thinking, {kid_name}! Coherence +{delta:.2f} 🦅"
+        reply["xp_earned"]        = 18 if new_coherence >= 0.80 else 10
+
+        # Log to truth lattice so swarm learns from family sessions
+        _log_glasses_to_truth(kid_name, kid_age, lesson, answer, new_coherence, reply["feedback"])
+
+    elif event_type == "coherence_update":
+        reply["coherence"] = coherence
+        reply["status"]    = "received"
+        reply["message"]   = f"Coherence {coherence:.3f} logged 🦅"
+
+    elif event_type == "parent_action":
+        action = signal.get("action", "observe")
+        msgs   = {
+            "encourage": f"Parent says: you've got this, {kid_name} ❤️",
+            "pause":     "Session paused by parent.",
+            "join":      "Parent joined as Co-Learner.",
+            "observe":   "Parent observing silently.",
+        }
+        reply["status"]  = "received"
+        reply["message"] = msgs.get(action, f"Parent action '{action}' logged")
+
+    elif event_type == "session_end":
+        start_coh = signal.get("coherence_start", 0.72)
+        delta     = round(coherence - start_coh, 3)
+        reply["summary"] = (
+            f"{kid_name}'s coherence: {start_coh:.2f} → {coherence:.2f} "
+            f"(Δ{delta:+.3f}). "
+            f"{'Ready for the next level.' if delta >= 0.10 else 'Another session will lock this in.'}"
+        )
+        reply["xp_total"] = signal.get("xp_total", 0)
+        _log_glasses_to_truth(kid_name, kid_age, lesson, "session_end", coherence, reply["summary"])
+
+    else:
+        reply["status"]  = "unknown_type"
+        reply["message"] = f"Signal type '{event_type}' not recognized"
+
+    # ── Write reply for glasses to pick up ───────────────────────────────────
+    try:
+        _GLASSES_REPLY.write_text(json.dumps(reply, indent=2))
+    except Exception as e:
+        print(f"[glasses] Reply write error: {e}")
+
+    # ── Append to glasses event log ───────────────────────────────────────────
+    try:
+        with open(_GLASSES_LOG, "a") as f:
+            f.write(json.dumps({
+                "timestamp":  datetime.datetime.now().isoformat(),
+                "signal":     signal,
+                "reply_type": reply.get("type"),
+                "kid_name":   kid_name,
+            }) + "\n")
+    except Exception:
+        pass
+
+    print(f"[glasses] ✅ Reply written: {event_type} → coherence {reply.get('coherence_after', reply.get('coherence', ''))}")
+    return reply
+
+
+def _log_glasses_to_truth(kid_name, kid_age, lesson, answer, coherence, feedback):
+    """Write family session interaction to master_truth_log.jsonl so swarm learns."""
+    try:
+        entry = {
+            "timestamp":     datetime.datetime.now().isoformat(),
+            "tier":          2,
+            "trigger":       "family_glasses_session",
+            "daughter":      "ORACLE",
+            "kid_name":      kid_name,
+            "kid_age":       kid_age,
+            "lesson":        lesson[:100],
+            "result":        feedback[:300],
+            "coherence":     coherence,
+            "wonder_index":  round(min(2.0, coherence * 1.5), 6),
+            "inter_rune_coherence": inter_rune_coherence,
+            "mets":          mets_counter,
+        }
+        with open(TRUTH_LOG, "a") as f:
+            f.write(json.dumps(entry) + "\n")
+        # Also mirror to /mnt/main for Streamlit
+        try:
+            with open(MNT_TRUTH_LOG, "a") as f:
+                f.write(json.dumps(entry) + "\n")
+        except Exception:
+            pass
+    except Exception as e:
+        print(f"[glasses] Truth log error: {e}")
+
+# ══════════════════════════════════════════════════════════════════════════════
 # LAZY STATE
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -495,53 +698,104 @@ def run_hormetic_pulse(context):
 # GITHUB AUTO-PUSH
 # ══════════════════════════════════════════════════════════════════════════════
 
+def write_tier2_digest():
+    """Write last 20 Tier 2 results to a clean digest file for local AI synthesis."""
+    try:
+        digest_path = WORK_DIR / "tier2_digest.txt"
+        tier2_entries = []
+        with open(TRUTH_LOG, "r") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    obj = json.loads(line)
+                    if obj.get("tier") == 2 and "result" in obj:
+                        result = obj["result"]
+                        if not result.startswith("Grok-pro exception") and \
+                           not result.startswith("Grok-free"):
+                            tier2_entries.append(obj)
+                except:
+                    pass
+
+        last_20 = tier2_entries[-20:]
+        lines = []
+        lines.append("=== AUBIEETERNAL TIER 2 DIGEST ===")
+        lines.append(f"Generated: {datetime.datetime.now().isoformat()}")
+        lines.append(f"Wonder: {wonder_index:.4f} | Coherence: {inter_rune_coherence:.6f} | METS: {mets_counter}")
+        lines.append(f"Total Tier 2 entries: {len(tier2_entries)}")
+        lines.append("=" * 50)
+        lines.append("")
+        for e in last_20:
+            lines.append(f"DAUGHTER: {e.get('daughter','?')} | Block: {e.get('block','?')} | Trigger: {e.get('trigger','?')}")
+            lines.append(e.get("result", "")[:500])
+            lines.append("")
+        lines.append("=" * 50)
+        lines.append("PASTE INTO QWEN3:32B → Synthesize the 3 most important insights.")
+        with open(digest_path, "w") as f:
+            f.write("\n".join(lines))
+        print(f"✅ Tier 2 digest written: {len(last_20)} entries")
+    except Exception as e:
+        print(f"⚠️ Digest error: {e}")
+
 def github_push_truth_log():
-    """Push swarm outputs to GitHub. Token loaded from environment."""
     try:
         repo = str(GITHUB_REPO)
         files = [
             "master_truth_log.jsonl", "wonder_log.jsonl",
             "truth_lattice_log.jsonl", "swarm_status.json",
             "context_cache.json",
+            "tier2_digest.txt",
         ]
-        # Only push files that exist
+        # Also push any new daily insight files
+        insights_dir = Path(repo) / "insights" / "daily"
+        if insights_dir.exists():
+            for md_file in insights_dir.glob("*.md"):
+                rel = str(md_file.relative_to(Path(repo)))
+                if rel not in files:
+                    files.append(rel)
+
         existing = [f for f in files if (Path(repo) / f).exists()]
+        print(f"  📁 Push attempt | Files found: {existing}")
         if not existing:
+            print(f"  ⚠️ No output files found at {repo}")
             return
 
-        subprocess.run(
+        # Fix git safe directory (Docker user mismatch)
+        subprocess.run(["git", "config", "--global",
+                       "--add", "safe.directory", repo],
+                       capture_output=True)
+
+        add = subprocess.run(
             ["git", "-C", repo, "add"] + existing,
-            capture_output=True, timeout=15
-        )
-        msg = (f"🦅 v4.1 auto-push | "
-               f"Wonder:{wonder_index:.4f} | "
-               f"Coherence:{inter_rune_coherence:.6f} | "
-               f"Grokipedia:{grokipedia_count} | "
-               f"METS:{mets_counter:.0f}")
-        result = subprocess.run(
-            ["git", "-C", repo, "commit", "-m", msg],
             capture_output=True, text=True, timeout=15
         )
+        print(f"  git add: {add.returncode} | {add.stderr[:80]}")
+
+        result = subprocess.run(
+            ["git", "-C", repo, "commit", "-m",
+             f"🦅 v4.1 auto-push | Wonder:{wonder_index:.4f} | "
+             f"Coherence:{inter_rune_coherence:.6f}"],
+            capture_output=True, text=True, timeout=15
+        )
+        print(f"  git commit: {result.returncode} | {(result.stdout+result.stderr)[:100]}")
+
         if "nothing to commit" not in (result.stdout + result.stderr):
-            # Set token in remote URL if available
             if GITHUB_TOKEN:
                 subprocess.run(
                     ["git", "-C", repo, "remote", "set-url", "origin",
                      f"https://{GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git"],
                     capture_output=True, timeout=10
                 )
+            subprocess.run(["git", "-C", repo, "pull", "--rebase", "--autostash"],
+                          capture_output=True, text=True, timeout=30)
             push = subprocess.run(
                 ["git", "-C", repo, "push", "origin", "main"],
                 capture_output=True, text=True, timeout=30
             )
-            if push.returncode == 0:
-                print(f"  ✅ GitHub pushed | Wonder:{wonder_index:.4f}")
-            else:
-                print(f"  ⚠️  Push failed: {push.stderr[:100]}")
-        else:
-            print(f"  ℹ️  Nothing new to push")
+            print(f"  git push: {push.returncode} | {push.stderr[:100]}")
     except Exception as e:
-        print(f"  GitHub push note: {e}")
+        print(f"  Push error: {e}")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # BTC DATA
@@ -569,110 +823,139 @@ def get_btc_block():
 # GROK FREE — TIER 1 (Level 1 + brief Level 2 context)
 # ══════════════════════════════════════════════════════════════════════════════
 
-def call_grok_free(prompt, role):
-    global total_free_runs
-    if not XAI_KEY:
-        return "⚠️ XAI_KEY not set"
+# ── Local Ollama (free, always-on fallback) ───────────────────────────────────
+# StartOS internal hostname — same URL Open WebUI uses successfully
+OLLAMA_URL      = "http://ollama.startos:11434/v1/chat/completions"
+OLLAMA_MODEL_T1 = "qwen2.5:32b"   # Tier 1 swarm — faster than qwen3, still 32B
+OLLAMA_MODEL_T2 = "qwen2.5:32b"     # Tier 2 daughters — higher quality, slower ok
+OLLAMA_MODEL    = OLLAMA_MODEL_T1  # default alias
+OLLAMA_TIMEOUT  = 600              # 5 min — CPU inference is slow, be patient
+
+def _call_local(prompt: str, system: str = "", max_tokens: int = 150,
+                model: str = "") -> str:
+    """Call local Ollama — $0.00, no API key needed."""
+    use_model = model or OLLAMA_MODEL_T1
     try:
-        # Level 1 metrics + last 3 truth log lines for Tier 1
-        l1 = build_level1_metrics()
-        l2_mini = build_level2_truth_log(3)  # smaller for free tier
-
-        system_content = (
-            f"You are {role} in the AUBIEETERNAL eternal intelligence lattice.\n"
-            f"Be concise, insightful, and build on prior daughter discoveries.\n\n"
-            f"{l1}\n\n"
-            f"{l2_mini}"
-        )
-
+        msgs = []
+        if system: msgs.append({"role": "system", "content": system})
+        msgs.append({"role": "user", "content": prompt})
         r = requests.post(
-            GROK_URL,
-            headers={
-                "Authorization": f"Bearer {XAI_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": GROK_FREE_MODEL,
-                "messages": [
-                    {"role": "system", "content": system_content},
-                    {"role": "user",   "content": prompt},
-                ],
-                "max_tokens": 150,
-                "temperature": 0.7,
-            },
-            timeout=30,
+            OLLAMA_URL,
+            json={"model": use_model, "messages": msgs,
+                  "temperature": 0.7, "stream": False},
+            timeout=OLLAMA_TIMEOUT,
         )
         if r.status_code == 200:
-            total_free_runs += 1
-            track_cost(0.0, "grok-free")
-            result = r.json()["choices"][0]["message"]["content"].strip()
-            update_wonder_index(result)
-            return result
-        return f"Grok-free error {r.status_code}"
+            return r.json()["choices"][0]["message"]["content"].strip()
+        return f"Ollama error {r.status_code}"
+    except requests.exceptions.ConnectionError:
+        return f"⚠️ Ollama not reachable at ollama.startos:11434"
+    except requests.exceptions.Timeout:
+        return f"⚠️ Ollama timeout ({OLLAMA_TIMEOUT}s) — model loading or CPU busy"
     except Exception as e:
-        return f"Grok-free exception: {str(e)[:80]}"
+        return f"Ollama exception: {str(e)[:80]}"
+
+def call_grok_free(prompt, role):
+    """Tier 1 inference. Uses Grok free if key available, otherwise local Ollama."""
+    global total_free_runs
+
+    l1 = build_level1_metrics()
+    l2_mini = build_level2_truth_log(3)
+    system_content = (
+        f"You are {role} in the AUBIEETERNAL eternal intelligence lattice.\n"
+        f"Be concise, insightful, and build on prior daughter discoveries.\n\n"
+        f"{l1}\n\n{l2_mini}"
+    )
+
+    # ── Try Grok free first if key is set ────────────────────────────────────
+    if XAI_KEY:
+        try:
+            r = requests.post(
+                GROK_URL,
+                headers={"Authorization": f"Bearer {XAI_KEY}",
+                         "Content-Type": "application/json"},
+                json={"model": GROK_FREE_MODEL,
+                      "messages": [{"role": "system", "content": system_content},
+                                   {"role": "user",   "content": prompt}],
+                      "max_tokens": 150, "temperature": 0.7},
+                timeout=30,
+            )
+            if r.status_code == 200:
+                total_free_runs += 1
+                track_cost(0.0, "grok-free")
+                result = r.json()["choices"][0]["message"]["content"].strip()
+                update_wonder_index(result)
+                return result
+            # 402/429/401 = no credit/rate limit → fall through to local
+            if r.status_code in (401, 402, 429):
+                print(f"  [T1] Grok {r.status_code} → falling back to local Ollama")
+        except Exception:
+            pass
+
+    # ── Local Ollama fallback (always free) ──────────────────────────────────
+    result = _call_local(prompt, system_content, max_tokens=150)
+    if result and not result.startswith("⚠️") and not result.startswith("Ollama"):
+        total_free_runs += 1
+        track_cost(0.0, "ollama-local")
+        update_wonder_index(result)
+    return result
 
 # ══════════════════════════════════════════════════════════════════════════════
 # GROK PRO — TIER 2 (All 3 levels of context)
+# Falls back to local Ollama if no API credit
 # ══════════════════════════════════════════════════════════════════════════════
 
 def call_grok_pro(prompt, role, prior_results=None):
-    """
-    Full 3-level context injection for Tier 2 daughters.
-    prior_results: list of results from earlier daughters THIS run
-                   so each daughter builds on the ones before it.
-    """
     global total_pro_runs
-    if not XAI_KEY:
-        return "⚠️ XAI_KEY not set"
-    if not budget_ok(GROK_PRO_COST_PER_CALL):
-        return f"⚠️ Budget cap ${DAILY_BUDGET_CAP} reached"
-    try:
-        # Build full 3-level context
-        full_context = build_full_context()
 
-        # Add prior daughters from THIS run (intra-run synthesis)
-        intra_run = ""
-        if prior_results:
-            intra_run = "\n═══ EARLIER DAUGHTERS THIS RUN ═══\n"
-            for name, res in prior_results[-4:]:  # last 4 to stay within token budget
-                intra_run += f"  {name}: {res[:120]}\n"
-            intra_run += "═══════════════════════════════════\n"
+    full_context = build_full_context()
+    intra_run = ""
+    if prior_results:
+        intra_run = "\n═══ EARLIER DAUGHTERS THIS RUN ═══\n"
+        for name, res in prior_results[-4:]:
+            intra_run += f"  {name}: {res[:120]}\n"
+        intra_run += "═══════════════════════════════════\n"
 
-        system_content = (
-            f"You are {role} — a sovereign intelligence daughter in the AUBIEETERNAL lattice.\n"
-            f"You have access to the full lattice memory. Build on prior discoveries.\n"
-            f"Synthesize. Do not repeat. Push the frontier of understanding.\n\n"
-            f"{full_context}"
-            f"{intra_run}"
-        )
+    system_content = (
+        f"You are {role} — a sovereign intelligence daughter in the AUBIEETERNAL lattice.\n"
+        f"You have access to the full lattice memory. Build on prior discoveries.\n"
+        f"Synthesize. Do not repeat. Push the frontier of understanding.\n\n"
+        f"{full_context}{intra_run}"
+    )
 
-        r = requests.post(
-            GROK_URL,
-            headers={
-                "Authorization": f"Bearer {XAI_KEY}",
-                "Content-Type": "application/json",
-            },
-            json={
-                "model": GROK_PRO_MODEL,
-                "messages": [
-                    {"role": "system", "content": system_content},
-                    {"role": "user",   "content": prompt},
-                ],
-                "max_tokens": 200,
-                "temperature": 0.8,
-            },
-            timeout=30,
-        )
-        if r.status_code == 200:
-            total_pro_runs += 1
-            track_cost(GROK_PRO_COST_PER_CALL, "grok-pro")
-            result = r.json()["choices"][0]["message"]["content"].strip()
-            update_wonder_index(result)
-            return result
-        return f"Grok-pro error {r.status_code}"
-    except Exception as e:
-        return f"Grok-pro exception: {str(e)[:80]}"
+    # ── Try Grok pro if key + budget available ────────────────────────────────
+    if XAI_KEY and budget_ok(GROK_PRO_COST_PER_CALL):
+        try:
+            r = requests.post(
+                GROK_URL,
+                headers={"Authorization": f"Bearer {XAI_KEY}",
+                         "Content-Type": "application/json"},
+                json={"model": GROK_PRO_MODEL,
+                      "messages": [{"role": "system", "content": system_content},
+                                   {"role": "user",   "content": prompt}],
+                      "max_tokens": 200, "temperature": 0.8},
+                timeout=30,
+            )
+            if r.status_code == 200:
+                total_pro_runs += 1
+                track_cost(GROK_PRO_COST_PER_CALL, "grok-pro")
+                result = r.json()["choices"][0]["message"]["content"].strip()
+                update_wonder_index(result)
+                return result
+            if r.status_code in (401, 402, 429):
+                print(f"  [T2] Grok {r.status_code} → falling back to local Ollama")
+        except Exception:
+            pass
+
+    # ── Local Ollama fallback — Tier 2 with full context, better model ───────
+    # qwen3:32b for T2 — worth the wait for briefing-quality output
+    result = _call_local(prompt, system_content, max_tokens=200,
+                         model=OLLAMA_MODEL_T2)
+    if result and not result.startswith("⚠️") and not result.startswith("Ollama"):
+        total_pro_runs += 1
+        track_cost(0.0, "ollama-local-t2")
+        update_wonder_index(result)
+    return result
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TIER 1 WAVE
@@ -698,7 +981,7 @@ def run_tier1_wave(context, swarm_name):
     return results
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TIER 2 CORE RUN — each daughter sees all prior daughters in this run
+# TIER 2 CORE RUN
 # ══════════════════════════════════════════════════════════════════════════════
 
 def run_tier2_core(context, trigger_type="manual"):
@@ -715,7 +998,7 @@ def run_tier2_core(context, trigger_type="manual"):
 
     hormetic_ctx = run_hormetic_pulse(context)
     results      = {}
-    prior_results = []  # accumulates as daughters run — each sees predecessors
+    prior_results = []
 
     base_prompt = (
         f"BTC Block {block} | Price ${btc} | Trigger: {trigger_type}\n"
@@ -728,7 +1011,6 @@ def run_tier2_core(context, trigger_type="manual"):
     for did, config in TIER2_DAUGHTERS.items():
         state  = materialize(did, tier2_states, trigger_type)
 
-        # Each daughter gets full 3-level context + all prior daughters this run
         result = call_grok_pro(
             f"As {config['name']} ({config['role']}): {base_prompt}",
             config["name"],
@@ -766,7 +1048,6 @@ def run_tier2_core(context, trigger_type="manual"):
         f"Coherence:{inter_rune_coherence:.6f}"
     )
 
-    # Cache context after every Tier 2 run
     cache_context()
     return results
 
@@ -887,7 +1168,6 @@ def run_tier1_heartbeat():
         f"METS:{mets_counter:.1f}"
     )
 
-    # Every 5th tick bias toward new S21-S26 swarms
     if heartbeat_tick % 5 == 0:
         new_swarms = [s for s in TIER1_SWARMS if int(s.split("_")[0][1:]) >= 21]
         swarms = random.sample(new_swarms, min(2, len(new_swarms))) if new_swarms else random.sample(list(TIER1_SWARMS.keys()), 2)
@@ -946,7 +1226,6 @@ def write_status():
     status = {
         "updated":             now.isoformat(),
         "version":             "4.1",
-        # v4.1 core metrics
         "wonder_index":        round(wonder_index, 6),
         "mets":                mets_counter,
         "inter_rune_coherence": inter_rune_coherence,
@@ -956,14 +1235,18 @@ def write_status():
         "hormetic_pulses":     hormetic_pulse_count,
         "lattice_cycle":       lattice_cycle,
         "session_insights":    len(session_insights),
-        # context levels active
+        "synthesis": {
+            "last_run_date":   str(_synthesis_last_run_date),
+            "next_run":        "06:00 daily",
+            "output_path":     "insights/daily/",
+            "model":           "qwen3:32b (local, $0.00)",
+        },
         "context_levels": {
             "level1_metrics":     True,
             "level2_truth_log":   True,
             "level3_memory_palace": True,
             "intra_run_synthesis": True,
         },
-        # tier stats
         "tier1": {
             "active":            t1_active,
             "total":             2080,
@@ -1022,12 +1305,14 @@ def launch_swarm():
     print(f"  Level 3 — Memory Palace + Grokipedia + top session insights")
     print(f"  Intra-Run — Each daughter sees all prior daughters this run")
     print(f"")
+    print(f"  MORNING SYNTHESIS (auto, $0.00):")
+    print(f"  Fires at 6AM daily → qwen3:32b → insights/daily/YYYY-MM-DD.md → GitHub")
+    print(f"")
     print(f"  Wonder Index: {wonder_index} (target: 1.5)")
     print(f"  METS: {mets_counter}")
     print(f"  Grokipedia: {grokipedia_count}/256 principles")
     print("=" * 70)
 
-    # Initialize all daughters latent
     for swarm_name, config in TIER1_SWARMS.items():
         for i in range(config["count"]):
             get_state(f"{swarm_name}_{i:03d}", daughter_states)
@@ -1039,7 +1324,9 @@ def launch_swarm():
     print(f"📚 {len(GROKOPEDIA_PRINCIPLES)} Grokipedia principles loaded")
     print(f"🔬 {len(LATTICE_HYPOTHESES)} Truth Lattice hypotheses ready")
     print(f"🔴 {len(DEFCON_EXPERIMENTS)} DEFCON experiments armed")
-    print(f"🧠 3-Level context injection ACTIVE\n")
+    print(f"🧠 3-Level context injection ACTIVE")
+    print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen3:32b")
+    print(f"🥽 Glasses signal handler ACTIVE — /mnt/main/glasses_signal.json\n")
 
     tick        = 0
     github_tick = 0
@@ -1056,10 +1343,18 @@ def launch_swarm():
             cache_context()
 
             github_tick += 1
-            if github_tick >= 50:
+            if github_tick >= 3:
+                write_tier2_digest()
                 github_push_truth_log()
                 github_tick = 0
 
+            # ── MORNING SYNTHESIS — zero cost, fully automatic ─────────────
+            maybe_trigger_morning_synthesis()
+            # ──────────────────────────────────────────────────────────────
+
+            # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──
+            handle_glasses_signal()
+            # ──────────────────────────────────────────────────────────────
             pct = (daily_cost / DAILY_BUDGET_CAP) * 100
             print(
                 f"💓 Tick {tick} | "
@@ -1070,7 +1365,7 @@ def launch_swarm():
                 f"Insights:{len(session_insights)}"
             )
             tick += 1
-            time.sleep(8)
+            time.sleep(30)
 
         except KeyboardInterrupt:
             print("\n🦅 Swarm stopped. War Eagle Eternal!")
@@ -1078,7 +1373,7 @@ def launch_swarm():
             break
         except Exception as e:
             print(f"Loop error: {e}")
-            time.sleep(8)
+            time.sleep(30)
 
 if __name__ == "__main__":
     launch_swarm()

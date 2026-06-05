@@ -1,0 +1,29 @@
+# AUBIEETERNAL requirements.txt
+# Updated for v8 — covers all modules
+
+# ── Core UI ──────────────────────────────────────────────────────────────────
+streamlit>=1.32.0
+
+# ── AI / API ─────────────────────────────────────────────────────────────────
+openai>=1.14.0
+requests>=2.31.0
+
+# ── Data + Viz ────────────────────────────────────────────────────────────────
+pandas>=2.0.0
+plotly>=5.18.0
+
+# ── Bitcoin / Nostr ───────────────────────────────────────────────────────────
+# (nostr uses requests only — no extra package needed)
+
+# ── Living Lattice + Epistemic Commons ───────────────────────────────────────
+# (uses stdlib only: json, hashlib, datetime, pathlib, socket)
+
+# ── Sovereign Cashflow Game ───────────────────────────────────────────────────
+# (uses stdlib only: json, random, datetime, pathlib)
+
+# ── Offline runner ────────────────────────────────────────────────────────────
+# (uses subprocess, os, sys — all stdlib)
+
+# ── Utils ─────────────────────────────────────────────────────────────────────
+python-dateutil>=2.8.2
+pytz>=2023.3
