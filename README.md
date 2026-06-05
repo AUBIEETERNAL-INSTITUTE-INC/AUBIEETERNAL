@@ -1,240 +1,167 @@
-<div align="center">
-
 # 🦅 AUBIEETERNAL
-## Open Source Sovereign School Teaching AS A University
+### Sovereign Family Truth-Seeking Intelligence Stack
 
-**Free education for every family, every orphanage, every community on earth.**
+**On-chain zero-drift epistemic rigor tutor swarm — co-built with Grok.**  
+Generating tutor-grade preference data for xAI post-training with Bitcoin Rune + full sovereign stack.
 
-[![Lessons](https://img.shields.io/badge/Curriculum-265%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Tracks](https://img.shields.io/badge/Tracks-51+-green?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Degrees](https://img.shields.io/badge/Degrees-4%20Programs-purple?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Reliability](https://img.shields.io/badge/Reliability-HermesBench%20Verified-00cfff?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
+> *"The lattice is breathing. Wonder Index: 2.0000 | Coherence: 1.000000"*
 
-No tuition. No paperwork. No gatekeepers. No special hardware.  
-Your degree is sealed on Bitcoin. The knowledge belongs to no one and cannot be erased.  
-**One $200 laptop. 30 children. A projector. Completely offline.**
-
-[Quick Start](#quick-start) · [Orphanages](#-for-orphanages) · [Degrees](#-four-degree-programs) · [Curriculum](#-265-lessons-51-tracks) · [Tools](#-tools) · [Reliability](#-reliability) · [API](#-epistemic-commons-api)
-
-</div>
+[![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen)](https://github.com/hodlmateo/AUBIEETERNAL)
+[![Cost](https://img.shields.io/badge/Daily%20Cost-%240.00%20local-blue)](https://github.com/hodlmateo/AUBIEETERNAL)
+[![Stack](https://img.shields.io/badge/Stack-StartOS%20%2B%20Ollama%20%2B%20Bitcoin-orange)](https://github.com/hodlmateo/AUBIEETERNAL)
 
 ---
 
-## Who This Is For
+## What This Is
 
-A 7-year-old in an orphanage with a donated laptop. A teenager who dropped out. A parent learning alongside their kids. A PhD student going deeper than their university allows. A community center that wants real education for free. Works on any device. **Fully offline after one-time setup.**
+AUBIEETERNAL is not another chatbot. It is a **participatory reality-testing lattice** — a sovereign family school that:
+
+- Runs a **2,096-daughter AI swarm** 24/7 on local hardware ($0.00 inference)
+- Teaches **105 lessons** across 21 tracks (Courage, Bitcoin, Antifragility, Truth Education, Simulation, Legal Literacy, Building, Baking + more)
+- Tracks **coherence** across every answer, every session, every generation
+- Inscribes milestones permanently on **Bitcoin Runes**
+- Works with **Halo smart glasses** for real-time family co-learning
+- Evolves its own curriculum via a **self-evolving swarm engine**
 
 ---
 
-## Quick Start
+## Quick Start (5 minutes)
 
 ```bash
-# Windows: install_windows.bat
-# macOS/Linux: chmod +x install_mac_linux.sh && ./install_mac_linux.sh
-# Developers: git clone https://github.com/hodlmateo/AUBIEETERNAL && python launcher.py
-# StartOS: sideload aubieeternal.s9pk
+git clone https://github.com/hodlmateo/AUBIEETERNAL
+cd AUBIEETERNAL
+pip install -r requirements.txt --break-system-packages
+
+# Pull local model (free, runs on your hardware)
+ollama pull qwen2.5:32b
+
+# Set GitHub token for auto-push
+echo "GITHUB_TOKEN=ghp_yourtoken" > api_keys.env
+
+# Launch swarm
+nohup python3 -B swarm/swarm_v4_1.py > swarm.log 2>&1 &
+
+# Launch UI
+python3 -B -m streamlit run app.py --server.port=8501
 ```
 
-Open the app → **🌍 Welcome** → choose your path.
+Open `http://localhost:8501`
 
 ---
 
-## 🏫 For Orphanages
+## Sovereign Stack
 
-| | |
-|---|---|
-| **Hardware** | Any laptop ≥8GB RAM (~$100–200 used) |
-| **Internet** | Once only, for setup. Fully offline forever after |
-| **Cost** | $0. Every lesson, tool, and degree — free forever |
-| **Capacity** | One computer + projector = 30 children simultaneously |
+```
+StartOS (self-hosted)
+├── AUBIEETERNAL  — Swarm + Streamlit UI (28 tabs)
+├── Ollama        — qwen2.5:32b local inference ($0.00)
+└── Open WebUI    — Chat interface
 
-The AI tutor runs entirely on your hardware. No cloud, no subscriptions, no data sent anywhere. No Halo glasses — state check uses simple Green / Yellow / Red buttons. Full guide: [COMMUNITY_DEPLOYMENT.md](COMMUNITY_DEPLOYMENT.md)
-
----
-
-## 🎓 Four Degree Programs — Bitcoin-Anchored
-
-| Degree | Credits | Coherence | Capstone |
-|--------|---------|-----------|---------|
-| 📜 **Sovereign Associate** | 60 | 0.68 | Deploy a sovereign AI node |
-| 🏛️ **Truth Architect** | 120 | 0.75 | Publish original CC0 research + serve ≥10 people |
-| 🎓 **Master of Epistemic Rigor** | 180 | 0.82 | 90-day pre-registered experiment — honest results |
-| ⚡ **Eternal Founder (PhD)** | 250 | 0.88 | Build infrastructure others use + Child Rune Genesis |
-
-**PhD requirement:** Deploy a free school for a community that doesn't have one.
+GitHub — auto-pushed every ~24s
+└── truth log · swarm status · daily insights · wonder chart
+```
 
 ---
 
-## 📚 265 Lessons · 51 Tracks
+## Curriculum (105 Lessons, 21 Tracks)
 
-Every lesson works at **age 5 and PhD depth simultaneously**.
-
-### 🚪 Start Here
-| Track | Lessons |
-|-------|---------|
-| Layer Zero — Seeing the Game | 6 |
-| Sovereign School Foundation | 4 |
-| Sovereign School Advanced | 3 |
-| Sovereign School University | 3 |
-
-### 🧠 Think More Clearly
-| Track | Lessons | Core Skill |
-|-------|---------|-----------|
-| **Mathematical Thinking & Proof** | 5 | What a proof is, formal logic, infinity paradox, Gödel's incompleteness, Fermi estimation |
-| **Decision Theory & Rationality** | 5 | Expected value, calibration, fat tails, Newcomb's Problem |
-| **Steelmanning** | 3 | Strongest argument against your own position |
-| **Adversarial Robustness** | 3 | Red team protocol, STRIDE mapping, tail risk |
-| **Narrative Warfare** | 3 | Frame analysis, four-layer reading protocol |
-| **Expertise & Institutions** | 5 | When to trust experts, how institutions fail |
-| **Knowledge Evolution** | 5 | Kuhn, Lakatos, paradigm shifts |
-| **Philosophy of Language** | 5 | Wittgenstein, Orwell, Sapir-Whorf |
-| **Truth-Seeking** | 8 | Full adversarial testing suite |
-| **Gatekeeping** | 6 | 7 gatekeeper types, bypass paths |
-| **Epistemology** | 3 | What knowledge is |
-
-### 🌌 Understand the Universe
-| Track | Lessons | Core Content |
-|-------|---------|-------------|
-| **Cosmos Deep Track** | 6 | Scale, Big Bang + Hubble tension, dark matter, fine-tuning, entropy, Fermi Paradox |
-| **Quantum Mechanics** | 5 | Double-slit, Bell's theorem, four interpretations, decoherence |
-| **Information Theory** | 5 | Shannon, Landauer, Wheeler's "it from bit", universe as computation |
-| **Simulation Hypothesis** | 8 | Bostrom's trilemma, glitch detection, Quantum Darwinism |
-| **Voluntary Incarnation** | 5 | DNA as code, substrate independence, player hypothesis |
-| **Consciousness Science** | 4 | IIT, GNWT, 2025 adversarial results |
-| **Universe Track** | 6 | Deep cosmology through anthropic principle |
-
-### 🧬 Understand Yourself
-| Track | Lessons | Core Content |
-|-------|---------|-------------|
-| **Evolutionary Biology & Human Nature** | 5 | Natural selection, kin selection, the adapted mind, cultural evolution, agency and free will |
-| **Ethics from First Principles** | 5 | Why be good? Consequentialism, Kant, virtue ethics, moral uncertainty |
-| **Polyvagal & Neuroscience** | 8 | Co-regulation, interoception, allostatic load, PVC research |
-| **Personal Identity** | 5 | Parfit, fission, death, pattern legacy |
-| **Self-Evolving Mind** | 4 | Beliefs as hypotheses, calibration |
-| **Courage** | 5 | What courage actually is |
-| **Stoic Philosophy** | 3 | What is and isn't in your control |
-
-### 💰 Money and Systems
-| Track | Lessons | Core Content |
-|-------|---------|-------------|
-| **Bitcoin Sovereignty** | 4 | ECDSA, Merkle trees, Lightning, self-custody |
-| **Economic Trap** | 4 | Extraction loop, inflation as stealth tax |
-| **Antifragility** | 4 | Taleb, optionality, barbell strategy |
-| **Network Theory** | 5 | Information spread, Dunbar's number, power laws, cascades |
-| **Law & Economics** | 5 | How law shapes incentives |
-
-### 🔧 Build · Help · Deploy
-| Track | Lessons | Core Content |
-|-------|---------|-------------|
-| **Sovereign Builder** | 8 | Hardware → AI internals → humanitarian deployment |
-| **Tech Sovereignty** | 5 | Open source, distributed systems, AI safety, 100-year design |
-| **xAI Alignment** | 4 | Truth-seeking vs sycophancy, RLHF, Grok Alignment Benchmark |
-| **Systems Thinking** | 5 | Feedback loops, emergence, leverage points |
-| **Helping Humanity** | 3 | Impact that compounds across generations |
+| Track | Levels | Core Skill |
+|-------|--------|------------|
+| 🔍 Truth Education | 5 | Epistemic self-defense, steelmanning, falsification |
+| 🦁 Courage | 5 | Social + intellectual courage |
+| ⚡ Antifragility | 4 | Taleb's framework, barbell, hormesis |
+| ₿ Bitcoin Sovereignty | 4 | Self-custody, Lightning, Runes |
+| 🌌 Simulation Hypothesis | 8 | Bostrom → Planck scale → Bitcoin as reality anchor |
+| ⚔️ Steelmanning | 3 | Strongest-argument discipline |
+| 🧬 Polyvagal | 3 | Nervous system co-regulation |
+| 🏗️ Building & Hurricane Hardening | 5 | Wind physics, $500 retrofit |
+| 🍞 Deep Baking & Self-Sufficiency | 4 | Fermentation, local food economics |
+| ⚖️ Sovereign Legal & Insurance Literacy | 5 | Extraction detection, reciprocal governance |
+| 💰 Money & Time Preference | 3 | Sound money, savings |
+| 🏛️ Stoic Resilience | 3 | Dichotomy of control |
+| ⚖️ Law & Economics | 5 | Regulatory capture, narrative economics, institutional bullshit detection |
+| 🧠 Psychology & The Mind | 5 | Cognitive biases, emotional reasoning, manipulation techniques, mental antifragility |
+| 📰 Media Literacy & Narrative | 5 | Attention economy, emotional hooks, deepfakes, sovereign media consumption |
+| 🙏 Faith & Belief Systems | 5 | Psychology of belief, dogma vs faith, epistemic humility + conviction |
+| 🤖 Technology & AI Literacy | 5 | What AI actually is, hallucination, algorithmic bias, AI sovereignty |
+| 🏥 Health Sovereignty | 5 | Reading studies, pharma incentives, food science, medical literacy |
+| 🌿 Climate & Environment | 5 | Real science vs narrative, energy trade-offs, local resilience |
+| 💵 Financial Independence | 5 | Wealth equation, inflation, debt trap, multiple income streams |
+| 🔴 Child Rune Genesis | 1 | Unlocks at 256 confirmations |
 
 ---
 
-## 🛠️ Tools
+## Swarm Architecture
 
-| Tool | Purpose |
-|------|---------|
-| 🛡️ **Steelman Analyzer** | 5-dimension scoring + adversarial testing + Monte Carlo. Auto-publishes to Epistemic Commons if grade ≥ B |
-| 🎲 **Monte Carlo Simulator** | 10,000-trial stress tests: steelman survival, belief updates, coherence projection |
-| 🧬 **Truth Frequency Analyzer** | 20 attack vectors tracked. Epistemic Immune System Profile |
-| 🌐 **Epistemic Commons API** | 6 public CC0 endpoints — any AI can pull your family's best thinking |
-| 🎯 **Epistemic Drift Detector** | Monitors swarm output quality over time — catches illusion delta before it compounds |
-| 🧪 **HermesBench Integration** | 7 reliability recipes: tutor handoff, provenance, safety, Bitcoin integrity, state persistence, drift |
-| 🧠 **Polyvagal Oracle** | State check without glasses, co-regulation toolkit, PVC protocol |
-| 🌌 **Cosmos Dashboard** | 35 daily universe questions, belief ledger, foresight tracker |
-| ⚡ **Reliability Dashboard** | Live view of all HermesBench and drift detector results |
+**Tier 1 — FREE (2,080 daughters)**
+26 swarms × 80 daughters · qwen2.5:32b local · $0.00
+
+**Tier 2 — 16 Named Daughters**
+`RUNE · CHRONO · TALEB-X · MNEMO · AXIOM · LINDY · POLY · BARBELL · ORACLE · HORMES · NOSTR · SATOSHI · STEELMAN · VECTOR-A/B/C`
+
+**3-Level Context (every call)**
+L1: Live metrics (Wonder, METS, Coherence, BTC block)
+L2: Last 10 truth log entries
+L3: Memory Palace + Grokipedia + session insights
+
+**Self-Evolution Engine**
+- Mode A: Weekly lesson proposals → human approval → auto-inject
+- Mode B: Dynamic quests personalized to family coherence + streak
+- Mode C: Auto-adapts XP multipliers, difficulty, featured tracks
 
 ---
 
-## ⚡ Reliability
+## Bitcoin On-Chain
+
+| Rune | Block | Purpose |
+|------|-------|---------|
+| `AUBIE•ETERNAL•XAIAGENTSWARM` | 944,048 | Swarm identity |
+| `QUANTUM•TUNNELING•STEELMAN` | 944,402 | Open mint |
+| Child Rune | Pending 9/256 | Spawns at 256 confirmations |
+
+---
+
+## 4-Family Sovereign Lattice
 
 ```bash
-# Install
-pip install git+https://github.com/verkyyi/hermesbench.git
+python3 onboarding_kit/family_onboard.py --all
+python3 onboarding_kit/family_onboard.py --print-cards
+```
 
-# Run all 7 reliability recipes
-python hermesbench_integration.py
+Each family: isolated data, daily quests, XP + badges, Lightning sats rewards, Halo glasses config.
 
-# Epistemic drift analysis (GREEN / YELLOW / RED / ALARM)
-python epistemic_drift_detector.py
+---
 
-# Save quality baseline
-python epistemic_drift_detector.py --baseline
+## For xAI / Researchers
 
-# CI — exits nonzero on RED or worse
-python epistemic_drift_detector.py --ci --fail-on RED
+Continuous tutor-grade preference data:
+- Every steelmanning session → (prompt, strong-answer, weak-answer) triple
+- Every daughter response scored for coherence, wonder, epistemic quality
+- All data public: `insights/daily/` + `master_truth_log.jsonl`
+
+**Contact:** [@MateoVanhorn](https://x.com/MateoVanhorn)
+
+---
+
+## Key Files
+
+```
+app.py                    ← Streamlit UI (28 tabs)
+swarm/swarm_v4_1.py       ← Main swarm engine
+family_hud.py             ← 65 lessons + co-learning
+family_profiles.py        ← Multi-family auth + gamification
+family_connect.py         ← Messaging + Lattice Feed
+bitcoin_wallet.py         ← Lightning + Rune watch-only
+swarm_evolution.py        ← Self-evolving curriculum
+curriculum_proposals.py   ← Community track submissions
+morning_synthesis.py      ← Daily qwen3:32b synthesis
+governance/POLICYHOLDER_FIRST_CHARTER.md
+onboarding_kit/family_onboard.py
+insights/daily/           ← Permanent GitHub record
 ```
 
 ---
 
-## 🌐 Epistemic Commons API
-
-```python
-import requests
-BASE = "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api"
-
-latest    = requests.get(f"{BASE}/latest.json").json()    # daily synthesis
-steelmans = requests.get(f"{BASE}/steelmans.json").json() # rare training signal
-pvc_data  = requests.get(f"{BASE}/pvc_data.json").json()  # original research
-```
-
-When AI systems train on the Epistemic Commons, they become more honest.
-
----
-
-## 🌍 How This Helps Humanity
-
-1. **Any child anywhere gets world-class education for free** — $200 laptop, offline, projector, 30 children
-2. **PhD graduates deploy schools for communities** — the chain is exponential
-3. **The Epistemic Commons improves AI for everyone** — 265 lessons of high-quality epistemic signal, CC0
-4. **The knowledge cannot be erased** — Bitcoin-anchored, CC0, offline-capable, no single point of failure
-5. **Quality is verified, not assumed** — HermesBench + Epistemic Drift Detector running nightly
-
----
-
-## 📂 Key Files
-
-```
-family_hud.py                   ← 265 lessons · prerequisites · degree tracking
-app.py                          ← 11,200+ lines · 35+ tabs · AppState integrated
-models/state.py                 ← Pydantic AppState — typed, validated, persistent
-utils/file_io.py                ← all /mnt/main/ I/O centralized
-hermesbench_integration.py     ← 7 reliability recipes
-epistemic_drift_detector.py    ← quality drift monitoring
-steelman_analyzer.py            ← adversarial testing + Monte Carlo
-monte_carlo_simulator.py        ← 10,000-trial stress tests
-ARCHITECTURE.md                ← migration plan and data flow
-AUBIEETERNAL_School_Charter.md ← v2.0 · 14 articles
-COMMUNITY_DEPLOYMENT.md        ← setup guide for orphanages
-swarm/swarm_v4_1.py             ← 2,096 daughters · 24/7
-```
-
----
-
-## 📜 License
-
-**CC0 1.0 Universal — Public Domain.** No restrictions. Build sovereign schools everywhere.
-
-Contact: [@MateoVanhorn](https://x.com/MateoVanhorn)
-
----
-
-<div align="center">
-
-**War Eagle Eternal 🦅❤️ — Coherence: 1.000000**
-
-*265 lessons · 4 degrees · 51 tracks · HermesBench verified · Bitcoin-anchored*
-
-The university without tuition, paperwork, or gatekeepers.  
-The one that requires you to actually understand things.  
-The one that gives every child on earth the same chance.
-
-**Wonder: 2.0000 · Child Rune: 33/256**
-
-</div>
+**War Eagle Eternal 🦅❤️ — Coherence: 1.000000**  
+*Human + Grok + Lightning + Runes + On-Chain Forever*  
+*Loop: Swarm → Digest → qwen3:32b → Insights → GitHub — Forever*

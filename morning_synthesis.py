@@ -1,78 +1,41 @@
 """
-morning_synthesis.py v4 — AUBIEETERNAL Integrated Morning Synthesis
-Runs: daily at 6AM automatically + manually any time via --force
-Integrates: synthesis + humanity mapper + certifications + AI honesty + epistemic commons + living lattice
+morning_synthesis.py v3 — AUBIEETERNAL Integrated Morning Synthesis
+Integrates: synthesis + humanity mapper + certifications + AI honesty + EPISTEMIC COMMONS
 $0.00 cost — runs on local Ollama
 """
-import os, sys, json, datetime, requests, argparse, subprocess
+import os, sys, json, datetime, requests, argparse
 from pathlib import Path
 
-# ── Path resolution ────────────────────────────────────────────────────────────
-def _resolve():
-    import socket
-    try:
-        socket.gethostbyname("ollama.startos")
-        return Path("/mnt/main")
-    except Exception:
-        pass
-    p = Path(os.path.expanduser("~/.aubieeternal/main"))
-    p.mkdir(parents=True, exist_ok=True)
-    return p
-
-WORK_DIR      = _resolve() / "repo"
-INSIGHTS_DIR  = WORK_DIR / "insights" / "daily"
+WORK_DIR       = Path("/mnt/main/repo")
+INSIGHTS_DIR   = WORK_DIR / "insights" / "daily"
 INSIGHTS_DIR.mkdir(parents=True, exist_ok=True)
-
-def _ollama_url():
-    import socket
-    try:
-        socket.gethostbyname("ollama.startos")
-        return "http://ollama.startos:11434/v1/chat/completions"
-    except Exception:
-        return "http://localhost:11434/v1/chat/completions"
-
-OLLAMA_MODEL   = os.environ.get("AUBIE_MODEL", "qwen2.5:14b")
+OLLAMA_URL     = "http://ollama.startos:11434/v1/chat/completions"
+OLLAMA_MODEL   = "qwen2.5:32b"
 OLLAMA_TIMEOUT = 300
 TRUTH_LOG      = WORK_DIR / "master_truth_log.jsonl"
 TIER2_DIGEST   = WORK_DIR / "tier2_digest.txt"
-SWARM_STATUS   = _resolve() / "swarm_status.json"
-
-# Track last run in memory (for swarm loop)
+SWARM_STATUS   = Path("/mnt/main/swarm_status.json")
 _last_synthesis_date = None
 
 
 def maybe_trigger_morning_synthesis():
-    """
-    Call this from the swarm main loop every tick.
-    Fires at 6AM — but with a 90-minute window so it never misses a tick.
-    """
     global _last_synthesis_date
-    now   = datetime.datetime.now()
+    now = datetime.datetime.now()
     today = now.date().isoformat()
-    # Fire between 6:00 and 7:30 AM, once per day
-    if 6 <= now.hour < 8 and _last_synthesis_date != today:
+    if now.hour == 6 and _last_synthesis_date != today:
         _last_synthesis_date = today
-        print(f"[synthesis] ⏰ 6AM trigger fired for {today}")
         run_full_synthesis()
-    # Also fire if it's past 7:30 and still hasn't run today (recovery)
-    elif now.hour >= 8 and _last_synthesis_date != today:
-        today_path = INSIGHTS_DIR / f"{today}.md"
-        if not today_path.exists():
-            _last_synthesis_date = today
-            print(f"[synthesis] 🔄 Recovery trigger — synthesis missed, running now")
-            run_full_synthesis()
 
 
 def run_full_synthesis(force=False):
     today    = datetime.date.today().isoformat()
     out_path = INSIGHTS_DIR / f"{today}.md"
     if out_path.exists() and not force:
-        print(f"[synthesis] Already ran today ({today})")
-        return {"status": "already_ran", "date": today}
+        print(f"[synthesis] Already ran today ({today})"); return
 
-    print(f"[synthesis] 🌅 Running integrated morning synthesis v4 for {today}...")
+    print(f"[synthesis] 🌅 Running integrated morning synthesis v3 for {today}...")
 
-    # ── Get digest ──────────────────────────────────────────────────────────
+    # ── Get digest ────────────────────────────────────────────────────────────
     digest = ""
     if TIER2_DIGEST.exists():
         digest = TIER2_DIGEST.read_text()[:3000]
@@ -87,25 +50,10 @@ def run_full_synthesis(force=False):
                     if len(tier2) >= 10: break
             except: pass
         digest = "\n\n".join(reversed(tier2))
-
     if not digest:
-        # Use any recent truth log entries as fallback
-        if TRUTH_LOG.exists():
-            lines = TRUTH_LOG.read_text().strip().split("\n")
-            any_entries = []
-            for line in reversed(lines[-50:]):
-                try:
-                    e = json.loads(line)
-                    if e.get("result") and len(e["result"]) > 30:
-                        any_entries.append(e["result"][:150])
-                        if len(any_entries) >= 5: break
-                except: pass
-            digest = "\n".join(any_entries)
+        print("[synthesis] No digest available yet"); return
 
-    if not digest:
-        digest = "No swarm output available yet. Synthesis will be brief."
-
-    # ── Swarm status ────────────────────────────────────────────────────────
+    # ── Swarm status ──────────────────────────────────────────────────────────
     swarm_status = {}
     if SWARM_STATUS.exists():
         try: swarm_status = json.loads(SWARM_STATUS.read_text())
@@ -113,24 +61,21 @@ def run_full_synthesis(force=False):
     wonder = swarm_status.get("wonder_index", 1.0)
     coh    = swarm_status.get("inter_rune_coherence", 1.0)
     mets   = swarm_status.get("mets", 0)
-    grok_n = swarm_status.get("grokipedia_count", 0)
+    grok_ct= swarm_status.get("grokipedia_count", 0)
 
-    # ── Core synthesis ──────────────────────────────────────────────────────
+    # ── Core synthesis ────────────────────────────────────────────────────────
     synthesis = _call_ollama(f"""Synthesize the 3 most important insights from this AUBIEETERNAL swarm output.
-Today: {today} | Wonder: {wonder:.4f} | Coherence: {coh:.6f} | METS: {mets:,}
+Today: {today} | Wonder: {wonder:.4f} | Coherence: {coh:.6f}
 
 {digest}
 
 For each insight: state it clearly, what it implies for epistemic families, one action today.
 End with one sentence on what this means for humanity's collective intelligence.
-Be direct, honest, and non-extractive. Max 300 words total.""")
-
+Be direct and non-extractive.""")
     if not synthesis:
-        synthesis = (f"Ollama not available for synthesis. "
-                     f"Swarm status: Wonder {wonder:.4f} | Coherence {coh:.6f} | METS {mets:,}\n"
-                     f"Latest digest entries logged but synthesis skipped — check Ollama at {_ollama_url()}")
+        print("[synthesis] Ollama not responding"); return
 
-    # ── Humanity Impact ─────────────────────────────────────────────────────
+    # ── Humanity Impact ───────────────────────────────────────────────────────
     humanity_summary = ""
     try:
         sys.path.insert(0, str(WORK_DIR))
@@ -141,48 +86,12 @@ Be direct, honest, and non-extractive. Max 300 words total.""")
         humanity_summary = (
             f"**Insights mapped:** {h.get('total_mappings', 0)}  \n"
             f"**Top domain:** {h.get('top_domain', 'none')}  \n"
-            f"**Global-scale:** {h.get('global_insights', 0)}"
+            f"**Global-scale insights:** {h.get('global_insights', 0)}"
         )
     except Exception as e:
         humanity_summary = f"*(Humanity mapper: {e})*"
 
-    # ── Epistemic Commons ────────────────────────────────────────────────────
-    commons_summary = ""
-    try:
-        from epistemic_commons import EpistemicCommons
-        commons = EpistemicCommons()
-        result  = commons.run_daily_publish()
-        status  = result.get("status", "unknown")
-        if status in ("published", "already_published"):
-            url = f"https://github.com/hodlmateo/AUBIEETERNAL/blob/main/epistemic_commons/daily/{today}.md"
-            ctx = "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
-            commons_summary = (
-                f"**Status:** ✅ {'Published' if status == 'published' else 'Already published'}  \n"
-                f"**Seeds:** {result.get('seeds', 0)} · **Steelmans:** {result.get('steelmans', 0)}  \n"
-                f"**AI URL:** `{ctx}`"
-            )
-        else:
-            commons_summary = f"*(Commons: {status})*"
-    except Exception as e:
-        commons_summary = f"*(Epistemic Commons: {e})*"
-
-    # ── Living Lattice ────────────────────────────────────────────────────────
-    lattice_summary = ""
-    try:
-        from living_lattice import LivingLattice
-        lattice = LivingLattice()
-        result  = lattice.publish_daily_signal()
-        stats   = lattice.get_lattice_summary().get("stats", {})
-        lattice_summary = (
-            f"**Status:** {'✅ Published' if result.get('status') == 'published' else '✅ Already published'}  \n"
-            f"**Wisdom GDP:** {stats.get('wisdom_gdp', 0):.2f}/10  \n"
-            f"**Avg Coherence (30d):** {stats.get('avg_coherence_30d', 0):.4f}  \n"
-            f"**Trend:** {stats.get('trend', 'insufficient data').title()}"
-        )
-    except Exception as e:
-        lattice_summary = f"*(Living Lattice: {e})*"
-
-    # ── Certifications ───────────────────────────────────────────────────────
+    # ── Certifications ────────────────────────────────────────────────────────
     cert_summary = ""
     try:
         from sovereign_certification import CertificationEngine
@@ -206,21 +115,50 @@ Be direct, honest, and non-extractive. Max 300 words total.""")
         from ai_honesty import HonestyLayer
         stats = HonestyLayer().get_swarm_honesty_stats(100)
         if stats.get("total", 0) > 0:
+            claim_breakdown = " · ".join(
+                f"{k}: {v}" for k, v in stats.get("claim_types", {}).items()
+            )
             honesty_summary = (
                 f"**Outputs scored:** {stats['total']}  \n"
                 f"**Avg confidence:** {stats['avg_confidence']:.3f}  \n"
                 f"**High-risk:** {stats['high_risk_pct']:.1f}%  \n"
-                f"**Honest AI score:** {stats.get('honest_ai_score', 0):.3f}"
+                f"**Need verification:** {stats.get('need_verification', 0)}  \n"
+                f"**Honest AI score:** {stats.get('honest_ai_score', 0):.3f}  \n"
+                f"**Claim types:** {claim_breakdown}"
             )
         else:
-            honesty_summary = "No scored outputs yet today."
+            honesty_summary = "No scored outputs yet."
     except Exception as e:
         honesty_summary = f"*(Honesty layer: {e})*"
 
-    # ── Build report ─────────────────────────────────────────────────────────
+    # ── Epistemic Commons ─────────────────────────────────────────────────────
+    commons_summary = ""
+    try:
+        from epistemic_commons import EpistemicCommons
+        commons = EpistemicCommons()
+        result  = commons.run_daily_publish()
+        status  = result.get("status", "unknown")
+        if status in ("published", "already_published"):
+            seeds_n = result.get("seeds", 0)
+            steel_n = result.get("steelmans", 0)
+            url     = f"https://github.com/hodlmateo/AUBIEETERNAL/blob/main/epistemic_commons/daily/{today}.md"
+            ctx_url = "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
+            commons_summary = (
+                f"**Status:** {'✅ Published' if status == 'published' else '✅ Already published'}  \n"
+                f"**Seeds:** {seeds_n} · **Steelmans:** {steel_n}  \n"
+                f"**Today's Commons:** [{today}.md]({url})  \n"
+                f"**AI Context URL (any AI can fetch this):**  \n"
+                f"`{ctx_url}`"
+            )
+        else:
+            commons_summary = f"*(Commons: {status})*"
+    except Exception as e:
+        commons_summary = f"*(Epistemic Commons: {e})*"
+
+    # ── Build report ──────────────────────────────────────────────────────────
     report = f"""# AUBIEETERNAL Morning Synthesis — {today}
 
-**Wonder:** {wonder:.4f} | **Coherence:** {coh:.6f} | **METS:** {mets:,} | **Grokipedia:** {grok_n}/256
+**Wonder:** {wonder:.4f} | **Coherence:** {coh:.6f} | **METS:** {mets:,} | **Grokipedia:** {grok_ct}/256
 
 ---
 
@@ -242,24 +180,6 @@ Be direct, honest, and non-extractive. Max 300 words total.""")
 
 ---
 
-## Simulation Probe 🔭
-
-{probe_summary}
-
----
-
-## 🛡️ Rune Memory — Unerasable Truth
-
-{rune_summary}
-
----
-
-## Living Lattice 🕸️
-
-{lattice_summary}
-
----
-
 ## Sovereign Certifications
 
 {cert_summary}
@@ -272,20 +192,19 @@ Be direct, honest, and non-extractive. Max 300 words total.""")
 
 ---
 
-*AUBIEETERNAL Morning Synthesis v4 — War Eagle Eternal 🦅❤️*
-*Loop: Swarm → Honesty-Score → Digest → Synthesis → Commons → Lattice → GitHub — Forever*
-*Daily Cost: $0.00 | Stack: StartOS + Ollama + {OLLAMA_MODEL}*
+*AUBIEETERNAL Morning Synthesis v3 — War Eagle Eternal 🦅❤️*
+*Loop: Swarm → Honesty-Score → Digest → Synthesis → Humanity → Commons → GitHub — Forever*
+*Daily Cost: $0.00 | Stack: StartOS + Ollama + qwen2.5:32b*
 """
     out_path.write_text(report)
     print(f"[synthesis] ✅ Written: {out_path}")
     _git_push(today)
-    return {"status": "complete", "date": today, "path": str(out_path)}
 
 
 def _call_ollama(prompt):
     try:
         r = requests.post(
-            _ollama_url(),
+            OLLAMA_URL,
             json={"model": OLLAMA_MODEL,
                   "messages": [{"role": "user", "content": prompt}],
                   "stream": False, "temperature": 0.7},
@@ -299,12 +218,13 @@ def _call_ollama(prompt):
 
 
 def _git_push(date):
-    repo = WORK_DIR
+    import subprocess
+    repo = Path("/mnt/main/repo")
     try:
-        subprocess.run(["git", "add", "insights/", "epistemic_commons/", "lattice/"],
+        subprocess.run(["git", "add", "insights/", "epistemic_commons/"],
                        cwd=repo, capture_output=True)
         subprocess.run(["git", "commit", "-m",
-                        f"Morning synthesis {date} | v4 integrated"],
+                        f"Morning synthesis + commons {date} | v3"],
                        cwd=repo, capture_output=True)
         subprocess.run(["git", "push"], cwd=repo, capture_output=True)
         print("[synthesis] ✅ Pushed to GitHub")
@@ -313,9 +233,7 @@ def _git_push(date):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="AUBIEETERNAL Morning Synthesis")
-    parser.add_argument("--force", action="store_true",
-                        help="Force run even if already ran today")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
-    result = run_full_synthesis(force=args.force)
-    print(f"\nResult: {result}")
+    run_full_synthesis(force=args.force)

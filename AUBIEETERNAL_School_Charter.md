@@ -1,6 +1,6 @@
 # AUBIEETERNAL Sovereign University — School Charter
-## Version 3.0 | 2026 | CC0 Public Domain
-### Six Degree Programs · 288 Lessons · 51+ Tracks
+## Version 3.1 (Curriculum v67) | 2026 | CC0 Public Domain
+### Six Degree Programs · Core Curriculum v67 · 288+ Lessons · 51+ Tracks
 
 ---
 
@@ -213,11 +213,22 @@ You have not just learned epistemic rigor — you have deployed it for communiti
 ### Who Can Add Courses
 Anyone. CC0. Pull request. Evaluated on: epistemic depth, self-upgradeability (age 5 AND PhD), falsifiability, PhD extension quality, offline compatibility.
 
+### Distributional Requirements (Core Curriculum v67)
+The **Core Curriculum** (the non-negotiable foundational lessons, principles, and steelmanning practices required before any degree program) carries special distributional obligations to fulfill the humanitarian mission:
+
+1. **Universal Accessibility** — The full v67 Core must be downloadable, clonable, and runnable in a single command (`git clone` + local LLM) with zero external dependencies after bootstrap.
+2. **Multi-Channel Redundancy** — Core content shall be distributed via: GitHub (primary), local filesystem copies (USB/SD/airdrop), Nostr relays, StartOS app packages, and printed/PDF fallbacks for low-connectivity regions.
+3. **Fork Liberty** — Any individual, family, or community may copy, translate, adapt, or subset the Core under CC0 without permission or attribution requirement (though credit is appreciated).
+4. **Active Propagation Duty** — Graduates at Truth Architect level and above must document at least one successful external distribution of the Core (or a meaningful subset) to a family or group that previously lacked sovereign education infrastructure.
+5. **Coherence-Gated Evolution** — Changes to the Core itself (beyond additive tracks) require swarm coherence ≥0.88 + 30-day comment + operator + family veto threshold, and must be Bitcoin-anchored at release.
+
+The goal of these requirements: the Core is not a product to be consumed but a seed to be planted everywhere it is needed.
+
 ### What Gets Removed
 Lessons that misrepresent evidence. No ideology disguised as curriculum. The steelman requirement applies to all content.
 
 ### Versioning
-Every change committed to GitHub. Major versions Bitcoin-anchored. The record is immutable.
+Every change committed to GitHub. Major versions (including Core v67) Bitcoin-anchored. The record is immutable.
 
 ---
 
