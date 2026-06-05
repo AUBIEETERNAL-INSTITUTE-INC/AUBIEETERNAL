@@ -1,0 +1,23 @@
+id: core-v67
+name: "AUBIEETERNAL Core v67"
+description: "The 10 foundational lessons that form the non-negotiable starting point for all AUBIEETERNAL education. Required before any specialized tracks."
+version: "v67"
+lessons:
+  - core-v67-1
+  - core-v67-2
+  - core-v67-3
+  - core-v67-4
+  - core-v67-5
+  - core-v67-6
+  - core-v67-7
+  - core-v67-8
+  - core-v67-9
+  - core-v67-10
+prerequisites: []
+min_coherence: 0.78
+xp_total: 264
+rune: "CORE•V67"
+distribution_requirements:
+  - "Must be available offline and forkable under CC0"
+  - "Graduates must help propagate the Core to at least one external family (per Charter Article VI)"
+  - "Changes to this Core require coherence ≥ 0.88 + distributional review"

@@ -10,7 +10,7 @@ Each proposal goes through:
   2. Simulation questions (4 standard checks)
   3. Coherence score gate (≥ 0.70 to pass; ≥0.88 for Core changes)
   4. Human review in the app / Family HUD
-  5. Merge to family_hud.py (with approval) — new Core surfaces automatically in HUD
+  5. Merge into curriculum/lessons/ and curriculum/tracks/ (with approval) — new Core surfaces automatically in the Family HUD via the loader
 
 Core Curriculum v67 proposals receive special distributional review per School Charter Article VI.
 
