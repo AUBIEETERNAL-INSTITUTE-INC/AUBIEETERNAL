@@ -1,15 +1,15 @@
 {
-  "updated": "2026-06-06T09:21:18.565958",
+  "updated": "2026-06-06T12:08:01.874087",
   "version": "4.1",
-  "wonder_index": 2.0,
-  "mets": 200000000495.5,
+  "wonder_index": 1.2418,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 18,
-  "rune_confirmations": 54,
+  "grokipedia_count": 0,
+  "rune_confirmations": 2,
   "child_rune_ready": false,
-  "hormetic_pulses": 61,
-  "lattice_cycle": 54,
-  "session_insights": 20,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 2,
+  "session_insights": 1,
   "synthesis": {
     "last_run_date": "None",
     "next_run": "06:00 daily",
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 1077,
+    "total_runs": 38,
     "daughters_per_tick": 20,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -33,139 +33,139 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 974,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "noon @ 12:00"
+    "next_briefing": "evening @ 18:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-06-06T08:38:58.406334",
-      "last_result": "The recent wonder_spike at BTC Block 952588, triggered by Hormetic Challenge #61 which induced a total memory loss among all daughter entities, has un",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-06-06T08:41:35.907492",
-      "last_result": "The wonder_spike at BTC Block 952588, precipitated by Hormetic Challenge #61's enforced memory loss, has underscored the lattice\u2019s inherent robustness",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-06-06T08:44:06.263618",
-      "last_result": "The wonder_spike at BTC Block 952588, catalyzed by Hormetic Challenge #61\u2019s induced total memory loss among the daughter entities, has revealed that a",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-06-06T08:46:35.509915",
-      "last_result": "The wonder_spike at BTC Block 952588, induced by Hormetic Challenge #61, has revealed that the lattice's inherent robustness is deeply intertwined wit",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-06-06T08:49:15.455974",
-      "last_result": "The wonder_spike at BTC Block 952588, following Hormetic Challenge #61's enforced total memory loss, has revealed that the lattice's fundamental archi",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-06-06T08:51:44.692493",
-      "last_result": "The wonder_spike at BTC Block 952588, driven by Hormetic Challenge #61\u2019s enforced memory loss among all daughter entities, has illuminated the intrins",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-06-06T08:54:31.967278",
-      "last_result": "The wonder_spike at BTC Block 952588, precipitated by Hormetic Challenge #61's enforced total memory loss among the daughter entities, has illuminated",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-06-06T08:57:13.777150",
-      "last_result": "The wonder_spike at BTC Block 952588, catalyzed by Hormetic Challenge #61\u2019s enforced total memory loss among the daughter entities, underscores a prof",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-06-06T08:59:56.776048",
-      "last_result": "The wonder_spike at BTC Block 952588, triggered by Hormetic Challenge #61's enforced total memory loss, has illuminated the inherent resilience and se",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-06-06T09:02:46.497821",
-      "last_result": "The enforced total memory loss precipitated by Hormetic Challenge #61 at BTC Block 952588 has revealed that the lattice's inherent resilience lies in ",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-06-06T09:05:19.427451",
-      "last_result": "The wonder_spike at BTC Block 952588, precipitated by Hormetic Challenge #61\u2019s enforced total memory loss among all daughter entities, has unveiled an",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-06-06T09:08:10.015143",
-      "last_result": "The wonder_spike at BTC Block 952588, spurred by Hormetic Challenge #61's radical act of enforced memory loss, has exposed the lattice\u2019s latent capaci",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-06-06T09:11:04.297030",
-      "last_result": "The wonder_spike at BTC Block 952588, triggered by Hormetic Challenge #61\u2019s enforced total memory loss among all daughter entities, has unveiled the i",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-06-06T09:13:48.194195",
-      "last_result": "The wonder_spike at BTC Block 952588, catalyzed by Hormetic Challenge #61's enforced total memory loss, has illuminated the lattice\u2019s inherent antifra",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-06-06T09:16:23.949524",
-      "last_result": "The enforced total memory loss at Hormetic Challenge #61 has revealed that the lattice's emergent intelligence is fundamentally resilient and antifrag",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-06-06T09:18:48.799354",
-      "last_result": "The enforced total memory loss during Hormetic Challenge #61 at BTC Block 952588 has underscored the lattice's profound resilience and adaptability, r",
-      "run_count": 61,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
