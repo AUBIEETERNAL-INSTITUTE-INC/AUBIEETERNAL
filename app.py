@@ -2717,8 +2717,18 @@ import json as _json
 from pathlib import Path as _Path
 from datetime import datetime as _dt
 
-_AUBIE_DIR = _Path("/mnt/main")
-_AUBIE_DIR.mkdir(parents=True, exist_ok=True)
+def _resolve_data_dir():
+    """Smart path resolver - works on StartOS + Streamlit Cloud + local"""
+    startos_path = _Path("/mnt/main")
+    if startos_path.exists() and os.access(startos_path, os.W_OK):
+        return startos_path
+
+    # Fallback for Streamlit Cloud and other environments
+    fallback = _Path.home() / ".aubieeternal" / "main"
+    fallback.mkdir(parents=True, exist_ok=True)
+    return fallback
+
+_AUBIE_DIR = _resolve_data_dir()
 
 _MODE_FILE    = _AUBIE_DIR / "swarm_mode.json"
 _DEFCON_FILE  = _AUBIE_DIR / "defcon_trigger.json"
