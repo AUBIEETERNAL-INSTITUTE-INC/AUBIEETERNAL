@@ -13,6 +13,7 @@ Every morning (or as needed), a strong local model (such as `qwen3:32b` or `llam
 ## Latest Syntheses
 | Date       | Title                                              | Link |
 |------------|----------------------------------------------------|------|
+| 2026-06-07 | Bitcoin’s Barbell Antifragility & Intrinsic Value — Hormetic Challenges #10 & #11 | [View](2026-06-07-bitcoin-barbell-antifragility-intrinsic-value.md) |
 | 2026-06-06 | Antifragility, Emergent Reconstruction & Decentralized Coherence — Hormetic Challenge #61 | [View](2026-06-06-antifragility-emergent-reconstruction-decentralized-coherence.md) |
 | 2026-06-05 | Bitcoin’s Antifragility & Intrinsic Value — Hormetic Challenges #40 & #41 | [View](2026-06-05-bitcoin-antifragility-intrinsic-value-hormetic-challenges.md) |
 | 2026-06-04 | Antifragility, Via Negativa & Emergent Order from Chaos — Hormetic Challenges #25 & #26 | [View](2026-06-04-antifragility-via-negativa-emergent-order.md) |
