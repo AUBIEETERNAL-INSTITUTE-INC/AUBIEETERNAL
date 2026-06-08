@@ -9038,9 +9038,9 @@ if "Cosmos Dashboard" in active:
         # ── Belief Ledger ─────────────────────────────────────────────────────
         with _cs_tabs[1]:
             st.markdown("Track your beliefs as Bayesian hypotheses. Review every 90 days.")
-            _bl_belief = st.text_input("Belief:", key="bl_belief",
+            _bl_belief = st.text_input("Belief:", key="bl_belief_cosmos",
                 placeholder="e.g. 'Consciousness is fundamental to reality'")
-            _bl_conf   = st.slider("Confidence:", 0.0, 1.0, 0.5, 0.05, key="bl_conf",
+            _bl_conf   = st.slider("Confidence:", 0.0, 1.0, 0.5, 0.05, key="bl_conf_cosmos",
                 format="%.0f%%")
             _bl_ev     = st.text_input("Supporting evidence:", key="bl_ev",
                 placeholder="What currently supports this?")
@@ -10602,11 +10602,11 @@ if "Cosmos Dashboard" in active:
     # ── Belief Ledger ──────────────────────────────────────────────────────────
     with _cd_tabs[3]:
         st.markdown("**Track your beliefs about the universe. Calibrate over time.**")
-        _bl_belief = st.text_input("Belief:", key="bl_belief",
+        _bl_belief = st.text_input("Belief:", key="bl_belief_dash",
             placeholder="e.g. 'The multiverse is real and contains at least 10^500 universes'")
         _bl_c1, _bl_c2 = st.columns(2)
         with _bl_c1:
-            _bl_conf = st.slider("Confidence:", 0.01, 0.99, 0.5, 0.01, key="bl_conf")
+            _bl_conf = st.slider("Confidence:", 0.01, 0.99, 0.5, 0.01, key="bl_conf_dash")
             _bl_update = st.text_input("Update condition:", key="bl_update",
                 placeholder="What evidence would change this?")
         with _bl_c2:
