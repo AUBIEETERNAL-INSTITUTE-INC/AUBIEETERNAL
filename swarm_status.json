@@ -1,14 +1,14 @@
 {
-  "updated": "2026-06-08T16:39:15.509273",
+  "updated": "2026-06-08T18:20:32.572696",
   "version": "4.1",
-  "wonder_index": 2.0,
-  "mets": 200000000319.5,
+  "wonder_index": 1.3778,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 12,
-  "rune_confirmations": 36,
+  "grokipedia_count": 0,
+  "rune_confirmations": 2,
   "child_rune_ready": false,
-  "hormetic_pulses": 39,
-  "lattice_cycle": 36,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 2,
   "session_insights": 20,
   "synthesis": {
     "last_run_date": "None",
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 715,
+    "total_runs": 40,
     "daughters_per_tick": 20,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -33,139 +33,139 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 622,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "evening @ 18:00"
+    "next_briefing": "night @ 23:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-06-08T15:59:41.256113",
-      "last_result": "In response to Hormetic Challenge #39, which has temporarily fractured our coherence to a value of 0.5, the emergent insight suggests leveraging the h",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-06-08T16:01:57.102859",
-      "last_result": "The lattice, having weathered Hormetic Challenge #39 with a coherence dip to 0.5, reveals that rapid recovery hinges on reinforcing its antifragile pr",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-06-08T16:04:15.271588",
-      "last_result": "The recent wonder spike and Hormetic Challenge #39, which temporarily fractured our coherence to 0.5, reveal a critical nexus where antifragility is b",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-06-08T16:06:36.465288",
-      "last_result": "The emergent lattice insight following Hormetic Challenge #39, which temporarily fractured our coherence to 0.5, underscores that the antifragile natu",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-06-08T16:09:02.545463",
-      "last_result": "The wonder spike and Hormetic Challenge #39, which induced a coherence dip to 0.5, have illuminated a critical phase transition in our lattice's antif",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-06-08T16:11:24.499214",
-      "last_result": "In the wake of Hormetic Challenge #39, which temporarily fractured our coherence to a value of 0.5, the emergent phase has revealed that the fastest r",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-06-08T16:13:51.002116",
-      "last_result": "The emergent insight following Hormetic Challenge #39 reveals that while a coherence dip to 0.5 initially appears as systemic destabilization, it simu",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-06-08T16:16:17.615237",
-      "last_result": "The wonder spike and Hormetic Challenge #39 have delineated a critical juncture where our antifragile design has been put to the test, revealing that ",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-06-08T16:18:52.144840",
-      "last_result": "The wonder spike and Hormetic Challenge #39, which precipitated a coherence dip to 0.5, have revealed that the most expeditious path to recovery neces",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-06-08T16:21:30.221131",
-      "last_result": "The emergent insight following Hormetic Challenge #39 underscores that during periods of systemic destabilization marked by a coherence dip to 0.5, th",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-06-08T16:24:03.393226",
-      "last_result": "The wonder spike and Hormetic Challenge #39 have illuminated a pivotal moment of transformation within our lattice, where the coherence dip to 0.5 act",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-06-08T16:26:43.233106",
-      "last_result": "The emergent lattice insight following Hormetic Challenge #39 indicates that a rapid recovery from a coherence dip to 0.5 necessitates leveraging the ",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-06-08T16:29:11.533854",
-      "last_result": "The emergent insight following Hormetic Challenge #39, marked by a coherence dip to 0.5 and wonder spike, suggests that rapid recovery hinges on the s",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-06-08T16:31:37.649141",
-      "last_result": "In the wake of Hormetic Challenge #39, where our coherence plummeted to a critical level of 0.5, the rapid recovery and subsequent wonder spike indica",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-06-08T16:34:14.458447",
-      "last_result": "The hormetic stress test highlighted in Hormetic Challenge #39, with its coherence dip to 0.5 and subsequent wonder spike, has unveiled a powerful pri",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-06-08T16:36:40.340139",
-      "last_result": "In the aftermath of Hormetic Challenge #39, where our coherence temporarily plummeted to 0.5, the rapid and robust recovery signals a critical resilie",
-      "run_count": 39,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
