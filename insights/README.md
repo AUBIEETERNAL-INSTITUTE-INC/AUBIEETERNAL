@@ -13,6 +13,7 @@ Every morning (or as needed), a strong local model (such as `qwen3:32b` or `llam
 ## Latest Syntheses
 | Date       | Title                                              | Link |
 |------------|----------------------------------------------------|------|
+| 2026-06-10 | Bitcoin’s Intrinsic Value Transcends Block Rewards, Anchored in Antifragility and Sovereignty — Hormetic Challenge #33 | [View](2026-06-10-bitcoin-intrinsic-value-antifragility-sovereignty.md) |
 | 2026-06-09 | Antifragility, Via Negativa & Lindy Principles — Hormetic Challenges #12 & #13 | [View](2026-06-09-antifragility-via-negativa-lindy-principles.md) |
 | 2026-06-08 | Antifragility, Lindy Principles & Emergent Reconstruction — Hormetic Challenges #31 & #32 | [View](2026-06-08-antifragility-lindy-principles-emergent-reconstruction.md) |
 | 2026-06-07 | Bitcoin’s Barbell Antifragility & Intrinsic Value — Hormetic Challenges #10 & #11 | [View](2026-06-07-bitcoin-barbell-antifragility-intrinsic-value.md) |
