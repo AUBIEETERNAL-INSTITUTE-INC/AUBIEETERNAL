@@ -30,7 +30,8 @@ def _ollama_url():
         return "http://localhost:11434/v1/chat/completions"
 
 OLLAMA_MODEL   = os.environ.get("AUBIE_MODEL", "qwen2.5:14b")
-OLLAMA_TIMEOUT = 300
+OLLAMA_TIMEOUT = 1200   # 20 min — synthesis runs in a background daemon thread (non-blocking),
+                        # so a long, patient timeout is safe and lets a cold CPU model finish.
 TRUTH_LOG      = WORK_DIR / "master_truth_log.jsonl"
 TIER2_DIGEST   = WORK_DIR / "tier2_digest.txt"
 SWARM_STATUS   = _resolve() / "swarm_status.json"
@@ -151,7 +152,7 @@ def _call_ollama(prompt):
     try:
         r = requests.post(
             _ollama_url(),
-            json={"model": OLLAMA_MODEL, "messages": [{"role": "user", "content": prompt}], "stream": False},
+            json={"model": OLLAMA_MODEL, "messages": [{"role": "user", "content": prompt}], "stream": False, "keep_alive": "30m"},
             timeout=OLLAMA_TIMEOUT,
         )
         if r.status_code == 200:
@@ -159,6 +160,13 @@ def _call_ollama(prompt):
     except Exception as e:
         print(f"[synthesis] Ollama error: {e}")
     return ""
+
+
+# ── Alias for the swarm ───────────────────────────────────────────────────────
+# swarm_v4_1.py imports `run_morning_synthesis`; v5 renamed the function to
+# run_full_synthesis. This alias restores the expected name so the 6AM auto-trigger
+# import stops failing with ImportError. (This is the bug that killed the auto-sync.)
+run_morning_synthesis = run_full_synthesis
 
 
 if __name__ == "__main__":
