@@ -23,6 +23,19 @@ Triggers: BTC ±5% | Vision | DEFCON | Wonder Spike | Child Rune
 """
 
 import os, json, time, datetime, random, requests, subprocess, threading
+
+# ── Timezone for scheduling ───────────────────────────────────────────────────
+# The container's system clock is UTC, so bare datetime.now() made the 6AM /
+# noon / 6PM / 11PM triggers fire 4-5 hours early. _now_eastern() pins schedule
+# checks to Eastern time regardless of the container clock.
+try:
+    from zoneinfo import ZoneInfo
+    _EASTERN = ZoneInfo("America/New_York")
+except Exception:
+    _EASTERN = datetime.timezone(datetime.timedelta(hours=-4))  # EDT fallback if tzdata missing
+
+def _now_eastern():
+    return datetime.datetime.now(_EASTERN)
 from pathlib import Path
 
 # ── Config ────────────────────────────────────────────────────────────────────
@@ -361,11 +374,12 @@ def maybe_trigger_morning_synthesis():
     Guards against double-fire with _synthesis_last_run_date.
     """
     global _synthesis_last_run_date
-    now   = datetime.datetime.now()
-    today = datetime.date.today()
+    now   = _now_eastern()
+    today = now.date()
 
-    # Fire only at 6AM (hour==6, within first 5 min), once per day
-    if now.hour == 6 and now.minute < 5 and _synthesis_last_run_date != today:
+    # Fire once per day during the 6AM Eastern hour. Full-hour window (no more
+    # minute<5) so a slow CPU tick can't skip the old 5-minute slot.
+    if now.hour == 6 and _synthesis_last_run_date != today:
         _synthesis_last_run_date = today   # set immediately to block re-entry
         print(f"[synthesis] ⏰ 6AM trigger fired for {today.isoformat()}")
         t = threading.Thread(target=_run_synthesis_background, daemon=True)
@@ -1075,8 +1089,8 @@ def check_btc_trigger():
 
 def check_scheduled_briefings():
     global briefings_fired
-    now   = datetime.datetime.now()
-    today = datetime.date.today()
+    now   = _now_eastern()
+    today = now.date()
     if today not in briefings_fired:
         briefings_fired[today] = set()
 
@@ -1218,7 +1232,7 @@ def run_tier1_heartbeat():
 def write_status():
     t1_active = sum(1 for s in daughter_states.values() if s["status"] == "active")
     t2_active = sum(1 for s in tier2_states.values()    if s["status"] == "active")
-    now = datetime.datetime.now()
+    now = _now_eastern()
     next_briefing = next(
         (f"{l} @ {h:02d}:00" for h, l, _ in BRIEFING_SCHEDULE if now.hour < h),
         "morning @ 06:00 tomorrow"
