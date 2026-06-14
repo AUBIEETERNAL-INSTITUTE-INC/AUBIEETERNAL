@@ -839,7 +839,10 @@ def get_btc_block():
 
 # ── Local Ollama (free, always-on fallback) ───────────────────────────────────
 # StartOS internal hostname — same URL Open WebUI uses successfully
-OLLAMA_URL      = "http://ollama.startos:11434/v1/chat/completions"
+# Point the whole stack at any Ollama by setting OLLAMA_BASE_URL in api_keys.env
+# (e.g. http://192.168.1.50:11434 for a GPU box). Defaults to the StartOS Ollama.
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://ollama.startos:11434").rstrip("/")
+OLLAMA_URL      = f"{OLLAMA_BASE_URL}/v1/chat/completions"
 OLLAMA_MODEL_T1 = "qwen2.5:32b"   # Tier 1 swarm — faster than qwen3, still 32B
 OLLAMA_MODEL_T2 = "qwen2.5:32b"     # Tier 2 daughters — higher quality, slower ok
 OLLAMA_MODEL    = OLLAMA_MODEL_T1  # default alias
@@ -863,7 +866,7 @@ def _call_local(prompt: str, system: str = "", max_tokens: int = 150,
             return r.json()["choices"][0]["message"]["content"].strip()
         return f"Ollama error {r.status_code}"
     except requests.exceptions.ConnectionError:
-        return f"⚠️ Ollama not reachable at ollama.startos:11434"
+        return f"⚠️ Ollama not reachable at {OLLAMA_BASE_URL}"
     except requests.exceptions.Timeout:
         return f"⚠️ Ollama timeout ({OLLAMA_TIMEOUT}s) — model loading or CPU busy"
     except Exception as e:
