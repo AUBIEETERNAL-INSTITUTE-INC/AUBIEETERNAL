@@ -78,7 +78,7 @@ GITHUB_TOKEN     = os.getenv("GITHUB_TOKEN", "")
 GROK_PRO_COST_PER_CALL  = 0.02
 GROK_FREE_COST_PER_CALL = 0.00
 DAILY_BUDGET_CAP        = 5.00
-TIER1_DAUGHTERS_PER_TICK = 10
+TIER1_DAUGHTERS_PER_TICK = 3   # throttled: one GPU can't run 20/tick AND serve synthesis/humanity/kid-portal
 
 # ── Briefing Schedule ─────────────────────────────────────────────────────────
 BRIEFING_SCHEDULE = [
@@ -1358,7 +1358,11 @@ def launch_swarm():
             check_scheduled_briefings()
             if tick % 5 == 0:
                 check_btc_trigger()
-            run_tier1_heartbeat()
+            # Morning priority: during the 6AM Eastern hour, give the GPU to the
+            # synthesis/humanity run first — pause Tier-1 until today's run is done.
+            _e = _now_eastern()
+            if not (_e.hour == 6 and _synthesis_last_run_date != _e.date()):
+                run_tier1_heartbeat()
             write_status()
             cache_context()
 
