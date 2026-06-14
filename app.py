@@ -20,6 +20,10 @@ def _ukey(base):
 
 # ── Path resolver: StartOS vs WSL vs local ────────────────────────────────────
 import socket as _socket
+import os as _os_ollama
+# Point inference at any Ollama by setting OLLAMA_BASE_URL in api_keys.env
+# (e.g. http://192.168.1.50:11434 for a GPU box). Defaults to the StartOS Ollama.
+OLLAMA_BASE_URL = _os_ollama.environ.get("OLLAMA_BASE_URL", "http://ollama.startos:11434").rstrip("/")
 def _resolve_data_dir():
     try:
         _socket.gethostbyname("ollama.startos")
@@ -417,7 +421,7 @@ AI_PROVIDERS = {
             "qwen3:32b",       # best quality, slowest
             "llama3.3:70b",    # ⚠️ avoid — hits 94°C
         ],
-        "base_url": "http://ollama.startos:11434/v1",
+        "base_url": f"{OLLAMA_BASE_URL}/v1",
         "key_field": "key_ollama",
         "placeholder": "no key needed",
         "free": True,
@@ -908,9 +912,9 @@ with st.sidebar:
         _mode_model_map = {
             "⚡ Fast":          "qwen2.5:7b",
             "⚖️ Balanced":      "qwen2.5:14b",
-            "🧠 Deep Thinking": "qwen2.5:32b",
+            "🧠 Deep Thinking": "qwen2.5:14b",  # 32b spills to CPU on 12GB; 14b is max that stays fully on GPU
         }
-        _auto_model = _mode_model_map.get(thinking_mode, "qwen2.5:14b")
+        _auto_model = _mode_model_map.get(thinking_mode, "qwen2.5:7b")
         st.session_state.active_model = _auto_model
         st.caption(f"🤖 Model: `{_auto_model}`")
 
@@ -1677,9 +1681,9 @@ elif "Kid Curriculum" in active:
                                 _kid_lesson = ""
                                 try:
                                     import requests as _req_kid
-                                    _ollama_kid = "http://ollama.startos:11434/v1/chat/completions"
+                                    _ollama_kid = f"{OLLAMA_BASE_URL}/v1/chat/completions"
                                     _r = _req_kid.post(_ollama_kid,
-                                        json={"model":"qwen2.5:14b",
+                                        json={"model":"qwen2.5:7b",
                                               "messages":[{"role":"user","content":_kid_prompt}],
                                               "stream":False,"temperature":0.75},
                                         timeout=120)
@@ -1729,8 +1733,8 @@ elif "Kid Curriculum" in active:
             _msgs_voice = [{"role":"system","content":_sys_voice}] + st.session_state.chat_history[-8:]
             _reply = ""
             try:
-                _r_voice = _req_voice.post("http://ollama.startos:11434/v1/chat/completions",
-                    json={"model":"qwen2.5:14b","messages":_msgs_voice,"stream":False,"temperature":0.75},
+                _r_voice = _req_voice.post(f"{OLLAMA_BASE_URL}/v1/chat/completions",
+                    json={"model":"qwen2.5:7b","messages":_msgs_voice,"stream":False,"temperature":0.75},
                     timeout=60)
                 if _r_voice.status_code == 200:
                     _reply = _r_voice.json()["choices"][0]["message"]["content"].strip()
