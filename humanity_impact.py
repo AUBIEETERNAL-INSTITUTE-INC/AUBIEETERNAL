@@ -31,8 +31,9 @@ TRUTH_LOG    = WORK_DIR / "master_truth_log.jsonl"
 IMPACT_LOG   = WORK_DIR / "humanity_impact.jsonl"
 IMPACT_DIR.mkdir(parents=True, exist_ok=True)
 
-OLLAMA_URL   = "http://ollama.startos:11434/v1/chat/completions"
-OLLAMA_MODEL = "qwen2.5:32b"
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://ollama.startos:11434").rstrip("/")
+OLLAMA_URL   = f"{OLLAMA_BASE_URL}/v1/chat/completions"
+OLLAMA_MODEL = os.environ.get("AUBIE_MODEL", "qwen2.5:7b")
 GROK_URL     = "https://api.x.ai/v1/chat/completions"
 
 HUMANITY_DOMAINS = {
@@ -332,8 +333,8 @@ Analyze this insight and respond ONLY with valid JSON:
             r = requests.post(
                 OLLAMA_URL,
                 json={"model":OLLAMA_MODEL,"messages":[{"role":"user","content":prompt}],
-                      "stream":False,"temperature":0.7},
-                timeout=300,
+                      "stream":False,"temperature":0.7,"keep_alive":"30m"},
+                timeout=600,
             )
             if r.status_code == 200:
                 return r.json()["choices"][0]["message"]["content"].strip()
