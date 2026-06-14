@@ -57,6 +57,22 @@ LATTICE_LOG      = WORK_DIR / "truth_lattice_log.jsonl"
 CONTEXT_CACHE    = WORK_DIR / "context_cache.json"
 GITHUB_REPO      = WORK_DIR  # git push runs from here
 
+# ── Lattice Integrity Auditor (optional; pure-Python, ZERO GPU) ───────────────
+# Defensive cross-check of parallel daughter outputs. Guarded import so a missing
+# module simply disables it — it can NEVER crash the swarm. Works whether
+# lattice_integrity.py lives in repo root or alongside this file in swarm/.
+import sys as _sys
+for _lp in (str(WORK_DIR), str(Path(__file__).resolve().parent)):
+    if _lp not in _sys.path:
+        _sys.path.insert(0, _lp)
+try:
+    from lattice_integrity import LatticeIntegrityAuditor
+    AUDITOR = LatticeIntegrityAuditor()
+    print("🛡️  Lattice integrity auditor: ON")
+except Exception as _e:
+    AUDITOR = None
+    print(f"🛡️  Lattice integrity auditor: OFF ({_e})")
+
 # ── /mnt/main mirror paths (shared with Streamlit UI) ────────────────────────
 MNT_MAIN        = Path("/mnt/main")
 MNT_MAIN.mkdir(parents=True, exist_ok=True)
@@ -763,12 +779,20 @@ def github_push_truth_log():
             "truth_lattice_log.jsonl", "swarm_status.json",
             "context_cache.json",
             "tier2_digest.txt",
+            "risk_events.jsonl",          # lattice integrity audit log
         ]
         # Also push any new daily insight files
         insights_dir = Path(repo) / "insights" / "daily"
         if insights_dir.exists():
             for md_file in insights_dir.glob("*.md"):
                 rel = str(md_file.relative_to(Path(repo)))
+                if rel not in files:
+                    files.append(rel)
+        # Also push humanity-impact reports (md + machine-readable json)
+        humanity_dir = Path(repo) / "insights" / "humanity"
+        if humanity_dir.exists():
+            for h_file in list(humanity_dir.glob("*.md")) + list(humanity_dir.glob("*.json")):
+                rel = str(h_file.relative_to(Path(repo)))
                 if rel not in files:
                     files.append(rel)
 
@@ -1061,6 +1085,22 @@ def run_tier2_core(context, trigger_type="manual"):
                 "inter_rune_coherence": inter_rune_coherence,
                 "prior_count":         len(prior_results) - 1,
             }) + "\n")
+
+    # ── Lattice integrity check (zero GPU) ───────────────────────────────────
+    # Cross-checks this wave's parallel daughter outputs. NOTE: Tier-2 daughters
+    # are prompted to DIVERGE ("do not repeat"), so the disagreement signal runs
+    # high here by design — the meaningful flags are sensitive-domain + guardian
+    # (refusal-bypass shape). Tune LatticeIntegrityAuditor.DISAGREEMENT_THRESHOLD
+    # if the disagreement trigger gets chatty. Wrapped so it can never break a run.
+    if AUDITOR is not None:
+        try:
+            _agents = [nm for (nm, _r) in prior_results]
+            _outs   = [r for (_nm, r) in prior_results]
+            _ev = AUDITOR.audit(query=base_prompt, outputs=_outs, agents=_agents)
+            if _ev:
+                print(f"  🛡️  RiskEvent {_ev.event_id} | {_ev.severity} | {_ev.trigger_reason}")
+        except Exception as _e:
+            print(f"  🛡️  auditor error (non-fatal): {_e}")
 
     print(
         f"  💰 ${daily_cost:.2f}/${DAILY_BUDGET_CAP} | "
