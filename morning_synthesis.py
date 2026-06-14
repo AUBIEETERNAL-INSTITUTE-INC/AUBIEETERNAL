@@ -29,7 +29,7 @@ def _ollama_url():
     except Exception:
         return "http://localhost:11434/v1/chat/completions"
 
-OLLAMA_MODEL   = os.environ.get("AUBIE_MODEL", "qwen2.5:14b")
+OLLAMA_MODEL   = os.environ.get("AUBIE_MODEL", "qwen2.5:7b")
 OLLAMA_TIMEOUT = 1200   # 20 min — synthesis runs in a background daemon thread (non-blocking),
                         # so a long, patient timeout is safe and lets a cold CPU model finish.
 TRUTH_LOG      = WORK_DIR / "master_truth_log.jsonl"
