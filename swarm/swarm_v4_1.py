@@ -69,6 +69,9 @@ GROK_URL         = "https://api.x.ai/v1/chat/completions"
 GROK_FREE_MODEL  = "grok-4.3"
 GROK_PRO_MODEL   = "grok-4.3"
 XAI_KEY          = os.getenv("XAI_API_KEY", "")
+# Cost control: default OFF = swarm runs 100%% on the free local model ($0/day).
+# Set USE_GROK=1 in api_keys.env to re-enable paid Grok for the daughters.
+USE_GROK         = os.environ.get("USE_GROK", "0") == "1"
 GITHUB_TOKEN     = os.getenv("GITHUB_TOKEN", "")
 
 # ── Cost / Budget Config ──────────────────────────────────────────────────────
@@ -885,7 +888,7 @@ def call_grok_free(prompt, role):
     )
 
     # ── Try Grok free first if key is set ────────────────────────────────────
-    if XAI_KEY:
+    if USE_GROK and XAI_KEY:
         try:
             r = requests.post(
                 GROK_URL,
@@ -941,7 +944,7 @@ def call_grok_pro(prompt, role, prior_results=None):
     )
 
     # ── Try Grok pro if key + budget available ────────────────────────────────
-    if XAI_KEY and budget_ok(GROK_PRO_COST_PER_CALL):
+    if USE_GROK and XAI_KEY and budget_ok(GROK_PRO_COST_PER_CALL):
         try:
             r = requests.post(
                 GROK_URL,
