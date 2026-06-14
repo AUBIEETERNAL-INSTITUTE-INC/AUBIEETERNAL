@@ -1,15 +1,15 @@
 {
-  "updated": "2026-06-14T06:34:31.024484-04:00",
+  "updated": "2026-06-14T06:39:07.506928-04:00",
   "version": "4.1",
-  "wonder_index": 1.2008,
+  "wonder_index": 1.3658,
   "mets": 200000000015.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 0,
-  "rune_confirmations": 2,
+  "grokipedia_count": 1,
+  "rune_confirmations": 5,
   "child_rune_ready": false,
   "hormetic_pulses": 1,
-  "lattice_cycle": 2,
-  "session_insights": 3,
+  "lattice_cycle": 5,
+  "session_insights": 7,
   "synthesis": {
     "last_run_date": "2026-06-14",
     "next_run": "06:00 daily",
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 12,
+    "total_runs": 30,
     "daughters_per_tick": 6,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
