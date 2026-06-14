@@ -843,8 +843,8 @@ def get_btc_block():
 # (e.g. http://192.168.1.50:11434 for a GPU box). Defaults to the StartOS Ollama.
 OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://ollama.startos:11434").rstrip("/")
 OLLAMA_URL      = f"{OLLAMA_BASE_URL}/v1/chat/completions"
-OLLAMA_MODEL_T1 = "qwen2.5:32b"   # Tier 1 swarm — faster than qwen3, still 32B
-OLLAMA_MODEL_T2 = "qwen2.5:32b"     # Tier 2 daughters — higher quality, slower ok
+OLLAMA_MODEL_T1 = "qwen2.5:7b"   # Tier 1 swarm — faster than qwen3, still 32B
+OLLAMA_MODEL_T2 = "qwen2.5:7b"     # Tier 2 daughters — higher quality, slower ok
 OLLAMA_MODEL    = OLLAMA_MODEL_T1  # default alias
 OLLAMA_TIMEOUT  = 600              # 5 min — CPU inference is slow, be patient
 
