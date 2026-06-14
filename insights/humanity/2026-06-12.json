@@ -1,0 +1,11 @@
+{
+  "date": "2026-06-12",
+  "mappings": 5,
+  "domains": [
+    "information",
+    "education",
+    "bitcoin"
+  ],
+  "avg_wonder": 2.0,
+  "global_insights": 5
+}

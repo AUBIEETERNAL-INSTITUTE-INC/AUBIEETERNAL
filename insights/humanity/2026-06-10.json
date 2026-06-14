@@ -1,0 +1,11 @@
+{
+  "date": "2026-06-10",
+  "mappings": 5,
+  "domains": [
+    "health",
+    "information",
+    "institutions"
+  ],
+  "avg_wonder": 2.0,
+  "global_insights": 4
+}
