@@ -9,12 +9,19 @@ if [ -d /mnt/main/repo/.git ]; then
     git config --global user.name "AUBIEETERNAL"
     git remote set-url origin https://${GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git
     git config --global --add safe.directory /mnt/main/repo
-    if ! git fetch origin 2>/dev/null || ! git reset --hard origin/main 2>/dev/null; then
-        echo "⚠️  Git repo corrupt — nuking and re-cloning..."
+    # Only a GENUINELY broken repo gets nuked. A failed fetch means the network
+    # is down (offline / GitHub unreachable) — NOT corruption — so keep the
+    # existing local code and carry on instead of rm -rf'ing everything.
+    if ! git rev-parse --git-dir >/dev/null 2>&1; then
+        echo "⚠️  Git repo genuinely corrupt — re-cloning..."
         cd /mnt/main
         rm -rf repo
         git clone https://${GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git repo
         cd repo
+    elif git fetch origin 2>/dev/null; then
+        git reset --hard origin/main 2>/dev/null && echo "✅ Synced to origin/main"
+    else
+        echo "📴 Offline / GitHub unreachable — running existing local code (no reset, no nuke)."
     fi
 else
     echo "📦 First run — cloning repo..."
