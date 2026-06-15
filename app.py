@@ -4412,7 +4412,7 @@ if "4 Families" in active:
             for r in pending[:10]:
                 st.markdown(
                     f'<div class="memory-node" style="border-left:3px solid #f7931a;">'
-                    f'<span style="color:#f7931a;font-size:0.78rem;">{r["family_id"]} · {r.get("kid_name","")} · {r["sats"]} sats</span><br>'
+                    f'<span style="color:#f7931a;font-size:0.78rem;">{r["family_id"]} · {r.get("kid_name","")} · {r.get("sats", 0)} sats</span><br>'
                     f'<span style="color:#8899bb;font-size:0.75rem;">{r["memo"]}</span><br>'
                     f'<span style="color:#445577;font-size:0.7rem;">{r["timestamp"][:16]} · {r.get("address","no address")}</span>'
                     f'</div>', unsafe_allow_html=True)
@@ -4488,7 +4488,7 @@ if "Daily Quests" in active:
                 st.markdown(
                     f'<div class="card" style="border-left:3px solid {color};">'
                     f'<div style="color:{color};font-size:0.82rem;">{icon} {q["title"]}</div>'
-                    f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">+{q["xp"]} XP · +{q["sats"]} sats</div>'
+                    f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">+{q["xp"]} XP · +{q.get("sats", 0)} sats</div>'
                     f'</div>', unsafe_allow_html=True)
             with col_q2:
                 st.markdown("<br>", unsafe_allow_html=True)
@@ -4496,7 +4496,7 @@ if "Daily Quests" in active:
                     if st.button(f"✅ Complete", key=f"quest_{q['id']}"):
                         result = _cq(_fid, q["id"])
                         if result.get("xp"):
-                            st.toast(f"+{result['xp']} XP · +{result['sats']} sats! 🦅", icon="⚡")
+                            st.toast(f"+{result['xp']} XP · +{result.get('sats', 0)} sats! 🦅", icon="⚡")
                             st.rerun()
 
         st.divider()
@@ -4673,7 +4673,7 @@ if "Bitcoin" in active:
         if history:
             for r in history:
                 st.markdown(
-                    f'<div class="memory-node"><span style="color:#f7931a;font-size:0.75rem;">+{r["sats"]} sats</span>'
+                    f'<div class="memory-node"><span style="color:#f7931a;font-size:0.75rem;">+{r.get("sats", 0)} sats</span>'
                     f' <span style="color:#445577;font-size:0.72rem;">{r["timestamp"][:16]}</span><br>'
                     f'<span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>',
                     unsafe_allow_html=True)
@@ -4987,7 +4987,7 @@ if "School" in active:
                     f'<div class="card" style="border-left:3px solid #ff9500;">'
                     f'<div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">⭕ TODAY\'S QUEST</div>'
                     f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">{q["title"]}</div>'
-                    f'<div style="color:#445577;font-size:0.72rem;">+{q["xp"]} XP · +{q["sats"]} sats</div>'
+                    f'<div style="color:#445577;font-size:0.72rem;">+{q["xp"]} XP · +{q.get("sats", 0)} sats</div>'
                     f'</div>', unsafe_allow_html=True)
         except ImportError:
             pass
@@ -5797,7 +5797,7 @@ if "Parent Dashboard" in active:
                 total_sats = sum(r.get("sats",0) for r in pending)
                 st.caption(f"Total pending: {total_sats:,} sats")
                 for r in pending[:5]:
-                    st.markdown(f'<div class="memory-node" style="border-left:3px solid #f7931a;"><span style="color:#f7931a;">{r["family_id"]} · +{r["sats"]} sats</span><br><span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="memory-node" style="border-left:3px solid #f7931a;"><span style="color:#f7931a;">{r["family_id"]} · +{r.get("sats", 0)} sats</span><br><span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>', unsafe_allow_html=True)
         except ImportError:
             pass
 
