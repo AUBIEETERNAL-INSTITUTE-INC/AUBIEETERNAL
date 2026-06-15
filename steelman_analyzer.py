@@ -87,7 +87,7 @@ class SteelmanAnalyzer:
             try:
                 from monte_carlo_simulator import MonteCarloSimulator
                 sim = MonteCarloSimulator(n_trials=5000)
-                base_overall = sum(base_scores.values()) / len(base_scores)
+                base_overall = sum(base_scores.values())
                 r = sim.simulate_steelman_robustness(
                     base_score=base_overall,
                     adversarial_strength=0.3 + (1 - adversarial["resistance_score"]) * 0.2
@@ -110,7 +110,9 @@ class SteelmanAnalyzer:
 
         # Step 4: Combine
         final_scores  = self._adjust_for_adversarial(base_scores, adversarial)
-        overall_score = sum(final_scores.values()) / len(final_scores)
+        # Dimensions are weighted to SUM to 1.0 (maxes: .30+.25+.20+.15+.10),
+        # so sum — not mean — is the correct 0-1 aggregate. Averaging capped it at 0.20.
+        overall_score = sum(final_scores.values())
 
         # Step 5: AI insight
         ai_insight = ""
@@ -133,7 +135,7 @@ class SteelmanAnalyzer:
             "epistemic_commons_eligible": (
                 overall_score >= 0.70 and
                 adversarial["resistance_score"] >= 0.65 and
-                mc_result.get("tail_risk", 1.0) < 0.15
+                mc_result.get("tail_risk", 0.0) < 0.15
             ),
             "grade": self._letter_grade(overall_score, adversarial["resistance_score"]),
         }
