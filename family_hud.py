@@ -44,6 +44,15 @@ def _detect_ollama_url():
 OLLAMA_URL = _detect_ollama_url()
 OLLAMA_MODEL   = os.environ.get("AUBIE_MODEL", "qwen2.5:7b")  # honor global AUBIE_MODEL; 7b default fits GPU
 
+# Real steelman grading replaces the old random local score. Guarded so a
+# missing analyzer module never breaks a family session.
+try:
+    from steelman_analyzer import SteelmanAnalyzer
+    HAS_ANALYZER = True
+except Exception:
+    SteelmanAnalyzer = None
+    HAS_ANALYZER = False
+
 # ── Lesson Library ────────────────────────────────────────────────────────────
 LESSONS = {
 
@@ -10504,24 +10513,29 @@ class FamilySession:
 
         self.kid_answers.append(answer)
 
-        # ── Score locally (fast, no API cost) ────────────────────────────────
-        coherence_delta = self._score_locally(answer)
+        # ── Grade the answer for real (quality, not random drift) ────────────
+        graded          = self._grade_answer(answer)
+        new_coherence   = graded["coherence"]
+        coherence_delta = round(new_coherence - self.kid_coherence, 3)
 
-        # ── Optionally refine with Ollama ─────────────────────────────────────
-        feedback = ""
-        if use_ai:
-            feedback = self._score_with_ollama(answer)
+        # Specific, earned feedback from the grader; warm AI polish only when
+        # the answer was actually adequate (don't praise a non-answer).
+        feedback = graded["feedback"]
+        if use_ai and graded["adequate"]:
+            ai_fb = self._score_with_ollama(answer)
+            if ai_fb:
+                feedback = ai_fb
 
-        # Update coherence
-        new_coherence = round(min(1.0, self.kid_coherence + coherence_delta), 3)
+        # Update coherence to reflect the graded quality.
         self.kid_coherence = new_coherence
         self.coherence_history.append(new_coherence)
 
         # Polyvagal detection
         self.polyvagal_state = detect_polyvagal(answer, new_coherence)
 
-        # XP award (first correct answer only)
-        if not self.xp_earned and new_coherence >= self.lesson["min_coherence"]:
+        # XP award (first genuinely adequate answer that clears the bar)
+        if (not self.xp_earned and graded["adequate"]
+                and new_coherence >= self.lesson["min_coherence"]):
             self.xp_earned  = self.lesson["xp"]
             self.rune_earned = True
 
@@ -10812,6 +10826,43 @@ for the swarm to process. The **Child Rune Genesis lesson** is now unlocked.
         }
 
     # ── Private helpers ───────────────────────────────────────────────────────
+
+    def _grade_answer(self, answer: str) -> dict:
+        """
+        Real quality grade of a steelman answer. Returns a 0-1 coherence that
+        reflects the strength of the *argument* (via SteelmanAnalyzer), an
+        `adequate` flag gating rewards, and specific, warm feedback.
+        Falls back to the legacy heuristic only if the analyzer is unavailable.
+        """
+        if HAS_ANALYZER and self.lesson:
+            try:
+                an = SteelmanAnalyzer(use_ai=False, use_monte_carlo=False)
+                r  = an.analyze(self.lesson.get("steelman", ""), answer)
+                overall = float(r.get("overall_score", 0.0))
+                resist  = float(r.get("adversarial", {}).get("resistance_score", 0.0))
+                # Resistance is the practical signal; blend with overall quality.
+                coherence = round(min(1.0, max(0.20, 0.6 * resist + 0.4 * overall)), 3)
+                # Adequate = a real attempt that survived basic adversarial critique.
+                adequate  = (len(answer.split()) >= 25 and r.get("grade", "F") != "F")
+                recs = r.get("recommendations", [])
+                if adequate:
+                    fb = f"Solid work, {self.kid_name}! " + (
+                        recs[0] if recs else "Now push the argument one level deeper.")
+                else:
+                    fb = (f"Good start, {self.kid_name} — but that's not a full steelman yet. "
+                          "Build the *strongest* version of the other side: ") + (
+                        recs[0] if recs else
+                        "start with 'The strongest argument is...' and give a real reason.")
+                return {"coherence": coherence, "adequate": adequate,
+                        "feedback": fb, "grade": r.get("grade", "F")}
+            except Exception:
+                pass
+        # Fallback (analyzer missing): legacy additive heuristic.
+        delta     = self._score_locally(answer)
+        coherence = round(min(1.0, self.kid_coherence + delta), 3)
+        return {"coherence": coherence,
+                "adequate":  coherence >= self.lesson["min_coherence"],
+                "feedback":  self._local_feedback(coherence), "grade": "?"}
 
     def _score_locally(self, answer: str) -> float:
         """Fast local scoring — no API calls."""
