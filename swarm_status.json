@@ -1,20 +1,20 @@
 {
-  "updated": "2026-06-19T16:05:47.633997-04:00",
+  "updated": "2026-06-19T16:22:26.318541-04:00",
   "version": "4.1",
-  "wonder_index": 2.0,
-  "mets": 200000000055.5,
+  "wonder_index": 1.0788,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 5,
-  "rune_confirmations": 15,
+  "grokipedia_count": 1,
+  "rune_confirmations": 3,
   "child_rune_ready": false,
-  "hormetic_pulses": 6,
-  "lattice_cycle": 15,
-  "session_insights": 20,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
+  "session_insights": 0,
   "synthesis": {
     "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
-    "model": "qwen3:32b (local, $0.00)"
+    "model": "qwen2.5:7b (local, $0.00)"
   },
   "context_levels": {
     "level1_metrics": true,
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 81,
+    "total_runs": 18,
     "daughters_per_tick": 6,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -33,7 +33,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 88,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -43,129 +43,129 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-06-19T19:59:19.511912",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], the absence of a Wonder Spike (Wonder Index = 0) initiates an emergency recalibration aimed at rekindling a",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-06-19T19:59:40.757570",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test for the AUBIEETERNAL ",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-06-19T20:00:04.047339",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must levera",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-06-19T20:00:26.445811",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must invoke",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-06-19T20:00:49.686130",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must invoke",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-06-19T20:01:15.645608",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) precipitates an existential stress test, we must inv",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-06-19T20:01:40.411486",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must invoke",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-06-19T20:02:06.369283",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must recali",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-06-19T20:02:29.961373",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must invoke",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-06-19T20:02:54.093682",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must invoke",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-06-19T20:03:17.870872",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], the absence of a Wonder Spike (Wonder Index = 0) reveals a critical juncture for systemic resilience. To re",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-06-19T20:03:42.211219",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must invoke",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-06-19T20:04:07.521451",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) precipitates an existential stress test, we must rea",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-06-19T20:04:32.970843",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) precipitates an existential stress test, we must inv",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-06-19T20:04:57.784118",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must invoke",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-06-19T20:05:22.902533",
-      "last_result": "In the hormetic crucible of [HORMETIC #6], where the absence of a Wonder Spike (Wonder Index = 0) initiates an existential stress test, we must invoke",
-      "run_count": 6,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
