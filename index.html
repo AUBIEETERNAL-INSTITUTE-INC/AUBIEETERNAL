@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AUBIEETERNAL • Free Sovereign AI Education</title>
+<meta name="description" content="AUBIEETERNAL is a free, open-source, sovereign AI education system. Launch the hosted portal or run it yourself on Windows, Mac, or StartOS. No subscriptions, no gatekeepers." />
+
+<!--
+  ============================================================
+  EDIT THESE LINKS IN ONE PLACE — they are reused below.
+  Right now all three "download" buttons point to the latest
+  GitHub Release because there is no separate Windows / Mac /
+  StartOS installer yet. When you build real per-OS packages,
+  just swap the matching URL below.
+  ============================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:#FBF7F0;
+    --ink:#15263B;
+    --ink-soft:#54627A;
+    --accent:#C9450E;        /* Auburn burnt orange */
+    --accent-deep:#A4380A;
+    --navy:#0C2340;
+    --surface:#FFFFFF;
+    --line:#E7DECF;
+    --line-strong:#D8CDB8;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(21,38,59,.05), 0 12px 30px -18px rgba(21,38,59,.28);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Plus Jakarta Sans",system-ui,-apple-system,sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+
+  .wrap{width:min(1080px,92vw);margin-inline:auto;}
+
+  .eyebrow{
+    font-family:"JetBrains Mono",monospace;
+    font-size:.72rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--accent-deep);
+    margin:0 0 .9rem;
+    font-weight:500;
+  }
+
+  h1,h2,h3{font-family:"Fraunces",Georgia,serif;font-weight:600;line-height:1.08;letter-spacing:-.01em;margin:0;}
+
+  /* ---------- buttons ---------- */
+  .btn{
+    display:inline-flex;align-items:center;gap:.55rem;
+    font-family:"Plus Jakarta Sans",sans-serif;
+    font-weight:600;font-size:1rem;
+    padding:.85rem 1.4rem;border-radius:999px;
+    text-decoration:none;cursor:pointer;border:1.5px solid transparent;
+    transition:transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 10px 22px -12px rgba(201,69,14,.7);}
+  .btn-primary:hover{background:var(--accent-deep);transform:translateY(-2px);}
+  .btn-ghost{background:transparent;color:var(--ink);border-color:var(--line-strong);}
+  .btn-ghost:hover{border-color:var(--ink);transform:translateY(-2px);}
+  .btn .arrow{transition:transform .15s ease;}
+  .btn:hover .arrow{transform:translateX(3px);}
+  a:focus-visible,button:focus-visible{outline:3px solid var(--navy);outline-offset:3px;border-radius:6px;}
+
+  /* ---------- nav ---------- */
+  header.nav{position:sticky;top:0;z-index:20;background:rgba(251,247,240,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0;gap:1rem;}
+  .brand{display:flex;align-items:center;gap:.65rem;text-decoration:none;}
+  .brand .mark{width:38px;height:38px;border-radius:10px;background:var(--navy);color:#fff;display:grid;place-items:center;font-family:"Fraunces",serif;font-weight:700;font-size:1.25rem;}
+  .brand .name{font-family:"Fraunces",serif;font-weight:600;font-size:1.15rem;letter-spacing:.01em;}
+  .brand .tag{display:block;font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.22em;color:var(--ink-soft);text-transform:uppercase;}
+  .nav-links{display:flex;align-items:center;gap:1.5rem;}
+  .nav-links a{text-decoration:none;font-weight:500;font-size:.95rem;color:var(--ink-soft);}
+  .nav-links a:hover{color:var(--ink);}
+  .nav-links a.gh{color:var(--ink);font-weight:600;}
+  @media(max-width:720px){.nav-links a:not(.gh){display:none;}}
+
+  /* ---------- hero ---------- */
+  .hero{padding:5.5rem 0 3rem;position:relative;overflow:hidden;}
+  .hero h1{font-size:clamp(2.6rem,7vw,4.6rem);max-width:14ch;}
+  .hero h1 .mark-line{position:relative;white-space:nowrap;}
+  .hero h1 .mark-line::after{content:"";position:absolute;left:0;right:0;bottom:.08em;height:.16em;background:var(--accent);opacity:.85;border-radius:2px;}
+  .hero p.lead{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--ink-soft);max-width:46ch;margin:1.4rem 0 2rem;}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;}
+  .hero-note{margin-top:1.4rem;font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--ink-soft);letter-spacing:.02em;}
+  .hero-deco{position:absolute;right:-120px;top:-60px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(201,69,14,.12),transparent 60%);pointer-events:none;}
+
+  /* ---------- section frame ---------- */
+  section.block{padding:4rem 0;border-top:1px solid var(--line);}
+  .section-head{max-width:60ch;margin-bottom:2.4rem;}
+  .section-head h2{font-size:clamp(1.9rem,4vw,2.7rem);}
+  .section-head p{color:var(--ink-soft);font-size:1.08rem;margin:.8rem 0 0;}
+
+  /* ---------- hosted portal feature card ---------- */
+  .portal-card{
+    background:var(--navy);color:#fff;border-radius:24px;padding:clamp(2rem,5vw,3.2rem);
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:2rem;
+    box-shadow:var(--shadow);
+  }
+  .portal-card h2{color:#fff;font-size:clamp(1.8rem,4vw,2.6rem);}
+  .portal-card p{color:rgba(255,255,255,.78);margin:.7rem 0 0;max-width:42ch;}
+  .portal-card .eyebrow{color:#F2A07A;}
+  .portal-card .btn-primary{box-shadow:none;}
+  .portal-card .sub{margin-top:1rem;font-family:"JetBrains Mono",monospace;font-size:.72rem;color:rgba(255,255,255,.6);letter-spacing:.04em;}
+
+  /* ---------- download grid ---------- */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+  @media(max-width:820px){.grid3{grid-template-columns:1fr;}}
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    padding:1.8rem;display:flex;flex-direction:column;gap:.5rem;box-shadow:var(--shadow);
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .card:hover{transform:translateY(-3px);border-color:var(--line-strong);}
+  .card .ic{font-size:1.8rem;line-height:1;}
+  .card h3{font-size:1.35rem;}
+  .card.rec{border-color:var(--accent);position:relative;}
+  .card .pill{position:absolute;top:1.2rem;right:1.2rem;font-family:"JetBrains Mono",monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-deep);background:rgba(201,69,14,.1);padding:.25rem .55rem;border-radius:999px;}
+  .card p{color:var(--ink-soft);font-size:.95rem;margin:.2rem 0 1.1rem;flex:1;}
+  .card .btn{align-self:flex-start;}
+
+  /* ---------- clone block ---------- */
+  .clone{margin-top:1.6rem;background:var(--navy);border-radius:14px;padding:1rem 1.1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+  .clone code{font-family:"JetBrains Mono",monospace;color:#E9DCC9;font-size:.85rem;white-space:nowrap;overflow:auto;}
+  .clone button{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;background:var(--accent);color:#fff;border:none;padding:.5rem .9rem;border-radius:8px;cursor:pointer;}
+  .clone button:hover{background:var(--accent-deep);}
+
+  /* ---------- schools band ---------- */
+  .band{background:#fff;border:1px solid var(--line);border-radius:24px;padding:clamp(1.8rem,4vw,2.6rem);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.6rem;box-shadow:var(--shadow);}
+  .band h3{font-size:clamp(1.5rem,3vw,2.1rem);max-width:18ch;}
+  .band p{color:var(--ink-soft);margin:.6rem 0 0;max-width:40ch;}
+
+  /* ---------- about ---------- */
+  .about p{font-size:1.1rem;color:var(--ink-soft);max-width:62ch;}
+
+  /* ---------- welcome choices ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr;}}
+  .choice{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:1.8rem;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.4rem;}
+  .choice .tag-mono{font-family:"JetBrains Mono",monospace;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-deep);}
+  .choice h3{font-size:1.35rem;margin-top:.2rem;}
+  .choice p{color:var(--ink-soft);font-size:.97rem;flex:1;margin:.3rem 0 1.1rem;}
+  .choice .btn{align-self:flex-start;}
+  .welcome-nudge{margin-top:1.6rem;font-family:"JetBrains Mono",monospace;font-size:.82rem;color:var(--ink-soft);background:rgba(201,69,14,.06);border-left:3px solid var(--accent);padding:.8rem 1rem;border-radius:0 8px 8px 0;}
+  .chips{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.8rem;}
+  .chip{font-family:"JetBrains Mono",monospace;font-size:.78rem;letter-spacing:.04em;border:1px solid var(--line-strong);border-radius:999px;padding:.5rem .95rem;color:var(--ink);}
+  .chip b{color:var(--accent-deep);}
+
+  /* ---------- footer ---------- */
+  footer{border-top:1px solid var(--line);padding:2.6rem 0 3.4rem;margin-top:1rem;}
+  .foot-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;}
+  .foot-inner .links{display:flex;gap:1.4rem;}
+  .foot-inner a{text-decoration:none;color:var(--ink-soft);font-weight:500;}
+  .foot-inner a:hover{color:var(--accent-deep);}
+  .foot-made{font-size:.85rem;color:var(--ink-soft);}
+
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important;}}
+
+  /* load animation */
+  .fade{opacity:0;transform:translateY(14px);animation:rise .7s ease forwards;}
+  @keyframes rise{to{opacity:1;transform:none;}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top" aria-label="AUBIEETERNAL home">
+      <span class="mark">A</span>
+      <span class="name">AUBIEETERNAL<span class="tag">War Eagle Eternal</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#welcome">Welcome</a>
+      <a href="#portal">Launch Portal</a>
+      <a href="#self-hosted">Run Yourself</a>
+      <a href="#about">About</a>
+      <a class="gh" href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="hero-deco" aria-hidden="true"></div>
+    <div class="wrap fade">
+      <p class="eyebrow">Free · Sovereign · Open Source</p>
+      <h1>A free school. <span class="mark-line">Run it yourself.</span></h1>
+      <p class="lead">AUBIEETERNAL is a sovereign, AI-powered education system. No subscriptions, no gatekeepers — run it on your own computer or open it up to your whole community.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/" target="_blank" rel="noopener noreferrer">Launch the hosted portal <span class="arrow">→</span></a>
+        <a class="btn btn-ghost" href="#self-hosted">Run it on your own computer</a>
+      </div>
+      <p class="hero-note">Works on Windows, Mac, and StartOS · No credit card needed</p>
+    </div>
+  </section>
+
+  <!-- ================= WELCOME / START HERE ================= -->
+  <section class="block" id="welcome">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Start here</p>
+        <h2>Welcome — new to AUBIEETERNAL?</h2>
+        <p>Whether you're a parent, a teacher, or caring for a home full of kids, there are just two ways to begin. Pick the one that fits.</p>
+      </div>
+
+      <div class="grid2">
+        <div class="choice">
+          <span class="tag-mono">No setup</span>
+          <h3>Just want to look around?</h3>
+          <p>Open the hosted portal in your browser. It's free, instant, and there's nothing to install.</p>
+          <a class="btn btn-primary" href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/" target="_blank" rel="noopener noreferrer">Launch the portal <span class="arrow">→</span></a>
+        </div>
+
+        <div class="choice">
+          <span class="tag-mono">Yours forever</span>
+          <h3>Want it to be truly yours?</h3>
+          <p>Download it to your own computer so it keeps working with no internet, no accounts, and no gatekeepers.</p>
+          <a class="btn btn-ghost" href="#self-hosted">Put it on your computer <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <p class="welcome-nudge">Not sure which to pick? Start by launching the portal — you can always download it later.</p>
+    </div>
+  </section>
+
+  <section class="block" id="portal">
+    <div class="wrap">
+      <div class="portal-card">
+        <div>
+          <p class="eyebrow">Easiest way to start</p>
+          <h2>Launch the hosted portal</h2>
+          <p>Try the full experience instantly in your browser. No installation, works on any device.</p>
+          <p class="sub">Opens in a new tab · powered by Streamlit</p>
+        </div>
+        <a class="btn btn-primary" href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/" target="_blank" rel="noopener noreferrer">Open the portal <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= RUN YOURSELF ================= -->
+  <section class="block" id="self-hosted">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Most powerful option</p>
+        <h2>Run it fully sovereign</h2>
+        <p>Download and run everything on your own computer or StartOS rig. Your data stays yours.</p>
+      </div>
+
+      <p id="osHint" class="hero-note" style="margin:-1rem 0 1.4rem;display:none;"></p>
+
+      <div class="grid3">
+        <!-- WINDOWS — direct one-click ZIP download.
+             When you build a real .exe, upload it to a GitHub Release and
+             swap the href to: .../releases/download/<tag>/AUBIEETERNAL-windows.exe -->
+        <div class="card" id="card-win">
+          <span class="ic" aria-hidden="true">🪟</span>
+          <h3>Windows</h3>
+          <p>Downloads the full project as a ZIP. Unzip, then follow the 2-step setup inside.</p>
+          <a class="btn btn-ghost" href="https://github.com/hodlmateo/AUBIEETERNAL/archive/refs/heads/main.zip">Download for Windows <span class="arrow">↓</span></a>
+        </div>
+
+        <!-- MAC — direct one-click ZIP download.
+             When you build a real .dmg, upload it to a GitHub Release and
+             swap the href to: .../releases/download/<tag>/AUBIEETERNAL-mac.dmg -->
+        <div class="card" id="card-mac">
+          <span class="ic" aria-hidden="true">🍎</span>
+          <h3>Mac</h3>
+          <p>Downloads the full project as a ZIP. Works on Intel and Apple Silicon.</p>
+          <a class="btn btn-ghost" href="https://github.com/hodlmateo/AUBIEETERNAL/archive/refs/heads/main.zip">Download for Mac <span class="arrow">↓</span></a>
+        </div>
+
+        <!-- STARTOS — swap href to the StartOS package when published -->
+        <div class="card rec">
+          <span class="pill">Recommended</span>
+          <span class="ic" aria-hidden="true">🛡️</span>
+          <h3>StartOS</h3>
+          <p>The most sovereign way to run it 24/7 on your own node.</p>
+          <a class="btn btn-primary" href="https://github.com/hodlmateo/AUBIEETERNAL/releases/latest" target="_blank" rel="noopener noreferrer">Get StartOS package <span class="arrow">→</span></a>
+        </div>
+      </div>
+
+      <!-- one-line install for technical users -->
+      <div class="clone">
+        <code id="clonecmd">git clone https://github.com/hodlmateo/AUBIEETERNAL.git &amp;&amp; cd AUBIEETERNAL &amp;&amp; streamlit run app.py</code>
+        <button type="button" id="copybtn" aria-label="Copy install command">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SCHOOLS / ORPHANAGES ================= -->
+  <section class="block">
+    <div class="wrap">
+      <div class="band">
+        <div>
+          <p class="eyebrow">For schools &amp; orphanages</p>
+          <h3>One computer can serve many students</h3>
+          <p>Run AUBIEETERNAL on a single machine and let an entire classroom or orphanage use it together.</p>
+        </div>
+        <a class="btn btn-ghost" href="https://github.com/hodlmateo/AUBIEETERNAL/blob/main/README.md" target="_blank" rel="noopener noreferrer">See deployment guide <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="block about" id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">What is it</p>
+        <h2>What is AUBIEETERNAL?</h2>
+      </div>
+      <p>A free, open-source, sovereign education system powered by AI. It includes 265+ lessons across many subjects, a multi-agent swarm, and tools built for families and communities. Everything is designed so you can run it yourself — on your own computer, or for an entire group on one machine. No subscriptions. No data harvesting. No gatekeepers.</p>
+      <div class="chips">
+        <span class="chip"><b>265+</b> lessons</span>
+        <span class="chip"><b>Multi-agent</b> swarm</span>
+        <span class="chip"><b>MIT</b> licensed</span>
+        <span class="chip"><b>On-chain</b> provenance</span>
+      </div>
+      <p style="margin-top:2rem;font-style:italic;color:var(--ink);">Made with care for families and communities who want real education.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span class="foot-made">© 2026 AUBIEETERNAL · War Eagle Eternal 🦅</span>
+    <div class="links">
+      <a href="https://github.com/hodlmateo/AUBIEETERNAL" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      <a href="https://x.com/MateoVanhorn" target="_blank" rel="noopener noreferrer">X / Twitter ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // detect OS and gently point the visitor to the right download
+  (function(){
+    var hint = document.getElementById('osHint');
+    if(!hint) return;
+    var p = (navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || '';
+    var ua = navigator.userAgent || '';
+    var os = null, cardId = null;
+    if(/Win/i.test(p) || /Windows/i.test(ua)){ os = 'Windows'; cardId = 'card-win'; }
+    else if(/Mac/i.test(p) || /Mac OS X/i.test(ua)){ os = 'Mac'; cardId = 'card-mac'; }
+    if(os){
+      hint.textContent = 'Looks like you\u2019re on ' + os + ' \u2014 grab the ' + os + ' download below.';
+      hint.style.display = 'block';
+      var card = document.getElementById(cardId);
+      if(card){ card.style.borderColor = 'var(--accent)'; card.style.transform = 'translateY(-3px)'; }
+    }
+  })();
+
+  (function(){
+    var btn = document.getElementById('copybtn');
+    var cmd = document.getElementById('clonecmd');
+    if(!btn || !cmd) return;
+    btn.addEventListener('click', function(){
+      var text = cmd.textContent.replace(/&&/g,'&&');
+      navigator.clipboard.writeText(text).then(function(){
+        var old = btn.textContent;
+        btn.textContent = 'Copied ✓';
+        setTimeout(function(){ btn.textContent = old; }, 1600);
+      }).catch(function(){
+        btn.textContent = 'Copy failed';
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
