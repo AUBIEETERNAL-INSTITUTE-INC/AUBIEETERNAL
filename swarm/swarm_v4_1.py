@@ -354,7 +354,7 @@ def cache_context():
 # ══════════════════════════════════════════════════════════════════════════════
 
 def _run_synthesis_background():
-    """Background thread: tier2_digest → qwen3:32b → insights/daily/YYYY-MM-DD.md"""
+    """Background thread: tier2_digest → qwen2.5:7b → insights/daily/YYYY-MM-DD.md"""
     global _synthesis_last_run_date
     try:
         from morning_synthesis import run_morning_synthesis
@@ -748,7 +748,7 @@ def write_tier2_digest():
             lines.append(e.get("result", "")[:500])
             lines.append("")
         lines.append("=" * 50)
-        lines.append("PASTE INTO QWEN3:32B → Synthesize the 3 most important insights.")
+        lines.append("PASTE INTO QWEN2.5:7B → Synthesize the 3 most important insights.")
         with open(digest_path, "w") as f:
             f.write("\n".join(lines))
         print(f"✅ Tier 2 digest written: {len(last_20)} entries")
@@ -849,8 +849,8 @@ def get_btc_block():
 # (e.g. http://192.168.1.50:11434 for a GPU box). Defaults to the StartOS Ollama.
 OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://ollama.startos:11434").rstrip("/")
 OLLAMA_URL      = f"{OLLAMA_BASE_URL}/v1/chat/completions"
-OLLAMA_MODEL_T1 = "qwen2.5:7b"   # Tier 1 swarm — faster than qwen3, still 32B
-OLLAMA_MODEL_T2 = "qwen2.5:7b"     # Tier 2 daughters — higher quality, slower ok
+OLLAMA_MODEL_T1 = "qwen2.5:7b"   # Tier 1 swarm — fast, light 7B model (bulk swarm)
+OLLAMA_MODEL_T2 = "qwen2.5:7b"   # Tier 2 daughters — same 7B; bump to 14b later if RAM allows
 OLLAMA_MODEL    = OLLAMA_MODEL_T1  # default alias
 OLLAMA_TIMEOUT  = 600              # 5 min — CPU inference is slow, be patient
 
@@ -971,7 +971,7 @@ def call_grok_pro(prompt, role, prior_results=None):
             pass
 
     # ── Local Ollama fallback — Tier 2 with full context, better model ───────
-    # qwen3:32b for T2 — worth the wait for briefing-quality output
+    # qwen2.5:7b for T2 — light model; raise to 14b later if the box has RAM
     result = _call_local(prompt, system_content, max_tokens=200,
                          model=OLLAMA_MODEL_T2)
     if result and not result.startswith("⚠️") and not result.startswith("Ollama"):
@@ -1262,7 +1262,7 @@ def write_status():
             "last_run_date":   str(_synthesis_last_run_date),
             "next_run":        "06:00 daily",
             "output_path":     "insights/daily/",
-            "model":           "qwen3:32b (local, $0.00)",
+            "model":           "qwen2.5:7b (local, $0.00)",
         },
         "context_levels": {
             "level1_metrics":     True,
@@ -1329,7 +1329,7 @@ def launch_swarm():
     print(f"  Intra-Run — Each daughter sees all prior daughters this run")
     print(f"")
     print(f"  MORNING SYNTHESIS (auto, $0.00):")
-    print(f"  Fires at 6AM daily → qwen3:32b → insights/daily/YYYY-MM-DD.md → GitHub")
+    print(f"  Fires at 6AM daily → qwen2.5:7b → insights/daily/YYYY-MM-DD.md → GitHub")
     print(f"")
     print(f"  Wonder Index: {wonder_index} (target: 1.5)")
     print(f"  METS: {mets_counter}")
@@ -1348,7 +1348,7 @@ def launch_swarm():
     print(f"🔬 {len(LATTICE_HYPOTHESES)} Truth Lattice hypotheses ready")
     print(f"🔴 {len(DEFCON_EXPERIMENTS)} DEFCON experiments armed")
     print(f"🧠 3-Level context injection ACTIVE")
-    print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen3:32b")
+    print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen2.5:7b")
     print(f"🥽 Glasses signal handler ACTIVE — /mnt/main/glasses_signal.json\n")
 
     tick        = 0
