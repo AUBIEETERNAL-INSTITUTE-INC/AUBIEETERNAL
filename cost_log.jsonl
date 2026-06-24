@@ -49641,3 +49641,15 @@
 {"timestamp": "2026-06-24T10:51:11.628611", "provider": "ollama-local-t2", "amount": 0.0, "daily_total": 0.0}
 {"timestamp": "2026-06-24T10:51:36.524805", "provider": "ollama-local-t2", "amount": 0.0, "daily_total": 0.0}
 {"timestamp": "2026-06-24T10:52:01.580997", "provider": "ollama-local-t2", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:52:51.255644", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:53:02.975839", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:53:13.835827", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:53:26.690339", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:53:40.291232", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:53:54.675698", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:54:38.289220", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:54:51.311280", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:55:03.790318", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:55:15.670933", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:55:28.226118", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
+{"timestamp": "2026-06-24T10:55:39.334255", "provider": "ollama-local", "amount": 0.0, "daily_total": 0.0}
