@@ -18,6 +18,8 @@ Your degree is sealed on Bitcoin. The knowledge belongs to no one and cannot be 
 
 [Quick Start](#quick-start) · [Orphanages](#-for-orphanages) · [Degrees](#-four-degree-programs) · [Curriculum](#-265-lessons-51-tracks) · [Tools](#-tools) · [Reliability](#-reliability) · [API](#-epistemic-commons-api)
 
+🐾 **Also in this repo:** [Aubie the Robot Dog](AUBIE_DOG.md) — the hands-on hardware capstone: build your own AI voice/vision assistant on a 12-servo quadruped.
+
 </div>
 
 ---
