@@ -1,0 +1,3 @@
+name: spotmicro_dog
+ports:
+  - 8420

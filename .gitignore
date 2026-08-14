@@ -59,3 +59,23 @@ startos/build/
 secrets/
 xai_keys/
 GITHUB_TOKEN
+*.pem
+*.key
+.webui_secret_key
+
+# Databases
+*.db
+*.sqlite
+*.sqlite3
+
+# Face recognition data (biometric embeddings - personal, not for a public repo)
+faces.npz
+
+# Arduino build cache / venv (spotmicro_dog side)
+spotmicro_dog/.cache/
+spotmicro_dog/**/__pycache__/
+
+# Backup files created by ad hoc edits during development
+*.bak
+*.bak.*
+*.bak_*
