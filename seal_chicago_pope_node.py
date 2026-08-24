@@ -24,7 +24,7 @@ from pathlib import Path
 import os, socket
 def _data_dir():
     try:
-        socket.gethostbyname("ollama.startos")
+        socket.gethostbyname("localhost")
         return Path("/mnt/main")
     except Exception:
         p = Path(os.path.expanduser("~/.aubieeternal/main"))

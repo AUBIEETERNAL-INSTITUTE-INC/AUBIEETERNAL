@@ -1,0 +1,18 @@
+[Unit]
+Description=aubieeternal Build (Grok Build web UI on the Ryzen rig)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aubieeternal
+WorkingDirectory=/home/aubieeternal/AUBIEETERNAL/aubieeternal_build
+Environment="PATH=/home/aubieeternal/.local/bin:/home/aubieeternal/.grok/bin:/home/aubieeternal/AUBIEETERNAL/venv/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="HOME=/home/aubieeternal"
+Environment="GROK=/home/aubieeternal/.local/bin/grok"
+ExecStart=/home/aubieeternal/AUBIEETERNAL/venv/bin/uvicorn server:app --host 0.0.0.0 --port 8840
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

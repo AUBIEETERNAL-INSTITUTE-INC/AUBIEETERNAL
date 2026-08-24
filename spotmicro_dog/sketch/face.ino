@@ -1,3 +1,6 @@
+// >>> LIVE, DEPLOYED COPY <<< see sketch.ino's header for the full note -
+// robot path is ~/spotmicro_dog/sketch/face.ino, NOT the stale
+// ~/ArduinoApps/spotmicro_dog/sketch/ copy.
 #include <Adafruit_GFX.h>
 #include <Adafruit_ILI9341.h>
 #include <SPI.h>
@@ -115,6 +118,34 @@ bool photoActive = false;
 bool photoPending = false;
 unsigned long photoStartMs = 0;
 const unsigned long PHOTO_DISPLAY_DURATION_MS = 10000UL;
+
+// ── Pong (play_pong RPC) ──
+// "Find your own fun" idle demo: a non-blocking full-screen takeover, same
+// on/off + step-timer shape as princess_mode/flower_explosion above. There's
+// no input device on this screen, so it's attract-mode Pong - both paddles
+// auto-track the ball instead of waiting for a player, same as an arcade
+// cabinet's demo loop. Triggered from aubie_listen.py's idle timer, stopped
+// the moment a real interaction (wake word, touch, etc.) needs the screen -
+// handleFace()'s existing priority chain gives that preemption for free,
+// since every higher-priority branch above the pong check already returns
+// early.
+volatile bool pongActive = false;
+// Set by play_pong() instead of drawing directly - initPong()'s fillScreen()
+// is a big/slow SPI operation, and RPC handlers run on a different thread
+// than loop()/handleFace() (see photoPending's comment above for the same
+// hazard already hit and fixed once for photo rendering). handleFace()
+// below picks this up and does the actual draw itself, keeping all TFT/SPI
+// access on the one thread that's supposed to own it.
+volatile bool pongInitPending = false;
+const unsigned long PONG_STEP_MS = 40UL;
+const int PONG_PADDLE_W = 8;
+const int PONG_PADDLE_H = 40;
+const int PONG_BALL_R = 5;
+const int PONG_LEFT_X = 12;
+const int PONG_RIGHT_X = 320 - 12 - PONG_PADDLE_W;
+const int PONG_PADDLE_SPEED = 2;  // smaller steps = smoother-looking motion (was 4, felt jumpy live)
+float pongBallX, pongBallY, pongBallVX, pongBallVY;
+int pongLeftY, pongRightY;
 
 void drawEye(int cx, int cy, bool open) {
   if (!open) {
@@ -817,6 +848,21 @@ void handleFace() {
     }
   }
 
+  // Idle Pong demo (play_pong RPC) - checked last, after every real-interaction
+  // state above has had its chance to return early, so a wake word/touch/photo/
+  // etc. preempts it automatically and it resumes once that finishes.
+  if (pongActive) {
+    if (pongInitPending) {
+      pongInitPending = false;
+      initPong();
+      lastAnimTime = now;
+    } else if (now - lastAnimTime > PONG_STEP_MS) {
+      stepPong();
+      lastAnimTime = now;
+    }
+    return;
+  }
+
   if (faceState == IDLE) {
     if (now - lastAnimTime > 3800UL) {
       drawIdleFace(false);
@@ -892,11 +938,12 @@ bool touch_check() {
 // the "changes face right after boot with no RPC call" report in the act,
 // since guessing from static code reading twice already missed it.
 String face_diag() {
-  char buf[128];
-  snprintf(buf, sizeof(buf), "%d,%d,%d,%d,%d,%d,%d,%lu",
+  char buf[192];
+  snprintf(buf, sizeof(buf), "%d,%d,%d,%d,%d,%d,%d,%lu,pong:%d,%d,%d,%d,%d,%d",
            (int)faceState, currentEyeShape, currentMouthShape, (int)isTalking,
            (int)calibrationMode, (int)flashlightMode, (int)textOverlayActive,
-           millis());
+           millis(), (int)pongActive, (int)pongBallX, (int)pongBallY,
+           pongLeftY, pongRightY, (int)(pongBallVY * 10));
   return String(buf);
 }
 
@@ -957,6 +1004,113 @@ bool flashlight(bool on) {
   flashlightMode = on;
   if (on) {
     tft.fillScreen(ILI9341_WHITE);
+  } else {
+    faceState = IDLE;
+    stateStartTime = millis();
+    lastAnimTime = millis();
+    returnToIdleFace();
+  }
+  return true;
+}
+
+void drawPongPaddles() {
+  tft.fillRect(PONG_LEFT_X, pongLeftY, PONG_PADDLE_W, PONG_PADDLE_H, ILI9341_WHITE);
+  tft.fillRect(PONG_RIGHT_X, pongRightY, PONG_PADDLE_W, PONG_PADDLE_H, ILI9341_WHITE);
+}
+
+void initPong() {
+  tft.fillScreen(ILI9341_BLACK);
+  pongBallX = 160;
+  pongBallY = 120;
+  pongBallVX = (millis() % 2 == 0) ? 3.0 : -3.0;
+  pongBallVY = (float)((millis() % 5) - 2);
+  if (pongBallVY == 0) pongBallVY = 1.5;
+  pongLeftY = pongRightY = 120 - PONG_PADDLE_H / 2;
+  drawPongPaddles();
+  tft.fillCircle((int)pongBallX, (int)pongBallY, PONG_BALL_R, ILI9341_WHITE);
+}
+
+// Moves one paddle toward the ball's Y, capped at PONG_PADDLE_SPEED/step -
+// stands in for a player since this screen has no input device (attract-mode
+// AI). Snaps exactly onto the target once within one step instead of a
+// fixed-step-vs-dead-zone bang-bang (previous version had them equal, so the
+// paddle could overshoot past center and jitter back every frame - visible
+// as "glitchy" paddle motion).
+int pongTrackBall(int paddleY) {
+  int center = paddleY + PONG_PADDLE_H / 2;
+  int diff = (int)pongBallY - center;
+  if (diff > PONG_PADDLE_SPEED) paddleY += PONG_PADDLE_SPEED;
+  else if (diff < -PONG_PADDLE_SPEED) paddleY -= PONG_PADDLE_SPEED;
+  else paddleY += diff;
+  if (paddleY < 0) paddleY = 0;
+  if (paddleY > 240 - PONG_PADDLE_H) paddleY = 240 - PONG_PADDLE_H;
+  return paddleY;
+}
+
+// One animation frame - called from handleFace() at PONG_STEP_MS cadence.
+// Only erases+redraws a paddle if its position actually changed this frame -
+// unconditionally blanking and refilling it every frame (even while
+// stationary, which is common once pongTrackBall() has snapped onto the
+// ball's Y) was reading as jitter even after the tracking math itself
+// stopped overshooting (confirmed live). Ball still redraws every frame
+// since it's essentially always moving.
+void stepPong() {
+  int oldLeftY = pongLeftY;
+  int oldRightY = pongRightY;
+  int oldBallXi = (int)pongBallX;
+  int oldBallYi = (int)pongBallY;
+
+  pongLeftY = pongTrackBall(pongLeftY);
+  pongRightY = pongTrackBall(pongRightY);
+
+  pongBallX += pongBallVX;
+  pongBallY += pongBallVY;
+
+  if (pongBallY <= PONG_BALL_R || pongBallY >= 240 - PONG_BALL_R) {
+    pongBallVY = -pongBallVY;
+  }
+
+  if (pongBallVX < 0 && pongBallX - PONG_BALL_R <= PONG_LEFT_X + PONG_PADDLE_W &&
+      pongBallY >= pongLeftY && pongBallY <= pongLeftY + PONG_PADDLE_H) {
+    pongBallVX = -pongBallVX;
+  }
+  if (pongBallVX > 0 && pongBallX + PONG_BALL_R >= PONG_RIGHT_X &&
+      pongBallY >= pongRightY && pongBallY <= pongRightY + PONG_PADDLE_H) {
+    pongBallVX = -pongBallVX;
+  }
+
+  // Missed - reset to center. This is an idle attract-mode demo, not a
+  // scored game, so there's no game-over state to show.
+  if (pongBallX < 0 || pongBallX > 320) {
+    pongBallX = 160;
+    pongBallY = 120;
+  }
+
+  if (pongLeftY != oldLeftY) {
+    tft.fillRect(PONG_LEFT_X, oldLeftY, PONG_PADDLE_W, PONG_PADDLE_H, ILI9341_BLACK);
+    tft.fillRect(PONG_LEFT_X, pongLeftY, PONG_PADDLE_W, PONG_PADDLE_H, ILI9341_WHITE);
+  }
+  if (pongRightY != oldRightY) {
+    tft.fillRect(PONG_RIGHT_X, oldRightY, PONG_PADDLE_W, PONG_PADDLE_H, ILI9341_BLACK);
+    tft.fillRect(PONG_RIGHT_X, pongRightY, PONG_PADDLE_W, PONG_PADDLE_H, ILI9341_WHITE);
+  }
+  tft.fillCircle(oldBallXi, oldBallYi, PONG_BALL_R, ILI9341_BLACK);
+  tft.fillCircle((int)pongBallX, (int)pongBallY, PONG_BALL_R, ILI9341_WHITE);
+}
+
+// Starts/stops the idle Pong demo - "true" starts fresh, anything else hands
+// the screen back to the normal idle face. String arg (not bool) - matches
+// face_idle_cmd(String)/face_text(String)/touch_check() etc, since
+// aubie_listen.py's bridge_call() helper only ever sends plain strings, not
+// native bools (unlike princess_mode(bool)/flashlight(bool), which are only
+// ever called from inside aubie_dog.py's own running app process, never via
+// a standalone bridge_call()-style script - a real bool arg over that path
+// is untested and hung the RPC dispatch when tried).
+bool play_pong(String on) {
+  bool turnOn = (on == "true");
+  pongActive = turnOn;
+  if (turnOn) {
+    pongInitPending = true;
   } else {
     faceState = IDLE;
     stateStartTime = millis();

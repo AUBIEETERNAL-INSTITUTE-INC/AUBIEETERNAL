@@ -57,7 +57,7 @@ import socket as _socket
 
 def _data_dir() -> Path:
     try:
-        _socket.gethostbyname("ollama.startos")
+        _socket.gethostbyname("localhost")
         return Path("/mnt/main")
     except Exception:
         p = Path(os.path.expanduser("~/.aubieeternal/main"))
@@ -89,8 +89,8 @@ AUBIEETERNAL_TOPICS = [
 
 def _ollama_url() -> str:
     try:
-        _socket.gethostbyname("ollama.startos")
-        return "http://ollama.startos:11434/v1/chat/completions"
+        _socket.gethostbyname("localhost")
+        return "http://localhost:11434/v1/chat/completions"
     except Exception:
         return "http://localhost:11434/v1/chat/completions"
 

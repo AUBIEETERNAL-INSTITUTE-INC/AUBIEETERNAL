@@ -1,0 +1,41 @@
+{
+  "id": "gabriela_baking_seed",
+  "type": "track",
+  "author": "Gabriela",
+  "track_name": "Deep Baking & Self-Sufficiency",
+  "description": "A track on fermentation, traditional food preparation, nutrition science, and local food economics \u2014 taught through the lens of antifragility and family resilience.",
+  "rationale": "Self-sufficiency in food is a foundational sovereignty skill. Gabriela's deep baking practice makes this hands-on and immediately applicable.",
+  "lessons": [
+    {
+      "key": "baking-1",
+      "title": "Deep Baking L1 \u2014 Fermentation is Antifragile"
+    },
+    {
+      "key": "baking-2",
+      "title": "Deep Baking L2 \u2014 Local Food Systems"
+    },
+    {
+      "key": "baking-3",
+      "title": "Deep Baking L3 \u2014 Nutrition as Antifragility"
+    },
+    {
+      "key": "baking-4",
+      "title": "Deep Baking L4 \u2014 Self-Sufficiency Economics \u2605"
+    }
+  ],
+  "submitted_at": "2026-08-24T11:55:25.945093",
+  "status": "approved",
+  "approved_at": "2026-08-24T11:55:25.945097",
+  "public": true,
+  "review": {
+    "steelman_for": "Food sovereignty reduces family vulnerability to supply chain failures and builds genuine self-sufficiency \u2014 fully Lindy.",
+    "steelman_against": "Time cost of home food production is prohibitive for working families with two incomes.",
+    "sim_q1_reality": "Families who produce food understand inputs, seasonality, and nutrition at a deeper level \u2014 better health + resilience decisions.",
+    "sim_q2_falsify": "If home-produced food consistently costs more in real terms (time-adjusted) than store-bought, the economics don't hold.",
+    "sim_q3_lattice": "Yes \u2014 antifragile (fermentation improves with time/stress), sovereign (reduces dependence), Lindy (traditional methods are millennia old).",
+    "sim_q4_coherence": "Increases \u2014 practical self-sufficiency skills compound with building and legal literacy tracks.",
+    "coherence_score": 0.9,
+    "reviewer_notes": "Pre-approved \u2014 Gabriela's direct practice qualifies this as lived-experience curriculum."
+  },
+  "comments": []
+}

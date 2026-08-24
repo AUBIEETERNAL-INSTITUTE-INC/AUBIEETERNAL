@@ -82,16 +82,35 @@ if [ "$OLLAMA_OK" -eq 1 ]; then
         sleep 3
     fi
 
+    # Detect RAM to recommend a model tier - a stronger machine should
+    # default to a bigger model, not always the smallest one.
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        RAM_GB=$(( $(sysctl -n hw.memsize 2>/dev/null || echo 0) / 1073741824 ))
+    else
+        RAM_GB=$(awk '/MemTotal/ {printf "%d", $2/1024/1024}' /proc/meminfo 2>/dev/null)
+    fi
+    if [ -n "$RAM_GB" ] && [ "$RAM_GB" -ge 28 ] 2>/dev/null; then
+        RECOMMENDED=3
+    elif [ -n "$RAM_GB" ] && [ "$RAM_GB" -ge 16 ] 2>/dev/null; then
+        RECOMMENDED=2
+    else
+        RECOMMENDED=1
+    fi
+
     # Pull model
     echo ""
     echo "  Choose AI model:"
+    [ -n "$RAM_GB" ] && [ "$RAM_GB" -gt 0 ] 2>/dev/null && echo "  (detected ~${RAM_GB}GB RAM)"
     echo "  [1] qwen2.5:7b  — Fast, works on 8GB RAM (4.7GB download)"
     echo "  [2] qwen2.5:14b — Best, needs 16GB RAM   (9.0GB download)"
-    echo "  [3] Skip"
-    read -p "  Choice (1/2/3): " MODEL_CHOICE
+    echo "  [3] qwen2.5:32b — Strongest, needs 28GB+ RAM (18GB download)"
+    echo "  [4] Skip"
+    read -p "  Choice (1/2/3/4) [recommended: $RECOMMENDED]: " MODEL_CHOICE
+    MODEL_CHOICE="${MODEL_CHOICE:-$RECOMMENDED}"
     case "$MODEL_CHOICE" in
         2) MODEL="qwen2.5:14b" ;;
-        3) MODEL="" ;;
+        3) MODEL="qwen2.5:32b" ;;
+        4) MODEL="" ;;
         *) MODEL="qwen2.5:7b" ;;
     esac
 

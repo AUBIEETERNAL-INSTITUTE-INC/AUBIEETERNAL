@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>aubieeternal Build</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦅</text></svg>" />
+<style>
+  :root {
+    --bg: #0b1020;
+    --bg-2: #11182c;
+    --bg-3: #182238;
+    --panel: #0f1628;
+    --line: #243049;
+    --text: #e8edf7;
+    --muted: #8b97b0;
+    --accent: #e87722;
+    --accent-2: #ffb347;
+    --navy: #0c2340;
+    --ok: #3dd68c;
+    --warn: #f5c542;
+    --err: #ff6b6b;
+    --user: #c9d4ea;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); }
+  body { display: flex; flex-direction: column; overflow: hidden; }
+  header {
+    height: 52px; display: flex; align-items: center; gap: 14px;
+    padding: 0 16px; border-bottom: 1px solid var(--line); background: var(--panel);
+    flex: 0 0 auto;
+  }
+  .mark { display: flex; align-items: baseline; gap: 8px; letter-spacing: 0.02em; }
+  .mark .host { font-size: 13px; color: var(--muted); font-weight: 500; }
+  .mark .prod { font-size: 18px; font-weight: 700; color: var(--accent); }
+  .eagle { font-size: 18px; }
+  .grow { flex: 1; }
+  .chip, select, input[type="text"] {
+    background: var(--bg-2); color: var(--text); border: 1px solid var(--line);
+    border-radius: 8px; padding: 6px 10px; font: 12px/1.3 var(--mono);
+  }
+  select { max-width: 220px; }
+  #cwd { min-width: 220px; max-width: 420px; flex: 1; }
+  .status { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--err); }
+  .dot.on { background: var(--ok); box-shadow: 0 0 8px var(--ok); }
+  .shell { flex: 1; display: flex; min-height: 0; }
+  aside {
+    width: 260px; border-right: 1px solid var(--line); background: var(--panel);
+    display: flex; flex-direction: column; min-width: 200px;
+  }
+  .aside-h {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 12px 8px; font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  #new-session {
+    background: transparent; color: var(--accent); border: 1px solid var(--accent);
+    border-radius: 6px; padding: 4px 8px; cursor: pointer; font: 11px var(--sans);
+  }
+  #new-session:hover { background: var(--accent); color: #111; }
+  #sessions { overflow: auto; padding: 4px 8px 12px; flex: 1; }
+  .sess {
+    padding: 10px 10px; border-radius: 8px; cursor: pointer; margin-bottom: 4px;
+    border: 1px solid transparent;
+  }
+  .sess:hover { background: var(--bg-3); }
+  .sess.active { background: var(--bg-3); border-color: var(--line); }
+  .sess .t { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .sess .m { font-size: 11px; color: var(--muted); margin-top: 3px; font-family: var(--mono); }
+  main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+  #log {
+    flex: 1; overflow: auto; padding: 22px 28px 12px;
+    scroll-behavior: smooth;
+  }
+  .empty {
+    max-width: 560px; margin: 12vh auto 0; text-align: left;
+  }
+  .empty h1 { font-size: 28px; margin: 0 0 8px; font-weight: 650; }
+  .empty p { color: var(--muted); margin: 0 0 18px; line-height: 1.5; }
+  .hints { display: grid; gap: 8px; }
+  .hint {
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 12px; cursor: pointer; font-size: 13px; color: var(--user);
+  }
+  .hint:hover { border-color: var(--accent); }
+  .block { margin: 0 0 16px; max-width: 920px; }
+  .user {
+    background: var(--bg-2); border-left: 3px solid var(--accent);
+    padding: 12px 14px; border-radius: 0 10px 10px 0; white-space: pre-wrap;
+  }
+  .asst { line-height: 1.55; font-size: 15px; }
+  .asst p { margin: 0 0 10px; }
+  .asst pre {
+    background: #0a0f1c; border: 1px solid var(--line); border-radius: 8px;
+    padding: 12px; overflow: auto; font: 12.5px/1.45 var(--mono);
+  }
+  .asst code { font-family: var(--mono); font-size: 0.9em; color: var(--accent-2); }
+  .asst pre code { color: var(--text); }
+  .thought {
+    color: var(--muted); font-size: 13px; border-left: 2px solid #3a4a6a;
+    padding: 6px 10px; white-space: pre-wrap; max-height: 160px; overflow: auto;
+  }
+  .tool {
+    background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px;
+    padding: 10px 12px; font: 12.5px var(--mono);
+  }
+  .tool .hd { display: flex; gap: 8px; align-items: center; }
+  .tool .kind { color: var(--accent-2); }
+  .tool .st { margin-left: auto; font-size: 11px; color: var(--muted); }
+  .tool .st.run { color: var(--warn); }
+  .tool .st.ok { color: var(--ok); }
+  .tool .st.bad { color: var(--err); }
+  .tool .body {
+    margin-top: 8px; color: var(--muted); white-space: pre-wrap;
+    max-height: 180px; overflow: auto; font-size: 12px;
+  }
+  .err { color: var(--err); background: #2a1216; border: 1px solid #5a2028;
+    padding: 10px 12px; border-radius: 8px; }
+  .working { color: var(--accent-2); font-size: 13px; letter-spacing: 0.02em; }
+  .working::after { content: " …"; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0.3; } }
+  footer {
+    padding: 10px 18px 16px; border-top: 1px solid var(--line); background: var(--panel);
+  }
+  #composer {
+    display: flex; gap: 10px; align-items: flex-end; max-width: 960px;
+  }
+  #prompt {
+    flex: 1; min-height: 52px; max-height: 180px; resize: vertical;
+    background: var(--bg-2); color: var(--text); border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 14px; font: 14px/1.4 var(--sans);
+  }
+  #prompt:focus { outline: none; border-color: var(--accent); }
+  #send, #stop {
+    height: 44px; padding: 0 16px; border: 0; border-radius: 10px;
+    font-weight: 650; cursor: pointer;
+  }
+  #send { background: var(--accent); color: #1a0e04; }
+  #send:disabled { opacity: 0.45; cursor: default; }
+  #stop { background: #3a1c22; color: var(--err); display: none; }
+  @media (max-width: 800px) {
+    aside { display: none; }
+    header { flex-wrap: wrap; height: auto; padding: 8px 10px; gap: 8px; }
+    #cwd { min-width: 0; width: 100%; }
+    #log { padding: 14px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <span class="eagle">🦅</span>
+  <div class="mark">
+    <span class="host">aubieeternal</span>
+    <span class="prod">Build</span>
+  </div>
+  <input id="cwd" type="text" value="/home/aubieeternal/AUBIEETERNAL" title="working directory" />
+  <select id="model" title="model"></select>
+  <div class="grow"></div>
+  <div class="status"><span class="dot" id="dot"></span><span id="stat">connecting</span></div>
+</header>
+<div class="shell">
+  <aside>
+    <div class="aside-h">Sessions <button id="new-session" type="button">New</button></div>
+    <div id="sessions"></div>
+  </aside>
+  <main>
+    <div id="log"></div>
+    <footer>
+      <form id="composer">
+        <textarea id="prompt" placeholder="Ask aubieeternal Build to do something…" autocomplete="off"></textarea>
+        <button id="send" type="submit">Send</button>
+        <button id="stop" type="button">Stop</button>
+      </form>
+    </footer>
+  </main>
+</div>
+<script>
+const $ = (id) => document.getElementById(id);
+const state = {
+  sessionId: null,
+  running: false,
+  abort: null,
+};
+
+const HINTS = [
+  "Explain this repo and how the pieces talk to each other.",
+  "Catch errors ahead of time — check the dog monitor, services, and boot health.",
+  "List the house toolkits and what each one does.",
+];
+
+function esc(s) {
+  return String(s ?? "").replace(/[&<>"']/g, (c) => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function md(src) {
+  let s = esc(src);
+  s = s.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (_, lang, code) =>
+    `<pre><code class="lang-${esc(lang)}">${code}</code></pre>`);
+  s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
+  s = s.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  s = s.replace(/(^|\n)- (.+)/g, "$1• $2");
+  s = s.split(/\n{2,}/).map(p => `<p>${p.replace(/\n/g,"<br>")}</p>`).join("");
+  return s;
+}
+
+function emptyState() {
+  $("log").innerHTML = `
+    <div class="empty">
+      <h1>aubieeternal Build</h1>
+      <p>Same loop as Grok Build, on this Ryzen box, running local Qwen 14. Type what you want. It reads, edits, and runs.</p>
+      <div class="hints">
+        ${HINTS.map(h => `<div class="hint">${esc(h)}</div>`).join("")}
+      </div>
+    </div>`;
+  $("log").querySelectorAll(".hint").forEach((el) => {
+    el.onclick = () => {
+      $("prompt").value = el.textContent;
+      $("prompt").focus();
+      $("composer").requestSubmit();
+    };
+  });
+}
+
+function addBlock(html, cls) {
+  const empty = $("log").querySelector(".empty");
+  if (empty) empty.remove();
+  const el = document.createElement("div");
+  el.className = "block " + (cls || "");
+  el.innerHTML = html;
+  $("log").appendChild(el);
+  $("log").scrollTop = $("log").scrollHeight;
+  return el;
+}
+
+function fmtTime(iso) {
+  if (!iso) return "";
+  try {
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "";
+    return d.toLocaleString();
+  } catch { return ""; }
+}
+
+function toolBody(ev) {
+  const input = ev.rawInput || ev.rawOutput || {};
+  const bits = [];
+  if (typeof input === "string") return input.slice(0, 2000);
+  for (const k of ["target_file","path","command","query","target_directory","old_string","url"]) {
+    if (input[k]) bits.push(String(input[k]));
+  }
+  if (!bits.length) {
+    try { return JSON.stringify(input).slice(0, 1200); } catch { return ""; }
+  }
+  return bits.join("\n").slice(0, 2000);
+}
+
+function renderTool(ev) {
+  const st = (ev.status || "").toLowerCase();
+  const cls = st.includes("fail") || st.includes("error") ? "bad"
+            : st.includes("complete") || st === "ok" ? "ok" : "run";
+  const title = ev.title || ev.toolName || ev.kind || "tool";
+  const body = toolBody(ev);
+  return `<div class="tool" data-id="${esc(ev.toolCallId || "")}">
+    <div class="hd"><span>◆</span><span class="kind">${esc(title)}</span>
+    <span class="st ${cls}">${esc(st || "running")}</span></div>
+    ${body ? `<div class="body">${esc(body)}</div>` : ""}
+  </div>`;
+}
+
+function upsertTool(ev) {
+  const id = ev.toolCallId;
+  if (id) {
+    const existing = $("log").querySelector(`.tool[data-id="${CSS.escape(id)}"]`);
+    if (existing) {
+      existing.parentElement.innerHTML = renderTool({ ...ev, ...{
+        title: ev.title || existing.querySelector(".kind")?.textContent,
+      }});
+      return;
+    }
+  }
+  addBlock(renderTool(ev));
+}
+
+async function loadModels() {
+  const r = await fetch("/api/models");
+  const data = await r.json();
+  $("model").innerHTML = data.models.map(m =>
+    `<option value="${esc(m.id)}">${esc(m.name)}</option>`).join("");
+  $("model").value = data.default;
+}
+
+async function loadHealth() {
+  try {
+    const r = await fetch("/api/health");
+    const data = await r.json();
+    $("dot").classList.toggle("on", !!data.ok);
+    $("stat").textContent = data.ok ? (data.host || "online") : "offline";
+  } catch {
+    $("dot").classList.remove("on");
+    $("stat").textContent = "offline";
+  }
+}
+
+async function loadSessions() {
+  const cwd = $("cwd").value.trim();
+  const r = await fetch("/api/sessions?cwd=" + encodeURIComponent(cwd));
+  const data = await r.json();
+  const box = $("sessions");
+  if (!data.sessions.length) {
+    box.innerHTML = `<div class="sess"><div class="t">No sessions in this folder yet</div></div>`;
+    return;
+  }
+  box.innerHTML = data.sessions.map(s => `
+    <div class="sess ${s.id === state.sessionId ? "active" : ""}" data-id="${esc(s.id)}">
+      <div class="t">${esc(s.title)}</div>
+      <div class="m">${esc(s.model || "")} · ${esc(fmtTime(s.updated_at))}</div>
+    </div>`).join("");
+  box.querySelectorAll(".sess[data-id]").forEach((el) => {
+    el.onclick = () => openSession(el.dataset.id);
+  });
+}
+
+async function openSession(id) {
+  state.sessionId = id;
+  const r = await fetch("/api/session/" + encodeURIComponent(id));
+  const data = await r.json();
+  $("log").innerHTML = "";
+  if (data.session?.cwd) $("cwd").value = data.session.cwd;
+  if (data.session?.model) {
+    const raw = data.session.model;
+    const mapped = raw === "qwen2.5:14b" ? "qwen-14b"
+                 : raw === "qwen2.5:7b" ? "qwen-7b"
+                 : raw;
+    if ([...$("model").options].some(o => o.value === mapped)) $("model").value = mapped;
+  }
+  if (!data.blocks.length) emptyState();
+  for (const b of data.blocks) {
+    if (b.type === "user") addBlock(`<div class="user">${esc(b.text)}</div>`);
+    else if (b.type === "thought") addBlock(`<div class="thought">${esc(b.text)}</div>`);
+    else if (b.type === "text") addBlock(`<div class="asst">${md(b.text)}</div>`);
+    else if (b.type === "tool_call") addBlock(renderTool(b));
+  }
+  loadSessions();
+}
+
+function setRunning(on) {
+  state.running = on;
+  $("send").disabled = on;
+  $("stop").style.display = on ? "inline-block" : "none";
+  $("send").style.display = on ? "none" : "inline-block";
+}
+
+async function send(ev) {
+  ev.preventDefault();
+  if (state.running) return;
+  const prompt = $("prompt").value.trim();
+  if (!prompt) return;
+  $("prompt").value = "";
+  addBlock(`<div class="user">${esc(prompt)}</div>`);
+  const work = addBlock(`<div class="working">Working — reading the repo</div>`);
+  const asst = addBlock(`<div class="asst"></div>`);
+  const asstBody = asst.querySelector(".asst");
+  let text = "";
+  setRunning(true);
+  const ctrl = new AbortController();
+  state.abort = ctrl;
+  try {
+    const res = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: ctrl.signal,
+      body: JSON.stringify({
+        prompt,
+        cwd: $("cwd").value.trim(),
+        session_id: state.sessionId,
+        model: $("model").value || "qwen-14b",
+      }),
+    });
+    if (!res.ok) {
+      const t = await res.text();
+      throw new Error(t || ("HTTP " + res.status));
+    }
+    const reader = res.body.getReader();
+    const dec = new TextDecoder();
+    let buf = "";
+    const apply = (evn) => {
+      if (evn.type === "status") {
+        if (evn.sessionId) state.sessionId = evn.sessionId;
+        const w = work.isConnected && work.querySelector(".working");
+        if (w) w.textContent = "Working";
+      } else if (evn.type === "text") {
+        if (work.isConnected) work.remove();
+        text += evn.data || "";
+        asstBody.innerHTML = md(text);
+        $("log").scrollTop = $("log").scrollHeight;
+      } else if (evn.type === "thought") {
+        const w = work.isConnected && work.querySelector(".working");
+        if (w) w.textContent = "Thinking";
+        let th = $("log").querySelector(".thought.live");
+        if (!th) {
+          const wrap = addBlock(`<div class="thought live"></div>`);
+          th = wrap.querySelector(".thought");
+        }
+        th.textContent += evn.data || "";
+      } else if (evn.type === "tool_call" || evn.type === "tool_call_update") {
+        if (work.isConnected) work.remove();
+        upsertTool(evn);
+      } else if (evn.type === "end") {
+        if (evn.sessionId) state.sessionId = evn.sessionId;
+      } else if (evn.type === "error") {
+        if (work.isConnected) work.remove();
+        addBlock(`<div class="err">${esc(evn.message || "error")}</div>`);
+      }
+    };
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buf += dec.decode(value, { stream: true });
+      const parts = buf.split("\n\n");
+      buf = parts.pop();
+      for (const part of parts) {
+        const line = part.split("\n").filter(l => l.startsWith("data:")).map(l => l.slice(5).trim()).join("");
+        if (!line) continue;
+        let evn;
+        try { evn = JSON.parse(line); } catch { continue; }
+        apply(evn);
+      }
+    }
+    if (buf.trim()) {
+      const line = buf.split("\n").filter(l => l.startsWith("data:")).map(l => l.slice(5).trim()).join("");
+      if (line) {
+        try { apply(JSON.parse(line)); } catch {}
+      }
+    }
+    if (work.isConnected) work.remove();
+    document.querySelectorAll(".thought.live").forEach(el => el.classList.remove("live"));
+    if (!text && asstBody.textContent === "") asst.remove();
+    await loadSessions();
+  } catch (err) {
+    if (err.name !== "AbortError") {
+      addBlock(`<div class="err">${esc(err.message || err)}</div>`);
+    }
+  } finally {
+    setRunning(false);
+    state.abort = null;
+  }
+}
+
+$("composer").addEventListener("submit", send);
+$("prompt").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(e); }
+});
+$("new-session").onclick = () => {
+  state.sessionId = null;
+  emptyState();
+  loadSessions();
+  $("prompt").focus();
+};
+$("stop").onclick = async () => {
+  if (state.abort) state.abort.abort();
+  await fetch("/api/cancel", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ session_key: state.sessionId || "default" }),
+  });
+  setRunning(false);
+};
+$("cwd").addEventListener("change", loadSessions);
+
+emptyState();
+loadHealth();
+loadModels().then(loadSessions);
+setInterval(loadHealth, 15000);
+</script>
+</body>
+</html>

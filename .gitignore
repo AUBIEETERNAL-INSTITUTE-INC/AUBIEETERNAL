@@ -79,3 +79,4 @@ spotmicro_dog/**/__pycache__/
 *.bak
 *.bak.*
 *.bak_*
+institute_memory/EIN_confirmation.pdf

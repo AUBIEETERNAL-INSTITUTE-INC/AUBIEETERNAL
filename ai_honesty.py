@@ -35,7 +35,7 @@ from pathlib import Path
 WORK_DIR       = Path("/mnt/main/repo")
 HONESTY_LOG    = WORK_DIR / "ai_honesty_log.jsonl"
 FLAGGED_LOG    = WORK_DIR / "flagged_for_review.jsonl"
-OLLAMA_URL     = "http://ollama.startos:11434/v1/chat/completions"
+OLLAMA_URL     = "http://localhost:11434/v1/chat/completions"
 OLLAMA_MODEL   = "qwen2.5:32b"
 
 # ── Claim patterns that trigger higher scrutiny ───────────────────────────────

@@ -53,7 +53,7 @@ import socket as _socket
 
 def _data_dir() -> Path:
     try:
-        _socket.gethostbyname("ollama.startos")
+        _socket.gethostbyname("localhost")
         return Path("/mnt/main")
     except Exception:
         p = Path(os.path.expanduser("~/.aubieeternal/main"))
@@ -120,8 +120,8 @@ class AUBIEBenchSuite:
 
     def _detect_ollama(self) -> str:
         try:
-            _socket.gethostbyname("ollama.startos")
-            return "http://ollama.startos:11434"
+            _socket.gethostbyname("localhost")
+            return "http://localhost:11434"
         except Exception:
             return "http://localhost:11434"
 

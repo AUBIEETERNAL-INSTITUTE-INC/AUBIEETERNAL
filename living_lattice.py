@@ -61,7 +61,7 @@ FAMILIES_DIR      = DATA_DIR / "families"
 REPO_LATTICE_DIR  = DATA_DIR / "repo" / "lattice" / "signals"
 REPO_LATTICE_DIR.mkdir(parents=True, exist_ok=True)
 
-OLLAMA_URL  = "http://ollama.startos:11434/v1/chat/completions"
+OLLAMA_URL  = "http://localhost:11434/v1/chat/completions"
 
 # ── Curriculum track mapping (for effectiveness tracking) ────────────────────
 TRACK_FAMILIES = {

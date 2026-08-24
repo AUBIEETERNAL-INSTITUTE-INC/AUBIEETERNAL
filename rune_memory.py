@@ -53,7 +53,7 @@ import socket as _socket
 # ── Path resolution ───────────────────────────────────────────────────────────
 def _data_dir() -> Path:
     try:
-        _socket.gethostbyname("ollama.startos")
+        _socket.gethostbyname("localhost")
         return Path("/mnt/main")
     except Exception:
         p = Path(os.path.expanduser("~/.aubieeternal/main"))

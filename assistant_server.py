@@ -33,18 +33,40 @@ import requests
 import websockets
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form, WebSocket, WebSocketDisconnect
-from fastapi.responses import Response
+from fastapi.responses import Response, RedirectResponse
 from faster_whisper import WhisperModel
 from memory_layer import append_turn, get_history
 from debug_endpoint import router as debug_router
 from phone_ui import router as phone_router
+from browser_agent import router as browser_router
+from interpreter_agent import router as interpreter_router
+from memory_manager import router as memory_router
+from agent import router as agent_router
+from voice import router as voice_router
+from voice import router as voice_router
+from vision_extras import router as vision_router
+from family_profiles import load_family_stats, save_family_stats
+from model_selector import pick_best_model
 
 load_dotenv()  # picks up .env (gitignored) - see UNSPLASH_ACCESS_KEY below
 
 # ---- Config ----
 OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
-TEXT_MODEL = "qwen2.5:14b"
+# Hardware-aware, not hardcoded: picks the largest already-pulled model this
+# machine's RAM can comfortably run (see model_selector.py) - a fresh install
+# on a much stronger machine than the reference setup gets a better model by
+# default instead of being stuck on whatever a fixed constant happened to
+# say. Falls back to the original default if nothing is pulled yet or
+# detection fails, so this is never worse than the old hardcoded behavior.
+TEXT_MODEL = pick_best_model() or "qwen2.5:14b"
 VISION_MODEL = "qwen2.5vl:7b"
+
+# Tutor XP awarded per real conversational turn (both here in /converse, the
+# audio path, and phone_ui.py's /ask-text, the Watch/typed-text path) -
+# tracked via family_profiles' real persistence layer, not the browser-local
+# localStorage progress tracker in phone_ui.py's "My Progress" card.
+TUTOR_FAMILY_ID = "default"
+TUTOR_XP_PER_QUESTION = 5
 
 # Persistent storage - originally planned for a USB drive on Aubie, moved
 # here (local to the rig) after that drive turned out to have a hardware
@@ -75,6 +97,44 @@ LANGUAGE_VOICES = {
 VOICE_BY_CODE = {code: voice for code, voice in LANGUAGE_VOICES.values()}
 VOICE_BY_NAME = {name: voice for name, (_, voice) in LANGUAGE_VOICES.items()}
 VOCAB_MEMORY_PATH = CONVERSATIONS_DIR / "memory.json"
+
+# ---- English voice presets ("different custom voices") ----
+# Separate from LANGUAGE_VOICES above: those pick a voice by detected
+# *language* (always overrides this for non-English replies), this picks
+# among several English voices by user preference. To add another preset,
+# drop its Piper voice in ~/piper_voices and add one entry here.
+VOICE_PRESETS = {
+    "lessac": ("Aubie (default)", PIPER_VOICES_DIR / "en_US-lessac-medium.onnx"),
+    "amy":    ("Amy",             PIPER_VOICES_DIR / "en_US-amy-medium.onnx"),
+    "joe":    ("Joe",             PIPER_VOICES_DIR / "en_US-joe-medium.onnx"),
+    "alan":   ("Alan (British)",  PIPER_VOICES_DIR / "en_GB-alan-medium.onnx"),
+}
+DEFAULT_VOICE_PRESET = "lessac"
+VOICE_PREF_PATH = CONVERSATIONS_DIR / "voice_preference.json"
+selected_voice_preset = DEFAULT_VOICE_PRESET
+
+
+def load_voice_preference():
+    """Load the last-selected voice preset so it survives service restarts."""
+    global selected_voice_preset
+    if not VOICE_PREF_PATH.exists():
+        return
+    try:
+        key = json.loads(VOICE_PREF_PATH.read_text()).get("preset")
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"[voice] failed to load {VOICE_PREF_PATH}: {e}")
+        return
+    if key in VOICE_PRESETS:
+        selected_voice_preset = key
+
+
+def save_voice_preference():
+    VOICE_PREF_PATH.write_text(json.dumps({"preset": selected_voice_preset}))
+
+
+def get_active_voice() -> Path:
+    """The Piper voice for English replies, per the user's chosen preset."""
+    return VOICE_PRESETS.get(selected_voice_preset, VOICE_PRESETS[DEFAULT_VOICE_PRESET])[1]
 
 # ---- Movement commands (Bridge RPC on Aubie, via aubie_dog.py) ----
 DOG_COMMAND_URL = "http://100.66.110.65:8420/dog/command"
@@ -489,7 +549,57 @@ def remember_exchange(
         f.write(json.dumps(entry) + "\n")
 
 
-def build_context_block(speakers_in_room: list[str], objects_seen: list[str]) -> str:
+# institute_memory/ holds several plain-text fact files, each gated behind
+# its own trigger keywords rather than one giant always-on dump - none of it
+# belongs in every single prompt (some of it, like org_facts.txt, is real
+# sensitive org data; the rest is just off-topic for casual lesson chat).
+# Re-read fresh on each match rather than cached - the files are tiny and
+# this way an edit takes effect immediately, same spirit as scan_faces()'s
+# comment above about re-reading known-faces fresh. Add a new category by
+# adding one entry here and one .txt file - build_context_block() below
+# picks up any match automatically.
+INSTITUTE_MEMORY_DIR = Path("/home/aubieeternal/AUBIEETERNAL/institute_memory")
+INSTITUTE_MEMORY_FILES = {
+    "org_facts.txt": (
+        "ein", "tax id", "tax-id", "tax_id", "taxid",
+        "nonprofit status", "501(c)", "501c3", "501(c)(3)",
+        "company email", "org email", "organization email", "institute email",
+        "legal name", "registered agent", "principal address", "mailing address",
+        "sunbiz", "document number", "incorporat",
+        "who runs", "who owns", "who founded",
+        "contact info", "phone number", "your address", "your phone",
+    ),
+    "robot_facts.txt": (
+        "spotmicro", "spot micro", "robot dog", "aubie the robot", "the robot",
+        "hip servo", "watchdog", "lidar", "sonar", "usb hub", "uno q", "unoq",
+        "sketch.ino", "servo", "gait", "bridge rpc", "arduino-app-cli", "i2c",
+        "pca9685", "quadruped", "your body", "your legs",
+    ),
+    "platform_facts.txt": (
+        "curriculum", "let's go to class", "lets go to class", "class feature",
+        "family_profiles", "xp system", "grant", "funding", "autogen",
+        "who built you", "how were you built", "how do you work",
+        "degree program", "sovereign school", "how many lessons", "how many tracks",
+    ),
+}
+
+
+def _institute_memory_matches(text: str) -> list[str]:
+    """Which institute_memory/*.txt filenames this text's keywords trigger."""
+    low = text.lower()
+    return [fname for fname, triggers in INSTITUTE_MEMORY_FILES.items()
+            if any(trigger in low for trigger in triggers)]
+
+
+def _load_institute_memory_file(filename: str) -> str:
+    try:
+        return (INSTITUTE_MEMORY_DIR / filename).read_text().strip()
+    except Exception as e:
+        print(f"[institute_memory] could not read {filename}: {e}")
+        return ""
+
+
+def build_context_block(speakers_in_room: list[str], objects_seen: list[str], user_message: str = "") -> str:
     """Assemble what Aubie currently knows about the room and recent history,
     for injection into the LLM's system prompt as conversational grounding."""
     lines = []
@@ -499,6 +609,16 @@ def build_context_block(speakers_in_room: list[str], objects_seen: list[str]) ->
         lines.append(f"Right now, {', '.join(known_speakers)} {verb} in the room with you.")
     if objects_seen:
         lines.append(f"Around the room you can currently see: {', '.join(objects_seen)}.")
+
+    if user_message:
+        for fname in _institute_memory_matches(user_message):
+            facts = _load_institute_memory_file(fname)
+            if facts:
+                lines.append(
+                    f"Real background facts relevant to this question ({fname}) - answer "
+                    f"directly and accurately from these, don't guess or make anything up:"
+                )
+                lines.append(facts)
 
     if known_facts:
         lines.append("Things you know from past conversations:")
@@ -531,8 +651,36 @@ PERSON_TERMS = {
 }
 
 app = FastAPI(title="AUBIEETERNAL Assistant")
+
+# ── AUBIEETERNAL Build Code ───────────────────────────────────────────────
+import sys as _sys
+_sys.path.insert(0, "/home/aubieeternal/AUBIEETERNAL")
+from aubieeternal_build_code import handle_build_code_request
+
+@app.post("/build-code")
+async def build_code_endpoint(payload: dict):
+    """
+    POST /build-code
+    Body: {"request": "Write a Python script that ..."}
+    Runs dual-road Qwen orchestrator, executes result, returns output.
+    """
+    return await handle_build_code_request(payload)
+# ─────────────────────────────────────────────────────────────────────────
 app.include_router(debug_router)
 app.include_router(phone_router)
+app.include_router(browser_router)
+app.include_router(interpreter_router)
+app.include_router(memory_router)
+app.include_router(agent_router)
+app.include_router(voice_router)
+app.include_router(voice_router)
+app.include_router(vision_router)
+
+
+@app.get("/build")
+async def aubieeternal_build_redirect():
+    """aubieeternal Build lives on :8840 — send browsers there."""
+    return RedirectResponse("http://100.105.81.27:8840/", status_code=307)
 
 
 async def _connect_to_aubie_call_stream():
@@ -626,6 +774,7 @@ _load_faces()
 load_conversation_memory()
 load_conversation_summary()
 load_memory_facts()
+load_voice_preference()
 
 
 def scan_faces(image_bytes: bytes) -> list[str]:
@@ -762,6 +911,26 @@ def fetch_aubie_snapshot() -> bytes:
             return resp.content
         except requests.RequestException as e:
             print(f"[follow] snapshot via {host} failed: {e}")
+            last_exc = e
+    raise last_exc
+
+
+def push_audio_to_aubie(wav_bytes: bytes) -> None:
+    """POST raw WAV bytes to aubie's /play_audio (plays out the EMEET
+    speaker) - Tailscale first, LAN fallback, same reasoning as
+    fetch_aubie_snapshot() above."""
+    last_exc = None
+    for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):
+        try:
+            resp = requests.post(
+                f"http://{host}:{AUBIE_CALL_PORT}/play_audio",
+                data=wav_bytes,
+                timeout=15,
+            )
+            resp.raise_for_status()
+            return
+        except requests.RequestException as e:
+            print(f"[speak] play_audio via {host} failed: {e}")
             last_exc = e
     raise last_exc
 
@@ -1104,7 +1273,22 @@ async def converse(
     objects_seen = [o.strip() for o in objects.split(",") if o.strip()] if objects else []
 
     # 3. Build prompt + route model, with memory/room context injected into the system prompt
-    context_block = build_context_block(speaker_names, objects_seen)
+    context_block = build_context_block(speaker_names, objects_seen, user_message=transcript)
+
+    # Tutor progress (XP/level/streak) - same family_profiles persistence
+    # already proven durable in phone_ui.py's /proxy/tutor_ask (confirmed
+    # 2026-08-17 to survive a service restart). family_id is hardcoded to
+    # "default" for now, matching that endpoint - real per-kid identity via
+    # the speaker face-ID above (`speaker`) is a separate follow-up, not
+    # done here yet (see spotmicro_dog_aubieeternal_tutor_integration memory).
+    tutor_stats = load_family_stats(TUTOR_FAMILY_ID)
+    context_block += (
+        f"\nThe person you're talking to is level {tutor_stats.get('level', 1)} "
+        f"with {tutor_stats.get('total_xp', 0)} XP and a "
+        f"{tutor_stats.get('streak_days', 0)}-day streak - acknowledge their "
+        f"progress warmly if it feels natural, don't force it into every reply."
+    )
+
     prompt = transcript
     if speaker and speaker != "unknown":
         prompt = f"[Speaking: {speaker}] {transcript}"
@@ -1123,11 +1307,18 @@ async def converse(
         model = TEXT_MODEL
         reply = query_ollama(prompt, model, context=context_block)
 
+    # Award XP for this conversational turn - same rate as /proxy/tutor_ask,
+    # only on the real conversational path (not the canned-command/
+    # joint-move/translation short-circuits above, which return early).
+    tutor_stats["total_xp"] = tutor_stats.get("total_xp", 0) + TUTOR_XP_PER_QUESTION
+    tutor_stats["level"] = max(1, tutor_stats["total_xp"] // 100 + 1)
+    save_family_stats(tutor_stats, TUTOR_FAMILY_ID)
+
     # 4. TTS (in the detected input language, if we have that voice - see
     # SYSTEM_PROMPT's instruction to reply in the same language) + best-effort
     # long-term fact extraction, concurrently - the fact extraction call is a
     # second LLM round-trip and must not add to the latency of the spoken reply.
-    reply_voice = VOICE_BY_CODE.get(detected_lang, PIPER_VOICE)
+    reply_voice = VOICE_BY_CODE.get(detected_lang) or get_active_voice()
     wav_bytes, _ = await asyncio.gather(
         asyncio.to_thread(synthesize_speech, reply, reply_voice),
         asyncio.to_thread(extract_and_remember_fact, speaker, transcript, reply),
@@ -1189,22 +1380,38 @@ async def greet(image: UploadFile = File(...)):
     )
 
 
-@app.post("/generate_image")
-async def generate_image(phrase: str = Form(...)):
+@app.post("/vision_describe")
+async def vision_describe(
+    image: UploadFile = File(...),
+    prompt: str = Form("Describe what you see in detail."),
+):
     """
-    Search Unsplash for `phrase`, grab the top result, shrink it to
-    SHOW_IMAGE_W x SHOW_IMAGE_H RGB565, and push it to Aubie's TFT via the
-    show_image Bridge RPC (aubie_dog.py) - same chunked hex transfer the
-    wake-word photo thumbnail already uses (see photo_chunk_start/
-    photo_chunk/photo_render in sketch/face.ino).
+    Natural-language scene description via the qwen2.5vl:7b vision model
+    (same VISION_MODEL used by /greet's object detection) - for the phone
+    UI's Camera card "Describe" button, which wants a chatty description
+    rather than vision_extras.py's YOLO label/color/QR summary.
     """
+    image_bytes = await image.read()
+    image_b64 = base64.b64encode(image_bytes).decode("ascii")
+    try:
+        description = await asyncio.to_thread(query_ollama, prompt, VISION_MODEL, image_b64=image_b64)
+    except requests.RequestException as e:
+        raise HTTPException(502, f"vision model failed: {e}")
+    return {"description": description}
+
+
+def _unsplash_search_top(phrase: str, page: int = 1) -> dict:
+    """Search Unsplash for `phrase`, ping the required download-tracking
+    endpoint for the top result, and return that result's raw JSON dict.
+    Shared by /generate_image (pushes to Aubie's TFT) and /show_me_image
+    (returns a URL for direct display in the tablet UI)."""
     if not UNSPLASH_ACCESS_KEY:
         raise HTTPException(500, "UNSPLASH_ACCESS_KEY not configured (see .env)")
 
     try:
         search_resp = requests.get(
             UNSPLASH_SEARCH_URL,
-            params={"query": phrase, "per_page": 1},
+            params={"query": phrase, "per_page": 1, "page": page},
             headers={"Authorization": f"Client-ID {UNSPLASH_ACCESS_KEY}"},
             timeout=10,
         )
@@ -1217,12 +1424,6 @@ async def generate_image(phrase: str = Form(...)):
         raise HTTPException(404, f"no Unsplash results for {phrase!r}")
     top = results[0]
 
-    try:
-        img_resp = requests.get(top["urls"]["small"], timeout=15)
-        img_resp.raise_for_status()
-    except requests.RequestException as e:
-        raise HTTPException(502, f"failed to download image: {e}")
-
     # Unsplash API guidelines require pinging download_location when a photo
     # is actually used (not just searched) - best-effort, shouldn't block
     # the response if it fails.
@@ -1233,7 +1434,27 @@ async def generate_image(phrase: str = Form(...)):
             timeout=5,
         )
     except requests.RequestException as e:
-        print(f"[generate_image] download-tracking ping failed: {e}")
+        print(f"[unsplash] download-tracking ping failed: {e}")
+
+    return top
+
+
+@app.post("/generate_image")
+async def generate_image(phrase: str = Form(...)):
+    """
+    Search Unsplash for `phrase`, grab the top result, shrink it to
+    SHOW_IMAGE_W x SHOW_IMAGE_H RGB565, and push it to Aubie's TFT via the
+    show_image Bridge RPC (aubie_dog.py) - same chunked hex transfer the
+    wake-word photo thumbnail already uses (see photo_chunk_start/
+    photo_chunk/photo_render in sketch/face.ino).
+    """
+    top = _unsplash_search_top(phrase)
+
+    try:
+        img_resp = requests.get(top["urls"]["small"], timeout=15)
+        img_resp.raise_for_status()
+    except requests.RequestException as e:
+        raise HTTPException(502, f"failed to download image: {e}")
 
     try:
         hex_data = image_bytes_to_rgb565_hex(img_resp.content)
@@ -1243,6 +1464,25 @@ async def generate_image(phrase: str = Form(...)):
     ok = call_dog_command({"action": "show_image", "image_hex": hex_data})
     return {
         "ok": ok,
+        "phrase": phrase,
+        "photographer": top.get("user", {}).get("name"),
+        "source": top.get("links", {}).get("html"),
+    }
+
+
+@app.post("/show_me_image")
+async def show_me_image(phrase: str = Form(...), page: int = Form(1)):
+    """
+    Search Unsplash for `phrase` and return a directly-displayable image URL
+    - for the phone UI's "Show Me" card, which renders the photo in the
+    tablet's own <img> rather than pushing it to Aubie's TFT (see
+    /generate_image for that path). `page` lets the client page through
+    different top results for the same query ("Show me another").
+    """
+    top = _unsplash_search_top(phrase, page=page)
+    return {
+        "ok": True,
+        "url": top["urls"]["regular"],
         "phrase": phrase,
         "photographer": top.get("user", {}).get("name"),
         "source": top.get("links", {}).get("html"),
@@ -1308,6 +1548,56 @@ async def enroll_face(name: str = Form(...), images: list[UploadFile] = File(...
         "submitted": len(images),
         "kept": len(kept),
     }
+
+
+@app.post("/speak")
+async def speak(text: str = Form(...)):
+    """
+    Synthesizes `text` via Piper and plays it out Aubie's speaker - used by
+    the phone UI's "Say / Command" box so typed text is actually spoken, not
+    just shown as a TFT caption (that still happens separately via the
+    existing face_text Bridge RPC, this doesn't replace it).
+    """
+    text = text.strip()
+    if not text:
+        raise HTTPException(400, "text required")
+    wav_bytes = await asyncio.to_thread(synthesize_speech, text, get_active_voice())
+    await asyncio.to_thread(push_audio_to_aubie, wav_bytes)
+    return {"ok": True}
+
+
+@app.post("/speak_local")
+async def speak_local(text: str = Form(...)):
+    """
+    Synthesizes `text` via Piper and returns the WAV directly to the caller,
+    for playback on whatever device asked - unlike /speak, this does NOT
+    push audio to Aubie's own speaker, so it's what the tablet-as-interface
+    UI (phone_ui.py's aubieSpeak()) uses to speak through the tablet itself
+    while the robot's camera/speaker hardware is out of commission.
+    """
+    text = text.strip()
+    if not text:
+        raise HTTPException(400, "text required")
+    wav_bytes = await asyncio.to_thread(synthesize_speech, text, get_active_voice())
+    return Response(content=wav_bytes, media_type="audio/wav")
+
+
+@app.get("/voice_presets")
+def voice_presets():
+    return {
+        "presets": [{"key": k, "label": label} for k, (label, _) in VOICE_PRESETS.items()],
+        "selected": selected_voice_preset,
+    }
+
+
+@app.post("/voice_presets/select")
+async def select_voice_preset(preset: str = Form(...)):
+    global selected_voice_preset
+    if preset not in VOICE_PRESETS:
+        raise HTTPException(400, f"Unknown voice preset: {preset}")
+    selected_voice_preset = preset
+    save_voice_preference()
+    return {"ok": True, "selected": selected_voice_preset}
 
 
 @app.get("/known_people")
