@@ -66,62 +66,85 @@ echo.
 echo [*] Checking for Ollama...
 ollama --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo.
-    echo ============================================================
-    echo   Ollama (local AI engine) is not installed.
-    echo.
-    echo   AUBIEETERNAL uses Ollama to run AI locally, for free.
-    echo   Download it from: https://ollama.ai/download
-    echo.
-    echo   After installing Ollama, double-click AUBIEETERNAL.bat
-    echo   on your Desktop to launch.
-    echo ============================================================
-    echo.
-    set /p OPEN_OLLAMA="Open Ollama download page now? (y/n): "
-    if /i "%OPEN_OLLAMA%"=="y" start https://ollama.ai/download
+    echo [!] Ollama not found. Downloading installer - this is a large
+    echo     file ^(~1.5GB^), it may take a few minutes...
+    set OLLAMA_INSTALLER=%TEMP%\OllamaSetup.exe
+    curl -L -o "%OLLAMA_INSTALLER%" https://ollama.com/download/OllamaSetup.exe --silent --show-error
+    if exist "%OLLAMA_INSTALLER%" (
+        echo [*] Installing Ollama silently...
+        "%OLLAMA_INSTALLER%" /VERYSILENT /NORESTART
+        del "%OLLAMA_INSTALLER%" >nul 2>&1
+    ) else (
+        echo [!] Download failed.
+    )
+    ollama --version >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo.
+        echo ============================================================
+        echo   Automatic Ollama install didn't complete.
+        echo.
+        echo   AUBIEETERNAL uses Ollama to run AI locally, for free.
+        echo   Download it yourself from: https://ollama.ai/download
+        echo.
+        echo   After installing Ollama, double-click AUBIEETERNAL.bat
+        echo   on your Desktop to launch.
+        echo ============================================================
+        echo.
+        set /p OPEN_OLLAMA="Open Ollama download page now? (y/n): "
+        if /i "%OPEN_OLLAMA%"=="y" start https://ollama.ai/download
+    ) else (
+        echo [OK] Ollama installed.
+        call :PickAndPullModel
+    )
 ) else (
     echo [OK] Ollama found.
-    echo.
+    call :PickAndPullModel
+)
 
-    :: Detect RAM to recommend a model tier - a stronger machine should
-    :: default to a bigger model, not always the smallest one.
-    set RAM_GB=
-    for /f "usebackq tokens=*" %%A in (`powershell -NoProfile -Command "[math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB)" 2^>nul`) do set RAM_GB=%%A
+goto :AfterOllamaSection
 
-    set RECOMMENDED=1
-    if defined RAM_GB (
-        if %RAM_GB% GEQ 28 (
-            set RECOMMENDED=3
-        ) else if %RAM_GB% GEQ 16 (
-            set RECOMMENDED=2
-        )
-    )
+:PickAndPullModel
+:: Detect RAM to recommend a model tier - a stronger machine should
+:: default to a bigger model, not always the smallest one.
+set RAM_GB=
+for /f "usebackq tokens=*" %%A in (`powershell -NoProfile -Command "[math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB)" 2^>nul`) do set RAM_GB=%%A
 
-    echo   Choose AI model:
-    if defined RAM_GB echo   ^(detected ~%RAM_GB%GB RAM^)
-    echo   [1] qwen2.5:7b  - Fast, works on 8GB RAM    ^(4.7GB download^)
-    echo   [2] qwen2.5:14b - Best, needs 16GB RAM       ^(9.0GB download^)
-    echo   [3] qwen2.5:32b - Strongest, needs 28GB+ RAM ^(18GB download^)
-    echo   [4] Skip
-    set MODEL_CHOICE=
-    set /p MODEL_CHOICE="  Choice (1/2/3/4) [recommended: %RECOMMENDED%]: "
-    if not defined MODEL_CHOICE set MODEL_CHOICE=%RECOMMENDED%
-
-    set MODEL=qwen2.5:7b
-    if "%MODEL_CHOICE%"=="2" set MODEL=qwen2.5:14b
-    if "%MODEL_CHOICE%"=="3" set MODEL=qwen2.5:32b
-    if "%MODEL_CHOICE%"=="4" set MODEL=
-
-    if defined MODEL (
-        echo.
-        echo [*] Pulling %MODEL% - this may take a few minutes...
-        ollama pull %MODEL%
-        echo [OK] Model ready.
-    ) else (
-        echo [*] Skipped model download.
+set RECOMMENDED=1
+if defined RAM_GB (
+    if %RAM_GB% GEQ 28 (
+        set RECOMMENDED=3
+    ) else if %RAM_GB% GEQ 16 (
+        set RECOMMENDED=2
     )
 )
 
+echo.
+echo   Choose AI model:
+if defined RAM_GB echo   ^(detected ~%RAM_GB%GB RAM^)
+echo   [1] qwen2.5:7b  - Fast, works on 8GB RAM    ^(4.7GB download^)
+echo   [2] qwen2.5:14b - Best, needs 16GB RAM       ^(9.0GB download^)
+echo   [3] qwen2.5:32b - Strongest, needs 28GB+ RAM ^(18GB download^)
+echo   [4] Skip
+set MODEL_CHOICE=
+set /p MODEL_CHOICE="  Choice (1/2/3/4) [recommended: %RECOMMENDED%]: "
+if not defined MODEL_CHOICE set MODEL_CHOICE=%RECOMMENDED%
+
+set MODEL=qwen2.5:7b
+if "%MODEL_CHOICE%"=="2" set MODEL=qwen2.5:14b
+if "%MODEL_CHOICE%"=="3" set MODEL=qwen2.5:32b
+if "%MODEL_CHOICE%"=="4" set MODEL=
+
+if defined MODEL (
+    echo.
+    echo [*] Pulling %MODEL% - this may take a few minutes...
+    ollama pull %MODEL%
+    echo [OK] Model ready.
+) else (
+    echo [*] Skipped model download.
+)
+goto :eof
+
+:AfterOllamaSection
 echo.
 echo ============================================================
 echo   Installation complete!
