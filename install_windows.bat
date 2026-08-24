@@ -13,8 +13,36 @@ echo.
 :: Check if Python is installed
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
-    echo [!] Python not found. Installing via winget...
-    winget install Python.Python.3.11 --silent
+    echo [!] Python not found.
+
+    :: winget is NOT guaranteed to exist - confirmed missing entirely on a
+    :: real Windows 10 machine during testing, even though it's bundled on
+    :: most Windows 11 installs. Download the official installer directly
+    :: instead of depending on it, same approach as the Ollama install below.
+    where winget >nul 2>&1
+    if %errorlevel% equ 0 (
+        echo [*] Installing Python via winget...
+        winget install Python.Python.3.11 --silent
+    ) else (
+        echo [*] winget not found - downloading Python installer directly...
+        set PYTHON_INSTALLER=%TEMP%\python-installer.exe
+        curl -L -o "%PYTHON_INSTALLER%" https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe --silent --show-error
+        if exist "%PYTHON_INSTALLER%" (
+            echo [*] Installing Python silently...
+            "%PYTHON_INSTALLER%" /quiet InstallAllUsers=0 PrependPath=1 Include_test=0
+            del "%PYTHON_INSTALLER%" >nul 2>&1
+            :: PrependPath=1 updates PATH for future sessions, but this cmd
+            :: window won't see that until it restarts - add the known
+            :: per-user 3.11 install location directly so the rest of this
+            :: same script run (pip install, the shortcut it creates) can
+            :: still find python without needing a fresh window.
+            set "PATH=%LOCALAPPDATA%\Programs\Python\Python311\Scripts;%LOCALAPPDATA%\Programs\Python\Python311;%PATH%"
+        ) else (
+            echo [!] Download failed.
+        )
+    )
+
+    python --version >nul 2>&1
     if %errorlevel% neq 0 (
         echo [!] Auto-install failed. Please install Python from:
         echo     https://python.org/downloads
