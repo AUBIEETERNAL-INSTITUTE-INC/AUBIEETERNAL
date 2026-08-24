@@ -32,7 +32,7 @@ from pathlib import Path
 import socket as _socket
 def _data_dir():
     try:
-        _socket.gethostbyname("ollama.startos")
+        _socket.gethostbyname("localhost")
         return Path("/mnt/main")
     except Exception:
         p = Path(os.path.expanduser("~/.aubieeternal/main"))
@@ -46,8 +46,8 @@ LESSONS_DIR.mkdir(parents=True, exist_ok=True)
 
 def _ollama_url():
     try:
-        _socket.gethostbyname("ollama.startos")
-        return "http://ollama.startos:11434/v1/chat/completions"
+        _socket.gethostbyname("localhost")
+        return "http://localhost:11434/v1/chat/completions"
     except Exception:
         return "http://localhost:11434/v1/chat/completions"
 

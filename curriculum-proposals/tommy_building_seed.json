@@ -1,0 +1,45 @@
+{
+  "id": "tommy_building_seed",
+  "type": "track",
+  "author": "Tommy",
+  "track_name": "Building & Hurricane Hardening",
+  "description": "Hands-on track teaching hurricane hardening, construction fundamentals, and community resilience from a practicing builder's perspective.",
+  "rationale": "Tommy has direct field experience hardening homes on the Gulf Coast. This track turns his knowledge into teachable modules that directly reduce insurance risk for families.",
+  "lessons": [
+    {
+      "key": "building-1",
+      "title": "Building L1 \u2014 How Houses Fail"
+    },
+    {
+      "key": "building-2",
+      "title": "Building L2 \u2014 Wind Load Physics"
+    },
+    {
+      "key": "building-3",
+      "title": "Building L3 \u2014 The $500 Retrofit"
+    },
+    {
+      "key": "building-4",
+      "title": "Building L4 \u2014 Insurance & Building Codes"
+    },
+    {
+      "key": "building-5",
+      "title": "Building L5 \u2014 Community Resilience \u2605"
+    }
+  ],
+  "submitted_at": "2026-08-24T11:55:25.944816",
+  "status": "approved",
+  "approved_at": "2026-08-24T11:55:25.944823",
+  "public": true,
+  "review": {
+    "steelman_for": "Real-world building knowledge directly reduces hurricane losses and insurance premiums \u2014 measurable ROI for every family.",
+    "steelman_against": "Hands-on building skills are hard to teach digitally and may create false confidence without physical practice.",
+    "sim_q1_reality": "If families understand wind physics, they make better hardening investments and demand better insurance products.",
+    "sim_q2_falsify": "If hardened homes don't show measurable premium reductions, the insurance incentive argument fails.",
+    "sim_q3_lattice": "Yes \u2014 antifragile (hardening strengthens under stress), sovereign (DIY reduces dependence), skin in the game (Tommy has done this work).",
+    "sim_q4_coherence": "Increases \u2014 adds a practical, measurable track that connects to Legal Literacy and Insurance tracks downstream.",
+    "coherence_score": 0.92,
+    "reviewer_notes": "Pre-approved \u2014 Tommy's direct field experience qualifies this as tutor-grade content."
+  },
+  "comments": []
+}

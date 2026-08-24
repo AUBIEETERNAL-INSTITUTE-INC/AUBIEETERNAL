@@ -1,0 +1,32 @@
+{
+  "id": "3102b9add4e5",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Antifragile Courage",
+  "lesson": {
+    "key": "antifragile-thinking-beyond-bitcoin",
+    "title": "Antifragility Beyond Bitcoin",
+    "topic": "Exploring how antifragile principles apply beyond cryptocurrency to personal growth and resilience in various aspects of life.",
+    "steelman": "How can individuals adopt an antifragile mindset to enhance their personal development, mental health, and career prospects?",
+    "example": "Discussing how embracing challenges in personal relationships or professional projects can lead to stronger, more resilient outcomes.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "ANTIFRAGILE\u2022COURAGE\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Expanding the concept of antifragility beyond its application in cryptocurrency to broader personal and professional contexts.",
+  "submitted_at": "2026-08-24T11:55:46.151004",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

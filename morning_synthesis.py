@@ -10,7 +10,7 @@ from pathlib import Path
 def _resolve():
     import socket
     try:
-        socket.gethostbyname("ollama.startos")
+        socket.gethostbyname("localhost")
         return Path("/mnt/main")
     except Exception:
         p = Path(os.path.expanduser("~/.aubieeternal/main"))
@@ -24,8 +24,8 @@ INSIGHTS_DIR.mkdir(parents=True, exist_ok=True)
 def _ollama_url():
     import socket
     try:
-        socket.gethostbyname("ollama.startos")
-        return "http://ollama.startos:11434/v1/chat/completions"
+        socket.gethostbyname("localhost")
+        return "http://localhost:11434/v1/chat/completions"
     except Exception:
         return "http://localhost:11434/v1/chat/completions"
 

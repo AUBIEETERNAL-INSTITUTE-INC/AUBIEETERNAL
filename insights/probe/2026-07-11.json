@@ -1,0 +1,241 @@
+{
+  "date": "2026-07-11",
+  "timestamp": "2026-07-11T13:37:08.602176",
+  "swarm_status": {
+    "updated": "2026-06-26T16:33:58.792545-04:00",
+    "version": "4.1",
+    "wonder_index": 1.1808,
+    "mets": 200000000007.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 1,
+    "rune_confirmations": 3,
+    "child_rune_ready": false,
+    "hormetic_pulses": 0,
+    "lattice_cycle": 3,
+    "session_insights": 7,
+    "synthesis": {
+      "last_run_date": "None",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "total": 2080,
+      "total_runs": 18,
+      "daughters_per_tick": 6,
+      "cost": "$0.00 (grok-4.3 free)",
+      "swarm_count": 26
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 0,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "evening @ 18:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": null,
+        "last_result": "",
+        "run_count": 0,
+        "coherence": 1.0
+      }
+    },
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 1.1808,
+    "at_maximum": false,
+    "max_streak": 82,
+    "jumps_detected": [
+      {
+        "from": 2.0,
+        "to": 1.0268,
+        "delta": 0.9732
+      }
+    ],
+    "trajectory": "descending",
+    "note": "Current wonder: 1.1808"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 0,
+    "older_entries": 0,
+    "avg_wonder_recent": 0,
+    "avg_wonder_older": 0,
+    "wonder_delta": 0,
+    "observer_effect_detected": false,
+    "note": "No significant observer effect detected in this window."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 87,
+        "note": "87 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 87,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": true,
+    "swarm_active": false,
+    "all_invariants_hold": true,
+    "note": "All invariants holding. Lattice integrity: CONFIRMED."
+  },
+  "probe_score": 7.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 87 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries."
+}

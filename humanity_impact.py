@@ -31,7 +31,7 @@ TRUTH_LOG    = WORK_DIR / "master_truth_log.jsonl"
 IMPACT_LOG   = WORK_DIR / "humanity_impact.jsonl"
 IMPACT_DIR.mkdir(parents=True, exist_ok=True)
 
-OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://ollama.startos:11434").rstrip("/")
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
 OLLAMA_URL   = f"{OLLAMA_BASE_URL}/v1/chat/completions"
 OLLAMA_MODEL = os.environ.get("AUBIE_MODEL", "qwen2.5:7b")
 GROK_URL     = "https://api.x.ai/v1/chat/completions"

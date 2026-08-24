@@ -23,10 +23,10 @@ import socket as _socket
 import os as _os_ollama
 # Point inference at any Ollama by setting OLLAMA_BASE_URL in api_keys.env
 # (e.g. http://192.168.1.50:11434 for a GPU box). Defaults to the StartOS Ollama.
-OLLAMA_BASE_URL = _os_ollama.environ.get("OLLAMA_BASE_URL", "http://ollama.startos:11434").rstrip("/")
+OLLAMA_BASE_URL = _os_ollama.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
 def _resolve_data_dir():
     try:
-        _socket.gethostbyname("ollama.startos")
+        _socket.gethostbyname("localhost")
         return "/mnt/main"  # StartOS
     except Exception:
         pass
@@ -962,7 +962,7 @@ with st.sidebar:
             "📣 Share to X", "📡 Nostr Bridge",
         ],
         "🏫 SCHOOL": [
-            "🏫 School", "🗺️ Curriculum Map",
+            "🏫 School", "🗺️ Curriculum Map", "📥 Submit Curriculum",
             "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
             "🏛️ School Pathway",
             "🔧 Sovereign Builder",
@@ -5826,7 +5826,7 @@ if "Parent Dashboard" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: CURRICULUM MAP 🗺️ — visual progression tree
 # ══════════════════════════════════════════════════════════════════════════════
-if "Curriculum" in active:
+if active == "🗺️ Curriculum Map":
     st.markdown('<div class="card-title">🗺️ CURRICULUM MAP — Learning Progression</div>', unsafe_allow_html=True)
 
     try:
@@ -6385,6 +6385,49 @@ if "Submit Curriculum" in active:
         # ── Submit ────────────────────────────────────────────────────────────
         with sub_tabs[0]:
             st.markdown("**Submit a new lesson or full curriculum track.**")
+
+            st.markdown(
+                '<div class="card" style="border-left:3px solid #00cfff;">'
+                '<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;">🌱 CURRICULUM AUTOGEN</div>'
+                '<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">The swarm already proposes one new lesson '
+                'a day on its own (9AM, $0 cost, local Ollama) — it always lands here as pending, never self-approved. '
+                'Don\'t want to wait for 9AM?</div></div>',
+                unsafe_allow_html=True,
+            )
+            if st.button("🤖 Ask Aubie to propose one now", key="autogen_now_btn"):
+                with st.spinner("Aubie is thinking of a new lesson…"):
+                    try:
+                        import sys as _asys
+                        if "/mnt/main/repo" not in _asys.path: _asys.path.insert(0, "/mnt/main/repo")
+                        from curriculum_autogen import run_curriculum_autogen as _rca
+                        _result = _rca(force=True)
+                    except Exception as _e:
+                        _result = {"ok": False, "reason": str(_e)}
+                if _result.get("ok"):
+                    st.success(f"✅ Proposed: \"{_result['title']}\" → {_result['target_track']} "
+                               f"(ID: {_result['proposal_id']}) — review it in 📋 All Proposals or 📖 Review Queue.")
+                else:
+                    st.warning(f"Couldn't generate a proposal: {_result.get('reason','unknown error')}")
+            st.divider()
+
+            st.markdown(
+                '<div class="card" style="border-left:3px solid #a020f0;">'
+                '<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.82rem;">🌐 CURRICULUM COMMONS</div>'
+                '<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">Pull in lessons other AUBIEETERNAL '
+                'instances have published to the shared CC0 feed — they always land here as PENDING, never '
+                'auto-approved. Growing the curriculum across every install, one human review at a time.</div></div>',
+                unsafe_allow_html=True,
+            )
+            if st.button("⬇️ Pull from Commons", key="pull_commons_btn"):
+                with st.spinner("Checking the shared feed…"):
+                    _pull_result = _reviewer.pull_from_commons()
+                if _pull_result.get("ok"):
+                    st.success(f"✅ {_pull_result['added']} new proposal(s) pulled in as pending "
+                               f"(feed had {_pull_result['feed_total']} total).")
+                else:
+                    st.warning(f"Couldn't reach the commons feed: {_pull_result.get('reason','unknown error')}")
+            st.divider()
+
             sub_type = st.radio("Submission type", ["Single Lesson", "Full Track"], horizontal=True, key="sub_type")
             author   = st.text_input("Your name", placeholder="Tommy / Gabriela / Your name", key="sub_author")
 
@@ -6457,10 +6500,27 @@ if "Submit Curriculum" in active:
         with sub_tabs[2]:
             approved = [p for p in _reviewer.get_all() if p.get("status") == "approved"]
             st.caption(f"{len(approved)} approved submissions")
+            st.markdown(
+                '<div style="color:#8899bb;font-size:0.76rem;margin-bottom:8px;">Approving makes a '
+                'lesson live on <b>this</b> instance only. "Publish to Commons" is a separate, '
+                'explicit choice — it saves the lesson into the local commons feed file '
+                '(<code>epistemic_commons/api/curriculum_proposals.json</code>). It only actually '
+                'reaches other instances once that file is pushed to GitHub — the automated push '
+                'process isn\'t currently running, so for now this is a local save you (or a '
+                'restored auto-push) commit and push whenever you\'re ready.</div>', unsafe_allow_html=True)
             for p in approved:
                 name  = p.get("track_name") or p.get("lesson",{}).get("title","?")
                 score = p.get("review",{}).get("coherence_score",0)
+                published = p.get("published_to_commons", False)
                 st.markdown(f'<div class="card" style="border-left:3px solid #00ff88;"><div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.8rem;">✅ {name}</div><div style="color:#8899bb;font-size:0.78rem;">by {p.get("author","?")} · Coherence score: {score:.2f} · {p.get("approved_at","")[:10]}</div></div>', unsafe_allow_html=True)
+                if published:
+                    st.caption(f"📡 Saved to local commons feed {p.get('published_to_commons_at','')[:10]} — push to GitHub to actually share it")
+                elif st.button("📡 Publish to Commons", key=f"pub_commons_{p['id']}"):
+                    if _reviewer.publish_to_commons(p["id"]):
+                        st.success("Saved to the local commons feed file — push the repo to GitHub to make it reachable by other instances.")
+                        st.rerun()
+                    else:
+                        st.error("Could not publish.")
 
         # ── Review queue (operator only) ──────────────────────────────────────
         with sub_tabs[3]:
@@ -11034,7 +11094,7 @@ submit a PR or contact us — translation is the second-highest-impact contribut
         if st.button("🌍 Submit Deployment Request", key="dl_submit", type="primary") and _deploy_loc:
             import json as _jdl, pathlib as _pdl, datetime as _ddl, socket as _sdl
             try:
-                _sdl.gethostbyname("ollama.startos")
+                _sdl.gethostbyname("localhost")
                 _dl = _pdl.Path("/mnt/main/deployment_requests.jsonl")
             except Exception:
                 _dl = _pdl.Path(os.path.expanduser("~/.aubieeternal/main/deployment_requests.jsonl"))

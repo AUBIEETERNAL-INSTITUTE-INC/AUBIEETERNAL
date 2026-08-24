@@ -27,7 +27,7 @@ from pathlib import Path
 def _data_dir():
     import socket
     try:
-        socket.gethostbyname("ollama.startos")
+        socket.gethostbyname("localhost")
         return Path("/mnt/main")
     except Exception:
         p = Path(os.path.expanduser("~/.aubieeternal/main"))
@@ -134,7 +134,7 @@ def _run_oracle(question: str, api_key: str = "") -> str:
 
     # Try Ollama — all possible locations
     _ollama_candidates = [
-        "http://ollama.startos:11434",
+        "http://localhost:11434",
         "http://painful-recess.local:59885",
         "http://192.168.1.251:59885",
         "http://localhost:11434",

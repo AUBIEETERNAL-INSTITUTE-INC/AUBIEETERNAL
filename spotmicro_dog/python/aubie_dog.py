@@ -1,4 +1,9 @@
 # -----------------------------------------------------------------------
+# >>> LIVE, DEPLOYED COPY <<< On the robot this is
+# ~/spotmicro_dog/python/aubie_dog.py - do NOT confuse with
+# ~/ArduinoApps/spotmicro_dog/python/ on the robot, a stale unregistered
+# leftover from initial app setup (see sketch/sketch.ino's matching note).
+# -----------------------------------------------------------------------
 # SpotMicro dog - Linux/Python side (Qualcomm QRB2210, Debian).
 #
 # Talks to the MCU sketch (sketch/sketch.ino) over Arduino's Bridge RPC and
@@ -6,14 +11,21 @@
 # movement from recognized voice intents.
 #
 # Bridge.call() is synchronous and blocks the calling thread until the MCU
-# replies, so it's called directly from FastAPI request handlers - each
-# request just waits for its own Bridge round trip, no separate queue needed.
+# replies. FastAPI runs each sync `def` route in its own threadpool thread,
+# so concurrent requests (e.g. the phone UI's 3D Sensor Dashboard, which
+# fires 5 sensor reads at once) previously meant multiple threads calling
+# Bridge.call() on the shared RPC link at the same time - confirmed
+# 2026-08-17 to wedge the link and corrupt an unrelated call's response
+# (read_imu came back with a frozen stale value after a concurrent burst).
+# Every call site below goes through bridge_call(), which wraps Bridge.call()
+# in a lock so only one request is ever in flight on the wire at a time.
 # App.run() has to be running for this process to behave as a proper UNO Q
 # app, so it runs in a background thread while uvicorn owns the main thread.
 # -----------------------------------------------------------------------
 
 import asyncio
 import logging
+import math
 import subprocess
 import threading
 import time
@@ -23,7 +35,7 @@ from typing import Literal, Optional
 import cv2
 import uvicorn
 from arduino.app_utils import App, Bridge
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import Response
 from pydantic import BaseModel
 
@@ -31,6 +43,14 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("aubie_dog")
 
 api = FastAPI(title="Aubie SpotMicro Dog Control")
+
+# Serializes every bridge_call() - see the header comment above for why.
+_bridge_lock = threading.Lock()
+
+
+def bridge_call(*args):
+    with _bridge_lock:
+        return Bridge.call(*args)
 
 
 @api.get("/snapshot")
@@ -55,6 +75,34 @@ def snapshot():
         return Response(content=jpg.tobytes(), media_type="image/jpeg")
     finally:
         cap.release()
+
+
+@api.post("/play_audio")
+async def play_audio(request: Request):
+    """
+    Plays raw WAV bytes (the request body) out the EMEET speaker via aplay -
+    same ALSA device (plughw, not the raw hw device - see CALL_ALSA_DEVICE's
+    comment) the live call path already uses successfully. Lets the rig push
+    speech to Aubie on demand (e.g. the phone UI's "speak" box) without
+    needing a live /call/stream call running, the same way /snapshot lets it
+    pull a photo on demand. The blocking aplay call runs via asyncio.to_thread
+    so it doesn't stall the event loop for however long playback takes.
+    """
+    wav_bytes = await request.body()
+    if not wav_bytes:
+        raise HTTPException(400, "empty request body")
+
+    def _play():
+        return subprocess.run(
+            ["aplay", "-D", CALL_ALSA_DEVICE],
+            input=wav_bytes,
+            capture_output=True,
+        )
+
+    proc = await asyncio.to_thread(_play)
+    if proc.returncode != 0:
+        raise HTTPException(502, f"aplay failed: {proc.stderr.decode(errors='ignore')}")
+    return {"ok": True}
 
 # ---- Live video/audio call (phone <-> Aubie's camera/mic/speaker) ----
 # Relayed through aubieeternal's /call/ws (not peer-to-peer WebRTC - aubie
@@ -211,10 +259,11 @@ async def call_stream(ws: WebSocket):
 Action = Literal[
     "stand", "sit", "rest", "lean", "walk_forward", "turn_left", "turn_right",
     "set_servo", "read_imu", "imu_read",
-    "calibration_mode", "read_sonar",
+    "calibration_mode", "read_sonar", "sonar_forward", "sonar_backward",
     "face_talk", "face_idle", "face_text",
-    "face_config", "flashlight", "get_servo_angles", "face_diag", "princess_mode",
-    "flower_explosion", "show_image",
+    "face_config", "flashlight", "get_servo_angles", "face_diag", "diag_info", "princess_mode",
+    "flower_explosion", "show_image", "play_pong", "test_speakers", "test_mic",
+    "test_lidar", "lidar_scan",
 ]
 
 # Must match PHOTO_W/PHOTO_H in sketch/face.ino exactly - the MCU just fills
@@ -269,8 +318,18 @@ class DogCommand(BaseModel):
     y: Optional[int] = None             # required for lean: -100..100, back(-)/forward(+)
 
 
+def _finite(v: float) -> float:
+    """NaN/inf isn't valid JSON (json.dumps raises ValueError on it) - the
+    MCU's tilt-from-gravity math (atan2/sqrt in imu()) can produce one on a
+    bad accel reading. Swallow it to 0.0 rather than 500ing the whole
+    request - a single bad IMU sample isn't worth crashing the phone UI's
+    every-2s tilt poll over (confirmed live, 2026-08-14 - the poll's
+    ValueError: Out of range float values are not JSON compliant: nan)."""
+    return v if math.isfinite(v) else 0.0
+
+
 def parse_imu_csv(raw: str) -> dict:
-    ax, ay, az, gx, gy, gz = (float(v) for v in raw.split(","))
+    ax, ay, az, gx, gy, gz = (_finite(float(v)) for v in raw.split(","))
     return {
         "accel_g": {"x": ax, "y": ay, "z": az},
         "gyro_dps": {"x": gx, "y": gy, "z": gz},
@@ -278,7 +337,7 @@ def parse_imu_csv(raw: str) -> dict:
 
 
 def parse_imu_read_csv(raw: str) -> dict:
-    pitch, roll, ax, ay, az = (float(v) for v in raw.split(","))
+    pitch, roll, ax, ay, az = (_finite(float(v)) for v in raw.split(","))
     return {
         "pitch_deg": pitch,
         "roll_deg": roll,
@@ -290,73 +349,87 @@ def parse_imu_read_csv(raw: str) -> dict:
 def dog_command(cmd: DogCommand):
     try:
         if cmd.action == "stand":
-            ok = Bridge.call("stand")
+            ok = bridge_call("stand")
             return {"ok": bool(ok)}
 
         if cmd.action == "sit":
-            ok = Bridge.call("sit")
+            ok = bridge_call("sit")
             return {"ok": bool(ok)}
 
         if cmd.action == "rest":
-            ok = Bridge.call("rest")
+            ok = bridge_call("rest")
             return {"ok": bool(ok)}
 
         if cmd.action == "lean":
             if cmd.x is None or cmd.y is None:
                 raise HTTPException(400, "lean requires x and y")
-            ok = Bridge.call("lean", cmd.x, cmd.y)
+            ok = bridge_call("lean", cmd.x, cmd.y)
             return {"ok": bool(ok)}
 
         if cmd.action == "walk_forward":
-            ok = Bridge.call("walk_forward")
+            ok = bridge_call("walk_forward")
             return {"ok": bool(ok)}
 
         if cmd.action == "turn_left":
-            ok = Bridge.call("turn_left")
+            ok = bridge_call("turn_left")
             return {"ok": bool(ok)}
 
         if cmd.action == "turn_right":
-            ok = Bridge.call("turn_right")
+            ok = bridge_call("turn_right")
             return {"ok": bool(ok)}
 
         if cmd.action == "set_servo":
             if cmd.channel is None or cmd.angle is None:
                 raise HTTPException(400, "set_servo requires channel and angle")
-            ok = Bridge.call("set_servo", cmd.channel, cmd.angle)
+            ok = bridge_call("set_servo", cmd.channel, cmd.angle)
             return {"ok": bool(ok)}
 
         if cmd.action == "read_imu":
-            raw = Bridge.call("read_imu")
+            raw = bridge_call("read_imu")
             return {"ok": True, "imu": parse_imu_csv(raw)}
 
         if cmd.action == "imu_read":
-            raw = Bridge.call("imu_read")
+            raw = bridge_call("imu_read")
             return {"ok": True, "imu": parse_imu_read_csv(raw)}
 
         if cmd.action == "calibration_mode":
             if cmd.on is None:
                 raise HTTPException(400, "calibration_mode requires on")
-            ok = Bridge.call("calibration_mode", cmd.on)
+            ok = bridge_call("calibration_mode", cmd.on)
             return {"ok": bool(ok)}
 
         if cmd.action == "face_talk":
             # face_talk/face_idle_cmd on the MCU side both take a String
             # param (unused) - Bridge has no default-param resolution, so a
             # zero-arg call fails with "Missing call parameters".
-            Bridge.call("face_talk", "")
+            bridge_call("face_talk", "")
             return {"ok": True}
         if cmd.action == "face_idle":
-            Bridge.call("face_idle", "")
+            bridge_call("face_idle", "")
             return {"ok": True}
         if cmd.action == "face_text":
             if cmd.text is None:
                 raise HTTPException(400, "face_text requires text")
-            Bridge.call("face-text", cmd.text)
+            bridge_call("face-text", cmd.text)
             return {"ok": True}
         if cmd.action == "read_sonar":
             if cmd.sensor_id is None:
                 raise HTTPException(400, "read_sonar requires sensor_id")
-            distance_cm = Bridge.call("read_sonar", cmd.sensor_id)
+            distance_cm = bridge_call("read_sonar", cmd.sensor_id)
+            return {"ok": True, "distance_cm": distance_cm}
+
+        # sonar_forward/sonar_backward: the two Modulino ToF "ear" sensors,
+        # physically relocated again 2026-08-19 to the underbelly, facing
+        # forward and backward - MCU-side Bridge RPC names
+        # (sonar_right_ear/sonar_left_ear) are unchanged, only the physical
+        # mounting and this Python-side label changed (previously top/bottom
+        # of head, before that left/right ears - see git history). Mapping
+        # confirmed by user 2026-08-19: left_ear=forward, right_ear=backward.
+        if cmd.action == "sonar_forward":
+            distance_cm = bridge_call("sonar_left_ear")
+            return {"ok": True, "distance_cm": distance_cm}
+        if cmd.action == "sonar_backward":
+            distance_cm = bridge_call("sonar_right_ear")
             return {"ok": True, "distance_cm": distance_cm}
 
         if cmd.action == "face_config":
@@ -370,28 +443,57 @@ def dog_command(cmd: DogCommand):
                 raise HTTPException(400, f"unknown mouth_shape {cmd.mouth_shape!r}, expected one of {sorted(MOUTH_SHAPES)}")
             eye_color = hex_to_rgb565(cmd.eye_color) if cmd.eye_color else DEFAULT_FACE_COLOR
             mouth_color = hex_to_rgb565(cmd.mouth_color) if cmd.mouth_color else DEFAULT_FACE_COLOR
-            ok = Bridge.call("face_config", EYE_SHAPES[eye_key], MOUTH_SHAPES[mouth_key], eye_color, mouth_color)
+            ok = bridge_call("face_config", EYE_SHAPES[eye_key], MOUTH_SHAPES[mouth_key], eye_color, mouth_color)
             return {"ok": bool(ok)}
 
         if cmd.action == "flashlight":
             if cmd.on is None:
                 raise HTTPException(400, "flashlight requires on")
-            ok = Bridge.call("flashlight", cmd.on)
+            ok = bridge_call("flashlight", cmd.on)
             return {"ok": bool(ok)}
 
+        if cmd.action == "test_speakers":
+            ok = bridge_call("test_speakers")
+            return {"ok": bool(ok)}
+
+        if cmd.action == "test_mic":
+            level = bridge_call("test_mic")
+            return {"ok": True, "level": float(level)}
+
+        if cmd.action == "test_lidar":
+            packet_count = bridge_call("test_lidar")
+            return {"ok": True, "packet_count": int(packet_count)}
+
+        if cmd.action == "lidar_scan":
+            raw = bridge_call("get_lidar_scan")
+            scan_cm = [int(v) for v in raw.split(",")]
+            return {"ok": True, "scan_cm": scan_cm}
+
         if cmd.action == "get_servo_angles":
-            raw = Bridge.call("get_servo_angles")
+            raw = bridge_call("get_servo_angles")
             angles = [int(v) for v in raw.split(",")]
             return {"ok": True, "angles": angles}
 
         if cmd.action == "princess_mode":
             if cmd.on is None:
                 raise HTTPException(400, "princess_mode requires on")
-            ok = Bridge.call("princess_mode", cmd.on)
+            ok = bridge_call("princess_mode", cmd.on)
             return {"ok": bool(ok)}
 
         if cmd.action == "flower_explosion":
-            ok = Bridge.call("flower_explosion")
+            ok = bridge_call("flower_explosion")
+            return {"ok": bool(ok)}
+
+        if cmd.action == "play_pong":
+            if cmd.on is None:
+                raise HTTPException(400, "play_pong requires on")
+            # play_pong takes a String on the MCU side ("true"/"false"), not a
+            # bool like princess_mode/flashlight - it's driven by
+            # aubie_listen.py's plain-string bridge_call() helper (a
+            # different bridge_call than this file's own lock-wrapped one,
+            # same name coincidentally), so the RPC signature matches that
+            # rather than the bool convention used elsewhere in this file.
+            ok = bridge_call("play_pong", "true" if cmd.on else "false")
             return {"ok": bool(ok)}
 
         if cmd.action == "show_image":
@@ -408,15 +510,21 @@ def dog_command(cmd: DogCommand):
             # photo_chunk_start/photo_chunk/photo_render) - just called
             # in-process here since aubie_dog.py already has a live Bridge
             # connection, no subprocess needed.
-            Bridge.call("photo_chunk_start", "")
+            bridge_call("photo_chunk_start", "")
             for i in range(0, len(cmd.image_hex), PHOTO_CHUNK_HEX_LEN):
-                Bridge.call("photo_chunk", cmd.image_hex[i:i + PHOTO_CHUNK_HEX_LEN])
-            ok = Bridge.call("photo_render")
+                bridge_call("photo_chunk", cmd.image_hex[i:i + PHOTO_CHUNK_HEX_LEN])
+            ok = bridge_call("photo_render")
             return {"ok": bool(ok)}
 
         if cmd.action == "face_diag":
-            raw = Bridge.call("face_diag")
-            face_state, eye_shape, mouth_shape, is_talking, calib, flash, text_overlay, ms = raw.split(",")
+            raw = bridge_call("face_diag")
+            # face.ino's face_diag() appends ",pong:<active>,<ballX>,<ballY>,
+            # <leftY>,<rightY>,<ballVYx10>" after the original 8 fields (added
+            # alongside play_pong for live debugging) - parse both parts.
+            parts = raw.split(",")
+            (face_state, eye_shape, mouth_shape, is_talking, calib, flash,
+             text_overlay, ms) = parts[:8]
+            pong_active, ball_x, ball_y, left_y, right_y, ball_vy10 = parts[8:14]
             return {
                 "ok": True,
                 "face_state": FACE_STATE_NAMES.get(int(face_state), face_state),
@@ -427,6 +535,22 @@ def dog_command(cmd: DogCommand):
                 "flashlight": bool(int(flash)),
                 "text_overlay_active": bool(int(text_overlay)),
                 "millis": int(ms),
+                "pong_active": bool(int(pong_active.split(":")[1])),
+                "pong_ball": {"x": int(ball_x), "y": int(ball_y)},
+                "pong_paddles": {"left_y": int(left_y), "right_y": int(right_y)},
+                "pong_ball_vy": int(ball_vy10) / 10.0,
+            }
+
+        if cmd.action == "diag_info":
+            raw = bridge_call("diag_info")
+            pca9685, imu, face, dist_r, dist_l = raw.split(",")
+            return {
+                "ok": True,
+                "pca9685_present": bool(int(pca9685)),
+                "imu_present": bool(int(imu)),
+                "face_setup_done": bool(int(face)),
+                "dist_right_present": bool(int(dist_r)),
+                "dist_left_present": bool(int(dist_l)),
             }
 
     except HTTPException:
@@ -445,3 +569,28 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+@api.get("/dog/distance")
+async def get_distance():
+    # Was read_sonar(0), which reads the dead/never-wired HC-SR04 placeholder
+    # array (see sketch.ino's SONAR_COUNT note) - always timed out to -1.
+    # Now reads the real Modulino ToF sensors, underbelly forward/backward.
+    try:
+        forward_cm = bridge_call("sonar_left_ear")
+        backward_cm = bridge_call("sonar_right_ear")
+        return {"forward_cm": forward_cm, "backward_cm": backward_cm, "status": "ok"}
+    except Exception as e:
+        return {"forward_cm": -1, "backward_cm": -1, "error": str(e)}
+
+@api.get("/dog/lidar_scan")
+async def get_lidar_scan_endpoint():
+    # Live 360deg scan, 36 buckets @ 10deg resolution, cm distances (-1 = no
+    # reading yet for that bucket). See sketch.ino's get_lidar_scan() comment.
+    try:
+        raw = bridge_call("get_lidar_scan")
+        scan_cm = [int(v) for v in raw.split(",")]
+        return {"scan_cm": scan_cm, "status": "ok"}
+    except Exception as e:
+        return {"scan_cm": [], "error": str(e)}

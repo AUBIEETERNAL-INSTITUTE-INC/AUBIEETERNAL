@@ -34,8 +34,8 @@ def _detect_ollama_url():
     # StartOS: use internal hostname
     import socket
     try:
-        socket.gethostbyname("ollama.startos")
-        return "http://ollama.startos:11434/v1/chat/completions"
+        socket.gethostbyname("localhost")
+        return "http://localhost:11434/v1/chat/completions"
     except Exception:
         pass
     # WSL / local: use localhost

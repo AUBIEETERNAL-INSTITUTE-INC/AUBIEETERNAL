@@ -26,6 +26,15 @@ from pathlib import Path
 PROPOSALS_DIR = Path("/mnt/main/repo/curriculum-proposals")
 PROPOSALS_DIR.mkdir(parents=True, exist_ok=True)
 
+# The shared, cross-instance "commons" feed (see publish_to_commons/
+# pull_from_commons below) - the canonical public AUBIEETERNAL repo's own
+# published curriculum proposals, readable by any separately-run instance
+# (a different family's install, not just this machine).
+COMMONS_FEED_URL = (
+    "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/"
+    "epistemic_commons/api/curriculum_proposals.json"
+)
+
 REVIEW_TEMPLATE = {
     "steelman_for":     "",
     "steelman_against": "",
@@ -49,6 +58,95 @@ LESSON_TEMPLATE = {
     "rune":          "RUNE",
     "min_coherence": 0.65,
 }
+
+
+def merge_approved_proposal(proposal: dict) -> bool:
+    """Folds an approved lesson/track proposal into curriculum.py's live
+    tree via curriculum_extra.json (see curriculum.py's `_load_extra_tracks`)
+    — every process reading curriculum.py picks it up on its next call, no
+    source edit or restart needed. Called from `approve()` above; also
+    callable standalone. Never raises — a merge failure just means the
+    proposal stays "approved" without yet being teachable, logged for
+    follow-up rather than blocking the approval itself."""
+    try:
+        import sys as _sys
+        _repo_dir = str(Path(__file__).parent)
+        if _repo_dir not in _sys.path:
+            _sys.path.insert(0, _repo_dir)
+        import curriculum
+
+        extra_path = curriculum.EXTRA_PATH
+        extra_path.parent.mkdir(parents=True, exist_ok=True)
+        tracks = []
+        if extra_path.exists():
+            try:
+                loaded = json.loads(extra_path.read_text())
+                if isinstance(loaded, list):
+                    tracks = loaded
+            except Exception:
+                tracks = []
+
+        ptype = proposal.get("type")
+
+        if ptype == "lesson":
+            lesson = proposal.get("lesson", {})
+            key, title = lesson.get("key"), lesson.get("title")
+            if not key or not title:
+                return False
+            target_raw = (proposal.get("target_track") or "community").strip()
+            level = [key, title, lesson.get("age_hint", "All ages"), int(lesson.get("xp", 20) or 20)]
+
+            # Match target_track against a real track by id or display label
+            # (emoji/punctuation stripped) before minting a new one — an
+            # LLM- or human-typed target like "Bitcoin Sovereignty" or
+            # "💡 Wonder" should land on the existing track, not spawn a
+            # near-duplicate "🧩 Bitcoin Sovereignty".
+            target_slug = target_raw.lower().replace(" ", "-") or "community"
+            target_norm = target_raw.lower()
+            match_id = None
+            for tid, label in curriculum.track_names():
+                label_words = "".join(c for c in label if c.isalnum() or c.isspace()).strip().lower()
+                if target_slug == tid or target_norm == label_words \
+                   or (label_words and (label_words in target_norm or target_norm in label_words)):
+                    match_id = tid
+                    break
+            target_id = match_id or target_slug
+
+            entry = next((t for t in tracks if t.get("track_id") == target_id), None)
+            if entry is None:
+                base_name = next((label for tid, label in curriculum.track_names() if tid == target_id), None)
+                entry = {"track_id": target_id, "track": base_name or f"🧩 {target_raw.title()}",
+                         "color": "#00c9ff", "levels": []}
+                tracks.append(entry)
+            if not any(lvl[0] == key for lvl in entry["levels"]):
+                entry["levels"].append(level)
+
+        elif ptype == "track":
+            track_name = proposal.get("track_name", "New Track")
+            track_id   = track_name.strip().lower().replace(" ", "-").replace("'", "") or "new-track"
+            levels = []
+            for i, l in enumerate(proposal.get("lessons", [])):
+                key   = l.get("key") or f"{track_id}-{i + 1}"
+                title = l.get("title", key)
+                levels.append([key, title, l.get("age_hint", "All ages"), int(l.get("xp", 20) or 20)])
+            if not levels:
+                return False  # a track with no lessons yet isn't teachable
+
+            entry = next((t for t in tracks if t.get("track_id") == track_id), None)
+            if entry is None:
+                entry = {"track_id": track_id, "track": f"🧩 {track_name}", "color": "#00c9ff", "levels": []}
+                tracks.append(entry)
+            existing_keys = {lvl[0] for lvl in entry["levels"]}
+            entry["levels"].extend(lv for lv in levels if lv[0] not in existing_keys)
+
+        else:
+            return False
+
+        extra_path.write_text(json.dumps(tracks, indent=2))
+        return True
+    except Exception as e:
+        print(f"[curriculum_proposals] merge_approved_proposal failed: {e}")
+        return False
 
 
 class CurriculumReviewer:
@@ -165,6 +263,11 @@ class CurriculumReviewer:
             p = json.loads(path.read_text())
             p["status"]      = "approved"
             p["approved_at"] = datetime.datetime.now().isoformat()
+            # Fold it into the live curriculum immediately (see
+            # merge_approved_proposal below) — approving here is meant to
+            # make the lesson teachable, not just flip a status flag that
+            # then needs a manual copy-paste into family_hud.py.
+            p["merged_to_curriculum"] = merge_approved_proposal(p)
             path.write_text(json.dumps(p, indent=2))
             return True
         except Exception:
@@ -183,6 +286,106 @@ class CurriculumReviewer:
             return True
         except Exception:
             return False
+
+    def publish_to_commons(self, proposal_id: str) -> bool:
+        """Publishes an already-APPROVED proposal to the same public, CC0
+        Epistemic Commons feed epistemic_commons_api.py already writes
+        (epistemic_commons/api/curriculum_proposals.json, inside the git
+        repo) - the swarm's existing GitHub auto-push is what actually
+        makes it public, this doesn't need its own push mechanism. This is
+        a deliberately separate, explicit action from approve() - approving
+        a proposal makes it live on THIS instance; publishing is a second,
+        conscious choice to also offer it to every other AUBIEETERNAL
+        instance via pull_from_commons() below. Never automatic."""
+        path = PROPOSALS_DIR / f"{proposal_id}.json"
+        if not path.exists():
+            return False
+        try:
+            p = json.loads(path.read_text())
+        except Exception:
+            return False
+        if p.get("status") != "approved":
+            return False  # only vetted, already-locally-approved content goes public
+
+        try:
+            from epistemic_commons_api import API_DIR
+        except Exception:
+            API_DIR = Path("/mnt/main/repo/epistemic_commons/api")
+        API_DIR.mkdir(parents=True, exist_ok=True)
+
+        commons_path = API_DIR / "curriculum_proposals.json"
+        entries = []
+        if commons_path.exists():
+            try:
+                loaded = json.loads(commons_path.read_text())
+                if isinstance(loaded, list):
+                    entries = loaded
+            except Exception:
+                entries = []
+
+        if not any(e.get("id") == proposal_id for e in entries):
+            entries.append({
+                "id": proposal_id, "type": p.get("type"),
+                "author": p.get("author"), "track_name": p.get("track_name"),
+                "target_track": p.get("target_track"),
+                "lesson": p.get("lesson"), "lessons": p.get("lessons"),
+                "rationale": p.get("rationale"),
+                "approved_at": p.get("approved_at"),
+                "coherence_score": p.get("review", {}).get("coherence_score"),
+                "license": "CC0",
+            })
+            commons_path.write_text(json.dumps(entries, indent=2))
+
+        p["published_to_commons"]    = True
+        p["published_to_commons_at"] = datetime.datetime.now().isoformat()
+        path.write_text(json.dumps(p, indent=2))
+        return True
+
+    def pull_from_commons(self, feed_url: str = COMMONS_FEED_URL) -> dict:
+        """Fetches the shared commons feed (default: the canonical public
+        AUBIEETERNAL repo's feed) and re-submits any not-already-seen
+        entries as new LOCAL PENDING proposals - never auto-approved, so a
+        human on THIS instance still has to review and say yes before
+        anything from another instance reaches this instance's real
+        curriculum (curriculum_extra.json only changes on approve(), same
+        as any other proposal). Safe to call repeatedly - already-imported
+        entries are skipped by their commons id."""
+        try:
+            import requests
+            r = requests.get(feed_url, timeout=15)
+            r.raise_for_status()
+            remote_entries = r.json()
+            if not isinstance(remote_entries, list):
+                return {"ok": False, "reason": "unexpected feed format"}
+        except Exception as e:
+            return {"ok": False, "reason": str(e)}
+
+        already_seen = set()
+        for p in self.get_all(1000):
+            src = p.get("commons_source_id")
+            if src:
+                already_seen.add(src)
+
+        added = []
+        for entry in remote_entries:
+            source_id = entry.get("id")
+            if not source_id or source_id in already_seen:
+                continue
+            author = f"{entry.get('author', '?')} (via commons)"
+            if entry.get("type") == "lesson" and entry.get("lesson"):
+                prop = self.submit_lesson(author, entry["lesson"],
+                                           entry.get("target_track", ""), entry.get("rationale", ""))
+            elif entry.get("type") == "track" and entry.get("lessons"):
+                prop = self.submit_track(author, entry.get("track_name", "Imported Track"),
+                                          entry.get("description", ""), entry["lessons"],
+                                          entry.get("rationale", ""))
+            else:
+                continue
+            prop["commons_source_id"] = source_id
+            (PROPOSALS_DIR / f"{prop['id']}.json").write_text(json.dumps(prop, indent=2))
+            added.append(prop["id"])
+
+        return {"ok": True, "added": len(added), "proposal_ids": added, "feed_total": len(remote_entries)}
 
     def get_review_template(self) -> dict:
         """Return a blank review template for the UI."""

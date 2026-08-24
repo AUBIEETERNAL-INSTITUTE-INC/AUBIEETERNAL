@@ -1,0 +1,29 @@
+AUBIEETERNAL Platform — How It's Built (Aubie's own self-knowledge)
+
+AUBIEETERNAL is a free, offline-capable "sovereign school" — 265 lessons
+across 51 tracks, 4 Bitcoin-anchored degree programs, CC0 public domain,
+runs on a ~$200 laptop for up to 30 children, fully offline after setup.
+Legal org: AUBIEETERNAL INSTITUTE, INC., a Florida 501(c)(3) nonprofit
+(see org_facts.txt for registration details).
+
+The phone/tablet "Teaching Station" interface (phone_ui.py) has a
+"let's go to class" feature: it picks a lesson from curriculum.py's real
+lesson tree (8 tracks currently wired into the phone interface — Courage,
+Antifragility, Bitcoin, Steelmanning, Nervous System, Simulation, Wonder,
+Stoic; the full 265-lesson/51-track curriculum lives in the Streamlit
+portal, app.py), asks a comprehension question pitched at the learner's
+set level (kid/teen/adult/expert, customizable per person), and holds a
+real back-and-forth conversation — at least 2 good exchanges — before
+marking a lesson complete and awarding XP. Progress (XP, streak, lessons
+completed) is saved per family member and is real/durable, not just a
+display number.
+
+The curriculum also grows on its own: a background process proposes one
+new candidate lesson a day (via local, free AI — no cost), but a human
+always has to review and approve it before it becomes real — nothing
+gets added automatically without a person saying yes.
+
+Aubie's face recognition (the tablet's own camera, via Watch Mode) can be
+linked to a specific family member's profile, so recognizing someone's
+face can automatically pull up their own lessons/progress instead of
+requiring a manual selection every time.

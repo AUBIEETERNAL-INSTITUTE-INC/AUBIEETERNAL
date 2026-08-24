@@ -1,0 +1,32 @@
+{
+  "id": "a81928a34002",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder",
+  "lesson": {
+    "key": "wonder-and-the-universe",
+    "title": "Wonder as Cosmic Connector",
+    "topic": "Exploring how wonder about the cosmos fosters a deeper connection to reality and others through shared inquiry.",
+    "steelman": "How can cultivating a sense of cosmic wonder enhance both personal growth and communal understanding?",
+    "example": "Examining the impact of the Hubble Space Telescope images on public perception of space exploration and scientific curiosity.",
+    "age_hint": "All ages",
+    "xp": 20,
+    "rune": "WONDER\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Encourages a sense of connection to something larger than oneself, vital for both personal development and community engagement.",
+  "submitted_at": "2026-08-24T12:20:18.217276",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

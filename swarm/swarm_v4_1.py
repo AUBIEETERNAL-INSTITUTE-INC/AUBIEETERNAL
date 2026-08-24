@@ -389,6 +389,51 @@ def maybe_trigger_morning_synthesis():
         t.start()
 
 # ══════════════════════════════════════════════════════════════════════════════
+# CURRICULUM AUTOGEN — the curriculum should always be trying to grow.
+# Drafts one candidate lesson a day via local Ollama ($0.00, no Grok budget
+# touched) and submits it as a PENDING proposal through the same
+# curriculum_proposals.py review pipeline a human submission goes through
+# (Submit Curriculum → Review Queue in app.py) — it never self-approves.
+# See curriculum_autogen.py for the generator itself.
+# ══════════════════════════════════════════════════════════════════════════════
+_curriculum_autogen_last_run_date = None
+
+def _run_curriculum_autogen_background():
+    global _curriculum_autogen_last_run_date
+    try:
+        from curriculum_autogen import run_curriculum_autogen
+        print("[curriculum-autogen] 🌱 Background thread started...")
+        result = run_curriculum_autogen()
+        if result.get("ok"):
+            _curriculum_autogen_last_run_date = datetime.date.today()
+            print(f"[curriculum-autogen] ✅ Proposed \"{result['title']}\" "
+                  f"(id: {result['proposal_id']}) — awaiting human review")
+        else:
+            print(f"[curriculum-autogen] ⚠️  Skipped: {result.get('reason')}")
+    except ImportError:
+        print("[curriculum-autogen] ❌ curriculum_autogen.py not found in repo")
+    except Exception as e:
+        print(f"[curriculum-autogen] ❌ Error: {e}")
+
+def maybe_trigger_curriculum_autogen():
+    """
+    Called every tick. Fires once per day at 9AM Eastern (after the 6AM
+    synthesis run has the GPU to itself, before the noon briefing).
+    Non-blocking — runs in a daemon thread. Guards against double-fire
+    with _curriculum_autogen_last_run_date, same pattern as morning
+    synthesis above.
+    """
+    global _curriculum_autogen_last_run_date
+    now   = _now_eastern()
+    today = now.date()
+
+    if now.hour == 9 and _curriculum_autogen_last_run_date != today:
+        _curriculum_autogen_last_run_date = today
+        print(f"[curriculum-autogen] ⏰ 9AM trigger fired for {today.isoformat()}")
+        t = threading.Thread(target=_run_curriculum_autogen_background, daemon=True)
+        t.start()
+
+# ══════════════════════════════════════════════════════════════════════════════
 # GLASSES SIGNAL HANDLER — Halo glasses → swarm bridge
 # Reads /mnt/main/glasses_signal.json each tick (written by nostr_glasses_bridge.py)
 # Routes signal to appropriate daughters, writes reply to /mnt/main/glasses_reply.json
@@ -847,7 +892,7 @@ def get_btc_block():
 # StartOS internal hostname — same URL Open WebUI uses successfully
 # Point the whole stack at any Ollama by setting OLLAMA_BASE_URL in api_keys.env
 # (e.g. http://192.168.1.50:11434 for a GPU box). Defaults to the StartOS Ollama.
-OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://ollama.startos:11434").rstrip("/")
+OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
 OLLAMA_URL      = f"{OLLAMA_BASE_URL}/v1/chat/completions"
 OLLAMA_MODEL_T1 = "qwen2.5:7b"   # Tier 1 swarm — fast, light 7B model (bulk swarm)
 OLLAMA_MODEL_T2 = "qwen2.5:7b"   # Tier 2 daughters — same 7B; bump to 14b later if RAM allows
@@ -1349,6 +1394,7 @@ def launch_swarm():
     print(f"🔴 {len(DEFCON_EXPERIMENTS)} DEFCON experiments armed")
     print(f"🧠 3-Level context injection ACTIVE")
     print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen2.5:7b")
+    print(f"🌱 Curriculum autogen ACTIVE — proposes 1 new lesson daily at 9AM (pending human review)")
     print(f"🥽 Glasses signal handler ACTIVE — /mnt/main/glasses_signal.json\n")
 
     tick        = 0
@@ -1377,6 +1423,10 @@ def launch_swarm():
 
             # ── MORNING SYNTHESIS — zero cost, fully automatic ─────────────
             maybe_trigger_morning_synthesis()
+            # ──────────────────────────────────────────────────────────────
+
+            # ── CURRICULUM AUTOGEN — zero cost, proposes, never self-approves ─
+            maybe_trigger_curriculum_autogen()
             # ──────────────────────────────────────────────────────────────
 
             # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──

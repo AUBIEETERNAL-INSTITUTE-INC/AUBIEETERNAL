@@ -40,7 +40,7 @@ from pathlib import Path
 def _resolve_repo():
     import socket
     try:
-        socket.gethostbyname("ollama.startos")
+        socket.gethostbyname("localhost")
         return Path("/mnt/main/repo")
     except Exception:
         p = Path(os.path.expanduser("~/.aubieeternal/repo"))

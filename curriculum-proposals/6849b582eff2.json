@@ -1,0 +1,32 @@
+{
+  "id": "6849b582eff2",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder",
+  "lesson": {
+    "key": "wonder-as-inspiration",
+    "title": "Wonder Inspires Action",
+    "topic": "How maintaining a sense of wonder about the world can drive curiosity, exploration and personal growth.",
+    "steelman": "Can the feeling of genuine wonder be harnessed as an effective tool for daily motivation?",
+    "example": "The story of Galileo using his wonder about celestial bodies to challenge established astronomical beliefs.",
+    "age_hint": "10+",
+    "xp": 20,
+    "rune": "WONDER\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Encourages learners to see the practical benefits of maintaining a sense of wonder.",
+  "submitted_at": "2026-08-24T11:56:38.514674",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

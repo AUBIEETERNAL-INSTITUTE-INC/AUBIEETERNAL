@@ -62,7 +62,7 @@ HONESTY_LOG    = WORK_DIR / "ai_honesty_log.jsonl"
 WONDER_LOG     = WORK_DIR / "wonder_log.jsonl"
 SWARM_STATUS   = Path("/mnt/main/swarm_status.json")
 
-OLLAMA_URL     = "http://ollama.startos:11434/v1/chat/completions"
+OLLAMA_URL     = "http://localhost:11434/v1/chat/completions"
 OLLAMA_MODEL   = "qwen2.5:32b"
 OLLAMA_TIMEOUT = 300
 
