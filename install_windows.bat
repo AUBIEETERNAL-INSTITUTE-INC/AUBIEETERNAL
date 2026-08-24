@@ -31,7 +31,15 @@ if %errorlevel% neq 0 (
 echo.
 echo [*] Creating desktop shortcut...
 set SCRIPT_DIR=%~dp0
-set SHORTCUT=%USERPROFILE%\Desktop\AUBIEETERNAL.bat
+
+:: %USERPROFILE%\Desktop is wrong on any machine where OneDrive has moved
+:: Desktop into OneDrive (Known Folder Move) - that plain path may not even
+:: exist there, so the shortcut write silently fails with no error the user
+:: would notice. Ask Windows for the real, current Desktop path instead.
+set DESKTOP_DIR=
+for /f "usebackq tokens=*" %%A in (`powershell -NoProfile -Command "[Environment]::GetFolderPath('Desktop')" 2^>nul`) do set DESKTOP_DIR=%%A
+if not defined DESKTOP_DIR set DESKTOP_DIR=%USERPROFILE%\Desktop
+set SHORTCUT=%DESKTOP_DIR%\AUBIEETERNAL.bat
 
 echo @echo off > "%SHORTCUT%"
 echo title AUBIEETERNAL >> "%SHORTCUT%"
@@ -39,7 +47,13 @@ echo cd /d "%SCRIPT_DIR%" >> "%SHORTCUT%"
 echo python launcher.py >> "%SHORTCUT%"
 echo pause >> "%SHORTCUT%"
 
-echo [OK] Desktop shortcut created: AUBIEETERNAL.bat
+if exist "%SHORTCUT%" (
+    echo [OK] Desktop shortcut created: %SHORTCUT%
+) else (
+    echo [!] Could not create the desktop shortcut at %SHORTCUT%
+    echo     You can still launch AUBIEETERNAL by running: python launcher.py
+    echo     from this folder: %SCRIPT_DIR%
+)
 
 :: Install Python packages now
 echo.
