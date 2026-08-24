@@ -1,0 +1,16 @@
+[Unit]
+Description=AUBIEETERNAL Swarm (background daughter-swarm, curriculum autogen, briefings)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aubieeternal
+WorkingDirectory=/home/aubieeternal/AUBIEETERNAL
+Environment="PATH=/home/aubieeternal/AUBIEETERNAL/venv/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/home/aubieeternal/AUBIEETERNAL/venv/bin/python -u swarm/swarm_v4_1.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
