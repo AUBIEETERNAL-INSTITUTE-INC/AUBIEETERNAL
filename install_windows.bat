@@ -68,10 +68,44 @@ if %errorlevel% neq 0 (
 ) else (
     echo [OK] Ollama found.
     echo.
-    echo [*] Pulling AI model (qwen2.5:7b - one time, ~4.7GB)...
-    echo     This may take 5-15 minutes on first run.
-    ollama pull qwen2.5:7b
-    echo [OK] Model ready.
+
+    :: Detect RAM to recommend a model tier - a stronger machine should
+    :: default to a bigger model, not always the smallest one.
+    set RAM_GB=
+    for /f "usebackq tokens=*" %%A in (`powershell -NoProfile -Command "[math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory / 1GB)" 2^>nul`) do set RAM_GB=%%A
+
+    set RECOMMENDED=1
+    if defined RAM_GB (
+        if %RAM_GB% GEQ 28 (
+            set RECOMMENDED=3
+        ) else if %RAM_GB% GEQ 16 (
+            set RECOMMENDED=2
+        )
+    )
+
+    echo   Choose AI model:
+    if defined RAM_GB echo   ^(detected ~%RAM_GB%GB RAM^)
+    echo   [1] qwen2.5:7b  - Fast, works on 8GB RAM    ^(4.7GB download^)
+    echo   [2] qwen2.5:14b - Best, needs 16GB RAM       ^(9.0GB download^)
+    echo   [3] qwen2.5:32b - Strongest, needs 28GB+ RAM ^(18GB download^)
+    echo   [4] Skip
+    set MODEL_CHOICE=
+    set /p MODEL_CHOICE="  Choice (1/2/3/4) [recommended: %RECOMMENDED%]: "
+    if not defined MODEL_CHOICE set MODEL_CHOICE=%RECOMMENDED%
+
+    set MODEL=qwen2.5:7b
+    if "%MODEL_CHOICE%"=="2" set MODEL=qwen2.5:14b
+    if "%MODEL_CHOICE%"=="3" set MODEL=qwen2.5:32b
+    if "%MODEL_CHOICE%"=="4" set MODEL=
+
+    if defined MODEL (
+        echo.
+        echo [*] Pulling %MODEL% - this may take a few minutes...
+        ollama pull %MODEL%
+        echo [OK] Model ready.
+    ) else (
+        echo [*] Skipped model download.
+    )
 )
 
 echo.
