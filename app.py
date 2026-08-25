@@ -996,8 +996,7 @@ with st.sidebar:
         ],
         "🧬 TRUTH": [
             "🔮 Truth Lattice",
-            "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
-            "🧠 Polyvagal Oracle",
+            "🧠 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
         ],
         "🌉 X BRIDGE": [
             "🌉 X Bridge",
@@ -2111,113 +2110,6 @@ Make it warm, specific, and actionable. End with a War Eagle family affirmation.
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: POLYVAGAL ORACLE
 # ══════════════════════════════════════════════════════════════════════════════
-elif "Polyvagal Oracle" in active:
-    st.markdown('<div class="card-title">🧬 POLYVAGAL ORACLE — Nervous System Assessment</div>', unsafe_allow_html=True)
-
-    st.markdown("""
-    <div class="card">
-        <div style="font-size:0.85rem;color:#aabbcc;line-height:1.9;">
-        The <b style="color:#00cfff;">Polyvagal Theory</b> (Dr. Stephen Porges) explains three automatic nervous system states.
-        Type what you or your child is experiencing — the Oracle will assess the state and recommend a co-regulation strategy.
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # State explainer cards
-    for state, emoji, color, signs, rec in [
-        ("VENTRAL VAGAL — Safe & Social", "🟢", "#00ff88",
-         "Warm eyes, playful, curious, easy eye contact, relaxed breathing",
-         "Lean into storytelling, shared laughter, and collaborative exploration."),
-        ("SYMPATHETIC — Fight or Flight", "🟡", "#ff9500",
-         "Wide eyes, tense jaw, fast/shallow breathing, loud voice, fidgeting, aggression",
-         "Offer movement, 4-7-8 breathwork, or 'what can we control?' exercises."),
-        ("DORSAL VAGAL — Shutdown", "🔴", "#ff4444",
-         "Flat face, avoiding eye contact, quiet/monotone voice, 'I don't care', withdrawing",
-         "Gentle presence, no pressure. Somatic grounding: cold water, feet on floor, humming."),
-    ]:
-        st.markdown(f'''
-        <div class="card" style="border-left:3px solid {color};">
-            <div style="color:{color};font-family:Orbitron,monospace;font-size:0.8rem;">{emoji} {state}</div>
-            <div style="font-size:0.78rem;color:#8899bb;margin-top:4px;"><b>Signs:</b> {signs}</div>
-            <div style="font-size:0.78rem;color:#aabbcc;margin-top:4px;"><b>Strategy:</b> {rec}</div>
-        </div>
-        ''', unsafe_allow_html=True)
-
-    st.markdown("---")
-    st.markdown("### 🔍 Assess a State")
-    trigger = st.text_area("Describe what's happening", placeholder="I feel like everything is falling apart and no one understands me...", height=80)
-    kid_name_pv = st.text_input("Name (optional)", value=st.session_state.family_profile["kid"]["name"])
-
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("🧬 Assess Polyvagal State", type="primary") and trigger:
-            trigger_lower = trigger.lower()
-            if any(w in trigger_lower for w in ["safe","connect","play","curious","love","joy","happy","excited","calm","ready"]):
-                state, emoji, color = "ventral_vagal", "🟢", "#00ff88"
-                desc = "✅ SAFE & SOCIAL — Ventral vagal active. Curiosity, play, and co-regulation online."
-                rec = "Lean into storytelling, shared laughter, eye contact, and collaborative exploration."
-            elif any(w in trigger_lower for w in ["stress","angry","anxious","fight","flight","worry","scared","panic","overwhelm","tense","rage"]):
-                state, emoji, color = "sympathetic", "🟡", "#ff9500"
-                desc = "⚡ MOBILIZED — Sympathetic nervous system active. Energy for action or defense."
-                rec = "Offer movement, 4-7-8 breathwork, or structured 'what can we control?' exercises."
-            else:
-                state, emoji, color = "dorsal_vagal", "🔴", "#ff4444"
-                desc = "🛑 SHUTDOWN — Dorsal vagal dominant. Numbness or freeze response."
-                rec = "Gentle presence, no pressure. Somatic grounding: cold water, feet on floor, humming."
-
-            st.markdown(f'''
-            <div class="card" style="border:2px solid {color};">
-                <div style="color:{color};font-family:Orbitron,monospace;font-size:1rem;margin-bottom:8px;">{emoji} {state.upper().replace("_"," ")}</div>
-                <div style="font-size:0.88rem;color:#c8d8ff;line-height:1.8;">{desc}</div>
-                <div style="margin-top:10px;padding:8px;background:#0d0d2b;border-radius:6px;">
-                    <div style="color:#00cfff;font-size:0.75rem;font-family:Orbitron,monospace;">RECOMMENDED STRATEGY</div>
-                    <div style="font-size:0.85rem;color:#aabbcc;margin-top:4px;">{rec}</div>
-                </div>
-            </div>
-            ''', unsafe_allow_html=True)
-            save_memory(f"Polyvagal: {kid_name_pv}", f"State: {state} | {trigger[:100]}", tags=["polyvagal", state])
-            award_xp(10)
-
-    with col2:
-        if st.button("🤖 Ask AI for Deep Analysis") and trigger:
-            if not st.session_state.get("key_xai") and not st.session_state.get("active_provider"):
-                st.info("Add an API key in the sidebar for AI analysis.")
-            else:
-                with st.spinner("Consulting the nervous system oracle..."):
-                    try:
-                        client, model, _p, _pn = get_ai_client()
-                        resp = client.chat.completions.create(
-                            model=model,
-                            messages=[{"role": "system", "content": "You are a polyvagal-informed therapist. Assess nervous system state, explain what's happening, and give 3 specific co-regulation techniques. Be warm, practical, and trauma-informed."},
-                                       {"role": "user", "content": f"Person: {kid_name_pv}\nSituation: {trigger}"}],
-                            max_tokens=600
-                        )
-                        st.markdown(f'<div class="card"><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;">{resp.choices[0].message.content}</div></div>', unsafe_allow_html=True)
-                        award_xp(15)
-                    except Exception as e:
-                        st.error(str(e))
-
-    st.markdown("---")
-    st.markdown("### 🛠️ Co-Regulation Toolkit")
-    tools = [
-        ("❤️ Heart-to-Heart Breathing", "Place one hand on your heart. Breathe in 4 counts, hold 4, out 6. Do this together.", "2-3 min"),
-        ("🖐️ 5-4-3-2-1 Grounding", "Name 5 things you see, 4 you touch, 3 you hear, 2 you smell, 1 you taste.", "3 min"),
-        ("🏃 Movement Reset", "10 jumping jacks, shake your hands, stomp your feet. Move the stress through the body.", "1 min"),
-        ("🎵 Humming", "Hum any tune for 60 seconds. Humming activates the vagus nerve directly.", "1 min"),
-        ("💧 Cold Water", "Splash cold water on face or hold ice. Activates the dive reflex, calms heart rate.", "30 sec"),
-        ("🤝 Physical Co-Regulation", "Sit close, hand on shoulder or back (if welcome). Your calm nervous system regulates theirs.", "As long as needed"),
-    ]
-    for name, desc, duration in tools:
-        st.markdown(f'''
-        <div class="card" style="display:flex;gap:12px;align-items:flex-start;">
-            <div style="flex:1;">
-                <div style="color:#00cfff;font-size:0.85rem;font-weight:bold;">{name}</div>
-                <div style="font-size:0.8rem;color:#8899bb;margin-top:4px;">{desc}</div>
-            </div>
-            <div style="min-width:60px;text-align:center;background:#0d0d2b;border-radius:6px;padding:6px;font-family:Share Tech Mono,monospace;font-size:0.75rem;color:#ff6b35;">{duration}</div>
-        </div>
-        ''', unsafe_allow_html=True)
-
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SOCIAL CALIBRATION ORACLE
 # ══════════════════════════════════════════════════════════════════════════════
@@ -10014,7 +9906,7 @@ if "Polyvagal Oracle" in active:
     _fid_pv = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
 
-    _pv_tabs = st.tabs(["🟢 State Check", "🧪 Quiz", "🛠️ State-Shifting Toolkit",
+    _pv_tabs = st.tabs(["🟢 State Check", "🔍 Describe It (AI)", "🧪 Quiz", "🛠️ State-Shifting Toolkit",
                          "📊 PVC Research", "🔬 Social Calibration"])
 
     # ── Daily State Check ─────────────────────────────────────────────────────
@@ -10093,8 +9985,64 @@ if "Polyvagal Oracle" in active:
                                 f'🟢 {_sv_counts["2"]} · 🟡 {_sv_counts["1"]} · 🔴 {_sv_counts["0"]} '
                                 f'(last 20 check-ins — {_green_pct:.0f}% green)</div>', unsafe_allow_html=True)
 
-    # ── Polyvagal Quiz ────────────────────────────────────────────────────────
+    # ── Free-text description → keyword assessment + optional AI deep-dive ────
+    # Merged in from the duplicate "Polyvagal Oracle" tab body this file used
+    # to have (found live 2026-08-25) - this was its one genuinely distinct
+    # feature next to the richer 5-tab version above (a free-text description
+    # instead of picking from 3 fixed states, plus an AI-generated deep dive).
     with _pv_tabs[1]:
+        st.markdown('<div style="color:#8899bb;font-size:0.82rem;">Type what you or your child is experiencing in your own words — get an instant keyword-based read, or ask the AI for a deeper, situation-specific analysis.</div>', unsafe_allow_html=True)
+        trigger = st.text_area("Describe what's happening", placeholder="I feel like everything is falling apart and no one understands me...", height=80, key="pv_describe_trigger")
+        kid_name_pv = st.text_input("Name (optional)", value=st.session_state.family_profile["kid"]["name"], key="pv_describe_name")
+
+        _pvd_c1, _pvd_c2 = st.columns(2)
+        with _pvd_c1:
+            if st.button("🧬 Assess Polyvagal State", type="primary", key="pv_describe_assess") and trigger:
+                trigger_lower = trigger.lower()
+                if any(w in trigger_lower for w in ["safe","connect","play","curious","love","joy","happy","excited","calm","ready"]):
+                    state, emoji, color = "ventral_vagal", "🟢", "#00ff88"
+                    desc = "✅ SAFE & SOCIAL — Ventral vagal active. Curiosity, play, and co-regulation online."
+                    rec = "Lean into storytelling, shared laughter, eye contact, and collaborative exploration."
+                elif any(w in trigger_lower for w in ["stress","angry","anxious","fight","flight","worry","scared","panic","overwhelm","tense","rage"]):
+                    state, emoji, color = "sympathetic", "🟡", "#ff9500"
+                    desc = "⚡ MOBILIZED — Sympathetic nervous system active. Energy for action or defense."
+                    rec = "Offer movement, 4-7-8 breathwork, or structured 'what can we control?' exercises."
+                else:
+                    state, emoji, color = "dorsal_vagal", "🔴", "#ff4444"
+                    desc = "🛑 SHUTDOWN — Dorsal vagal dominant. Numbness or freeze response."
+                    rec = "Gentle presence, no pressure. Somatic grounding: cold water, feet on floor, humming."
+
+                st.markdown(f'''
+                <div class="card" style="border:2px solid {color};">
+                    <div style="color:{color};font-family:Orbitron,monospace;font-size:1rem;margin-bottom:8px;">{emoji} {state.upper().replace("_"," ")}</div>
+                    <div style="font-size:0.88rem;color:#c8d8ff;line-height:1.8;">{desc}</div>
+                    <div style="margin-top:10px;padding:8px;background:#0d0d2b;border-radius:6px;">
+                        <div style="color:#00cfff;font-size:0.75rem;font-family:Orbitron,monospace;">RECOMMENDED STRATEGY</div>
+                        <div style="font-size:0.85rem;color:#aabbcc;margin-top:4px;">{rec}</div>
+                    </div>
+                </div>
+                ''', unsafe_allow_html=True)
+                save_memory(f"Polyvagal: {kid_name_pv}", f"State: {state} | {trigger[:100]}", tags=["polyvagal", state])
+                award_xp(10)
+
+        with _pvd_c2:
+            if st.button("🤖 Ask AI for Deep Analysis", key="pv_describe_ai") and trigger:
+                with st.spinner("Consulting the nervous system oracle..."):
+                    try:
+                        client, model, _p, _pn = get_ai_client()
+                        resp = client.chat.completions.create(
+                            model=model,
+                            messages=[{"role": "system", "content": "You are a polyvagal-informed therapist. Assess nervous system state, explain what's happening, and give 3 specific co-regulation techniques. Be warm, practical, and trauma-informed."},
+                                       {"role": "user", "content": f"Person: {kid_name_pv}\nSituation: {trigger}"}],
+                            max_tokens=600
+                        )
+                        st.markdown(f'<div class="card"><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;">{resp.choices[0].message.content}</div></div>', unsafe_allow_html=True)
+                        award_xp(15)
+                    except Exception as e:
+                        st.error(str(e))
+
+    # ── Polyvagal Quiz ────────────────────────────────────────────────────────
+    with _pv_tabs[2]:
         st.markdown("**Identify the nervous system state in each scenario.**")
         _quiz_qs = [
             {"q":"Your child is staring at homework with a flat voice saying 'I don't know' when asked what's wrong.",
@@ -10162,7 +10110,7 @@ if "Polyvagal Oracle" in active:
                 st.session_state.pv_quiz_done = False; st.rerun()
 
     # ── State-Shifting Toolkit ────────────────────────────────────────────────
-    with _pv_tabs[2]:
+    with _pv_tabs[3]:
         st.markdown("### 🛠️ State-Shifting Toolkit")
         _toolkit_state = st.selectbox("Current state to shift FROM:", 
             ["🟡 Sympathetic (activated, frustrated)", "🔴 Dorsal Vagal (shutdown, numb)"], key="tk_state")
@@ -10216,7 +10164,7 @@ if "Polyvagal Oracle" in active:
                     f'</div>', unsafe_allow_html=True)
 
     # ── PVC Research Protocol ─────────────────────────────────────────────────
-    with _pv_tabs[3]:
+    with _pv_tabs[4]:
         st.markdown("""
         <div class="card" style="border-left:3px solid #a020f0;">
             <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;">
@@ -10281,7 +10229,7 @@ if "Polyvagal Oracle" in active:
                 st.info(f"Need {10-len(_recs)} more sessions to compute correlation.")
 
     # ── Social Calibration ────────────────────────────────────────────────────
-    with _pv_tabs[4]:
+    with _pv_tabs[5]:
         st.markdown("""
         <div class="card" style="border-left:3px solid #00cfff;">
             <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.72rem;">
