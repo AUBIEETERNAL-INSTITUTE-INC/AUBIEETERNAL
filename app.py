@@ -418,12 +418,6 @@ def award_xp(amount):
             st.session_state.badges.append(name)
             st.toast(f"🏅 Badge Unlocked: {name}!", icon="🏅")
 
-def get_client():
-    key = st.session_state.api_key
-    if not key:
-        return None
-    return OpenAI(api_key=key, base_url="https://api.x.ai/v1")
-
 # ── Multi-AI Provider Config ──────────────────────────────────────────────────
 AI_PROVIDERS = {
     "Local Ollama (FREE — qwen3:32b)": {
@@ -816,82 +810,20 @@ with st.sidebar:
 
     st.markdown("### 🤖 AI Provider")
 
-    provider_names = list(AI_PROVIDERS.keys())
-    selected_provider = st.selectbox(
-        "Choose AI",
-        provider_names,
-        index=provider_names.index(st.session_state.active_provider),
-        key="provider_select"
+    # Full provider picker, key entry, Keys→Disk, and model selector all
+    # live in the "🤖 AI Models" tab now (they were duplicated here and
+    # there - found live 2026-08-25). Sidebar keeps a read-only status line
+    # since it's the one thing worth seeing from every tab.
+    _sb_prov  = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
+    _sb_model = st.session_state.get("active_model", _sb_prov["models"][0])
+    st.markdown(
+        f'<div class="memory-node" style="border-left:3px solid {_sb_prov["color"]};">'
+        f'<span style="color:{_sb_prov["color"]};font-size:1rem;">{_sb_prov["icon"]}</span> '
+        f'<span style="font-size:0.82rem;color:#c8d8ff;">{st.session_state.active_provider}</span><br>'
+        f'<span style="font-size:0.7rem;color:#556677;">{_sb_model}</span>'
+        f'</div>', unsafe_allow_html=True
     )
-    st.session_state.active_provider = selected_provider
-    prov = AI_PROVIDERS[selected_provider]
-
-    # Provider badge
-    st.markdown(f'<div class="memory-node" style="border-left:3px solid {prov["color"]};"><span style="color:{prov["color"]};font-size:1rem;">{prov["icon"]}</span> <span style="font-size:0.78rem;color:#aabbcc;">{prov["note"]}</span><br><a href="{prov["get_url"]}" target="_blank" style="font-size:0.7rem;color:{prov["color"]};">🔑 Get API Key →</a></div>', unsafe_allow_html=True)
-
-    # Key input for selected provider
-    key_val = st.text_input(
-        f"{selected_provider} Key",
-        type="password",
-        placeholder=prov["placeholder"],
-        value=st.session_state.get(prov["key_field"], ""),
-        key=f"input_{prov['key_field']}"
-    )
-    if key_val:
-        st.session_state[prov["key_field"]] = key_val
-        st.session_state.api_key = key_val  # backward compat
-
-    # ── GitHub Token + Save All Keys ──────────────────────────────────────────
-    st.markdown("---")
-    st.markdown("### 🔑 Keys → Disk")
-    github_val = st.text_input(
-        "GitHub Token (enables swarm auto-push)",
-        type="password",
-        placeholder="ghp_...",
-        value=st.session_state.get("github_token", ""),
-        key="input_github_token"
-    )
-    if github_val:
-        st.session_state["github_token"] = github_val
-
-    if st.sidebar.button("💾 Save All Keys to Disk", key="save_all_keys_btn"):
-        try:
-            env_path = "/mnt/main/api_keys.env"
-            existing = {}
-            try:
-                with open(env_path) as f:
-                    for line in f:
-                        if "=" in line:
-                            k, v = line.strip().split("=", 1)
-                            existing[k] = v
-            except FileNotFoundError:
-                pass
-            if st.session_state.get("key_xai"):
-                existing["XAI_API_KEY"] = st.session_state["key_xai"]
-            if st.session_state.get("key_openai"):
-                existing["OPENAI_API_KEY"] = st.session_state["key_openai"]
-            if st.session_state.get("key_anthropic"):
-                existing["ANTHROPIC_API_KEY"] = st.session_state["key_anthropic"]
-            if st.session_state.get("github_token"):
-                existing["GITHUB_TOKEN"] = st.session_state["github_token"]
-            with open(env_path, "w") as f:
-                for k, v in existing.items():
-                    f.write(k + "=" + v + "\n")
-            st.sidebar.success("✅ Saved: " + ", ".join(existing.keys()))
-        except Exception as e:
-            st.sidebar.error(f"❌ Could not save: {e}")
-
-    # Model selector
-    model_list = prov["models"]
-    st.session_state.active_model = st.selectbox("Model", model_list, key="model_select")
-
-    # Status dots for all providers
-    st.markdown("**All Providers:**")
-    for pname, pinfo in AI_PROVIDERS.items():
-        has_key = bool(st.session_state.get(pinfo["key_field"], ""))
-        dot = "🟢" if has_key else ("🟡" if pinfo["free"] else "⚫")
-        active_mark = " ◀" if pname == selected_provider else ""
-        st.markdown(f'<div style="font-family:Share Tech Mono,monospace;font-size:0.72rem;color:#{"aabbcc" if has_key else "445577"};">{dot} {pinfo["icon"]} {pname}{active_mark}</div>', unsafe_allow_html=True)
+    st.caption("Switch provider, add keys, or change model in the 🤖 AI Models tab")
 
     st.markdown("---")
     st.markdown("### 👤 Profile")
@@ -1240,6 +1172,55 @@ elif "AI Models" in active:
 
             # Available models
             st.markdown(f'**Models:** {" · ".join(f"`{m}`" for m in pinfo["models"])}')
+
+    st.markdown("---")
+    st.markdown("### 🎯 Active Model")
+    _am_prov = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
+    _am_models = _am_prov["models"]
+    _am_idx = _am_models.index(st.session_state["active_model"]) if st.session_state.get("active_model") in _am_models else 0
+    st.session_state.active_model = st.selectbox(
+        f"Model for {st.session_state.active_provider}", _am_models, index=_am_idx, key="models_tab_model_select"
+    )
+
+    st.markdown("---")
+    st.markdown("### 🔑 Keys → Disk")
+    st.markdown('<div style="font-size:0.78rem;color:#8899bb;">Save your keys to disk so they persist across restarts (they otherwise live only in this browser session). GitHub token enables the swarm\'s auto-push.</div>', unsafe_allow_html=True)
+    github_val = st.text_input(
+        "GitHub Token (enables swarm auto-push)",
+        type="password",
+        placeholder="ghp_...",
+        value=st.session_state.get("github_token", ""),
+        key="input_github_token"
+    )
+    if github_val:
+        st.session_state["github_token"] = github_val
+
+    if st.button("💾 Save All Keys to Disk", key="save_all_keys_btn"):
+        try:
+            env_path = "/mnt/main/api_keys.env"
+            existing = {}
+            try:
+                with open(env_path) as f:
+                    for line in f:
+                        if "=" in line:
+                            k, v = line.strip().split("=", 1)
+                            existing[k] = v
+            except FileNotFoundError:
+                pass
+            if st.session_state.get("key_xai"):
+                existing["XAI_API_KEY"] = st.session_state["key_xai"]
+            if st.session_state.get("key_openai"):
+                existing["OPENAI_API_KEY"] = st.session_state["key_openai"]
+            if st.session_state.get("key_anthropic"):
+                existing["ANTHROPIC_API_KEY"] = st.session_state["key_anthropic"]
+            if st.session_state.get("github_token"):
+                existing["GITHUB_TOKEN"] = st.session_state["github_token"]
+            with open(env_path, "w") as f:
+                for k, v in existing.items():
+                    f.write(k + "=" + v + "\n")
+            st.success("✅ Saved: " + ", ".join(existing.keys()))
+        except Exception as e:
+            st.error(f"❌ Could not save: {e}")
 
     st.markdown("---")
     st.markdown("### 🧪 Test Active Provider")
