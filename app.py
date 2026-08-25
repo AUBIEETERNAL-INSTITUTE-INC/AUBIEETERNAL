@@ -4977,48 +4977,72 @@ if "School" in active:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# TAB: PARENT DASHBOARD 📈
+# TAB: PARENT DASHBOARD 📊
 # ══════════════════════════════════════════════════════════════════════════════
 if "Parent Dashboard" in active:
-    st.markdown('<div class="card-title">📈 PARENT OVERVIEW DASHBOARD — All Kids at a Glance</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📊 PARENT DASHBOARD — All Kids at a Glance</div>', unsafe_allow_html=True)
 
     try:
-        from family_profiles import FamilyAuth as _FA_pd, load_family_stats as _lfs_pd
-        _auth_pd  = _FA_pd()
-        _families_pd = _auth_pd.list_families()
+        from family_profiles import FamilyAuth as _FA_pd, load_family_stats as _lfs_pd, get_daily_quests as _gdq_pd
+        _auth_pd     = _FA_pd()
+        _families_pd = [f for f in _auth_pd.list_families() if not (f.get("is_operator") and _fid != "operator")]
 
-        # ── Summary cards ──────────────────────────────────────────────────────
-        cols_pd = st.columns(min(len(_families_pd), 4))
-        for i, fam in enumerate(_families_pd[:4]):
-            with cols_pd[i % 4]:
-                fid    = fam["family_id"]
-                stats  = _lfs_pd(fid)
-                color  = fam.get("color","#00cfff")
-                emoji  = fam.get("emoji","🦅")
-                xp     = stats.get("total_xp",0)
-                level  = max(1, xp // 100 + 1)
-                streak = stats.get("streak_days",0)
-                coh    = stats.get("coherence_history",[-1])
-                last_coh = coh[-1] if coh and coh[-1] != -1 else "—"
-                frags  = stats.get("child_rune_fragments",0)
-                lessons = len(stats.get("lessons_completed",[]))
+        try:
+            from family_connect import ShareToX as _SX, LatticeFeed as _LF
+            _feed_pd = _LF()
+            _SHARE_OK_PD = True
+        except ImportError:
+            _SHARE_OK_PD = False
 
-                st.markdown(
-                    f'<div class="card" style="border:2px solid {color};text-align:center;">'
-                    f'<div style="font-size:1.8rem;">{emoji}</div>'
-                    f'<div style="color:{color};font-family:Orbitron,monospace;font-size:0.82rem;">{fam["kid_name"]}</div>'
-                    f'<div style="color:#8899bb;font-size:0.72rem;">{fam["parent_name"]} observing</div>'
-                    f'<div style="margin-top:8px;font-family:Share Tech Mono,monospace;font-size:0.78rem;color:#aabbcc;line-height:2;">'
-                    f'LVL {level} · {xp} XP<br>'
-                    f'🔥 {streak} day streak<br>'
-                    f'Coherence: {last_coh}<br>'
-                    f'🔴 {frags}/256 frags<br>'
-                    f'📖 {lessons} lessons done'
-                    f'</div></div>', unsafe_allow_html=True)
+        # ── Per-family detail cards ─────────────────────────────────────────────
+        st.markdown("### 👨‍👩‍👧 All Family Progress")
+        for fam_pd in _families_pd:
+            fid_pd  = fam_pd["family_id"]
+            stats   = _lfs_pd(fid_pd)
+            color   = fam_pd.get("color","#00cfff")
+            emoji   = fam_pd.get("emoji","🦅")
+            xp      = stats.get("total_xp",0)
+            level   = stats.get("level", max(1, xp // 100 + 1))
+            streak  = stats.get("streak_days",0)
+            badges  = len(stats.get("badges",[]))
+            frags   = stats.get("child_rune_fragments",0)
+            sats    = stats.get("sats_earned",0)
+            lessons = len(stats.get("lessons_completed",[]))
+            last    = stats.get("last_session_date","never")
+
+            with st.expander(
+                f"{emoji} {fam_pd['display_name']} — {fam_pd['kid_name']} · LVL {level} · 🔥{streak} · {xp} XP",
+                expanded=(fid_pd == _fid)
+            ):
+                pd1,pd2,pd3,pd4,pd5,pd6 = st.columns(6)
+                for col, label, val, vc in [
+                    (pd1,"Level",    level,   color),
+                    (pd2,"Streak",   f"🔥{streak}", "#ff9500"),
+                    (pd3,"XP",       xp,      "#00cfff"),
+                    (pd4,"Badges",   badges,  "#a020f0"),
+                    (pd5,"Frags",    f"{frags}/256", "#f7931a"),
+                    (pd6,"Sats",     sats,    "#00ff88"),
+                ]:
+                    col.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:{vc};">{val}</div><div class="stat-lbl">{label}</div></div>', unsafe_allow_html=True)
+
+                st.caption(f"Last session: {last} · Lessons completed: {lessons}")
+
+                coh_hist = stats.get("coherence_history",[])
+                if coh_hist:
+                    st.markdown("**Coherence history:** " + " → ".join(f"`{c:.2f}`" for c in coh_hist[-5:]))
+
+                if _SHARE_OK_PD and streak > 0:
+                    share_data = _SX.streak_milestone(fam_pd["kid_name"], streak, xp)
+                    if st.button(f"📣 Share {fam_pd['kid_name']}'s streak to X", key=f"share_streak_{fid_pd}"):
+                        st.markdown(f"[🐦 Post to X]({share_data['url']})", unsafe_allow_html=True)
+                        st.code(share_data["text"], language=None)
+                        _feed_pd.post(fid_pd, fam_pd["display_name"], emoji,
+                                      "streak_milestone",
+                                      f"🔥 {streak}-day streak! {xp} XP", public=True)
 
         st.divider()
 
-        # ── Coherence trends ───────────────────────────────────────────────────
+        # ── Coherence trends across families ────────────────────────────────────
         st.markdown("### 📊 Coherence Trends")
         if HAS_NUMPY:
             try:
@@ -5049,9 +5073,8 @@ if "Parent Dashboard" in active:
 
         st.divider()
 
-        # ── Pending quests ─────────────────────────────────────────────────────
+        # ── Pending quests today ─────────────────────────────────────────────────
         st.markdown("### ⭕ Pending Quests Today")
-        from family_profiles import get_daily_quests as _gdq_pd
         for fam in _families_pd[:4]:
             fid    = fam["family_id"]
             quests = _gdq_pd(fid)
@@ -5069,6 +5092,21 @@ if "Parent Dashboard" in active:
 
         st.divider()
 
+        # ── Pending Lightning rewards ─────────────────────────────────────────────
+        try:
+            from bitcoin_wallet import OperatorWallet as _OW_pd
+            _op_pd  = _OW_pd()
+            pending = _op_pd.get_all_pending_rewards()
+            if pending:
+                st.markdown(f"### ⚡ {len(pending)} Pending Lightning Rewards")
+                total_sats = sum(r.get("sats",0) for r in pending)
+                st.caption(f"Total pending: {total_sats:,} sats")
+                for r in pending[:5]:
+                    st.markdown(f'<div class="memory-node" style="border-left:3px solid #f7931a;"><span style="color:#f7931a;">{r["family_id"]} · +{r.get("sats", 0)} sats</span><br><span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>', unsafe_allow_html=True)
+                st.divider()
+        except ImportError:
+            pass
+
         # ── Send global encouragement ──────────────────────────────────────────
         st.markdown("### ❤️ Send Encouragement to All Families")
         enc_msg = st.text_input("Message", placeholder="Keep going everyone — War Eagle! 🦅", key="pd_enc_msg")
@@ -5085,6 +5123,24 @@ if "Parent Dashboard" in active:
                 st.success("✅ Broadcast queued — all families receive within 24s")
             except Exception as e:
                 st.error(f"Error: {e}")
+
+        # ── Quick share panel ────────────────────────────────────────────────────
+        if _SHARE_OK_PD:
+            st.divider()
+            st.markdown("### 📣 Quick Share")
+            share_type = st.selectbox("Event type", ["streak_milestone","badge_earned","morning_insight","coherence_breakthrough"], key="pd_share_type")
+            share_kid  = st.text_input("Kid name", value=_cf.get("kid_name","Explorer") if _cf else "Explorer", key="pd_share_kid")
+            if st.button("🐦 Generate X Post", key="pd_gen_share"):
+                if share_type == "streak_milestone":
+                    data = _SX.streak_milestone(share_kid, 7, 250)
+                elif share_type == "badge_earned":
+                    data = _SX.badge_earned(share_kid, "🌀 Lattice Walker", 150)
+                elif share_type == "morning_insight":
+                    data = _SX.morning_insight(datetime.date.today().isoformat(), 1.42, "Antifragility compounds across generations...")
+                else:
+                    data = _SX.coherence_breakthrough(share_kid, 0.92, "Courage Level 3")
+                st.markdown(f"[🐦 Open X to post]({data['url']})")
+                st.code(data["text"], language=None)
 
     except ImportError as e:
         st.error(f"family_profiles.py not found: {e}")
@@ -5590,108 +5646,6 @@ if _school_mode and any(t in active for t in _advanced_tabs):
         st.caption("🛡️ Safety: Only parent-approved contributions enter the swarm.")
     else:
         st.info("Push swarm_contributions.py and ai_sandbox_persistence.py to GitHub and redeploy to enable this.")
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB: PARENT DASHBOARD 📊 — all kids' progress at a glance
-# ══════════════════════════════════════════════════════════════════════════════
-if "Parent Dashboard" in active:
-    st.markdown('<div class="card-title">📊 PARENT DASHBOARD — All Kids at a Glance</div>', unsafe_allow_html=True)
-
-    try:
-        from family_profiles import FamilyAuth as _FA_pd, load_family_stats as _lfs_pd
-        from family_connect import ShareToX as _SX, LatticeFeed as _LF
-
-        _auth_pd  = _FA_pd()
-        _feed_pd  = _LF()
-        families_pd = _auth_pd.list_families()
-
-        # ── Family cards ──────────────────────────────────────────────────────
-        st.markdown("### 👨‍👩‍👧 All Family Progress")
-        for fam_pd in families_pd:
-            if fam_pd.get("is_operator") and _fid != "operator":
-                continue
-            fid_pd  = fam_pd["family_id"]
-            stats   = _lfs_pd(fid_pd)
-            color   = fam_pd.get("color","#00cfff")
-            emoji   = fam_pd.get("emoji","🦅")
-            xp      = stats.get("total_xp",0)
-            level   = stats.get("level",1)
-            streak  = stats.get("streak_days",0)
-            badges  = len(stats.get("badges",[]))
-            frags   = stats.get("child_rune_fragments",0)
-            sats    = stats.get("sats_earned",0)
-            lessons = len(stats.get("lessons_completed",[]))
-            last    = stats.get("last_session_date","never")
-
-            with st.expander(
-                f"{emoji} {fam_pd['display_name']} — {fam_pd['kid_name']} · LVL {level} · 🔥{streak} · {xp} XP",
-                expanded=(fid_pd == _fid)
-            ):
-                pd1,pd2,pd3,pd4,pd5,pd6 = st.columns(6)
-                for col, label, val, vc in [
-                    (pd1,"Level",    level,   color),
-                    (pd2,"Streak",   f"🔥{streak}", "#ff9500"),
-                    (pd3,"XP",       xp,      "#00cfff"),
-                    (pd4,"Badges",   badges,  "#a020f0"),
-                    (pd5,"Frags",    f"{frags}/256", "#f7931a"),
-                    (pd6,"Sats",     sats,    "#00ff88"),
-                ]:
-                    col.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:{vc};">{val}</div><div class="stat-lbl">{label}</div></div>', unsafe_allow_html=True)
-
-                st.caption(f"Last session: {last} · Lessons completed: {lessons}")
-
-                # Coherence history sparkline
-                coh_hist = stats.get("coherence_history",[])
-                if coh_hist:
-                    st.markdown("**Coherence history:** " + " → ".join(f"`{c:.2f}`" for c in coh_hist[-5:]))
-
-                # Share button
-                if streak > 0:
-                    share_data = _SX.streak_milestone(fam_pd["kid_name"], streak, xp)
-                    if st.button(f"📣 Share {fam_pd['kid_name']}'s streak to X", key=f"share_streak_{fid_pd}"):
-                        st.markdown(f"[🐦 Post to X]({share_data['url']})", unsafe_allow_html=True)
-                        st.code(share_data["text"], language=None)
-                        _feed_pd.post(fid_pd, fam_pd["display_name"], emoji,
-                                      "streak_milestone",
-                                      f"🔥 {streak}-day streak! {xp} XP", public=True)
-
-        st.divider()
-
-        # ── Pending rewards summary ────────────────────────────────────────────
-        try:
-            from bitcoin_wallet import OperatorWallet as _OW_pd
-            _op_pd  = _OW_pd()
-            pending = _op_pd.get_all_pending_rewards()
-            if pending:
-                st.markdown(f"### ⚡ {len(pending)} Pending Lightning Rewards")
-                total_sats = sum(r.get("sats",0) for r in pending)
-                st.caption(f"Total pending: {total_sats:,} sats")
-                for r in pending[:5]:
-                    st.markdown(f'<div class="memory-node" style="border-left:3px solid #f7931a;"><span style="color:#f7931a;">{r["family_id"]} · +{r.get("sats", 0)} sats</span><br><span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>', unsafe_allow_html=True)
-        except ImportError:
-            pass
-
-        st.divider()
-
-        # ── Quick share panel ──────────────────────────────────────────────────
-        st.markdown("### 📣 Quick Share")
-        share_type = st.selectbox("Event type", ["streak_milestone","badge_earned","morning_insight","coherence_breakthrough"], key="pd_share_type")
-        share_kid  = st.text_input("Kid name", value=_cf.get("kid_name","Explorer") if _cf else "Explorer", key="pd_share_kid")
-        if st.button("🐦 Generate X Post", key="pd_gen_share"):
-            if share_type == "streak_milestone":
-                data = _SX.streak_milestone(share_kid, 7, 250)
-            elif share_type == "badge_earned":
-                data = _SX.badge_earned(share_kid, "🌀 Lattice Walker", 150)
-            elif share_type == "morning_insight":
-                data = _SX.morning_insight(datetime.date.today().isoformat(), 1.42, "Antifragility compounds across generations...")
-            else:
-                data = _SX.coherence_breakthrough(share_kid, 0.92, "Courage Level 3")
-            st.markdown(f"[🐦 Open X to post]({data['url']})")
-            st.code(data["text"], language=None)
-
-    except ImportError as e:
-        st.warning(f"family_connect.py or family_profiles.py not found: {e}")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
