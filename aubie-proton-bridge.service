@@ -1,0 +1,14 @@
+[Unit]
+Description=Proton Mail Bridge (local IMAP/SMTP for Aubie's email-checking feature)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aubieeternal
+ExecStart=/usr/bin/protonmail-bridge --noninteractive
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

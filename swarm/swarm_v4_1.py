@@ -434,6 +434,68 @@ def maybe_trigger_curriculum_autogen():
         t.start()
 
 # ══════════════════════════════════════════════════════════════════════════════
+# EMAIL WATCH — real inbox via Proton Mail Bridge (local IMAP,
+# aubie-proton-bridge.service), local Ollama picks out anything task/
+# deadline-shaped. See email_watch.py for the reader/extractor itself and
+# its PRIVACY note - the digest never leaves this machine, never gets
+# pushed anywhere, and only genuinely urgent deadlines get spoken aloud
+# unprompted (the daily digest just gets written to a private file).
+# ══════════════════════════════════════════════════════════════════════════════
+_email_digest_last_run_date = None
+
+def _run_email_digest_background():
+    global _email_digest_last_run_date
+    try:
+        from email_watch import daily_digest
+        print("[email-watch] 📧 Daily digest background thread started...")
+        result = daily_digest()
+        if "error" in result:
+            print(f"[email-watch] ⚠️  Digest error: {result['error']}")
+        else:
+            _email_digest_last_run_date = datetime.date.today()
+            print(f"[email-watch] ✅ Digest written — {len(result.get('tasks', []))} "
+                  f"task(s) found in {result.get('messages_scanned', 0)} messages")
+    except ImportError:
+        print("[email-watch] ❌ email_watch.py not found in repo")
+    except Exception as e:
+        print(f"[email-watch] ❌ Error: {e}")
+
+def maybe_trigger_email_digest():
+    """Fires once per day at 7AM Eastern (between the 6AM synthesis run
+    and the 9AM curriculum-autogen trigger). Same daemon-thread + date-
+    guard pattern as both of those."""
+    global _email_digest_last_run_date
+    now   = _now_eastern()
+    today = now.date()
+
+    if now.hour == 7 and _email_digest_last_run_date != today:
+        _email_digest_last_run_date = today
+        print(f"[email-watch] ⏰ 7AM digest trigger fired for {today.isoformat()}")
+        t = threading.Thread(target=_run_email_digest_background, daemon=True)
+        t.start()
+
+def _run_email_urgent_check_background():
+    try:
+        from email_watch import check_urgent
+        urgent = check_urgent(speak=True)
+        if urgent and not (len(urgent) == 1 and "error" in urgent[0]):
+            print(f"[email-watch] 🚨 {len(urgent)} urgent item(s) spoken")
+    except ImportError:
+        print("[email-watch] ❌ email_watch.py not found in repo")
+    except Exception as e:
+        print(f"[email-watch] ❌ Urgent check error: {e}")
+
+def maybe_check_email_urgent(tick: int):
+    """Called every tick, actually runs every 30 ticks (~15 min at the
+    30s tick interval) - frequent enough to catch a same-day deadline
+    with real lead time, not so frequent it hammers Ollama/IMAP. Each
+    urgent item is only ever spoken once (see email_watch.py's dedup),
+    so overlapping windows across runs can't cause a repeat."""
+    if tick % 30 == 0:
+        t = threading.Thread(target=_run_email_urgent_check_background, daemon=True)
+        t.start()
+
+# ══════════════════════════════════════════════════════════════════════════════
 # GLASSES SIGNAL HANDLER — Halo glasses → swarm bridge
 # Reads /mnt/main/glasses_signal.json each tick (written by nostr_glasses_bridge.py)
 # Routes signal to appropriate daughters, writes reply to /mnt/main/glasses_reply.json
@@ -1395,6 +1457,7 @@ def launch_swarm():
     print(f"🧠 3-Level context injection ACTIVE")
     print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen2.5:7b")
     print(f"🌱 Curriculum autogen ACTIVE — proposes 1 new lesson daily at 9AM (pending human review)")
+    print(f"📧 Email watch ACTIVE — daily digest at 7AM (private), urgent deadlines spoken ~every 15min")
     print(f"🥽 Glasses signal handler ACTIVE — /mnt/main/glasses_signal.json\n")
 
     tick        = 0
@@ -1427,6 +1490,12 @@ def launch_swarm():
 
             # ── CURRICULUM AUTOGEN — zero cost, proposes, never self-approves ─
             maybe_trigger_curriculum_autogen()
+            # ──────────────────────────────────────────────────────────────
+
+            # ── EMAIL WATCH — daily digest (private, never pushed) + urgent ──
+            # deadline check (speaks aloud only, ~every 15 min) ─────────────
+            maybe_trigger_email_digest()
+            maybe_check_email_urgent(tick)
             # ──────────────────────────────────────────────────────────────
 
             # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──

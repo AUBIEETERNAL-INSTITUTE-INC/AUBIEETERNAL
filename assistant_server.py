@@ -591,6 +591,47 @@ def _institute_memory_matches(text: str) -> list[str]:
             if any(trigger in low for trigger in triggers)]
 
 
+# Real, live personal data (from email_watch.py's daily digest, see that
+# module's PRIVACY note) - a different category from INSTITUTE_MEMORY_FILES
+# above, which are static facts meant to be told to anyone who asks. This
+# is Matthew's actual day, pulled from his actual inbox. Deliberately kept
+# as its own trigger list/loader rather than folded into
+# INSTITUTE_MEMORY_FILES, since a future speaker-scoping pass (only
+# answering this to Matthew himself, not any family member who happens to
+# ask) belongs here specifically, not on the org/robot/platform facts -
+# not built yet, flagged as a real gap rather than silently skipped.
+EMAIL_TASK_TRIGGERS = (
+    "what am i supposed to do", "what do i have today", "my tasks",
+    "my to-do", "my todo", "anything i need to do", "what's on my plate",
+    "my schedule", "my day today", "any deadlines", "check my email",
+    "what's in my inbox", "do i have anything today",
+)
+
+
+def _email_tasks_requested(text: str) -> bool:
+    low = text.lower()
+    return any(trigger in low for trigger in EMAIL_TASK_TRIGGERS)
+
+
+def _load_email_digest_summary() -> str:
+    try:
+        from email_watch import DIGEST_PATH
+        if not DIGEST_PATH.exists():
+            return ""
+        digest = json.loads(DIGEST_PATH.read_text())
+        tasks = digest.get("tasks", [])
+        if not tasks:
+            return "No tasks or deadlines found in recent email - the inbox looks clear."
+        lines = [f"Real tasks/deadlines found in the inbox as of {digest.get('generated_at', 'recently')}:"]
+        for t in tasks:
+            deadline = f" (deadline: {t['deadline']})" if t.get("deadline") else ""
+            lines.append(f"  - {t.get('summary', '?')}{deadline} [from: \"{t.get('source_subject', '?')}\"]")
+        return "\n".join(lines)
+    except Exception as e:
+        print(f"[email_watch] could not load digest: {e}")
+        return ""
+
+
 def _load_institute_memory_file(filename: str) -> str:
     try:
         return (INSTITUTE_MEMORY_DIR / filename).read_text().strip()
@@ -619,6 +660,16 @@ def build_context_block(speakers_in_room: list[str], objects_seen: list[str], us
                     f"directly and accurately from these, don't guess or make anything up:"
                 )
                 lines.append(facts)
+
+        if _email_tasks_requested(user_message):
+            digest_summary = _load_email_digest_summary()
+            if digest_summary:
+                lines.append(
+                    "The question is asking about real tasks/deadlines from checking email - "
+                    "answer directly from this real data, don't guess or make anything up. If "
+                    "a deadline is close, say so plainly rather than downplaying it:"
+                )
+                lines.append(digest_summary)
 
     if known_facts:
         lines.append("Things you know from past conversations:")
