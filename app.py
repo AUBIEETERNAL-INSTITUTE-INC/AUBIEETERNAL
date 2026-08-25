@@ -960,7 +960,7 @@ with st.sidebar:
             "⚡ Reliability",
         ],
         "👨‍👩‍👧 FAMILY": [
-            "🥽 Family Co-Learning",
+            "🥽 Family Co-Learning", "🧬 Family Lattice",
             "👨‍👩‍👧 Parent Guide", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
             "👑 Family Dynasty",
         ],
@@ -995,7 +995,7 @@ with st.sidebar:
             "🕸️ Living Lattice",
         ],
         "🧬 TRUTH": [
-            "🔮 Truth Lattice", "🧬 Family Lattice",
+            "🔮 Truth Lattice",
             "🧬 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
             "🧠 Polyvagal Oracle",
         ],
