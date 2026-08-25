@@ -816,6 +816,16 @@ def load_memory_palace():
     except ImportError:
         return st.session_state.memory_palace
 
+def load_runes():
+    """Real etched-rune list for the current family - same pattern as
+    load_memory_palace() above, same underlying session-only bug found
+    in the Rune-Palace tab live 2026-08-25."""
+    try:
+        from family_profiles import load_family_stats as _lfs_rune0
+        return _lfs_rune0(_memory_fid()).get("runes", [])
+    except ImportError:
+        return st.session_state.runes
+
 SWARM_AGENTS = [
     {"name": "AXIOM",    "role": "Logic & Reasoning Core",       "icon": "🔷", "color": "#00cfff"},
     {"name": "MNEMO",    "role": "Memory Palace Curator",         "icon": "🔮", "color": "#a020f0"},
@@ -1076,7 +1086,7 @@ with c3:
 with c4:
     st.markdown(f'<div class="stat-box"><div class="stat-val">{len(st.session_state.badges)}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
 with c5:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(st.session_state.runes)}</div><div class="stat-lbl">Runes</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(load_runes())}</div><div class="stat-lbl">Runes</div></div>', unsafe_allow_html=True)
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1440,7 +1450,7 @@ elif "Swarm" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: RUNE-PALACE
 # ══════════════════════════════════════════════════════════════════════════════
-elif "Rune" in active:
+elif "Rune" in active and "Shield" not in active:
     st.markdown('<div class="card-title">₿ RUNE-PALACE — Bitcoin Runes & On-Chain Memory</div>', unsafe_allow_html=True)
 
     st.markdown("""
@@ -1470,16 +1480,32 @@ elif "Rune" in active:
                 "block": f"SIM-{random.randint(840000, 900000)}",
             }
             st.session_state.runes.append(rune)
+            # Real persistence - same session-only bug the Memory Palace tab
+            # had (found live 2026-08-25): the rune object itself (name,
+            # symbol, supply, block) only ever lived in st.session_state,
+            # even though save_memory() below already durably logs the
+            # meaning text. A restart or new session silently lost the
+            # "Your Rune Collection" list underneath the "Rune etched!"
+            # success message.
+            try:
+                from family_profiles import load_family_stats as _lfs_rune, save_family_stats as _sfs_rune
+                _fid_rune = _memory_fid()
+                _stats_rune = _lfs_rune(_fid_rune)
+                _stats_rune.setdefault("runes", []).append(rune)
+                _sfs_rune(_stats_rune, _fid_rune)
+            except ImportError:
+                pass
             save_memory(f"Rune: {rune_name}", rune_meaning, tags=["rune", "bitcoin", "on-chain"])
             st.success(f"Rune {rune_name} etched! +10 XP")
             st.rerun()
 
     st.markdown("---")
     st.markdown("### 📜 Your Rune Collection")
-    if not st.session_state.runes:
+    _real_runes = load_runes()
+    if not _real_runes:
         st.markdown('<div class="rune-card" style="text-align:center;color:#554433;">No runes etched yet. Create your first on-chain knowledge artifact.</div>', unsafe_allow_html=True)
     else:
-        for r in reversed(st.session_state.runes):
+        for r in reversed(_real_runes):
             st.markdown(f'''
             <div class="rune-card">
                 <div class="rune-name">{r["symbol"]} {r["name"]}</div>
