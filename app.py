@@ -2960,42 +2960,48 @@ if "Swarm Mode" in active:
         current_mode = "Standard"
 
     st.info(f"**Current Mode:** {current_mode}")
-    st.caption("Mode is written to `/mnt/main/swarm_mode.json` — swarm_v4.py reads it on next tick.")
+    st.caption(
+        "Mode is written to `/mnt/main/swarm_mode.json` — swarm_v4_1.py's apply_swarm_mode() "
+        "reads it every tick (~30s) and applies it to real per-tick throughput and the daily "
+        "budget cap. Found live 2026-08-25: this file used to be write-only — the background "
+        "swarm never read it back, so these buttons changed nothing. Now wired for real. "
+        "The daughter/swarm totals below are how many of the swarm's fixed 26-group, "
+        "2080-daughter roster actually get a wave each tick, not the whole-roster totals the "
+        "old copy implied. The $/day cap only matters once a paid Grok key is enabled — by "
+        "default the swarm runs 100% on the free local model ($0.00/day) regardless of mode."
+    )
     st.divider()
 
     col1, col2, col3 = st.columns(3)
 
     with col1:
         st.markdown("#### 🔥 FULL")
-        st.markdown("2080 daughters · 26 swarms · All Tier 2 · **~$1.28/day**")
+        st.markdown("2 swarms/tick · 3 daughters each · **$5.00/day cap**")
         if st.button("ACTIVATE FULL MODE", width='stretch', key="mode_full"):
             _MODE_FILE.write_text(_json.dumps({
-                "mode": "Full", "daughters": 2080, "swarms": 26,
-                "set_at": _dt.now().isoformat()
+                "mode": "Full", "set_at": _dt.now().isoformat()
             }))
-            st.success("✅ Full Mode activated! Swarm picks up on next tick.")
+            st.success("✅ Full Mode activated! Swarm picks up within ~30s.")
             st.rerun()
 
     with col2:
         st.markdown("#### ⚖️ STANDARD")
-        st.markdown("520 daughters · 8 swarms · 8 Tier 2 · **~$0.32/day**")
+        st.markdown("2 swarms/tick · 3 daughters each · **$2.50/day cap**")
         if st.button("ACTIVATE STANDARD MODE", width='stretch', key="mode_std"):
             _MODE_FILE.write_text(_json.dumps({
-                "mode": "Standard", "daughters": 520, "swarms": 8,
-                "set_at": _dt.now().isoformat()
+                "mode": "Standard", "set_at": _dt.now().isoformat()
             }))
             st.success("✅ Standard Mode activated!")
             st.rerun()
 
     with col3:
         st.markdown("#### 🧪 EXPERIMENTAL")
-        st.markdown("4160 daughters · 52 swarms · Continuous · **~$2.56/day**")
+        st.markdown("4 swarms/tick · 5 daughters each · **$8.00/day cap**")
         if st.button("ACTIVATE EXPERIMENTAL", width='stretch', key="mode_exp"):
             _MODE_FILE.write_text(_json.dumps({
-                "mode": "Experimental", "daughters": 4160, "swarms": 52,
-                "set_at": _dt.now().isoformat()
+                "mode": "Experimental", "set_at": _dt.now().isoformat()
             }))
-            st.warning("⚠️ Experimental Mode activated!")
+            st.warning("⚠️ Experimental Mode activated! More GPU load per tick.")
             st.rerun()
 
     # Show raw file content for debugging

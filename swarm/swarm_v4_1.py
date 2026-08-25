@@ -79,6 +79,51 @@ GROK_PRO_COST_PER_CALL  = 0.02
 GROK_FREE_COST_PER_CALL = 0.00
 DAILY_BUDGET_CAP        = 5.00
 TIER1_DAUGHTERS_PER_TICK = 3   # throttled: one GPU can't run 20/tick AND serve synthesis/humanity/kid-portal
+SWARMS_PER_TICK          = 2   # how many of the 26 Tier1 swarm groups get a wave each heartbeat
+
+# ── Swarm Mode — read from /mnt/main/swarm_mode.json, set by the Streamlit
+# "Swarm Mode" tab. Was write-only for months (the tab wrote this file, but
+# nothing here ever read it back - the Full/Standard/Experimental buttons
+# changed nothing about the running swarm). Found + wired live 2026-08-25.
+# The old tab claimed specific daughter/swarm totals and $/day costs that
+# don't fit the real architecture (a fixed 26-swarm/2080-daughter roster,
+# a random subset actually ticked each heartbeat, $0/day by default since
+# USE_GROK is off) - so the real, honest knobs this controls are how many
+# swarms + daughters run per tick, and the budget ceiling for if a paid
+# Grok key is ever enabled.
+# ══════════════════════════════════════════════════════════════════════════════
+SWARM_MODE_FILE = Path("/mnt/main/swarm_mode.json")
+SWARM_MODE_CONFIG = {
+    "Standard":     {"swarms_per_tick": 2, "daughters_per_tick": 3, "budget_cap": 2.50},
+    "Full":         {"swarms_per_tick": 2, "daughters_per_tick": 3, "budget_cap": 5.00},
+    "Experimental": {"swarms_per_tick": 4, "daughters_per_tick": 5, "budget_cap": 8.00},
+}
+_current_swarm_mode = None  # tracks last-applied mode so we only log on change
+
+def apply_swarm_mode():
+    """Called every tick. Reads swarm_mode.json (written by the Streamlit
+    Swarm Mode tab) and applies its mode to the real per-tick throughput
+    and budget cap. Cheap (~100 bytes) - fine to check every tick so a
+    mode change takes effect on the very next one, matching what the UI
+    already told the user ('swarm picks it up on next tick')."""
+    global _current_swarm_mode, TIER1_DAUGHTERS_PER_TICK, SWARMS_PER_TICK, DAILY_BUDGET_CAP
+    try:
+        mode = json.loads(SWARM_MODE_FILE.read_text()).get("mode", "Standard")
+    except Exception:
+        mode = "Standard"
+
+    if mode not in SWARM_MODE_CONFIG:
+        mode = "Standard"
+
+    if mode != _current_swarm_mode:
+        cfg = SWARM_MODE_CONFIG[mode]
+        TIER1_DAUGHTERS_PER_TICK = cfg["daughters_per_tick"]
+        SWARMS_PER_TICK          = cfg["swarms_per_tick"]
+        DAILY_BUDGET_CAP         = cfg["budget_cap"]
+        _current_swarm_mode      = mode
+        print(f"[swarm-mode] ⚔️  Mode → {mode} | "
+              f"{SWARMS_PER_TICK} swarms/tick × {TIER1_DAUGHTERS_PER_TICK} daughters | "
+              f"budget cap ${DAILY_BUDGET_CAP:.2f}/day")
 
 # ── Briefing Schedule ─────────────────────────────────────────────────────────
 BRIEFING_SCHEDULE = [
@@ -1349,11 +1394,12 @@ def run_tier1_heartbeat():
         f"METS:{mets_counter:.1f}"
     )
 
+    _n_swarms = min(SWARMS_PER_TICK, len(TIER1_SWARMS))
     if heartbeat_tick % 5 == 0:
         new_swarms = [s for s in TIER1_SWARMS if int(s.split("_")[0][1:]) >= 21]
-        swarms = random.sample(new_swarms, min(2, len(new_swarms))) if new_swarms else random.sample(list(TIER1_SWARMS.keys()), 2)
+        swarms = random.sample(new_swarms, min(_n_swarms, len(new_swarms))) if new_swarms else random.sample(list(TIER1_SWARMS.keys()), _n_swarms)
     else:
-        swarms = random.sample(list(TIER1_SWARMS.keys()), 2)
+        swarms = random.sample(list(TIER1_SWARMS.keys()), _n_swarms)
 
     for swarm in swarms:
         results = run_tier1_wave(context, swarm)
@@ -1517,6 +1563,7 @@ def launch_swarm():
 
     while True:
         try:
+            apply_swarm_mode()
             check_vision_trigger()
             check_defcon_trigger()
             check_scheduled_briefings()
