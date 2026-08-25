@@ -320,6 +320,7 @@
       <div class="result-body" id="simBody"></div>
     </div>
 
+    <button class="open-app-btn" id="discussBridgeBtn" style="display:none;background:#1a2233;border-color:#00c9ff;color:#00c9ff">💬 Discuss with Aubie</button>
     <button class="open-app-btn" id="openAppBtn">↗ Open full AUBIEETERNAL app</button>
   </div>
 </div>
@@ -331,6 +332,7 @@
   <button class="btn btn-purple" id="oracleBtn">🔮 Ask Oracle</button>
   <div class="spinner" id="oracleSpinner">Thinking...</div>
   <div class="oracle-response" id="oracleResponse"></div>
+  <button class="open-app-btn" id="discussOracleBtn" style="display:none;background:#1a2233;border-color:#00c9ff;color:#00c9ff">💬 Discuss with Aubie</button>
 </div>
 
 <!-- ═══════════════════════════════════ LEDGER ═══════════════════════════════ -->
@@ -435,6 +437,10 @@
 
 <!-- ═══════════════════════════════════ SETTINGS ════════════════════════════ -->
 <div class="panel" id="panel-settings">
+  <div class="setting-row">
+    <span class="setting-label">Who's this?</span>
+    <select id="familyId"></select>
+  </div>
   <div class="setting-row">
     <span class="setting-label">API Server URL</span>
     <input type="url" id="serverUrl" value="http://100.105.81.27:8502" />

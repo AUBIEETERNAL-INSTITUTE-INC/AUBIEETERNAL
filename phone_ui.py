@@ -2676,7 +2676,44 @@ async function submitClassAnswer(answer) {
     log('Class answer error: '+e.message,'err');
   }
 }
-loadPeople();
+
+// "Discuss with Aubie" - reached via ?discuss=<text>&family_id=<id> on this
+// page's own URL, sent by the browser extension's "💬 Discuss with Aubie"
+// button (see AUBIEETERNAL_extension/popup/popup.js) so something read
+// while browsing becomes a real conversation here instead of just sitting
+// in a popup. Not a graded class question - just opens the same Ask-box
+// chat thread with a warm discussion prompt.
+async function checkDiscussParam() {
+  const params  = new URLSearchParams(location.search);
+  const discuss = params.get('discuss');
+  if(!discuss) return;
+  const fid = params.get('family_id');
+  if(fid) pickPerson(fid);
+  switchTab('teach');
+  document.getElementById('tab-teach').scrollTo({top:0,behavior:'smooth'});
+  const opener = `I just read this while browsing: "${discuss}"\n\nLet's talk about it - what's `
+    + `genuinely interesting here, what's worth questioning, and is there anything I should know `
+    + `more about? Keep it conversational, not a lecture.`;
+  setResp('ask-resp', '⏳ Getting Aubie’s take…', 'thinking');
+  log('Discussing browsed content with Aubie','info');
+  try {
+    const data = await aubieTextChat(opener, {history: chatHistory});
+    const reply = data.reply||data.response||data.answer||data.text||data.output||JSON.stringify(data);
+    chatHistory.push({role:'user', content:opener}, {role:'assistant', content:reply});
+    setResp('ask-resp', renderChatHistory(), 'ok');
+    document.getElementById('greet-msg').textContent = reply;
+    log('Discuss started','ok');
+    await aubieSpeak(reply);
+  } catch(e) {
+    setResp('ask-resp', `⚠️ Error: ${e.message}`, 'error');
+    log('Discuss error: '+e.message,'err');
+  }
+}
+
+(async () => {
+  await loadPeople();
+  await checkDiscussParam();
+})();
 
 // ════════════════════════════════════════════════════════════════════
 // 2. RESEARCH

@@ -5,17 +5,20 @@ const DEFAULT_SERVER = 'http://100.105.81.27:8502';
 
 // ── State ──────────────────────────────────────────────────────────────────────
 let serverUrl = DEFAULT_SERVER;
+let familyId  = 'default';
 let connected = false;
 
 // ── Init ───────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
   await loadSettings();
   await checkConnection();
+  await loadPeople();
   setupTabs();
   setupBridge();
   setupOracle();
   setupLedger();
   setupSettings();
+  setupDiscuss();
   loadLedgerStats();
   loadRuneStatus();
   setupRune();
@@ -23,8 +26,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // ── Settings ───────────────────────────────────────────────────────────────────
 async function loadSettings() {
-  const data = await chrome.storage.local.get(['serverUrl','apiKey','autoAnalyze','showXButtons']);
+  const data = await chrome.storage.local.get(['serverUrl','familyId','apiKey','autoAnalyze','showXButtons']);
   serverUrl = data.serverUrl || DEFAULT_SERVER;
+  familyId  = data.familyId || 'default';
   document.getElementById('serverUrl').value     = serverUrl;
   document.getElementById('appUrl').value         = data.appUrl || '';
   document.getElementById('apiKey').value         = data.apiKey || '';
@@ -32,10 +36,28 @@ async function loadSettings() {
   document.getElementById('showXButtons').checked = data.showXButtons !== false;
 }
 
+// Who's using the extension right now - same FAMILY_REGISTRY the phone
+// Teaching Station uses, so "Discuss with Aubie" credits the right
+// person's real progress instead of a hardcoded "default".
+async function loadPeople() {
+  const sel = document.getElementById('familyId');
+  try {
+    const res = await fetch(`${serverUrl}/people`, { signal: AbortSignal.timeout(3000) });
+    const data = await res.json();
+    const people = data.people || [];
+    sel.innerHTML = people.map(p =>
+      `<option value="${p.family_id}" ${p.family_id === familyId ? 'selected' : ''}>${p.emoji} ${p.kid_name} (${p.display_name})</option>`
+    ).join('');
+  } catch {
+    sel.innerHTML = `<option value="default">Default</option>`;
+  }
+}
+
 function setupSettings() {
   document.getElementById('saveSettings').addEventListener('click', async () => {
     const settings = {
       serverUrl:     document.getElementById('serverUrl').value.trim(),
+      familyId:      document.getElementById('familyId').value,
       appUrl:        document.getElementById('appUrl').value.trim(),
       apiKey:        document.getElementById('apiKey').value.trim(),
       autoAnalyze:   document.getElementById('autoAnalyze').checked,
@@ -43,9 +65,46 @@ function setupSettings() {
     };
     await chrome.storage.local.set(settings);
     serverUrl = settings.serverUrl;
+    familyId  = settings.familyId;
     document.getElementById('settingsSaved').style.display = 'block';
     setTimeout(() => { document.getElementById('settingsSaved').style.display = 'none'; }, 2000);
     await checkConnection();
+    await loadPeople();
+  });
+}
+
+// ── Discuss with Aubie ────────────────────────────────────────────────────────
+// Sends whatever you just analyzed (a Bridge claim, an Oracle question)
+// into a real conversation with Aubie on the Teaching Station - turns
+// passive reading into an actual discussion, and awards a small amount of
+// real XP for the activity along the way.
+function teachingStationUrl(discussText) {
+  const base = new URL(serverUrl); // e.g. http://100.105.81.27:8502
+  base.port = '8800';
+  base.pathname = '/remote';
+  base.search = `?discuss=${encodeURIComponent(discussText)}&family_id=${encodeURIComponent(familyId)}`;
+  return base.toString();
+}
+
+async function discussWithAubie(text, activity) {
+  if (!text) return;
+  fetch(`${serverUrl}/reward`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ family_id: familyId, activity, xp: 8 }),
+  }).catch(() => {}); // best-effort, never block opening the tab on this
+  chrome.tabs.create({ url: teachingStationUrl(text) });
+}
+
+function setupDiscuss() {
+  document.getElementById('discussBridgeBtn').addEventListener('click', () => {
+    const text = document.getElementById('bridgeInput').value.trim();
+    discussWithAubie(text, 'bridge_analysis');
+  });
+  document.getElementById('discussOracleBtn').addEventListener('click', () => {
+    const question = document.getElementById('oracleInput').value.trim();
+    const answer   = document.getElementById('oracleResponse').textContent.trim();
+    discussWithAubie(question ? `${question}\n\n${answer}` : answer, 'oracle_question');
   });
 }
 
@@ -151,6 +210,7 @@ async function runBridge() {
     renderEpistemic(data.epistemic || {});
     renderLesson(data.family || {});
     renderSim(data.simulation || {});
+    document.getElementById('discussBridgeBtn').style.display = 'block';
 
   } catch (err) {
     showError('bridge', err.message.includes('fetch') ?
@@ -241,6 +301,7 @@ function hideResults() {
   ['epistemicResult','lessonResult','simResult'].forEach(id => {
     document.getElementById(id).className = 'result';
   });
+  document.getElementById('discussBridgeBtn').style.display = 'none';
 }
 
 function setLoading(section, loading) {
@@ -273,6 +334,7 @@ async function runOracle() {
 
   setLoading('oracle', true);
   document.getElementById('oracleResponse').className = 'oracle-response';
+  document.getElementById('discussOracleBtn').style.display = 'none';
 
   try {
     const stored = await chrome.storage.local.get('apiKey');
@@ -286,6 +348,7 @@ async function runOracle() {
     const resp = document.getElementById('oracleResponse');
     resp.textContent = data.answer || 'No response.';
     resp.className = 'oracle-response visible';
+    document.getElementById('discussOracleBtn').style.display = 'block';
   } catch (err) {
     const resp = document.getElementById('oracleResponse');
     resp.textContent = `Error: ${err.message}`;
