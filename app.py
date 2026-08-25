@@ -384,6 +384,20 @@ def init_state():
 
 init_state()
 
+# ── URL deep-link (?tab=...) ────────────────────────────────────────────────
+# Lets a physical join card / QR code (see community_deployment/
+# make_join_card.py) send a walk-up patron straight into a specific tab
+# (Community Mode) instead of landing on the default Oracle tab and having
+# to navigate there manually. One-time only (via _query_tab_applied) so it
+# doesn't fight with normal in-app navigation on every rerun after the
+# first page load - once someone clicks elsewhere, the URL is stale and
+# should stop taking priority over their actual navigation.
+if not st.session_state.get("_query_tab_applied"):
+    st.session_state["_query_tab_applied"] = True
+    _qp_tab = st.query_params.get("tab")
+    if _qp_tab:
+        st.session_state["active_tab"] = _qp_tab
+
 # ── Helpers ───────────────────────────────────────────────────────────────────
 BADGES_DEF = {
     10:  ("🔷 First Light",     "10 XP earned"),
@@ -10751,14 +10765,47 @@ if "Community Mode" in active:
         </div>
         """, unsafe_allow_html=True)
 
-        # Simple name input
-        _cm_name = st.text_input("What is your name? (optional — this is just for you)", 
-                                  key="cm_name", placeholder="e.g. Maria, or leave blank")
-        _cm_age  = st.selectbox("How old are you?", 
-                                 ["I prefer not to say", "Under 8", "8-11", "12-15", "16-18", "Adult"],
-                                 key="cm_age")
-        if st.button("✅ Let's Start", key="cm_start", type="primary") and _cm_name:
-            st.success(f"Great, {_cm_name}! Go to 'How Do You Feel?' to begin.")
+        # Name + PIN — real, lightweight identity (community_learners.py),
+        # no email or personal info needed. Found 2026-08-25: this used to
+        # be just a name box that saved nothing at all (pure
+        # st.session_state, gone the moment the tab closed) - a walk-up
+        # learner had zero way to pick up where they left off tomorrow.
+        if st.session_state.get("cm_learner_id"):
+            st.markdown(
+                f'<div class="card" style="border:2px solid #00ff88;text-align:center;padding:1rem;">'
+                f'<div style="color:#00ff88;font-size:1rem;">✅ Signed in as {st.session_state.get("cm_learner_name","")}</div>'
+                f'</div>', unsafe_allow_html=True)
+            if st.button("🚪 Not you? Sign in as someone else", key="cm_switch"):
+                for _k in ("cm_learner_id", "cm_learner_name"):
+                    st.session_state.pop(_k, None)
+                st.rerun()
+        else:
+            _cm_name = st.text_input("What is your name?",
+                                      key="cm_name", placeholder="e.g. Maria")
+            _cm_pin  = st.text_input("Pick a short PIN (any 4+ digits or letters — remember it!)",
+                                      key="cm_pin", placeholder="e.g. 4821", type="password")
+            _cm_age  = st.selectbox("How old are you?",
+                                     ["I prefer not to say", "Under 8", "8-11", "12-15", "16-18", "Adult"],
+                                     key="cm_age")
+            st.caption("No email, no personal info — just your name and PIN, so you can come back "
+                       "tomorrow and pick up where you left off. If you've been here before, use the "
+                       "exact same name and PIN.")
+            if st.button("✅ Let's Start", key="cm_start", type="primary") and _cm_name and _cm_pin:
+                try:
+                    from community_learners import resume_or_create as _cm_resume
+                    _result = _cm_resume(_cm_name, _cm_pin, age_range=_cm_age)
+                    st.session_state["cm_learner_id"]   = _result["learner_id"]
+                    st.session_state["cm_learner_name"] = _result["display_name"]
+                    if _result["is_new"]:
+                        st.success(f"Nice to meet you, {_result['display_name']}! Remember your name "
+                                   f"and PIN to come back tomorrow. Go to 'How Do You Feel?' to begin.")
+                    else:
+                        st.success(f"Welcome back, {_result['display_name']}! Go to 'How Do You Feel?' to continue.")
+                    st.rerun()
+                except ValueError as e:
+                    st.error(str(e))
+                except ImportError:
+                    st.error("community_learners.py not found.")
 
     # ── How Do You Feel — No Glasses Needed ────────────────────────────────
     with _cm_tabs[1]:
@@ -10862,8 +10909,25 @@ if "Community Mode" in active:
                                         f'{_l.get("steelman","")}</div>', unsafe_allow_html=True)
                     if st.button("✅ I finished this lesson!", key="cm_done", type="primary"):
                         xp = _l.get("xp", 15)
-                        st.balloons()
-                        st.success(f"Amazing! You earned {xp} XP. Come back tomorrow for another lesson.")
+                        # Real persistence (2026-08-25 fix) - this used to just
+                        # show balloons + a success message claiming XP was
+                        # earned with zero actual save, same category of false
+                        # claim as the earlier "encrypted" messaging bug.
+                        _cm_learner_id = st.session_state.get("cm_learner_id")
+                        if _cm_learner_id:
+                            from family_profiles import load_family_stats as _cm_lfs, save_family_stats as _cm_sfs
+                            _cm_stats = _cm_lfs(_cm_learner_id)
+                            if _active_l not in _cm_stats.get("lessons_completed", []):
+                                _cm_stats.setdefault("lessons_completed", []).append(_active_l)
+                                _cm_stats["total_xp"] = _cm_stats.get("total_xp", 0) + xp
+                                _cm_stats["level"]    = max(1, _cm_stats["total_xp"] // 100 + 1)
+                                _cm_sfs(_cm_stats, _cm_learner_id)
+                            st.balloons()
+                            st.success(f"Amazing! You earned {xp} XP — really saved this time. "
+                                       f"Come back tomorrow (same name + PIN) for another lesson.")
+                        else:
+                            st.warning("Go to 'Start Here' and enter your name + PIN first, so this "
+                                       "lesson actually gets saved to your progress.")
                         st.session_state.cm_active_lesson = None
 
         except ImportError:
