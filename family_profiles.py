@@ -7,7 +7,7 @@ Provides ALL functions app.py needs:
   complete_quest, award_badge
 """
 
-import json, os, datetime, random
+import hashlib, hmac, json, os, datetime, random, re, secrets
 from pathlib import Path
 
 # ── Path resolution: StartOS /mnt/main takes priority ─────────────────────────
@@ -17,12 +17,43 @@ DATA_DIR     = _MNT if _MNT.exists() else _LOCAL
 FAMILIES_DIR = DATA_DIR / "families"
 FAMILIES_DIR.mkdir(parents=True, exist_ok=True)
 
-# ── Family registry — 4 families + operator ───────────────────────────────────
-FAMILY_REGISTRY = {
+# ── Family registry — now REAL, persisted, self-serve account creation ────────
+# Used to be 5 hardcoded Python constants (alpha/beta/gamma/delta/wareagle)
+# that reset to the same 5 demo accounts on every restart, with no way for
+# anyone downloading AUBIEETERNAL to create their own family at all - found
+# 2026-08-25 while making onboarding friendlier for new installs. Now backed
+# by FAMILY_REGISTRY_PATH (a real file in DATA_DIR, so it survives restarts
+# and grows as real families sign up).
+#
+# FAMILY_REGISTRY stays a plain dict OBJECT that's mutated in place (never
+# reassigned wholesale) - several other modules do
+# `from family_profiles import FAMILY_REGISTRY` and expect to see live
+# updates (phone_ui.py's person picker, the browser extension's /people),
+# which only works if this stays the SAME dict object across the app's
+# lifetime, not a fresh one swapped in on reload.
+FAMILY_REGISTRY_PATH = DATA_DIR / "family_registry.json"
+FAMILY_REGISTRY: dict = {}
+
+# Legacy plaintext passcodes for the 5 original demo accounts ONLY - kept
+# exactly as they always were (deliberately not retrofitted to hashing,
+# since they're trivial "alpha"/"alpha" demo credentials to begin with, not
+# real secrets). Any REAL family created via create_family() below gets a
+# properly hashed passcode in _PASSCODE_HASHES instead - never plaintext.
+PASSCODES: dict = {}
+_PASSCODE_HASHES: dict = {}   # family_id -> {"salt": hex, "hash": hex} (PBKDF2-HMAC-SHA256)
+
+# What ships as demo accounts on a machine that already has real usage
+# (i.e. this Ryzen instance) - NOT what a brand-new install starts with.
+# A fresh install (no family_registry.json AND no existing family stat
+# files under FAMILIES_DIR) starts completely empty and goes straight to
+# "create your first family" - no demo accounts pre-seeded, so a new
+# downloader never has to reuse someone else's identities.
+_LEGACY_DEMO_REGISTRY = {
     "alpha": {
         "family_id":    "alpha",
         "display_name": "Family Alpha",
         "kid_name":     "Explorer",
+        "kid_age":      9,
         "parent_name":  "Parent Alpha",
         "emoji":        "🦅",
         "color":        "#FF6B35",
@@ -32,6 +63,7 @@ FAMILY_REGISTRY = {
         "family_id":    "beta",
         "display_name": "Family Beta",
         "kid_name":     "Seeker",
+        "kid_age":      9,
         "parent_name":  "Parent Beta",
         "emoji":        "⚡",
         "color":        "#4ECDC4",
@@ -41,6 +73,7 @@ FAMILY_REGISTRY = {
         "family_id":    "gamma",
         "display_name": "Family Gamma",
         "kid_name":     "Builder",
+        "kid_age":      9,
         "parent_name":  "Parent Gamma",
         "emoji":        "🌿",
         "color":        "#45B7D1",
@@ -50,6 +83,7 @@ FAMILY_REGISTRY = {
         "family_id":    "delta",
         "display_name": "Family Delta",
         "kid_name":     "Thinker",
+        "kid_age":      9,
         "parent_name":  "Parent Delta",
         "emoji":        "🔥",
         "color":        "#96CEB4",
@@ -59,20 +93,60 @@ FAMILY_REGISTRY = {
         "family_id":    "wareagle",
         "display_name": "Operator",
         "kid_name":     "Operator",
+        "kid_age":      9,
         "parent_name":  "Mateo",
         "emoji":        "🛡️",
         "color":        "#DDA0DD",
         "is_operator":  True,
     },
 }
-
-PASSCODES = {
-    "alpha":    "alpha",
-    "beta":     "beta",
-    "gamma":    "gamma",
-    "delta":    "delta",
-    "wareagle": "wareagle",
+_LEGACY_DEMO_PASSCODES = {
+    "alpha": "alpha", "beta": "beta", "gamma": "gamma",
+    "delta": "delta", "wareagle": "wareagle",
 }
+
+
+def _save_registry() -> None:
+    FAMILY_REGISTRY_PATH.write_text(json.dumps(
+        {"families": FAMILY_REGISTRY, "passcodes": PASSCODES,
+         "passcode_hashes": _PASSCODE_HASHES}, indent=2,
+    ))
+
+
+def _load_registry() -> None:
+    """Runs once at import time. Loads the real registry file if one
+    exists; otherwise seeds from the legacy demo accounts ONLY if this
+    machine already has real usage under those IDs (protects THIS
+    instance's existing families), else starts genuinely empty."""
+    if FAMILY_REGISTRY_PATH.exists():
+        try:
+            data = json.loads(FAMILY_REGISTRY_PATH.read_text())
+            FAMILY_REGISTRY.update(data.get("families", {}))
+            PASSCODES.update(data.get("passcodes", {}))
+            _PASSCODE_HASHES.update(data.get("passcode_hashes", {}))
+            return
+        except Exception:
+            pass  # corrupt file - fall through and re-seed/start fresh below
+
+    existing_usage = any((FAMILIES_DIR / f"{fid}.json").exists() for fid in _LEGACY_DEMO_REGISTRY)
+    if existing_usage:
+        FAMILY_REGISTRY.update(_LEGACY_DEMO_REGISTRY)
+        PASSCODES.update(_LEGACY_DEMO_PASSCODES)
+    _save_registry()
+
+
+def _hash_passcode(passcode: str, salt_hex: str | None = None) -> tuple[str, str]:
+    salt = bytes.fromhex(salt_hex) if salt_hex else secrets.token_bytes(16)
+    digest = hashlib.pbkdf2_hmac("sha256", passcode.encode(), salt, 200_000)
+    return salt.hex(), digest.hex()
+
+
+def _verify_passcode(passcode: str, salt_hex: str, hash_hex: str) -> bool:
+    _, computed = _hash_passcode(passcode, salt_hex)
+    return hmac.compare_digest(computed, hash_hex)
+
+
+_load_registry()
 
 DEFAULT_STATE = {
     "total_xp":              0,
@@ -118,15 +192,31 @@ QUEST_POOL = [
 # FamilyAuth — authentication + family listing
 # ══════════════════════════════════════════════════════════════════════════════
 
+_ID_PATTERN = re.compile(r"^[a-z0-9][a-z0-9_-]{1,31}$")
+_PALETTE = [
+    ("🦅", "#FF6B35"), ("⚡", "#4ECDC4"), ("🌿", "#45B7D1"), ("🔥", "#96CEB4"),
+    ("🌙", "#C77DFF"), ("🎨", "#FFD166"), ("🚀", "#06D6A0"), ("🦋", "#EF476F"),
+]
+
+
 class FamilyAuth:
 
     def authenticate(self, code: str):
-        """Returns family dict or None."""
-        fid = PASSCODES.get(code.lower().strip())
-        if fid:
-            result = FAMILY_REGISTRY[fid].copy()
-            result["kid_age"] = 9  # default; override per family as needed
-            return result
+        """Returns family dict or None. Checks real hashed passcodes
+        (self-created families) first, then falls back to the legacy
+        plaintext demo passcodes (alpha/beta/gamma/delta/wareagle only)."""
+        code = code.strip()
+        if not code:
+            return None
+
+        for fid, entry in _PASSCODE_HASHES.items():
+            if fid in FAMILY_REGISTRY and _verify_passcode(code, entry["salt"], entry["hash"]):
+                return FAMILY_REGISTRY[fid].copy()
+
+        fid = PASSCODES.get(code.lower())
+        if fid and fid in FAMILY_REGISTRY:
+            return FAMILY_REGISTRY[fid].copy()
+
         return None
 
     def login(self, code: str):
@@ -134,7 +224,9 @@ class FamilyAuth:
         return self.authenticate(code)
 
     def list_families(self) -> list:
-        """All families except operator (unless you want operator too)."""
+        """All families except operator (unless you want operator too).
+        Never includes passcode hashes - those live in a separate dict
+        that list callers never touch."""
         return [
             info.copy()
             for fid, info in FAMILY_REGISTRY.items()
@@ -147,6 +239,70 @@ class FamilyAuth:
              "kid_name": "Explorer", "parent_name": "Parent",
              "emoji": "👤", "color": "#888", "is_operator": False}
         ).copy()
+
+    def create_family(self, family_id: str, display_name: str, passcode: str,
+                       kid_name: str = "Explorer", kid_age: int = 9,
+                       parent_name: str = "Parent") -> dict:
+        """Real, persisted self-serve account creation - the actual thing
+        a new AUBIEETERNAL install needs so someone downloading it isn't
+        stuck reusing this machine's demo families. Raises ValueError with
+        a clear reason on any validation failure (bad id, taken, no
+        passcode) - callers should catch and show the message, not assume
+        this always succeeds."""
+        family_id = family_id.strip().lower().replace(" ", "_")
+        if not _ID_PATTERN.match(family_id):
+            raise ValueError("Family ID must be 2-32 characters: lowercase letters, numbers, - or _ only.")
+        if family_id in FAMILY_REGISTRY:
+            raise ValueError(f"'{family_id}' is already taken - choose a different family ID.")
+        if not passcode or len(passcode) < 4:
+            raise ValueError("Passcode must be at least 4 characters.")
+        if not display_name.strip():
+            raise ValueError("Display name is required.")
+
+        emoji, color = _PALETTE[len(FAMILY_REGISTRY) % len(_PALETTE)]
+        entry = {
+            "family_id":    family_id,
+            "display_name": display_name.strip(),
+            "kid_name":     kid_name.strip() or "Explorer",
+            "kid_age":      int(kid_age),
+            "parent_name":  parent_name.strip() or "Parent",
+            "emoji":        emoji,
+            "color":        color,
+            "is_operator":  False,
+        }
+        salt_hex, hash_hex = _hash_passcode(passcode)
+        _PASSCODE_HASHES[family_id] = {"salt": salt_hex, "hash": hash_hex}
+        FAMILY_REGISTRY[family_id] = entry  # mutate in place - see module docstring
+        _save_registry()
+        return entry.copy()
+
+    def update_family(self, family_id: str, updates: dict) -> bool:
+        """Updates an existing family's profile fields. A "new_passcode"
+        key (if present and non-empty) is hashed and replaces whatever
+        passcode the family had before - including upgrading a legacy
+        plaintext demo account to a real hashed one the moment its
+        passcode is ever changed."""
+        if family_id not in FAMILY_REGISTRY:
+            return False
+
+        entry = FAMILY_REGISTRY[family_id]
+        for field in ("display_name", "kid_name", "parent_name", "emoji", "color"):
+            if field in updates and updates[field]:
+                entry[field] = updates[field]
+        if "kid_age" in updates:
+            try:
+                entry["kid_age"] = int(updates["kid_age"])
+            except (TypeError, ValueError):
+                pass
+
+        new_passcode = updates.get("new_passcode")
+        if new_passcode:
+            salt_hex, hash_hex = _hash_passcode(new_passcode)
+            _PASSCODE_HASHES[family_id] = {"salt": salt_hex, "hash": hash_hex}
+            PASSCODES.pop(family_id, None)  # hashed version now takes precedence
+
+        _save_registry()
+        return True
 
 
 # ══════════════════════════════════════════════════════════════════════════════
