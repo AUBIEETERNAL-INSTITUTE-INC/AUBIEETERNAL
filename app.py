@@ -1566,96 +1566,110 @@ elif "Taleb" in active:
 # TAB: DASHBOARD
 # ══════════════════════════════════════════════════════════════════════════════
 elif "Dashboard" in active:
-    st.markdown('<div class="card-title">📊 FAMILY LATTICE DASHBOARD</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📊 FAMILY DASHBOARD</div>', unsafe_allow_html=True)
 
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown("### 🏅 Badge Collection")
-        if not st.session_state.badges:
-            st.caption("No badges yet. Keep learning to earn them!")
-        for b in st.session_state.badges:
-            threshold = next(t for t, (name, _) in BADGES_DEF.items() if name == b)
-            _, desc = BADGES_DEF[threshold]
-            st.markdown(f'<div class="memory-node"><span class="badge">{b}</span><span style="color:#556677;font-size:0.75rem;margin-left:8px;">{desc}</span></div>', unsafe_allow_html=True)
+    # Rebuilt 2026-08-25 (found while the user asked about a dead "v60
+    # Easter" CSV log referencing a path - /mnt/user-data/uploads/... -
+    # that never existed on any real deployment, only ever a temp file in
+    # whatever one-off session originally authored this tab). Turned out
+    # the WHOLE tab had the same underlying problem: every number here
+    # (badges, XP, "knowledge graph", truth log) read from
+    # st.session_state only - ephemeral, resets every browser session,
+    # completely disconnected from the real per-family persisted stats
+    # (family_profiles.py) the rest of the app already uses. Same category
+    # of bug as the sidebar Profile fix earlier tonight, applied to this
+    # whole tab. "XP earned this week" deliberately left out - that's only
+    # tracked by the tablet's class flow (phone_ui.py), not this portal's
+    # own lesson-completion path, so showing it here would read as 0 for
+    # any family that's only ever used the portal, even with real progress
+    # elsewhere - a misleading number, not an honest one.
+    _cf_dash  = st.session_state.get("current_family")
+    _fid_dash = _cf_dash.get("family_id") if _cf_dash else None
 
-        st.markdown("### 📈 Learning Stats")
-        st.markdown(f'''
-        <div class="card">
-            <div style="font-family:Share Tech Mono,monospace;font-size:0.85rem;line-height:2.2;color:#8899bb;">
-            🔮 Oracle Queries: <span style="color:#00cfff;">{st.session_state.total_queries}</span><br>
-            🧠 Memories Stored: <span style="color:#00cfff;">{len(st.session_state.memory_palace)}</span><br>
-            👾 Swarm Dispatches: <span style="color:#00cfff;">{len(st.session_state.swarm_log)}</span><br>
-            ₿ Runes Etched: <span style="color:#00cfff;">{len(st.session_state.runes)}</span><br>
-            ⚡ Total XP: <span style="color:#00cfff;">{st.session_state.xp}</span><br>
-            🎓 Current Level: <span style="color:#00cfff;">{st.session_state.level}</span>
-            </div>
-        </div>
-        ''', unsafe_allow_html=True)
+    if not _fid_dash:
+        st.markdown(
+            '<div class="card" style="text-align:center;color:#8899bb;padding:2rem;">'
+            "👋 Log in as a family to see your real dashboard — go to "
+            "<b style=\"color:#00cfff;\">Welcome</b> and sign in or create a family."
+            "</div>", unsafe_allow_html=True)
+    else:
+        try:
+            from family_profiles import load_family_stats as _lfs_dash
+            _stats_dash = _lfs_dash(_fid_dash)
+        except ImportError:
+            _stats_dash = {}
 
-    with col2:
-        st.markdown("### 🌐 Knowledge Graph")
-        if st.session_state.memory_palace:
-            tag_counts = {}
-            for mem in st.session_state.memory_palace:
-                for tag in mem["tags"]:
-                    tag_counts[tag] = tag_counts.get(tag, 0) + 1
-            for tag, count in sorted(tag_counts.items(), key=lambda x: -x[1]):
-                st.markdown(f'''
-                <div style="display:flex;align-items:center;margin:4px 0;">
-                    <span class="memory-tag">{tag}</span>
-                    <div class="xp-bar-bg" style="flex:1;margin-left:8px;">
-                        <div class="xp-bar-fill" style="width:{min(100, count*20)}%"></div>
-                    </div>
-                    <span style="color:#445577;font-size:0.75rem;margin-left:8px;font-family:Share Tech Mono,monospace;">{count}</span>
-                </div>
-                ''', unsafe_allow_html=True)
-        else:
-            st.caption("Ask the Oracle to build your knowledge graph.")
+        try:
+            from curriculum import get_lesson as _gl_dash, track_progress as _tp_dash, total_lessons as _tl_dash
+            _total_lessons_dash = _tl_dash()
+        except ImportError:
+            _total_lessons_dash = 0
 
-        st.markdown("### 🎯 Next Milestones")
-        next_badges = [(t, name, desc) for t, (name, desc) in BADGES_DEF.items() if name not in st.session_state.badges]
-        for t, name, desc in next_badges[:3]:
-            progress = min(100, int(st.session_state.xp / t * 100))
+        _badges_dash    = _stats_dash.get("badges", [])
+        _completed_dash = _stats_dash.get("lessons_completed", [])
+        _xp_dash        = _stats_dash.get("total_xp", 0)
+        _level_dash     = _stats_dash.get("level", 1)
+        _streak_dash    = _stats_dash.get("streak_days", 0)
+        _coh_hist_dash  = _stats_dash.get("coherence_history", [])
+
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown("### 📈 Real Progress")
             st.markdown(f'''
-            <div class="memory-node">
-                <div style="color:#a020f0;font-size:0.8rem;">{name}</div>
-                <div class="xp-bar-bg"><div class="xp-bar-fill" style="width:{progress}%"></div></div>
-                <div style="color:#445577;font-size:0.7rem;">{st.session_state.xp}/{t} XP · {desc}</div>
+            <div class="card">
+                <div style="font-family:Share Tech Mono,monospace;font-size:0.85rem;line-height:2.2;color:#8899bb;">
+                ⚡ Total XP: <span style="color:#00cfff;">{_xp_dash}</span><br>
+                🎓 Level: <span style="color:#00cfff;">{_level_dash}</span><br>
+                🔥 Day Streak: <span style="color:#00cfff;">{_streak_dash}</span><br>
+                📖 Lessons Completed: <span style="color:#00cfff;">{len(_completed_dash)}/{_total_lessons_dash}</span>
+                </div>
             </div>
             ''', unsafe_allow_html=True)
 
-    st.markdown("---")
-    st.markdown("### 📜 Truth Log (v65.0 Coherence Tracker)")
-    st.markdown(f'<div class="stat-box"><div class="stat-val">1.000000</div><div class="stat-lbl">Coherence Level</div></div>', unsafe_allow_html=True)
+            st.markdown("### 🏅 Badge Collection")
+            if not _badges_dash:
+                st.caption("No badges yet. Keep learning to earn them!")
+            for b in _badges_dash:
+                st.markdown(f'<div class="memory-node"><span class="badge">{b}</span></div>', unsafe_allow_html=True)
 
-    if st.session_state.truth_log:
-        st.caption(f"{len(st.session_state.truth_log)} events logged this session")
-        for entry in reversed(st.session_state.truth_log[-10:]):
-            st.markdown(f'<div class="memory-node"><span style="color:#00cfff;font-size:0.7rem;">{entry["ts"][11:19]}</span> <span class="memory-tag">{entry["type"]}</span> <span style="color:#8899bb;font-size:0.78rem;">{entry["detail"]}</span></div>', unsafe_allow_html=True)
-    else:
-        st.caption("No events yet — use Oracle, Social Calibration, or Quantum Lab to generate log entries.")
+        with col2:
+            st.markdown("### 📚 Recently Completed Lessons")
+            if _completed_dash:
+                for _lk in reversed(_completed_dash[-8:]):
+                    try:
+                        _l_dash = _gl_dash(_lk)
+                    except Exception:
+                        _l_dash = None
+                    _title = _l_dash["title"] if _l_dash else _lk
+                    _track = _l_dash["track"] if _l_dash else ""
+                    st.markdown(
+                        f'<div class="memory-node"><span style="color:#00cfff;font-size:0.82rem;">{_title}</span>'
+                        f'<span style="color:#556677;font-size:0.72rem;margin-left:8px;">{_track}</span></div>',
+                        unsafe_allow_html=True)
+            else:
+                st.caption("No lessons completed yet — try 'Curriculum Map' or 'Family Co-Learning' to start.")
 
-    # Load historical truth log from CSV if available
-    st.markdown("---")
-    st.markdown("### 📂 Historical Truth Log (v60 Easter)")
-    csv_path = "/mnt/user-data/uploads/aubieeternal_truth_log_v60_easter.csv"
-    if os.path.exists(csv_path):
-        try:
-            import csv as csvlib
-            rows = []
-            with open(csv_path) as f:
-                for line in f:
-                    parts = line.strip().split(" | ")
-                    if len(parts) >= 4:
-                        rows.append({"timestamp": parts[0], "type": parts[1], "id": parts[2], "detail": parts[3], "coherence": parts[4] if len(parts) > 4 else "1.0"})
-            st.caption(f"📊 {len(rows):,} historical events loaded from v60 Easter archive")
-            st.markdown(f'<div class="stat-box"><div class="stat-val">{len(rows):,}</div><div class="stat-lbl">Archive Events</div></div>', unsafe_allow_html=True)
-            # Show sample
-            with st.expander("View sample entries (last 20)"):
-                for row in rows[-20:]:
-                    st.markdown(f'<div class="memory-node"><span style="color:#445577;font-size:0.7rem;">{row["timestamp"][11:19]}</span> <span class="memory-tag">{row["type"]}</span> <span style="color:#8899bb;font-size:0.78rem;">{row["detail"][:100]}</span></div>', unsafe_allow_html=True)
-        except Exception as e:
-            st.caption(f"CSV load note: {e}")
+            st.markdown("### 🧭 Track Progress")
+            try:
+                for _t in _tp_dash(_completed_dash):
+                    st.markdown(f'''
+                    <div style="display:flex;align-items:center;margin:4px 0;">
+                        <span class="memory-tag">{_t["track"]}</span>
+                        <div class="xp-bar-bg" style="flex:1;margin-left:8px;">
+                            <div class="xp-bar-fill" style="width:{_t["pct"]}%;background:{_t["color"]};"></div>
+                        </div>
+                        <span style="color:#445577;font-size:0.75rem;margin-left:8px;font-family:Share Tech Mono,monospace;">{_t["done"]}/{_t["total"]}</span>
+                    </div>
+                    ''', unsafe_allow_html=True)
+            except Exception:
+                st.caption("Track progress unavailable.")
+
+        if _coh_hist_dash:
+            st.markdown("---")
+            st.markdown("### 🎯 Recent Understanding Scores")
+            _recent_coh = _coh_hist_dash[-10:]
+            _avg_coh = sum(_recent_coh) / len(_recent_coh)
+            st.markdown(f'<div class="stat-box"><div class="stat-val">{_avg_coh:.2f}</div><div class="stat-lbl">Average (last {len(_recent_coh)})</div></div>', unsafe_allow_html=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -8944,68 +8958,216 @@ if "Family Dynasty" in active:
 if "Cosmos Dashboard" in active:
     st.markdown('<div class="card-title">🌌 COSMOS DASHBOARD — Daily Universe Inquiry</div>', unsafe_allow_html=True)
 
-    _fid_cs = st.session_state.get("current_family", {}).get("family_id", "default") \
+    # Merged 2026-08-25 - this used to be TWO separate, independent tab
+    # bodies both matching `if "Cosmos Dashboard" in active:`, so opening
+    # this tab rendered both, one after another, on the same page (found
+    # after the user noticed "Cosmos Dashboard has the same information
+    # and more"). Worse than just visual duplication: the two bodies used
+    # genuinely DIFFERENT, non-overlapping persistence - one delegated
+    # belief/foresight tracking to cosmos_dashboard.py's real
+    # CosmosDashboard class (BELIEFS_FILE, FORESIGHT_LOG), the other wrote
+    # its own separate belief/foresight/experiment logs directly to
+    # different filenames (belief_ledger.jsonl happened to collide with
+    # the module's own file by coincidence; foresight_tracker.jsonl,
+    # consciousness_experiments.jsonl, and cosmos_answers.jsonl did not -
+    # confirmed by reading cosmos_dashboard.py's own FORESIGHT_LOG =
+    # "foresight_experiments.jsonl", a different name). A belief or
+    # prediction logged through one body would never show up if the other
+    # body's own reading methods looked for it. Confirmed no real family
+    # data existed in any of these files on this machine before merging,
+    # so nothing needed migrating - a clean merge, not a risky one.
+    #
+    # This version keeps the richer content (the real 35-question bank
+    # with hints/domains, the Cosmos Deep Track tied to real lesson
+    # status, rune-sealed daily answers) and routes ALL belief/foresight/
+    # experiment logging through cosmos_dashboard.py's real methods -
+    # one canonical persistence path, not two silently-diverging ones.
+
+    _fid_cd = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
 
     try:
         from cosmos_dashboard import CosmosDashboard as _CD
-        _dash   = _CD(_fid_cs)
-        _q      = _dash.get_daily_question()
-        _exp    = _dash.get_daily_experiment()
-        _summ   = _dash.get_cosmos_summary()
+        _dash = _CD(_fid_cd)
+        _summ = _dash.get_cosmos_summary()
 
-        # ── Today's question ──────────────────────────────────────────────────
-        _qc = {"cosmology":"#00cfff","information":"#a020f0","consciousness":"#00ff88",
-               "fermi":"#f7931a","simulation":"#ff9500","humanity":"#f7931a",
-               "self-evolve":"#00ff88"}.get(_q.get("track","?"),"#445577")
-        st.markdown(
-            f'<div class="card" style="border:2px solid {_qc};padding:16px;">'
-            f'<div style="color:{_qc};font-family:Orbitron,monospace;font-size:0.72rem;letter-spacing:0.12em;">'
-            f'TODAY\'S UNIVERSE QUESTION · {_q.get("track","?").upper()} · {_q.get("difficulty","?").upper()}</div>'
-            f'<div style="color:#c8d8ff;font-size:1.05rem;margin-top:10px;line-height:1.7;font-weight:500;">'
-            f'{_q.get("q","")}</div>'
-            f'</div>', unsafe_allow_html=True)
-
-        # ── Quick metrics ──────────────────────────────────────────────────────
         _cs1, _cs2, _cs3, _cs4 = st.columns(4)
-        _cs1.metric("Beliefs Tracked", _summ.get("total_beliefs",0))
-        _cs2.metric("Overdue Review",  _summ.get("overdue_beliefs",0))
-        _cs3.metric("Experiments",     _summ.get("total_experiments",0))
-        _cs4.metric("Calibration",     f"{_summ.get('calibration_score',0):.2f}")
-
+        _cs1.metric("Beliefs Tracked", _summ.get("total_beliefs", 0))
+        _cs2.metric("Overdue Review",  _summ.get("overdue_beliefs", 0))
+        _cs3.metric("Experiments",     _summ.get("total_experiments", 0))
+        _cs4.metric("Calibration",     f"{_summ.get('calibration_score', 0):.2f}")
         st.divider()
 
-        _cs_tabs = st.tabs(["🧠 Daily Experiment", "📝 Belief Ledger",
-                             "🔭 Foresight", "📚 Consciousness Science"])
+        import datetime as _dt_cd, json as _jcd, pathlib as _pcd
 
-        # ── Daily consciousness experiment ─────────────────────────────────────
+        UNIVERSE_QUESTIONS = [
+            {"q":"Is the universe infinite?","hint":"The observable universe is 93 billion light-years. The total universe is likely much larger — possibly infinite. How do we reason about what we cannot observe?","domain":"cosmology"},
+            {"q":"Why is there something rather than nothing?","hint":"Leibniz called this the fundamental question. Physicists have proposed that 'nothing' is unstable and something must emerge from it. Is that a real answer?","domain":"metaphysics"},
+            {"q":"Is consciousness fundamental to the universe or emergent from matter?","hint":"IIT says it is fundamental. Most materialists say emergent. The 2025 Cogitate study found neither theory fully correct. What does the evidence say?","domain":"consciousness"},
+            {"q":"Are the laws of physics the same everywhere in the universe?","hint":"We assume so, but we can only verify locally. CPT violation in kaon decay shows some asymmetry already exists.","domain":"physics"},
+            {"q":"Could there be life in a universe with different physical constants?","hint":"This is the anthropic reasoning question. What kinds of complexity require 'our' constants vs. what might work differently?","domain":"fine_tuning"},
+            {"q":"Is time travel physically possible?","hint":"GR permits closed timelike curves. Chronology protection conjecture (Hawking) says quantum effects prevent them. What would falsify this?","domain":"physics"},
+            {"q":"What is entropy and why does it always increase?","hint":"The Second Law may be the most important law in physics. It explains time's direction, the heat death of the universe, and why we age.","domain":"thermodynamics"},
+            {"q":"Are there other universes?","hint":"The multiverse has four levels (Tegmark): same laws different regions, different initial conditions, different mathematical structures, different everything. Which are science?","domain":"cosmology"},
+            {"q":"What happened before the Big Bang?","hint":"This may be a category error — time began with the Big Bang. But Penrose's CCC proposes aeons preceding ours. Is a timeless 'before' coherent?","domain":"cosmology"},
+            {"q":"Why are there exactly three dimensions of space?","hint":"String theory requires 10 or 11. The other dimensions may be compactified below detection. Or three may be the only value permitting stable atoms and orbits.","domain":"physics"},
+            {"q":"Is mathematics discovered or invented?","hint":"Wigner called the unreasonable effectiveness of mathematics a mystery. Tegmark says the universe IS mathematics. Formalists say we invent it. Which best explains Wigner?","domain":"philosophy"},
+            {"q":"What is dark matter made of?","hint":"WIMPs, axions, sterile neutrinos, primordial black holes — dozens of candidates, zero direct detections after 40 years of searching. Does this suggest MOND instead?","domain":"dark_matter"},
+            {"q":"Will the universe end?","hint":"Heat death (entropy maximum), Big Rip (dark energy accelerates), Big Crunch (gravity wins), vacuum decay (metastable false vacuum). Which does evidence favor?","domain":"cosmology"},
+            {"q":"Is quantum mechanics complete?","hint":"Hidden variables (de Broglie-Bohm), many-worlds, QBism, Copenhagen. Bell's theorem rules out local hidden variables. What does the evidence leave open?","domain":"quantum"},
+            {"q":"Is there a theory of everything?","hint":"String theory, loop quantum gravity, causal set theory — none yet tested. What would a ToE even mean? Would it explain consciousness?","domain":"physics"},
+            {"q":"How did life first emerge?","hint":"RNA world, metabolism-first, panspermia. The hardest step: from chemistry to self-replication. We have no confirmed mechanism. What does the fossil record constrain?","domain":"origins"},
+            {"q":"Is free will compatible with physics?","hint":"Determinism vs. quantum indeterminacy vs. compatibilism. If the brain is a physical system, in what sense can choices be free? Does it matter?","domain":"philosophy"},
+            {"q":"What is the relationship between mind and brain?","hint":"Identity theory, functionalism, IIT, dualism. The hard problem: why does physical processing feel like anything? This is genuinely unsolved.","domain":"consciousness"},
+            {"q":"Are we living in a simulation?","hint":"Bostrom's trilemma: either civilizations go extinct before simulation-capability, or they don't run simulations, or we are in a simulation. How do we assign probabilities?","domain":"simulation"},
+            {"q":"Is the universe fine-tuned for life?","hint":"Physical constants within narrow ranges permitting complexity. Design, multiverse, or necessity? None is fully satisfying. What's your credence and why?","domain":"fine_tuning"},
+            {"q":"Could aliens exist without carbon-based chemistry?","hint":"Silicon has similar bonding properties but forms solids at life-relevant temperatures. Information-processing life in plasma? Electromagnetic life?","domain":"astrobiology"},
+            {"q":"What would it mean to detect alien intelligence?","hint":"SETI searches narrow-band radio and optical lasers. But a sufficiently advanced civilization might communicate in ways we can't conceive. What would unambiguous detection require?","domain":"fermi"},
+            {"q":"Is the universe computable?","hint":"Church-Turing thesis + digital physics: is reality fundamentally computational? What would a non-computable universe look like? Penrose says consciousness requires it.","domain":"information"},
+            {"q":"What is the smallest thing that exists?","hint":"String theory: 1D strings at Planck scale. Loop quantum gravity: discrete spacetime. Are these testable? What happens below the Planck length?","domain":"physics"},
+            {"q":"Does spacetime have an ultimate structure?","hint":"GR: continuous and geometric. QFT: fields on a background. The incompatibility at singularities suggests both are incomplete. What's more fundamental?","domain":"physics"},
+            {"q":"How probable is the existence of intelligent life on Earth?","hint":"If fl, fi, fc in Drake's equation are all very small, Earth might be extraordinarily lucky. The Great Filter question: is our existence evidence for the filter being behind us?","domain":"fermi"},
+            {"q":"What would falsify the Standard Model of particle physics?","hint":"The Standard Model has passed every test. But it doesn't include gravity, dark matter, or explain matter-antimatter asymmetry. What experiments probe beyond it?","domain":"physics"},
+            {"q":"Can information be destroyed?","hint":"Hawking's information paradox: does information fall into black holes forever? His final resolution (2016) says no. But the mechanism remains debated.","domain":"information"},
+            {"q":"Is the universe fundamentally random or deterministic?","hint":"Copenhagen QM: truly random. Many-worlds: deterministic at the level of the wavefunction, random from within. Hidden variables: deterministic underneath. Which best explains experiments?","domain":"quantum"},
+            {"q":"What is the nature of mathematical truth?","hint":"Gödel showed any consistent formal system has true but unprovable statements. Does this mean mathematical truth transcends formal systems? What does this imply for AI?","domain":"mathematics"},
+            {"q":"How do you measure the quality of a scientific theory?","hint":"Popper: falsifiability. Kuhn: paradigm fit. Bayesian: likelihood ratio. Lakatos: progressive research programs. Which best describes how science actually works?","domain":"philosophy_of_science"},
+            {"q":"What is the relationship between entropy and information?","hint":"Shannon entropy and thermodynamic entropy are mathematically identical. Maxwell's Demon was exorcised by Landauer's principle. What does this reveal about the nature of information?","domain":"information"},
+            {"q":"Could a sufficiently complex universe simulate itself?","hint":"Hofstadter's strange loops. A universe that contains a complete simulation of itself. Is this logically coherent? What would Gödel say?","domain":"simulation"},
+            {"q":"What would it take for you to change your view on consciousness being fundamental?","hint":"This is the meta-question: what is your update condition? Pre-register it. The most important epistemic habit in consciousness science.","domain":"consciousness"},
+            {"q":"In 1,000 years, what do you think humanity will know that we don't today?","hint":"Not a prediction game — a perspective exercise. What categories of knowledge seem most likely to transform? This is the foresight question.","domain":"foresight"},
+        ]
+
+        _today_cd = _dt_cd.date.today()
+        _q_idx    = _today_cd.toordinal() % len(UNIVERSE_QUESTIONS)
+        _today_q  = UNIVERSE_QUESTIONS[_q_idx]
+
+        _cs_tabs = st.tabs(["🔭 Today's Question", "📚 Cosmos Deep Track",
+                             "🧠 Consciousness", "📝 Belief Ledger",
+                             "🔮 Foresight Tracker", "📖 Reference"])
+
+        # ── Today's question ─────────────────────────────────────────────────
         with _cs_tabs[0]:
+            st.markdown(
+                f'<div class="card" style="border:2px solid #a020f0;padding:16px;">'
+                f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;margin-bottom:8px;">'
+                f'TODAY\'S UNIVERSE QUESTION — {_today_cd.strftime("%B %d, %Y")} · {_today_q["domain"].upper()}</div>'
+                f'<div style="color:#c8d8ff;font-size:1.05rem;font-weight:600;line-height:1.5;">'
+                f'{_today_q["q"]}</div>'
+                f'<div style="color:#8899bb;font-size:0.8rem;margin-top:8px;line-height:1.7;">'
+                f'{_today_q["hint"]}</div>'
+                f'</div>', unsafe_allow_html=True)
+
+            _cd_ans  = st.text_area("Your answer (think before writing — this gets sealed):",
+                height=120, key="cd_ans",
+                placeholder="Take the question seriously. Your answer today will be readable in 50 years.")
+            _cd_conf = st.slider("Confidence in your current view:", 0.05, 0.95, 0.5, 0.05, key="cd_conf",
+                help="0.5 = complete uncertainty. Only go higher if you can defend it.")
+
+            if st.button("🌌 Seal Today's Answer", key="cd_seal", type="primary") and _cd_ans.strip():
+                try:
+                    from rune_memory import RuneMemory as _RM_cd
+                    _RM_cd().record(
+                        f"COSMOS ANSWER [{_today_q['domain']}]: {_today_q['q']}\n\n{_cd_ans}",
+                        source="cosmos_dashboard", coherence=_cd_conf,
+                        tags=["cosmos", "universe", "daily_question", _today_q["domain"]]
+                    )
+                    st.success(f"✅ Sealed permanently.\n\nConfidence: {_cd_conf:.0%} | Domain: {_today_q['domain']}\n\n"
+                               "Your grandchildren can read this. Make it honest.")
+                except Exception:
+                    st.success(f"✅ Saved — {_today_q['domain']} | confidence: {_cd_conf:.0%}")
+
+            with st.expander("🔭 Browse All 35 Universe Questions"):
+                _domains = sorted(set(q["domain"] for q in UNIVERSE_QUESTIONS))
+                _dom_filter = st.selectbox("Filter by domain:", ["all"] + _domains, key="cd_dom")
+                for _qi, _q in enumerate(UNIVERSE_QUESTIONS):
+                    if _dom_filter == "all" or _q["domain"] == _dom_filter:
+                        _is_today = _qi == _q_idx
+                        _qc = "#a020f0" if _is_today else "#445577"
+                        st.markdown(
+                            f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
+                            f'<span style="color:{_qc};font-size:0.75rem;">[{_q["domain"]}{"  ← TODAY" if _is_today else ""}]</span> '
+                            f'<span style="color:#8899bb;font-size:0.82rem;">{_q["q"]}</span>'
+                            f'</div>', unsafe_allow_html=True)
+
+        # ── Cosmos Deep Track ────────────────────────────────────────────────
+        with _cs_tabs[1]:
+            st.markdown("**Cosmos Deep Track — 6 lessons from scale to the Fermi Paradox**")
+            cosmos_lessons_info = [
+                ("cosmos-1", "How Big Is Everything?", "Cognitive confrontation with scale. The Pale Blue Dot calculation.", "All ages", 40),
+                ("cosmos-2", "What the Big Bang Actually Claims", "Four lines of evidence + the Hubble Tension (unresolved at 5σ, 2026).", "9+", 45),
+                ("cosmos-3", "Dark Matter and Dark Energy — 95% Unknown", "Real anomalies, honest uncertainty. The 10^120-orders-of-magnitude problem.", "11+", 50),
+                ("cosmos-4", "Fine-Tuning and the Anthropic Principle", "Design vs multiverse vs necessity. Pre-register your credences.", "13+", 55),
+                ("cosmos-5", "Information, Entropy, and the Arrow of Time", "Why time flows one way. Penrose's 10^(10^123) initial entropy.", "13+", 58),
+                ("cosmos-6", "The Fermi Paradox — Where Is Everyone?", "Great Filter: behind or ahead? The Great Filter Credence Map.", "12+", 62),
+            ]
+            for _ck, _ct, _cdesc, _cage, _cxp in cosmos_lessons_info:
+                _status = "?"
+                try:
+                    from family_hud import FamilySession as _FS_cd
+                    _fs_cd = _FS_cd(_fid_cd, "")
+                    _status = _fs_cd.get_lesson_status(_ck).get("status", "?")
+                except Exception:
+                    pass
+                _cc = "#00ff88" if _status == "completed" else "#00cfff" if _status == "available" else "#445577"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {_cc};">'
+                    f'<div style="display:flex;justify-content:space-between;">'
+                    f'<b style="color:{_cc};">{_ct}</b>'
+                    f'<span style="color:#445577;font-size:0.72rem;">{_cxp} XP · Age {_cage} · {_status}</span>'
+                    f'</div>'
+                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">{_cdesc}</div>'
+                    f'</div>', unsafe_allow_html=True)
+
+        # ── Consciousness (daily experiment + 5 named experiments) ──────────
+        with _cs_tabs[2]:
+            _exp = _dash.get_daily_experiment()
             st.markdown(
                 f'<div class="card" style="border-left:3px solid #a020f0;">'
                 f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.75rem;">'
-                f'🧠 CONSCIOUSNESS EXPERIMENT · {_exp.get("duration",60)}s · TODAY</div>'
+                f'🧠 TODAY\'S EXPERIMENT · {_exp.get("duration", 60)}s</div>'
                 f'<div style="color:#f7931a;font-size:0.95rem;margin-top:8px;font-weight:600;">'
-                f'{_exp.get("title","")}</div>'
+                f'{_exp.get("title", "")}</div>'
                 f'<div style="color:#8899bb;font-size:0.82rem;margin-top:8px;line-height:1.8;">'
-                f'{_exp.get("instructions","")}</div>'
+                f'{_exp.get("instructions", "")}</div>'
                 f'</div>', unsafe_allow_html=True)
-
             _obs = st.text_area("What did you observe?", height=80, key="cs_obs",
                 placeholder="Describe what happened during the experiment...")
             if st.button("✅ Log Observation", key="cs_log_obs") and _obs:
                 _dash.log_foresight_experiment(
-                    f"[EXPERIMENT] {_exp['title']}: {_obs[:200]}",
+                    f"[EXPERIMENT] {_exp.get('title','')}: {_obs[:200]}",
                     prediction=0.5, domain="consciousness"
                 )
-                st.success("✅ Observation logged to foresight experiments")
+                st.success("✅ Observation logged")
 
-        # ── Belief Ledger ─────────────────────────────────────────────────────
-        with _cs_tabs[1]:
+            st.divider()
+            st.markdown("**Design and run your own consciousness experiments. Pre-register predictions.**")
+            _exp_list = [
+                ("Introspection Accuracy", "Pick a mental state. Describe it in writing. 24 hours later, try to recall the state from your description. How accurate is introspection?"),
+                ("Attention Collapse", "Focus on a single word for 10 minutes. Log when attention drifts. Plot frequency over 30 days. Does practice change the distribution?"),
+                ("Predictive Processing", "Pick a strong expectation. Notice it before it's confirmed. Log: was the expectation conscious before or only after confirmation?"),
+                ("PVC Protocol", "Before a lesson: log ANS state + IA score. After: log coherence. After 30+ sessions, compute Pearson r (state vs coherence). This tests the PVC hypothesis."),
+                ("Metacognitive Accuracy", "Predict your score on 10 quiz questions before taking them. Compare predicted vs actual. Calculate calibration score (|predicted - actual|)."),
+            ]
+            for _exp_name, _exp_desc in _exp_list:
+                st.markdown(
+                    f'<div class="card" style="margin-bottom:4px;">'
+                    f'<div style="color:#00cfff;font-weight:600;font-size:0.85rem;">{_exp_name}</div>'
+                    f'<div style="color:#8899bb;font-size:0.8rem;margin-top:3px;">{_exp_desc}</div>'
+                    f'</div>', unsafe_allow_html=True)
+            _exp_pred = st.text_area("Pre-register a prediction:", height=80, key="exp_pred",
+                placeholder="I predict that my ANS state (Green/Yellow/Red) will correlate with coherence score with r > 0.3 over 30 sessions.")
+            _exp_prob = st.slider("Your confidence:", 0.05, 0.95, 0.6, 0.05, key="exp_prob")
+            if st.button("🔬 Pre-Register", key="exp_reg") and _exp_pred:
+                _dash.log_foresight_experiment(_exp_pred, _exp_prob, domain="consciousness")
+                st.success(f"✅ Pre-registered at {_exp_prob:.0%} confidence. Cannot be changed. Run honestly.")
+
+        # ── Belief Ledger — real, via cosmos_dashboard.py ────────────────────
+        with _cs_tabs[3]:
             st.markdown("Track your beliefs as Bayesian hypotheses. Review every 90 days.")
             _bl_belief = st.text_input("Belief:", key="bl_belief_cosmos",
                 placeholder="e.g. 'Consciousness is fundamental to reality'")
-            _bl_conf   = st.slider("Confidence:", 0.0, 1.0, 0.5, 0.05, key="bl_conf_cosmos",
-                format="%.0f%%")
+            _bl_conf   = st.slider("Confidence:", 0.0, 1.0, 0.5, 0.05, key="bl_conf_cosmos", format="%.0f%%")
             _bl_ev     = st.text_input("Supporting evidence:", key="bl_ev",
                 placeholder="What currently supports this?")
             _bl_upd    = st.text_input("What would update you -20%?", key="bl_upd",
@@ -9017,7 +9179,6 @@ if "Cosmos Dashboard" in active:
                 st.success(f"✅ Belief recorded — ID: `{_entry['belief_id']}` | "
                            f"Confidence: {_bl_conf:.0%} | Review: {_entry['review_date']}")
 
-            # Overdue beliefs
             _overdue = _dash.get_overdue_beliefs()
             if _overdue:
                 st.divider()
@@ -9041,7 +9202,6 @@ if "Cosmos Dashboard" in active:
                         st.success("✅ Belief updated")
                         st.rerun()
 
-            # All beliefs
             _all_beliefs = _dash.get_all_beliefs()
             if _all_beliefs:
                 st.divider()
@@ -9056,25 +9216,23 @@ if "Cosmos Dashboard" in active:
                         f'<span style="color:#c8d8ff;font-size:0.82rem;">{_b["belief"][:100]}</span>'
                         f'</div>', unsafe_allow_html=True)
 
-        # ── Foresight Experiments ──────────────────────────────────────────────
-        with _cs_tabs[2]:
+        # ── Foresight Tracker — real, via cosmos_dashboard.py ────────────────
+        with _cs_tabs[4]:
             st.markdown("Log predictions about the world. Track your accuracy over time.")
             _fe_desc = st.text_area("Prediction:", height=80, key="fe_desc",
                 placeholder="e.g. 'Families that run daily Simulation Probe will report higher wonder in 30 days'")
-            _fe_prob = st.slider("Your probability:", 0.0, 1.0, 0.6, 0.05, key="fe_prob",
-                format="%.0f%%")
+            _fe_prob = st.slider("Your probability:", 0.0, 1.0, 0.6, 0.05, key="fe_prob", format="%.0f%%")
             _fe_dom  = st.selectbox("Domain:", ["general","consciousness","economics",
                                                  "physics","society","family"], key="fe_dom")
             _fe_date = st.date_input("Expected resolution:", key="fe_date",
-                value=datetime.date.today() + datetime.timedelta(days=30))
+                value=_dt_cd.date.today() + _dt_cd.timedelta(days=30))
             if st.button("🔭 Log Prediction", key="fe_log") and _fe_desc:
-                _fe = _dash.log_foresight_experiment(_fe_desc, _fe_prob, _fe_dom,
-                                                      str(_fe_date))
+                _fe = _dash.log_foresight_experiment(_fe_desc, _fe_prob, _fe_dom, str(_fe_date))
                 st.success(f"✅ Prediction logged — ID: `{_fe.get('exp_id', '?')}` | "
                            f"Your probability: {_fe_prob:.0%} | Resolution: {_fe_date}")
 
-        # ── Consciousness Science Quick Reference ──────────────────────────────
-        with _cs_tabs[3]:
+        # ── Reference ─────────────────────────────────────────────────────────
+        with _cs_tabs[5]:
             st.markdown("""
             <div style="font-size:0.85rem;line-height:2.0;color:#8899bb;">
             <div style="color:#f7931a;font-weight:600;margin-bottom:8px;font-family:Orbitron,monospace;font-size:0.75rem;">
@@ -9103,6 +9261,7 @@ if "Cosmos Dashboard" in active:
         st.error("cosmos_dashboard.py not found. Push it to GitHub and redeploy.")
     except Exception as _e_cs:
         st.error(f"Cosmos Dashboard error: {_e_cs}")
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SCHOOL PATHWAY 🏛️
@@ -10394,217 +10553,6 @@ pvc = requests.get(
 # Daily universe question + belief ledger + consciousness experiments
 # + foresight tracker + 35 rotating cosmological questions
 # ══════════════════════════════════════════════════════════════════════════════
-if "Cosmos Dashboard" in active:
-    st.markdown('<div class="card-title">🌌 COSMOS DASHBOARD — Daily Questions About Reality</div>', unsafe_allow_html=True)
-
-    _fid_cd = st.session_state.get("current_family", {}).get("family_id", "default") \
-              if st.session_state.get("current_family") else "default"
-
-    # 35 rotating universe questions
-    import datetime as _dt_cd, hashlib as _hs_cd, json as _jcd, pathlib as _pcd
-
-    UNIVERSE_QUESTIONS = [
-        {"q":"Is the universe infinite?","hint":"The observable universe is 93 billion light-years. The total universe is likely much larger — possibly infinite. How do we reason about what we cannot observe?","domain":"cosmology"},
-        {"q":"Why is there something rather than nothing?","hint":"Leibniz called this the fundamental question. Physicists have proposed that 'nothing' is unstable and something must emerge from it. Is that a real answer?","domain":"metaphysics"},
-        {"q":"Is consciousness fundamental to the universe or emergent from matter?","hint":"IIT says it is fundamental. Most materialists say emergent. The 2025 Cogitate study found neither theory fully correct. What does the evidence say?","domain":"consciousness"},
-        {"q":"Are the laws of physics the same everywhere in the universe?","hint":"We assume so, but we can only verify locally. CPT violation in kaon decay shows some asymmetry already exists.","domain":"physics"},
-        {"q":"Could there be life in a universe with different physical constants?","hint":"This is the anthropic reasoning question. What kinds of complexity require 'our' constants vs. what might work differently?","domain":"fine_tuning"},
-        {"q":"Is time travel physically possible?","hint":"GR permits closed timelike curves. Chronology protection conjecture (Hawking) says quantum effects prevent them. What would falsify this?","domain":"physics"},
-        {"q":"What is entropy and why does it always increase?","hint":"The Second Law may be the most important law in physics. It explains time's direction, the heat death of the universe, and why we age.","domain":"thermodynamics"},
-        {"q":"Are there other universes?","hint":"The multiverse has four levels (Tegmark): same laws different regions, different initial conditions, different mathematical structures, different everything. Which are science?","domain":"cosmology"},
-        {"q":"What happened before the Big Bang?","hint":"This may be a category error — time began with the Big Bang. But Penrose's CCC proposes aeons preceding ours. Is a timeless 'before' coherent?","domain":"cosmology"},
-        {"q":"Why are there exactly three dimensions of space?","hint":"String theory requires 10 or 11. The other dimensions may be compactified below detection. Or three may be the only value permitting stable atoms and orbits.","domain":"physics"},
-        {"q":"Is mathematics discovered or invented?","hint":"Wigner called the unreasonable effectiveness of mathematics a mystery. Tegmark says the universe IS mathematics. Formalists say we invent it. Which best explains Wigner?","domain":"philosophy"},
-        {"q":"What is dark matter made of?","hint":"WIMPs, axions, sterile neutrinos, primordial black holes — dozens of candidates, zero direct detections after 40 years of searching. Does this suggest MOND instead?","domain":"dark_matter"},
-        {"q":"Will the universe end?","hint":"Heat death (entropy maximum), Big Rip (dark energy accelerates), Big Crunch (gravity wins), vacuum decay (metastable false vacuum). Which does evidence favor?","domain":"cosmology"},
-        {"q":"Is quantum mechanics complete?","hint":"Hidden variables (de Broglie-Bohm), many-worlds, QBism, Copenhagen. Bell's theorem rules out local hidden variables. What does the evidence leave open?","domain":"quantum"},
-        {"q":"Is there a theory of everything?","hint":"String theory, loop quantum gravity, causal set theory — none yet tested. What would a ToE even mean? Would it explain consciousness?","domain":"physics"},
-        {"q":"How did life first emerge?","hint":"RNA world, metabolism-first, panspermia. The hardest step: from chemistry to self-replication. We have no confirmed mechanism. What does the fossil record constrain?","domain":"origins"},
-        {"q":"Is free will compatible with physics?","hint":"Determinism vs. quantum indeterminacy vs. compatibilism. If the brain is a physical system, in what sense can choices be free? Does it matter?","domain":"philosophy"},
-        {"q":"What is the relationship between mind and brain?","hint":"Identity theory, functionalism, IIT, dualism. The hard problem: why does physical processing feel like anything? This is genuinely unsolved.","domain":"consciousness"},
-        {"q":"Are we living in a simulation?","hint":"Bostrom's trilemma: either civilizations go extinct before simulation-capability, or they don't run simulations, or we are in a simulation. How do we assign probabilities?","domain":"simulation"},
-        {"q":"Is the universe fine-tuned for life?","hint":"Physical constants within narrow ranges permitting complexity. Design, multiverse, or necessity? None is fully satisfying. What's your credence and why?","domain":"fine_tuning"},
-        {"q":"Could aliens exist without carbon-based chemistry?","hint":"Silicon has similar bonding properties but forms solids at life-relevant temperatures. Information-processing life in plasma? Electromagnetic life?","domain":"astrobiology"},
-        {"q":"What would it mean to detect alien intelligence?","hint":"SETI searches narrow-band radio and optical lasers. But a sufficiently advanced civilization might communicate in ways we can't conceive. What would unambiguous detection require?","domain":"fermi"},
-        {"q":"Is the universe computable?","hint":"Church-Turing thesis + digital physics: is reality fundamentally computational? What would a non-computable universe look like? Penrose says consciousness requires it.","domain":"information"},
-        {"q":"What is the smallest thing that exists?","hint":"String theory: 1D strings at Planck scale. Loop quantum gravity: discrete spacetime. Are these testable? What happens below the Planck length?","domain":"physics"},
-        {"q":"Does spacetime have an ultimate structure?","hint":"GR: continuous and geometric. QFT: fields on a background. The incompatibility at singularities suggests both are incomplete. What's more fundamental?","domain":"physics"},
-        {"q":"How probable is the existence of intelligent life on Earth?","hint":"If fl, fi, fc in Drake's equation are all very small, Earth might be extraordinarily lucky. The Great Filter question: is our existence evidence for the filter being behind us?","domain":"fermi"},
-        {"q":"What would falsify the Standard Model of particle physics?","hint":"The Standard Model has passed every test. But it doesn't include gravity, dark matter, or explain matter-antimatter asymmetry. What experiments probe beyond it?","domain":"physics"},
-        {"q":"Can information be destroyed?","hint":"Hawking's information paradox: does information fall into black holes forever? His final resolution (2016) says no. But the mechanism remains debated.","domain":"information"},
-        {"q":"Is the universe fundamentally random or deterministic?","hint":"Copenhagen QM: truly random. Many-worlds: deterministic at the level of the wavefunction, random from within. Hidden variables: deterministic underneath. Which best explains experiments?","domain":"quantum"},
-        {"q":"What is the nature of mathematical truth?","hint":"Gödel showed any consistent formal system has true but unprovable statements. Does this mean mathematical truth transcends formal systems? What does this imply for AI?","domain":"mathematics"},
-        {"q":"How do you measure the quality of a scientific theory?","hint":"Popper: falsifiability. Kuhn: paradigm fit. Bayesian: likelihood ratio. Lakatos: progressive research programs. Which best describes how science actually works?","domain":"philosophy_of_science"},
-        {"q":"What is the relationship between entropy and information?","hint":"Shannon entropy and thermodynamic entropy are mathematically identical. Maxwell's Demon was exorcised by Landauer's principle. What does this reveal about the nature of information?","domain":"information"},
-        {"q":"Could a sufficiently complex universe simulate itself?","hint":"Hofstadter's strange loops. A universe that contains a complete simulation of itself. Is this logically coherent? What would Gödel say?","domain":"simulation"},
-        {"q":"What would it take for you to change your view on consciousness being fundamental?","hint":"This is the meta-question: what is your update condition? Pre-register it. The most important epistemic habit in consciousness science.","domain":"consciousness"},
-        {"q":"In 1,000 years, what do you think humanity will know that we don't today?","hint":"Not a prediction game — a perspective exercise. What categories of knowledge seem most likely to transform? This is the foresight question.","domain":"foresight"},
-    ]
-
-    import random as _rcd
-    # Daily question rotates by date
-    _today_cd = _dt_cd.date.today()
-    _q_idx = _today_cd.toordinal() % len(UNIVERSE_QUESTIONS)
-    _today_q = UNIVERSE_QUESTIONS[_q_idx]
-
-    st.markdown(
-        f'<div class="card" style="border:2px solid #a020f0;padding:16px;">'
-        f'<div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.72rem;margin-bottom:8px;">'
-        f'TODAY\'S UNIVERSE QUESTION — {_today_cd.strftime("%B %d, %Y")}</div>'
-        f'<div style="color:#c8d8ff;font-size:1.05rem;font-weight:600;line-height:1.5;">'
-        f'{_today_q["q"]}</div>'
-        f'<div style="color:#8899bb;font-size:0.8rem;margin-top:8px;line-height:1.7;">'
-        f'{_today_q["hint"]}</div>'
-        f'</div>', unsafe_allow_html=True)
-
-    _cd_tabs = st.tabs(["🔭 Today's Question", "📚 Cosmos Deep Track",
-                         "🧠 Consciousness Experiments", "📊 Belief Ledger",
-                         "🔮 Foresight Tracker"])
-
-    # ── Today's question ───────────────────────────────────────────────────────
-    with _cd_tabs[0]:
-        _cd_ans = st.text_area("Your answer (think before writing — this gets sealed):",
-            height=120, key="cd_ans",
-            placeholder="Take the question seriously. Your answer today will be readable in 50 years.")
-        _cd_conf = st.slider("Confidence in your current view:", 0.05, 0.95, 0.5, 0.05, key="cd_conf",
-            help="0.5 = complete uncertainty. Only go higher if you can defend it.")
-
-        if st.button("🌌 Seal Today's Answer", key="cd_seal", type="primary") and _cd_ans.strip():
-            _seal_content = {
-                "date":     str(_today_cd),
-                "question": _today_q["q"],
-                "domain":   _today_q["domain"],
-                "answer":   _cd_ans,
-                "confidence": _cd_conf,
-                "family_id": _fid_cd,
-            }
-            _cd_log = _pcd.Path("/mnt/main/cosmos_answers.jsonl") if _pcd.Path("/mnt/main").exists() \
-                      else _pcd.Path(os.path.expanduser("~/.aubieeternal/main/cosmos_answers.jsonl"))
-            with open(_cd_log, "a") as f:
-                f.write(_jcd.dumps(_seal_content) + "\n")
-            try:
-                from rune_memory import RuneMemory as _RM_cd
-                _RM_cd().record(
-                    f"COSMOS ANSWER [{_today_q['domain']}]: {_today_q['q']}\n\n{_cd_ans}",
-                    source="cosmos_dashboard", coherence=_cd_conf,
-                    tags=["cosmos","universe","daily_question",_today_q["domain"]]
-                )
-                st.success(f"✅ Sealed permanently.\n\nConfidence: {_cd_conf:.0%} | Domain: {_today_q['domain']}\n\n"
-                           "Your grandchildren can read this. Make it honest.")
-            except Exception:
-                st.success(f"✅ Saved — {_today_q['domain']} | confidence: {_cd_conf:.0%}")
-
-        # Browse all 35 questions
-        with st.expander("🔭 Browse All 35 Universe Questions"):
-            _domains = sorted(set(q["domain"] for q in UNIVERSE_QUESTIONS))
-            _dom_filter = st.selectbox("Filter by domain:", ["all"] + _domains, key="cd_dom")
-            for _qi, _q in enumerate(UNIVERSE_QUESTIONS):
-                if _dom_filter == "all" or _q["domain"] == _dom_filter:
-                    _is_today = _qi == _q_idx
-                    _qc = "#a020f0" if _is_today else "#445577"
-                    st.markdown(
-                        f'<div style="padding:4px 0;border-bottom:1px solid #1e2a3a;">'
-                        f'<span style="color:{_qc};font-size:0.75rem;">[{_q["domain"]}{"  ← TODAY" if _is_today else ""}]</span> '
-                        f'<span style="color:#8899bb;font-size:0.82rem;">{_q["q"]}</span>'
-                        f'</div>', unsafe_allow_html=True)
-
-    # ── Cosmos Deep Track ──────────────────────────────────────────────────────
-    with _cd_tabs[1]:
-        st.markdown("**Cosmos Deep Track — 6 lessons from scale to the Fermi Paradox**")
-        cosmos_lessons_info = [
-            ("cosmos-1", "How Big Is Everything?", "Cognitive confrontation with scale. The Pale Blue Dot calculation.", "All ages", 40),
-            ("cosmos-2", "What the Big Bang Actually Claims", "Four lines of evidence + the Hubble Tension (unresolved at 5σ, 2026).", "9+", 45),
-            ("cosmos-3", "Dark Matter and Dark Energy — 95% Unknown", "Real anomalies, honest uncertainty. The 10^120-orders-of-magnitude problem.", "11+", 50),
-            ("cosmos-4", "Fine-Tuning and the Anthropic Principle", "Design vs multiverse vs necessity. Pre-register your credences.", "13+", 55),
-            ("cosmos-5", "Information, Entropy, and the Arrow of Time", "Why time flows one way. Penrose's 10^(10^123) initial entropy.", "13+", 58),
-            ("cosmos-6", "The Fermi Paradox — Where Is Everyone?", "Great Filter: behind or ahead? The Great Filter Credence Map.", "12+", 62),
-        ]
-        for _ck, _ct, _cdesc, _cage, _cxp in cosmos_lessons_info:
-            _status = "?"
-            try:
-                from family_hud import FamilySession as _FS_cd
-                _fs_cd = _FS_cd(_fid_cd, "")
-                _status = _fs_cd.get_lesson_status(_ck).get("status","?")
-            except Exception: pass
-            _cc = "#00ff88" if _status == "completed" else "#00cfff" if _status == "available" else "#445577"
-            st.markdown(
-                f'<div class="memory-node" style="border-left:3px solid {_cc};">'
-                f'<div style="display:flex;justify-content:space-between;">'
-                f'<b style="color:{_cc};">{_ct}</b>'
-                f'<span style="color:#445577;font-size:0.72rem;">{_cxp} XP · Age {_cage} · {_status}</span>'
-                f'</div>'
-                f'<div style="color:#8899bb;font-size:0.78rem;margin-top:2px;">{_cdesc}</div>'
-                f'</div>', unsafe_allow_html=True)
-
-    # ── Consciousness Experiments ──────────────────────────────────────────────
-    with _cd_tabs[2]:
-        st.markdown("**Design and run consciousness experiments. Pre-register predictions.**")
-        _exp_list = [
-            ("Introspection Accuracy", "Pick a mental state. Describe it in writing. 24 hours later, try to recall the state from your description. How accurate is introspection?"),
-            ("Attention Collapse", "Focus on a single word for 10 minutes. Log when attention drifts. Plot frequency over 30 days. Does practice change the distribution?"),
-            ("Predictive Processing", "Pick a strong expectation. Notice it before it's confirmed. Log: was the expectation conscious before or only after confirmation?"),
-            ("PVC Protocol", "Before a lesson: log ANS state + IA score. After: log coherence. After 30+ sessions, compute Pearson r (state vs coherence). This tests the PVC hypothesis."),
-            ("Metacognitive Accuracy", "Predict your score on 10 quiz questions before taking them. Compare predicted vs actual. Calculate calibration score (|predicted - actual|)."),
-        ]
-        for _exp_name, _exp_desc in _exp_list:
-            st.markdown(
-                f'<div class="card" style="margin-bottom:4px;">'
-                f'<div style="color:#00cfff;font-weight:600;font-size:0.85rem;">{_exp_name}</div>'
-                f'<div style="color:#8899bb;font-size:0.8rem;margin-top:3px;">{_exp_desc}</div>'
-                f'</div>', unsafe_allow_html=True)
-        st.divider()
-        _exp_pred = st.text_area("Pre-register a prediction:", height=80, key="exp_pred",
-            placeholder="I predict that my ANS state (Green/Yellow/Red) will correlate with coherence score with r > 0.3 over 30 sessions.")
-        _exp_prob = st.slider("Your confidence:", 0.05, 0.95, 0.6, 0.05, key="exp_prob")
-        if st.button("🔬 Pre-Register", key="exp_reg") and _exp_pred:
-            _exp_log = _pcd.Path("/mnt/main/consciousness_experiments.jsonl") if _pcd.Path("/mnt/main").exists() \
-                       else _pcd.Path(os.path.expanduser("~/.aubieeternal/main/consciousness_experiments.jsonl"))
-            with open(_exp_log, "a") as f:
-                f.write(_jcd.dumps({"date":str(_today_cd),"prediction":_exp_pred,"confidence":_exp_prob,"family_id":_fid_cd}) + "\n")
-            st.success(f"✅ Pre-registered at {_exp_prob:.0%} confidence. Cannot be changed. Run honestly.")
-
-    # ── Belief Ledger ──────────────────────────────────────────────────────────
-    with _cd_tabs[3]:
-        st.markdown("**Track your beliefs about the universe. Calibrate over time.**")
-        _bl_belief = st.text_input("Belief:", key="bl_belief_dash",
-            placeholder="e.g. 'The multiverse is real and contains at least 10^500 universes'")
-        _bl_c1, _bl_c2 = st.columns(2)
-        with _bl_c1:
-            _bl_conf = st.slider("Confidence:", 0.01, 0.99, 0.5, 0.01, key="bl_conf_dash")
-            _bl_update = st.text_input("Update condition:", key="bl_update",
-                placeholder="What evidence would change this?")
-        with _bl_c2:
-            _bl_domain = st.selectbox("Domain:", ["cosmology","consciousness","fine_tuning","quantum","simulation","fermi","physics","philosophy","other"], key="bl_domain")
-            _bl_review = st.date_input("Review date:", key="bl_review")
-        if st.button("📊 Log Belief", key="bl_log") and _bl_belief:
-            _bl_log = _pcd.Path("/mnt/main/belief_ledger.jsonl") if _pcd.Path("/mnt/main").exists() \
-                      else _pcd.Path(os.path.expanduser("~/.aubieeternal/main/belief_ledger.jsonl"))
-            with open(_bl_log, "a") as f:
-                f.write(_jcd.dumps({"date":str(_today_cd),"belief":_bl_belief,"confidence":_bl_conf,
-                                    "domain":_bl_domain,"update_condition":_bl_update,
-                                    "review_date":str(_bl_review),"family_id":_fid_cd}) + "\n")
-            st.success(f"✅ Logged — {_bl_conf:.0%} confidence | review: {_bl_review}")
-
-    # ── Foresight Tracker ──────────────────────────────────────────────────────
-    with _cd_tabs[4]:
-        st.markdown("**Long-range epistemic predictions. Science's best tool is prediction.**")
-        _ft_pred = st.text_area("Prediction:", height=80, key="ft_pred",
-            placeholder="e.g. 'The Hubble tension will be resolved by new physics by 2030'")
-        _ft_c1, _ft_c2 = st.columns(2)
-        with _ft_c1:
-            _ft_conf = st.slider("Confidence:", 0.05, 0.95, 0.5, 0.05, key="ft_conf")
-            _ft_resolve = st.date_input("Expected resolution date:", key="ft_resolve")
-        with _ft_c2:
-            _ft_domain = st.selectbox("Domain:", ["physics","cosmology","biology","AI","civilization","consciousness","other"], key="ft_domain")
-            _ft_falsify = st.text_input("What would falsify this?", key="ft_falsify")
-        if st.button("🔮 Register Foresight", key="ft_reg", type="primary") and _ft_pred:
-            _ft_log = _pcd.Path("/mnt/main/foresight_tracker.jsonl") if _pcd.Path("/mnt/main").exists() \
-                      else _pcd.Path(os.path.expanduser("~/.aubieeternal/main/foresight_tracker.jsonl"))
-            with open(_ft_log, "a") as f:
-                f.write(_jcd.dumps({"date":str(_today_cd),"prediction":_ft_pred,"confidence":_ft_conf,
-                                    "domain":_ft_domain,"falsification":_ft_falsify,
-                                    "resolution_date":str(_ft_resolve),"family_id":_fid_cd}) + "\n")
-            st.success(f"✅ Sealed — {_ft_conf:.0%} | resolves: {_ft_resolve}\nYour descendants will score this.")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: WELCOME 🌍 — First page any new user (child or adult) sees
