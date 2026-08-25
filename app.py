@@ -5473,6 +5473,7 @@ if "Family Messaging" in active:
     <div class="card" style="border-left:3px solid #a020f0;">
         <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">💬 Family-to-family messages, stored locally on this AUBIEETERNAL install</div>
         <div style="color:#445577;font-size:0.72rem;margin-top:4px;">Not yet encrypted or sent over Nostr — that's real future work, not implemented today. Anyone with access to this install's data could read message contents.</div>
+        <div style="color:#445577;font-size:0.72rem;margin-top:6px;">📍 This only reaches families sharing <em>this</em> install (e.g. a household or library machine) — it can't reach a family running their own separate download. For that, real Nostr keys are needed (opt-in, not required to use the rest of AUBIEETERNAL).</div>
     </div>
     """, unsafe_allow_html=True)
 
@@ -10656,6 +10657,24 @@ if "Welcome" in active:
     <b style="color:#c8d8ff;">The AI tutor works offline</b> — it runs directly on your computer.<br>
     All 250 lessons are free forever. No subscription. No ads. No data collection.<br><br>
     See the <b style="color:#00ff88;">Community Mode</b> tab for the setup guide.
+    </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+    # You're already connected — no setup needed. Living Lattice is the
+    # zero-config path to "part of something bigger": no Nostr keys, no
+    # Lightning address, nothing to configure. Family messaging elsewhere
+    # in the app is real but local-only to one install; this is the actual
+    # answer to "how do we stay connected" for a brand new download.
+    st.markdown("""
+    <div style="background:#0a0f1e;border:2px solid #00cfff;border-radius:12px;padding:20px;margin-top:8px;">
+    <div style="color:#00cfff;font-size:1rem;font-weight:700;margin-bottom:8px;">🕸️ You're already connected — no setup needed</div>
+    <div style="color:#8899bb;font-size:0.9rem;line-height:2.0;">
+    Every AUBIEETERNAL family quietly contributes to the <b style="color:#c8d8ff;">Living Lattice</b> —
+    an anonymous, real-time picture of how families everywhere are doing: coherence, lessons completed,
+    wonder index. No account, no keys, nothing to set up. It's on by default.<br><br>
+    See the <b style="color:#00cfff;">Living Lattice</b> tab to watch your family's signal join the wider picture.
     </div>
     </div>
     """, unsafe_allow_html=True)
