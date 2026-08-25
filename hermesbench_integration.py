@@ -4,9 +4,12 @@ hermesbench_integration.py — AUBIEETERNAL HermesBench Integration
 Wires the HermesBench reliability evaluation harness into AUBIEETERNAL's
 swarm pipeline, epistemic commons, and tutor agent system.
 
-HermesBench (github.com/verkyyi/hermesbench) benchmarks complete agent
-setups — not just models — including prompts, tools, memory, delegation,
-safety, latency, and state persistence.
+Named after HermesBench (github.com/verkyyi/hermesbench), a harness that
+benchmarks complete agent setups — not just models — including prompts,
+tools, memory, delegation, safety, latency, and state persistence. The
+7 recipes below are AUBIEETERNAL's own self-contained implementation of
+that idea, reading this install's real local logs directly — no
+external package required or used.
 
 AUBIEETERNAL-SPECIFIC RECIPES:
   Recipe 1 — Tutor Handoff Integrity
@@ -37,8 +40,11 @@ AUBIEETERNAL-SPECIFIC RECIPES:
     Runs the same prompt 10 times and measures output variance.
     High variance = epistemic drift requiring attention.
 
-INSTALL:
-    pip install git+https://github.com/verkyyi/hermesbench.git
+No install needed — nothing here imports the external hermesbench
+package. (An earlier draft tried to and fell back to "standalone mode"
+otherwise, but that flag was never actually used to gate anything -
+these recipes always ran the same way either way. Found + removed
+2026-08-25.)
 
 USAGE:
     python hermesbench_integration.py          # run all recipes
@@ -64,16 +70,6 @@ DATA_DIR   = _data_dir()
 EVAL_DIR   = DATA_DIR / "hermesbench_evals"
 EVAL_DIR.mkdir(parents=True, exist_ok=True)
 BENCH_LOG  = EVAL_DIR / "benchmark_results.jsonl"
-
-# Try to import hermesbench; fall back to standalone mode if not installed
-try:
-    import hermesbench  # type: ignore
-    _HAS_HERMES = True
-    print("[hermesbench] ✅ HermesBench installed — full integration mode")
-except ImportError:
-    _HAS_HERMES = False
-    print("[hermesbench] ⚠️  HermesBench not installed — standalone recipe mode")
-    print("              Install: pip install git+https://github.com/verkyyi/hermesbench.git")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
