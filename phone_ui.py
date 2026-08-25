@@ -1874,6 +1874,8 @@ let greetTimer = null;
 let greetVideo = null;
 let lastGreeted = '';
 let lastGreetTime = 0;
+let moodTimer = null;
+let moodInFlight = false;
 
 // Watch mode's live "hey aubie" conversation - runs alongside the face-greet
 // poll above so Watch is one continuous camera+mic session ("stay connected
@@ -2034,6 +2036,7 @@ async function toggleGreetMode() {
       document.getElementById('face-widget').classList.add('show');
       greetMode = true;
       greetTimer = setInterval(checkForFace, 3000);
+      moodTimer = setInterval(checkMood, MOOD_CHECK_INTERVAL_MS);
       startWatchListening();
       log('Greet mode ON','ok');
     } catch(e) { log('Camera error: '+e.message,'err'); }
@@ -2041,6 +2044,7 @@ async function toggleGreetMode() {
     if(greetStream) greetStream.getTracks().forEach(t=>t.stop());
     if(greetVideo) greetVideo.remove();
     clearInterval(greetTimer);
+    clearInterval(moodTimer);
     stopWatchListening();
     document.getElementById('greet-ring').className='greet-ring';
     document.getElementById('greet-name').textContent='Waiting…';
@@ -2122,6 +2126,36 @@ async function checkForFace() {
     }
   } catch(e) { /* silent — keep watching */ }
   finally { greetInFlight = false; }
+}
+
+// Periodic mood check-in — piggybacks on the same open Watch-mode camera
+// session as checkForFace() above (no extra permission prompt, no second
+// stream), just on a much longer interval since a mood read every 5
+// minutes is plenty and every 3s (checkForFace's cadence) would be both
+// wasteful and, if it ever surfaced anything to the user, annoying.
+// Silent by design: this logs to the Polyvagal Oracle's real state-check
+// history (see /mood_check in assistant_server.py) so it accumulates
+// there for the family to look at, rather than interrupting Watch mode
+// with a popup every few minutes.
+const MOOD_CHECK_INTERVAL_MS = 5 * 60 * 1000;
+
+async function checkMood() {
+  if (!greetVideo || !greetMode || moodInFlight || audioBusy) return;
+  moodInFlight = true;
+  try {
+    const canvas = document.createElement('canvas');
+    canvas.width = 320; canvas.height = 240;
+    canvas.getContext('2d').drawImage(greetVideo, 0, 0, 320, 240);
+    const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/jpeg', 0.7));
+    const form = new FormData();
+    form.append('image', blob, 'frame.jpg');
+    const r = await fetch('/mood_check', {method: 'POST', body: form});
+    if (!r.ok) return;
+    const data = await r.json();
+    const icon = data.state === 'ventral' ? '🟢' : data.state === 'dorsal' ? '🔴' : '🟡';
+    log(`Mood check-in: ${icon} ${data.state} (${data.member}) — ${data.note}`, 'info');
+  } catch(e) { /* silent — try again next interval */ }
+  finally { moodInFlight = false; }
 }
 
 async function loadKnownPeople() {
