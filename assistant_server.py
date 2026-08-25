@@ -45,7 +45,7 @@ from agent import router as agent_router
 from voice import router as voice_router
 from voice import router as voice_router
 from vision_extras import router as vision_router
-from family_profiles import load_family_stats, save_family_stats
+from family_profiles import load_family_stats, save_family_stats, FAMILY_REGISTRY
 from model_selector import pick_best_model
 
 load_dotenv()  # picks up .env (gitignored) - see UNSPLASH_ACCESS_KEY below
@@ -1449,6 +1449,118 @@ async def vision_describe(
     except requests.RequestException as e:
         raise HTTPException(502, f"vision model failed: {e}")
     return {"description": description}
+
+
+_POLYVAGAL_STATE_MAP = {
+    "ventral":     {"value": 2, "emoji": "🟢", "coherence_boost": 0.02},
+    "sympathetic": {"value": 1, "emoji": "🟡", "coherence_boost": -0.01},
+    "dorsal":      {"value": 0, "emoji": "🔴", "coherence_boost": -0.02},
+}
+
+
+@app.post("/mood_check")
+async def mood_check(image: UploadFile = File(...)):
+    """
+    Periodic camera-based mood/nervous-system read, meant to piggyback on
+    the tablet's Watch-mode camera session (already open for face-ID/
+    greeting - no separate camera permission or stream needed). Face-IDs
+    whoever's in frame (same scan_faces() /greet uses) so the read is
+    tagged to the right family automatically instead of a generic bucket,
+    asks the local vision model for a one-line mood read + a rough
+    polyvagal-state guess, and logs it to the same polyvagal_states.jsonl
+    the Streamlit app's Polyvagal Oracle > State Check tab already reads
+    its history from - tagged source="camera_mood_check" so it's visibly
+    distinguishable from a manual check-in, not silently blended in as if
+    it were equally authoritative. This is a rough AI read of one photo,
+    not a diagnosis - framed that way in the prompt below on purpose.
+    """
+    image_bytes = await image.read()
+    names = await asyncio.to_thread(scan_faces, image_bytes)
+    recognized = next((n for n in names if n and n != "unknown"), None)
+
+    image_b64 = base64.b64encode(image_bytes).decode("ascii")
+    prompt = (
+        "Look at this person's facial expression and posture. Respond with "
+        "EXACTLY two lines in English, nothing else, no extra commentary:\n"
+        "STATE: one word - ventral, sympathetic, or dorsal (polyvagal "
+        "nervous system state - ventral=calm/curious/safe, "
+        "sympathetic=activated/stressed/frustrated, dorsal=withdrawn/flat/"
+        "shut down)\n"
+        "NOTE: one short, warm sentence describing what you see - casual "
+        "and kind, never clinical or alarming. This is a casual mood "
+        "check-in, not a medical or psychological diagnosis."
+    )
+    try:
+        # system_override, not the default Aubie persona (SYSTEM_PROMPT) -
+        # that persona explicitly instructs "reply in whatever language the
+        # person used" and "end with a follow-up question", both of which
+        # fought the strict STATE:/NOTE: format below in testing (got a
+        # chatty French reply with no STATE: line at all on the first try).
+        raw = await asyncio.to_thread(
+            query_ollama, prompt, VISION_MODEL, image_b64=image_b64,
+            system_override="You are a precise vision-analysis tool. Follow the requested output format exactly.",
+        )
+    except requests.RequestException as e:
+        raise HTTPException(502, f"vision model failed: {e}")
+
+    state, note = None, raw.strip()
+    for line in raw.splitlines():
+        low = line.strip().lower()
+        if low.startswith("state:"):
+            for cand in _POLYVAGAL_STATE_MAP:
+                if cand in low:
+                    state = cand
+                    break
+        elif low.startswith("note:"):
+            note = line.split(":", 1)[1].strip()
+
+    if state is None:
+        # Model didn't follow the STATE:/NOTE: format - fall back to the
+        # same keyword classifier the Polyvagal Oracle tab's free-text
+        # "Describe It" assessment already uses, applied to the raw reply
+        # instead of silently defaulting to one state.
+        low_raw = raw.lower()
+        if any(w in low_raw for w in ["safe", "connect", "play", "curious", "love", "joy",
+                                       "happy", "excited", "calm", "ready", "relax", "détendu"]):
+            state = "ventral"
+        elif any(w in low_raw for w in ["stress", "angry", "anxious", "fight", "flight",
+                                         "worry", "scared", "panic", "overwhelm", "tense", "rage"]):
+            state = "sympathetic"
+        elif any(w in low_raw for w in ["withdrawn", "flat", "numb", "shut down", "shutdown",
+                                         "disconnect", "blank"]):
+            state = "dorsal"
+        else:
+            state = "sympathetic"  # neutral-ish default when genuinely ambiguous
+
+    # Resolve the recognized face to a real family_id via linked_face_name -
+    # the same link /class/profile already lets a family set up, and the
+    # same lookup checkForFace() in the tablet UI does client-side for
+    # auto-selecting the class chip.
+    family_id = "operator"
+    member = recognized or "Unknown"
+    if recognized:
+        for fid, info in FAMILY_REGISTRY.items():
+            if load_family_stats(fid).get("linked_face_name", "").lower() == recognized.lower():
+                family_id = fid
+                member = info.get("kid_name") or recognized
+                break
+
+    sv = _POLYVAGAL_STATE_MAP[state]
+    log_path = Path("/mnt/main/polyvagal_states.jsonl") if Path("/mnt/main").exists() \
+               else Path(os.path.expanduser("~/.aubieeternal/main/polyvagal_states.jsonl"))
+    log_path.parent.mkdir(parents=True, exist_ok=True)
+    entry = {
+        "timestamp": datetime.now().isoformat(),
+        "family_id": family_id, "member": member,
+        "state": f"{sv['emoji']} {state.upper()}"[:7],
+        "state_value": sv["value"], "notes": note,
+        "coherence_boost": sv["coherence_boost"],
+        "source": "camera_mood_check",
+    }
+    with open(log_path, "a") as f:
+        f.write(json.dumps(entry) + "\n")
+
+    return {"state": state, "note": note, "family_id": family_id, "member": member}
 
 
 def _unsplash_search_top(phrase: str, page: int = 1) -> dict:
