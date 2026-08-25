@@ -1,0 +1,16 @@
+[Unit]
+Description=AUBIEETERNAL Browser Extension API (port 8502)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=aubieeternal
+WorkingDirectory=/home/aubieeternal/AUBIEETERNAL/AUBIEETERNAL_extension
+Environment="PATH=/home/aubieeternal/AUBIEETERNAL/venv/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/home/aubieeternal/AUBIEETERNAL/venv/bin/uvicorn api_server:app --host 127.0.0.1 --port 8502
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
