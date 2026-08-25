@@ -953,7 +953,7 @@ with st.sidebar:
             "⚡ Reliability",
         ],
         "👨‍👩‍👧 FAMILY": [
-            "👨‍👩‍👧‍👦 4 Families", "🥽 Family Co-Learning",
+            "🥽 Family Co-Learning",
             "👨‍👩‍👧 Parent Guide", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
             "👑 Family Dynasty",
         ],
@@ -4285,20 +4285,29 @@ def _family_login_block():
     """, unsafe_allow_html=True)
 
     families = _auth.list_families()
-    cols     = st.columns(min(len(families), 3))
 
-    for i, fam in enumerate(families[:5]):
-        with cols[i % 3]:
-            color = fam.get("color","#00cfff")
-            emoji = fam.get("emoji","🦅")
-            stats = _lfs(fam["family_id"])
-            st.markdown(
-                f'<div class="card" style="border:2px solid {color};text-align:center;cursor:pointer;">'
-                f'<div style="font-size:2rem;">{emoji}</div>'
-                f'<div style="color:{color};font-family:Orbitron,monospace;font-size:0.85rem;">{fam["display_name"]}</div>'
-                f'<div style="color:#8899bb;font-size:0.75rem;margin-top:4px;">{fam["kid_name"]} + {fam["parent_name"]}</div>'
-                f'<div style="color:#445577;font-size:0.7rem;">LVL {stats.get("level",1)} · {stats.get("total_xp",0)} XP · 🔥{stats.get("streak_days",0)}</div>'
-                f'</div>', unsafe_allow_html=True)
+    if not families:
+        # A genuinely fresh install (no families created yet) - st.columns(0)
+        # would crash here, and there's nothing to show yet anyway, so skip
+        # straight to a friendly first-run message instead of empty cards.
+        st.markdown(
+            '<div style="text-align:center;color:#8899bb;padding:1rem 0;">'
+            "👋 No families yet on this install — create the first one below to get started."
+            "</div>", unsafe_allow_html=True)
+    else:
+        cols = st.columns(min(len(families), 3))
+        for i, fam in enumerate(families[:5]):
+            with cols[i % 3]:
+                color = fam.get("color","#00cfff")
+                emoji = fam.get("emoji","🦅")
+                stats = _lfs(fam["family_id"])
+                st.markdown(
+                    f'<div class="card" style="border:2px solid {color};text-align:center;cursor:pointer;">'
+                    f'<div style="font-size:2rem;">{emoji}</div>'
+                    f'<div style="color:{color};font-family:Orbitron,monospace;font-size:0.85rem;">{fam["display_name"]}</div>'
+                    f'<div style="color:#8899bb;font-size:0.75rem;margin-top:4px;">{fam["kid_name"]} + {fam["parent_name"]}</div>'
+                    f'<div style="color:#445577;font-size:0.7rem;">LVL {stats.get("level",1)} · {stats.get("total_xp",0)} XP · 🔥{stats.get("streak_days",0)}</div>'
+                    f'</div>', unsafe_allow_html=True)
             if st.button(f"{emoji} Enter as {fam['display_name']}", key=f"login_{fam['family_id']}"):
                 st.session_state["current_family"] = fam
                 _us(fam["family_id"])
@@ -4327,11 +4336,41 @@ def _family_login_block():
                 st.session_state["family_profile"]["parent"]["name"] = fam.get("parent_name","Parent")
                 st.rerun()
             else:
-                st.error("Code not found. Try: alpha, beta, gamma, delta, or wareagle")
+                st.error("Code not found. Check your family's passcode, or create a new family below.")
+
+    st.divider()
+    with st.expander("✨ Create your own family" if families else "✨ Create your first family", expanded=not families):
+        st.caption("This is the real, actual way to get your own account on AUBIEETERNAL — "
+                   "your progress stays completely separate from any other family on this install.")
+        nf_c1, nf_c2 = st.columns(2)
+        with nf_c1:
+            nf_id_w   = st.text_input("Family ID (lowercase, no spaces)", placeholder="smith_family", key="welcome_nf_id")
+            nf_name_w = st.text_input("Family display name", placeholder="The Smith Family", key="welcome_nf_name")
+            nf_code_w = st.text_input("Choose a passcode (4+ chars)", type="password", key="welcome_nf_code")
+        with nf_c2:
+            nf_kid_w    = st.text_input("Kid's name", placeholder="Explorer", key="welcome_nf_kid")
+            nf_age_w    = st.number_input("Kid's age", 4, 17, 9, key="welcome_nf_age")
+            nf_parent_w = st.text_input("Parent's name", placeholder="Parent", key="welcome_nf_parent")
+        if st.button("✨ Create Family", key="welcome_create_fam_btn", type="primary"):
+            try:
+                new_fam = _auth.create_family(
+                    nf_id_w, nf_name_w, nf_code_w,
+                    kid_name=nf_kid_w or "Explorer", kid_age=int(nf_age_w), parent_name=nf_parent_w or "Parent",
+                )
+                st.session_state["current_family"] = new_fam
+                _us(new_fam["family_id"])
+                st.session_state["kid_name"] = new_fam.get("kid_name","Explorer")
+                st.session_state["family_profile"]["kid"]["name"] = new_fam.get("kid_name","Explorer")
+                st.session_state["family_profile"]["kid"]["age"]  = new_fam.get("kid_age", 9)
+                st.session_state["family_profile"]["parent"]["name"] = new_fam.get("parent_name","Parent")
+                st.success(f"✅ Welcome, {new_fam['display_name']}! Logging you in...")
+                st.rerun()
+            except ValueError as e:
+                st.error(str(e))
     return None
 
 # Show login on Family-specific tabs
-_family_tabs = ["4 Families","Daily Quests","Bitcoin","Sandbox Lab","Family Co-Learning","School","Parent Dashboard","Curriculum Map","Share to X","Family Messaging","Family Groups"]
+_family_tabs = ["Daily Quests","Bitcoin","Sandbox Lab","Family Co-Learning","School","Parent Dashboard","Curriculum Map","Share to X","Family Messaging","Family Groups"]
 if any(t in active for t in _family_tabs):
     if not st.session_state.get("current_family"):
         _family_login_block()
@@ -4351,96 +4390,6 @@ if _cf:
         f' <span style="color:#334466;">|</span> '
         f'<a href="#" style="color:#445577;" onclick="window.location.reload()">Switch family</a>'
         f'</div>', unsafe_allow_html=True)
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB: 4 FAMILIES — Operator dashboard + family management
-# ══════════════════════════════════════════════════════════════════════════════
-if "4 Families" in active:
-    st.markdown('<div class="card-title">👨‍👩‍👧‍👦 4-FAMILY SOVEREIGN LATTICE — Operator Dashboard</div>', unsafe_allow_html=True)
-
-    try:
-        from family_profiles import FamilyAuth as _FA4, load_family_stats as _lfs4
-        from bitcoin_wallet import OperatorWallet as _OW
-        _auth4    = _FA4()
-        _op_wallet = _OW()
-        families4  = _auth4.list_families()
-
-        # ── Summary row ───────────────────────────────────────────────────────
-        st.markdown("### 📊 All Families")
-        for fam in families4:
-            fid    = fam["family_id"]
-            stats  = _lfs4(fid)
-            color  = fam.get("color","#00cfff")
-            emoji  = fam.get("emoji","🦅")
-            streak = stats.get("streak_days",0)
-            xp     = stats.get("total_xp",0)
-            level  = stats.get("level",1)
-            badges = len(stats.get("badges",[]))
-            frags  = stats.get("child_rune_fragments",0)
-            sats   = stats.get("sats_earned",0)
-
-            with st.expander(f"{emoji} {fam['display_name']} — {fam['kid_name']} + {fam['parent_name']}  |  LVL {level} · {xp} XP · 🔥{streak}", expanded=False):
-                c1,c2,c3,c4,c5 = st.columns(5)
-                with c1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{color};">{level}</div><div class="stat-lbl">Level</div></div>', unsafe_allow_html=True)
-                with c2: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#ff9500;">🔥{streak}</div><div class="stat-lbl">Streak</div></div>', unsafe_allow_html=True)
-                with c3: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#f7931a;">{frags}</div><div class="stat-lbl">Rune Frags</div></div>', unsafe_allow_html=True)
-                with c4: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00ff88;">{sats}</div><div class="stat-lbl">Sats Earned</div></div>', unsafe_allow_html=True)
-                with c5: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#a020f0;">{badges}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
-
-                # Edit family
-                st.markdown("**Update family:**")
-                ec1,ec2,ec3 = st.columns(3)
-                with ec1:
-                    new_kid = st.text_input("Kid name", value=fam.get("kid_name",""), key=f"edit_kid_{fid}")
-                with ec2:
-                    new_parent = st.text_input("Parent name", value=fam.get("parent_name",""), key=f"edit_par_{fid}")
-                with ec3:
-                    new_code = st.text_input("Login code", value=fam.get("login_code",""), key=f"edit_code_{fid}")
-                if st.button(f"💾 Save {fam['display_name']}", key=f"save_fam_{fid}"):
-                    _auth4.update_family(fid, {"kid_name": new_kid, "parent_name": new_parent, "login_code": new_code})
-                    st.success("✅ Saved")
-                    st.rerun()
-
-        st.divider()
-
-        # ── Pending Lightning rewards ──────────────────────────────────────────
-        st.markdown("### ⚡ Pending Lightning Rewards")
-        pending = _op_wallet.get_all_pending_rewards()
-        if pending:
-            st.caption(f"{len(pending)} rewards pending")
-            for r in pending[:10]:
-                st.markdown(
-                    f'<div class="memory-node" style="border-left:3px solid #f7931a;">'
-                    f'<span style="color:#f7931a;font-size:0.78rem;">{r["family_id"]} · {r.get("kid_name","")} · {r.get("sats", 0)} sats</span><br>'
-                    f'<span style="color:#8899bb;font-size:0.75rem;">{r["memo"]}</span><br>'
-                    f'<span style="color:#445577;font-size:0.7rem;">{r["timestamp"][:16]} · {r.get("address","no address")}</span>'
-                    f'</div>', unsafe_allow_html=True)
-        else:
-            st.caption("No pending rewards")
-
-        st.divider()
-
-        # ── Add new family ──────────────────────────────────────────────────────
-        st.markdown("### ➕ Add New Family")
-        with st.expander("Add family"):
-            nc1,nc2 = st.columns(2)
-            with nc1:
-                nf_id      = st.text_input("Family ID (no spaces)", placeholder="family_echo", key="nf_id")
-                nf_name    = st.text_input("Display name", placeholder="Family Echo", key="nf_name")
-                nf_code    = st.text_input("Login code", placeholder="echo", key="nf_code")
-            with nc2:
-                nf_kid     = st.text_input("Kid name", key="nf_kid")
-                nf_age     = st.number_input("Kid age", 4, 17, 9, key="nf_age")
-                nf_parent  = st.text_input("Parent name", key="nf_parent")
-            if st.button("➕ Create Family", key="create_fam_btn"):
-                if nf_id and nf_name and nf_code:
-                    _auth4.create_family(nf_id, nf_name, nf_code, nf_kid or "Explorer", int(nf_age), nf_parent or "Parent")
-                    st.success(f"✅ Family '{nf_name}' created! Login code: {nf_code}")
-                    st.rerun()
-
-    except ImportError as e:
-        st.error(f"family_profiles.py or bitcoin_wallet.py not found: {e}")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
