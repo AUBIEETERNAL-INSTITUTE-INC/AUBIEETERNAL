@@ -27,3 +27,6 @@ plotly>=5.18.0
 # ── Utils ─────────────────────────────────────────────────────────────────────
 python-dateutil>=2.8.2
 pytz>=2023.3
+
+# ── Community deployment (join-card QR codes) ────────────────────────────────
+qrcode[pil]>=7.4
