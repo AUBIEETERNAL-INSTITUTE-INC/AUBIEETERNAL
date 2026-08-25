@@ -4957,19 +4957,32 @@ if "School" in active:
 
         st.divider()
 
-        # Today's Quest shortcut
+        # Today's Quest shortcut — now with a working complete button
+        # (ported 2026-08-25 from the "School Mode" nav tab, which was
+        # unreachable dead code - not in _NAV_CATEGORIES, nothing ever set
+        # active_tab to reach it - but had this one genuinely useful piece
+        # the live School tab was missing: a way to actually mark the
+        # quest done, not just look at it).
         try:
-            from family_profiles import get_daily_quests as _gdq_sch
+            from family_profiles import get_daily_quests as _gdq_sch, complete_quest as _cq_sch
             quests_sch = _gdq_sch(_fid_sch)
             incomplete = [q for q in quests_sch if not q.get("completed")]
             if incomplete:
                 q = incomplete[0]
-                st.markdown(
-                    f'<div class="card" style="border-left:3px solid #ff9500;">'
-                    f'<div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">⭕ TODAY\'S QUEST</div>'
-                    f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">{q["title"]}</div>'
-                    f'<div style="color:#445577;font-size:0.72rem;">+{q["xp"]} XP · +{q.get("sats", 0)} sats</div>'
-                    f'</div>', unsafe_allow_html=True)
+                _qc1, _qc2 = st.columns([3,1])
+                with _qc1:
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid #ff9500;">'
+                        f'<div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">⭕ TODAY\'S QUEST</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">{q["title"]}</div>'
+                        f'<div style="color:#445577;font-size:0.72rem;">+{q["xp"]} XP · +{q.get("sats", 0)} sats</div>'
+                        f'</div>', unsafe_allow_html=True)
+                with _qc2:
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    if st.button("✅ Done", key="school_quest_complete"):
+                        _cq_sch(_fid_sch, q["daily_key"])
+                        st.toast(f"+{q['xp']} XP earned! 🦅", icon="⚡")
+                        st.rerun()
         except ImportError:
             pass
 
@@ -5592,84 +5605,6 @@ if _school_mode and any(t in active for t in _advanced_tabs):
         st.caption("🛡️ Safety: Only parent-approved contributions enter the swarm.")
     else:
         st.info("Push swarm_contributions.py and ai_sandbox_persistence.py to GitHub and redeploy to enable this.")
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB: SCHOOL MODE 🏫 — clean simplified UI for kids
-# ══════════════════════════════════════════════════════════════════════════════
-if "School Mode" in active:
-    st.markdown('<div class="card-title">🏫 SCHOOL MODE — Simple Family Learning Hub</div>', unsafe_allow_html=True)
-
-    fam_name = _cf.get("kid_name","Explorer") if _cf else st.session_state.kid_name
-    fam_color = _cf.get("color","#00cfff") if _cf else "#00cfff"
-    fam_emoji = _cf.get("emoji","🦅") if _cf else "🦅"
-
-    # ── Welcome card ──────────────────────────────────────────────────────────
-    st.markdown(f"""
-    <div class="card" style="border:2px solid {fam_color};text-align:center;padding:1.5rem;">
-        <div style="font-size:3rem;">{fam_emoji}</div>
-        <div style="color:{fam_color};font-family:Orbitron,monospace;font-size:1.2rem;margin-top:8px;">
-            Welcome, {fam_name}!
-        </div>
-        <div style="color:#8899bb;font-size:0.85rem;margin-top:6px;">
-            Ready to learn something amazing today?
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ── Quick stats ───────────────────────────────────────────────────────────
-    try:
-        from family_profiles import load_family_stats as _lfs_sm
-        stats_sm = _lfs_sm(_fid)
-        sc1,sc2,sc3 = st.columns(3)
-        with sc1: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{fam_color};">LVL {stats_sm.get("level",1)}</div><div class="stat-lbl">Level</div></div>', unsafe_allow_html=True)
-        with sc2: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#ff9500;">🔥 {stats_sm.get("streak_days",0)}</div><div class="stat-lbl">Day Streak</div></div>', unsafe_allow_html=True)
-        with sc3: st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:#00cfff;">{stats_sm.get("total_xp",0)}</div><div class="stat-lbl">Total XP</div></div>', unsafe_allow_html=True)
-    except ImportError:
-        pass
-
-    st.divider()
-
-    # ── Big simple lesson buttons ─────────────────────────────────────────────
-    st.markdown("### 📖 Pick Today's Lesson")
-    SCHOOL_LESSONS = [
-        ("🦁 Courage",         "courage-1",            "#ff6b35"),
-        ("⚡ Antifragility",    "antifragility-1",      "#00cfff"),
-        ("₿ Bitcoin",          "bitcoin-sovereignty-1","#f7931a"),
-        ("🧠 Steelmanning",    "steelmanning-1",       "#a020f0"),
-        ("🧬 Nervous System",  "polyvagal-1",          "#00ff88"),
-        ("✨ Wonder",           "wonder-1",             "#ffff00"),
-        ("🏛️ Stoic",          "stoic-1",              "#c8d8ff"),
-        ("💰 Money",           "money-1",              "#f7931a"),
-    ]
-    grid1, grid2 = st.columns(2)
-    for i, (label, key, color) in enumerate(SCHOOL_LESSONS):
-        with (grid1 if i % 2 == 0 else grid2):
-            if st.button(f"{label}", key=f"school_lesson_{key}", use_container_width=True):
-                st.session_state["active_tab"] = "Family Co-Learning"
-                st.session_state["fl_lesson_preset"] = key
-                st.rerun()
-
-    st.divider()
-
-    # ── Daily quests simplified ───────────────────────────────────────────────
-    st.markdown("### 🎯 Today's Quests")
-    try:
-        from family_profiles import get_daily_quests as _gdq_sm, complete_quest as _cq_sm
-        quests_sm = _gdq_sm(_fid)
-        for q in quests_sm:
-            done = q.get("completed", False)
-            icon = "✅" if done else "⭕"
-            col_sm1, col_sm2 = st.columns([3,1])
-            with col_sm1:
-                st.markdown(f'<div style="font-size:0.9rem;color:{"#00ff88" if done else "#c8d8ff"};padding:6px 0;">{icon} {q["title"]} — +{q["xp"]} XP</div>', unsafe_allow_html=True)
-            with col_sm2:
-                if not done and st.button("✅", key=f"sm_quest_{q['id']}"):
-                    _cq_sm(_fid, q["id"])
-                    st.toast(f"+{q['xp']} XP earned! 🦅", icon="⚡")
-                    st.rerun()
-    except ImportError:
-        pass
 
 
 # ══════════════════════════════════════════════════════════════════════════════
