@@ -34,7 +34,6 @@
         "https://*.local/*"
       ],
       "js": ["content/content.js"],
-      "css": ["content/content.css"],
       "run_at": "document_idle"
     }
   ],
