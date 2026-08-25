@@ -199,6 +199,44 @@ def _register_claim(claim: str, claim_type: str, source: str) -> dict:
         return {"error": str(e)}
 
 
+def _get_people() -> list:
+    """Same FAMILY_REGISTRY the phone Teaching Station uses for its person
+    picker - lets the extension credit the right family/person, not just a
+    hardcoded "default", for the XP it awards below."""
+    try:
+        from family_profiles import FAMILY_REGISTRY
+        return [
+            {"family_id": fid, "display_name": info["display_name"],
+             "kid_name": info["kid_name"], "emoji": info["emoji"], "color": info["color"]}
+            for fid, info in FAMILY_REGISTRY.items()
+        ]
+    except Exception as e:
+        return [{"family_id": "default", "display_name": "Default", "kid_name": "Explorer",
+                  "emoji": "🦅", "color": "#00c9ff"}]
+
+
+def _award_extension_xp(family_id: str, activity: str, xp: int = 8) -> dict:
+    """Small, repeatable XP for using the extension (a Bridge analysis, an
+    Oracle question) - deliberately NOT family_profiles.award_cross_tool_
+    reward(), which is idempotent/one-time-only per activity key and isn't
+    meant to fire on every use. Same weekly_log pattern phone_ui.py's
+    /class/answer uses, so extension activity shows up in the same real,
+    durable progress the rest of AUBIEETERNAL already tracks."""
+    try:
+        from family_profiles import load_family_stats, save_family_stats
+        stats = load_family_stats(family_id or "default")
+        stats["total_xp"] = stats.get("total_xp", 0) + xp
+        stats["level"]    = max(1, stats["total_xp"] // 100 + 1)
+        stats.setdefault("weekly_log", []).append(
+            {"date": datetime.date.today().isoformat(), "xp": xp, "activity": f"extension:{activity}"}
+        )
+        stats["weekly_log"] = stats["weekly_log"][-200:]
+        save_family_stats(stats, family_id or "default")
+        return {"ok": True, "xp_awarded": xp, "total_xp": stats["total_xp"], "level": stats["level"]}
+    except Exception as e:
+        return {"ok": False, "reason": str(e)}
+
+
 # ══════════════════════════════════════════════════════════════════════════════
 # FastAPI version
 # ══════════════════════════════════════════════════════════════════════════════
@@ -237,6 +275,19 @@ if USE_FASTAPI:
             "daily_cost":                s.get("daily_cost", 0.0),
             "timestamp":                 datetime.datetime.now().isoformat(),
         }
+
+    class RewardRequest(BaseModel):
+        family_id: str = "default"
+        activity: str = "unknown"
+        xp: int = 8
+
+    @app.get("/people")
+    async def people():
+        return {"people": _get_people()}
+
+    @app.post("/reward")
+    async def reward(req: RewardRequest):
+        return _award_extension_xp(req.family_id, req.activity, req.xp)
 
     @app.post("/bridge")
     async def bridge(req: BridgeRequest):
@@ -327,6 +378,17 @@ elif USE_FLASK:
             "child_rune_confirmations": s.get("child_rune_confirmations", 0),
             "daily_cost":   s.get("daily_cost", 0.0),
         })
+
+    @app.route("/people")
+    def people():
+        return jsonify({"people": _get_people()})
+
+    @app.route("/reward", methods=["POST"])
+    def reward():
+        data = request.get_json()
+        return jsonify(_award_extension_xp(
+            data.get("family_id", "default"), data.get("activity", "unknown"), data.get("xp", 8)
+        ))
 
     @app.route("/bridge", methods=["POST"])
     def bridge():
