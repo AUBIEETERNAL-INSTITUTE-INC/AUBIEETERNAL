@@ -46,7 +46,8 @@
   ],
   "host_permissions": [
     "http://localhost:8502/*",
-    "http://127.0.0.1:8502/*"
+    "http://127.0.0.1:8502/*",
+    "http://100.105.81.27:8502/*"
   ],
   "commands": {
     "analyze-selection": {
