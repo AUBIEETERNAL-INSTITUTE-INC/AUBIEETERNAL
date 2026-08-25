@@ -496,6 +496,57 @@ def maybe_check_email_urgent(tick: int):
         t.start()
 
 # ══════════════════════════════════════════════════════════════════════════════
+# EPISTEMIC COMMONS — daily publish of honesty-scored signal as CC0 public
+# domain, both the human-readable coherence letter/seeds (epistemic_commons.py)
+# and the machine-readable API endpoints (epistemic_commons_api.py, which also
+# runs the day's Grokipedia pipeline). Both modules' own docstrings already
+# said "called from morning_synthesis" - that wiring was drafted in
+# SWARM_PATCH.py (repo root) but never actually applied here, so in practice
+# this only ever ran when a human clicked the manual buttons in the Streamlit
+# "Epistemic Commons" tab. Found live 2026-08-25 (app.py's tab hadn't updated
+# in ~3 months). Runs at 8AM Eastern - after the 6AM synthesis and 7AM email
+# digest have the GPU, before the 9AM curriculum-autogen trigger.
+# ══════════════════════════════════════════════════════════════════════════════
+_epistemic_commons_last_run_date = None
+
+def _run_epistemic_commons_background():
+    global _epistemic_commons_last_run_date
+    try:
+        from epistemic_commons import EpistemicCommons
+        print("[epistemic-commons] 🌐 Daily publish background thread started...")
+        result = EpistemicCommons().run_daily_publish()
+        print(f"[epistemic-commons] Commons publish: {result.get('status','?')}")
+    except ImportError:
+        print("[epistemic-commons] ❌ epistemic_commons.py not found in repo")
+    except Exception as e:
+        print(f"[epistemic-commons] ❌ Commons publish error: {e}")
+
+    try:
+        from epistemic_commons_api import update_epistemic_commons
+        api_result = update_epistemic_commons()
+        print(f"[epistemic-commons] API endpoints updated: {list(api_result.get('api', {}).keys()) if isinstance(api_result.get('api'), dict) else api_result.get('api')}")
+    except ImportError:
+        print("[epistemic-commons] ❌ epistemic_commons_api.py not found in repo")
+    except Exception as e:
+        print(f"[epistemic-commons] ❌ API update error: {e}")
+
+    _epistemic_commons_last_run_date = datetime.date.today()
+
+def maybe_trigger_epistemic_commons():
+    """Called every tick. Fires once per day at 8AM Eastern. Same
+    daemon-thread + date-guard pattern as morning synthesis, curriculum
+    autogen, and the email digest above."""
+    global _epistemic_commons_last_run_date
+    now   = _now_eastern()
+    today = now.date()
+
+    if now.hour == 8 and _epistemic_commons_last_run_date != today:
+        _epistemic_commons_last_run_date = today   # set immediately to block re-entry
+        print(f"[epistemic-commons] ⏰ 8AM trigger fired for {today.isoformat()}")
+        t = threading.Thread(target=_run_epistemic_commons_background, daemon=True)
+        t.start()
+
+# ══════════════════════════════════════════════════════════════════════════════
 # GLASSES SIGNAL HANDLER — Halo glasses → swarm bridge
 # Reads /mnt/main/glasses_signal.json each tick (written by nostr_glasses_bridge.py)
 # Routes signal to appropriate daughters, writes reply to /mnt/main/glasses_reply.json
@@ -1458,6 +1509,7 @@ def launch_swarm():
     print(f"🌅 Morning synthesis ACTIVE — fires 6AM daily via qwen2.5:7b")
     print(f"🌱 Curriculum autogen ACTIVE — proposes 1 new lesson daily at 9AM (pending human review)")
     print(f"📧 Email watch ACTIVE — daily digest at 7AM (private), urgent deadlines spoken ~every 15min")
+    print(f"🌐 Epistemic Commons ACTIVE — daily CC0 publish at 8AM (commons letter + API endpoints)")
     print(f"🥽 Glasses signal handler ACTIVE — /mnt/main/glasses_signal.json\n")
 
     tick        = 0
@@ -1496,6 +1548,10 @@ def launch_swarm():
             # deadline check (speaks aloud only, ~every 15 min) ─────────────
             maybe_trigger_email_digest()
             maybe_check_email_urgent(tick)
+            # ──────────────────────────────────────────────────────────────
+
+            # ── EPISTEMIC COMMONS — daily CC0 publish, zero cost ──────────
+            maybe_trigger_epistemic_commons()
             # ──────────────────────────────────────────────────────────────
 
             # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──

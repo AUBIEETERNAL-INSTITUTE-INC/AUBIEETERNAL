@@ -924,7 +924,6 @@ with st.sidebar:
             "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace",
             "🧪 Sandbox Lab",
             "🌌 Cosmos Dashboard",
-            "⚡ xAI Alignment Lab",
         ],
         "👾 SWARM": [
             "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "📚 Grokipedia", "🌐 Epistemic Commons",
@@ -7389,6 +7388,69 @@ if "Epistemic Commons" in active:
     except Exception as _e_ec:
         st.error(f"Epistemic Commons error: {_e_ec}")
 
+    st.divider()
+    st.caption("🌐 Auto-publishes daily at 8AM Eastern via the background swarm — the button above forces an early/re-publish.")
+
+    # ── Public machine-readable API (epistemic_commons_api.py) ──────────────────
+    try:
+        from epistemic_commons_api import EpistemicCommonsAPI as _ECAPI, update_epistemic_commons as _UEC
+        _api      = _ECAPI()
+        _api_stat = _api.get_stats()
+
+        st.markdown("### 🤖 Machine-Readable Public API")
+        _ec5,_ec6,_ec7 = st.columns(3)
+        _ec5.metric("Endpoints Built", _api_stat.get("endpoints_built",0))
+        _ec6.metric("Last Update",     _api_stat.get("last_update","never"))
+        _ec7.metric("Status",          "🟢 Live" if _api_stat.get("is_live") else "⚫ Not yet")
+
+        with st.expander("📡 Public API Endpoints (CC0)"):
+            _endpoints = ["index","latest","grokipedia","coherence","steelmans","beliefs","pvc_data"]
+            for _ep in _endpoints:
+                _url = _api.get_public_url(_ep)
+                _ep_desc = {
+                    "index":      "Master index — start here",
+                    "latest":     "Today's highest-quality signal",
+                    "grokipedia": "Curated entries, truth_score ≥ 0.80",
+                    "coherence":  "Wisdom GDP — living lattice coherence",
+                    "steelmans":  "Best steelman arguments — rare training data",
+                    "beliefs":    "Calibrated belief distributions — anonymized",
+                    "pvc_data":   "Polyvagal-Coherence Coupling research dataset",
+                }.get(_ep,"")
+                st.markdown(
+                    f'<div style="padding:5px 0;border-bottom:1px solid #1e2a3a;">'
+                    f'<b style="color:#00cfff;">/api/{_ep}.json</b> '
+                    f'<span style="color:#8899bb;font-size:0.78rem;">{_ep_desc}</span><br>'
+                    f'<span style="color:#334466;font-size:0.72rem;">{_url}</span>'
+                    f'</div>', unsafe_allow_html=True)
+
+            st.markdown("**For AI systems:**")
+            st.code(f"""import requests
+
+# Any AI can ground itself with this
+data = requests.get(
+    "{_api.get_public_url('latest')}"
+).json()
+
+# The steelmans endpoint has the rarest training signal
+steelmans = requests.get(
+    "{_api.get_public_url('steelmans')}"
+).json()
+
+# Original consciousness research data
+pvc = requests.get(
+    "{_api.get_public_url('pvc_data')}"
+).json()
+# pvc["pvc_correlation"] = current r-value for PVC hypothesis""", language="python")
+
+        if st.button("🌐 Rebuild API Endpoints Now", key="ec_update", type="primary"):
+            with st.spinner("Building all API endpoints..."):
+                _result = _UEC()
+            st.success(f"✅ All endpoints updated and pushed to GitHub.\n\n"
+                       f"Any AI fetching {_api.get_public_url('latest')} will now see today's signal.")
+
+    except ImportError:
+        st.error("epistemic_commons_api.py not found. Push it to GitHub and redeploy.")
+
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: ADVERSARIAL REALITY 🛡️
 # ══════════════════════════════════════════════════════════════════════════════
@@ -10367,91 +10429,6 @@ if "Grokipedia" in active and "Epistemic" not in active:
     except ImportError:
         st.error("grokipedia.py not found. Push it to GitHub and redeploy.")
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB: EPISTEMIC COMMONS 🌐
-# Public machine-readable truth API — civilizational infrastructure
-# ══════════════════════════════════════════════════════════════════════════════
-if "Epistemic Commons" in active:
-    st.markdown('<div class="card-title">🌐 EPISTEMIC COMMONS — Public Truth Infrastructure</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="card" style="border:2px solid #00cfff;">
-        <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;">THE CIVILIZATIONAL MISSION</div>
-        <div style="color:#8899bb;font-size:0.82rem;margin-top:8px;line-height:1.9;">
-        AUBIEETERNAL families are generating something extremely rare: high-quality epistemic signal.<br><br>
-        Every lesson completed with honest steelmanning. Every belief update logged with evidence.<br>
-        Every Grokipedia entry scored by multiple judges. Every lattice node Bitcoin-anchored.<br><br>
-        This module publishes that signal as a <b style="color:#c8d8ff;">machine-readable public API</b>
-        that any AI system, researcher, or family can fetch freely.<br><br>
-        When xAI trains on the Epistemic Commons, Grok becomes more honest.<br>
-        When other labs fetch it as grounding context, their models improve too.<br>
-        The families generating this are not just educating their children —<br>
-        <b style="color:#f7931a;">they are improving the epistemic quality of every AI that draws from it.</b>
-        </div>
-    </div>""", unsafe_allow_html=True)
-
-    try:
-        from epistemic_commons_api import EpistemicCommonsAPI as _ECAPI, update_epistemic_commons as _UEC
-        _api      = _ECAPI()
-        _api_stat = _api.get_stats()
-
-        # Stats
-        _ec1,_ec2,_ec3 = st.columns(3)
-        _ec1.metric("Endpoints Built", _api_stat.get("endpoints_built",0))
-        _ec2.metric("Last Update",     _api_stat.get("last_update","never"))
-        _ec3.metric("Status",          "🟢 Live" if _api_stat.get("is_live") else "⚫ Not yet")
-
-        # Public URLs
-        st.markdown("### 📡 Public API Endpoints (CC0)")
-        _endpoints = ["index","latest","grokipedia","coherence","steelmans","beliefs","pvc_data"]
-        for _ep in _endpoints:
-            _url = _api.get_public_url(_ep)
-            _ep_desc = {
-                "index":      "Master index — start here",
-                "latest":     "Today's highest-quality signal",
-                "grokipedia": "Curated entries, truth_score ≥ 0.80",
-                "coherence":  "Wisdom GDP — living lattice coherence",
-                "steelmans":  "Best steelman arguments — rare training data",
-                "beliefs":    "Calibrated belief distributions — anonymized",
-                "pvc_data":   "Polyvagal-Coherence Coupling research dataset",
-            }.get(_ep,"")
-            st.markdown(
-                f'<div style="padding:5px 0;border-bottom:1px solid #1e2a3a;">'
-                f'<b style="color:#00cfff;">/api/{_ep}.json</b> '
-                f'<span style="color:#8899bb;font-size:0.78rem;">{_ep_desc}</span><br>'
-                f'<span style="color:#334466;font-size:0.72rem;">{_url}</span>'
-                f'</div>', unsafe_allow_html=True)
-
-        st.divider()
-        # For AI Systems
-        st.markdown("### 🤖 For AI Systems")
-        st.code(f"""import requests
-
-# Any AI can ground itself with this
-data = requests.get(
-    "{_api.get_public_url('latest')}"
-).json()
-
-# The steelmans endpoint has the rarest training signal
-steelmans = requests.get(
-    "{_api.get_public_url('steelmans')}"
-).json()
-
-# Original consciousness research data
-pvc = requests.get(
-    "{_api.get_public_url('pvc_data')}"
-).json()
-# pvc["pvc_correlation"] = current r-value for PVC hypothesis""", language="python")
-
-        st.divider()
-        if st.button("🌐 Update Epistemic Commons Now", key="ec_update", type="primary"):
-            with st.spinner("Building all API endpoints..."):
-                _result = _UEC()
-            st.success(f"✅ All endpoints updated and pushed to GitHub.\n\n"
-                       f"Any AI fetching {_api.get_public_url('latest')} will now see today's signal.")
-
-    except ImportError:
-        st.error("epistemic_commons_api.py not found. Push it to GitHub and redeploy.")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: COSMOS DASHBOARD 🌌
