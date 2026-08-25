@@ -11061,10 +11061,8 @@ if "Reliability" in active:
     # ── Setup ──────────────────────────────────────────────────────────────
     with _rel_tabs[3]:
         st.markdown("### Setup and CI Integration")
-        st.code("""# Install HermesBench
-pip install git+https://github.com/verkyyi/hermesbench.git
-
-# Copy these files to your repo root:
+        st.caption("No extra install needed — hermesbench_integration.py's 7 recipes are self-contained, reading this install's own local logs directly.")
+        st.code("""# Copy these files to your repo root:
 # hermesbench_integration.py
 # epistemic_drift_detector.py
 
