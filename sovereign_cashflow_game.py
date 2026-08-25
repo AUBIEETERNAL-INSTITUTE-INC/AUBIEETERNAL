@@ -273,10 +273,26 @@ def _ai_take_turn(ai: dict) -> str:
     uses, so an AI's assets/income/expenses evolve under identical rules -
     just decided by a simple heuristic instead of a person clicking Buy/Pass.
     Returns a one-line narration for the log."""
+    prof_name = PROFESSIONS[ai["profession"]]["name"]
+
+    # Before rolling, a "smart" AI pays off debt it can afford ~70% of the
+    # time (not every time, so it still plays like a character rather than
+    # a perfect optimizer) - the cheapest liability first, same real lever
+    # a human player has via the Pay Down Debt tab.
+    if ai["liabilities"] and random.random() < 0.7:
+        key, amount = min(ai["liabilities"].items(), key=lambda kv: kv[1])
+        if ai["savings"] >= amount:
+            monthly = ai["expenses"].get(key, 0)
+            paid = _payoff_debt(ai, key)
+            label = _LIABILITY_LABELS.get(key, key.replace("_"," ").title())
+            fallback = f"{ai['name']} the {prof_name} pays off the {label} ({_fmt(paid)}), freeing up {_fmt(monthly)}/mo."
+            return _ollama_narrate(fallback,
+                f"In one short, punchy sentence (under 20 words), narrate {ai['name']}, a {prof_name}, "
+                f"paying off their {label.split(' ',1)[-1]} debt in full in a cashflow board game.")
+
     roll = random.randint(1, 6)
     ai["board_pos"] = (ai.get("board_pos", 0) + roll) % len(BOARD_SPACES)
     space = BOARD_SPACES[ai["board_pos"]]
-    prof_name = PROFESSIONS[ai["profession"]]["name"]
 
     if space == "payday":
         c = cf(ai); ai["savings"] += c; ai["turn"] += 1
@@ -478,11 +494,12 @@ def _main(s, fid):
                 unsafe_allow_html=True)
     st.markdown("---")
 
-    t1,t2,t3,t4 = st.tabs(["🎲 Take Turn","📊 Balance Sheet","🏪 Marketplace","📜 Log"])
+    t1,t2,t3,t4,t5 = st.tabs(["🎲 Take Turn","📊 Balance Sheet","🏪 Marketplace","💳 Pay Down Debt","📜 Log"])
     with t1: _turn(s, fid, pv, ev)
     with t2: _sheet(s, pv, ev, cfv)
     with t3: _market(s, fid)
-    with t4:
+    with t4: _debt(s, fid)
+    with t5:
         for e in s.get("log",[]): st.markdown(f'<div class="cflog">{e}</div>', unsafe_allow_html=True)
 
     if escaped(s):
@@ -590,6 +607,64 @@ def _do_payday(s, fid):
     _log(s, f"💵 Payday +{_fmt(c)}. Savings: {_fmt(s['savings'])}")
     _run_ai_turns(s)
     save_game(s,fid); st.success(f"💵 Payday! +{_fmt(c)}"); st.rerun()
+
+_LIABILITY_LABELS = {
+    "mortgage": "🏠 Mortgage", "car_loan": "🚗 Car Loan",
+    "credit_card": "💳 Credit Card", "student_loan": "🎓 Student Loan",
+}
+
+def _payoff_debt(s: dict, key: str) -> int:
+    """Pays a liability off IN FULL from savings - matches the real Cashflow
+    board game's loan-payoff mechanic (no partial paydown) and keeps the
+    lesson simple: cost to lock in was always the full payoff amount. Every
+    profession's liability keys are a subset of its expense keys sharing the
+    same name (e.g. "car_loan" is both a liability and the monthly expense
+    line for it), so paying it off also removes the matching monthly
+    expense - the actual reward, since it's what moves Passive >= Expenses.
+    Returns the amount paid, or 0 if it couldn't be afforded."""
+    amount = s["liabilities"].get(key, 0)
+    if amount <= 0 or s["savings"] < amount:
+        return 0
+    s["savings"] -= amount
+    del s["liabilities"][key]
+    if key in s["expenses"]:
+        del s["expenses"][key]
+    return amount
+
+def _debt(s, fid):
+    st.markdown("### 💳 Pay Off Debt")
+    st.caption("Paying off a liability in full also removes its monthly payment from your "
+               "expenses — the fastest lever you have toward Passive Income ≥ Expenses.")
+    if not s["liabilities"]:
+        st.markdown('<div class="cfc" style="text-align:center;color:#00ff88;">🎉 Debt-free! Every liability is paid off.</div>',
+                    unsafe_allow_html=True)
+        return
+    for key, amount in list(s["liabilities"].items()):
+        label = _LIABILITY_LABELS.get(key, key.replace("_"," ").title())
+        monthly = s["expenses"].get(key, 0)
+        can_afford = s["savings"] >= amount
+        st.markdown(
+            f'<div class="cfc" style="border-left:3px solid {"#00ff88" if can_afford else "#334455"};">' +
+            f'<div style="display:flex;justify-content:space-between;">' +
+            f'<span style="color:#c8d8ff;">{label}</span>' +
+            f'<span style="color:{"#00ff88" if can_afford else "#445566"};font-size:.72rem;">' +
+            f'{"✅ CAN PAY OFF" if can_afford else "❌ SAVE MORE"}</span></div>' +
+            f'<div style="font-size:.78rem;display:flex;gap:16px;margin-top:4px;">' +
+            f'<span style="color:#ff4444;">Payoff: {_fmt(amount)}</span>' +
+            (f'<span style="color:#8899bb;">Frees up: {_fmt(monthly)}/mo</span>' if monthly else "") +
+            f'</div></div>', unsafe_allow_html=True
+        )
+        if can_afford:
+            if st.button(f"💳 Pay Off {label} — {_fmt(amount)}", key=f"payoff_{key}", use_container_width=True, type="primary"):
+                paid = _payoff_debt(s, key)
+                s["total_xp"] = s.get("total_xp",0) + 30
+                _log(s, f"💳 Paid off {label} ({_fmt(paid)}). " +
+                        (f"Freed up {_fmt(monthly)}/mo!" if monthly else "Debt-free on this one!"))
+                try:
+                    from family_profiles import award_cross_tool_reward
+                    award_cross_tool_reward(fid,"sovereign_life","debt_payoff",xp=30)
+                except: pass
+                save_game(s,fid); st.rerun()
 
 def _do_buy(s, card, fid):
     s["savings"] -= card["cost"]
