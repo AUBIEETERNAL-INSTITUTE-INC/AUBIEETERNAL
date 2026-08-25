@@ -4632,7 +4632,7 @@ if "Sandbox Lab" in active:
     exp_log = _Path(f"/mnt/main/families/{_fid}/experiments.jsonl")
     exp_log.parent.mkdir(parents=True, exist_ok=True)
 
-    tabs_sb = st.tabs(["⚔️ Steelman Playground", "🔬 Hypothesis Tester", "🧬 Simulation Runner", "📋 Experiment Log"])
+    tabs_sb = st.tabs(["⚔️ Steelman Playground", "🔬 Hypothesis Tester", "🧬 Simulation Runner", "📋 Experiment Log", "⚙️ Build Code"])
 
     # ── Steelman Playground ───────────────────────────────────────────────────
     with tabs_sb[0]:
@@ -4757,6 +4757,90 @@ if "Sandbox Lab" in active:
         else:
             st.caption("No experiments yet — run your first one above!")
 
+    # ── Build Code — same real dual-road agent the tablet's phone_ui.py
+    # "⚙️ Build" tab already uses, reused directly (not reimplemented) so the
+    # portal and the tablet share one source of truth. Two local Qwen models
+    # (qwen2.5:14b + qwen2.5:7b via Ollama, $0/day, despite the module's own
+    # internal function names being stale leftovers from when it called paid
+    # Claude/Grok) answer in parallel, Aubie synthesizes the best code,
+    # writes it to disk, actually runs it, and auto-fixes + re-runs on
+    # failure (up to 4x) before handing back the final working code.
+    # ──────────────────────────────────────────────────────────────────────
+    with tabs_sb[4]:
+        st.markdown("**Describe what you want built. Two local models race to write it, Aubie runs it for real, and auto-fixes it if it breaks.**")
+        st.caption("Same engine as the tablet's ⚙️ Build tab — runs locally, takes ~30-90 seconds, no API key needed.")
+
+        bc_request = st.text_area(
+            "What should Aubie build?", key="bc_request", height=90,
+            placeholder="Write a Python script that generates the first 20 fibonacci numbers and prints them"
+        )
+
+        st.markdown("**Quick builds:**")
+        _bc_quick = [
+            ("🔢 Fibonacci", "Write a Python script that generates the first 20 fibonacci numbers and prints them"),
+            ("🔠 Sort Names", "Write a Python function that sorts a list of names alphabetically and prints the result"),
+            ("🎲 Dice Sim", "Write a Python script that simulates rolling two dice 1000 times and shows the frequency of each sum"),
+            ("🔐 Caesar Cipher", "Write a Python Caesar cipher encoder and decoder and test it with a sample message"),
+            ("✖️ Times Table", "Write a Python script that prints a multiplication table from 1 to 12"),
+        ]
+        _bc_cols = st.columns(len(_bc_quick))
+        for _col, (_label, _prompt) in zip(_bc_cols, _bc_quick):
+            with _col:
+                if st.button(_label, key=f"bc_quick_{_label}", use_container_width=True):
+                    st.session_state["bc_request"] = _prompt
+                    st.rerun()
+
+        if st.button("⚙️ Build & Run", key="bc_run", type="primary", use_container_width=True) and bc_request:
+            with st.spinner("Two local models racing to build this... (usually 30-90 sec)"):
+                try:
+                    import asyncio as _bc_asyncio
+                    from aubieeternal_build_code import handle_build_code_request as _bc_handle
+                    _bc_result = _bc_asyncio.run(_bc_handle({"request": bc_request, "verbose": True}))
+                except ImportError:
+                    _bc_result = {"error": "aubieeternal_build_code.py not found."}
+                except Exception as _e_bc:
+                    _bc_result = {"error": str(_e_bc)}
+
+            if _bc_result.get("error"):
+                st.error(_bc_result["error"])
+            else:
+                _bc_ok = _bc_result.get("success")
+                st.markdown(
+                    f'<div class="card" style="border-left:3px solid {"#00ff88" if _bc_ok else "#ff9500"};">'
+                    f'<div style="color:{"#00ff88" if _bc_ok else "#ff9500"};font-family:Orbitron,monospace;font-size:0.78rem;">'
+                    f'{"✅ BUILT & RAN SUCCESSFULLY" if _bc_ok else "⚠️ DID NOT FULLY SUCCEED"} · '
+                    f'{_bc_result.get("iterations",1)} iteration(s)</div>'
+                    f'<div style="color:#8899bb;font-size:0.8rem;margin-top:6px;">{_bc_result.get("summary","")}</div>'
+                    + (f'<div style="color:#ff4444;font-size:0.78rem;margin-top:4px;">{_bc_result.get("error_message","")}</div>'
+                       if _bc_result.get("error_message") else "")
+                    + f'</div>', unsafe_allow_html=True
+                )
+                if _bc_result.get("final_code"):
+                    st.code(_bc_result["final_code"], language="python")
+                if _bc_result.get("output_file"):
+                    st.caption(f"📄 Saved to: {_bc_result['output_file']}")
+                _bc_log = _bc_result.get("run_log", [])
+                if _bc_log:
+                    with st.expander(f"🖥️ Run log ({len(_bc_log)} attempt{'s' if len(_bc_log)!=1 else ''})"):
+                        for _i, _r in enumerate(_bc_log, 1):
+                            _rc = "#00ff88" if _r.get("ok") else "#ff4444"
+                            st.markdown(f'<span style="color:{_rc};">Attempt {_i} · exit {_r.get("returncode")} · {_r.get("elapsed_s")}s</span>', unsafe_allow_html=True)
+                            if _r.get("stdout"): st.code(_r["stdout"], language=None)
+                            if _r.get("stderr"): st.code(_r["stderr"], language=None)
+
+                try:
+                    with open(exp_log, "a") as f:
+                        f.write(json.dumps({
+                            "timestamp": _dt.now().isoformat(),
+                            "type": "build_code",
+                            "request": bc_request[:150],
+                            "success": _bc_ok,
+                            "iterations": _bc_result.get("iterations", 1),
+                            "family_id": _fid,
+                        }) + "\n")
+                    award_xp(20)
+                except Exception:
+                    pass
 
     st.divider()
     st.markdown("### 🧬 Family Contribution Bridge")
