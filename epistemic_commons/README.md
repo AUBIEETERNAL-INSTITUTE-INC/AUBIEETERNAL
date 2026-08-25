@@ -30,3 +30,4 @@ GET https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_comm
 | Date | Seeds | Steelmans | Wonder | Hash |
 |------|-------|-----------|--------|------|
 | [2026-05-28](daily/2026-05-28.md) | 7 seeds | 5 steelmans | Wonder 1.6328 | `5039c5c5b6bbed17` |
+| [2026-08-25](daily/2026-08-25.md) | 7 seeds | 5 steelmans | Wonder 2.0 | `ba6ee238e30da858` |
