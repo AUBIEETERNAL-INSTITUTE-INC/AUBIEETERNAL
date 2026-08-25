@@ -13,7 +13,7 @@ Mechanics:
 """
 
 import streamlit as st
-import json, random, datetime
+import json, math, random, datetime, requests
 from pathlib import Path
 
 _SAVE_DIR = Path("/mnt/main/sovereign_life") if Path("/mnt/main").exists() \
@@ -165,6 +165,180 @@ def _fmt(n):
     return f"${n:.0f}"
 
 # ══════════════════════════════════════════════════════════════════════════════
+# BOARD — the circular "Rat Race" track, like the real Cashflow board game.
+# Landing on a space determines what you draw, instead of the old manual
+# "pick a card type" radio button. 24 spaces, weighted toward Opportunity
+# (the real game's focus) with Doodad/Market/Payday spaced around it.
+# ══════════════════════════════════════════════════════════════════════════════
+BOARD_SPACES = (["opp","opp","doodad","market","opp","payday"] * 4)
+SPACE_META = {
+    "opp":    {"emoji":"🎯", "color":"#00ff88", "label":"Opportunity"},
+    "doodad": {"emoji":"🛍️", "color":"#ff4444", "label":"Doodad"},
+    "market": {"emoji":"🌍", "color":"#00cfff", "label":"Market Event"},
+    "payday": {"emoji":"💵", "color":"#f7931a", "label":"Payday"},
+}
+
+def _render_board(players):
+    """players: list of (label, emoji, color, board_pos) tuples. Pure HTML/CSS -
+    positions computed with trig around a circle, no external chart/game lib
+    needed."""
+    n = len(BOARD_SPACES)
+    size, radius = 320, 132
+    cx = cy = size / 2
+    parts = [f'<div style="position:relative;width:{size}px;height:{size}px;'
+             f'margin:10px auto;background:radial-gradient(circle,rgba(160,32,240,.06),transparent 70%);'
+             f'border-radius:50%;border:1px dashed rgba(255,255,255,.08);">']
+
+    for i, sp in enumerate(BOARD_SPACES):
+        ang = (i / n) * 2 * math.pi - math.pi / 2
+        x, y = cx + radius * math.cos(ang), cy + radius * math.sin(ang)
+        meta = SPACE_META[sp]
+        parts.append(
+            f'<div title="{meta["label"]}" style="position:absolute;left:{x-13}px;top:{y-13}px;'
+            f'width:26px;height:26px;border-radius:50%;background:{meta["color"]}22;'
+            f'border:2px solid {meta["color"]};display:flex;align-items:center;'
+            f'justify-content:center;font-size:12px;">{meta["emoji"]}</div>'
+        )
+
+    at_pos = {}
+    for p in players:
+        at_pos.setdefault(p[3] % n, []).append(p)
+    for pos, plist in at_pos.items():
+        ang = (pos / n) * 2 * math.pi - math.pi / 2
+        bx, by = cx + radius * math.cos(ang), cy + radius * math.sin(ang)
+        for j, (label, emoji, color, _pos) in enumerate(plist):
+            ox = (j - (len(plist) - 1) / 2) * 15
+            parts.append(
+                f'<div title="{label}" style="position:absolute;left:{bx-9+ox}px;top:{by-9-16}px;'
+                f'width:18px;height:18px;border-radius:50%;background:{color};'
+                f'border:2px solid white;display:flex;align-items:center;justify-content:center;'
+                f'font-size:10px;z-index:5;box-shadow:0 0 4px rgba(0,0,0,.5);">{emoji}</div>'
+            )
+
+    parts.append(
+        f'<div style="position:absolute;left:{cx-50}px;top:{cy-22}px;width:100px;'
+        f'text-align:center;font-family:Orbitron,monospace;font-size:.62rem;'
+        f'color:#445566;letter-spacing:.1em;">RAT<br>RACE</div>'
+    )
+    parts.append("</div>")
+    st.markdown("".join(parts), unsafe_allow_html=True)
+
+    legend = " &nbsp; ".join(
+        f'<span style="color:{m["color"]};">{m["emoji"]} {m["label"]}</span>'
+        for m in SPACE_META.values()
+    )
+    st.markdown(f'<div style="text-align:center;font-size:.68rem;color:#556677;margin-top:-4px;">{legend}</div>',
+                unsafe_allow_html=True)
+
+# ══════════════════════════════════════════════════════════════════════════════
+# AI OPPONENTS — 2-3 computer-controlled players race around the same board.
+# Decisions are fast built-in heuristics (buy if affordable, resist doodads
+# more often than not) so a turn never stalls waiting on a model; a short
+# in-character line from the local Ollama model is layered on top purely for
+# flavor and always has a plain-text fallback if the model call fails or
+# Ollama isn't running.
+# ══════════════════════════════════════════════════════════════════════════════
+AI_NAMES  = ["Ada", "Byte", "Coin", "Delta", "Echo", "Frost"]
+AI_COLORS = ["#00cfff", "#a020f0", "#ff6b35", "#00ff88"]
+
+def _new_ai_player(idx):
+    pid = random.choice(list(PROFESSIONS.keys()))
+    ai = new_game(pid, fid=f"__ai_{idx}")
+    ai["name"]  = AI_NAMES[idx % len(AI_NAMES)]
+    ai["emoji"] = PROFESSIONS[pid]["emoji"]
+    ai["color"] = AI_COLORS[idx % len(AI_COLORS)]
+    ai["board_pos"] = 0
+    return ai
+
+def _ollama_narrate(fallback: str, prompt: str) -> str:
+    try:
+        r = requests.post(
+            "http://localhost:11434/v1/chat/completions",
+            json={"model": "qwen2.5:7b",
+                  "messages": [{"role": "user", "content": prompt}],
+                  "max_tokens": 50, "temperature": 0.85},
+            timeout=15,
+        )
+        if r.status_code == 200:
+            text = r.json()["choices"][0]["message"]["content"].strip()
+            if text:
+                return text
+    except Exception:
+        pass
+    return fallback
+
+def _ai_take_turn(ai: dict) -> str:
+    """Rolls, moves, lands, decides, and resolves one AI opponent's turn.
+    Reuses the same _do_buy/_apply_event mutators the human player's turn
+    uses, so an AI's assets/income/expenses evolve under identical rules -
+    just decided by a simple heuristic instead of a person clicking Buy/Pass.
+    Returns a one-line narration for the log."""
+    roll = random.randint(1, 6)
+    ai["board_pos"] = (ai.get("board_pos", 0) + roll) % len(BOARD_SPACES)
+    space = BOARD_SPACES[ai["board_pos"]]
+    prof_name = PROFESSIONS[ai["profession"]]["name"]
+
+    if space == "payday":
+        c = cf(ai); ai["savings"] += c; ai["turn"] += 1
+        fallback = f"{ai['name']} the {prof_name} collects payday: +{_fmt(c)}."
+        return _ollama_narrate(fallback,
+            f"In one short, punchy sentence (under 20 words), narrate a board-game character "
+            f"named {ai['name']}, a {prof_name}, collecting a payday of {_fmt(c)} in a cashflow game.")
+
+    if space == "opp":
+        pool = SMALL_DEALS if ai["savings"] < 5000 else (SMALL_DEALS + BIG_DEALS)
+        owned = {a["name"] for a in ai["assets"].values()}
+        pool = [d for d in pool if d["name"] not in owned] or SMALL_DEALS
+        card = random.choice(pool)
+        if ai["savings"] >= card["cost"]:
+            _do_buy(ai, card, ai["family_id"])
+            fallback = f"{ai['name']} the {prof_name} lands on Opportunity and buys {card['name']} for {_fmt(card['cost'])}."
+            return _ollama_narrate(fallback,
+                f"In one short, punchy sentence (under 20 words), narrate {ai['name']}, a {prof_name}, "
+                f"buying '{card['name']}' ({card['desc']}) in a cashflow board game.")
+        ai["turn"] += 1
+        fallback = f"{ai['name']} the {prof_name} lands on Opportunity but can't afford {card['name']} - passes."
+        return _ollama_narrate(fallback,
+            f"In one short sentence (under 20 words), narrate {ai['name']}, a {prof_name}, "
+            f"wanting but not being able to afford '{card['name']}' in a cashflow board game.")
+
+    if space == "doodad":
+        card = random.choice(DOODADS)
+        if random.random() < 0.45:  # AI gives in to temptation less than half the time
+            if card["cost"] > 0: ai["savings"] = max(0, ai["savings"] - card["cost"])
+            if card["monthly"] > 0: ai["expenses"]["doodads"] = ai["expenses"].get("doodads", 0) + card["monthly"]
+            ai["turn"] += 1
+            fallback = f"{ai['name']} the {prof_name} gives in and buys {card['name']}."
+            return _ollama_narrate(fallback,
+                f"In one short sentence (under 20 words), narrate {ai['name']}, a {prof_name}, "
+                f"giving in to temptation and buying '{card['name']}' in a cashflow board game.")
+        ai["savings"] += 50; ai["turn"] += 1
+        fallback = f"{ai['name']} the {prof_name} resists {card['name']} and saves instead."
+        return _ollama_narrate(fallback,
+            f"In one short sentence (under 20 words), narrate {ai['name']}, a {prof_name}, "
+            f"resisting the temptation to buy '{card['name']}' in a cashflow board game.")
+
+    # market
+    card = random.choice(MARKET_EVENTS)
+    _apply_event(ai, card); ai["turn"] += 1
+    fallback = f"{ai['name']} the {prof_name} hits a Market Event: {card['name']}."
+    return _ollama_narrate(fallback,
+        f"In one short sentence (under 20 words), narrate {ai['name']}, a {prof_name}, "
+        f"experiencing the market event '{card['name']}' ({card['desc']}) in a cashflow board game.")
+
+def _run_ai_turns(s: dict):
+    """Called once after the human's turn resolves. Every AI opponent takes
+    one turn and its narration lands in the shared log (see the 📜 Log tab)
+    so it reads like a real multiplayer session, not a silent background
+    process."""
+    for ai in s.get("ai_players", []):
+        line = _ai_take_turn(ai)
+        _log(s, f"🤖 {line}")
+        if escaped(ai) and not ai.get("_announced_escape"):
+            ai["_announced_escape"] = True
+            _log(s, f"🏁 {ai['name']} the {PROFESSIONS[ai['profession']]['name']} escaped the rat race!")
+
+# ══════════════════════════════════════════════════════════════════════════════
 # CSS
 # ══════════════════════════════════════════════════════════════════════════════
 _CSS = """<style>
@@ -203,6 +377,7 @@ def _setup(family_id):
                "The goal is always the same: make Passive Income ≥ Total Expenses.")
     dream = st.text_input("🌟 What's your dream? (What are you playing for?)",
                           placeholder="Own a homestead, travel freely, homeschool kids, Bitcoin full-node life...")
+    n_ai = st.radio("🤖 AI opponents racing the board with you:", [2, 3], horizontal=True, index=0)
     st.markdown("---")
     cols = st.columns(3)
     for i,(pid,p) in enumerate(PROFESSIONS.items()):
@@ -223,11 +398,19 @@ def _setup(family_id):
                 if not dream:
                     st.warning("Enter your dream first!"); st.stop()
                 s = new_game(pid, family_id); s["dream"] = dream
-                _log(s, f"Started as {p['name']}. Dream: {dream}")
+                s["board_pos"] = 0
+                s["ai_players"] = [_new_ai_player(i) for i in range(n_ai)]
+                _log(s, f"Started as {p['name']}. Dream: {dream}. {n_ai} AI opponents joined the board.")
                 save_game(s, family_id); st.rerun()
 
 # ══════════════════════════════════════════════════════════════════════════════
 def _main(s, fid):
+    # Lazily upgrade a save from before the board/AI-opponents feature -
+    # rather than forcing a new game, just give it a board position and a
+    # default pair of AI opponents the next time it's opened.
+    if "board_pos" not in s: s["board_pos"] = 0
+    if "ai_players" not in s: s["ai_players"] = [_new_ai_player(i) for i in range(2)]
+
     prof = PROFESSIONS[s["profession"]]
     pv   = passive(s); ev = expenses(s); cfv = cf(s)
     pct  = min(100, int(pv/ev*100)) if ev>0 else 0
@@ -270,6 +453,31 @@ def _main(s, fid):
             )
     st.markdown("---")
 
+    # ── Board + leaderboard ───────────────────────────────────────────────────
+    board_players = [(prof["name"], prof["emoji"], "#f7931a", s["board_pos"])]
+    for ai in s["ai_players"]:
+        board_players.append((ai["name"], ai["emoji"], ai["color"], ai.get("board_pos", 0)))
+    _render_board(board_players)
+
+    lb_cols = st.columns(len(s["ai_players"]) + 1)
+    with lb_cols[0]:
+        st.markdown(
+            f'<div style="text-align:center;"><span style="color:#f7931a;">{prof["emoji"]} You</span><br>'
+            f'<span style="font-size:.7rem;color:{"#00ff88" if escaped(s) else "#556677"};">'
+            f'{"🏁 ESCAPED" if escaped(s) else f"{pct}% to escape"}</span></div>',
+            unsafe_allow_html=True)
+    for col, ai in zip(lb_cols[1:], s["ai_players"]):
+        with col:
+            ai_pv, ai_ev = passive(ai), expenses(ai)
+            ai_pct = min(100, int(ai_pv/ai_ev*100)) if ai_ev>0 else 0
+            ai_escaped = escaped(ai)
+            st.markdown(
+                f'<div style="text-align:center;"><span style="color:{ai["color"]};">{ai["emoji"]} {ai["name"]}</span><br>'
+                f'<span style="font-size:.7rem;color:{"#00ff88" if ai_escaped else "#556677"};">'
+                f'{"🏁 ESCAPED" if ai_escaped else f"{ai_pct}% to escape"}</span></div>',
+                unsafe_allow_html=True)
+    st.markdown("---")
+
     t1,t2,t3,t4 = st.tabs(["🎲 Take Turn","📊 Balance Sheet","🏪 Marketplace","📜 Log"])
     with t1: _turn(s, fid, pv, ev)
     with t2: _sheet(s, pv, ev, cfv)
@@ -290,21 +498,26 @@ def _main(s, fid):
 # ══════════════════════════════════════════════════════════════════════════════
 def _turn(s, fid, pv, ev):
     st.markdown("### 🎲 Your Turn")
-    kind = st.radio("Draw:", ["🎯 Opportunity","🛍️ Doodad","🌍 Market Event","💵 Payday"],
-                    horizontal=True, key="turn_radio")
+    st.caption("Roll to move your token around the board. The space you land on decides what you draw.")
 
-    if st.button("🎲 Draw Card", key="draw", use_container_width=True, type="primary"):
-        if "Opportunity" in kind:
-            pool = SMALL_DEALS if s["savings"]<5000 else (SMALL_DEALS+BIG_DEALS)
-            owned = {a["name"] for a in s["assets"].values()}
-            pool  = [d for d in pool if d["name"] not in owned] or SMALL_DEALS
-            st.session_state["card"] = ("opp", random.choice(pool))
-        elif "Doodad" in kind:
-            st.session_state["card"] = ("doodad", random.choice(DOODADS))
-        elif "Market" in kind:
-            st.session_state["card"] = ("market", random.choice(MARKET_EVENTS))
-        else:
-            _do_payday(s, fid)
+    if "card" not in st.session_state:
+        if st.button("🎲 Roll Dice", key="roll", use_container_width=True, type="primary"):
+            roll = random.randint(1, 6)
+            s["board_pos"] = (s["board_pos"] + roll) % len(BOARD_SPACES)
+            space = BOARD_SPACES[s["board_pos"]]
+            st.toast(f"🎲 Rolled a {roll} — landed on {SPACE_META[space]['label']}", icon=SPACE_META[space]["emoji"])
+            if space == "opp":
+                pool = SMALL_DEALS if s["savings"]<5000 else (SMALL_DEALS+BIG_DEALS)
+                owned = {a["name"] for a in s["assets"].values()}
+                pool  = [d for d in pool if d["name"] not in owned] or SMALL_DEALS
+                st.session_state["card"] = ("opp", random.choice(pool))
+            elif space == "doodad":
+                st.session_state["card"] = ("doodad", random.choice(DOODADS))
+            elif space == "market":
+                st.session_state["card"] = ("market", random.choice(MARKET_EVENTS))
+            else:
+                _do_payday(s, fid)
+            st.rerun()
 
     if "card" not in st.session_state: return
     ck, card = st.session_state["card"]
@@ -328,13 +541,13 @@ def _turn(s, fid, pv, ev):
             if afford:
                 if st.button(f"✅ Buy {_fmt(card['cost'])}", key="buy_opp", use_container_width=True, type="primary"):
                     _do_buy(s, card, fid); del st.session_state["card"]
-                    save_game(s,fid); st.rerun()
+                    _run_ai_turns(s); save_game(s,fid); st.rerun()
             else:
                 st.button(f"❌ Need {_fmt(card['cost']-s['savings'])} more", disabled=True, use_container_width=True)
         with c2:
             if st.button("⏭️ Pass", key="pass_opp", use_container_width=True):
                 s["turn"]+=1; _log(s,f"Passed {card['name']}"); del st.session_state["card"]
-                save_game(s,fid); st.rerun()
+                _run_ai_turns(s); save_game(s,fid); st.rerun()
 
     elif ck=="doodad":
         st.markdown(
@@ -353,12 +566,12 @@ def _turn(s, fid, pv, ev):
                 if card["cost"]>0: s["savings"] = max(0, s["savings"]-card["cost"])
                 if card["monthly"]>0: s["expenses"]["doodads"] = s["expenses"].get("doodads",0)+card["monthly"]
                 s["turn"]+=1; _log(s,f"🛍️ Bought {card['name']}"); del st.session_state["card"]
-                save_game(s,fid); st.rerun()
+                _run_ai_turns(s); save_game(s,fid); st.rerun()
         with c2:
             if st.button("💪 Resist! Save it", key="res_doodad", use_container_width=True, type="primary"):
                 s["savings"]+=50; s["total_xp"]=s.get("total_xp",0)+10
                 s["turn"]+=1; _log(s,f"💪 Resisted {card['name']}. +$50 +10XP"); del st.session_state["card"]
-                save_game(s,fid); st.rerun()
+                _run_ai_turns(s); save_game(s,fid); st.rerun()
 
     elif ck=="market":
         st.markdown(
@@ -370,11 +583,12 @@ def _turn(s, fid, pv, ev):
         st.markdown(f'<div class="cfl">💡 {card["lesson"]}</div>', unsafe_allow_html=True)
         if st.button("📌 Apply Event", key="apply_mkt", use_container_width=True, type="primary"):
             _apply_event(s, card); s["turn"]+=1; del st.session_state["card"]
-            save_game(s,fid); st.rerun()
+            _run_ai_turns(s); save_game(s,fid); st.rerun()
 
 def _do_payday(s, fid):
     c = cf(s); s["savings"]+=c; s["turn"]+=1
     _log(s, f"💵 Payday +{_fmt(c)}. Savings: {_fmt(s['savings'])}")
+    _run_ai_turns(s)
     save_game(s,fid); st.success(f"💵 Payday! +{_fmt(c)}"); st.rerun()
 
 def _do_buy(s, card, fid):
