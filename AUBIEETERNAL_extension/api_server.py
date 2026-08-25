@@ -218,6 +218,7 @@ if USE_FASTAPI:
 
     class OracleRequest(BaseModel):
         question: str
+        api_key: str = ""
 
     class ClaimRequest(BaseModel):
         claim: str
