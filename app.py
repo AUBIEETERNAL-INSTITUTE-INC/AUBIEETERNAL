@@ -774,6 +774,14 @@ def quantum_kernel_matrix(n=6):
         return None
     return np.array([[np.exp(-abs(i-j)*0.25)*(1+0.2*np.sin(i*j)) for j in range(n)] for i in range(n)])
 
+def _memory_fid():
+    # Same "operator" fallback convention already used for the later,
+    # non-family-gated _fid computed near line 4400 - defined separately
+    # here because save_memory() and the Memory Palace/header stat box
+    # all run earlier in the script's top-to-bottom execution than that.
+    cf = st.session_state.get("current_family")
+    return cf.get("family_id", "operator") if cf else "operator"
+
 def save_memory(topic, content, tags=None):
     entry = {
         "id": len(st.session_state.memory_palace) + 1,
@@ -784,7 +792,29 @@ def save_memory(topic, content, tags=None):
         "xp_value": 10,
     }
     st.session_state.memory_palace.append(entry)
+    # Real persistence - this used to be session_state-only, meaning every
+    # "Memory stored!" success message was misleading: a new browser
+    # session or a portal restart silently wiped it. Found live 2026-08-25.
+    try:
+        from family_profiles import load_family_stats as _lfs_mem, save_family_stats as _sfs_mem
+        _fid_mem = _memory_fid()
+        _stats_mem = _lfs_mem(_fid_mem)
+        _stats_mem.setdefault("memory_palace", []).append(entry)
+        _sfs_mem(_stats_mem, _fid_mem)
+    except ImportError:
+        pass
     award_xp(10)
+
+def load_memory_palace():
+    """Real memory list for the current family (or the shared 'operator'
+    bucket when nobody's logged in - same fallback every other
+    non-family-gated feature in this file already uses). Falls back to
+    the session-only list if family_profiles.py isn't available."""
+    try:
+        from family_profiles import load_family_stats as _lfs_mem
+        return _lfs_mem(_memory_fid()).get("memory_palace", [])
+    except ImportError:
+        return st.session_state.memory_palace
 
 SWARM_AGENTS = [
     {"name": "AXIOM",    "role": "Logic & Reasoning Core",       "icon": "🔷", "color": "#00cfff"},
@@ -1043,7 +1073,7 @@ with c1:
 with c2:
     st.markdown(f'<div class="stat-box"><div class="stat-val">{st.session_state.xp}</div><div class="stat-lbl">XP</div></div>', unsafe_allow_html=True)
 with c3:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(st.session_state.memory_palace)}</div><div class="stat-lbl">Memories</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(load_memory_palace())}</div><div class="stat-lbl">Memories</div></div>', unsafe_allow_html=True)
 with c4:
     st.markdown(f'<div class="stat-box"><div class="stat-val">{len(st.session_state.badges)}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
 with c5:
@@ -1279,12 +1309,13 @@ elif "Memory Palace" in active:
 
     st.markdown("---")
 
-    if not st.session_state.memory_palace:
+    _real_memories = load_memory_palace()
+    if not _real_memories:
         st.markdown('<div class="memory-node" style="text-align:center;color:#445577;">No memories yet. Ask the Oracle to auto-populate your palace.</div>', unsafe_allow_html=True)
     else:
         # Search
         search = st.text_input("🔍 Search memories", placeholder="Search topics or tags...")
-        memories = st.session_state.memory_palace
+        memories = _real_memories
         if search:
             memories = [m for m in memories if search.lower() in m["topic"].lower() or search.lower() in m["content"].lower() or any(search.lower() in t for t in m["tags"])]
 
