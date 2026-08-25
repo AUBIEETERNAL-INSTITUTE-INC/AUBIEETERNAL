@@ -1348,76 +1348,73 @@ elif "Swarm" in active:
         query = st.text_area(f"Query for {agent['name']}", height=80, placeholder=f"What do you want {agent['name']} to analyze?")
 
         if st.button("⚡ Execute Swarm Query") and query:
-            if not st.session_state.api_key:
-                st.error("Enter your XAI API Key in the sidebar first.")
-            else:
-                # ── STEP 1: Auto-run Signal Simulation before swarm processes ──
-                sim_container = st.empty()
-                with sim_container.container():
-                    with st.spinner("🔬 Running signal simulation testing..."):
-                        sim = run_signal_simulation(query)
+            # ── STEP 1: Auto-run Signal Simulation before swarm processes ──
+            sim_container = st.empty()
+            with sim_container.container():
+                with st.spinner("🔬 Running signal simulation testing..."):
+                    sim = run_signal_simulation(query)
 
-                    if sim and not sim.get("error"):
-                        impact = sim.get("coherence_impact", 0)
-                        action = sim.get("recommended_action", "process")
-                        wonder = sim.get("wonder_delta", 0)
-                        color  = "#00ff88" if impact >= 0 else "#ff6b35"
-                        action_icon = "✅" if action == "process" else ("⚠️" if action == "flag" else "🚫")
+                if sim and not sim.get("error"):
+                    impact = sim.get("coherence_impact", 0)
+                    action = sim.get("recommended_action", "process")
+                    wonder = sim.get("wonder_delta", 0)
+                    color  = "#00ff88" if impact >= 0 else "#ff6b35"
+                    action_icon = "✅" if action == "process" else ("⚠️" if action == "flag" else "🚫")
 
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid {color};">'
+                        f'<div style="color:{color};font-size:0.78rem;font-family:Orbitron,monospace;">🔬 SIGNAL SIMULATION</div>'
+                        f'<div style="font-size:0.75rem;color:#8899bb;margin-top:4px;">'
+                        f'Coherence Impact: <b style="color:{color};">{impact:+.2f}</b> · '
+                        f'Wonder Δ: <b style="color:#a020f0;">+{wonder:.2f}</b> · '
+                        f'Action: <b>{action_icon} {action.upper()}</b>'
+                        f'</div>',
+                        unsafe_allow_html=True
+                    )
+                    for q_item in sim.get("questions", []):
+                        direction = q_item.get("direction", "") or q_item.get("implication_type", "")
                         st.markdown(
-                            f'<div class="card" style="border-left:3px solid {color};">'
-                            f'<div style="color:{color};font-size:0.78rem;font-family:Orbitron,monospace;">🔬 SIGNAL SIMULATION</div>'
-                            f'<div style="font-size:0.75rem;color:#8899bb;margin-top:4px;">'
-                            f'Coherence Impact: <b style="color:{color};">{impact:+.2f}</b> · '
-                            f'Wonder Δ: <b style="color:#a020f0;">+{wonder:.2f}</b> · '
-                            f'Action: <b>{action_icon} {action.upper()}</b>'
+                            f'<div style="font-size:0.73rem;color:#445577;margin-left:8px;">'
+                            f'→ <i>{q_item["q"][:60]}</i>: '
+                            f'<span style="color:#8899bb;">{q_item["a"][:80]}</span>'
                             f'</div>',
                             unsafe_allow_html=True
                         )
-                        for q_item in sim.get("questions", []):
-                            direction = q_item.get("direction", "") or q_item.get("implication_type", "")
-                            st.markdown(
-                                f'<div style="font-size:0.73rem;color:#445577;margin-left:8px;">'
-                                f'→ <i>{q_item["q"][:60]}</i>: '
-                                f'<span style="color:#8899bb;">{q_item["a"][:80]}</span>'
-                                f'</div>',
-                                unsafe_allow_html=True
-                            )
-                        st.markdown('</div>', unsafe_allow_html=True)
+                    st.markdown('</div>', unsafe_allow_html=True)
 
-                        if action == "reject":
-                            st.error("🚫 Signal simulation recommends REJECTING this query. Proceeding anyway (human override).")
+                    if action == "reject":
+                        st.error("🚫 Signal simulation recommends REJECTING this query. Proceeding anyway (human override).")
 
-                # ── STEP 2: Dispatch to swarm agent ───────────────────────────
-                AGENT_PROMPTS = {
-                    "AXIOM":   "You are AXIOM, a logic and reasoning specialist. Analyze every query with strict logical rigor, identify fallacies, and build sound arguments. Be precise.",
-                    "MNEMO":   "You are MNEMO, a memory and knowledge curation specialist. Organize information into memorable frameworks, palace structures, and lattice patterns.",
-                    "TALEB-X": "You are TALEB-X, channeling Nassim Taleb's philosophy. Apply antifragility, black swan theory, skin in the game, and via negativa to every analysis.",
-                    "CHRONO":  "You are CHRONO, a history and timeline specialist. Place every concept in historical context, find patterns across time, and identify what has survived (Lindy).",
-                    "RUNE":    "You are RUNE, a Bitcoin and on-chain specialist. Explain Bitcoin, Lightning, Runes protocol, and digital sovereignty with technical precision.",
+            # ── STEP 2: Dispatch to swarm agent ───────────────────────────
+            AGENT_PROMPTS = {
+                "AXIOM":   "You are AXIOM, a logic and reasoning specialist. Analyze every query with strict logical rigor, identify fallacies, and build sound arguments. Be precise.",
+                "MNEMO":   "You are MNEMO, a memory and knowledge curation specialist. Organize information into memorable frameworks, palace structures, and lattice patterns.",
+                "TALEB-X": "You are TALEB-X, channeling Nassim Taleb's philosophy. Apply antifragility, black swan theory, skin in the game, and via negativa to every analysis.",
+                "CHRONO":  "You are CHRONO, a history and timeline specialist. Place every concept in historical context, find patterns across time, and identify what has survived (Lindy).",
+                "RUNE":    "You are RUNE, a Bitcoin and on-chain specialist. Explain Bitcoin, Lightning, Runes protocol, and digital sovereignty with technical precision.",
+            }
+            try:
+                client, model, _provider, _pname = get_ai_client()
+                response = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "system", "content": AGENT_PROMPTS.get(agent["name"], "You are a helpful AI agent.")},
+                               {"role": "user", "content": query}],
+                    max_tokens=800,
+                )
+                result = response.choices[0].message.content
+                log_entry = {
+                    "agent": agent["name"],
+                    "icon": agent["icon"],
+                    "query": query,
+                    "result": result,
+                    "time": datetime.datetime.now().strftime("%H:%M:%S"),
+                    "sim_impact": sim.get("coherence_impact", 0) if sim else 0,
                 }
-                try:
-                    client, model, _provider, _pname = get_ai_client()
-                    response = client.chat.completions.create(
-                        model=model,
-                        messages=[{"role": "system", "content": AGENT_PROMPTS.get(agent["name"], "You are a helpful AI agent.")},
-                                   {"role": "user", "content": query}],
-                        max_tokens=800,
-                    )
-                    result = response.choices[0].message.content
-                    log_entry = {
-                        "agent": agent["name"],
-                        "icon": agent["icon"],
-                        "query": query,
-                        "result": result,
-                        "time": datetime.datetime.now().strftime("%H:%M:%S"),
-                        "sim_impact": sim.get("coherence_impact", 0) if sim else 0,
-                    }
-                    st.session_state.swarm_log.insert(0, log_entry)
-                    award_xp(20)
-                    st.rerun()
-                except Exception as e:
-                    st.error(f"Swarm error: {e}")
+                st.session_state.swarm_log.insert(0, log_entry)
+                award_xp(20)
+                st.rerun()
+            except Exception as e:
+                st.error(f"Swarm error: {e}")
 
     if st.session_state.swarm_log:
         st.markdown("### 📡 Swarm Log")
@@ -1485,21 +1482,18 @@ elif "Rune" in active:
     st.markdown("### 🔮 Ask the Rune Oracle")
     rune_q = st.text_input("Bitcoin / Runes question", placeholder="How do Runes differ from BRC-20 tokens?")
     if st.button("Ask Rune Oracle") and rune_q:
-        if not st.session_state.api_key:
-            st.error("Enter your XAI API Key in the sidebar.")
-        else:
-            try:
-                client, model, _provider, _pname = get_ai_client()
-                response = client.chat.completions.create(
-                    model=model,
-                    messages=[{"role": "system", "content": "You are a Bitcoin and Runes protocol expert. Explain Bitcoin, Lightning Network, Ordinals, Runes, and digital sovereignty clearly and accurately."},
-                               {"role": "user", "content": rune_q}],
-                    max_tokens=600,
-                )
-                st.markdown(f'<div class="rune-card" style="border-color:#f7931a88;"><div class="rune-name">₿ Rune Oracle</div><div style="color:#ccbbaa;font-size:0.85rem;margin-top:8px;">{response.choices[0].message.content}</div></div>', unsafe_allow_html=True)
-                award_xp(10)
-            except Exception as e:
-                st.error(f"Error: {e}")
+        try:
+            client, model, _provider, _pname = get_ai_client()
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "system", "content": "You are a Bitcoin and Runes protocol expert. Explain Bitcoin, Lightning Network, Ordinals, Runes, and digital sovereignty clearly and accurately."},
+                           {"role": "user", "content": rune_q}],
+                max_tokens=600,
+            )
+            st.markdown(f'<div class="rune-card" style="border-color:#f7931a88;"><div class="rune-name">₿ Rune Oracle</div><div style="color:#ccbbaa;font-size:0.85rem;margin-top:8px;">{response.choices[0].message.content}</div></div>', unsafe_allow_html=True)
+            award_xp(10)
+        except Exception as e:
+            st.error(f"Error: {e}")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: TALEB CURRICULUM
@@ -1524,7 +1518,7 @@ elif "Taleb" in active:
                 save_memory(lesson["title"], lesson["lesson"], tags=["taleb", "antifragility"])
                 st.success("+10 XP")
 
-    if "taleb_topic" in st.session_state and st.session_state.api_key:
+    if "taleb_topic" in st.session_state:
         topic = st.session_state.taleb_topic
         st.markdown(f"### 🔮 Deep Dive: {topic}")
         try:
@@ -1546,21 +1540,18 @@ elif "Taleb" in active:
     st.markdown("### 💬 Challenge the Oracle on Antifragility")
     taleb_q = st.text_input("Your antifragility question", placeholder="Is the stock market antifragile?")
     if st.button("Ask Taleb-X") and taleb_q:
-        if not st.session_state.api_key:
-            st.error("Enter your XAI API Key in the sidebar.")
-        else:
-            try:
-                client, model, _provider, _pname = get_ai_client()
-                response = client.chat.completions.create(
-                    model=model,
-                    messages=[{"role": "system", "content": "You are TALEB-X, deeply versed in Nassim Taleb's complete works including Antifragile, The Black Swan, Fooled by Randomness, and Skin in the Game. Answer with Taleb's intellectual rigor and characteristic directness."},
-                               {"role": "user", "content": taleb_q}],
-                    max_tokens=700,
-                )
-                st.markdown(f'<div class="card"><div style="font-size:0.88rem;color:#c8d8ff;line-height:1.8;">{response.choices[0].message.content}</div></div>', unsafe_allow_html=True)
-                award_xp(15)
-            except Exception as e:
-                st.error(f"Error: {e}")
+        try:
+            client, model, _provider, _pname = get_ai_client()
+            response = client.chat.completions.create(
+                model=model,
+                messages=[{"role": "system", "content": "You are TALEB-X, deeply versed in Nassim Taleb's complete works including Antifragile, The Black Swan, Fooled by Randomness, and Skin in the Game. Answer with Taleb's intellectual rigor and characteristic directness."},
+                           {"role": "user", "content": taleb_q}],
+                max_tokens=700,
+            )
+            st.markdown(f'<div class="card"><div style="font-size:0.88rem;color:#c8d8ff;line-height:1.8;">{response.choices[0].message.content}</div></div>', unsafe_allow_html=True)
+            award_xp(15)
+        except Exception as e:
+            st.error(f"Error: {e}")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: DASHBOARD
@@ -1828,9 +1819,6 @@ elif "Parent Guide" in active:
     kid_age = st.session_state.family_profile["kid"]["age"]
 
     def ask_grok_parent(prompt_text, spinner_text="Generating..."):
-        if not st.session_state.api_key:
-            st.error("Enter your XAI API Key in the sidebar first.")
-            return None
         with st.spinner(spinner_text):
             try:
                 client, model, _provider, _pname = get_ai_client()
@@ -1960,22 +1948,19 @@ Many parents today are working to break cycles of emotional neglect or harsh par
 
     gp_q = st.text_input("Your question", placeholder="How do I connect with a grandchild who seems withdrawn?")
     if st.button("Ask Grandparent Coach") and gp_q:
-        if not st.session_state.api_key:
-            st.error("Enter your XAI API Key in the sidebar first.")
-        else:
-            with st.spinner("Consulting the wisdom lattice..."):
-                try:
-                    client, model, _provider, _pname = get_ai_client()
-                    resp = client.chat.completions.create(
-                        model=model,
-                        messages=[{"role": "system", "content": "You are a warm, wise family therapist and grandparenting coach. Draw on polyvagal theory, attachment science, and intergenerational wisdom. Be compassionate, practical, and encouraging."},
-                                   {"role": "user", "content": gp_q}],
-                        max_tokens=700
-                    )
-                    st.markdown(f'<div class="card"><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;">{resp.choices[0].message.content}</div></div>', unsafe_allow_html=True)
-                    award_xp(10)
-                except Exception as e:
-                    st.error(str(e))
+        with st.spinner("Consulting the wisdom lattice..."):
+            try:
+                client, model, _provider, _pname = get_ai_client()
+                resp = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "system", "content": "You are a warm, wise family therapist and grandparenting coach. Draw on polyvagal theory, attachment science, and intergenerational wisdom. Be compassionate, practical, and encouraging."},
+                               {"role": "user", "content": gp_q}],
+                    max_tokens=700
+                )
+                st.markdown(f'<div class="card"><div style="font-size:0.88rem;line-height:1.8;color:#c8d8ff;">{resp.choices[0].message.content}</div></div>', unsafe_allow_html=True)
+                award_xp(10)
+            except Exception as e:
+                st.error(str(e))
 
     st.markdown("---")
     st.markdown('''
@@ -2024,15 +2009,12 @@ elif "Family Lattice" in active:
     lang = st.selectbox("Language", ["English", "Spanish", "French", "Portuguese"])
 
     if st.button("🚀 Generate Family Curriculum", type="primary", width='stretch'):
-        if not st.session_state.api_key:
-            st.error("Enter your XAI API Key in the sidebar first.")
-        else:
-            with st.spinner("The Sovereign Oracle is weaving the family lattice..."):
-                try:
-                    client, model, _provider, _pname = get_ai_client()
-                    prompt = f"""Create a rich, warm 5-week Family Lattice Curriculum in {lang} for:
+        with st.spinner("The Sovereign Oracle is weaving the family lattice..."):
+            try:
+                client, model, _provider, _pname = get_ai_client()
+                prompt = f"""Create a rich, warm 5-week Family Lattice Curriculum in {lang} for:
 - Kid: {fp['kid']['name']}, age {fp['kid']['age']}
-- Parent: {fp['parent']['name']}, age {fp['parent']['age']}  
+- Parent: {fp['parent']['name']}, age {fp['parent']['age']}
 - Grandparent: {fp['grandparent']['name']}, age {fp['grandparent']['age']}
 - Mode: {family_mode}
 
@@ -2046,20 +2028,20 @@ For each week include:
 
 Make it warm, specific, and actionable. End with a War Eagle family affirmation."""
 
-                    resp = client.chat.completions.create(
-                        model=model,
-                        messages=[{"role": "system", "content": "You are a warm family educator who combines Bitcoin sovereignty, Taleb antifragility, polyvagal safety, and intergenerational wisdom into practical family curricula."},
-                                   {"role": "user", "content": prompt}],
-                        max_tokens=1800
-                    )
-                    curriculum = resp.choices[0].message.content
-                    st.session_state.curriculum_text = curriculum
-                    award_xp(80)
-                    st.session_state.rune_points += 60
-                    st.toast("🧬 Family Lattice Generated! +80 XP", icon="🦅")
-                    st.rerun()
-                except Exception as e:
-                    st.error(str(e))
+                resp = client.chat.completions.create(
+                    model=model,
+                    messages=[{"role": "system", "content": "You are a warm family educator who combines Bitcoin sovereignty, Taleb antifragility, polyvagal safety, and intergenerational wisdom into practical family curricula."},
+                               {"role": "user", "content": prompt}],
+                    max_tokens=1800
+                )
+                curriculum = resp.choices[0].message.content
+                st.session_state.curriculum_text = curriculum
+                award_xp(80)
+                st.session_state.rune_points += 60
+                st.toast("🧬 Family Lattice Generated! +80 XP", icon="🦅")
+                st.rerun()
+            except Exception as e:
+                st.error(str(e))
 
     if st.session_state.curriculum_text:
         with st.expander("📖 Your Family Curriculum", expanded=True):
@@ -4713,52 +4695,49 @@ if "Sandbox Lab" in active:
         custom_counter  = st.text_area("Counter-steelman (strongest argument AGAINST)", height=100, placeholder="The strongest argument against this is...")
 
         if st.button("⚔️ Run Steelman Battle", key="sb_steelman") and custom_topic:
-            if not st.session_state.get("api_key"):
-                st.error("Enter your API key in the sidebar first.")
-            else:
-                with st.spinner("STEELMAN + ORACLE daughters scoring..."):
-                    try:
-                        client, model, _, _ = get_ai_client()
-                        prompt = (
-                            f"Topic: {custom_topic}\n\n"
-                            f"Steelman FOR: {custom_steelman}\n\n"
-                            f"Steelman AGAINST: {custom_counter}\n\n"
-                            f"Score each steelman 0.0-1.0 for: logical rigor, falsifiability, epistemic humility. "
-                            f"Respond ONLY with JSON: {{\"for_score\": 0.0, \"against_score\": 0.0, \"verdict\": \"...\", \"insight\": \"...\"}}"
-                        )
-                        resp = client.chat.completions.create(
-                            model=model,
-                            messages=[{"role":"system","content":"You are STEELMAN — sovereign epistemic scoring daughter."},
-                                      {"role":"user","content":prompt}],
-                            max_tokens=300,
-                        )
-                        raw = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
-                        result = json.loads(raw)
-                        for_s  = result.get("for_score",0.5)
-                        aga_s  = result.get("against_score",0.5)
-                        winner = "FOR" if for_s > aga_s else "AGAINST"
-                        wcolor = "#00ff88" if winner == "FOR" else "#ff6b35"
-                        st.markdown(
-                            f'<div class="card" style="border:2px solid {wcolor};">'
-                            f'<div style="color:{wcolor};font-family:Orbitron,monospace;">⚔️ WINNER: {winner}</div>'
-                            f'<div style="font-size:0.82rem;color:#8899bb;margin-top:8px;">'
-                            f'FOR score: {for_s:.2f} · AGAINST score: {aga_s:.2f}<br>'
-                            f'Verdict: {result.get("verdict","")}<br>'
-                            f'Insight: {result.get("insight","")}</div></div>',
-                            unsafe_allow_html=True)
-                        # Log experiment
-                        with open(exp_log, "a") as f:
-                            f.write(json.dumps({
-                                "timestamp": _dt.now().isoformat(),
-                                "type": "steelman_battle",
-                                "topic": custom_topic,
-                                "for_score": for_s,
-                                "against_score": aga_s,
-                                "family_id": _fid,
-                            }) + "\n")
-                        award_xp(10)
-                    except Exception as e:
-                        st.error(f"Error: {e}")
+            with st.spinner("STEELMAN + ORACLE daughters scoring..."):
+                try:
+                    client, model, _, _ = get_ai_client()
+                    prompt = (
+                        f"Topic: {custom_topic}\n\n"
+                        f"Steelman FOR: {custom_steelman}\n\n"
+                        f"Steelman AGAINST: {custom_counter}\n\n"
+                        f"Score each steelman 0.0-1.0 for: logical rigor, falsifiability, epistemic humility. "
+                        f"Respond ONLY with JSON: {{\"for_score\": 0.0, \"against_score\": 0.0, \"verdict\": \"...\", \"insight\": \"...\"}}"
+                    )
+                    resp = client.chat.completions.create(
+                        model=model,
+                        messages=[{"role":"system","content":"You are STEELMAN — sovereign epistemic scoring daughter."},
+                                  {"role":"user","content":prompt}],
+                        max_tokens=300,
+                    )
+                    raw = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
+                    result = json.loads(raw)
+                    for_s  = result.get("for_score",0.5)
+                    aga_s  = result.get("against_score",0.5)
+                    winner = "FOR" if for_s > aga_s else "AGAINST"
+                    wcolor = "#00ff88" if winner == "FOR" else "#ff6b35"
+                    st.markdown(
+                        f'<div class="card" style="border:2px solid {wcolor};">'
+                        f'<div style="color:{wcolor};font-family:Orbitron,monospace;">⚔️ WINNER: {winner}</div>'
+                        f'<div style="font-size:0.82rem;color:#8899bb;margin-top:8px;">'
+                        f'FOR score: {for_s:.2f} · AGAINST score: {aga_s:.2f}<br>'
+                        f'Verdict: {result.get("verdict","")}<br>'
+                        f'Insight: {result.get("insight","")}</div></div>',
+                        unsafe_allow_html=True)
+                    # Log experiment
+                    with open(exp_log, "a") as f:
+                        f.write(json.dumps({
+                            "timestamp": _dt.now().isoformat(),
+                            "type": "steelman_battle",
+                            "topic": custom_topic,
+                            "for_score": for_s,
+                            "against_score": aga_s,
+                            "family_id": _fid,
+                        }) + "\n")
+                    award_xp(10)
+                except Exception as e:
+                    st.error(f"Error: {e}")
 
     # ── Hypothesis Tester ─────────────────────────────────────────────────────
     with tabs_sb[1]:
@@ -4766,20 +4745,17 @@ if "Sandbox Lab" in active:
         hyp_input = st.text_area("Your hypothesis", height=80,
                                   placeholder="The universe is a simulation running on quantum computational substrate.")
         if st.button("🔬 Run 4 Simulation Questions", key="sb_hyp") and hyp_input:
-            if not st.session_state.get("api_key"):
-                st.error("Enter your API key in the sidebar first.")
-            else:
-                with st.spinner("Running simulation tests..."):
-                    result = run_signal_simulation(hyp_input)
-                    impact = result.get("coherence_impact", 0)
-                    color  = "#00ff88" if impact >= 0 else "#ff4444"
-                    st.markdown(f'<div class="card" style="border-left:3px solid {color};"><div style="color:{color};font-size:0.78rem;font-family:Orbitron,monospace;">🔬 SIMULATION RESULT · Coherence Impact: {impact:+.2f} · Action: {result.get("recommended_action","process").upper()}</div></div>', unsafe_allow_html=True)
-                    for q in result.get("questions",[]):
-                        icon = "✅" if q.get("pass") else "⚠️"
-                        st.markdown(f"**{icon} {q['q']}**  \n→ _{q['a']}_")
-                    with open(exp_log, "a") as f:
-                        f.write(json.dumps({"timestamp": _dt.now().isoformat(), "type": "hypothesis_test", "hypothesis": hyp_input[:100], "impact": impact, "family_id": _fid}) + "\n")
-                    award_xp(15)
+            with st.spinner("Running simulation tests..."):
+                result = run_signal_simulation(hyp_input)
+                impact = result.get("coherence_impact", 0)
+                color  = "#00ff88" if impact >= 0 else "#ff4444"
+                st.markdown(f'<div class="card" style="border-left:3px solid {color};"><div style="color:{color};font-size:0.78rem;font-family:Orbitron,monospace;">🔬 SIMULATION RESULT · Coherence Impact: {impact:+.2f} · Action: {result.get("recommended_action","process").upper()}</div></div>', unsafe_allow_html=True)
+                for q in result.get("questions",[]):
+                    icon = "✅" if q.get("pass") else "⚠️"
+                    st.markdown(f"**{icon} {q['q']}**  \n→ _{q['a']}_")
+                with open(exp_log, "a") as f:
+                    f.write(json.dumps({"timestamp": _dt.now().isoformat(), "type": "hypothesis_test", "hypothesis": hyp_input[:100], "impact": impact, "family_id": _fid}) + "\n")
+                award_xp(15)
 
     # ── Simulation Runner ─────────────────────────────────────────────────────
     with tabs_sb[2]:
@@ -6495,13 +6471,10 @@ if "Legal HUD" in active:
                                       placeholder="e.g. Any dispute arising from this agreement shall be resolved by binding arbitration...")
 
         if st.button("⚖️ Analyze Clause", key="legal_analyze") and contract_text:
-            if not st.session_state.get("api_key"):
-                st.error("Enter your API key in the sidebar first.")
-            else:
-                with st.spinner("STEELMAN + ORACLE daughters analyzing..."):
-                    try:
-                        client, model, _, _ = get_ai_client()
-                        prompt = f"""You are a sovereign legal analysis tool for families.
+            with st.spinner("STEELMAN + ORACLE daughters analyzing..."):
+                try:
+                    client, model, _, _ = get_ai_client()
+                    prompt = f"""You are a sovereign legal analysis tool for families.
 Analyze this contract clause and return ONLY valid JSON:
 {{
   "plain_english": "Explain in one sentence what this clause means, 8th-grade level",
@@ -6516,43 +6489,43 @@ Analyze this contract clause and return ONLY valid JSON:
 }}
 
 Clause: {contract_text}"""
-                        resp = client.chat.completions.create(
-                            model=model,
-                            messages=[{"role":"user","content":prompt}],
-                            max_tokens=600,
-                        )
-                        raw    = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
-                        result = json.loads(raw)
+                    resp = client.chat.completions.create(
+                        model=model,
+                        messages=[{"role":"user","content":prompt}],
+                        max_tokens=600,
+                    )
+                    raw    = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
+                    result = json.loads(raw)
 
-                        severity = result.get("extraction_severity","none")
-                        sev_colors = {"none":"#00ff88","low":"#00ff88","medium":"#ff9500","high":"#ff4444","critical":"#ff0000"}
-                        sev_color  = sev_colors.get(severity,"#8899bb")
+                    severity = result.get("extraction_severity","none")
+                    sev_colors = {"none":"#00ff88","low":"#00ff88","medium":"#ff9500","high":"#ff4444","critical":"#ff0000"}
+                    sev_color  = sev_colors.get(severity,"#8899bb")
 
-                        st.markdown(
-                            f'<div class="card" style="border:2px solid {sev_color};">'
-                            f'<div style="color:{sev_color};font-family:Orbitron,monospace;font-size:0.82rem;">EXTRACTION LEVEL: {severity.upper()}</div>'
-                            f'<div style="color:#c8d8ff;font-size:0.88rem;margin-top:8px;"><b>Plain English:</b> {result.get("plain_english","")}</div>'
-                            f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;"><b>Benefits:</b> {result.get("who_it_benefits","")}</div>'
-                            f'</div>', unsafe_allow_html=True)
+                    st.markdown(
+                        f'<div class="card" style="border:2px solid {sev_color};">'
+                        f'<div style="color:{sev_color};font-family:Orbitron,monospace;font-size:0.82rem;">EXTRACTION LEVEL: {severity.upper()}</div>'
+                        f'<div style="color:#c8d8ff;font-size:0.88rem;margin-top:8px;"><b>Plain English:</b> {result.get("plain_english","")}</div>'
+                        f'<div style="color:#8899bb;font-size:0.82rem;margin-top:4px;"><b>Benefits:</b> {result.get("who_it_benefits","")}</div>'
+                        f'</div>', unsafe_allow_html=True)
 
-                        if result.get("extraction_patterns"):
-                            st.markdown("**⚠️ Extraction patterns detected:**")
-                            for pattern in result["extraction_patterns"]:
-                                st.markdown(f"- {pattern}")
+                    if result.get("extraction_patterns"):
+                        st.markdown("**⚠️ Extraction patterns detected:**")
+                        for pattern in result["extraction_patterns"]:
+                            st.markdown(f"- {pattern}")
 
-                        col_l1, col_l2 = st.columns(2)
-                        with col_l1:
-                            st.markdown(f'<div class="card" style="border-left:3px solid #00ff88;"><div style="color:#00ff88;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ FOR</div><div style="font-size:0.82rem;color:#8899bb;margin-top:4px;">{result.get("steelman_for","")}</div></div>', unsafe_allow_html=True)
-                        with col_l2:
-                            st.markdown(f'<div class="card" style="border-left:3px solid #ff6b35;"><div style="color:#ff6b35;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ AGAINST</div><div style="font-size:0.82rem;color:#8899bb;margin-top:4px;">{result.get("steelman_against","")}</div></div>', unsafe_allow_html=True)
+                    col_l1, col_l2 = st.columns(2)
+                    with col_l1:
+                        st.markdown(f'<div class="card" style="border-left:3px solid #00ff88;"><div style="color:#00ff88;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ FOR</div><div style="font-size:0.82rem;color:#8899bb;margin-top:4px;">{result.get("steelman_for","")}</div></div>', unsafe_allow_html=True)
+                    with col_l2:
+                        st.markdown(f'<div class="card" style="border-left:3px solid #ff6b35;"><div style="color:#ff6b35;font-size:0.75rem;font-family:Orbitron,monospace;">⚔️ AGAINST</div><div style="font-size:0.82rem;color:#8899bb;margin-top:4px;">{result.get("steelman_against","")}</div></div>', unsafe_allow_html=True)
 
-                        if result.get("questions_to_ask"):
-                            st.markdown("**❓ Ask before signing:**")
-                            for q in result["questions_to_ask"]:
-                                st.markdown(f"- {q}")
-                        award_xp(15)
-                    except Exception as e:
-                        st.error(f"Analysis error: {e}")
+                    if result.get("questions_to_ask"):
+                        st.markdown("**❓ Ask before signing:**")
+                        for q in result["questions_to_ask"]:
+                            st.markdown(f"- {q}")
+                    award_xp(15)
+                except Exception as e:
+                    st.error(f"Analysis error: {e}")
 
     # ── Insurance Policy Analyzer ─────────────────────────────────────────────
     with legal_tabs[1]:
@@ -6563,13 +6536,10 @@ Clause: {contract_text}"""
         ins_type = st.selectbox("Policy type", ["Homeowners/Wind","Flood","Auto","Life","Health","Other"], key="ins_type")
 
         if st.button("🏠 Analyze Insurance Clause", key="ins_analyze") and policy_text:
-            if not st.session_state.get("api_key"):
-                st.error("Enter your API key in the sidebar first.")
-            else:
-                with st.spinner("Analyzing with ORACLE + STEELMAN daughters..."):
-                    try:
-                        client, model, _, _ = get_ai_client()
-                        prompt = f"""You are a sovereign insurance literacy tool.
+            with st.spinner("Analyzing with ORACLE + STEELMAN daughters..."):
+                try:
+                    client, model, _, _ = get_ai_client()
+                    prompt = f"""You are a sovereign insurance literacy tool.
 Analyze this {ins_type} policy clause. Return ONLY valid JSON:
 {{
   "plain_english": "What this clause actually means, 8th-grade level",
@@ -6584,28 +6554,28 @@ Analyze this {ins_type} policy clause. Return ONLY valid JSON:
 }}
 
 Policy text: {policy_text}"""
-                        resp = client.chat.completions.create(
-                            model=model,
-                            messages=[{"role":"user","content":prompt}],
-                            max_tokens=700,
-                        )
-                        raw    = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
-                        result = json.loads(raw)
+                    resp = client.chat.completions.create(
+                        model=model,
+                        messages=[{"role":"user","content":prompt}],
+                        max_tokens=700,
+                    )
+                    raw    = resp.choices[0].message.content.strip().replace("```json","").replace("```","")
+                    result = json.loads(raw)
 
-                        severity  = result.get("extraction_severity","none")
-                        sev_color = {"none":"#00ff88","low":"#00ff88","medium":"#ff9500","high":"#ff4444","critical":"#ff0000"}.get(severity,"#8899bb")
+                    severity  = result.get("extraction_severity","none")
+                    sev_color = {"none":"#00ff88","low":"#00ff88","medium":"#ff9500","high":"#ff4444","critical":"#ff0000"}.get(severity,"#8899bb")
 
-                        st.markdown(f'<div class="card" style="border:2px solid {sev_color};"><div style="color:{sev_color};font-family:Orbitron,monospace;font-size:0.82rem;">EXTRACTION: {severity.upper()} · {result.get("extraction_pattern","none")}</div><div style="color:#c8d8ff;font-size:0.88rem;margin-top:6px;">{result.get("plain_english","")}</div><div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{result.get("coverage_impact","")}</div></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="card" style="border:2px solid {sev_color};"><div style="color:{sev_color};font-family:Orbitron,monospace;font-size:0.82rem;">EXTRACTION: {severity.upper()} · {result.get("extraction_pattern","none")}</div><div style="color:#c8d8ff;font-size:0.88rem;margin-top:6px;">{result.get("plain_english","")}</div><div style="color:#8899bb;font-size:0.8rem;margin-top:4px;">{result.get("coverage_impact","")}</div></div>', unsafe_allow_html=True)
 
-                        st.markdown(f'<div class="card" style="border-left:3px solid #a020f0;"><div style="color:#a020f0;font-size:0.75rem;font-family:Orbitron,monospace;">🏛️ HOW A RECIPROCAL WOULD HANDLE THIS</div><div style="font-size:0.82rem;color:#c8d8ff;margin-top:4px;">{result.get("how_reciprocal_differs","")}</div></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="card" style="border-left:3px solid #a020f0;"><div style="color:#a020f0;font-size:0.75rem;font-family:Orbitron,monospace;">🏛️ HOW A RECIPROCAL WOULD HANDLE THIS</div><div style="font-size:0.82rem;color:#c8d8ff;margin-top:4px;">{result.get("how_reciprocal_differs","")}</div></div>', unsafe_allow_html=True)
 
-                        if result.get("what_to_ask_agent"):
-                            st.markdown("**Ask your agent:**")
-                            for q in result["what_to_ask_agent"]:
-                                st.markdown(f"- {q}")
-                        award_xp(20)
-                    except Exception as e:
-                        st.error(f"Error: {e}")
+                    if result.get("what_to_ask_agent"):
+                        st.markdown("**Ask your agent:**")
+                        for q in result["what_to_ask_agent"]:
+                            st.markdown(f"- {q}")
+                    award_xp(20)
+                except Exception as e:
+                    st.error(f"Error: {e}")
 
     # ── Insurance Charter v0.2 viewer ────────────────────────────────────────
     with legal_tabs[2]:
