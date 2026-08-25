@@ -969,6 +969,13 @@ def github_push_truth_log():
             # Off-box backup of previously local-only state. The existence
             # filter below skips any that aren't present yet, so this is safe.
             "memory_palace.jsonl", "cost_log.jsonl", "master_status.json",
+            # X Bridge's Truth Debt Ledger (truth_debt_ledger.py) - same
+            # never-pushed-because-never-listed bug as Living Lattice/
+            # Epistemic Commons below, found live 2026-08-25 while checking
+            # X Bridge. Not a directory of dated files like those two, just
+            # one running ledger + its rendered report, so listed directly
+            # rather than via the glob loop.
+            "truth_debt_ledger.jsonl", "insights/truth_debt_report.md",
         ]
         # Also push any new daily insight files
         insights_dir = Path(repo) / "insights" / "daily"
@@ -990,9 +997,14 @@ def github_push_truth_log():
         # This also matters for Epistemic Commons specifically because its
         # AI Context URL is a raw.githubusercontent.com link - it can't work
         # at all until the content is actually pushed.
+        # x_bridge.py's generated family lesson files (insights/x_lessons/) -
+        # same gap, found live 2026-08-25 while checking X Bridge: real
+        # lessons were saving locally back to Aug 24 but never reaching
+        # GitHub, same as Living Lattice/Epistemic Commons above.
         for extra_dir, pattern in [
             (Path(repo) / "lattice" / "signals", "*.json"),
             (Path(repo) / "epistemic_commons", "**/*"),
+            (Path(repo) / "insights" / "x_lessons", "*.md"),
         ]:
             if extra_dir.exists():
                 for f in extra_dir.glob(pattern):
