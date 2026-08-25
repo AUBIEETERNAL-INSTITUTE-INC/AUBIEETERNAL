@@ -7937,6 +7937,25 @@ if "X Bridge" in active:
     </div>
     """, unsafe_allow_html=True)
 
+    with st.expander("🦅 Get the Browser Extension — one-click analyze on every tweet"):
+        st.markdown("""
+        <div style="color:#8899bb;font-size:0.85rem;line-height:1.9;">
+        Everything below (paste text, click a button) can also happen right on X itself —
+        the extension adds a <b style="color:#1DA1F2;">🦅 Analyze</b> button under every tweet,
+        plus a right-click "Analyze with AUBIEETERNAL" on any selected text anywhere on the web.
+        Same real pipeline, no copy-pasting.<br><br>
+        <b style="color:#c8d8ff;">Install (Chrome, Edge, or Brave):</b>
+        </div>
+        """, unsafe_allow_html=True)
+        st.markdown("""
+        1. Go to `chrome://extensions/`
+        2. Turn on **Developer mode** (top-right toggle)
+        3. Click **Load unpacked**
+        4. Select the `AUBIEETERNAL_extension/` folder from this repo
+        5. The 🦅 icon appears in your toolbar — done
+        """)
+        st.caption("Privacy: it only ever talks to this AUBIEETERNAL server (localhost or your own Tailscale network). Never contacts the public internet.")
+
     _fid_xb = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
 
