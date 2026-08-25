@@ -10720,6 +10720,18 @@ if "Welcome" in active:
             st.session_state.welcome_mode = "school"
             st.rerun()
 
+    # "Start as a Family" used to just set a flag and do nothing visible -
+    # found live 2026-08-25 when a real click on this exact button on the
+    # tablet produced no walkthrough at all. The real sign-in/create-family
+    # UI (_family_login_block(), defined earlier in this file) already
+    # existed but was only ever triggered from unrelated gated tabs like
+    # Daily Quests - never reachable from Welcome, the actual first thing
+    # anyone sees. Show it right here instead of just flipping a flag.
+    if st.session_state.get("welcome_mode") == "family":
+        st.divider()
+        st.markdown("### 👨‍👩‍👧 Sign in or create your family")
+        _family_login_block()
+
     st.divider()
     # What you'll learn
     st.markdown("### What you will learn here (for free, forever)")
