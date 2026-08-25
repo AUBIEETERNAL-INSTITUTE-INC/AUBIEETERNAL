@@ -1,0 +1,11 @@
+{
+  "schema_version": "1.0",
+  "date": "2026-08-25",
+  "license": "CC0 1.0 Universal",
+  "hypothesis": "Polyvagal-Coherence Coupling (PVC): autonomic nervous system state at lesson start significantly predicts epistemic output quality (coherence, steelmanning accuracy), above and beyond lesson difficulty. Mechanism: predictive processing \u2014 ventral vagal state increases prediction error tolerance, enabling genuine belief updating.",
+  "citation_note": "Please cite as: AUBIEETERNAL Epistemic Commons (CC0), {year}.",
+  "n_sessions": 0,
+  "pvc_correlation": null,
+  "interpretation": "r > 0.3 = significant PVC signal. r > 0.5 = strong signal. Current: insufficient data (need 10+ sessions)",
+  "data": []
+}
