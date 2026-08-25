@@ -2084,8 +2084,12 @@ async function checkForFace() {
     const name = allNames[0] || null;
     const now = Date.now();
     // Don't re-greet the same person while they're just standing in frame -
-    // once every 3 minutes is plenty, not every 30s.
-    if(name && !(name===lastGreeted && now-lastGreetTime<180000)) {
+    // once every 3 minutes is plenty, not every 30s. Also don't re-greet at
+    // all while a class is actively in progress (currentClass truthy) -
+    // "Hello Matthew" interrupting mid-lesson every 3 minutes while you're
+    // just sitting in front of the camera working through a lesson is pure
+    // noise, not a real greeting need. Reported live 2026-08-25.
+    if(name && !currentClass && !(name===lastGreeted && now-lastGreetTime<180000)) {
       // /greet can take up to ~15s - by the time it resolves, Aubie may
       // already be mid-reply to something else (tap-to-talk, "hey aubie").
       // Don't barge in with "Hello Matthew"; just skip and try again next
