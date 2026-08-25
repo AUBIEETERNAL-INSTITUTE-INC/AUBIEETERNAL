@@ -5347,105 +5347,86 @@ if "Share to X" in active:
 # TAB: FAMILY MESSAGING 💬 — Encrypted Nostr DMs between families
 # ══════════════════════════════════════════════════════════════════════════════
 if "Family Messaging" in active:
-    st.markdown('<div class="card-title">💬 FAMILY MESSAGING — Encrypted Nostr DMs</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">💬 FAMILY MESSAGING</div>', unsafe_allow_html=True)
 
     _cf_msg  = st.session_state.get("current_family",{})
     _fid_msg = _cf_msg.get("family_id","operator") if _cf_msg else "operator"
-    _msg_log = _Path(f"/mnt/main/families/{_fid_msg}/messages.jsonl")
-    _msg_log.parent.mkdir(parents=True, exist_ok=True)
 
+    # Rewired 2026-08-25 to the real FamilyMessenger (family_connect.py)
+    # instead of this tab's own ad-hoc storage - the old version wrote to
+    # /mnt/main/families/{fid}/messages.jsonl (a DIRECTORY) right next to
+    # the real per-family stat files at /mnt/main/families/{fid}.json (a
+    # FILE) under the same parent dir, then aggregated messages by
+    # iterating every entry under that folder - fragile, and its "🔐 NIP-04
+    # ENCRYPTED" banner was flatly false: it hardcoded "encrypted": True on
+    # every message while just writing plain text to a local file, and
+    # "queued" a Nostr broadcast by overwriting one shared JSON file that
+    # nothing in the codebase ever reads. FamilyMessenger stores messages
+    # honestly (real encrypted=False until a Nostr key is actually
+    # configured) in its own dedicated directory tree - no collision risk,
+    # no false security claims.
     st.markdown("""
     <div class="card" style="border-left:3px solid #a020f0;">
-        <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">🔐 NIP-04 ENCRYPTED — Only linked families can read your messages</div>
-        <div style="color:#445577;font-size:0.72rem;margin-top:4px;">Messages route via Nostr relays · No central server sees raw content · Sovereign by default</div>
+        <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">💬 Family-to-family messages, stored locally on this AUBIEETERNAL install</div>
+        <div style="color:#445577;font-size:0.72rem;margin-top:4px;">Not yet encrypted or sent over Nostr — that's real future work, not implemented today. Anyone with access to this install's data could read message contents.</div>
     </div>
     """, unsafe_allow_html=True)
 
-    # ── Compose ───────────────────────────────────────────────────────────────
     try:
+        from family_connect import FamilyMessenger as _FM
         from family_profiles import FamilyAuth as _FA_msg
+        _messenger = _FM(_fid_msg)
+        _all_family_ids_msg = [f["family_id"] for f in _FA_msg().list_families() if f["family_id"] != _fid_msg]
         families_msg = [f for f in _FA_msg().list_families() if f["family_id"] != _fid_msg]
         recipient_opts = {f["display_name"]: f["family_id"] for f in families_msg}
         recipient_opts["📡 All Families (Broadcast)"] = "all"
-    except ImportError:
-        recipient_opts = {"📡 All Families (Broadcast)": "all"}
+        _MSG_OK = True
+    except ImportError as e:
+        _MSG_OK = False
+        st.error(f"family_connect.py or family_profiles.py not found: {e}")
 
-    col_msg1, col_msg2 = st.columns([2,1])
-    with col_msg1:
-        recipient = st.selectbox("To", list(recipient_opts.keys()), key="msg_recipient")
-        msg_text  = st.text_area("Message", height=80, placeholder="Hey! How's the courage lesson going?", key="msg_text")
-    with col_msg2:
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        if st.button("📤 Send", key="msg_send") and msg_text:
-            recipient_id = recipient_opts[recipient]
-            entry = {
-                "timestamp":  _dt.now().isoformat(),
-                "from":       _fid_msg,
-                "from_name":  _cf_msg.get("display_name","Unknown") if _cf_msg else "Operator",
-                "to":         recipient_id,
-                "to_name":    recipient,
-                "message":    msg_text,
-                "encrypted":  True,
-                "status":     "sent",
-            }
-            with open(_msg_log, "a") as f:
-                f.write(json.dumps(entry) + "\n")
+    if _MSG_OK:
+        # ── Compose ───────────────────────────────────────────────────────────
+        col_msg1, col_msg2 = st.columns([2,1])
+        with col_msg1:
+            recipient = st.selectbox("To", list(recipient_opts.keys()), key="msg_recipient")
+            msg_text  = st.text_area("Message", height=80, placeholder="Hey! How's the courage lesson going?", key="msg_text")
+        with col_msg2:
+            st.markdown("<br><br>", unsafe_allow_html=True)
+            if st.button("📤 Send", key="msg_send") and msg_text:
+                recipient_id = recipient_opts[recipient]
+                if recipient_id == "all":
+                    for _to_fid in _all_family_ids_msg:
+                        _messenger.send(_to_fid, msg_text)
+                else:
+                    _messenger.send(recipient_id, msg_text)
+                st.success(f"✅ Sent to {recipient}")
+                st.rerun()
 
-            # Queue for Nostr broadcast
-            try:
-                bc = _Path("/mnt/main/nostr_broadcast.json")
-                bc.write_text(json.dumps({
-                    "type":       "family_dm",
-                    "from":       _fid_msg,
-                    "to":         recipient_id,
-                    "message":    msg_text,
-                    "timestamp":  _dt.now().isoformat(),
-                }))
-                st.success(f"✅ Sent to {recipient} via Nostr!")
-            except Exception as e:
-                st.success(f"✅ Message logged (Nostr queuing: {e})")
-            st.rerun()
+        st.divider()
 
-    st.divider()
+        # ── Inbox + Sent, merged ─────────────────────────────────────────────
+        st.markdown("### 📥 Recent Messages")
+        _fam_names_msg = {f["family_id"]: f["display_name"] for f in _FA_msg().list_families()}
+        _fam_names_msg[_fid_msg] = _cf_msg.get("display_name","You") if _cf_msg else "Operator"
 
-    # ── Inbox ─────────────────────────────────────────────────────────────────
-    st.markdown("### 📥 Recent Messages")
+        all_messages = _messenger.get_inbox(30) + _messenger.get_sent(30)
+        all_messages.sort(key=lambda x: x.get("timestamp",""), reverse=True)
 
-    # Aggregate messages from all family logs that are to this family
-    all_messages = []
-    families_dir_msg = _Path("/mnt/main/families")
-    if families_dir_msg.exists():
-        for fam_dir in families_dir_msg.iterdir():
-            msg_file = fam_dir / "messages.jsonl"
-            if msg_file.exists():
-                try:
-                    for line in msg_file.read_text().strip().split("\n"):
-                        try:
-                            m = json.loads(line)
-                            if m.get("to") in [_fid_msg, "all"] or m.get("from") == _fid_msg:
-                                all_messages.append(m)
-                        except Exception:
-                            pass
-                except Exception:
-                    pass
-
-    all_messages.sort(key=lambda x: x.get("timestamp",""), reverse=True)
-
-    if all_messages:
-        for m in all_messages[:15]:
-            is_mine   = m.get("from") == _fid_msg
-            frm_name  = m.get("from_name","?")
-            to_name   = m.get("to_name","?")
-            msg_color = "#00cfff" if is_mine else "#a020f0"
-            direction = "→" if is_mine else "←"
-            st.markdown(
-                f'<div class="memory-node" style="border-left:3px solid {msg_color};">'
-                f'<div style="color:{msg_color};font-size:0.72rem;">{frm_name} {direction} {to_name} · {m.get("timestamp","")[:16]}</div>'
-                f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:4px;">{m.get("message","")}</div>'
-                f'<div style="color:#334466;font-size:0.68rem;">🔐 NIP-04 encrypted</div>'
-                f'</div>', unsafe_allow_html=True)
-    else:
-        st.caption("No messages yet — send your first one above!")
+        if all_messages:
+            for m in all_messages[:15]:
+                is_mine   = m.get("from") == _fid_msg
+                frm_name  = _fam_names_msg.get(m.get("from"), m.get("from","?"))
+                to_name   = _fam_names_msg.get(m.get("to"), m.get("to","?"))
+                msg_color = "#00cfff" if is_mine else "#a020f0"
+                direction = "→" if is_mine else "←"
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid {msg_color};">'
+                    f'<div style="color:{msg_color};font-size:0.72rem;">{frm_name} {direction} {to_name} · {m.get("timestamp","")[:16]}</div>'
+                    f'<div style="color:#c8d8ff;font-size:0.82rem;margin-top:4px;">{m.get("message","")}</div>'
+                    f'</div>', unsafe_allow_html=True)
+        else:
+            st.caption("No messages yet — send your first one above!")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -5456,93 +5437,82 @@ if "Family Groups" in active:
 
     _cf_grp  = st.session_state.get("current_family",{})
     _fid_grp = _cf_grp.get("family_id","operator") if _cf_grp else "operator"
-    _grp_log = _Path("/mnt/main/family_groups.json")
 
-    # Load groups
-    groups = {}
-    if _grp_log.exists():
-        try: groups = json.loads(_grp_log.read_text())
-        except Exception: groups = {}
+    # Rewired 2026-08-25 to the real FamilyGroups (family_connect.py) -
+    # this tab used to keep its own completely separate storage
+    # (/mnt/main/family_groups.json, one flat file with every group's
+    # entire message history nested inline) with zero connection to
+    # family_connect.py's FamilyGroups class, which already existed with a
+    # cleaner per-group log design. Two parallel, non-interoperating group
+    # systems, only one of which this tab was using.
+    try:
+        from family_connect import FamilyGroups as _FG
+        _fg = _FG()
+        _FG_OK = True
+    except ImportError as e:
+        _FG_OK = False
+        st.error(f"family_connect.py not found: {e}")
 
-    def _save_groups():
-        _grp_log.parent.mkdir(parents=True, exist_ok=True)
-        _grp_log.write_text(json.dumps(groups, indent=2))
+    if _FG_OK:
+        # ── Create group ─────────────────────────────────────────────────────
+        with st.expander("➕ Create New Group", expanded=not _fg.groups):
+            gc1, gc2 = st.columns(2)
+            with gc1:
+                grp_name = st.text_input("Group name", placeholder="Miami Sovereign Families", key="grp_name")
+                grp_desc = st.text_input("Description", placeholder="Bitcoin homeschoolers in Miami", key="grp_desc")
+            with gc2:
+                grp_emoji  = st.text_input("Emoji", value="🌀", max_chars=2, key="grp_emoji")
+                grp_public = st.checkbox("Public group (visible to all families)", value=True, key="grp_public")
+            if st.button("➕ Create Group", key="grp_create") and grp_name:
+                grp_id = grp_name.lower().replace(" ","_")[:20]
+                _fg.create_group(grp_id, grp_name, grp_desc, _fid_grp, emoji=grp_emoji or "🌀", public=grp_public)
+                st.success(f"✅ Group '{grp_name}' created!")
+                st.rerun()
 
-    # ── Create group ──────────────────────────────────────────────────────────
-    with st.expander("➕ Create New Group", expanded=not groups):
-        gc1, gc2 = st.columns(2)
-        with gc1:
-            grp_name = st.text_input("Group name", placeholder="Miami Sovereign Families", key="grp_name")
-            grp_desc = st.text_input("Description", placeholder="Bitcoin homeschoolers in Miami", key="grp_desc")
-        with gc2:
-            grp_challenge = st.text_input("Weekly challenge", placeholder="Complete Courage Level 3 this week", key="grp_challenge")
-            grp_public    = st.checkbox("Public group (visible to all families)", value=True, key="grp_public")
-        if st.button("➕ Create Group", key="grp_create") and grp_name:
-            grp_id = grp_name.lower().replace(" ","_")[:20]
-            groups[grp_id] = {
-                "id":        grp_id,
-                "name":      grp_name,
-                "desc":      grp_desc,
-                "challenge": grp_challenge,
-                "public":    grp_public,
-                "creator":   _fid_grp,
-                "members":   [_fid_grp],
-                "messages":  [],
-                "created_at": _dt.now().isoformat(),
-            }
-            _save_groups()
-            st.success(f"✅ Group '{grp_name}' created!")
-            st.rerun()
+        st.divider()
 
-    st.divider()
+        # ── Group listing ────────────────────────────────────────────────────
+        if not _fg.groups:
+            st.markdown('<div class="card" style="text-align:center;color:#445577;">No groups yet — create the first one above!</div>', unsafe_allow_html=True)
+        else:
+            for grp_id, grp in _fg.groups.items():
+                is_member = _fid_grp in grp.get("members",[])
+                color     = "#00ff88" if is_member else "#334466"
+                member_count = len(grp.get("members",[]))
 
-    # ── Group listing ──────────────────────────────────────────────────────────
-    if not groups:
-        st.markdown('<div class="card" style="text-align:center;color:#445577;">No groups yet — create the first one above!</div>', unsafe_allow_html=True)
-    else:
-        for grp_id, grp in groups.items():
-            is_member = _fid_grp in grp.get("members",[])
-            color     = "#00ff88" if is_member else "#334466"
-            member_count = len(grp.get("members",[]))
+                with st.expander(f"{'✅' if is_member else grp.get('emoji','👥')} {grp['name']} · {member_count} members", expanded=is_member):
+                    _challenges = grp.get("challenges", [])
+                    _next_challenge = _challenges[-1]["title"] if _challenges else ""
+                    st.markdown(
+                        f'<div class="card" style="border-left:3px solid {color};">'
+                        f'<div style="color:{color};font-family:Orbitron,monospace;font-size:0.78rem;">{grp["name"]}</div>'
+                        f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">{grp.get("description","")}</div>'
+                        f'{"<div style=color:#ff9500;font-size:0.75rem;margin-top:4px;>⭐ Challenge: " + _next_challenge + "</div>" if _next_challenge else ""}'
+                        f'<div style="color:#334466;font-size:0.7rem;margin-top:4px;">{"🌐 Public" if grp.get("public") else "🔒 Private"} · {member_count} members</div>'
+                        f'</div>', unsafe_allow_html=True)
 
-            with st.expander(f"{'✅' if is_member else '👥'} {grp['name']} · {member_count} members", expanded=is_member):
-                st.markdown(
-                    f'<div class="card" style="border-left:3px solid {color};">'
-                    f'<div style="color:{color};font-family:Orbitron,monospace;font-size:0.78rem;">{grp["name"]}</div>'
-                    f'<div style="color:#8899bb;font-size:0.78rem;margin-top:4px;">{grp.get("desc","")}</div>'
-                    f'{"<div style=color:#ff9500;font-size:0.75rem;margin-top:4px;>⭐ Weekly challenge: " + grp["challenge"] + "</div>" if grp.get("challenge") else ""}'
-                    f'<div style="color:#334466;font-size:0.7rem;margin-top:4px;">{"🌐 Public" if grp.get("public") else "🔒 Private"} · {member_count} members</div>'
-                    f'</div>', unsafe_allow_html=True)
+                    if not is_member:
+                        if st.button(f"Join {grp['name']}", key=f"join_{grp_id}"):
+                            _fg.join_group(grp_id, _fid_grp)
+                            st.success(f"✅ Joined {grp['name']}!")
+                            st.rerun()
+                    else:
+                        # Group chat
+                        st.markdown("**Group messages:**")
+                        _fam_names_grp = {}
+                        try:
+                            from family_profiles import FamilyAuth as _FA_grp
+                            _fam_names_grp = {f["family_id"]: f["display_name"] for f in _FA_grp().list_families()}
+                        except ImportError:
+                            pass
+                        for msg in reversed(_fg.get_group_messages(grp_id, limit=5)):
+                            frm = _fam_names_grp.get(msg.get("from"), msg.get("from","?"))
+                            st.markdown(f'<div class="memory-node"><span style="color:#a020f0;font-size:0.72rem;">{frm}</span> <span style="color:#445577;font-size:0.7rem;">{msg.get("timestamp","")[:16]}</span><br><span style="color:#c8d8ff;font-size:0.8rem;">{msg.get("message","")}</span></div>', unsafe_allow_html=True)
 
-                if not is_member:
-                    if st.button(f"Join {grp['name']}", key=f"join_{grp_id}"):
-                        grp["members"].append(_fid_grp)
-                        _save_groups()
-                        st.success(f"✅ Joined {grp['name']}!")
-                        st.rerun()
-                else:
-                    # Group chat
-                    st.markdown("**Group messages:**")
-                    for msg in grp.get("messages",[])[-5:]:
-                        frm = msg.get("from_name","?")
-                        st.markdown(f'<div class="memory-node"><span style="color:#a020f0;font-size:0.72rem;">{frm}</span> <span style="color:#445577;font-size:0.7rem;">{msg.get("timestamp","")[:16]}</span><br><span style="color:#c8d8ff;font-size:0.8rem;">{msg.get("message","")}</span></div>', unsafe_allow_html=True)
-
-                    grp_msg = st.text_input("Post to group", key=f"grp_msg_{grp_id}", placeholder="War Eagle! 🦅")
-                    if st.button("📤 Post", key=f"grp_post_{grp_id}") and grp_msg:
-                        grp.setdefault("messages",[]).append({
-                            "from":       _fid_grp,
-                            "from_name":  _cf_grp.get("display_name","?") if _cf_grp else "Operator",
-                            "message":    grp_msg,
-                            "timestamp":  _dt.now().isoformat(),
-                        })
-                        _save_groups()
-                        award_xp(5)
-                        st.rerun()
-
-                    if grp.get("creator") == _fid_grp:
-                        if st.button(f"🗑️ Delete group", key=f"del_grp_{grp_id}"):
-                            del groups[grp_id]
-                            _save_groups()
+                        grp_msg = st.text_input("Post to group", key=f"grp_msg_{grp_id}", placeholder="War Eagle! 🦅")
+                        if st.button("📤 Post", key=f"grp_post_{grp_id}") and grp_msg:
+                            _fg.post_to_group(grp_id, _fid_grp, grp_msg)
+                            award_xp(5)
                             st.rerun()
 
 # ── School Mode filter ────────────────────────────────────────────────────────
