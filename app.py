@@ -3635,6 +3635,18 @@ if "Family Co-Learning" in active:
             lesson_labels = [lesson_labels[i] for i in filtered]
 
     st.caption(f"{len(lesson_keys)} lessons available")
+
+    # Consume a preset lesson key set by a "▶ Start" button elsewhere
+    # (AI Partnership, Curriculum Map, etc.) - those set fl_lesson_preset
+    # and route here, but nothing ever read it back, so the selectbox
+    # always just showed whatever lesson was first in the list regardless
+    # of which one was actually clicked. Found live 2026-08-25.
+    _fl_preset = st.session_state.pop("fl_lesson_preset", None)
+    if _fl_preset and _fl_preset in lesson_keys:
+        st.session_state["fl_lesson"] = lesson_keys.index(_fl_preset)
+    elif _fl_preset and age_filter:
+        st.info(f"The requested lesson isn't shown under the current age filter — turn off \"Filter lessons by kid's age\" to find it.")
+
     chosen_idx = st.selectbox("Lesson", range(len(lesson_labels)), format_func=lambda i: lesson_labels[i], key="fl_lesson")
     chosen_key = lesson_keys[chosen_idx]
 

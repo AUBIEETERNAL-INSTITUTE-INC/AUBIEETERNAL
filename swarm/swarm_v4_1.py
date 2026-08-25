@@ -978,6 +978,29 @@ def github_push_truth_log():
                 if rel not in files:
                     files.append(rel)
 
+        # Also push new Living Lattice signals and Epistemic Commons output.
+        # Both modules write real local files under the repo (lattice/signals/,
+        # epistemic_commons/) but neither one pushes to GitHub itself - they
+        # depend entirely on this function, which never knew either directory
+        # existed. Found live 2026-08-25: Living Lattice's "Publish Today's
+        # Signal" button said "✅ Signal published" and Epistemic Commons said
+        # "✅ Published"/"✅ endpoints updated and pushed to GitHub" - both
+        # true for the local write, false for ever actually reaching GitHub;
+        # files just piled up locally back to June/July, never committed.
+        # This also matters for Epistemic Commons specifically because its
+        # AI Context URL is a raw.githubusercontent.com link - it can't work
+        # at all until the content is actually pushed.
+        for extra_dir, pattern in [
+            (Path(repo) / "lattice" / "signals", "*.json"),
+            (Path(repo) / "epistemic_commons", "**/*"),
+        ]:
+            if extra_dir.exists():
+                for f in extra_dir.glob(pattern):
+                    if f.is_file():
+                        rel = str(f.relative_to(Path(repo)))
+                        if rel not in files:
+                            files.append(rel)
+
         existing = [f for f in files if (Path(repo) / f).exists()]
         print(f"  📁 Push attempt | Files found: {existing}")
         if not existing:
