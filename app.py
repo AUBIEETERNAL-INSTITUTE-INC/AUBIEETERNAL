@@ -881,7 +881,24 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("### 👤 Profile")
-    st.session_state.kid_name = st.text_input("Your Name", value=st.session_state.kid_name)
+    # Wired to the real logged-in family account when one exists - this used
+    # to be a plain free-text box completely disconnected from the actual
+    # family_profiles.py record, meaning someone could type a different name
+    # here that silently drifted from their real account, and the XP shown
+    # below could differ from what's actually saved. Found live 2026-08-25.
+    # Falls back to the old free-text/session-only behavior when nobody's
+    # logged in, since several ungated features (e.g. the Oracle chat)
+    # still read st.session_state.kid_name unconditionally.
+    _cf_sidebar = st.session_state.get("current_family")
+    if _cf_sidebar:
+        st.session_state.kid_name = _cf_sidebar.get("kid_name", "Explorer")
+        st.markdown(
+            f'<div style="color:{_cf_sidebar.get("color","#00cfff")};font-size:1rem;">'
+            f'{_cf_sidebar.get("emoji","🦅")} {st.session_state.kid_name}</div>',
+            unsafe_allow_html=True)
+        st.caption(f"{_cf_sidebar.get('display_name','')} · logged in")
+    else:
+        st.session_state.kid_name = st.text_input("Your Name", value=st.session_state.kid_name)
 
     st.markdown("---")
     st.markdown("### 🧠 Thinking Mode")
@@ -909,14 +926,29 @@ with st.sidebar:
     st.session_state.thinking_mode = thinking_mode
 
     if "Local Ollama" in st.session_state.get("active_provider", ""):
-        _mode_model_map = {
-            "⚡ Fast":          "qwen2.5:7b",
-            "⚖️ Balanced":      "qwen2.5:14b",
-            "🧠 Deep Thinking": "qwen2.5:14b",  # 32b spills to CPU on 12GB; 14b is max that stays fully on GPU
-        }
-        _auto_model = _mode_model_map.get(thinking_mode, "qwen2.5:7b")
+        # Was a hardcoded model-per-mode map (fixed at qwen2.5:14b for both
+        # Balanced and Deep Thinking, with a stale comment about a 12GB VRAM
+        # limit) - didn't reflect what's actually pulled on this machine, so
+        # it could show a model name that's wrong or doesn't exist here at
+        # all. Now sourced from model_selector.py (the same hardware-aware
+        # logic assistant_server.py's TEXT_MODEL already uses) - real data
+        # about what's really pulled on THIS machine, always shown clearly
+        # since thinking-mode is rarely changed day-to-day.
+        try:
+            from model_selector import ranked_try_order as _rto
+            _real_models = _rto()
+        except Exception:
+            _real_models = []
+
+        if _real_models:
+            # Fast = the smallest model actually pulled here (quickest
+            # replies); Balanced/Deep both use the best-fit model this
+            # machine can comfortably run.
+            _auto_model = _real_models[-1] if thinking_mode == "⚡ Fast" else _real_models[0]
+        else:
+            _auto_model = "qwen2.5:7b"  # nothing pulled yet - name only, not a real pick
         st.session_state.active_model = _auto_model
-        st.caption(f"🤖 Model: `{_auto_model}`")
+        st.caption(f"🤖 Model in use: `{_auto_model}`" + (" (only one model pulled)" if len(_real_models) <= 1 else ""))
 
 
     st.markdown("---")
