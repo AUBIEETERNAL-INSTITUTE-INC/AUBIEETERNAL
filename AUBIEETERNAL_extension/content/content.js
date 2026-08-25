@@ -1,7 +1,7 @@
 // content.js — AUBIEETERNAL Content Script
 // Injects 🦅 Analyze buttons into X/Twitter posts and any page
 
-const SERVER_URL = 'http://localhost:8502';
+const SERVER_URL = 'http://100.105.81.27:8502';
 let settings = { showXButtons: true, autoAnalyze: false };
 
 // ── Load settings ──────────────────────────────────────────────────────────────

@@ -16,11 +16,16 @@
 - **Badge**: Shows live Wonder Index on toolbar icon
 
 ## Requirements
-- AUBIEETERNAL running locally
-- `python api_server.py` running on port 8502
+- `api_server.py` running on port 8502 — either on the same machine as your
+  browser, or on your AUBIEETERNAL server reachable over Tailscale (the
+  default server URL is set to the Ryzen box's Tailscale IP,
+  `100.105.81.27` — change it in the extension popup's settings if your
+  server lives elsewhere)
 - Chrome, Edge, or Brave (Firefox support coming)
 
 ## Privacy
-100% local — extension only calls localhost:8502. Zero external requests.
+Never talks to the public internet — only ever calls your own AUBIEETERNAL
+server, either on localhost or over your private Tailscale network. Zero
+external requests.
 
 War Eagle Eternal 🦅 | CC0 Public Domain

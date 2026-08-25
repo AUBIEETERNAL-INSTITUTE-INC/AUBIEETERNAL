@@ -1,7 +1,7 @@
 // popup.js — AUBIEETERNAL Extension Popup
 // Communicates with the local API server (api_server.py on port 8502)
 
-const DEFAULT_SERVER = 'http://localhost:8502';
+const DEFAULT_SERVER = 'http://100.105.81.27:8502';
 
 // ── State ──────────────────────────────────────────────────────────────────────
 let serverUrl = DEFAULT_SERVER;

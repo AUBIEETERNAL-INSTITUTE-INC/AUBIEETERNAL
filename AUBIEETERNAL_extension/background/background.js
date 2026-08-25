@@ -52,7 +52,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 async function updateBadge() {
   try {
     const data = await chrome.storage.local.get('serverUrl');
-    const url  = (data.serverUrl || 'http://localhost:8502') + '/status';
+    const url  = (data.serverUrl || 'http://100.105.81.27:8502') + '/status';
     const res  = await fetch(url, { signal: AbortSignal.timeout(3000) });
     if (res.ok) {
       const status = await res.json();
