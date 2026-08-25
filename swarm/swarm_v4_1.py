@@ -592,6 +592,45 @@ def maybe_trigger_epistemic_commons():
         t.start()
 
 # ══════════════════════════════════════════════════════════════════════════════
+# LIVING LATTICE — daily anonymous signal (coherence, lessons, wonder index),
+# same never-auto-wired gap as Epistemic Commons above: living_lattice.py's
+# own docstring already says "Called from morning_synthesis" but nothing
+# here ever called it - it only ever ran when a human clicked "Publish
+# Today's Signal" in the Streamlit Living Lattice tab. Found live 2026-08-25
+# while writing onboarding copy that promised new families this is "on by
+# default" - which wasn't true until this. Cheap (pure local aggregation,
+# no AI calls), so no GPU-contention reason to avoid an early slot; runs at
+# 10AM Eastern, after curriculum autogen (9AM) has the GPU to itself.
+# ══════════════════════════════════════════════════════════════════════════════
+_living_lattice_last_run_date = None
+
+def _run_living_lattice_background():
+    global _living_lattice_last_run_date
+    try:
+        from living_lattice import LivingLattice
+        print("[living-lattice] 🕸️  Daily publish background thread started...")
+        result = LivingLattice().publish_daily_signal()
+        print(f"[living-lattice] Signal publish: {result.get('status','?')}")
+    except ImportError:
+        print("[living-lattice] ❌ living_lattice.py not found in repo")
+    except Exception as e:
+        print(f"[living-lattice] ❌ Signal publish error: {e}")
+    _living_lattice_last_run_date = datetime.date.today()
+
+def maybe_trigger_living_lattice():
+    """Called every tick. Fires once per day at 10AM Eastern. Same
+    daemon-thread + date-guard pattern as the other daily jobs above."""
+    global _living_lattice_last_run_date
+    now   = _now_eastern()
+    today = now.date()
+
+    if now.hour == 10 and _living_lattice_last_run_date != today:
+        _living_lattice_last_run_date = today   # set immediately to block re-entry
+        print(f"[living-lattice] ⏰ 10AM trigger fired for {today.isoformat()}")
+        t = threading.Thread(target=_run_living_lattice_background, daemon=True)
+        t.start()
+
+# ══════════════════════════════════════════════════════════════════════════════
 # GLASSES SIGNAL HANDLER — Halo glasses → swarm bridge
 # Reads /mnt/main/glasses_signal.json each tick (written by nostr_glasses_bridge.py)
 # Routes signal to appropriate daughters, writes reply to /mnt/main/glasses_reply.json
@@ -1591,6 +1630,7 @@ def launch_swarm():
     print(f"🌱 Curriculum autogen ACTIVE — proposes 1 new lesson daily at 9AM (pending human review)")
     print(f"📧 Email watch ACTIVE — daily digest at 7AM (private), urgent deadlines spoken ~every 15min")
     print(f"🌐 Epistemic Commons ACTIVE — daily CC0 publish at 8AM (commons letter + API endpoints)")
+    print(f"🕸️  Living Lattice ACTIVE — daily anonymous signal publish at 10AM")
     print(f"🥽 Glasses signal handler ACTIVE — /mnt/main/glasses_signal.json\n")
 
     tick        = 0
@@ -1634,6 +1674,10 @@ def launch_swarm():
 
             # ── EPISTEMIC COMMONS — daily CC0 publish, zero cost ──────────
             maybe_trigger_epistemic_commons()
+            # ──────────────────────────────────────────────────────────────
+
+            # ── LIVING LATTICE — daily anonymous signal, zero cost ────────
+            maybe_trigger_living_lattice()
             # ──────────────────────────────────────────────────────────────
 
             # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──
