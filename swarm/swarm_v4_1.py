@@ -997,23 +997,109 @@ def write_tier2_digest():
     except Exception as e:
         print(f"⚠️ Digest error: {e}")
 
+# ── Telemetry branch ──────────────────────────────────────────────────────
+# The swarm's rolling operational logs (truth log, wonder/cost/lattice logs,
+# status snapshots, context cache) used to be committed to `main` every few
+# minutes: ~290 commits/day, ~89 MB of append-only .jsonl bundled into every
+# `main.zip` download, and real code commits buried 1-in-50 in `git log`.
+# They're pure diagnostics - nothing reads them from GitHub (the app reads
+# them off the local /mnt/main disk), and no downloaded copy needs them. They
+# now go to a separate `telemetry` branch, ~hourly, as off-box backup only.
+# `main` stays code + curriculum + Epistemic Commons - the things other
+# instances actually point at.
+TELEMETRY_FILES = [
+    "master_truth_log.jsonl", "wonder_log.jsonl", "truth_lattice_log.jsonl",
+    "cost_log.jsonl", "memory_palace.jsonl",
+    "swarm_status.json", "master_status.json", "context_cache.json",
+]
+TELEMETRY_BRANCH        = "telemetry"
+TELEMETRY_PUSH_INTERVAL = 3600   # seconds - once an hour, not every tick
+_last_telemetry_push    = 0.0
+
+def _maybe_push_telemetry_branch(repo):
+    """Snapshot TELEMETRY_FILES onto the `telemetry` branch ~hourly, without
+    ever touching main's working tree, index, or HEAD (throwaway index +
+    commit-tree plumbing). Best-effort: any failure is logged and retried
+    next hour."""
+    global _last_telemetry_push
+    now = time.time()
+    if now - _last_telemetry_push < TELEMETRY_PUSH_INTERVAL:
+        return
+    try:
+        tel = [f for f in TELEMETRY_FILES if (Path(repo) / f).exists()]
+        if not tel:
+            return
+        env = dict(os.environ)
+        env["GIT_INDEX_FILE"] = str(Path(repo) / ".git" / "telemetry.index")
+        try:
+            os.remove(env["GIT_INDEX_FILE"])
+        except OSError:
+            pass
+
+        subprocess.run(["git", "-C", repo, "fetch", "origin",
+                        f"{TELEMETRY_BRANCH}:refs/remotes/origin/{TELEMETRY_BRANCH}"],
+                       capture_output=True, timeout=30)
+        parent = subprocess.run(
+            ["git", "-C", repo, "rev-parse", "--verify", "--quiet",
+             f"refs/remotes/origin/{TELEMETRY_BRANCH}"],
+            capture_output=True, text=True, timeout=10
+        ).stdout.strip()
+        if parent:
+            subprocess.run(["git", "-C", repo, "read-tree", parent],
+                           env=env, capture_output=True, timeout=15)
+
+        subprocess.run(["git", "-C", repo, "update-index", "--add", "--"] + tel,
+                       env=env, capture_output=True, text=True, timeout=20)
+        tree = subprocess.run(["git", "-C", repo, "write-tree"],
+                              env=env, capture_output=True, text=True,
+                              timeout=15).stdout.strip()
+        if not tree:
+            return
+
+        msg = "telemetry snapshot " + time.strftime("%Y-%m-%dT%H:%M:%SZ",
+                                                    time.gmtime(now))
+        ct = ["git", "-C", repo, "commit-tree", tree, "-m", msg]
+        if parent:
+            ct[5:5] = ["-p", parent]
+        commit = subprocess.run(ct, capture_output=True, text=True,
+                                timeout=15).stdout.strip()
+        if not commit:
+            return
+
+        subprocess.run(["git", "-C", repo, "update-ref",
+                        f"refs/heads/{TELEMETRY_BRANCH}", commit],
+                       capture_output=True, timeout=10)
+        if GITHUB_TOKEN:
+            subprocess.run(
+                ["git", "-C", repo, "remote", "set-url", "origin",
+                 f"https://{GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git"],
+                capture_output=True, timeout=10
+            )
+        push = subprocess.run(
+            ["git", "-C", repo, "push", "origin",
+             f"refs/heads/{TELEMETRY_BRANCH}:refs/heads/{TELEMETRY_BRANCH}"],
+            capture_output=True, text=True, timeout=30
+        )
+        print(f"  📊 telemetry push: {push.returncode} | {push.stderr[:100]}")
+        _last_telemetry_push = now
+    except Exception as e:
+        print(f"  telemetry push error: {e}")
+
 def github_push_truth_log():
     try:
         repo = str(GITHUB_REPO)
+        # Rolling operational logs -> `telemetry` branch, hourly, independent
+        # of whether main has anything to push this cycle.
+        _maybe_push_telemetry_branch(repo)
+        # `main` gets only the knowledge / human-readable artifacts. The raw
+        # operational logs go to the `telemetry` branch instead - see
+        # _maybe_push_telemetry_branch() and TELEMETRY_FILES above.
         files = [
-            "master_truth_log.jsonl", "wonder_log.jsonl",
-            "truth_lattice_log.jsonl", "swarm_status.json",
-            "context_cache.json",
             "tier2_digest.txt",
-            # Off-box backup of previously local-only state. The existence
-            # filter below skips any that aren't present yet, so this is safe.
-            "memory_palace.jsonl", "cost_log.jsonl", "master_status.json",
-            # X Bridge's Truth Debt Ledger (truth_debt_ledger.py) - same
-            # never-pushed-because-never-listed bug as Living Lattice/
-            # Epistemic Commons below, found live 2026-08-25 while checking
-            # X Bridge. Not a directory of dated files like those two, just
-            # one running ledger + its rendered report, so listed directly
-            # rather than via the glob loop.
+            # X Bridge's Truth Debt Ledger (truth_debt_ledger.py) - one
+            # running ledger + its rendered report. Small, changes rarely,
+            # human-readable report - stays on main with the other knowledge
+            # artifacts rather than the noisy telemetry logs.
             "truth_debt_ledger.jsonl", "insights/truth_debt_report.md",
         ]
         # Also push any new daily insight files
