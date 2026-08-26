@@ -1085,6 +1085,82 @@ def _maybe_push_telemetry_branch(repo):
     except Exception as e:
         print(f"  telemetry push error: {e}")
 
+# ── Log rotation ─────────────────────────────────────────────────────────
+# The append-only telemetry logs grow without bound (master_truth_log.jsonl
+# alone hit 69 MB). Once a day, trim each to a recent window; the dropped
+# prefix is gzipped into log_archive/ (gitignored, local-only) as
+# belt-and-suspenders on top of the `telemetry` branch backup. Runs inside
+# the swarm loop, so it never races the swarm's own appends. Uses the
+# append-only + chronological property: find the byte offset of the first
+# line newer than the cutoff, gzip everything before it, keep the rest.
+LOG_ROTATION = {
+    TRUTH_LOG:   30,   # master_truth_log.jsonl - full reasoning/briefing log
+    WONDER_LOG:   7,   # wonder_log.jsonl - ~1 line / 2 s, low value per line
+    COST_LOG:    90,   # cost_log.jsonl - kept longer, useful for budgeting
+    LATTICE_LOG: 30,   # truth_lattice_log.jsonl
+    # memory_palace.jsonl deliberately NOT rotated - 32 KB, semantically rich
+}
+LOG_ARCHIVE_DIR         = WORK_DIR / "log_archive"
+_log_rotation_last_date = None
+
+def _rotate_one_jsonl(path, keep_days):
+    if not path.exists() or path.stat().st_size == 0:
+        return
+    cutoff = datetime.datetime.now() - datetime.timedelta(days=keep_days)
+    split_at = None            # byte offset of the first line to KEEP
+    pos = 0
+    with open(path, "rb") as f:
+        for raw in f:
+            line = raw.decode("utf-8", "replace").strip()
+            if line:
+                ts = None
+                try:
+                    t = json.loads(line).get("timestamp")
+                    if t:
+                        ts = datetime.datetime.fromisoformat(
+                            str(t).replace("Z", "").split("+")[0].split(".")[0])
+                except Exception:
+                    pass
+                if ts is not None and ts >= cutoff:
+                    split_at = pos
+                    break
+            pos += len(raw)
+    # split_at None  -> no line newer than cutoff (swarm idle > keep_days, or
+    #                   no parseable timestamps): leave the file alone.
+    # split_at 0     -> nothing old enough to trim yet.
+    if not split_at:
+        return
+    LOG_ARCHIVE_DIR.mkdir(exist_ok=True)
+    stamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    arc = LOG_ARCHIVE_DIR / f"{path.name}.{stamp}.gz"
+    tmp = path.with_name(path.name + ".rot")
+    import gzip, shutil
+    with open(path, "rb") as src:
+        with gzip.open(arc, "wb") as a:
+            remaining = split_at
+            while remaining > 0:
+                chunk = src.read(min(1 << 20, remaining))
+                if not chunk:
+                    break
+                a.write(chunk)
+                remaining -= len(chunk)
+        with open(tmp, "wb") as k:
+            shutil.copyfileobj(src, k)
+    os.replace(tmp, path)
+    print(f"  🧹 rotated {path.name}: archived {split_at} bytes -> {arc.name}")
+
+def maybe_trigger_log_rotation():
+    global _log_rotation_last_date
+    today = datetime.date.today()
+    if _log_rotation_last_date == today:
+        return
+    _log_rotation_last_date = today
+    for path, days in LOG_ROTATION.items():
+        try:
+            _rotate_one_jsonl(path, days)
+        except Exception as e:
+            print(f"  log rotation error ({getattr(path, 'name', path)}): {e}")
+
 def github_push_truth_log():
     try:
         repo = str(GITHUB_REPO)
@@ -1764,6 +1840,10 @@ def launch_swarm():
 
             # ── LIVING LATTICE — daily anonymous signal, zero cost ────────
             maybe_trigger_living_lattice()
+            # ──────────────────────────────────────────────────────────────
+
+            # ── LOG ROTATION — daily, trims append-only telemetry logs ────
+            maybe_trigger_log_rotation()
             # ──────────────────────────────────────────────────────────────
 
             # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──
