@@ -84,6 +84,7 @@ spotmicro_dog/**/__pycache__/
 # Reviewed and deliberately excluded 2026-08-24; locked here so a future
 # `git add -A` can't sweep them in by accident.
 institute_memory/EIN_confirmation.pdf
+institute_memory/org_facts.txt
 USER_CONTEXT.md
 memory/
 conversations/

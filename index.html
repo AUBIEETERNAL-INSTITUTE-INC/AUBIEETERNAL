@@ -152,6 +152,11 @@
   .about-more{margin-top:2.8rem;padding-top:2rem;border-top:1px solid var(--line);}
   .about-more h3{font-size:clamp(1.4rem,3vw,1.8rem);margin:.4rem 0 .8rem;}
   .about-more .btn{margin-top:1.3rem;}
+  .org-facts{margin-top:1.6rem;display:grid;grid-template-columns:auto 1fr;gap:.4rem 1.1rem;font-size:.95rem;max-width:62ch;}
+  .org-facts dt{font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);align-self:center;}
+  .org-facts dd{margin:0;color:var(--ink);}
+  .org-facts a{color:var(--accent-deep);}
+  @media(max-width:560px){.org-facts{grid-template-columns:1fr;gap:.15rem;}.org-facts dd{margin-bottom:.7rem;}}
 
   /* ---------- welcome choices ---------- */
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;}
@@ -353,6 +358,13 @@
         <p class="eyebrow">The nonprofit behind it</p>
         <h3>AUBIEETERNAL Institute</h3>
         <p>AUBIEETERNAL Institute, Inc. is a Florida-registered not-for-profit corporation formed to keep this education system free, offline-capable, and community-owned. The Institute stewards the curriculum, helps families and schools deploy it, and pursues grant funding so the software never needs a paywall.</p>
+        <dl class="org-facts">
+          <dt>Legal name</dt><dd>AUBIEETERNAL INSTITUTE, INC.</dd>
+          <dt>Entity type</dt><dd>Florida Not For Profit Corporation</dd>
+          <dt>EIN</dt><dd>42-3145820</dd>
+          <dt>FL document&nbsp;#</dt><dd>N26000008523 &middot; Status: Active</dd>
+          <dt>Contact</dt><dd><a href="mailto:aubieeternal_institute@pm.me">aubieeternal_institute@pm.me</a></dd>
+        </dl>
         <a class="btn btn-ghost" href="https://aubieeternal-institute.org" target="_blank" rel="noopener noreferrer">Visit aubieeternal-institute.org <span class="arrow">→</span></a>
       </div>
     </div>
