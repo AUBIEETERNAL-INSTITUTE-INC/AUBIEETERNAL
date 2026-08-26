@@ -2637,7 +2637,7 @@ elif "Provenance" in active:
     st.markdown('<div class="card-title">📜 ON-CHAIN PROVENANCE — Eternal Lattice Record</div>', unsafe_allow_html=True)
 
     st.markdown("**Permanent public record of the AUBIEETERNAL project.**")
-    st.markdown("[📄 View Full PROVENANCE.md on GitHub](https://github.com/hodlmateo/AUBIEETERNAL/blob/main/PROVENANCE.md)")
+    st.markdown("[📄 View Full PROVENANCE.md on GitHub](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/blob/main/PROVENANCE.md)")
 
     st.markdown("---")
 
@@ -7416,7 +7416,7 @@ if "Epistemic Commons" in active:
             st.info("No commons published yet. First publish happens at 6AM after swarm runs.")
 
         st.divider()
-        _ctx_url = "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
+        _ctx_url = "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
         st.markdown("### 🤖 AI Context URL")
         st.markdown(
             f'<div class="card" style="border-left:3px solid #00ff88;">' +
@@ -10935,7 +10935,7 @@ if "Community Mode" in active:
         st.divider()
         st.markdown("### Step-by-step setup for first time")
         _steps = [
-            ("1", "Download everything", "Go to github.com/hodlmateo/AUBIEETERNAL\nClick the green 'Code' button → 'Download ZIP'\nUnzip the folder"),
+            ("1", "Download everything", "Go to github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL\nClick the green 'Code' button → 'Download ZIP'\nUnzip the folder"),
             ("2", "Install the AI (Ollama)", "Go to ollama.com/download and download Ollama.\nInstall it. This is the offline AI brain."),
             ("3", "Download the AI model", 'Open a terminal and type:\nollama pull qwen2.5:7b\nThis downloads the AI that will answer questions. Takes ~15 minutes on first setup.'),
             ("4", "Install Python", "Go to python.org/downloads and install Python 3.11.\nThis runs the school software."),
@@ -11004,7 +11004,7 @@ If you deploy this school for a community:
 
 Every deployment is permanent. Every child you teach is part of the chain."""),
             ("📞 Getting help", """
-GitHub: github.com/hodlmateo/AUBIEETERNAL (file an issue)
+GitHub: github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL (file an issue)
 Twitter/X: @MateoVanhorn
 Everything is open source — someone will help.
 

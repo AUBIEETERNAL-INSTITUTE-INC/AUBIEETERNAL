@@ -18,17 +18,19 @@ GitHub repo, and that repo is currently tied to one person.
 
 ---
 
-## 2. The single points of failure (fix these first)
+## 2. The single points of failure
 
-| Thing | Current state | Risk | Fix |
+| Thing | Current state (2026-08-26) | Risk | Fix |
 |---|---|---|---|
-| **GitHub repo** | `github.com/hodlmateo/AUBIEETERNAL` — a **personal** account | If that account is lost, the repo and its history can go with it | Move it to a **GitHub Organization** (e.g. under the Institute). Orgs outlive individuals. |
-| **Who can push** | One deploy key on one machine (the "Ryzen rig", hostname `aubieeternal`), plus the owner's login | If the rig dies or the owner is gone, `main` freezes forever | Add **2+ people as org owners/maintainers** with push + admin. |
-| **The swarm auto-push** | Runs only on the Ryzen rig as `aubie-swarm.service` | Dies with that machine | Document the setup (below) so a successor can re-point it from any Linux box. |
+| **GitHub repo** | ✅ Moved to the **`AUBIEETERNAL-INSTITUTE-INC`** organization. History, releases, deployments all carried over. | — | Done. Keep it org-owned, never move back to a personal account. |
+| **Org owners** | Needs confirming: at least **2 people** must have the **Owner** role in org → People (contributor / push access is *not* enough). | If only one person is Owner, the org still dies with one account. | Org → People → set a second trusted person to **Owner**. |
+| **Push access from the rig** | ⚠️ The rig's SSH deploy key authenticates to the new repo but is **read-only** — write access did not survive the transfer. The swarm's auto-push has been failing since the move. | `main` and `telemetry` stop updating; published curriculum never reaches other installs. | New repo → Settings → Deploy keys → delete the old key, re-add `~/.ssh/aubieeternal_github_deploy_key.pub` **with "Allow write access" ticked**. |
+| **Branch protection vs. the swarm** | The swarm pushes **directly to `main`** every ~5 min. | If `main` protection blocks direct pushes / requires PRs, the swarm auto-push breaks. | When enabling branch protection, add the deploy key (or a bot account) to the **bypass list**, or switch the swarm to push a branch + auto-merge. |
+| **The swarm auto-push** | Runs only on the Ryzen rig as `aubie-swarm.service` | Dies with that machine | §4 documents how to re-point it from any Linux box. |
 | **Contribution back** | No path for an outside install to get a lesson into the shared feed without repo write access | Growth is bottlenecked on the maintainer | Build a submission path (GitHub Issues/PRs from the app) OR federated per-instance feeds. |
 
-**Priority order:** (1) move repo to an org, (2) add maintainers, (3) write
-down the rig setup, (4) build the contribution path.
+**Immediate:** re-grant the deploy key write access (row 3) — nothing
+publishes until that's fixed.
 
 ---
 
@@ -56,9 +58,13 @@ push to the repo:
 Double-gated on purpose: your choice to publish, their choice to adopt.
 Nothing propagates automatically.
 
-If the repo moves to an org, update `COMMONS_FEED_URL` in
-`curriculum_proposals.py` and `PUBLIC_BASE` in `epistemic_commons_api.py`
-(both currently hardcode `hodlmateo/AUBIEETERNAL`).
+The repo path is hardcoded in a few places (all updated to the org path
+2026-08-26): `COMMONS_FEED_URL` in `curriculum_proposals.py`, `PUBLIC_BASE`
+in `epistemic_commons_api.py`, the `git remote set-url` lines in
+`swarm/swarm_v4_1.py` and `start.sh`, and the download/clone links in
+`index.html`. Still on the old namespace and needing a manual decision:
+`ghcr.io/hodlmateo/aubieeternal` in `.github/workflows/docker.yml` (the
+container image tag — changing it affects anything pulling that image).
 
 ---
 

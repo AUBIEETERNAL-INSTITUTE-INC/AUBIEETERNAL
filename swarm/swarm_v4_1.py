@@ -1072,7 +1072,7 @@ def _maybe_push_telemetry_branch(repo):
         if GITHUB_TOKEN:
             subprocess.run(
                 ["git", "-C", repo, "remote", "set-url", "origin",
-                 f"https://{GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git"],
+                 f"https://{GITHUB_TOKEN}@github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL.git"],
                 capture_output=True, timeout=10
             )
         push = subprocess.run(
@@ -1243,7 +1243,7 @@ def github_push_truth_log():
             if GITHUB_TOKEN:
                 subprocess.run(
                     ["git", "-C", repo, "remote", "set-url", "origin",
-                     f"https://{GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git"],
+                     f"https://{GITHUB_TOKEN}@github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL.git"],
                     capture_output=True, timeout=10
                 )
             subprocess.run(["git", "-C", repo, "pull", "--rebase", "--autostash"],

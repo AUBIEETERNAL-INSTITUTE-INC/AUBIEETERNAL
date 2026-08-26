@@ -29,7 +29,7 @@ Everything runs locally. No cloud. No subscription. No API key required.
 The full sovereign stack in one file.
 
 License: CC0 1.0 Universal — Public Domain Dedication
-Source: https://github.com/hodlmateo/AUBIEETERNAL
+Source: https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL
 """
 
 import os, sys, json, subprocess, datetime
@@ -196,7 +196,7 @@ if "Home" in _page:
     AI tutor, steelmanning exercises, and on-chain identity via Bitcoin Runes.
 
     Running locally on your machine. No cloud. No subscription.
-    Full source: https://github.com/hodlmateo/AUBIEETERNAL
+    Full source: https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL
     """)
 
     if st.button("☀️ Run Morning Synthesis"):

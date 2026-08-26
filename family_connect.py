@@ -123,7 +123,7 @@ class ShareToX:
             f"Wonder Index: {wonder:.4f}\n\n"
             f"{insight_preview[:120]}...\n\n"
             f"Daily sovereign intelligence distilled by qwen3:32b ($0.00).\n"
-            f"Full report: github.com/hodlmateo/AUBIEETERNAL\n\n"
+            f"Full report: github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL\n\n"
             f"#AUBIEETERNAL #AI #Bitcoin #WearEagle"
         )
         return {

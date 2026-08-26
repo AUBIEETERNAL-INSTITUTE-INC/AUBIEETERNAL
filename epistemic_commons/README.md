@@ -20,7 +20,7 @@ to your system prompt. Each seed is honesty-scored and hallucination-risk-filter
 High-quality (prompt, steelmanned-argument) pairs for RLHF/preference training.
 
 ```
-GET https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt
+GET https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt
 ```
 
 ---

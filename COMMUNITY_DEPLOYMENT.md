@@ -29,7 +29,7 @@ AUBIEETERNAL is a free school that runs on a single computer — with no interne
 
 ### Step 1 — Download the school
 ```
-1. Go to: github.com/hodlmateo/AUBIEETERNAL
+1. Go to: github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL
 2. Click green "Code" button → "Download ZIP"
 3. Unzip the folder to your desktop
 ```
@@ -122,7 +122,7 @@ The curriculum is currently in English. High-priority translations:
 - Spanish, French, Arabic, Portuguese, Hindi, Swahili, Mandarin
 
 **To contribute a translation:**
-1. Fork the repo at github.com/hodlmateo/AUBIEETERNAL
+1. Fork the repo at github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL
 2. Translate lessons in `family_hud.py` 
 3. Submit a pull request
 4. Your translation is immediately CC0 — the community owns it
@@ -184,7 +184,7 @@ This:
 
 ## Getting Help
 
-- **GitHub:** github.com/hodlmateo/AUBIEETERNAL → Issues tab
+- **GitHub:** github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL → Issues tab
 - **Twitter/X:** @MateoVanhorn
 - **Setup help:** File an issue labeled "community-deployment" — community responds fast
 - **Translation help:** File an issue labeled "translation-needed" with your language
