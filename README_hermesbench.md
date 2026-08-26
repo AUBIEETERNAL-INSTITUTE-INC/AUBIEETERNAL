@@ -4,7 +4,7 @@
 Built by [@hodlmateo](https://github.com/hodlmateo) · Shared for [@compileandpush](https://twitter.com/compileandpush) and the late-night builder community.
 
 HermesBench: [github.com/verkyyi/hermesbench](https://github.com/verkyyi/hermesbench)  
-AUBIEETERNAL: [github.com/hodlmateo/AUBIEETERNAL](https://github.com/hodlmateo/AUBIEETERNAL)
+AUBIEETERNAL: [github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 
 ---
 

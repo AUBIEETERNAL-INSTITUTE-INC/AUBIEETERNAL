@@ -7,7 +7,7 @@ if [ -d /mnt/main/repo/.git ]; then
     cd /mnt/main/repo
     git config --global user.email "aubie@eternal.ai"
     git config --global user.name "AUBIEETERNAL"
-    git remote set-url origin https://${GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git
+    git remote set-url origin https://${GITHUB_TOKEN}@github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL.git
     git config --global --add safe.directory /mnt/main/repo
     # Only a GENUINELY broken repo gets nuked. A failed fetch means the network
     # is down (offline / GitHub unreachable) — NOT corruption — so keep the
@@ -16,7 +16,7 @@ if [ -d /mnt/main/repo/.git ]; then
         echo "⚠️  Git repo genuinely corrupt — re-cloning..."
         cd /mnt/main
         rm -rf repo
-        git clone https://${GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git repo
+        git clone https://${GITHUB_TOKEN}@github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL.git repo
         cd repo
     elif git fetch origin 2>/dev/null; then
         git reset --hard origin/main 2>/dev/null && echo "✅ Synced to origin/main"
@@ -26,11 +26,11 @@ if [ -d /mnt/main/repo/.git ]; then
 else
     echo "📦 First run — cloning repo..."
     mkdir -p /mnt/main
-    git clone https://${GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git /mnt/main/repo
+    git clone https://${GITHUB_TOKEN}@github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL.git /mnt/main/repo
     cd /mnt/main/repo
     git config --global user.email "aubie@eternal.ai"
     git config --global user.name "AUBIEETERNAL"
-    git remote set-url origin https://${GITHUB_TOKEN}@github.com/hodlmateo/AUBIEETERNAL.git
+    git remote set-url origin https://${GITHUB_TOKEN}@github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL.git
 fi
 
 # ── Clear Python bytecode cache ─────────────────────────────────────────────

@@ -5,12 +5,12 @@
 
 **Free education for every family, every orphanage, every community on earth.**
 
-[![Lessons](https://img.shields.io/badge/Curriculum-265%20Lessons-blue?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Tracks](https://img.shields.io/badge/Tracks-51+-green?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Degrees](https://img.shields.io/badge/Degrees-4%20Programs-purple?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Reliability](https://img.shields.io/badge/Reliability-HermesBench%20Verified-00cfff?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
-[![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/hodlmateo/AUBIEETERNAL)
+[![Lessons](https://img.shields.io/badge/Curriculum-265%20Lessons-blue?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
+[![Tracks](https://img.shields.io/badge/Tracks-51+-green?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
+[![Degrees](https://img.shields.io/badge/Degrees-4%20Programs-purple?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
+[![Reliability](https://img.shields.io/badge/Reliability-HermesBench%20Verified-00cfff?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
+[![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
+[![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 
 No tuition. No paperwork. No gatekeepers. No special hardware.  
 Your degree is sealed on Bitcoin. The knowledge belongs to no one and cannot be erased.  
@@ -35,7 +35,7 @@ A 7-year-old in an orphanage with a donated laptop. A teenager who dropped out. 
 ```bash
 # Windows: install_windows.bat
 # macOS/Linux: chmod +x install_mac_linux.sh && ./install_mac_linux.sh
-# Developers: git clone https://github.com/hodlmateo/AUBIEETERNAL && python launcher.py
+# Developers: git clone https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL && python launcher.py
 # StartOS: sideload aubieeternal.s9pk
 ```
 
@@ -179,7 +179,7 @@ python epistemic_drift_detector.py --ci --fail-on RED
 
 ```python
 import requests
-BASE = "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api"
+BASE = "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api"
 
 latest    = requests.get(f"{BASE}/latest.json").json()    # daily synthesis
 steelmans = requests.get(f"{BASE}/steelmans.json").json() # rare training signal

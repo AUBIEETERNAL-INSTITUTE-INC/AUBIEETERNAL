@@ -31,7 +31,7 @@ PROPOSALS_DIR.mkdir(parents=True, exist_ok=True)
 # published curriculum proposals, readable by any separately-run instance
 # (a different family's install, not just this machine).
 COMMONS_FEED_URL = (
-    "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/"
+    "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/"
     "epistemic_commons/api/curriculum_proposals.json"
 )
 

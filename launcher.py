@@ -14,7 +14,7 @@ What this does automatically:
 
 Works on: Windows 10/11, macOS 12+, Ubuntu 22.04+
 
-Source: https://github.com/hodlmateo/AUBIEETERNAL
+Source: https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL
 License: CC0 Public Domain
 """
 
@@ -384,7 +384,7 @@ def first_run_setup(data_dir: Path):
 
   Your data stays 100% on this computer.
   No accounts. No cloud. No subscription.
-  Source code: https://github.com/hodlmateo/AUBIEETERNAL
+  Source code: https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL
 """)
 
 

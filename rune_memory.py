@@ -502,7 +502,7 @@ class ShieldRune:
                     f"Anchored: {seal_record.get('bitcoin_txid','pending')[:32]}\n"
                     f"Note: {seal_record.get('note','')[:100]}\n"
                     f"Coherence: 1.000000 | War Eagle Eternal 🦅\n"
-                    f"Source: https://github.com/hodlmateo/AUBIEETERNAL"
+                    f"Source: https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL"
                 ),
                 "tags": [
                     ["t", "aubieeternal"],

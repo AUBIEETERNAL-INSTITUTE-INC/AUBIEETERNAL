@@ -178,9 +178,9 @@ MuseteX case · Ryzen 7 · RTX 4060 · green lighting
 This document is append-only. Once something is recorded here, it is never removed or altered — only added to.
 
 The most recent version of this file is always at:
-`https://github.com/hodlmateo/AUBIEETERNAL/blob/main/PROVENANCE.md`
+`https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/blob/main/PROVENANCE.md`
 
-All images are in: `https://github.com/hodlmateo/AUBIEETERNAL/tree/main/PROVENANCE`
+All images are in: `https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/tree/main/PROVENANCE`
 
 ---
 

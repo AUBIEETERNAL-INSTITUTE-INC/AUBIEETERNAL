@@ -9,11 +9,11 @@
   "recent_insights": [],
   "grokipedia_today": [],
   "fetch_endpoints": {
-    "latest": "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/latest.json",
-    "grokipedia": "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/grokipedia.json",
-    "coherence": "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/coherence.json",
-    "steelmans": "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/steelmans.json",
-    "beliefs": "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/beliefs.json",
-    "pvc_data": "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/pvc_data.json"
+    "latest": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/latest.json",
+    "grokipedia": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/grokipedia.json",
+    "coherence": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/coherence.json",
+    "steelmans": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/steelmans.json",
+    "beliefs": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/beliefs.json",
+    "pvc_data": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/pvc_data.json"
   }
 }

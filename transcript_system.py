@@ -130,7 +130,7 @@ class TranscriptGenerator:
         transcript = {
             "schema_version":    "1.0",
             "institution":       "AUBIEETERNAL Sovereign University",
-            "institution_url":   "https://github.com/hodlmateo/AUBIEETERNAL",
+            "institution_url":   "https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL",
             "license":           "CC0 1.0 Universal — Public Domain",
             "student_name":      self.student_name,
             "family_id":         self.family_id,

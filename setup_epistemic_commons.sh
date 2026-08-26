@@ -49,8 +49,8 @@ if [[ "$PUSH" == "y" || "$PUSH" == "Y" ]]; then
     echo "✅ Pushed to GitHub"
     echo ""
     echo "📡 Your public endpoints:"
-    echo "  https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/latest.json"
-    echo "  https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/index.json"
+    echo "  https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/latest.json"
+    echo "  https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/index.json"
 fi
 
 echo ""
