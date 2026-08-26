@@ -80,6 +80,20 @@ spotmicro_dog/**/__pycache__/
 *.bak.*
 *.bak_*
 
+# Swarm operational logs / status snapshots — diagnostics only, ~89 MB of
+# append-only churn. The app reads these off the local /mnt/main disk, never
+# from GitHub, and no download needs them. The swarm now snapshots them to
+# the `telemetry` branch (hourly, off-box backup) instead of main. See
+# github_push_truth_log() / _maybe_push_telemetry_branch() in swarm/swarm_v4_1.py.
+master_truth_log.jsonl
+wonder_log.jsonl
+truth_lattice_log.jsonl
+cost_log.jsonl
+memory_palace.jsonl
+swarm_status.json
+master_status.json
+context_cache.json
+
 # Personal/sensitive local data - this repo is PUBLIC, never commit these.
 # Reviewed and deliberately excluded 2026-08-24; locked here so a future
 # `git add -A` can't sweep them in by accident.
