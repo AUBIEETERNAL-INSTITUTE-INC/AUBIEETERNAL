@@ -6379,21 +6379,22 @@ if "Submit Curriculum" in active:
             st.markdown(
                 '<div style="color:#8899bb;font-size:0.76rem;margin-bottom:8px;">Approving makes a '
                 'lesson live on <b>this</b> instance only. "Publish to Commons" is a separate, '
-                'explicit choice — it saves the lesson into the local commons feed file '
-                '(<code>epistemic_commons/api/curriculum_proposals.json</code>). It only actually '
-                'reaches other instances once that file is pushed to GitHub — the automated push '
-                'process isn\'t currently running, so for now this is a local save you (or a '
-                'restored auto-push) commit and push whenever you\'re ready.</div>', unsafe_allow_html=True)
+                'explicit choice — it writes the lesson into the commons feed file '
+                '(<code>epistemic_commons/api/curriculum_proposals.json</code>), which the swarm\'s '
+                'GitHub auto-push then makes public (usually within a few minutes). Once it\'s on '
+                'GitHub, any other AUBIEETERNAL install can pull it in via "Pull from Commons" and '
+                'review it themselves. On a fresh install with no push access, this stays a local '
+                'save until someone with repo write access commits it.</div>', unsafe_allow_html=True)
             for p in approved:
                 name  = p.get("track_name") or p.get("lesson",{}).get("title","?")
                 score = p.get("review",{}).get("coherence_score",0)
                 published = p.get("published_to_commons", False)
                 st.markdown(f'<div class="card" style="border-left:3px solid #00ff88;"><div style="color:#00ff88;font-family:Orbitron,monospace;font-size:0.8rem;">✅ {name}</div><div style="color:#8899bb;font-size:0.78rem;">by {p.get("author","?")} · Coherence score: {score:.2f} · {p.get("approved_at","")[:10]}</div></div>', unsafe_allow_html=True)
                 if published:
-                    st.caption(f"📡 Saved to local commons feed {p.get('published_to_commons_at','')[:10]} — push to GitHub to actually share it")
+                    st.caption(f"📡 Published to the commons feed {p.get('published_to_commons_at','')[:10]} — the swarm auto-push carries it to GitHub; other installs can then Pull it")
                 elif st.button("📡 Publish to Commons", key=f"pub_commons_{p['id']}"):
                     if _reviewer.publish_to_commons(p["id"]):
-                        st.success("Saved to the local commons feed file — push the repo to GitHub to make it reachable by other instances.")
+                        st.success("Written to the commons feed — the swarm's GitHub auto-push will make it public within a few minutes, then other installs can Pull it.")
                         st.rerun()
                     else:
                         st.error("Could not publish.")
