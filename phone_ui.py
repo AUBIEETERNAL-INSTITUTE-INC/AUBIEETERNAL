@@ -447,6 +447,29 @@ HTML = r"""<!DOCTYPE html>
   #face-widget .greet-msg  { font-size:15px; max-height:110px; overflow-y:auto; }
   #widget-img { display:none; width:100%; border-radius:14px; margin-bottom:10px; }
 
+  /* ── Aubie tab — full-screen talking face (UNO Q assistant/teacher) ──
+     Reuses the one #face-widget: switchTab() relocates it into
+     #aubie-face-mount while this tab is active, then puts it back. */
+  #tab-aubie { padding: 0; }
+  #aubie-stage {
+    display:flex; flex-direction:column; align-items:center;
+    padding:20px 14px 100px; min-height:calc(100vh - 130px);
+  }
+  #aubie-face-mount { width:100%; display:flex; justify-content:center; }
+  #face-widget.fullscreen {
+    position:static; right:auto; bottom:auto; z-index:auto;
+    width:100%; max-width:460px; margin:0 auto;
+    background:transparent; border:none; box-shadow:none; padding:0;
+  }
+  #face-widget.fullscreen #widget-close-btn { display:none; }
+  #aubie-convo { width:100%; max-width:460px; }
+  #aubie-transcript {
+    max-height:32vh; overflow-y:auto; font-size:14px; line-height:1.5; padding:4px 0;
+  }
+  #aubie-transcript .u { color:var(--sub); margin-top:10px; }
+  #aubie-transcript .a { color:var(--text); margin-top:3px; }
+  #aubie-hold-talk.recording { background:var(--red); }
+
   /* ── Base animated face: eyes, nose, mouth — shared by every preset,
      including "the bug" - only colors/shape/accessories change per preset,
      never the animation itself (blink + talk). ─────────────────────────── */
@@ -649,10 +672,10 @@ HTML = r"""<!DOCTYPE html>
 <!-- ── GREET MODE ─────────────────────────────────────────────────── -->
 <div class="card" style="background:linear-gradient(135deg,#0a1500,#001a08);border:1px solid #00e67633">
   <div class="card-title">👋 Greet Mode · Who's Here?</div>
-  <p style="font-size:12px;color:var(--sub);margin-bottom:10px">
+  <p style="font-size:12px;color:var(--sub);margin-bottom:10px" id="greet-mode-intro">
     Tap Watch and Aubie's face appears in the floating widget (bottom-right, stays visible on any tab) - it recognizes who walks in, and you can talk to it any time with "hey aubie" until you tap Stop.
   </p>
-  <div class="g2">
+  <div class="g2" id="greet-mode-buttons">
     <button class="btn btn-green btn-sm" id="greet-btn" onclick="toggleGreetMode()">👁️ Watch</button>
     <button class="btn btn-accent btn-sm" onclick="switchTab('teach');setTimeout(()=>document.getElementById('enroll-section').scrollIntoView({behavior:'smooth'}),100)">➕ Add Person</button>
   </div>
@@ -1151,7 +1174,32 @@ HTML = r"""<!DOCTYPE html>
 </div><!-- /tab-dog -->
 
 
-<!-- ── Tab bar (4 tabs) ───────────────────────────────────────────────── -->
+<!-- ═══════════ TAB — AUBIE · full-screen talking face (UNO Q assistant) ═══════════ -->
+<div id="tab-aubie" class="tab-panel">
+  <div id="aubie-stage">
+    <div id="aubie-face-mount"><!-- #face-widget is moved in here while this tab is active --></div>
+    <div id="aubie-convo">
+      <div id="aubie-transcript"></div>
+      <div class="g2" style="display:flex;gap:8px;margin-top:12px">
+        <input id="aubie-chat-input" type="text" placeholder="Talk to Aubie…"
+          onkeydown="if(event.key==='Enter')sendAubieChat()"
+          style="flex:1;background:#0d1520;border:1px solid var(--accent);border-radius:12px;padding:12px;color:var(--text);font-size:15px">
+        <button class="btn btn-accent btn-sm" onclick="sendAubieChat()">💬 Send</button>
+      </div>
+      <button id="aubie-hold-talk" class="btn btn-green" style="width:100%;margin-top:10px"
+        onmousedown="startRecording()" onmouseup="stopRecordingAndSend()" onmouseleave="cancelRecordingIfActive()"
+        ontouchstart="event.preventDefault();startRecording()" ontouchend="event.preventDefault();stopRecordingAndSend()">
+        🎙️ Hold to Talk
+      </button>
+      <p style="font-size:11px;color:var(--sub);text-align:center;margin-top:8px">
+        Hands-free “hey aubie” runs in Watch mode (Teach tab) and is always on when this is the kiosk screen.
+      </p>
+    </div>
+  </div>
+</div><!-- /tab-aubie -->
+
+
+<!-- ── Tab bar (5 tabs) ───────────────────────────────────────────────── -->
 <div class="tabbar">
   <button class="tab-btn active" id="tbtn-teach" onclick="switchTab('teach')">
     <span class="tab-icon">🧠</span>Teach
@@ -1162,10 +1210,49 @@ HTML = r"""<!DOCTYPE html>
   <button class="tab-btn" id="tbtn-dog" onclick="switchTab('dog')">
     <span class="tab-icon">🐕</span>Dog Remote
   </button>
+  <button class="tab-btn" id="tbtn-aubie" onclick="switchTab('aubie')">
+    <span class="tab-icon">🧑‍🏫</span>Aubie
+  </button>
   <button class="tab-btn" id="tbtn-portal" onclick="window.open('http://100.105.81.27:8501','_blank')">
     <span class="tab-icon">🖥️</span>Portal
   </button>
 </div>
+
+<!-- ── Kiosk-only "back to home" button — only meaningful when this page was
+     reached from the touchscreen kiosk's own home screen; harmless dead
+     button otherwise (phone/tablet users just never see it, or can ignore
+     it - the file:// URL simply won't resolve off that specific device). ── -->
+<button id="kiosk-home-btn" onclick="location.href='file:///home/arduino/kiosk/home.html'"
+  style="position:fixed;bottom:14px;left:14px;z-index:900;width:52px;height:52px;border-radius:50%;
+  border:none;background:#1c2f45;color:#cfe8ff;font-size:24px;box-shadow:0 6px 18px rgba(0,0,0,.4);display:none">🏠</button>
+<script>
+  // Only show the kiosk home button when actually loaded on the kiosk
+  // touchscreen itself (its own Tailscale/LAN address) - hidden for
+  // everyone else (phone/tablet/desktop users on the real internet).
+  if (location.hostname === '100.66.110.65' || location.hostname === '100.105.81.27') {
+    document.getElementById('kiosk-home-btn').style.display = 'block';
+    // The Watch button's "hey aubie" listening uses the browser's Web Speech
+    // API, which the open-source `chromium` package on this device doesn't
+    // actually support (missing the Google API key only proprietary Chrome
+    // ships with) - it just silently never triggers here. The robot's own
+    // aubie_listen.py already runs a fully local, working wake-word listener
+    // independent of any browser, so on the kiosk, point to that instead of
+    // offering a button that looks live but isn't.
+    const btnRow = document.getElementById('greet-mode-buttons');
+    if (btnRow) document.getElementById('greet-btn').style.display = 'none';
+    const intro = document.getElementById('greet-mode-intro');
+    if (intro) intro.textContent = 'Just say "hey aubie" any time - Aubie is always listening on this device, no button needed.';
+  }
+  // Kiosk quick-launch: ?kiosk_action=start-class in the URL (set by the
+  // touchscreen's home screen when it navigates here) auto-starts the
+  // lesson flow instead of making a kid type "let's go to class" themselves.
+  window.addEventListener('load', () => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('kiosk_action') === 'start-class') {
+      setTimeout(() => { if (typeof startClass === 'function') startClass(); }, 500);
+    }
+  });
+</script>
 
 <!-- ── FLOATING FACE WIDGET — Watch mode, visible on every tab ─────────── -->
 <div id="face-widget">
@@ -1339,10 +1426,71 @@ function setFaceColor(part, color) {
 
 // ── Tab switching ─────────────────────────────────────────────────────────
 function switchTab(name) {
+  if (name === 'aubie') moveFaceToAubieTab(); else restoreFaceFromAubieTab();
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   document.getElementById('tbtn-' + name).classList.add('active');
+}
+
+// ── Aubie tab: borrow the single #face-widget for a full-screen face ──────
+// There's only one animated face in the page (Watch mode's floating widget,
+// with all the blink/talk/face-picker machinery bound to its ids). Rather
+// than build a second one, relocate it into the Aubie tab while that tab is
+// open and put it back exactly where it was on leave.
+let _faceHomeNextSibling = null;   // where #face-widget sits in <body> normally
+let _facePrevShow = false;         // was the floating widget visible before?
+function moveFaceToAubieTab() {
+  const fw = document.getElementById('face-widget');
+  const mount = document.getElementById('aubie-face-mount');
+  if (!fw || !mount || fw.parentElement === mount) return;
+  _faceHomeNextSibling = fw.nextSibling;
+  _facePrevShow = fw.classList.contains('show');
+  mount.appendChild(fw);
+  fw.classList.add('fullscreen', 'show');
+}
+function restoreFaceFromAubieTab() {
+  const fw = document.getElementById('face-widget');
+  if (!fw || !fw.classList.contains('fullscreen')) return;
+  fw.classList.remove('fullscreen');
+  document.body.insertBefore(fw, _faceHomeNextSibling || null);
+  // Only keep it visible if Watch mode wants it, or it was already shown.
+  if (!_facePrevShow && !greetMode) fw.classList.remove('show');
+}
+
+// Typed conversation for the Aubie tab — same persona/memory/voice as
+// "hey aubie" and the Teach-tab ask box (aubieTextChat -> /ask-text,
+// shared chatHistory, spoken reply), plus the class-flow passthrough.
+function aubieTranscriptAdd(who, txt) {
+  const t = document.getElementById('aubie-transcript');
+  if (!t) return;
+  const d = document.createElement('div');
+  d.className = who === 'You' ? 'u' : 'a';
+  d.textContent = (who === 'You' ? '🧑 ' : '🦅 ') + txt;
+  t.appendChild(d);
+  t.scrollTop = t.scrollHeight;
+}
+async function sendAubieChat() {
+  const input = document.getElementById('aubie-chat-input');
+  const q = (input.value || '').trim();
+  if (!q) return;
+  input.value = '';
+  aubieTranscriptAdd('You', q);
+  if (CLASS_TRIGGER_RE.test(q.toLowerCase())) { await startClass(); return; }
+  if (currentClass) { await submitClassAnswer(q); return; }
+  const msgEl = document.getElementById('greet-msg');
+  if (msgEl) msgEl.textContent = '⏳ Thinking…';
+  try {
+    const data = await aubieTextChat(q, { history: chatHistory, speaker: lastGreeted || undefined });
+    const reply = data.reply || data.response || data.answer || data.text || data.output || JSON.stringify(data);
+    chatHistory.push({ role: 'user', content: q }, { role: 'assistant', content: reply });
+    if (msgEl) msgEl.textContent = reply;
+    aubieTranscriptAdd('Aubie', reply);
+    await aubieSpeak(reply);
+  } catch (e) {
+    if (msgEl) msgEl.textContent = 'Sorry — ' + e.message;
+    aubieTranscriptAdd('Aubie', 'Sorry — ' + e.message);
+  }
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────
