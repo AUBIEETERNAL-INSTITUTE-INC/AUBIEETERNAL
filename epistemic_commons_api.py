@@ -467,6 +467,12 @@ class EpistemicCommonsAPI:
                 "steelmans":  f"{PUBLIC_BASE}/steelmans.json",
                 "beliefs":    f"{PUBLIC_BASE}/beliefs.json",
                 "pvc_data":   f"{PUBLIC_BASE}/pvc_data.json",
+                # Community curriculum feed - lessons other instances have
+                # published (curriculum_proposals.publish_to_commons). Any
+                # install pulls it via "Pull from Commons". Written by
+                # curriculum_proposals.py, not this module, so it's only
+                # listed here, never overwritten.
+                "curriculum_proposals": f"{PUBLIC_BASE}/curriculum_proposals.json",
                 "index":      f"{PUBLIC_BASE}/index.json",
             },
             "update_frequency": "daily at 6AM local time",
