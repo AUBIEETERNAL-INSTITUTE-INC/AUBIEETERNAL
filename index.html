@@ -100,6 +100,8 @@
   .hero p.lead{font-size:clamp(1.05rem,2.2vw,1.3rem);color:var(--ink-soft);max-width:46ch;margin:1.4rem 0 2rem;}
   .hero-cta{display:flex;flex-wrap:wrap;gap:.9rem;}
   .hero-note{margin-top:1.4rem;font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--ink-soft);letter-spacing:.02em;}
+  .portal-wake{margin-top:.7rem;font-family:"JetBrains Mono",monospace;font-size:.72rem;line-height:1.5;color:var(--ink-soft);letter-spacing:.02em;opacity:.85;}
+  .portal-card .portal-wake{color:rgba(255,255,255,.6);opacity:1;}
   .hero-deco{position:absolute;right:-120px;top:-60px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(201,69,14,.12),transparent 60%);pointer-events:none;}
 
   /* ---------- section frame ---------- */
@@ -217,6 +219,7 @@
         <a class="btn btn-primary" href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/" target="_blank" rel="noopener noreferrer">Launch the hosted portal <span class="arrow">→</span></a>
         <a class="btn btn-ghost" href="#self-hosted">Run it on your own computer</a>
       </div>
+      <p class="portal-wake">First visit can take 15–30 seconds while the hosted portal wakes up — if you see a Streamlit loading screen, give it a moment.</p>
       <p class="hero-note">Works on Windows, Mac, and StartOS · No credit card needed</p>
     </div>
   </section>
@@ -236,6 +239,7 @@
           <h3>Just want to look around?</h3>
           <p>Open the hosted portal in your browser. It's free, instant, and there's nothing to install.</p>
           <a class="btn btn-primary" href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/" target="_blank" rel="noopener noreferrer">Launch the portal <span class="arrow">→</span></a>
+          <p class="portal-wake">First visit can take 15–30 seconds to wake up.</p>
         </div>
 
         <div class="choice">
@@ -259,7 +263,10 @@
           <p>Try the full experience instantly in your browser. No installation, works on any device.</p>
           <p class="sub">Opens in a new tab · powered by Streamlit</p>
         </div>
-        <a class="btn btn-primary" href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/" target="_blank" rel="noopener noreferrer">Open the portal <span class="arrow">→</span></a>
+        <div>
+          <a class="btn btn-primary" href="https://aubieeternal-rqrh46a4hjnxer3gnstcbk.streamlit.app/" target="_blank" rel="noopener noreferrer">Open the portal <span class="arrow">→</span></a>
+          <p class="portal-wake">First visit can take 15–30 seconds while the portal wakes up. If it asks you to sign in, the hosted app is still coming back online — try again shortly or run it yourself below.</p>
+        </div>
       </div>
     </div>
   </section>
