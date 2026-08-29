@@ -1,0 +1,241 @@
+#!/usr/bin/env python3
+"""
+askqwen -- ask the self-hosted Qwen (Ollama) a question about the AUBIEETERNAL
+codebase, with the CURRENT on-disk contents of the relevant files pulled into
+the prompt automatically. Same idea as how Claude Code works (read file ->
+reason -> answer), wired up for the local model so routine "how does X work"
+questions don't need a frontier tool.
+
+NOT a fine-tune. Every run reads the files fresh off disk, so the answer always
+reflects the code as it is right now.
+
+USAGE
+  askqwen "how does face enrollment work end to end?"
+  askqwen -f phone_ui.py "why would the camera button do nothing on http?"
+  askqwen -f assistant_server.py,phone_ui.py "trace a /converse request"
+  askqwen -a "where is the greeting text built?"      # all known files
+  askqwen -l                                          # list known files + size
+  askqwen -m qwen2.5:7b "..."                         # pick a model
+  askqwen -n 40000 "..."                              # override context window
+  askqwen -v "..."                                    # show what's being sent
+
+  # plain question, no files:
+  askqwen -f- "what does a 422 from FastAPI usually mean?"
+
+NOTES
+  * Default file set = the small, high-signal ones (CLAUDE.md + the assistant
+    server + the faces README). phone_ui.py and app.py are big and only get
+    included when you ask for them with -f or -a.
+  * aubie_listen.py lives on the aubie-tutor board (100.66.110.65), not here.
+    To include it, pull a copy first:
+        mkdir -p ~/AUBIEETERNAL/_remote
+        scp arduino@100.66.110.65:~/aubie_listen.py ~/AUBIEETERNAL/_remote/
+    then it shows up in `askqwen -l` automatically.
+  * Config is the FILES list below -- edit it freely.
+"""
+
+import argparse
+import json
+import os
+import sys
+import urllib.request
+
+REPO = os.path.expanduser("~/AUBIEETERNAL")
+HOME = os.path.expanduser("~")
+
+OLLAMA_URL = os.environ.get("OLLAMA_URL", "http://localhost:11434")
+DEFAULT_MODEL = os.environ.get("ASKQWEN_MODEL", "qwen2.5:14b")
+DEFAULT_NUM_CTX = int(os.environ.get("ASKQWEN_NUM_CTX", "32768"))
+
+# (label, path, in_default_set)
+# label is what you pass to -f ; path is where it lives on disk.
+FILES = [
+    ("CLAUDE.md",            f"{REPO}/CLAUDE.md",                 True),
+    ("assistant_server.py",  f"{REPO}/assistant_server.py",       True),
+    ("faces_README.md",      f"{HOME}/faces/README.md",           True),
+    ("phone_ui.py",          f"{REPO}/phone_ui.py",               False),
+    ("api_server.py",        f"{REPO}/api_server.py",             False),
+    ("aubie_mcp.py",         f"{REPO}/aubie_mcp.py",              False),
+    ("aubie_listen.py",      f"{REPO}/_remote/aubie_listen.py",   False),  # see NOTES
+    ("app.py",               f"{REPO}/app.py",                    False),
+    ("swarm_v4_1.py",        f"{REPO}/swarm/swarm_v4_1.py",       False),
+]
+
+SYSTEM_PROMPT_WITH_FILES = (
+    "You are a code assistant for the AUBIEETERNAL project on Mateo's self-hosted "
+    "Ryzen rig. Below you are given the CURRENT, on-disk contents of selected "
+    "project files, each line prefixed with its line number. Answer the question "
+    "using what those files actually show. Cite concrete locations as file:line. "
+    "If the answer isn't in the provided files, say so plainly and name which "
+    "file would need to be included rather than guessing about this project's "
+    "specifics -- but you may still answer general questions from your own "
+    "knowledge. Be concise and specific; prefer a short explanation plus the "
+    "relevant code reference over long prose."
+)
+
+SYSTEM_PROMPT_NO_FILES = (
+    "You are a helpful programming assistant answering a question for Mateo from "
+    "the terminal on his self-hosted setup. No project files were attached to "
+    "this question. Answer from your own knowledge, concisely. If the question "
+    "seems to be about the AUBIEETERNAL codebase specifically, note that he can "
+    "re-run with `-f <files>` or `-a` to attach the actual code."
+)
+
+
+def approx_tokens(s: str) -> int:
+    # rough heuristic for code/markdown; good enough for a budget warning
+    return int(len(s) / 3.6)
+
+
+def resolve_selection(args):
+    """Return list of (label, path) to include."""
+    known = {label: path for label, path, _ in FILES}
+    if args.files is not None:
+        if args.files.strip() in ("-", ""):
+            return []
+        picked = []
+        for tok in args.files.split(","):
+            tok = tok.strip()
+            if not tok:
+                continue
+            if tok in known:
+                picked.append((tok, known[tok]))
+            elif os.path.exists(tok):
+                picked.append((os.path.basename(tok), os.path.abspath(tok)))
+            elif os.path.exists(os.path.join(REPO, tok)):
+                picked.append((tok, os.path.join(REPO, tok)))
+            else:
+                sys.exit(f"askqwen: unknown file '{tok}' (see `askqwen -l`)")
+        return picked
+    if args.all:
+        return [(label, path) for label, path, _ in FILES]
+    return [(label, path) for label, path, in_default in FILES if in_default]
+
+
+def load_files(selection):
+    blocks, included, missing = [], [], []
+    for label, path in selection:
+        try:
+            with open(path, "r", errors="replace") as fh:
+                text = fh.read()
+        except OSError:
+            missing.append(label)
+            continue
+        numbered = "\n".join(
+            f"{i:>5}\t{line}" for i, line in enumerate(text.splitlines(), 1)
+        )
+        blocks.append(f"===== FILE: {label}  ({text.count(chr(10)) + 1} lines) =====\n{numbered}")
+        included.append((label, approx_tokens(text)))
+    return "\n\n".join(blocks), included, missing
+
+
+def list_files():
+    print(f"{'label':<22} {'default':<8} {'~tokens':>9}  path")
+    print("-" * 78)
+    for label, path, in_default in FILES:
+        if os.path.exists(path):
+            with open(path, errors="replace") as fh:
+                tok = f"{approx_tokens(fh.read()):>9,}"
+        else:
+            tok = f"{'(missing)':>9}"
+        short = path.replace(HOME, "~")
+        print(f"{label:<22} {'yes' if in_default else '-':<8} {tok}  {short}")
+    print(f"\nmodel: {DEFAULT_MODEL}   num_ctx default: {DEFAULT_NUM_CTX:,}   ollama: {OLLAMA_URL}")
+
+
+def stream_chat(model, num_ctx, system, user):
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ],
+        "stream": True,
+        "options": {"temperature": 0.2, "num_ctx": num_ctx},
+    }
+    req = urllib.request.Request(
+        f"{OLLAMA_URL}/api/chat",
+        data=json.dumps(payload).encode(),
+        headers={"Content-Type": "application/json"},
+    )
+    try:
+        resp = urllib.request.urlopen(req)
+    except urllib.error.URLError as e:
+        sys.exit(f"askqwen: cannot reach Ollama at {OLLAMA_URL} ({e}). Is it running?")
+    for raw in resp:
+        raw = raw.strip()
+        if not raw:
+            continue
+        obj = json.loads(raw)
+        if "error" in obj:
+            sys.exit(f"\naskqwen: ollama error: {obj['error']}")
+        chunk = obj.get("message", {}).get("content", "")
+        if chunk:
+            sys.stdout.write(chunk)
+            sys.stdout.flush()
+        if obj.get("done"):
+            break
+    print()
+
+
+def main():
+    ap = argparse.ArgumentParser(
+        prog="askqwen", add_help=True,
+        description="Ask self-hosted Qwen about the AUBIEETERNAL codebase with live file context.",
+    )
+    ap.add_argument("question", nargs="*", help="your question")
+    ap.add_argument("-f", "--files", metavar="a,b,c",
+                    help="comma-list of files to include (labels from -l, or paths). '-' = none")
+    ap.add_argument("-a", "--all", action="store_true", help="include every known file")
+    ap.add_argument("-l", "--list", action="store_true", help="list known files and exit")
+    ap.add_argument("-m", "--model", default=DEFAULT_MODEL, help=f"ollama model (default {DEFAULT_MODEL})")
+    ap.add_argument("-n", "--num-ctx", type=int, default=DEFAULT_NUM_CTX,
+                    help=f"context window tokens (default {DEFAULT_NUM_CTX})")
+    ap.add_argument("-v", "--verbose", action="store_true", help="print what is being sent")
+    ap.add_argument("-y", "--yes", action="store_true", help="don't prompt when over context budget")
+    args = ap.parse_args()
+
+    if args.list:
+        list_files()
+        return
+
+    question = " ".join(args.question).strip()
+    if not question:
+        ap.print_usage()
+        sys.exit("askqwen: no question given")
+
+    selection = resolve_selection(args)
+    context, included, missing = load_files(selection)
+
+    system = SYSTEM_PROMPT_WITH_FILES if context else SYSTEM_PROMPT_NO_FILES
+    ctx_tokens = approx_tokens(context) + approx_tokens(system) + approx_tokens(question)
+    if args.verbose or missing:
+        for label, tok in included:
+            print(f"  + {label:<22} ~{tok:,} tok", file=sys.stderr)
+        for label in missing:
+            hint = "  (pull from aubie board -- see `askqwen` header)" if label == "aubie_listen.py" else ""
+            print(f"  ! skipped {label} (not on disk){hint}", file=sys.stderr)
+        print(f"  = prompt ~{ctx_tokens:,} tok, num_ctx {args.num_ctx:,}, model {args.model}\n",
+              file=sys.stderr)
+
+    if ctx_tokens > args.num_ctx * 0.9 and not args.yes:
+        print(f"askqwen: prompt (~{ctx_tokens:,} tok) is close to / over num_ctx "
+              f"({args.num_ctx:,}). Ollama will silently truncate the OLDEST content "
+              f"(your files) first.\n  Options: raise it with  -n {((ctx_tokens // 8192) + 2) * 8192}  "
+              f"(needs RAM/VRAM), or include fewer files with -f.",
+              file=sys.stderr)
+        if sys.stdin.isatty():
+            if input("  send anyway? [y/N] ").strip().lower() not in ("y", "yes"):
+                sys.exit(1)
+
+    user_msg = f"{context}\n\n===== QUESTION =====\n{question}" if context else question
+    if args.verbose:
+        print("----- user message (first 1500 chars) -----", file=sys.stderr)
+        print(user_msg[:1500], file=sys.stderr)
+        print("----- end preview -----\n", file=sys.stderr)
+
+    stream_chat(args.model, args.num_ctx, system, user_msg)
+
+
+if __name__ == "__main__":
+    main()
