@@ -141,3 +141,82 @@ production.
 3. Prefer extracting genuinely self-contained tabs into `pages/` following the `render()` /
    `if __name__ == "__page__":` pattern already used for `05_Social_Calibration.py`, rather than
    growing `app.py` further.
+
+## Roadmap / planning context (from an Aug 2026 planning conversation)
+
+Forward-looking decisions and planned work. Not yet implemented unless noted — treat as
+direction, not current state.
+
+### `/converse` should feel collaborative, not one-shot Q&A
+
+Goal: the `/converse` experience (`assistant_server.py`, endpoint at ~line 1211; persona in
+`SYSTEM_PROMPT` at ~line 331) should hold collaborative, tradeoff-weighing conversations —
+walk through options step by step, ask clarifying questions, weigh pros/cons — rather than
+flat one-shot answers.
+
+Planned features:
+
+1. **Tune the `/converse` system prompt** (`SYSTEM_PROMPT`) to explicitly encourage reasoning
+   through tradeoffs and asking clarifying questions before concluding, rather than answering
+   directly.
+2. **Add multi-turn conversation memory to the wake-word client** (`aubie_listen.py`, on the
+   robot). Today it does one round-trip per wake word: `capture_and_greet()` →
+   `listen_and_converse()` → `recent_scores.clear()`, single-shot only. Make Aubie hold a real
+   back-and-forth across multiple wake-word triggers.
+
+### Inference hardware: 32B now, not 70B
+
+Decided against Qwen 70B (needs ~45-55 GB VRAM for 2-3 concurrent users → dual-GPU, $3-4K+,
+more complexity).
+
+- **Plan: add a single RTX 3090 (24 GB) to the existing Ryzen rig** to run Qwen 32B (Q4,
+  ~20 GB VRAM) — comfortable for 1-2 concurrent users, workable for a small pilot. GPU upgrade,
+  not a rebuild — keep case/PSU/CPU/RAM.
+- The Ryzen rig stays home as the always-on inference brain. Do **not** donate it — rebuilding
+  a brain elsewhere costs more and loses the already-debugged systemd/venv setup.
+- Before spending money: `ollama pull qwen2.5:32b` alongside the existing `qwen2.5:14b` and
+  compare responses side by side on real pilot-style questions. (`ai_model_router.py` already
+  maps `Fast`/`Balanced`/`Deep Thinking` → `qwen2.5:7b/14b/32b`.)
+
+### Pilot: library (2 blocks away) via donated tablets, not new hardware
+
+Decided against a mini-PC/monitor/camera thin-client build.
+
+- **Donate 2-3 budget tablets (~$80-150 each)** to the library. Built-in
+  mic/camera/speaker/screen; run Tailscale (Android/iOS apps) to reach the same Ryzen rig
+  brain — same split-brain architecture as the Aubie Dog robot and the Windows dev tablet,
+  just a simpler front end.
+- **Build item:** a lightweight web page / PWA with a "talk to Aubie" button (browser mic
+  access) that hits the existing `/greet` and `/converse` endpoints on `assistant_server.py`.
+  No new backend logic — this is a frontend only.
+- Architecture throughline for grant writeups: **one inference brain, multiple lightweight
+  access points** — home dev tablet (SSH), library kiosk tablets (web app), Aubie robot
+  (wake-word edge client), all hitting the same rig.
+- Open question for the library: tablets fixed at a public terminal on library WiFi (simpler)
+  vs. checked out / roaming to patrons.
+
+### Boy Scouts partnership (across from the library) — separate site
+
+- Better fit for the **Aubie Dog robot** (robotics / AI merit badge alignment) than a generic
+  tablet/chat deployment. See `AUBIE_DOG.md`.
+- Treat as a separate pilot site, not a shared-WiFi bridge with the library — a
+  directional/bridge WiFi link is impractical (line-of-sight antenna gear, liability sharing
+  the library's connection). Each site gets its own internet + its own Tailscale client.
+
+### Curriculum content area: ICS / critical-infrastructure security
+
+- Fits AUBIEETERNAL as a **curriculum/education topic**, not a pivot into security services
+  (mixing for-profit security consulting risks 501(c)(3) mission alignment).
+- Ties to current events (CISA water-sector guidance, White House water-infrastructure
+  cybersecurity program) and a genuine workforce gap — good language for future
+  EducateAI-style workforce-pipeline grants.
+- A separate personal learning track (general, non-water ICS security via CISA free training /
+  GICSP path) is kept **outside** the nonprofit entity.
+
+### Budget framing (if ~$10K grant/donation money), in priority order
+
+1. Nonprofit compliance — Articles of Amendment + 1023-EZ filing (~$500-1,000)
+2. RTX 3090 upgrade for the existing Ryzen rig (~$800-1,200)
+3. Library tablets (~$250-450)
+4. Reserve for unplanned costs (~$1,000+)
+5. Remainder → a second pilot site (e.g. Boy Scouts) or contingency
