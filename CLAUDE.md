@@ -154,15 +154,117 @@ Goal: the `/converse` experience (`assistant_server.py`, endpoint at ~line 1211;
 walk through options step by step, ask clarifying questions, weigh pros/cons — rather than
 flat one-shot answers.
 
-Planned features:
+1. **Tune the `/converse` system prompt** — ✅ **DONE 2026-08-29.** `SYSTEM_PROMPT` now tells
+   Aubie: when someone is working a decision (not a fact lookup), name what the choice turns
+   on or ask the one clarifying question first, think out loud one consideration per turn,
+   give the recommendation after naming what it depends on, disagree kindly when warranted.
+   Reconciled with the "keep it short, spoken aloud" line — depth comes from the back-and-forth
+   across turns, not one long answer. Live on `aubie-assistant.service` :8800.
+2. **Multi-turn conversation memory** — ⚠️ **server side already exists.** `/converse` →
+   `build_context_block()` (~line 642) injects the last `MEMORY_CONTEXT_TURNS = 5` exchanges
+   verbatim + a rolling `conversation_summary` (compacted after 20 turns) + durable
+   `known_facts`; `remember_exchange()` runs every turn. So the **tablet / `phone_ui.py`
+   tap-to-talk path already holds a real back-and-forth.** Still open: the **wake-word client
+   `aubie_listen.py`** on the robot (SSH `100.66.110.65`, not in this repo) is single-shot per
+   wake word — `capture_and_greet()` → `listen_and_converse()` → `recent_scores.clear()`.
+   Make it hold state across multiple wake-word triggers.
 
-1. **Tune the `/converse` system prompt** (`SYSTEM_PROMPT`) to explicitly encourage reasoning
-   through tradeoffs and asking clarifying questions before concluding, rather than answering
-   directly.
-2. **Add multi-turn conversation memory to the wake-word client** (`aubie_listen.py`, on the
-   robot). Today it does one round-trip per wake word: `capture_and_greet()` →
-   `listen_and_converse()` → `recent_scores.clear()`, single-shot only. Make Aubie hold a real
-   back-and-forth across multiple wake-word triggers.
+### Face recognition & greeting (`assistant_server.py` + `phone_ui.py`) — implemented
+
+- **Live database:** `~/aubie_storage/faces/faces.npz` (`FACES_DIR` in `assistant_server.py`),
+  512-d InsightFace `buffalo_l` embeddings, `names`/`vectors`/`sources` arrays. Currently
+  `matthew`, `gabriela`. `/known_people` lists them; `/health` reports `faces_loaded`.
+- **Recognition:** `scan_faces()` matches every face in a frame (cosine ≥
+  `FACE_MATCH_THRESHOLD = 0.5`). `/greet` (camera → "Hello &lt;name&gt;!" via Piper TTS +
+  object detection) and `/converse` (when an image is attached) both use it.
+- **Enrollment — two paths:** (A) phone UI → **Teach → "🪪 Teach Aubie a Face"** → type name,
+  open camera, Snap & Save → `POST /enroll_face` → `append_face_embeddings()` appends to the
+  live npz and hot-reloads (no restart). (B) batch: `~/faces/<Name>/*.jpg` (8+), run
+  `~/enroll_faces.py .`, copy the output npz into `~/aubie_storage/faces/`, restart the
+  service. Enroll names **capitalized** (`Juan`) — the string is spoken verbatim. See
+  `~/faces/README.md` on the rig.
+- **Per-person behavior ("Princess Mode"):** recognizing `gabriela` triggers a hearts/flowers
+  burst — `burstHeartsAndFlowers()` in `phone_ui.py`, on both the `/greet` path
+  (`checkForFace`) and, as of 2026-08-29, the camera-conversation path
+  (`stopRecordingAndSend`, keyed on the `X-Speaker` header). Robot-side it also best-effort
+  fires `flower_explosion` via the Bridge RPC. Text bios the persona reads live in
+  `~/AUBIEETERNAL/memory/people/<name>.md` (gabriela/juan/patty/tommy exist).
+- This is the standing example of "why our system isn't normal AI": face recognition +
+  persistent named identity + person-specific behavior, all local, offline-capable, no
+  account.
+
+### `phone_ui.py` is the live UI; root-level copies are stale
+
+`assistant_server.py` does `from phone_ui import router` — the live file is
+`~/AUBIEETERNAL/phone_ui.py` (large, ~183 KB). The copies at `~/phone_ui.py`,
+`~/phone_ui (1).py`, `~/Phone_ui.py` are old (~40 KB, Aug 23) and used by nothing — don't
+edit those.
+
+### Recent debugging notes (2026-08-29)
+
+- **Tablet camera "blocked" is a secure-context problem, not permissions.**
+  `getUserMedia` only works over HTTPS or localhost. `http://<LAN or Tailscale
+  IP>:8800` is insecure → `navigator.mediaDevices` is `undefined` → `phone_ui.py`
+  shows its "CAMERA BLOCKED" banner and never calls the camera. Being in the
+  browser's camera-permission allowlist does nothing on insecure HTTP. **Use the
+  Tailscale Serve URL `https://aubieeternal.tail00eb41.ts.net/remote`** (already
+  running, proxies to `127.0.0.1:8800`, real cert) on tablets — no browser flags.
+- **Mic-button 500** reported after an alleged face-icon cleanup: investigated on
+  the rig, did NOT reproduce. `/converse` returns 200 for audio-only, audio+image,
+  and canned commands with the robot offline; no icon/asset deletions in `git log
+  --diff-filter=D`; all Piper voices present. If the 500 is real it's on the
+  offline aubie-tutor board's own copy, or was fixed by a service restart.
+- **`build` (:8840, `~/.local/bin/build`) now defaults to local `qwen-14b`.** It
+  works for surgical edits but only when the prompt gives the **exact absolute
+  path + exact old/new strings + exact tool name** — 14b otherwise fabricates
+  placeholder paths. Not yet reliable for open-ended multi-step diagnosis.
+- **`askqwen`** (`~/.local/bin/askqwen` → `tools/askqwen`): ask local Qwen a
+  codebase question with current file contents auto-injected. `askqwen -l` lists
+  the file set; edit the `FILES` list in the script to change it.
+
+## Edge devices are disposable — the rig + git is the source of truth
+
+**Principle:** every edge device (the UNO Q tutor board, kiosk/dev tablets, any
+robot) is replaceable. The permanent copy of every file lives in this git repo on
+the Ryzen rig. If a device is lost/wiped, the fix must be "re-flash from git,"
+never "hope we can pull it off the device." **When writing code that would only
+live on a device, stop and flag it** — add it to `tools/pull-board-files` or get
+it into the repo immediately; don't let it become a single-point-of-failure to be
+discovered later. (This rule exists because `aubie_listen.py`'s real version —
+`/converse`, `idle_scan_loop`, the audio-device fix, `CAMERA_LOCK`/`WAKE_BUSY` —
+lived *only* on the offline board for ~2 weeks, 2026-08.)
+
+**Auto-sync:** `tools/pull-board-files` (→ `~/.local/bin/pull-board-files`) scp's
+the board-only paths into `_remote/board/` and `--commit`s any changes. A crontab
+line runs it every 20 min; it no-ops + logs to `_remote/sync.log` when the board
+is unreachable. `pull-board-files --discover` lists `*.py/*.sh/*.html/*.ino` under
+`~` on the board to catch anything new.
+
+### Edge-only file audit (2026-08-29)
+
+**UNO Q tutor board `100.66.110.65` — none of these are in git yet; board was
+unreachable at audit time, so `pull-board-files` will capture them on reconnect:**
+
+| Path on board | What it is |
+|---|---|
+| `~/aubie_listen.py` | wake word + `/converse` + `idle_scan_loop` + `CAMERA_LOCK`/`WAKE_BUSY` guards + `pw-play` audio fix. Only floor is a July-26 pre-kiosk prototype at `_remote/board/aubie_listen.py.2026-07-26-prototype`. |
+| `~/kiosk/home.html` | kiosk home screen: ported `FACE_PRESETS`/accessories + net-new draw-your-own-face canvas, Glasses/Hat/scene toggles, `celebrateGabriela()` |
+| `~/kiosk/launch_kiosk.sh` | Chromium `--kiosk` autostart + `wpctl` HDMI audio profile/volume fix + `xset s off`/`-dpms` |
+| `~/.config/autostart/aubie-kiosk.desktop` | kiosk autostart entry |
+| `~/.config/autostart/light-locker.desktop` | `Hidden=true` screen-lock suppression |
+| `~/aubie-tutor/sketch/sketch.ino` + `sketch.yaml` | tutor MCU sketch: PCA9685 driver ported from the retired `spotmicro_dog` sketch + `wave()`/`wave_diag()`/`hub_diag()` RPCs; yaml carries the full dog library list |
+| `/etc/lightdm/lightdm.conf` | `autologin-user=arduino` under `[Seat:*]` — root-owned, **can't scp**, documented here only. Re-add this one line by hand on a re-flash. |
+| board's own `phone_ui.py` / `assistant_server.py` (if any) | unknown whether the board runs its own copies with kiosk-only edits; `pull-board-files` pulls them into `_remote/board/` for diffing against the tracked versions |
+
+**Windows tablet `desktop-q9mrd24` — NOT a code SPOF.** Thin client: a browser
+pointed at `https://aubieeternal.tail00eb41.ts.net/remote`. The `install_windows.bat`
+fixes (OneDrive Desktop-path resolution, Ollama auto-install) are already in the
+repo. Only device-local state is a bookmark / kiosk-mode autostart — trivial,
+recreate by hand.
+
+**Robot / spotmicro dog — covered.** `spotmicro_dog/` is in the repo;
+`spotmicro_dog_robot_backup_20260821/` is a full backup. Retired in favor of the
+tutor kit anyway.
 
 ### Inference hardware: 32B now, not 70B
 
