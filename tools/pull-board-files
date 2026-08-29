@@ -1,0 +1,82 @@
+#!/usr/bin/env bash
+# pull-board-files -- keep the Ryzen rig + git as the single source of truth for
+# code that would otherwise only exist on the aubie-tutor UNO Q board
+# (100.66.110.65). Safe to run any time / on a timer: if the board is
+# unreachable it logs one line and exits 0. When reachable, it copies the
+# tracked board paths into AUBIEETERNAL/_remote/board/ and, with --commit,
+# commits them if anything changed.
+#
+#   pull-board-files              # pull, show git status
+#   pull-board-files --commit     # pull, then auto-commit any changes
+#   pull-board-files --discover   # just list *.py/*.sh/*.html under ~ on the board
+#
+# When new board-only code appears, add its path to BOARD_FILES below.
+set -euo pipefail
+
+BOARD_HOST="arduino@100.66.110.65"
+REPO="$HOME/AUBIEETERNAL"
+DEST="$REPO/_remote/board"
+LOG="$REPO/_remote/sync.log"
+SSH_OPTS=(-o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new)
+
+# Board paths whose ONLY authoritative copy is on the device. Kept flat in
+# _remote/board/ by basename. Rig-side equivalents (phone_ui.py etc.) are pulled
+# too so they can be diffed against the repo's tracked versions on reconnect --
+# the board may carry kiosk-only edits.
+BOARD_FILES=(
+  "aubie_listen.py"
+  "aubie-tutor/sketch/sketch.ino"
+  "aubie-tutor/sketch/sketch.yaml"
+  "kiosk/home.html"
+  "kiosk/launch_kiosk.sh"
+  ".config/autostart/aubie-kiosk.desktop"
+  ".config/autostart/light-locker.desktop"
+  # rig-side twins carried on the board -- pulled for comparison, not as truth:
+  "phone_ui.py"
+  "assistant_server.py"
+)
+
+ts() { date -u +%Y-%m-%dT%H:%M:%SZ; }
+logline() { echo "$(ts) $*" | tee -a "$LOG" ; }
+
+mkdir -p "$DEST"
+
+if ! ssh "${SSH_OPTS[@]}" "$BOARD_HOST" true 2>/dev/null; then
+  logline "board unreachable -- skipped"
+  exit 0
+fi
+
+if [[ "${1:-}" == "--discover" ]]; then
+  echo "# *.py / *.sh / *.html under ~ on $BOARD_HOST"
+  ssh "${SSH_OPTS[@]}" "$BOARD_HOST" \
+    'find ~ -maxdepth 4 -type f \( -name "*.py" -o -name "*.sh" -o -name "*.html" -o -name "*.ino" -o -name "*.yaml" \) \
+       -not -path "*/.cache/*" -not -path "*/venv/*" -not -path "*/site-packages/*" -printf "%T@ %10s  %p\n" 2>/dev/null | sort -rn'
+  exit 0
+fi
+
+pulled=0 missing=0
+for rel in "${BOARD_FILES[@]}"; do
+  base=$(basename "$rel")
+  if scp -q "${SSH_OPTS[@]}" "$BOARD_HOST:$rel" "$DEST/$base" 2>/dev/null; then
+    pulled=$((pulled+1))
+  else
+    missing=$((missing+1))
+    echo "  ! $rel not on board (skipped)"
+  fi
+done
+logline "pulled $pulled file(s), $missing missing"
+
+cd "$REPO"
+echo "--- git status _remote/board/ ---"
+git status --porcelain _remote/board/ || true
+
+if [[ "${1:-}" == "--commit" ]]; then
+  git add _remote/board/
+  if git diff --cached --quiet -- _remote/board/; then
+    logline "no changes to commit"
+  else
+    changed=$(git diff --cached --name-only -- _remote/board/ | xargs -n1 basename | paste -sd' ' -)
+    git commit -q -m "auto-sync: board files ($changed) $(ts)"
+    logline "committed: $changed"
+  fi
+fi
