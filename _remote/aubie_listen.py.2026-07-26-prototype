@@ -1,0 +1,138 @@
+"""
+AUBIEETERNAL wake-word listener - runs on Aubie (the UNO Q), not the rig.
+
+Listens for "hey_aubie" via the trained Edge Impulse model, and on
+detection: captures a photo, sends it to the rig's /greet endpoint,
+and plays the spoken response back through the EMEET.
+
+Run with:
+  python3 aubie_listen.py
+
+Stop with Ctrl+C.
+"""
+
+import subprocess
+import time
+from pathlib import Path
+
+import requests
+from edge_impulse_linux.audio import AudioImpulseRunner
+
+# ---- Config ----
+MODEL_PATH = str(Path.home() / "aubie-wake.eim")
+AUDIO_DEVICE = "hw:0,0"          # EMEET mic input
+PLAYBACK_DEVICE = "plughw:0,0"   # EMEET speaker output (plughw, not hw - see handoff notes)
+CAMERA_DEVICE = "/dev/video0"
+CAPTURE_PATH = str(Path.home() / "wake_capture.jpg")
+GREETING_PATH = str(Path.home() / "wake_greeting.wav")
+RIG_URL = "http://100.105.81.27:8800/greet"
+
+TRIGGER_THRESHOLD = 0.6
+TRIGGER_WINDOW = 3       # look at the last N windows
+TRIGGER_COUNT = 2        # need at least this many above threshold
+COOLDOWN_SECONDS = 2.0
+
+# Rolling history of recent "hey_aubie" confidence scores
+recent_scores = []
+
+
+def capture_and_greet():
+    print("[trigger] Wake word detected! Capturing photo...")
+    try:
+        subprocess.run(
+            [
+                "fswebcam",
+                "-d", CAMERA_DEVICE,
+                "-r", "1280x720",
+                "-S", "20",
+                "--no-banner",
+                CAPTURE_PATH,
+            ],
+            check=True,
+            capture_output=True,
+            timeout=15,
+        )
+    except subprocess.CalledProcessError as e:
+        print(f"[error] fswebcam failed: {e.stderr.decode(errors='ignore')}")
+        return
+    except subprocess.TimeoutExpired:
+        print("[error] fswebcam timed out")
+        return
+
+    print("[trigger] Sending photo to rig...")
+    try:
+        with open(CAPTURE_PATH, "rb") as f:
+            resp = requests.post(
+                RIG_URL,
+                files={"image": f},
+                timeout=30,
+            )
+        resp.raise_for_status()
+    except requests.RequestException as e:
+        print(f"[error] Request to rig failed: {e}")
+        return
+
+    greeting_text = resp.headers.get("X-Greeting", "")
+    speakers = resp.headers.get("X-Speakers", "")
+    print(f"[trigger] Rig replied - speakers: {speakers!r}, text: {greeting_text!r}")
+
+    with open(GREETING_PATH, "wb") as f:
+        f.write(resp.content)
+
+    print("[trigger] Playing greeting...")
+    try:
+        subprocess.run(
+            ["aplay", "-D", PLAYBACK_DEVICE, GREETING_PATH],
+            check=True,
+            capture_output=True,
+            timeout=15,
+        )
+    except subprocess.CalledProcessError as e:
+        print(f"[error] aplay failed: {e.stderr.decode(errors='ignore')}")
+    except subprocess.TimeoutExpired:
+        print("[error] aplay timed out")
+
+
+def main():
+    print(f"Loading model from {MODEL_PATH} ...")
+    runner = AudioImpulseRunner(MODEL_PATH)
+    try:
+        model_info = runner.init()
+        print(
+            "Model loaded:",
+            model_info["project"]["name"],
+            "-",
+            model_info["project"]["owner"],
+        )
+        labels = model_info["model_parameters"]["labels"]
+        print("Labels:", labels)
+
+        last_trigger_time = 0.0
+
+        for res, audio in runner.classifier(device_id=AUDIO_DEVICE):
+            classification = res["result"]["classification"]
+            hey_aubie_score = classification.get("hey_aubie", 0.0)
+
+            recent_scores.append(hey_aubie_score)
+            if len(recent_scores) > TRIGGER_WINDOW:
+                recent_scores.pop(0)
+
+            above_threshold = sum(1 for s in recent_scores if s >= TRIGGER_THRESHOLD)
+            now = time.time()
+            in_cooldown = (now - last_trigger_time) < COOLDOWN_SECONDS
+
+            # Uncomment for live score debugging:
+            # print(f"hey_aubie={hey_aubie_score:.3f}  window={recent_scores}")
+
+            if above_threshold >= TRIGGER_COUNT and not in_cooldown:
+                last_trigger_time = now
+                capture_and_greet()
+                recent_scores.clear()
+
+    finally:
+        if runner:
+            runner.stop()
+
+
+if __name__ == "__main__":
+    main()
