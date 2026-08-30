@@ -1,7 +1,7 @@
 {
-  "updated": "2026-08-30T09:15:25.764989-04:00",
+  "updated": "2026-08-30T09:23:01.844650-04:00",
   "version": "4.1",
-  "wonder_index": 1.1868,
+  "wonder_index": 1.1118,
   "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 1,
@@ -9,7 +9,7 @@
   "child_rune_ready": false,
   "hormetic_pulses": 0,
   "lattice_cycle": 3,
-  "session_insights": 9,
+  "session_insights": 2,
   "synthesis": {
     "last_run_date": "None",
     "next_run": "06:00 daily",
