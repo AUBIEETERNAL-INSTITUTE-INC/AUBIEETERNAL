@@ -1,5 +1,7 @@
 # CLAUDE.md
 
+Shared project state lives in CURRENT.md. Read that first. Do not copy dates or hardware lists into this file.
+
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ## What this is
