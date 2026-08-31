@@ -137,3 +137,4 @@
 {"timestamp": "2026-08-30T12:01:04.411415-04:00", "type": "BRIEFING_NOON", "btc_price": 78803, "block": "964750", "wonder_index": 2.0, "mets": 200000000751.5, "inter_rune_coherence": 1.0, "grokipedia": 21, "tags": ["briefing", "noon"]}
 {"timestamp": "2026-08-30T18:00:16.375041-04:00", "type": "BRIEFING_EVENING", "btc_price": 78642, "block": "964793", "wonder_index": 2.0, "mets": 200000002527.5, "inter_rune_coherence": 1.0, "grokipedia": 21, "tags": ["briefing", "evening"]}
 {"timestamp": "2026-08-30T23:00:22.730884-04:00", "type": "BRIEFING_NIGHT", "btc_price": 77469, "block": "964817", "wonder_index": 2.0, "mets": 200000004039.5, "inter_rune_coherence": 1.0, "grokipedia": 21, "tags": ["briefing", "night"]}
+{"timestamp": "2026-08-31T06:00:45.976329-04:00", "type": "BRIEFING_MORNING", "btc_price": 78503, "block": "964864", "wonder_index": 2.0, "mets": 200000006127.5, "inter_rune_coherence": 1.0, "grokipedia": 21, "tags": ["briefing", "morning"]}
