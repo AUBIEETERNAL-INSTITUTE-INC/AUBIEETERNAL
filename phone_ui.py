@@ -55,7 +55,7 @@ PWA_MANIFEST = {
 # API call - /converse, /ask-text, /auth/* - is passed straight through and
 # never touched by the worker, so nothing account-scoped is ever cached.
 PWA_SW_JS = (
-    "const SHELL = 'aubie-shell-v1';\n"
+    "const SHELL = 'aubie-shell-v2';\n"
     "self.addEventListener('install', function (e) {\n"
     "  e.waitUntil(caches.open(SHELL).then(function (c) { return c.add('/remote'); }).then(function () { return self.skipWaiting(); }));\n"
     "});\n"
@@ -75,14 +75,7 @@ PWA_SW_JS = (
     "    }).catch(function () { return caches.match('/remote'); }));\n"
     "    return;\n"
     "  }\n"
-    "  if (url.pathname.indexOf('/pwa/') === 0) {\n"
-    "    e.respondWith(caches.match(req).then(function (hit) {\n"
-    "      return hit || fetch(req).then(function (res) {\n"
-    "        var cp = res.clone(); caches.open(SHELL).then(function (c) { c.put(req, cp); }); return res;\n"
-    "      });\n"
-    "    }));\n"
-    "    return;\n"
-    "  }\n"
+    "  if (url.pathname.indexOf('/pwa/') === 0 || url.pathname.indexOf('/apple-touch-icon') === 0) return;\n"
     "  // APIs and auth: straight to network, never cached.\n"
     "});\n"
 )
@@ -176,6 +169,8 @@ HTML = r"""<!DOCTYPE html>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="AUBIEETERNAL">
 <link rel="apple-touch-icon" href="/pwa/apple-touch-icon-180.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/pwa/apple-touch-icon-180.png">
+<link rel="apple-touch-icon-precomposed" href="/pwa/apple-touch-icon-180.png">
 <style>
   :root {
     --bg:      #070b0f;
@@ -3338,6 +3333,18 @@ async def pwa_icon(filename: str):
         return Response(status_code=404)
     return FileResponse(
         PWA_ASSETS / filename,
+        media_type="image/png",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
+
+
+@router.get("/apple-touch-icon.png")
+@router.get("/apple-touch-icon-precomposed.png")
+async def apple_touch_icon():
+    # iOS probes these well-known root paths for the home-screen icon
+    # even when the <link> tag is present; serve the same 180x180 PNG.
+    return FileResponse(
+        PWA_ASSETS / "apple-touch-icon-180.png",
         media_type="image/png",
         headers={"Cache-Control": "public, max-age=86400"},
     )
