@@ -46,14 +46,24 @@ def _compose(size: int, mark_frac: float, rounded: bool, opaque: bool) -> Image.
     eagle = Image.open(EAGLE).convert("RGBA").resize((mark_px, mark_px), Image.LANCZOS)
     pos = ((size - mark_px) // 2, (size - mark_px) // 2)
 
-    # soft cyan glow behind the mark
+    # Soft lighter disc behind the mark so the eagle reads clearly at
+    # home-screen size instead of vanishing into the dark ground.
+    disc = Image.new("RGBA", (size, size), (0, 0, 0, 0))
+    dd = ImageDraw.Draw(disc)
+    r = int(size * 0.40)
+    c = size // 2
+    dd.ellipse([c - r, c - r, c + r, c + r], fill=(18, 46, 74, 235))
+    disc = disc.filter(ImageFilter.GaussianBlur(size * 0.04))
+
+    # Cyan glow hugging the mark's silhouette.
     glow = Image.new("RGBA", (size, size), (0, 0, 0, 0))
     tint = Image.new("RGBA", (mark_px, mark_px), CYAN + (0,))
-    tint.putalpha(eagle.split()[3].point(lambda a: int(a * 0.55)))
+    tint.putalpha(eagle.split()[3].point(lambda a: int(a * 0.85)))
     glow.paste(tint, pos, tint)
-    glow = glow.filter(ImageFilter.GaussianBlur(size * 0.03))
+    glow = glow.filter(ImageFilter.GaussianBlur(size * 0.025))
 
-    out = Image.alpha_composite(base, glow)
+    out = Image.alpha_composite(base, disc)
+    out = Image.alpha_composite(out, glow)
     out.alpha_composite(eagle, pos)
 
     if opaque:
