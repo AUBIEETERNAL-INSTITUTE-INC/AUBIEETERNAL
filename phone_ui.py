@@ -6,7 +6,7 @@ Tab 1: 🧠 Teach   — Ask, Voice, Quick Topics, Camera, System
 Tab 2: ⚙️ Build   — AUBIEETERNAL Build Code (dual-road agentic)
 Tab 3: 🐕 Dog     — RC, Movement, Face, Tricks, Servos, Bluetooth
 
-Access: http://100.105.81.27:8800/remote
+Access: https://aubieeternal.tail00eb41.ts.net/remote
 """
 
 from fastapi import APIRouter, Request
@@ -2642,6 +2642,10 @@ async function stopRecordingAndSend() {
     const audioBlob  = await r.blob();
     document.getElementById('greet-name').textContent = speaker!=='none' ? speaker : '';
     document.getElementById('greet-msg').textContent = replyText || '(no reply)';
+    // Princess Mode also fires in a camera conversation, not just on the
+    // /greet "Hello Gabriela" - if Watch's camera frame ID'd her as the
+    // speaker this turn, burst the hearts + flowers (same as checkForFace).
+    if(speaker.toLowerCase().includes('gabriela')) burstHeartsAndFlowers();
     document.getElementById('widget-close-btn').textContent = greetMode ? '⏹ Stop' : '✕ Close';
     log('You said: '+transcript,'info');
     await playAudioExclusive(URL.createObjectURL(audioBlob));
@@ -3079,6 +3083,143 @@ async function captureAndDescribe(video) {
     }
   } catch(e) { log('Vision error: '+e.message,'err'); }
 }
+</script>
+
+<script>
+// ── Minimal interface localization ────────────────────────────────────────
+// Key-surface only (tab bar, card titles, primary buttons, main input
+// placeholders). Language is resolved: ?lang= query  >  localStorage
+// 'aubieLang'  >  the install-time choice from GET /language ('configured',
+// unless 'auto')  >  English. English is the source text, so lang==='en' is
+// a no-op. This is a JS-side patch on purpose - zero changes to the markup
+// above - so untranslated strings simply stay in English rather than break.
+// Follow-up: welcome-card body paragraph, Show Me / Research placeholders
+// (no id), toast/log messages.
+(function () {
+  const TAB = { teach: 'Enseñar', build: 'Crear', dog: 'Perro', aubie: 'Aubie', portal: 'Portal' };
+  const T = {
+    'WHAT IS THIS?': '¿QUÉ ES ESTO?',
+    'Your Always-On AI Teaching Station': 'Tu estación de enseñanza con IA, siempre disponible',
+    '🤖 Ask Aubie What It Is': '🤖 Pregúntale a Aubie qué es',
+    '✕ Hide': '✕ Ocultar',
+    "👋 Greet Mode · Who's Here?": '👋 Modo saludo · ¿Quién está aquí?',
+    'OR TYPE A QUESTION:': 'O ESCRIBE UNA PREGUNTA:',
+    'AUBIE KNOWS:': 'AUBIE CONOCE A:',
+    '👁️ Watch': '👁️ Vigilar',
+    '➕ Add Person': '➕ Añadir persona',
+    '💬 Ask': '💬 Preguntar',
+    '🪪 Teach Aubie a Face': '🪪 Enséñale una cara a Aubie',
+    '📷 Open Camera': '📷 Abrir cámara',
+    '📸 Snap & Save': '📸 Capturar y guardar',
+    '↻ Refresh List': '↻ Actualizar lista',
+    '🧠 Ask · Learn · Teach': '🧠 Pregunta · Aprende · Enseña',
+    '⚡ Ask Aubie': '⚡ Pregúntale a Aubie',
+    '🔄 New Conversation': '🔄 Nueva conversación',
+    '🎤 Voice': '🎤 Voz',
+    '🔊 Preview': '🔊 Escuchar',
+    '📚 Quick Topics': '📚 Temas rápidos',
+    '📷 Camera · Vision': '📷 Cámara · Visión',
+    '📸 Snapshot': '📸 Foto',
+    '👁️ Describe': '👁️ Describir',
+    '🖼️ Show Me': '🖼️ Muéstrame',
+    '🔄 Another': '🔄 Otra',
+    '📺 Also on Screen': '📺 También en pantalla',
+    "📚 Today's Lesson": '📚 Lección de hoy',
+    '🔍 Research': '🔍 Investigar',
+    '🔍 Research It': '🔍 Investígalo',
+    '🎓 My Progress': '🎓 Mi progreso',
+    '↻ Refresh Progress': '↻ Actualizar progreso',
+    '🌌 Daily Question': '🌌 Pregunta del día',
+    '💬 Discuss with Aubie': '💬 Comentar con Aubie',
+    '🎲 New Question': '🎲 Otra pregunta',
+    '🧠 What Aubie Remembers': '🧠 Lo que Aubie recuerda',
+    '↻ Refresh Memory': '↻ Actualizar memoria',
+    '👁️ Live Vision': '👁️ Visión en vivo',
+    '⚡ System': '⚡ Sistema',
+    '✅ Health': '✅ Estado',
+    '🗑️ Clear Log': '🗑️ Borrar registro',
+    '📋 Log': '📋 Registro',
+    '🎨 Customize Face': '🎨 Personalizar cara',
+    '⚙️ Build & Run': '⚙️ Crear y ejecutar',
+    '🔨 What Should Aubie Build?': '🔨 ¿Qué debería crear Aubie?',
+    '📄 Generated Code': '📄 Código generado',
+    '⚡ Quick Builds': '⚡ Creaciones rápidas',
+    '🕹️ RC Control': '🕹️ Control RC',
+    '🦿 Movement': '🦿 Movimiento',
+    '👁️ Follow Mode': '👁️ Modo seguir',
+    '😊 Face': '😊 Cara',
+    '🎨 Face Customise': '🎨 Personalizar cara',
+    '🎪 Tricks': '🎪 Trucos',
+    '🧑‍🏫 Teach Aubie a Person': '🧑‍🏫 Enséñale una persona a Aubie',
+    '🔩 Servo Control': '🔩 Control de servos',
+    '💬 Say / Command': '💬 Decir / Comando',
+    '🔵 Bluetooth Setup': '🔵 Configurar Bluetooth',
+  };
+  const PH = {
+    '#watch-ask-input': 'Escribe una pregunta para Aubie…',
+    '#enroll-name': '¿Quién es? (p. ej. Matthew, Gabriela…)',
+    '#ask-input': 'Pregunta lo que quieras…\nExplica la fotosíntesis · ¿Qué es la recursión? · Ayúdame a entender álgebra · ¿Qué es Bitcoin?',
+    '#pe-name': 'Nombre (p. ej. Papá, Gabriela)',
+    '#pe-note': 'Nota opcional (p. ej. Doctorado en física)',
+    '#person-name': 'Nombre de la persona…',
+    '#say-input': 'Escribe algo para que Aubie lo diga…',
+    '#aubie-chat-input': 'Habla con Aubie…',
+    '#build-input': 'Describe qué crear…',
+  };
+  // Normalize whitespace and curly punctuation so map keys written with a
+  // straight apostrophe match card titles that use either form.
+  const norm = (s) => (s || '').replace(/\s+/g, ' ').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').trim();
+
+  function apply(lang) {
+    lang = (lang === 'es') ? 'es' : 'en';
+    try { localStorage.setItem('aubieLang', lang); } catch (e) {}
+    document.documentElement.lang = lang;
+    if (lang === 'en') return;
+
+    // Tab bar: keep the .tab-icon span, translate only the trailing word.
+    document.querySelectorAll('.tab-btn').forEach((btn) => {
+      const key = (btn.id || '').replace('tbtn-', '');
+      if (!TAB[key]) return;
+      const t = [...btn.childNodes].reverse().find((n) => n.nodeType === 3 && norm(n.textContent));
+      if (t) t.textContent = TAB[key];
+    });
+
+    // Leaf elements whose whole text is a known string.
+    document.querySelectorAll('.tab-btn, .btn, .card-title, .card-title>span:first-child, h1, h2, h3, div, span, p, label').forEach((el) => {
+      if (el.children.length) return;
+      const hit = T[norm(el.textContent)];
+      if (hit) el.textContent = hit;
+    });
+
+    // Welcome-card body paragraph (has inline <b>/<i>/<br>, handled by id).
+    const wc = document.getElementById('welcome-card');
+    const para = wc && [...wc.querySelectorAll('div')].find((d) => /free, always-on AI teacher/i.test(d.textContent));
+    if (para) {
+      para.innerHTML =
+        '<b style="color:var(--text)">AUBIEETERNAL</b> es un maestro con IA gratuito y siempre disponible, hecho para dar una educación de primer nivel a <i>cualquiera, en cualquier lugar</i> — un teléfono, una pantalla táctil, la mesa de la cocina, un orfanato.<br><br>' +
+        'Pregúntale lo que sea. Enseña. Recuerda cada lección, cada pregunta, cada conversación — y va formando una imagen de lo que sabes y de lo que estás aprendiendo.<br><br>' +
+        'A medida que añades cursos, robots y herramientas de IA, <b style="color:var(--accent)">Aubie crece contigo</b> — siempre recordando, siempre enseñando.';
+    }
+
+    // Placeholders.
+    for (const sel in PH) {
+      const el = document.querySelector(sel);
+      if (el) el.setAttribute('placeholder', PH[sel]);
+    }
+  }
+
+  const qs = new URLSearchParams(location.search).get('lang');
+  let lang = (qs || (function () { try { return localStorage.getItem('aubieLang'); } catch (e) { return null; } })() || '').toLowerCase();
+  const run = () => {
+    if (lang === 'es' || lang === 'en') { apply(lang); return; }
+    fetch('/language')
+      .then((r) => r.json())
+      .then((d) => apply(d && d.configured === 'es' ? 'es' : 'en'))
+      .catch(() => apply('en'));
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run);
+  else run();
+})();
 </script>
 </body>
 </html>"""
