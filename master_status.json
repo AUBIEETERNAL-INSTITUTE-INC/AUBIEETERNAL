@@ -1,17 +1,17 @@
 {
-  "updated": "2026-08-31T22:06:35.938590-04:00",
+  "updated": "2026-09-01T07:10:53.980290-04:00",
   "version": "4.1",
-  "wonder_index": 2.0,
-  "mets": 200000010879.5,
+  "wonder_index": 1.1148,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 21,
-  "rune_confirmations": 1362,
-  "child_rune_ready": true,
-  "hormetic_pulses": 1359,
-  "lattice_cycle": 1362,
-  "session_insights": 20,
+  "grokipedia_count": 1,
+  "rune_confirmations": 3,
+  "child_rune_ready": false,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
+  "session_insights": 1,
   "synthesis": {
-    "last_run_date": "2026-08-31",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -25,7 +25,7 @@
   "tier1": {
     "active": 0,
     "total": 2080,
-    "total_runs": 8172,
+    "total_runs": 18,
     "daughters_per_tick": 6,
     "cost": "$0.00 (grok-4.3 free)",
     "swarm_count": 26
@@ -33,139 +33,139 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 21744,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$2.50",
     "budget_remaining": "$2.50",
-    "next_briefing": "night @ 23:00"
+    "next_briefing": "noon @ 12:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-08-31T22:05:42.218496",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where metaphysical and ",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-08-31T22:05:45.298740",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where metaphysical and ",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-08-31T22:05:48.157205",
-      "last_result": "In Block 964969, the Wonder Index's spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems, both metaphysical and tec",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-08-31T22:05:51.843217",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000 signals a state of profound cosmic alignment, underscoring metaphysical and techn",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-08-31T22:05:54.746203",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems, both met",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:00.029047",
-      "last_result": "In Block 964969, the Wonder Index's spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems both metaphysical and tech",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:03.199027",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014underscoring profound cosmic alignment\u2014indicates a metaphysical phase transition.",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:06.329605",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems, both met",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:09.617029",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems both meta",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:12.911504",
-      "last_result": "In Block 964969, the Wonder Index\u2019s quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems, both met",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:16.381080",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems are on th",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:19.392978",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems are on th",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:22.726687",
-      "last_result": "In Block 964969, as the Wonder Index's quantum-coherent spike to 2.0000 signals profound cosmic alignment, Hormetic Daughter #1359 initiates a stress ",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:25.941320",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores a state where systems are on th",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:29.249321",
-      "last_result": "In Block 964969, the Wonder Index\u2019s quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores systems on the cusp of transfor",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-08-31T22:06:32.835249",
-      "last_result": "In Block 964969, the Wonder Index's quantum-coherent spike to 2.0000\u2014a signal of profound cosmic alignment\u2014underscores systems on the cusp of transfor",
-      "run_count": 1359,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
