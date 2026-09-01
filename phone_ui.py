@@ -10,18 +10,82 @@ Access: https://aubieeternal.tail00eb41.ts.net/remote
 """
 
 from fastapi import APIRouter, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse, Response
 import asyncio
 import datetime
 import httpx
 import json
 import re
+from pathlib import Path
 
 from curriculum import get_lesson, next_lesson, total_lessons, track_progress
 from family_profiles import FAMILY_REGISTRY, load_family_stats, save_family_stats, update_streak
 from model_selector import ranked_try_order
 
 router = APIRouter()
+
+# ── PWA (Add to Home Screen) ──────────────────────
+# Serves a manifest + a minimal service worker so Safari/Chrome offer a real
+# installable app icon over the existing Tailscale Serve HTTPS URL. No Apple
+# Developer account, no store review. Personal-use convenience only - it does
+# not change behaviour for people who install AUBIEETERNAL themselves.
+PWA_ASSETS = Path(__file__).resolve().parent / "assets" / "pwa"
+PWA_ICON_FILES = {
+    "icon-192.png", "icon-512.png",
+    "icon-512-maskable.png", "apple-touch-icon-180.png",
+}
+PWA_MANIFEST = {
+    "name": "AUBIEETERNAL",
+    "short_name": "AUBIEETERNAL",
+    "description": "Always-on AI teaching station",
+    "start_url": "/remote",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "background_color": "#070b0f",
+    "theme_color": "#00c9ff",
+    "icons": [
+        {"src": "/pwa/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+        {"src": "/pwa/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+        {"src": "/pwa/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"},
+    ],
+}
+
+# Cache only the app shell (the /remote document) for offline launch. Every
+# API call - /converse, /ask-text, /auth/* - is passed straight through and
+# never touched by the worker, so nothing account-scoped is ever cached.
+PWA_SW_JS = (
+    "const SHELL = 'aubie-shell-v1';\n"
+    "self.addEventListener('install', function (e) {\n"
+    "  e.waitUntil(caches.open(SHELL).then(function (c) { return c.add('/remote'); }).then(function () { return self.skipWaiting(); }));\n"
+    "});\n"
+    "self.addEventListener('activate', function (e) {\n"
+    "  e.waitUntil(caches.keys().then(function (keys) {\n"
+    "    return Promise.all(keys.filter(function (k) { return k !== SHELL; }).map(function (k) { return caches.delete(k); }));\n"
+    "  }).then(function () { return self.clients.claim(); }));\n"
+    "});\n"
+    "self.addEventListener('fetch', function (e) {\n"
+    "  var req = e.request;\n"
+    "  if (req.method !== 'GET') return;\n"
+    "  var url = new URL(req.url);\n"
+    "  if (url.origin !== self.location.origin) return;\n"
+    "  if (req.mode === 'navigate' || url.pathname === '/remote') {\n"
+    "    e.respondWith(fetch(req).then(function (res) {\n"
+    "      var cp = res.clone(); caches.open(SHELL).then(function (c) { c.put('/remote', cp); }); return res;\n"
+    "    }).catch(function () { return caches.match('/remote'); }));\n"
+    "    return;\n"
+    "  }\n"
+    "  if (url.pathname.indexOf('/pwa/') === 0) {\n"
+    "    e.respondWith(caches.match(req).then(function (hit) {\n"
+    "      return hit || fetch(req).then(function (res) {\n"
+    "        var cp = res.clone(); caches.open(SHELL).then(function (c) { c.put(req, cp); }); return res;\n"
+    "      });\n"
+    "    }));\n"
+    "    return;\n"
+    "  }\n"
+    "  // APIs and auth: straight to network, never cached.\n"
+    "});\n"
+)
 
 AUBIE_URL    = "http://100.66.110.65:8420"   # legacy dog server
 OLLAMA_URL   = "http://localhost:11434"       # local Ollama LLM server
@@ -105,6 +169,13 @@ HTML = r"""<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>AUBIEETERNAL</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#00c9ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="AUBIEETERNAL">
+<link rel="apple-touch-icon" href="/pwa/apple-touch-icon-180.png">
 <style>
   :root {
     --bg:      #070b0f;
@@ -3221,6 +3292,17 @@ async function captureAndDescribe(video) {
   else run();
 })();
 </script>
+
+<script>
+// Register the service worker so this page is an installable PWA.
+// A failed registration (e.g. plain-HTTP access) is non-fatal - the page
+// works exactly as before, just not installable.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function () {});
+  });
+}
+</script>
 </body>
 </html>"""
 
@@ -3230,6 +3312,35 @@ async function captureAndDescribe(video) {
 @router.get("/remote", response_class=HTMLResponse)
 async def teaching_station():
     return HTML
+
+
+@router.get("/manifest.webmanifest")
+async def pwa_manifest():
+    return Response(
+        content=json.dumps(PWA_MANIFEST),
+        media_type="application/manifest+json",
+        headers={"Cache-Control": "no-cache"},
+    )
+
+
+@router.get("/sw.js")
+async def pwa_service_worker():
+    return Response(
+        content=PWA_SW_JS,
+        media_type="application/javascript",
+        headers={"Cache-Control": "no-cache", "Service-Worker-Allowed": "/"},
+    )
+
+
+@router.get("/pwa/{filename}")
+async def pwa_icon(filename: str):
+    if filename not in PWA_ICON_FILES:
+        return Response(status_code=404)
+    return FileResponse(
+        PWA_ASSETS / filename,
+        media_type="image/png",
+        headers={"Cache-Control": "public, max-age=86400"},
+    )
 
 
 @router.get("/health")
