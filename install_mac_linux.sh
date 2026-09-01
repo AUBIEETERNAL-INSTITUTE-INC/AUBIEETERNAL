@@ -19,8 +19,30 @@ echo ""
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OS="$(uname -s)"
 
-# ── Step 1: Python ────────────────────────────────────────────────────────────
-echo "[1/4] Checking Python..."
+# ── Step 1: Program language ──────────────────────────────────────────────────
+# Written to ~/.aubieeternal/language, the single source of truth read by both
+# the Streamlit launcher and the voice assistant (assistant_server.py). "en"
+# and "es" ship today; the file format is just a bare language code so more
+# can be added later without touching this script.
+echo "[1/5] Choose your language / Elige tu idioma..."
+echo "  [1] English"
+echo "  [2] Español"
+read -p "  Choice / Elección (1/2) [1]: " LANG_CHOICE
+case "${LANG_CHOICE:-1}" in
+    2) APP_LANG="es" ;;
+    *) APP_LANG="en" ;;
+esac
+CONFIG_DIR="$HOME/.aubieeternal"
+mkdir -p "$CONFIG_DIR"
+if printf '%s\n' "$APP_LANG" > "$CONFIG_DIR/language" 2>/dev/null; then
+    echo -e "  ${GREEN}✅ Language set to '$APP_LANG' ($CONFIG_DIR/language)${NC}"
+else
+    echo -e "  ${YELLOW}⚠️  Could not write $CONFIG_DIR/language - the app will default to English.${NC}"
+    echo -e "     To fix by hand: mkdir -p \"$CONFIG_DIR\" && echo $APP_LANG > \"$CONFIG_DIR/language\""
+fi
+
+# ── Step 2: Python ────────────────────────────────────────────────────────────
+echo "[2/5] Checking Python..."
 PYTHON_OK=0
 for CMD in python3 python; do
     if command -v "$CMD" &>/dev/null; then
@@ -47,18 +69,18 @@ if [ "$PYTHON_OK" -eq 0 ]; then
     exit 1
 fi
 
-# ── Step 2: Install packages ───────────────────────────────────────────────────
+# ── Step 3: Install packages ───────────────────────────────────────────────────
 echo ""
-echo "[2/4] Installing Python packages..."
+echo "[3/5] Installing Python packages..."
 "$PYTHON_CMD" -m pip install streamlit requests openai pandas plotly python-dateutil pytz \
     --quiet --disable-pip-version-check --break-system-packages 2>/dev/null || \
 "$PYTHON_CMD" -m pip install streamlit requests openai pandas plotly python-dateutil pytz \
     --quiet --disable-pip-version-check
 echo -e "  ${GREEN}✅ Packages ready${NC}"
 
-# ── Step 3: Ollama ────────────────────────────────────────────────────────────
+# ── Step 4: Ollama ────────────────────────────────────────────────────────────
 echo ""
-echo "[3/4] Checking Ollama..."
+echo "[4/5] Checking Ollama..."
 if command -v ollama &>/dev/null; then
     echo -e "  ${GREEN}✅ Ollama found${NC}"
     OLLAMA_OK=1
@@ -121,9 +143,9 @@ if [ "$OLLAMA_OK" -eq 1 ]; then
     fi
 fi
 
-# ── Step 4: Create launcher ────────────────────────────────────────────────────
+# ── Step 5: Create launcher ────────────────────────────────────────────────────
 echo ""
-echo "[4/4] Creating launcher..."
+echo "[5/5] Creating launcher..."
 
 LAUNCHER_SCRIPT="$SCRIPT_DIR/run_aubieeternal.sh"
 cat > "$LAUNCHER_SCRIPT" << RUNEOF
@@ -133,20 +155,29 @@ $PYTHON_CMD launcher.py
 RUNEOF
 chmod +x "$LAUNCHER_SCRIPT"
 
-# Create desktop shortcut
+# Create desktop shortcut. This step is best-effort: if $HOME/Desktop is
+# missing (headless box, non-English locale folder, OneDrive redirection)
+# the write can fail, and previously the script printed a success line
+# anyway and moved on - leaving a support-case user with no obvious way to
+# start the app. Now a failure is reported, and the manual-launch commands
+# below always print regardless of what happened here.
+SHORTCUT_OK=0
+mkdir -p "$HOME/Desktop" 2>/dev/null
 if [ "$OS" = "Darwin" ]; then
     DESKTOP="$HOME/Desktop/AUBIEETERNAL.command"
-    cat > "$DESKTOP" << DESKTOPEOF
+    if cat > "$DESKTOP" << DESKTOPEOF 2>/dev/null
 #!/bin/bash
 cd "$SCRIPT_DIR"
 $PYTHON_CMD launcher.py
 DESKTOPEOF
-    chmod +x "$DESKTOP"
-    echo -e "  ${GREEN}✅ Desktop shortcut: AUBIEETERNAL.command${NC}"
+    then
+        chmod +x "$DESKTOP" 2>/dev/null && SHORTCUT_OK=1
+    fi
+    [ "$SHORTCUT_OK" -eq 1 ] && echo -e "  ${GREEN}✅ Desktop shortcut: AUBIEETERNAL.command${NC}"
 else
     # Linux .desktop file
     DESKTOP_FILE="$HOME/Desktop/aubieeternal.desktop"
-    cat > "$DESKTOP_FILE" << DESKTOPEOF
+    if cat > "$DESKTOP_FILE" << DESKTOPEOF 2>/dev/null
 [Desktop Entry]
 Name=AUBIEETERNAL
 Comment=Sovereign Family Intelligence
@@ -156,17 +187,20 @@ Terminal=true
 Type=Application
 Categories=Education;
 DESKTOPEOF
-    chmod +x "$DESKTOP_FILE"
-    echo -e "  ${GREEN}✅ Desktop shortcut: aubieeternal.desktop${NC}"
+    then
+        chmod +x "$DESKTOP_FILE" 2>/dev/null && SHORTCUT_OK=1
+    fi
+    [ "$SHORTCUT_OK" -eq 1 ] && echo -e "  ${GREEN}✅ Desktop shortcut: aubieeternal.desktop${NC}"
 fi
+[ "$SHORTCUT_OK" -eq 0 ] && echo -e "  ${YELLOW}⚠️  Couldn't create a Desktop shortcut - use the manual command below.${NC}"
 
 echo ""
 echo "============================================================"
 echo -e "  ${GREEN}✅ Installation complete!${NC}"
 echo ""
-echo "  To launch AUBIEETERNAL:"
-echo "  - Double-click the Desktop shortcut"
-echo "  - Or run: $PYTHON_CMD launcher.py"
-echo "  - Or run: ./run_aubieeternal.sh"
+echo "  To launch AUBIEETERNAL (any of these work):"
+[ "$SHORTCUT_OK" -eq 1 ] && echo "  - Double-click the Desktop shortcut"
+echo "  - Run:  cd \"$SCRIPT_DIR\" && $PYTHON_CMD launcher.py"
+echo "  - Run:  \"$SCRIPT_DIR/run_aubieeternal.sh\""
 echo "============================================================"
 echo ""

@@ -10,6 +10,29 @@ echo   CC0 Public Domain - War Eagle Eternal
 echo ============================================================
 echo.
 
+:: ── Program language ────────────────────────────────────────
+:: Written to %USERPROFILE%\.aubieeternal\language - the single source of
+:: truth read by both the Streamlit launcher and the voice assistant
+:: (assistant_server.py). "en" and "es" ship today; the file is just a bare
+:: language code so more can be added later without touching this script.
+echo [*] Choose your language / Elige tu idioma:
+echo   [1] English
+echo   [2] Espanol
+set LANG_CHOICE=
+set /p LANG_CHOICE="  Choice / Eleccion (1/2) [1]: "
+if not defined LANG_CHOICE set LANG_CHOICE=1
+set APP_LANG=en
+if "%LANG_CHOICE%"=="2" set APP_LANG=es
+set CONFIG_DIR=%USERPROFILE%\.aubieeternal
+if not exist "%CONFIG_DIR%" mkdir "%CONFIG_DIR%" >nul 2>&1
+> "%CONFIG_DIR%\language" echo %APP_LANG%
+if exist "%CONFIG_DIR%\language" (
+    echo [OK] Language set to "%APP_LANG%" ^(%CONFIG_DIR%\language^)
+) else (
+    echo [!] Could not write %CONFIG_DIR%\language - the app will default to English.
+)
+echo.
+
 :: Check if Python is installed
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
@@ -177,9 +200,10 @@ echo.
 echo ============================================================
 echo   Installation complete!
 echo.
-echo   To launch AUBIEETERNAL:
+echo   To launch AUBIEETERNAL (any of these work):
 echo   - Double-click "AUBIEETERNAL.bat" on your Desktop
-echo   - Or run: python launcher.py
+echo   - Or open a terminal here and run:  python launcher.py
+echo     from this folder: %SCRIPT_DIR%
 echo ============================================================
 echo.
 pause

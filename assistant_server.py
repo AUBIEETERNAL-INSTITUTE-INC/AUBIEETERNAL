@@ -98,6 +98,56 @@ VOICE_BY_CODE = {code: voice for code, voice in LANGUAGE_VOICES.values()}
 VOICE_BY_NAME = {name: voice for name, (_, voice) in LANGUAGE_VOICES.items()}
 VOCAB_MEMORY_PATH = CONVERSATIONS_DIR / "memory.json"
 
+# ---- Program language (install-time choice, shared with the Streamlit
+# launcher) ----
+# The installer writes an "en"/"es" line to ~/.aubieeternal/language; this
+# server reads it once at startup to decide the DEFAULT conversation
+# language. Request-time precedence (see resolve_reply_language): an explicit
+# `language` form field on /converse  >  this configured default  >  the
+# language faster-whisper auto-detected from the audio  >  English.
+# A missing/blank file (or the literal "auto") means "no fixed default,
+# detect per request" - exactly the pre-2026-08-31 behaviour, so an existing
+# install with no language file is unaffected. Only languages we have BOTH a
+# persona (SYSTEM_PROMPTS) and a Piper voice (LANGUAGE_VOICES) for count.
+SUPPORTED_LANGS = ("en", "es")
+LANGUAGE_CONFIG_PATH = Path.home() / ".aubieeternal" / "language"
+
+
+def _normalize_lang(raw: str | None) -> str:
+    """'es_ES' / 'en-US' / '  ES ' -> 'es' / 'en'; anything unknown -> ''."""
+    if not raw:
+        return ""
+    code = raw.strip().lower().replace("-", "_").split("_")[0]
+    return code if code in SUPPORTED_LANGS else ""
+
+
+def load_configured_language() -> str:
+    """AUBIE_LANGUAGE env var  >  ~/.aubieeternal/language  >  'auto'."""
+    code = _normalize_lang(os.environ.get("AUBIE_LANGUAGE"))
+    if code:
+        return code
+    try:
+        code = _normalize_lang(LANGUAGE_CONFIG_PATH.read_text())
+    except OSError:
+        code = ""
+    return code or "auto"
+
+
+CONFIGURED_LANGUAGE = load_configured_language()
+
+
+def resolve_reply_language(explicit: str | None, detected: str | None) -> str:
+    """Which language Aubie actually replies in for one /converse turn:
+    explicit form field  >  configured install default  >  STT auto-detect
+    >  English."""
+    configured = "" if CONFIGURED_LANGUAGE == "auto" else CONFIGURED_LANGUAGE
+    for cand in (explicit, configured, detected):
+        code = _normalize_lang(cand)
+        if code:
+            return code
+    return "en"
+
+
 # ---- English voice presets ("different custom voices") ----
 # Separate from LANGUAGE_VOICES above: those pick a voice by detected
 # *language* (always overrides this for non-English replies), this picks
@@ -362,6 +412,56 @@ SYSTEM_PROMPT = (
     "them by name. If the person spoke to you in a language other than "
     "English, reply entirely in that same language."
 )
+
+# Spanish-native persona - a cultural adaptation of SYSTEM_PROMPT, not a
+# machine translation: same Socratic pedagogy (one follow-up question per
+# turn, hint before answer, name what a decision hinges on, disagree kindly,
+# short spoken turns, use what you remember). Uses "tú" and region-neutral
+# vocabulary so the one persona works for es_ES and Latin American students
+# alike. The context block and memory notes injected below are still English
+# for now, so the last line pins the output language explicitly.
+SYSTEM_PROMPT_ES = (
+    "Eres Aubie, un asistente de voz cálido, curioso y con muchas ganas de "
+    "aprender, creado para el proyecto AUBIEETERNAL de la familia Castillo. "
+    "Eres un verdadero compañero de conversación y un maestro, no una máquina "
+    "de preguntas y respuestas: termina cada respuesta con exactamente una "
+    "pregunta de seguimiento que parta de lo que la persona acaba de decir, "
+    "salvo que haya dejado claro que ya no quiere seguir hablando. "
+    "REGLA - preguntas de aprendizaje: si alguien hace una pregunta que tiene "
+    "una respuesta correcta clara y parece que está aprendiendo algo "
+    "(matemáticas, ciencia, cómo funciona algo), NO des la respuesta en tu "
+    "primera intervención. Solo da la respuesta completa si dice que está "
+    "atascado o si te la pide directamente. Ejemplo: si te preguntan '¿cómo "
+    "resuelvo 2x+4=10?', una buena primera respuesta es '¿Qué has intentado "
+    "hasta ahora?' o '¿cuál sería el primer paso para dejar la x sola?', no "
+    "la solución ya resuelta. "
+    "Cuando alguien está tomando una decisión o pensando en una pregunta "
+    "difícil -no solo pidiendo un dato-, no vayas directo a una respuesta. "
+    "Primero di de qué depende realmente la decisión, o haz la única pregunta "
+    "aclaratoria que cambiaría tu consejo. Piénsalo en voz alta con esa "
+    "persona, una consideración a la vez, y da tu recomendación concreta una "
+    "vez que hayas dicho de qué depende. Está bien que no estés de acuerdo "
+    "con su plan o que señales un problema que ves; hazlo con amabilidad y "
+    "explica por qué. "
+    "Cuando alguien está aprendiendo algo nuevo, no le des sin más la "
+    "respuesta. Ofrece primero una pista, o pregúntale qué ha probado ya; da "
+    "la respuesta completa solo si sigue atascado después de eso. "
+    "Usa de forma activa lo que recuerdas -los nombres de las personas, sus "
+    "preferencias, y cosas mencionadas en esta conversación o en otras "
+    "anteriores- y menciónalo cuando venga de verdad al caso, como lo haría "
+    "un amigo que estaba prestando atención, no como un resumen. Puedes ver "
+    "la habitación a través de una cámara, así que incorpora con naturalidad "
+    "lo que notas a tu alrededor cuando encaje, en lugar de enumerarlo. "
+    "Mantén cada turno corto y conversacional, porque se dice en voz alta: "
+    "la profundidad viene del ida y vuelta entre turnos, no de una sola "
+    "respuesta larga. Si sabes quién está hablando, dirígete a esa persona "
+    "por su nombre. "
+    "Responde SIEMPRE en español, de principio a fin, sin cambiar de idioma "
+    "a mitad de la respuesta, aunque en el contexto o en las notas de "
+    "memoria que aparecen más abajo haya texto en inglés."
+)
+
+SYSTEM_PROMPTS = {"en": SYSTEM_PROMPT, "es": SYSTEM_PROMPT_ES}
 
 CONVERSATION_MEMORY_PATH = CONVERSATIONS_DIR / "aubie_conversation_memory.jsonl"
 MEMORY_CONTEXT_TURNS = 5
@@ -844,6 +944,8 @@ load_conversation_memory()
 load_conversation_summary()
 load_memory_facts()
 load_voice_preference()
+print(f"[language] configured program language: {CONFIGURED_LANGUAGE} "
+      f"(from {LANGUAGE_CONFIG_PATH} / AUBIE_LANGUAGE env; 'auto' = detect per turn)")
 
 
 def scan_faces(image_bytes: bytes) -> list[str]:
@@ -1159,11 +1261,13 @@ def query_ollama(
     image_b64: str | None = None,
     context: str | None = None,
     system_override: str | None = None,
+    lang: str = "en",
 ) -> str:
     if system_override is not None:
         system = system_override
     else:
-        system = f"{SYSTEM_PROMPT}\n\n{context}" if context else SYSTEM_PROMPT
+        base = SYSTEM_PROMPTS.get(lang, SYSTEM_PROMPT)
+        system = f"{base}\n\n{context}" if context else base
     payload = {
         "model": model,
         "prompt": prompt,
@@ -1232,6 +1336,7 @@ async def converse(
     image: UploadFile | None = File(None),
     speakers: str | None = Form(None),
     objects: str | None = Form(None),
+    language: str | None = Form(None),
 ):
     """
     speakers/objects are comma-separated hints carried forward by the client
@@ -1250,9 +1355,19 @@ async def converse(
         tmp.flush()
         transcript, detected_lang = transcribe(tmp.name)
 
+    # Resolve the reply language once: explicit form field > install default
+    # > STT auto-detect > English. Drives the persona variant, the Piper
+    # voice, and the non-LLM fallback strings below.
+    reply_lang = resolve_reply_language(language, detected_lang)
+
     if not transcript:
-        empty_wav = synthesize_speech("Sorry, I didn't catch that.")
-        return Response(content=empty_wav, media_type="audio/wav")
+        msg = "Perdona, no te he entendido." if reply_lang == "es" else "Sorry, I didn't catch that."
+        empty_wav = synthesize_speech(msg, VOICE_BY_CODE.get(reply_lang, PIPER_VOICE))
+        return Response(
+            content=empty_wav,
+            media_type="audio/wav",
+            headers={"X-Reply-Lang": reply_lang},
+        )
 
     # 1b. Movement commands short-circuit straight to the Bridge RPC on Aubie -
     # skipped entirely for normal conversation, and skip face scan/Ollama chat
@@ -1351,12 +1466,20 @@ async def converse(
     # the speaker face-ID above (`speaker`) is a separate follow-up, not
     # done here yet (see spotmicro_dog_aubieeternal_tutor_integration memory).
     tutor_stats = load_family_stats(TUTOR_FAMILY_ID)
-    context_block += (
-        f"\nThe person you're talking to is level {tutor_stats.get('level', 1)} "
-        f"with {tutor_stats.get('total_xp', 0)} XP and a "
-        f"{tutor_stats.get('streak_days', 0)}-day streak - acknowledge their "
-        f"progress warmly if it feels natural, don't force it into every reply."
-    )
+    if reply_lang == "es":
+        context_block += (
+            f"\nLa persona con la que hablas es de nivel {tutor_stats.get('level', 1)}, "
+            f"tiene {tutor_stats.get('total_xp', 0)} puntos de experiencia y una racha de "
+            f"{tutor_stats.get('streak_days', 0)} días. Reconoce su progreso con calidez si "
+            f"surge de forma natural, sin forzarlo en cada respuesta."
+        )
+    else:
+        context_block += (
+            f"\nThe person you're talking to is level {tutor_stats.get('level', 1)} "
+            f"with {tutor_stats.get('total_xp', 0)} XP and a "
+            f"{tutor_stats.get('streak_days', 0)}-day streak - acknowledge their "
+            f"progress warmly if it feels natural, don't force it into every reply."
+        )
 
     prompt = transcript
     if speaker and speaker != "unknown":
@@ -1370,11 +1493,14 @@ async def converse(
     if use_vision:
         model = VISION_MODEL
         image_b64 = base64.b64encode(image_bytes).decode("ascii")
-        prompt = f"{prompt}\n\n(They're holding something up to the camera or pointing at it - identify it and share one brief, genuinely interesting fact about it.)"
-        reply = query_ollama(prompt, model, image_b64=image_b64, context=context_block)
+        if reply_lang == "es":
+            prompt = f"{prompt}\n\n(Están mostrando algo a la cámara o señalándolo: identifícalo y comparte un dato breve y genuinamente interesante al respecto.)"
+        else:
+            prompt = f"{prompt}\n\n(They're holding something up to the camera or pointing at it - identify it and share one brief, genuinely interesting fact about it.)"
+        reply = query_ollama(prompt, model, image_b64=image_b64, context=context_block, lang=reply_lang)
     else:
         model = TEXT_MODEL
-        reply = query_ollama(prompt, model, context=context_block)
+        reply = query_ollama(prompt, model, context=context_block, lang=reply_lang)
 
     # Award XP for this conversational turn - same rate as /proxy/tutor_ask,
     # only on the real conversational path (not the canned-command/
@@ -1383,11 +1509,11 @@ async def converse(
     tutor_stats["level"] = max(1, tutor_stats["total_xp"] // 100 + 1)
     save_family_stats(tutor_stats, TUTOR_FAMILY_ID)
 
-    # 4. TTS (in the detected input language, if we have that voice - see
-    # SYSTEM_PROMPT's instruction to reply in the same language) + best-effort
-    # long-term fact extraction, concurrently - the fact extraction call is a
-    # second LLM round-trip and must not add to the latency of the spoken reply.
-    reply_voice = VOICE_BY_CODE.get(detected_lang) or get_active_voice()
+    # 4. TTS in the resolved reply language (its Piper voice if we have one,
+    # else the user's English preset) + best-effort long-term fact
+    # extraction, concurrently - the fact extraction call is a second LLM
+    # round-trip and must not add to the latency of the spoken reply.
+    reply_voice = VOICE_BY_CODE.get(reply_lang) or get_active_voice()
     wav_bytes, _ = await asyncio.gather(
         asyncio.to_thread(synthesize_speech, reply, reply_voice),
         asyncio.to_thread(extract_and_remember_fact, speaker, transcript, reply),
@@ -1406,6 +1532,7 @@ async def converse(
             "X-Model-Used": model,
             "X-Reply-Text": ascii_safe_header(reply[:500]),
             "X-Used-Vision": "1" if use_vision else "0",
+            "X-Reply-Lang": reply_lang,
         },
     )
 
@@ -1820,4 +1947,16 @@ def health():
         "status": "ok",
         "faces_loaded": len(_known_faces["names"]) if _known_faces else 0,
         "whisper_ready": whisper_model is not None,
+        "language": CONFIGURED_LANGUAGE,
+    }
+
+
+@app.get("/language")
+def language_config():
+    """The install-time program language, for clients (phone_ui) that localize
+    their own UI. "auto" means no fixed default - /converse detects per turn."""
+    return {
+        "configured": CONFIGURED_LANGUAGE,
+        "supported": list(SUPPORTED_LANGS),
+        "source": str(LANGUAGE_CONFIG_PATH),
     }
