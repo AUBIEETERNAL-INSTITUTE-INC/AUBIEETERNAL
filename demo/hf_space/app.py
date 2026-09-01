@@ -115,7 +115,8 @@ def respond(message, history, language):
     system = SYSTEM_PROMPTS.get(language, SYSTEM_PROMPT_EN)
     msgs = [{"role": "system", "content": system}]
 
-    # history is a list of {"role", "content"} dicts (type="messages").
+    # history is a list of {"role", "content"} dicts (messages format, the
+    # Gradio 6 default).
     for turn in history[-2 * MAX_HISTORY_TURNS :]:
         role = turn.get("role")
         content = turn.get("content")
@@ -136,7 +137,7 @@ def respond(message, history, language):
         return ERR_ES if language == "Español" else ERR_EN
 
 
-with gr.Blocks(title="AUBIEETERNAL — public demo", theme=gr.themes.Soft()) as demo:
+with gr.Blocks(title="AUBIEETERNAL — public demo") as demo:
     gr.Markdown(NOTICE)
     language = gr.Dropdown(
         choices=["English", "Español"],
@@ -145,7 +146,6 @@ with gr.Blocks(title="AUBIEETERNAL — public demo", theme=gr.themes.Soft()) as 
     )
     gr.ChatInterface(
         fn=respond,
-        type="messages",
         additional_inputs=[language],
         examples=[
             ["How do I solve 2x + 4 = 10?", "English"],
@@ -162,4 +162,5 @@ with gr.Blocks(title="AUBIEETERNAL — public demo", theme=gr.themes.Soft()) as 
     )
 
 if __name__ == "__main__":
-    demo.launch()
+    # Gradio 6.0 moved `theme` off the Blocks/ChatInterface constructors.
+    demo.launch(theme=gr.themes.Soft())
