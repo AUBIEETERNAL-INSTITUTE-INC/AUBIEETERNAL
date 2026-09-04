@@ -47,17 +47,26 @@ class QRShareRequest(BaseModel):
     venue_city: Optional[str] = None
 
 
+# The safety-relevant part of a check — the verdict — is returned instantly by
+# verdict.py regardless of the model. This explanation is a nicety on top, so it
+# runs on the small fast model with a short timeout; on timeout / model-busy /
+# Ollama-down it returns "" and verdict.py falls back to DEFAULT_EXPLANATIONS.
+_EXPLAIN_MODEL = "qwen2.5:7b"
+_EXPLAIN_TIMEOUT_S = 15
+
+
 def _explain_via_qwen(payload: str, signals) -> str:
     """
-    Plain-language explanation via the same local Ollama model /converse
-    uses. Wired to assistant_server.query_ollama (lazy import so this
-    module still imports cleanly on its own, and so there's no import
-    cycle: assistant_server imports this router at startup). Any failure —
-    model busy, Ollama down, import error — returns "" and the caller
-    falls back to the canned explanation in verdict.py.
+    Plain-language explanation via the local Ollama server (the same
+    assistant_server.query_ollama helper /converse uses; lazy import so this
+    module still imports cleanly on its own and there's no cycle with
+    assistant_server importing this router at startup). Runs on the small
+    qwen2.5:7b model with a 15s timeout so it never stalls a kiosk scan. Any
+    failure — timeout, model busy, Ollama down, import error — returns "" and
+    the caller falls back to the canned explanation in verdict.py.
     """
     try:
-        from assistant_server import TEXT_MODEL, query_ollama
+        from assistant_server import query_ollama
 
         codes = ", ".join(getattr(signals, "codes", []) or []) or "none"
         prompt = (
@@ -69,11 +78,12 @@ def _explain_via_qwen(payload: str, signals) -> str:
         )
         return query_ollama(
             prompt,
-            TEXT_MODEL,
+            _EXPLAIN_MODEL,
             system_override=(
                 "You are a careful security explainer for non-technical "
                 "families. Be brief and calm. Never encourage opening the link."
             ),
+            timeout=_EXPLAIN_TIMEOUT_S,
         ).strip()
     except Exception:
         return ""  # falls back to canned explanation in verdict.py

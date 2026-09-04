@@ -1264,6 +1264,7 @@ def query_ollama(
     context: str | None = None,
     system_override: str | None = None,
     lang: str = "en",
+    timeout: int = 60,
 ) -> str:
     if system_override is not None:
         system = system_override
@@ -1278,7 +1279,7 @@ def query_ollama(
     }
     if image_b64:
         payload["images"] = [image_b64]
-    resp = requests.post(OLLAMA_URL, json=payload, timeout=60)
+    resp = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
     resp.raise_for_status()
     return resp.json().get("response", "").strip()
 
