@@ -39,3 +39,7 @@ qrcode[pil]>=7.4
 # already requires.
 opencv-python-headless>=4.9
 numpy>=1.24
+# pyzbar is the primary QR decoder (more robust on real photos than OpenCV's);
+# decode.py falls back to cv2 automatically if it's missing. Needs the system
+# library libzbar0:  sudo apt-get install libzbar0
+pyzbar>=0.1.9

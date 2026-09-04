@@ -3,16 +3,28 @@ decode.py — QR airlock: image/bytes -> raw payload string.
 
 Never opens, fetches, or navigates to anything found inside the QR.
 Pure decode only.
+
+Decoder strategy: pyzbar (libzbar) is tried first — it's meaningfully
+more robust than cv2.QRCodeDetector on real-world photos (angled shots,
+glare on laminated stickers, uneven restaurant lighting). cv2 is kept as
+a fallback since it needs no system library beyond opencv itself, so the
+airlock still works if libzbar isn't installed on a given box.
 """
 from __future__ import annotations
 
 import base64
-import io
 from dataclasses import dataclass
 from typing import Optional
 
 import cv2
 import numpy as np
+
+try:
+    from pyzbar.pyzbar import decode as _zbar_decode
+    _HAVE_ZBAR = True
+except (ImportError, OSError):
+    # OSError covers "libzbar.so not found" on boxes missing the system package
+    _HAVE_ZBAR = False
 
 
 class DecodeError(Exception):
@@ -33,9 +45,44 @@ def _cv2_image_from_bytes(image_bytes: bytes) -> np.ndarray:
     return img
 
 
-def decode_image_bytes(image_bytes: bytes) -> DecodeResult:
-    """Decode the first QR code found in raw image bytes (PNG/JPEG/etc)."""
-    img = _cv2_image_from_bytes(image_bytes)
+def _preprocess_variants(img: np.ndarray) -> list:
+    """
+    A few cheap, fast variants to try decoding against, aimed at the real
+    failure modes: low contrast / glare / uneven light on a printed sticker.
+    Order matters — cheapest and most-likely-to-help first.
+    """
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    variants = [gray]
+
+    # CLAHE local-contrast boost — helps with uneven lighting/glare.
+    clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8, 8))
+    variants.append(clahe.apply(gray))
+
+    # Adaptive threshold — helps with low-contrast prints/shadows.
+    variants.append(cv2.adaptiveThreshold(
+        gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 31, 5
+    ))
+
+    return variants
+
+
+def _try_pyzbar(img: np.ndarray) -> Optional[DecodeResult]:
+    if not _HAVE_ZBAR:
+        return None
+    for variant in _preprocess_variants(img):
+        try:
+            results = _zbar_decode(variant)
+        except Exception:
+            continue
+        for r in results:
+            if r.type == "QRCODE" and r.data:
+                text = r.data.decode("utf-8", errors="replace")
+                pts = [[p.x, p.y] for p in r.polygon] if r.polygon else None
+                return DecodeResult(payload=text, points=pts)
+    return None
+
+
+def _try_cv2(img: np.ndarray) -> Optional[DecodeResult]:
     detector = cv2.QRCodeDetector()
 
     # Try multi-detect first (handles multiple codes / better robustness in newer opencv)
@@ -49,11 +96,24 @@ def decode_image_bytes(image_bytes: bytes) -> DecodeResult:
     except cv2.error:
         pass
 
-    # Fallback to single-detect
-    text, pts, _ = detector.detectAndDecode(img)
-    if not text:
+    # Fallback to single-detect, including preprocessed variants.
+    for variant in [img] + _preprocess_variants(img):
+        text, pts, _ = detector.detectAndDecode(variant)
+        if text:
+            return DecodeResult(payload=text, points=pts.tolist() if pts is not None else None)
+    return None
+
+
+def decode_image_bytes(image_bytes: bytes) -> DecodeResult:
+    """Decode the first QR code found in raw image bytes (PNG/JPEG/etc)."""
+    img = _cv2_image_from_bytes(image_bytes)
+
+    result = _try_pyzbar(img)
+    if result is None:
+        result = _try_cv2(img)
+    if result is None:
         raise DecodeError("No QR code detected in image.")
-    return DecodeResult(payload=text, points=pts.tolist() if pts is not None else None)
+    return result
 
 
 def decode_base64_image(image_b64: str) -> DecodeResult:
