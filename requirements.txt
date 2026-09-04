@@ -30,3 +30,12 @@ pytz>=2023.3
 
 # ── Community deployment (join-card QR codes) ────────────────────────────────
 qrcode[pil]>=7.4
+
+# ── QR Airlock (tools/qr_airlock — mounted on assistant_server.py) ───────────
+# Offline decode of a scanned QR image -> payload string. Headless build: no
+# GUI libs on the rig. numpy is already pulled in transitively but pinned here
+# so a fresh install of just this module works. The module also needs the
+# FastAPI stack (fastapi / pydantic / uvicorn) that assistant_server.py
+# already requires.
+opencv-python-headless>=4.9
+numpy>=1.24
