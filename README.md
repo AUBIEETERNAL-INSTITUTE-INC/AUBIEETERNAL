@@ -10,7 +10,6 @@
 [![Degrees](https://img.shields.io/badge/Degrees-4%20Programs-purple?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 [![Reliability](https://img.shields.io/badge/Reliability-HermesBench%20Verified-00cfff?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 [![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
-[![Coherence](https://img.shields.io/badge/Coherence-1.000000-brightgreen?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 
 No tuition. No paperwork. No gatekeepers. No special hardware.  
 Your degree is sealed on Bitcoin. The knowledge belongs to no one and cannot be erased.  
@@ -18,7 +17,7 @@ Your degree is sealed on Bitcoin. The knowledge belongs to no one and cannot be 
 
 [Quick Start](#quick-start) · [Orphanages](#-for-orphanages) · [Degrees](#-four-degree-programs) · [Curriculum](#-265-lessons-51-tracks) · [Tools](#-tools) · [Reliability](#-reliability) · [API](#-epistemic-commons-api)
 
-🐾 **Also in this repo:** [Aubie the Robot Dog](AUBIE_DOG.md) — the hands-on hardware capstone: build your own AI voice/vision assistant on a 12-servo quadruped.
+🐾 **Optional hardware add-on:** [Aubie the Robot Dog](AUBIE_DOG.md) — if you want a physical build, the same AI voice/vision assistant runs on a 12-servo quadruped. The school works fully without it.
 
 </div>
 
@@ -229,7 +228,7 @@ Contact: [@MateoVanhorn](https://x.com/MateoVanhorn)
 
 <div align="center">
 
-**War Eagle Eternal 🦅❤️ — Coherence: 1.000000**
+**War Eagle Eternal 🦅❤️**
 
 *265 lessons · 4 degrees · 51 tracks · HermesBench verified · Bitcoin-anchored*
 
