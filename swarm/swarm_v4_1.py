@@ -1011,10 +1011,25 @@ TELEMETRY_FILES = [
     "master_truth_log.jsonl", "wonder_log.jsonl", "truth_lattice_log.jsonl",
     "cost_log.jsonl", "memory_palace.jsonl",
     "swarm_status.json", "master_status.json", "context_cache.json",
+    # 2026-09-04: tier2_digest.txt is rewritten every ~90s by
+    # write_tier2_digest() right before each github_push_truth_log(), so it
+    # was the last file forcing a `main` commit almost every cycle (276 of
+    # 280 main commits in the preceding 24h were the "🦅 v4.1 auto-push"
+    # heartbeat). Every consumer (file_io.get_tier2_digest, grokipedia.py,
+    # morning_synthesis.py, app.py) reads it off the local disk, never from
+    # GitHub, so it belongs with the telemetry snapshot, not on main.
+    # truth_debt_ledger.jsonl is an append-only log — same treatment; its
+    # rendered insights/truth_debt_report.md stays on main.
+    "tier2_digest.txt", "truth_debt_ledger.jsonl",
 ]
 TELEMETRY_BRANCH        = "telemetry"
 TELEMETRY_PUSH_INTERVAL = 3600   # seconds - once an hour, not every tick
 _last_telemetry_push    = 0.0
+
+# Once-a-day "rig alive" pulse to main (replaces the every-90s heartbeat
+# commit). One honest commit per calendar day, no fake Coherence.
+STATUS_FILE               = "STATUS.md"
+_last_status_heartbeat_date = None
 
 def _maybe_push_telemetry_branch(repo):
     """Snapshot TELEMETRY_FILES onto the `telemetry` branch ~hourly, without
@@ -1161,22 +1176,79 @@ def maybe_trigger_log_rotation():
         except Exception as e:
             print(f"  log rotation error ({getattr(path, 'name', path)}): {e}")
 
+def _maybe_daily_status_heartbeat(repo):
+    """Once per calendar day (Eastern), refresh STATUS.md and commit it to
+    main as a single honest 'rig alive' pulse. This is the deliberate
+    replacement for the old every-90s '🦅 v4.1 auto-push' heartbeat commit.
+    Best-effort: any failure is logged and retried next cycle / next day."""
+    global _last_status_heartbeat_date
+    today = _now_eastern().date()
+    if _last_status_heartbeat_date == today:
+        return
+    try:
+        pct = (daily_cost / DAILY_BUDGET_CAP) * 100 if DAILY_BUDGET_CAP else 0.0
+        body = (
+            "# Rig status\n\n"
+            "The `aubieeternal` inference rig is alive and the swarm loop is "
+            "running.\n\n"
+            f"- Date: {today} (America/New_York)\n"
+            f"- Swarm: v4.1\n"
+            f"- Model spend today: ${daily_cost:.2f} / ${DAILY_BUDGET_CAP:.2f} cap "
+            f"({pct:.0f}%)\n"
+            f"- Wonder index: {wonder_index:.4f} "
+            "(internal drift signal, not a claim about anything)\n\n"
+            "This file is a once-a-day liveness pulse. Real changes land as "
+            "their own commits - see ERROR_LEDGER.md and `git log --oneline` "
+            "on main.\n"
+        )
+        (Path(repo) / STATUS_FILE).write_text(body)
+        subprocess.run(["git", "-C", repo, "config", "--global", "--add",
+                        "safe.directory", repo], capture_output=True)
+        subprocess.run(["git", "-C", repo, "add", STATUS_FILE],
+                       capture_output=True, text=True, timeout=15)
+        commit = subprocess.run(
+            ["git", "-C", repo, "commit", "-m",
+             f"chore(status): rig alive {today}"],
+            capture_output=True, text=True, timeout=15
+        )
+        if "nothing to commit" in (commit.stdout + commit.stderr):
+            _last_status_heartbeat_date = today
+            return
+        if GITHUB_TOKEN:
+            subprocess.run(
+                ["git", "-C", repo, "remote", "set-url", "origin",
+                 f"https://{GITHUB_TOKEN}@github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL.git"],
+                capture_output=True, timeout=10
+            )
+        subprocess.run(["git", "-C", repo, "pull", "--rebase", "--autostash"],
+                       capture_output=True, text=True, timeout=30)
+        push = subprocess.run(["git", "-C", repo, "push", "origin", "main"],
+                              capture_output=True, text=True, timeout=30)
+        print(f"  💓 daily status push: {push.returncode} | {push.stderr[:100]}")
+        _last_status_heartbeat_date = today
+    except Exception as e:
+        print(f"  daily status heartbeat error: {e}")
+
+
 def github_push_truth_log():
     try:
         repo = str(GITHUB_REPO)
         # Rolling operational logs -> `telemetry` branch, hourly, independent
         # of whether main has anything to push this cycle.
         _maybe_push_telemetry_branch(repo)
-        # `main` gets only the knowledge / human-readable artifacts. The raw
-        # operational logs go to the `telemetry` branch instead - see
-        # _maybe_push_telemetry_branch() and TELEMETRY_FILES above.
+        # One honest "rig alive" commit per calendar day (not every cycle).
+        _maybe_daily_status_heartbeat(repo)
+        # `main` gets only the knowledge / human-readable artifacts that
+        # change rarely (a human publish, or a once-daily scheduled run).
+        # The raw operational logs AND the every-cycle tier2_digest.txt go to
+        # the `telemetry` branch instead - see _maybe_push_telemetry_branch()
+        # and TELEMETRY_FILES above. With the digest gone from this list the
+        # "nothing to commit" guard below now actually catches most cycles,
+        # so `main` stops collecting the "🦅 v4.1 auto-push" heartbeat.
         files = [
-            "tier2_digest.txt",
-            # X Bridge's Truth Debt Ledger (truth_debt_ledger.py) - one
-            # running ledger + its rendered report. Small, changes rarely,
-            # human-readable report - stays on main with the other knowledge
-            # artifacts rather than the noisy telemetry logs.
-            "truth_debt_ledger.jsonl", "insights/truth_debt_report.md",
+            # Rendered, human-readable Truth Debt report (the raw
+            # truth_debt_ledger.jsonl it's built from is telemetry now).
+            "insights/truth_debt_report.md",
         ]
         # Also push any new daily insight files
         insights_dir = Path(repo) / "insights" / "daily"
@@ -1231,10 +1303,23 @@ def github_push_truth_log():
         )
         print(f"  git add: {add.returncode} | {add.stderr[:80]}")
 
+        # Only the paths that actually changed this cycle - drives both the
+        # "did anything change" decision and an honest commit message. No
+        # Wonder:/Coherence: decoration: inter_rune_coherence is seeded at
+        # 1.0 and clamped min(1.0, ...), i.e. pinned at 1.000000, so it was
+        # never a measurement. See ERROR_LEDGER.md.
+        staged = subprocess.run(
+            ["git", "-C", repo, "diff", "--cached", "--name-only"],
+            capture_output=True, text=True, timeout=15
+        ).stdout.split()
+        if not staged:
+            print("  nothing changed on main this cycle")
+            return
+        summary = ", ".join(sorted({p.split("/")[0] for p in staged}))
+        today = _now_eastern().strftime("%Y-%m-%d")
+        msg = f"chore(swarm): publish {len(staged)} artifact(s) [{summary}] ({today})"
         result = subprocess.run(
-            ["git", "-C", repo, "commit", "-m",
-             f"🦅 v4.1 auto-push | Wonder:{wonder_index:.4f} | "
-             f"Coherence:{inter_rune_coherence:.6f}"],
+            ["git", "-C", repo, "commit", "-m", msg],
             capture_output=True, text=True, timeout=15
         )
         print(f"  git commit: {result.returncode} | {(result.stdout+result.stderr)[:100]}")

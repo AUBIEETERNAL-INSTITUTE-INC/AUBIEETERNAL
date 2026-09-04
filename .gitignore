@@ -93,6 +93,13 @@ memory_palace.jsonl
 swarm_status.json
 master_status.json
 context_cache.json
+# tier2_digest.txt was rewritten every ~90s right before each push, making it
+# the last file that forced a "🦅 v4.1 auto-push" commit to main almost every
+# cycle. Every consumer reads it off local disk, never GitHub. truth_debt_
+# ledger.jsonl is an append-only log. Both now go to the telemetry branch;
+# the rendered insights/truth_debt_report.md stays on main. (2026-09-04)
+tier2_digest.txt
+truth_debt_ledger.jsonl
 # Gzipped older log lines trimmed off the above by the swarm's daily
 # maybe_trigger_log_rotation() - local-only, never pushed anywhere.
 log_archive/
