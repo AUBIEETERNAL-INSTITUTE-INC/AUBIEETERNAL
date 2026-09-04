@@ -1322,7 +1322,7 @@ HTML = r"""<!DOCTYPE html>
   <button class="tab-btn" id="tbtn-qr" onclick="switchTab('qr')">
     <span class="tab-icon">🔒</span>Scan QR
   </button>
-  <button class="tab-btn" id="tbtn-portal" onclick="window.open('http://100.105.81.27:8501','_blank')">
+  <button class="tab-btn" id="tbtn-portal" onclick="window.open('https://aubieeternal.tail00eb41.ts.net/portal','_blank')">
     <span class="tab-icon">🖥️</span>Portal
   </button>
 </div>
