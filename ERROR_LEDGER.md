@@ -22,7 +22,7 @@ git show <sha> --stat
 Before 2026-09-04, `main` was ~98% `🦅 v4.1 auto-push | Wonder:X |
 Coherence:1.000000` — a swarm heartbeat that committed every ~90s and stamped a
 `Coherence` value that was pinned to `1.000000` by its own clamp, not measured.
-Commit `b4ca5ef8` stopped that: heartbeat telemetry now goes to the `telemetry`
+Commit `9111a3ce` stopped that: heartbeat telemetry now goes to the `telemetry`
 branch, and `main` gets one honest `chore(status): rig alive <date>` pulse per
 day. Real work lands as its own commit. The old heartbeat commits were left in
 history (forward-only, no rewrite) — filter them out with the greps above.
