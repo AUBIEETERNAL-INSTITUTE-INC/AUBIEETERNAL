@@ -1265,7 +1265,47 @@ HTML = r"""<!DOCTYPE html>
 </div><!-- /tab-aubie -->
 
 
-<!-- ── Tab bar (5 tabs) ───────────────────────────────────────────────── -->
+<!-- ── QR Airlock: scan a code, see the raw URL + verdict, never auto-open ── -->
+<div id="tab-qr" class="tab-panel">
+  <div class="card">
+    <div class="card-title"><span>🔒</span> Check a QR code before you trust it</div>
+    <p style="font-size:12px;color:var(--sub);margin:6px 0 12px">
+      Point the camera at any QR code (a table sticker, a flyer, a parking sign).
+      Aubie decodes it <b>on this device</b>, shows you the real link, and tells you
+      what's known about it. It never opens the link for you.
+    </p>
+    <button class="btn btn-accent" style="width:100%" onclick="scanQR()">📷 Scan a QR code</button>
+    <img id="qr-preview" style="display:none;width:100%;border-radius:12px;margin-top:10px" alt="">
+    <div id="qr-resp" class="resp"></div>
+
+    <div id="qr-result" style="display:none;margin-top:12px">
+      <div id="qr-badge" style="display:inline-block;padding:5px 12px;border-radius:999px;
+        font-weight:700;font-size:13px;letter-spacing:.02em"></div>
+      <p style="font-size:11px;color:var(--sub);margin:10px 0 4px">The actual link inside this code:</p>
+      <!-- Deliberately a <div>, never an <a>: selectable/copyable, never clickable, never auto-navigated. -->
+      <div id="qr-url" style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;
+        background:#0d1520;border:1px solid var(--accent);border-radius:10px;padding:11px;
+        word-break:break-all;user-select:all;-webkit-user-select:all"></div>
+      <p id="qr-explain" style="font-size:13px;color:var(--text);margin:10px 0 4px;line-height:1.45"></p>
+      <p id="qr-signals" style="font-size:11px;color:var(--sub);margin:0"></p>
+      <p style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--sub);
+        margin:8px 0 0;word-break:break-all">sha256: <span id="qr-hash"></span></p>
+
+      <div class="g2" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px">
+        <button class="btn btn-teal btn-sm" onclick="qrCopyUrl()">📋 Copy URL</button>
+        <button class="btn btn-sm" style="background:#1c2f45;color:#cfe8ff" onclick="qrAllow()">✅ Allow this month</button>
+        <button class="btn btn-sm" style="background:#452020;color:#ffd7d7" onclick="qrShare()">🚩 Share flag</button>
+      </div>
+      <p style="font-size:10px;color:var(--sub);margin-top:8px">
+        “Allow this month” only affects this household. “Share flag” queues a report for a
+        human to review before anything is published — nothing is sent automatically.
+      </p>
+    </div>
+  </div>
+</div><!-- /tab-qr -->
+
+
+<!-- ── Tab bar (6 tabs) ───────────────────────────────────────────────── -->
 <div class="tabbar">
   <button class="tab-btn active" id="tbtn-teach" onclick="switchTab('teach')">
     <span class="tab-icon">🧠</span>Teach
@@ -1278,6 +1318,9 @@ HTML = r"""<!DOCTYPE html>
   </button>
   <button class="tab-btn" id="tbtn-aubie" onclick="switchTab('aubie')">
     <span class="tab-icon">🧑‍🏫</span>Aubie
+  </button>
+  <button class="tab-btn" id="tbtn-qr" onclick="switchTab('qr')">
+    <span class="tab-icon">🔒</span>Scan QR
   </button>
   <button class="tab-btn" id="tbtn-portal" onclick="window.open('http://100.105.81.27:8501','_blank')">
     <span class="tab-icon">🖥️</span>Portal
@@ -1863,6 +1906,88 @@ async function describeScene() {
     if(!r.ok) { setResp('cam-resp', data.detail||'Vision error', 'error'); return; }
     setResp('cam-resp', data.description||JSON.stringify(data), 'ok'); log('Scene described','ok');
   } catch(e){setResp('cam-resp','Vision error: '+e.message,'error');}
+}
+
+// ── QR Airlock ───────────────────────────────────────────────────────────
+// Decode a scanned QR on the rig (POST /qr/check), show the raw URL + verdict.
+// Never navigates to the link. Buttons below are all explicit taps.
+let qrLast = null;   // last verdict payload {payload, payload_sha256, registered_domain, verdict}
+const QR_BADGE = {
+  confirmed_bad: ['#5a1a1a', '#ffb3b3', '⛔ Known bad — do not open'],
+  suspicious:    ['#4a3a10', '#ffdd88', '⚠️ Suspicious — read it carefully'],
+  withdrawn:     ['#333',    '#ccc',    'ℹ️ Was flagged, flag withdrawn'],
+  allowed:       ['#12351f', '#9be8b4', '✅ On your household allow list'],
+  unknown:       ['#1c2f45', '#cfe8ff', '❔ Nothing on record — read it yourself'],
+};
+async function scanQR() {
+  setResp('qr-resp','📷 Opening camera…','thinking');
+  document.getElementById('qr-result').style.display = 'none';
+  let b64;
+  try {
+    b64 = await captureTabletFrame();
+  } catch(e){ setResp('qr-resp','Camera error: '+e.message,'error'); return; }
+  if(!b64){ return; }  // captureTabletFrame already showed the insecure-origin fix
+  document.getElementById('qr-preview').src = 'data:image/jpeg;base64,'+b64;
+  document.getElementById('qr-preview').style.display = 'block';
+  setResp('qr-resp','🔎 Checking…','thinking');
+  try {
+    const r = await fetch('/qr/check', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ image_b64: b64, source: 'kiosk', who: 'kiosk' })
+    });
+    const d = await r.json();
+    if(d.error && !d.payload){ setResp('qr-resp', d.error, 'error'); return; }
+    renderQR(d);
+  } catch(e){ setResp('qr-resp','Check failed: '+e.message,'error'); }
+}
+function renderQR(d) {
+  qrLast = d;
+  setResp('qr-resp','', '');
+  document.getElementById('qr-resp').className = 'resp';
+  const [bg, fg, label] = QR_BADGE[d.verdict] || QR_BADGE.unknown;
+  const badge = document.getElementById('qr-badge');
+  badge.textContent = label; badge.style.background = bg; badge.style.color = fg;
+  document.getElementById('qr-url').textContent = d.payload || '(no link — not a URL)';
+  document.getElementById('qr-explain').textContent = d.explanation || '';
+  const sig = (d.signals||[]).join(', ');
+  document.getElementById('qr-signals').textContent = sig ? ('Warning signs: ' + sig) : '';
+  document.getElementById('qr-hash').textContent = d.payload_sha256 || '';
+  document.getElementById('qr-result').style.display = 'block';
+}
+async function qrCopyUrl() {
+  if(!qrLast || !qrLast.payload) return;
+  try {
+    if(navigator.clipboard) await navigator.clipboard.writeText(qrLast.payload);
+    else { const t=document.createElement('textarea'); t.value=qrLast.payload;
+      document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+    log('URL copied','ok');
+    const b=event.target; const o=b.textContent; b.textContent='📋 Copied'; setTimeout(()=>b.textContent=o,1500);
+  } catch(e){ log('Copy failed: '+e.message,'err'); }
+}
+async function qrAllow() {
+  if(!qrLast || !qrLast.payload) return;
+  if(!confirm('Allow this link for your whole household this month?')) return;
+  try {
+    const r = await fetch('/qr/allow', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ payload: qrLast.payload, domain: qrLast.registered_domain || null }) });
+    const d = await r.json();
+    if(r.ok){ log('Added to household allow list','ok'); renderQR({ ...qrLast, verdict:'allowed',
+      explanation:'You just added this to your household allow list.' }); }
+    else log('Allow failed: '+JSON.stringify(d),'err');
+  } catch(e){ log('Allow failed: '+e.message,'err'); }
+}
+async function qrShare() {
+  if(!qrLast || !qrLast.payload) return;
+  const venue = prompt('Optional: where did you see this code? (business name, or leave blank)') || '';
+  try {
+    const r = await fetch('/qr/share', { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ payload: qrLast.payload, venue_name: venue || null }) });
+    const d = await r.json();
+    if(r.ok && d.status==='queued'){
+      log('Flag queued for a human to review before publishing','ok');
+      const b=event.target; b.textContent='🚩 Queued'; b.disabled=true;
+    } else log('Share failed: '+JSON.stringify(d),'err');
+  } catch(e){ log('Share failed: '+e.message,'err'); }
 }
 
 // ── System ────────────────────────────────────────────────────────────────

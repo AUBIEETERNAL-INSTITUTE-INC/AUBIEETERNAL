@@ -45,6 +45,7 @@ from agent import router as agent_router
 from voice import router as voice_router
 from voice import router as voice_router
 from vision_extras import router as vision_router
+from tools.qr_airlock.api import router as qr_router
 from family_profiles import load_family_stats, save_family_stats, FAMILY_REGISTRY
 from model_selector import pick_best_model
 
@@ -844,6 +845,7 @@ app.include_router(agent_router)
 app.include_router(voice_router)
 app.include_router(voice_router)
 app.include_router(vision_router)
+app.include_router(qr_router)  # QR Airlock: POST /qr/check, /qr/allow, /qr/share
 
 
 @app.get("/build")
