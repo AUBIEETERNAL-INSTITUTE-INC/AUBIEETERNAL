@@ -864,13 +864,30 @@ def update_wonder_index(result_text):
         }) + "\n")
     return wonder_index
 
+# Hysteresis for the wonder-spike trigger. Found 2026-09-04: this was a bare
+# level check (`if wonder_index >= 1.4`) called on every heartbeat tick, with
+# no edge-detection - once wonder_index crossed 1.4 it kept firing every tick
+# for as long as it stayed there, and it almost always stayed there because
+# each Tier-2 response is full of the exact vocabulary update_wonder_index()
+# scores as "awe," pushing it right back up. Confirmed against real logs: a
+# 13h46m unattended run fired 501 Tier-2 pulses, with wonder_index >=1.4 on
+# 99.3% of that day's ticks. Fix: only fire on the upward crossing (armed ->
+# not armed), and only re-arm once the index drops back below 1.2, so a
+# single elevated stretch produces one pulse, not one per tick.
+_wonder_trigger_armed = True
+
+
 def check_wonder_trigger():
-    if wonder_index >= 1.4:
+    global _wonder_trigger_armed
+    if _wonder_trigger_armed and wonder_index >= 1.4:
+        _wonder_trigger_armed = False
         print(f"\n✨ WONDER SPIKE {wonder_index:.4f} — activating Tier 2!")
         run_tier2_core(
             f"Wonder Index reached {wonder_index:.4f}. Awe signal detected. Synthesize emergent insight.",
             trigger_type="wonder_spike"
         )
+    elif not _wonder_trigger_armed and wonder_index < 1.2:
+        _wonder_trigger_armed = True
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TRUTH LATTICE
@@ -1531,8 +1548,31 @@ def run_tier1_wave(context, swarm_name):
 # TIER 2 CORE RUN
 # ══════════════════════════════════════════════════════════════════════════════
 
+# Hard backstop on Tier-2 *frequency*, independent of the $ budget above and
+# of any individual trigger's own logic (wonder_spike, btc move, briefing,
+# vision, defcon) - added alongside the wonder-trigger hysteresis fix
+# 2026-09-04 so a bug in any one trigger (or a legitimately noisy one) can't
+# hammer the pipeline unbounded, including via the local-Ollama fallback
+# path where individual calls cost $0 and so never hit budget_ok()'s cap.
+TIER2_HOURLY_CAP = 6
+_tier2_pulse_timestamps: list = []
+
+
+def _tier2_hourly_cap_ok() -> bool:
+    global _tier2_pulse_timestamps
+    now = time.time()
+    _tier2_pulse_timestamps = [t for t in _tier2_pulse_timestamps if now - t < 3600]
+    if len(_tier2_pulse_timestamps) >= TIER2_HOURLY_CAP:
+        return False
+    _tier2_pulse_timestamps.append(now)
+    return True
+
+
 def run_tier2_core(context, trigger_type="manual"):
     global mets_counter
+    if not _tier2_hourly_cap_ok():
+        print(f"  🛑 TIER 2 HOURLY CAP ({TIER2_HOURLY_CAP}/hr) — skipping {trigger_type}")
+        return {}
     estimated = len(TIER2_DAUGHTERS) * GROK_PRO_COST_PER_CALL
     if not budget_ok(estimated):
         print(f"  💸 BUDGET CAP (${daily_cost:.2f}/${DAILY_BUDGET_CAP}) — skipping {trigger_type}")
