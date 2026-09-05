@@ -160,8 +160,22 @@ def http_ok(url: str, timeout: float = 3.0) -> bool:
 def check_wonder_pinned() -> dict | None:
     """wonder_index >= 1.9 for the entire trailing hour - the failure mode
     from the 2026-09-04 incident, where it sat pinned near the 2.0 ceiling
-    for 13+ hours because update_wonder_index() has no decay independent of
-    new content (see swarm_v4_1.py's update_wonder_index)."""
+    for 13+ hours.
+
+    2026-09-05: swarm_v4_1.py's decay_wonder_index() now pulls the index
+    back toward 0.5 on real elapsed time (half-life ~3h), so this check no
+    longer relies on "there's no decay at all" to be meaningful - a real
+    spike to 2.0 with nothing re-adding to it clears 1.9 in ~20 minutes and
+    is down to ~1.7 within the hour, well under this threshold. Verified
+    against the actual decay math in test_wonder_pinned_check.py (not
+    committed): an ordinary spike-then-idle hour reads None here; only a
+    hand-forced "stuck at 2.0 all hour" (decay broken, or something
+    re-adding fast enough to outrun it) still fires. Known accepted gap:
+    a legitimate run of real Tier-2 fires that happens to hit
+    TIER2_HOURLY_CAP with even spacing could theoretically keep the floor
+    above 1.9 too - that's rare enough (6 genuine triggers in one hour) to
+    be worth a human glance either way, so it's left as-is rather than
+    threaded through the cap counter here."""
     if not WONDER_LOG.exists():
         return None
     cutoff = datetime.now() - timedelta(hours=1)
