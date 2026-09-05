@@ -2,9 +2,15 @@
 """
 Always-on self-audit for the Ryzen rig.
 
-Every 15 minutes: check services, disk, HTTP, dog monitor.
+Every 15 minutes: check services, disk, HTTP, dog monitor, and (2026-09-05)
+aubie-swarm's own behavior - not just whether it's up, but whether it's
+producing a runaway (see the wonder_index / hormetic-pulse checks below,
+added after a 13h46m unattended incident; ERROR_LEDGER.md's Incidents
+section has the full story).
 If aubieeternal Build is down, restart it.
-Recurring problems become lessons the next Build/Grok session can see.
+Recurring problems become lessons the next Build/Grok session can see. The
+4 swarm-behavior checks bypass that recurrence gate - they alert by email
+on first detection, not after 45 minutes of confirmation.
 
 Nightly: ask local Qwen for a short "how to get better" note from the day's log.
 """
@@ -12,12 +18,16 @@ from __future__ import annotations
 
 import json
 import os
+import smtplib
 import subprocess
 import sys
 import time
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
+from email.mime.text import MIMEText
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 HOME = Path.home()
 DIR = HOME / "AUBIEETERNAL" / "memory" / "self_audit"
@@ -27,6 +37,34 @@ LESSONS = DIR / "lessons.md"
 GROK_RULE = HOME / ".grok" / "rules" / "self-audit.md"
 MONITOR_LOG = HOME / "scripts" / "aubie_monitor.log"
 SESSIONS = HOME / ".grok" / "sessions"
+
+# Same local Proton Bridge account email_watch.py reads via IMAP (port 1143);
+# Bridge exposes the same account's SMTP on 1025. Loaded explicitly rather
+# than relying on load_dotenv()'s directory-walk, since this script's
+# WorkingDirectory (aubieeternal_build/) is a subdirectory of where .env
+# actually lives.
+load_dotenv(HOME / "AUBIEETERNAL" / ".env")
+PROTON_SMTP_HOST = "127.0.0.1"
+PROTON_SMTP_PORT = 1025
+
+# aubie-swarm.service isn't in SYSTEM_SERVICES below because "is it active"
+# isn't the failure mode that matters for it - the 2026-09-04 incident ran
+# for 13h46m with the service healthy and running the whole time. These
+# checks look at what it's actually producing instead.
+SWARM_UNIT = "aubie-swarm.service"
+WONDER_LOG = HOME / "AUBIEETERNAL" / "wonder_log.jsonl"
+SWARM_TELEMETRY_STATUS = DIR / "telemetry_push_status.json"
+ALERT_STATE_PATH = DIR / "swarm_alert_state.json"
+WONDER_PINNED_THRESHOLD = 1.9
+SWARM_LOG_LINES_PER_HOUR_THRESHOLD = 1000
+# >2/hr, not >1/hr: run_hormetic_pulse() fires on every Tier-2 activation,
+# not just wonder_spike, so a single busy hour (two legitimate BTC-move
+# triggers, say) can reach 2 without being a runaway.
+HORMETIC_PULSES_PER_HOUR_THRESHOLD = 2
+SWARM_ALERT_CHECK_IDS = {
+    "swarm:wonder_pinned", "swarm:log_volume",
+    "swarm:telemetry_push_failing", "swarm:hormetic_frequency",
+}
 
 
 def scrape_tool_fails(limit: int = 8) -> list[dict]:
@@ -104,6 +142,164 @@ def http_ok(url: str, timeout: float = 3.0) -> bool:
         return False
 
 
+# ── Swarm behavior checks (2026-09-05) ──────────────────────────────────────
+# All four read data the swarm already produces on its own - wonder_log.jsonl,
+# journalctl, and (as of the same-day swarm_v4_1.py change) a small telemetry-
+# push status file - no polling of the swarm process itself.
+
+def check_wonder_pinned() -> dict | None:
+    """wonder_index >= 1.9 for the entire trailing hour - the failure mode
+    from the 2026-09-04 incident, where it sat pinned near the 2.0 ceiling
+    for 13+ hours because update_wonder_index() has no decay independent of
+    new content (see swarm_v4_1.py's update_wonder_index)."""
+    if not WONDER_LOG.exists():
+        return None
+    cutoff = datetime.now() - timedelta(hours=1)
+    values = []
+    try:
+        # Tail is enough - wonder_log gets a line roughly every couple
+        # seconds during active ticks, so the last 5000 lines comfortably
+        # covers an hour even on a busy run.
+        for line in WONDER_LOG.read_text(errors="ignore").splitlines()[-5000:]:
+            try:
+                rec = json.loads(line)
+                ts = datetime.fromisoformat(rec["timestamp"])
+            except Exception:
+                continue
+            if ts >= cutoff:
+                values.append(rec.get("wonder_index", 0))
+    except Exception:
+        return None
+    if values and min(values) >= WONDER_PINNED_THRESHOLD:
+        return {
+            "id": "swarm:wonder_pinned", "sev": "high",
+            "msg": f"wonder_index >= {WONDER_PINNED_THRESHOLD} for the entire last hour "
+                   f"({len(values)} samples, min {min(values):.4f})",
+        }
+    return None
+
+
+def check_swarm_log_volume() -> dict | None:
+    """aubie-swarm log lines in the last hour, vs. a static threshold - the
+    same style as the existing disk/RAM checks, not an adaptive baseline."""
+    out = sh(f"journalctl -u {SWARM_UNIT} --since '-1 hour' --no-pager 2>/dev/null | wc -l", timeout=15)
+    try:
+        n = int(out.strip())
+    except ValueError:
+        return None
+    if n > SWARM_LOG_LINES_PER_HOUR_THRESHOLD:
+        return {
+            "id": "swarm:log_volume", "sev": "high",
+            "msg": f"aubie-swarm produced {n} log lines in the last hour "
+                   f"(threshold {SWARM_LOG_LINES_PER_HOUR_THRESHOLD})",
+        }
+    return None
+
+
+def check_telemetry_push_failures() -> dict | None:
+    """3 consecutive failed telemetry-branch pushes, from the status file
+    swarm_v4_1.py's _record_telemetry_push_result() writes after every
+    attempt (added alongside this check, 2026-09-05)."""
+    if not SWARM_TELEMETRY_STATUS.exists():
+        return None
+    try:
+        history = json.loads(SWARM_TELEMETRY_STATUS.read_text())
+    except Exception:
+        return None
+    last3 = history[-3:]
+    if len(last3) == 3 and all(not h.get("ok") for h in last3):
+        return {
+            "id": "swarm:telemetry_push_failing", "sev": "high",
+            "msg": f"telemetry branch push failed 3 cycles in a row "
+                   f"(latest: {(last3[-1].get('detail') or '')[:120]})",
+        }
+    return None
+
+
+def check_hormetic_frequency() -> dict | None:
+    """HORMETIC PULSE / WONDER SPIKE lines in the last hour. run_hormetic_
+    pulse() fires on every Tier-2 activation (briefing, BTC move, vision,
+    DEFCON - not just wonder_spike), so this is deliberately > 2/hr, not
+    > 1/hr, to leave room for a legitimately busy hour."""
+    out = sh(
+        f"journalctl -u {SWARM_UNIT} --since '-1 hour' --no-pager 2>/dev/null "
+        f"| grep -cE 'HORMETIC PULSE|WONDER SPIKE'",
+        timeout=15,
+    )
+    try:
+        n = int(out.strip())
+    except ValueError:
+        return None
+    if n > HORMETIC_PULSES_PER_HOUR_THRESHOLD:
+        return {
+            "id": "swarm:hormetic_frequency", "sev": "high",
+            "msg": f"{n} HORMETIC PULSE/WONDER SPIKE lines in the last hour "
+                   f"(threshold >{HORMETIC_PULSES_PER_HOUR_THRESHOLD})",
+        }
+    return None
+
+
+def send_alert_email(subject: str, body: str) -> bool:
+    """Best-effort alert via the local Proton Bridge (same account
+    email_watch.py reads from). Never raises - a broken send shouldn't break
+    the rest of the 15-minute audit cycle."""
+    user = os.environ.get("PROTON_IMAP_USER")
+    pw = os.environ.get("PROTON_IMAP_PASS")
+    if not user or not pw:
+        print("  ⚠️ alert email skipped: PROTON_IMAP_USER/PROTON_IMAP_PASS not set")
+        return False
+    try:
+        msg = MIMEText(body)
+        msg["Subject"] = subject
+        msg["From"] = user
+        msg["To"] = user
+        with smtplib.SMTP(PROTON_SMTP_HOST, PROTON_SMTP_PORT, timeout=15) as s:
+            s.starttls()
+            s.login(user, pw)
+            s.send_message(msg)
+        return True
+    except Exception as exc:
+        print(f"  ⚠️ alert email failed: {exc}")
+        return False
+
+
+def _load_alert_state() -> set[str]:
+    try:
+        return set(json.loads(ALERT_STATE_PATH.read_text()))
+    except Exception:
+        return set()
+
+
+def _save_alert_state(active: set[str]) -> None:
+    try:
+        DIR.mkdir(parents=True, exist_ok=True)
+        ALERT_STATE_PATH.write_text(json.dumps(sorted(active)))
+    except Exception:
+        pass
+
+
+def maybe_send_swarm_alerts(report: dict) -> None:
+    """The 4 swarm-behavior checks bypass promote_lessons()'s normal 3-of-16
+    recurrence gate: email fires the FIRST run a condition is seen, not
+    after ~45 minutes of confirmation - a runaway process shouldn't need
+    three strikes. Edge-triggered like the wonder-trigger hysteresis fix
+    itself: fires once when a condition turns on, stays quiet while it
+    persists (still visible in findings/latest.json every cycle), and can
+    fire again after it clears and re-trips."""
+    by_id = {f["id"]: f for f in report.get("findings") or []}
+    now_active = set(by_id) & SWARM_ALERT_CHECK_IDS
+    newly_active = now_active - _load_alert_state()
+    for fid in newly_active:
+        f = by_id[fid]
+        send_alert_email(
+            f"[AUBIEETERNAL] Swarm alert: {fid}",
+            f"{f['msg']}\n\nDetected: {report.get('ts')}\n"
+            f"See memory/self_audit/latest.json and ERROR_LEDGER.md's "
+            f"Incidents section for prior context.",
+        )
+    _save_alert_state(now_active)
+
+
 def collect() -> dict:
     findings = []
     services = {}
@@ -167,6 +363,12 @@ def collect() -> dict:
             "sev": "med",
             "msg": f"{len(tool_fails)} recent Build tool failures (wrong args / bad paths)",
         })
+
+    for check in (check_wonder_pinned, check_swarm_log_volume,
+                  check_telemetry_push_failures, check_hormetic_frequency):
+        finding = check()
+        if finding:
+            findings.append(finding)
 
     return {
         "ts": now(),
@@ -311,6 +513,7 @@ def run_once() -> int:
         follow = collect()
         report["after_repair"] = {"http": follow["http"], "services": follow["services"]}
         report["ok"] = follow["ok"]
+    maybe_send_swarm_alerts(report)
     append_log(report)
     promote_lessons(report)
     write_grok_rule(report)
