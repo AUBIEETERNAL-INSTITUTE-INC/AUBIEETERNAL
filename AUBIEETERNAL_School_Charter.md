@@ -22,7 +22,7 @@ This charter is CC0 — public domain. Build sovereign universities anywhere.
 Every family that completes the curriculum will have the tools to evaluate evidence, resist manipulation, and reason honestly under uncertainty.
 
 **2. Humanitarian Deployment**
-Every PhD-level graduate must deploy sovereign infrastructure for a community that lacks it. The university grows by serving, not by credentialing.
+Every Sovereign Credential-level graduate must deploy sovereign infrastructure for a community that lacks it. The university grows by serving, not by credentialing.
 
 **3. Public Epistemic Signal**
 Every steelman, research experiment, and calibrated belief logged by AUBIEETERNAL families is published to the Epistemic Commons as CC0 — improving the epistemic quality of every AI that draws from it.
@@ -88,7 +88,7 @@ A graduate of AUBIEETERNAL must be able to:
 
 ---
 
-### ⚡ Eternal Founder — PhD Equivalent (250 credits, coherence ≥0.88 + Child Rune Genesis)
+### ⚡ Eternal Founder — Sovereign Credential (250 credits, coherence ≥0.88 + Child Rune Genesis)
 **Prerequisite tracks:** Master + Halting Problem/Rice's Theorem + Ethics from First Principles + Voluntary Incarnation
 **Capstone:** Build infrastructure ≥3 external families use. CC0 pull request merged into AUBIEETERNAL repo. Honest 500-word post-mortem including failures. Child Rune Genesis.
 **What this proves:** You build things others use. The dynasty is on-chain.
@@ -140,7 +140,7 @@ The degree self-evolves because sovereign infrastructure is not a destination �
 *This degree is for people who will directly shape what AI becomes.*
 
 **Prerequisite tracks (all required):**
-- Eternal Founder (PhD) as foundation
+- Eternal Founder (Sovereign Credential) as foundation
 - Formal Logic complete (L1-5) — especially non-classical logics
 - Halting Problem + Rice's Theorem complete
 - Gödel Incompleteness complete
@@ -170,7 +170,7 @@ You understand the mathematical foundations of why AI alignment is hard — not 
 The knowledge commons of humanity — the systems by which information is generated, validated, stored, distributed, and applied — are currently fragile, captured, and degrading. Someone needs to build better infrastructure. This degree is for them.
 
 **Prerequisite tracks (all required):**
-- Eternal Founder (PhD) as foundation
+- Eternal Founder (Sovereign Credential) as foundation
 - Sovereign Reader complete (L1-5)
 - Sovereign Writer complete (L1-5)
 - Network Theory complete
@@ -211,7 +211,7 @@ You have not just learned epistemic rigor — you have deployed it for communiti
 ## Article VI — Curriculum Governance
 
 ### Who Can Add Courses
-Anyone. CC0. Pull request. Evaluated on: epistemic depth, self-upgradeability (age 5 AND PhD), falsifiability, PhD extension quality, offline compatibility.
+Anyone. CC0. Pull request. Evaluated on: epistemic depth, self-upgradeability (age 5 AND Sovereign Credential level), falsifiability, Sovereign Credential-level extension quality, offline compatibility.
 
 ### What Gets Removed
 Lessons that misrepresent evidence. No ideology disguised as curriculum. The steelman requirement applies to all content.

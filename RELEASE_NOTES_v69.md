@@ -20,7 +20,7 @@ This release transforms AUBIEETERNAL from a family intelligence system into a **
 | 📜 Sovereign Associate | 60 | 0.68 | Deploy sovereign node |
 | 🏛️ Truth Architect | 120 | 0.75 | Research + community service |
 | 🎓 Master of Epistemic Rigor | 180 | 0.82 | 90-day pre-registered experiment |
-| ⚡ Eternal Founder (PhD) | 250 | 0.88 | Build infrastructure others use + Child Rune Genesis |
+| ⚡ Eternal Founder (Sovereign Credential) | 250 | 0.88 | Build infrastructure others use + Child Rune Genesis |
 
 ### 📚 New Curriculum Tracks (10 tracks, 40 lessons)
 

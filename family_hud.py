@@ -3821,8 +3821,8 @@ LESSONS = {
         "is_capstone": True,
     },
     "capstone-phd": {
-        "title":       "Capstone — Eternal Founder (PhD): Build the Infrastructure Others Use",
-        "topic":       "The PhD capstone has one requirement: build something real that other sovereign families use. Not a paper about building. Not a plan to build. A working piece of infrastructure with documented adoption.",
+        "title":       "Capstone — Eternal Founder (Sovereign Credential): Build the Infrastructure Others Use",
+        "topic":       "The Sovereign Credential capstone has one requirement: build something real that other sovereign families use. Not a paper about building. Not a plan to build. A working piece of infrastructure with documented adoption.",
         "steelman":    "What is the strongest argument that 'adoption' is a poor measure of intellectual achievement — that the most important contributions are often not widely adopted in their time?",
         "example":     (
             "PhD capstone requirements:\n\n"
