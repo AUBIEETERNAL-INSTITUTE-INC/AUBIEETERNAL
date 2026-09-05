@@ -6,11 +6,18 @@ Every 15 minutes: check services, disk, HTTP, dog monitor, and (2026-09-05)
 aubie-swarm's own behavior - not just whether it's up, but whether it's
 producing a runaway (see the wonder_index / hormetic-pulse checks below,
 added after a 13h46m unattended incident; ERROR_LEDGER.md's Incidents
-section has the full story).
+section has the full story) AND whether its 5 scheduled daily jobs
+(morning_synthesis, email_watch, epistemic_commons, curriculum_autogen,
+living_lattice) are actually producing output - a sys.path bug silently
+broke all 5 for 11 days while this file reported all-green the whole time,
+because it only ever checked whether the aubie-swarm *process* was alive.
+The stale-output checks look at each job's own on-disk evidence directly,
+independent of the swarm's logs or in-memory state.
 If aubieeternal Build is down, restart it.
 Recurring problems become lessons the next Build/Grok session can see. The
-4 swarm-behavior checks bypass that recurrence gate - they alert by email
-on first detection, not after 45 minutes of confirmation.
+9 swarm-behavior checks (4 runaway + 5 stale-output) bypass that recurrence
+gate - they alert by email on first detection, not after 45 minutes of
+confirmation.
 
 Nightly: ask local Qwen for a short "how to get better" note from the day's log.
 """
@@ -64,6 +71,9 @@ HORMETIC_PULSES_PER_HOUR_THRESHOLD = 2
 SWARM_ALERT_CHECK_IDS = {
     "swarm:wonder_pinned", "swarm:log_volume",
     "swarm:telemetry_push_failing", "swarm:hormetic_frequency",
+    "swarm:stale_morning_synthesis", "swarm:stale_email_digest",
+    "swarm:stale_epistemic_commons", "swarm:stale_curriculum_autogen",
+    "swarm:stale_living_lattice",
 }
 
 
@@ -239,6 +249,94 @@ def check_hormetic_frequency() -> dict | None:
     return None
 
 
+# ── Stale scheduled-output detection (2026-09-05) ───────────────────────────
+# The morning_synthesis/email_watch/epistemic_commons/curriculum_autogen/
+# living_lattice triggers all silently failed for 11 days (a sys.path bug in
+# swarm_v4_1.py, fixed in dc945427) while self_audit reported all-green the
+# whole time - it only ever checked whether the aubie-swarm *process* was
+# alive, never whether any specific scheduled job inside it had actually
+# produced output recently. These 5 checks close that gap: each looks at the
+# real on-disk evidence a successful run leaves (a dated output file's mtime,
+# or a recorded last_run_date field, whichever that trigger already writes),
+# not at the swarm's own logs or in-memory state - so this stays a true
+# outside observer, immune to the same class of bug it exists to catch.
+STALE_OUTPUT_THRESHOLD_HOURS = 48  # ~2 missed days before flagging, not 1
+
+INSIGHTS_DAILY_GLOB       = str(HOME / "AUBIEETERNAL" / "insights" / "daily" / "*.md")
+EMAIL_DIGEST_PATH         = Path("/mnt/main/email_digest/today.json")
+COMMONS_DAILY_GLOB        = str(HOME / "AUBIEETERNAL" / "epistemic_commons" / "daily" / "*.json")
+CURRICULUM_AUTOGEN_STATE  = Path("/mnt/main/curriculum_autogen_state.json")
+LATTICE_SIGNALS_GLOB      = str(HOME / "AUBIEETERNAL" / "lattice" / "signals" / "*.json")
+
+
+def _newest_glob_mtime(pattern: str) -> datetime | None:
+    import glob
+    paths = glob.glob(pattern)
+    if not paths:
+        return None
+    newest = max(paths, key=lambda p: os.path.getmtime(p))
+    return datetime.fromtimestamp(os.path.getmtime(newest))
+
+
+def _file_mtime(path: Path) -> datetime | None:
+    if not path.exists():
+        return None
+    return datetime.fromtimestamp(path.stat().st_mtime)
+
+
+def _json_field_date(path: Path, field: str) -> datetime | None:
+    try:
+        val = json.loads(path.read_text()).get(field)
+        return datetime.fromisoformat(val) if val else None
+    except Exception:
+        return None
+
+
+def _stale_check(fid: str, label: str, last_dt: datetime | None) -> dict | None:
+    """Shared verdict for all 5 checks: flag if there's no evidence at all,
+    or if the most recent evidence is older than STALE_OUTPUT_THRESHOLD_HOURS."""
+    if last_dt is None:
+        return {"id": fid, "sev": "high", "msg": f"{label}: no output found at all"}
+    age_hours = (datetime.now() - last_dt).total_seconds() / 3600
+    if age_hours > STALE_OUTPUT_THRESHOLD_HOURS:
+        return {
+            "id": fid, "sev": "high",
+            "msg": f"{label}: last output {age_hours:.0f}h old "
+                   f"(threshold {STALE_OUTPUT_THRESHOLD_HOURS}h)",
+        }
+    return None
+
+
+def check_stale_morning_synthesis() -> dict | None:
+    return _stale_check("swarm:stale_morning_synthesis",
+                         "morning_synthesis (insights/daily/*.md, fires 6AM)",
+                         _newest_glob_mtime(INSIGHTS_DAILY_GLOB))
+
+
+def check_stale_email_digest() -> dict | None:
+    return _stale_check("swarm:stale_email_digest",
+                         "email_watch.daily_digest (email_digest/today.json, fires 7AM)",
+                         _file_mtime(EMAIL_DIGEST_PATH))
+
+
+def check_stale_epistemic_commons() -> dict | None:
+    return _stale_check("swarm:stale_epistemic_commons",
+                         "epistemic_commons (epistemic_commons/daily/*.json, fires 8AM)",
+                         _newest_glob_mtime(COMMONS_DAILY_GLOB))
+
+
+def check_stale_curriculum_autogen() -> dict | None:
+    return _stale_check("swarm:stale_curriculum_autogen",
+                         "curriculum_autogen (curriculum_autogen_state.json, fires 9AM)",
+                         _json_field_date(CURRICULUM_AUTOGEN_STATE, "last_run_date"))
+
+
+def check_stale_living_lattice() -> dict | None:
+    return _stale_check("swarm:stale_living_lattice",
+                         "living_lattice (lattice/signals/*.json, fires 10AM)",
+                         _newest_glob_mtime(LATTICE_SIGNALS_GLOB))
+
+
 def send_alert_email(subject: str, body: str) -> bool:
     """Best-effort alert via the local Proton Bridge (same account
     email_watch.py reads from). Never raises - a broken send shouldn't break
@@ -365,7 +463,10 @@ def collect() -> dict:
         })
 
     for check in (check_wonder_pinned, check_swarm_log_volume,
-                  check_telemetry_push_failures, check_hormetic_frequency):
+                  check_telemetry_push_failures, check_hormetic_frequency,
+                  check_stale_morning_synthesis, check_stale_email_digest,
+                  check_stale_epistemic_commons, check_stale_curriculum_autogen,
+                  check_stale_living_lattice):
         finding = check()
         if finding:
             findings.append(finding)
