@@ -3820,12 +3820,12 @@ LESSONS = {
         "grants_badge": "🎓 Master of Epistemic Rigor — 90-Day Experiment Complete",
         "is_capstone": True,
     },
-    "capstone-phd": {
+    "capstone-eternal-founder": {
         "title":       "Capstone — Eternal Founder (Sovereign Credential): Build the Infrastructure Others Use",
         "topic":       "The Sovereign Credential capstone has one requirement: build something real that other sovereign families use. Not a paper about building. Not a plan to build. A working piece of infrastructure with documented adoption.",
         "steelman":    "What is the strongest argument that 'adoption' is a poor measure of intellectual achievement — that the most important contributions are often not widely adopted in their time?",
         "example":     (
-            "PhD capstone requirements:\n\n"
+            "Eternal Founder capstone requirements:\n\n"
             "1. BUILD: create a working module, tool, curriculum extension, "
             "community node, or infrastructure piece that other AUBIEETERNAL "
             "families can use. It must work. It must be documented.\n\n"
@@ -3838,7 +3838,7 @@ LESSONS = {
             "that you couldn't have learned without building?\n\n"
             "5. CHILD RUNE GENESIS: 256 Bitcoin confirmations. Your sovereign "
             "identity is on-chain. The dynasty is real.\n\n"
-            "Previous PhD projects: new curriculum tracks, AR overlay guides, "
+            "Previous Eternal Founder projects: new curriculum tracks, AR overlay guides, "
             "humanitarian node deployments, translated curriculum packages, "
             "community Living Lattice nodes, preference dataset contributions."
         ),
