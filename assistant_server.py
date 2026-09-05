@@ -18,6 +18,7 @@ Run with:
 """
 
 import asyncio
+import threading
 import base64
 import io
 import json
@@ -1088,24 +1089,35 @@ def fetch_aubie_snapshot() -> bytes:
     raise last_exc
 
 
+_aubie_audio_lock = threading.Lock()
+
+
 def push_audio_to_aubie(wav_bytes: bytes) -> None:
     """POST raw WAV bytes to aubie's /play_audio (plays out the EMEET
     speaker) - Tailscale first, LAN fallback, same reasoning as
-    fetch_aubie_snapshot() above."""
-    last_exc = None
-    for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):
-        try:
-            resp = requests.post(
-                f"http://{host}:{AUBIE_CALL_PORT}/play_audio",
-                data=wav_bytes,
-                timeout=15,
-            )
-            resp.raise_for_status()
-            return
-        except requests.RequestException as e:
-            print(f"[speak] play_audio via {host} failed: {e}")
-            last_exc = e
-    raise last_exc
+    fetch_aubie_snapshot() above. Serialized with _aubie_audio_lock so two
+    overlapping calls (e.g. rapid back-to-back /greet wake-word triggers)
+    can never both have a POST in flight to the board's /play_audio at
+    once - the board's aplay was hitting "Device or resource busy" trying
+    to open the ALSA device twice concurrently. NOT YET VERIFIED against
+    real hardware (board offline as of 2026-09-04) - once it reconnects,
+    trigger /greet twice in quick succession and confirm no ALSA error in
+    the board's own aplay log."""
+    with _aubie_audio_lock:
+        last_exc = None
+        for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):
+            try:
+                resp = requests.post(
+                    f"http://{host}:{AUBIE_CALL_PORT}/play_audio",
+                    data=wav_bytes,
+                    timeout=15,
+                )
+                resp.raise_for_status()
+                return
+            except requests.RequestException as e:
+                print(f"[speak] play_audio via {host} failed: {e}")
+                last_exc = e
+        raise last_exc
 
 
 def detect_target_offset(image_bytes: bytes, target_name: str) -> float | None:
