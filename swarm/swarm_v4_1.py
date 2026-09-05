@@ -1401,6 +1401,19 @@ def github_push_truth_log():
                 if rel not in files:
                     files.append(rel)
 
+        # 2026-09-05: insights/probe/*.json + *.md (morning_synthesis's
+        # simulation_probe sub-step) had the exact same never-swept gap as
+        # Living Lattice/Epistemic Commons/x_lessons below - written locally
+        # every run, never reaching GitHub. Same directory-glob treatment as
+        # insights/daily/ just above, not a hardcoded filename, since probe
+        # writes two extensions per day (unlike daily/'s .md-only).
+        probe_dir = Path(repo) / "insights" / "probe"
+        if probe_dir.exists():
+            for probe_file in list(probe_dir.glob("*.json")) + list(probe_dir.glob("*.md")):
+                rel = str(probe_file.relative_to(Path(repo)))
+                if rel not in files:
+                    files.append(rel)
+
         # Also push new Living Lattice signals and Epistemic Commons output.
         # Both modules write real local files under the repo (lattice/signals/,
         # epistemic_commons/) but neither one pushes to GitHub itself - they
@@ -1429,7 +1442,24 @@ def github_push_truth_log():
                         if rel not in files:
                             files.append(rel)
 
-        existing = [f for f in files if (Path(repo) / f).exists()]
+        # 2026-09-05: same skip-and-log guard as _maybe_push_telemetry_branch()
+        # (032f3b80) - this list is all glob-collected now (insights/daily/,
+        # insights/probe/, lattice/signals/, epistemic_commons/, x_lessons/),
+        # so one oversized file landing here would silently block main's
+        # entire knowledge-artifact commit the same way it blocked telemetry.
+        # Reuses TELEMETRY_MAX_FILE_BYTES rather than a second threshold.
+        existing = []
+        for f in files:
+            p = Path(repo) / f
+            if not p.exists():
+                continue
+            size = p.stat().st_size
+            if size > TELEMETRY_MAX_FILE_BYTES:
+                print(f"  ⚠️ main push: skipping {f} ({size / 1e6:.1f}MB > "
+                      f"{TELEMETRY_MAX_FILE_BYTES / 1e6:.1f}MB cap, GitHub's hard limit is "
+                      f"100MB) - would block the whole commit")
+                continue
+            existing.append(f)
         print(f"  📁 Push attempt | Files found: {existing}")
         if not existing:
             print(f"  ⚠️ No output files found at {repo}")
