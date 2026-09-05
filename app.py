@@ -9638,8 +9638,16 @@ if "Sovereign Builder" in active:
         # ── Builder level header ───────────────────────────────────────────────
         _bl    = _stats.get("builder_level", 0)
         _blc   = "#f7931a" if _bl >= 6 else "#00cfff" if _bl >= 3 else "#445577"
+        # NOTE: builder_level (sovereign_builder.py's own hardware/impact
+        # progression stat - upgrades, benchmarks, people reached) is NOT
+        # degrees.py data and was never meant to be; it has no id/tier
+        # mapping to degrees.DEGREES at all. Left as its own local dict for
+        # that reason - only the literal word "PhD" at level 7 changed
+        # (2026-09-05), since that's still our-own-product achievement-tier
+        # language the same cleanup pass targeted, independent of whether
+        # it happens to key off degrees.py.
         _blnames = {0:"Beginner",1:"Tinkerer",2:"Upgrader",3:"Optimizer",
-                    4:"Architect",5:"Engineer",6:"Master",7:"PhD",8:"Humanity Builder"}
+                    4:"Architect",5:"Engineer",6:"Master",7:"Sovereign Expert",8:"Humanity Builder"}
         st.markdown(
             f'<div style="text-align:center;padding:10px 0 6px;">'
             f'<div style="font-size:28px">🔧</div>'
@@ -9842,9 +9850,18 @@ if "University Registrar" in active:
     _highest = _deg_data.get("highest_degree")
     _hname   = _highest["name"] if _highest else "No degree yet"
     _hemoji  = _highest["emoji"] if _highest else "📋"
-    _hc      = "#f7931a" if _highest and "PhD" in _highest.get("name","") else \
-               "#a020f0" if _highest and "Master" in _highest.get("name","") else \
-               "#00cfff" if _highest else "#445577"
+    # Keyed off degrees.py's canonical `tier`, not the display name/emoji -
+    # those can change (they did, cc63eb06: "PhD" -> "Sovereign Credential")
+    # independent of this color logic. _highest is one of degrees.DEGREES'
+    # own dicts (family_hud.get_degree_eligibility() -> degrees.eligibility_
+    # report() -> degrees.highest_degree()), so tier is always present when
+    # _highest is truthy. tier==5 is Eternal Founder, tier==4 is Master of
+    # Epistemic Rigor - same two tiers the old "PhD"/"Master" substring
+    # checks picked out, just no longer tied to their exact wording.
+    _ht = _highest.get("tier", 0) if _highest else 0
+    _hc = "#f7931a" if _ht == 5 else \
+          "#a020f0" if _ht == 4 else \
+          "#00cfff" if _highest else "#445577"
 
     st.markdown(
         f'<div style="text-align:center;padding:12px 0 8px;">'
@@ -9944,7 +9961,7 @@ if "University Registrar" in active:
             ("📜 Associate", "Deploy your first sovereign node", "capstone-associate", 0.68),
             ("🏛️ Truth Architect", "Research paper + community contribution (10+ people)", "capstone-bachelor", 0.75),
             ("🎓 Master", "90-day pre-registered experiment + honest results", "capstone-masters", 0.82),
-            ("⚡ PhD / Eternal Founder", "Build infrastructure others use + CC0 contribution", "capstone-phd", 0.88),
+            ("⚡ Eternal Founder", "Build infrastructure others use + CC0 contribution", "capstone-phd", 0.88),
         ]
         for _cl_name, _cl_req, _cl_key, _cl_coh in _cap_levels:
             _cl_done = _cl_key in _ur_session.state.get("lessons_completed",[]) if _ur_session else False
@@ -10995,11 +11012,11 @@ No one is left behind. No one is held back.
 
 Option C — Mixed: Start together, let advanced learners go deeper,
 support learners who need more time with the simpler questions."""),
-            ("🌍 Reporting your deployment (earn the PhD capstone)", """
+            ("🌍 Reporting your deployment (earn the Eternal Founder capstone)", """
 If you deploy this school for a community:
 1. Document it: photos, number of children served, date
 2. Submit it as a humanitarian contribution in the Sovereign Builder tab
-3. This counts toward the PhD capstone requirement
+3. This counts toward the Eternal Founder capstone requirement
 4. It contributes to the Living Lattice — the global network of sovereign schools
 
 Every deployment is permanent. Every child you teach is part of the chain."""),
