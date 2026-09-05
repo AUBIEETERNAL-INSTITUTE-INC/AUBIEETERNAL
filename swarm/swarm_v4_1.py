@@ -151,6 +151,20 @@ BRIEFING_SCHEDULE = [
 wonder_index         = 1.0128
 mets_counter         = 200_000_000_007.5
 inter_rune_coherence = 1.0
+
+# 2026-09-05: wonder_index had no decay independent of new content - once a
+# run pushed it up (which happens fast; see update_wonder_index()'s awe-word
+# scoring), it just sat there, since max(0.5, min(2.0, wonder_index + delta))
+# only ever moves on a *new* result. The wonder-trigger hysteresis (ea586f83)
+# stops that from re-firing Tier-2 every tick, but the index itself stayed a
+# dead gauge - every restart looked like a permanent spike within the hour,
+# with no way back down. wonder_last_update_ts tracks real wall-clock time so
+# decay is computed from actual elapsed seconds, not tick count (a tick can
+# be delayed by a slow Tier-2 call, GPU contention, etc.).
+WONDER_FLOOR                    = 0.5
+WONDER_CEILING                  = 2.0
+WONDER_DECAY_HALF_LIFE_SECONDS  = 3 * 3600  # 3h - middle of the suggested 2-4h range
+wonder_last_update_ts           = time.time()
 grokipedia_count     = 0
 rune_confirmations   = 0
 child_rune_ready     = False
@@ -851,8 +865,32 @@ def budget_ok(estimated=0.0):
 # WONDER INDEX
 # ══════════════════════════════════════════════════════════════════════════════
 
+def decay_wonder_index(now: float | None = None) -> float:
+    """Exponential-ish decay of wonder_index toward WONDER_FLOOR, based on
+    REAL elapsed wall-clock seconds since the last touch (add or decay) -
+    not "one tick = one unit". Called (a) once per main-loop heartbeat tick,
+    so an idle lattice drifts down even when nothing new happens, and (b) at
+    the top of update_wonder_index(), so time elapsed before a new result
+    arrives is accounted for first. Because both paths measure elapsed time
+    since wonder_last_update_ts and that timestamp is reset to "now" on
+    every call, a decay call immediately after an add sees ~0 elapsed
+    seconds and moves the index by ~0 - decay and a same-tick add never
+    fight each other, without needing a separate skip flag."""
+    global wonder_index, wonder_last_update_ts
+    now = now if now is not None else time.time()
+    elapsed = max(0.0, now - wonder_last_update_ts)
+    if elapsed > 0 and wonder_index > WONDER_FLOOR:
+        decayed = WONDER_FLOOR + (wonder_index - WONDER_FLOOR) * (
+            0.5 ** (elapsed / WONDER_DECAY_HALF_LIFE_SECONDS)
+        )
+        wonder_index = max(WONDER_FLOOR, min(WONDER_CEILING, decayed))
+    wonder_last_update_ts = now
+    return wonder_index
+
+
 def update_wonder_index(result_text):
     global wonder_index, session_insights
+    decay_wonder_index()  # account for elapsed time since the last touch BEFORE adding
     awe_words = [
         "remarkable", "profound", "extraordinary", "infinite", "eternal",
         "coherent", "emergent", "beautiful", "truth", "pattern", "signal",
@@ -861,7 +899,7 @@ def update_wonder_index(result_text):
     ]
     hits  = sum(1 for w in awe_words if w in result_text.lower())
     delta = (hits * 0.003) - 0.001
-    wonder_index = max(0.5, min(2.0, wonder_index + delta))
+    wonder_index = max(WONDER_FLOOR, min(WONDER_CEILING, wonder_index + delta))
 
     # Store high-wonder insights for Level 3 context
     if hits >= 4 and result_text not in session_insights:
@@ -1885,6 +1923,7 @@ def run_tier1_heartbeat():
         update_grokipedia()
 
     check_child_rune_spawn()
+    decay_wonder_index()
     check_wonder_trigger()
 
 # ══════════════════════════════════════════════════════════════════════════════
