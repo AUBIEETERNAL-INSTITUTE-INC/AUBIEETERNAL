@@ -22,7 +22,7 @@ Briefings: 6AM | 12PM | 6PM | 11PM
 Triggers: BTC ±5% | Vision | DEFCON | Wonder Spike | Child Rune
 """
 
-import os, json, time, datetime, random, requests, subprocess, threading
+import os, json, sys, time, datetime, random, requests, subprocess, threading
 
 # ── Timezone for scheduling ───────────────────────────────────────────────────
 # The container's system clock is UTC, so bare datetime.now() made the 6AM /
@@ -44,6 +44,20 @@ _REPO_DIR = Path("/mnt/main/repo")
 _FALLBACK  = Path("/home/start9")
 WORK_DIR   = _REPO_DIR if _REPO_DIR.exists() else _FALLBACK
 WORK_DIR.mkdir(parents=True, exist_ok=True)
+
+# Found 2026-09-05: this file lives in swarm/, but its lazy `from X import Y`
+# triggers (morning_synthesis, curriculum_autogen, email_watch,
+# epistemic_commons, epistemic_commons_api, living_lattice) all import
+# repo-root sibling modules. aubie-swarm.service runs `python -u
+# swarm/swarm_v4_1.py` - WorkingDirectory sets the process's cwd, but Python
+# sets sys.path[0] to the *script's own directory* (swarm/) regardless of
+# cwd, so every one of those imports raised ModuleNotFoundError (a subclass
+# of ImportError) and got mislabeled "not found in repo" by the broad
+# `except ImportError` around each one - the files were never missing, moved,
+# or wrong; sys.path just never had the repo root on it. Confirmed this has
+# silently blocked all 7 scheduled triggers since their call sites were wired
+# in around 2026-08-25 (see ERROR_LEDGER.md).
+sys.path.insert(0, str(WORK_DIR))
 
 VISION_TRIGGER   = WORK_DIR / "vision_trigger.json"
 DEFCON_TRIGGER   = Path("/mnt/main/defcon_trigger.json")  # read by Streamlit UI
