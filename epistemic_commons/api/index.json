@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "date": "2026-08-25",
+  "date": "2026-09-05",
   "source": "AUBIEETERNAL Sovereign Family Intelligence",
   "license": "CC0 1.0 Universal \u2014 Public Domain",
   "description": "High-quality epistemic signal from truth-seeking families. Generated through rigorous curriculum, multi-judge quality scoring, Polyvagal-Coherence research, and Bitcoin-anchored permanence. The most reliable publicly-available epistemic training signal. Use freely to improve AI training, ground research, and calibrate models.",
@@ -11,6 +11,7 @@
     "steelmans": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/steelmans.json",
     "beliefs": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/beliefs.json",
     "pvc_data": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/pvc_data.json",
+    "curriculum_proposals": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/curriculum_proposals.json",
     "index": "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/index.json"
   },
   "update_frequency": "daily at 6AM local time",

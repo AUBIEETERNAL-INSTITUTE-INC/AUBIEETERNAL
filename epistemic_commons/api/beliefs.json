@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "date": "2026-08-25",
+  "date": "2026-09-05",
   "license": "CC0 1.0 Universal",
   "privacy_note": "Belief content is hashed. No PII. Confidence values only.",
   "purpose": "Calibration data from families practicing Bayesian belief updating. Rare training signal: shows humans who explicitly track confidence, evidence, and update conditions \u2014 the opposite of dogmatic assertion.",
