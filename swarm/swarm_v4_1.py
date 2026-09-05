@@ -1069,6 +1069,18 @@ def _record_telemetry_push_result(ok: bool, detail: str) -> None:
         pass
 
 
+# GitHub hard-rejects a push containing any single blob over 100 MB.
+# ROTATION_MAX_BYTES (80 MB) is supposed to keep every TELEMETRY_FILES entry
+# well under that, but 2026-09-05 found rotation and the push sharing one
+# blind spot isn't enough of a guarantee to bet the whole push on: master_
+# truth_log.jsonl crossing 100 MB silently blocked wonder_log.jsonl, cost_
+# log.jsonl, truth_lattice_log.jsonl, and the status JSONs too, since they
+# were all staged into the same tree/commit. This is the belt to rotation's
+# suspenders - independent of whether rotation is working, one oversized
+# file gets skipped-and-logged rather than taking the whole backup down.
+TELEMETRY_MAX_FILE_BYTES = 95 * 1024 * 1024
+
+
 def _maybe_push_telemetry_branch(repo):
     """Snapshot TELEMETRY_FILES onto the `telemetry` branch ~hourly, without
     ever touching main's working tree, index, or HEAD (throwaway index +
@@ -1079,7 +1091,18 @@ def _maybe_push_telemetry_branch(repo):
     if now - _last_telemetry_push < TELEMETRY_PUSH_INTERVAL:
         return
     try:
-        tel = [f for f in TELEMETRY_FILES if (Path(repo) / f).exists()]
+        tel = []
+        for f in TELEMETRY_FILES:
+            p = Path(repo) / f
+            if not p.exists():
+                continue
+            size = p.stat().st_size
+            if size > TELEMETRY_MAX_FILE_BYTES:
+                print(f"  ⚠️ telemetry push: skipping {f} ({size / 1e6:.1f}MB > "
+                      f"{TELEMETRY_MAX_FILE_BYTES / 1e6:.1f}MB cap, GitHub's hard limit is "
+                      f"100MB) - would block the whole push")
+                continue
+            tel.append(f)
         if not tel:
             return
         env = dict(os.environ)
@@ -1158,16 +1181,38 @@ LOG_ROTATION = {
 LOG_ARCHIVE_DIR         = WORK_DIR / "log_archive"
 _log_rotation_last_date = None
 
-def _rotate_one_jsonl(path, keep_days):
-    if not path.exists() or path.stat().st_size == 0:
+# 2026-09-05: master_truth_log.jsonl reached 152 MB in ~11.5 days (well
+# inside its own 30-day keep window - the age-based cutoff correctly found
+# nothing old enough to trim yet) and blocked the telemetry-branch push once
+# it crossed GitHub's 100 MB hard limit (see ERROR_LEDGER.md's Incidents
+# section). A big chunk of that growth was a single 13h46m runaway, so a
+# pure age-based cap can't protect against one high-volume day/incident
+# regardless of how short the window is. Applies to all four LOG_ROTATION
+# files, not just the one that broke - any of them could spike the same way.
+# 80 MB leaves real margin under the 100 MB limit. Rotation still only runs
+# once/day (maybe_trigger_log_rotation's existing gate) - the wonder-trigger
+# hysteresis + Tier-2 hourly cap fixed the same day are what actually bound
+# how much a single day can grow by now, this is the backstop under that.
+ROTATION_MAX_BYTES = 80 * 1024 * 1024
+
+def _rotate_one_jsonl(path, keep_days, max_bytes=None):
+    if not path.exists():
+        return
+    size = path.stat().st_size
+    if size == 0:
         return
     cutoff = datetime.datetime.now() - datetime.timedelta(days=keep_days)
-    split_at = None            # byte offset of the first line to KEEP
+    size_cutoff_pos = max(0, size - max_bytes) if max_bytes else 0
+
+    split_at_date = None       # byte offset of the first line new enough by age
+    split_at_size = None       # byte offset of the first line boundary at/after size_cutoff_pos
     pos = 0
     with open(path, "rb") as f:
         for raw in f:
+            if split_at_size is None and max_bytes is not None and pos >= size_cutoff_pos:
+                split_at_size = pos
             line = raw.decode("utf-8", "replace").strip()
-            if line:
+            if line and split_at_date is None:
                 ts = None
                 try:
                     t = json.loads(line).get("timestamp")
@@ -1177,12 +1222,18 @@ def _rotate_one_jsonl(path, keep_days):
                 except Exception:
                     pass
                 if ts is not None and ts >= cutoff:
-                    split_at = pos
-                    break
+                    split_at_date = pos
             pos += len(raw)
-    # split_at None  -> no line newer than cutoff (swarm idle > keep_days, or
-    #                   no parseable timestamps): leave the file alone.
-    # split_at 0     -> nothing old enough to trim yet.
+            if split_at_date is not None and (max_bytes is None or split_at_size is not None):
+                break
+    # split_at_date None -> no line newer than cutoff (swarm idle > keep_days,
+    #                       or no parseable timestamps): the age check alone
+    #                       contributes nothing to trim (same as before this
+    #                       change - the size check below is independent).
+    # split_at_*   0     -> nothing old enough to trim yet by that criterion.
+    # The kept tail must satisfy BOTH constraints, so archive up to whichever
+    # cutoff would archive more.
+    split_at = max(split_at_date or 0, split_at_size or 0)
     if not split_at:
         return
     LOG_ARCHIVE_DIR.mkdir(exist_ok=True)
@@ -1212,7 +1263,7 @@ def maybe_trigger_log_rotation():
     _log_rotation_last_date = today
     for path, days in LOG_ROTATION.items():
         try:
-            _rotate_one_jsonl(path, days)
+            _rotate_one_jsonl(path, days, max_bytes=ROTATION_MAX_BYTES)
         except Exception as e:
             print(f"  log rotation error ({getattr(path, 'name', path)}): {e}")
 
