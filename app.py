@@ -9961,10 +9961,19 @@ if "University Registrar" in active:
             ("📜 Associate", "Deploy your first sovereign node", "capstone-associate", 0.68),
             ("🏛️ Truth Architect", "Research paper + community contribution (10+ people)", "capstone-bachelor", 0.75),
             ("🎓 Master", "90-day pre-registered experiment + honest results", "capstone-masters", 0.82),
-            ("⚡ Eternal Founder", "Build infrastructure others use + CC0 contribution", "capstone-phd", 0.88),
+            ("⚡ Eternal Founder", "Build infrastructure others use + CC0 contribution", "capstone-eternal-founder", 0.88),
         ]
+        # Back-compat: a family's saved lessons_completed may still carry the
+        # pre-2026-09-05 key from before the "PhD" -> "Eternal Founder" rename
+        # (cc63eb06 + this task). No such saves were found on this rig
+        # (checked family_registry.json and the local data dir directly), but
+        # this repo is run by other installs too - cheap enough to keep old
+        # completions resolving rather than assume.
+        _LEGACY_LESSON_KEYS = {"capstone-phd": "capstone-eternal-founder"}
+        _completed_raw = _ur_session.state.get("lessons_completed",[]) if _ur_session else []
+        _completed_cap = {_LEGACY_LESSON_KEYS.get(k, k) for k in _completed_raw}
         for _cl_name, _cl_req, _cl_key, _cl_coh in _cap_levels:
-            _cl_done = _cl_key in _ur_session.state.get("lessons_completed",[]) if _ur_session else False
+            _cl_done = _cl_key in _completed_cap
             _cl_c    = "#00ff88" if _cl_done else "#445577"
             st.markdown(
                 f'<div class="memory-node" style="border-left:3px solid {_cl_c};">'
@@ -9975,7 +9984,7 @@ if "University Registrar" in active:
 
         st.divider()
         st.markdown("**Submit Capstone Completion**")
-        _cap_select = st.selectbox("Capstone:", ["capstone-associate","capstone-bachelor","capstone-masters","capstone-phd"], key="cap_sel")
+        _cap_select = st.selectbox("Capstone:", ["capstone-associate","capstone-bachelor","capstone-masters","capstone-eternal-founder"], key="cap_sel")
         _cap_proof  = st.text_area("Evidence / proof URL / description:", height=80, key="cap_proof")
         _cap_peer   = st.text_input("Peer reviewer name (required for Bachelor+):", key="cap_peer")
         if st.button("🎓 Submit Capstone", key="cap_submit", type="primary") and _cap_proof and _ur_session:
