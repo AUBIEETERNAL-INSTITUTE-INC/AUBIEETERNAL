@@ -253,13 +253,21 @@ fallout, and a repo-wide degree-language cleanup. All commits below are on `main
   Credential" for the top-tier Eternal Founder degree across `degrees.py` (the
   single source of truth), `AUBIEETERNAL_School_Charter.md`, `README.md`,
   `family_hud.py`, `phone_ui.py`; `RELEASE_NOTES_v69_UNIVERSITY.md` renamed to
-  `RELEASE_NOTES_v69.md`. **Flagged but deliberately not touched:**
-  `family_hud.py`'s `"capstone-phd"` dict key (machine identifier — a rename needs a
-  wider usage search first) and its lesson `example` field; `phone_ui.py:2880`'s
-  generic "PhD student" (describes an external demographic, not our own
-  credential); `app.py:9845` (`"PhD" in name` string check driving a UI color) and
-  `app.py:9642` (a separate, already-drifted hardcoded tier-name dict, unrelated to
-  `degrees.py`) — both silently stopped matching once `degrees.py`'s name changed.
+  `RELEASE_NOTES_v69.md`. **A same-day follow-up pass (2026-09-05,
+  `a549f0dc` + `df68baa9`) closed out everything flagged here:**
+  `app.py:9845`'s color
+  check now keys off `degrees.py`'s canonical `tier` (5 = Eternal Founder, 4 =
+  Master of Epistemic Rigor), not the display name; `app.py:9642`'s
+  `builder_level` dict (confirmed to be `sovereign_builder.py`'s own,
+  unrelated to `degrees.py` — its "PhD" label was still fixed to "Sovereign
+  Expert" since it's the same own-product-language issue); `app.py:9964` and
+  `11015/11019`'s capstone display strings; `family_hud.py`'s `"capstone-phd"`
+  key renamed to `"capstone-eternal-founder"` after confirming no saved
+  family session on this rig references the old key (checked
+  `family_registry.json` + the local data dir directly), with a
+  `_LEGACY_LESSON_KEYS` back-compat alias in `app.py` for other installs'
+  older saves. `phone_ui.py:2880`'s generic "PhD student" (an external
+  demographic, not our own credential) is left alone deliberately.
 - **13h46m unattended swarm runaway** (`ea586f83`) — `check_wonder_trigger()` was a
   bare `wonder_index >= 1.4` level check with no edge-detection, firing on nearly
   every ~30s heartbeat tick for as long as the index stayed elevated — which was
@@ -316,13 +324,12 @@ fallout, and a repo-wide degree-language cleanup. All commits below are on `main
   confirm no "Device or resource busy" and that the second greeting still plays
   (delayed, not dropped).
 
-**Still open, not done this session:** `family_hud.py`'s `"capstone-phd"` dict key
-rename (deferred, needs a usage search first); `app.py:9845` / `app.py:9642`
-hardcoded "PhD" strings (flagged, not fixed); the ALSA lock fix above, pending
-real-hardware verification; two untracked `insights/probe/*.json`/`.md` files
-per run (a `simulation_probe` sub-step of `morning_synthesis`) that aren't in the
-swarm's `github_push_truth_log()` sweep list the way `insights/daily/` is —
-minor, not investigated further this session.
+**Still open as of 2026-09-05's follow-up pass:** the ALSA lock fix above,
+pending real-hardware verification; `insights/probe/*.json`/`.md` files (a
+`simulation_probe` sub-step of `morning_synthesis`) not yet in the swarm's
+`github_push_truth_log()` sweep list the way `insights/daily/` is. (The
+`app.py:9845`/`9642` hardcodes and the `"capstone-phd"` key were resolved in
+the same-day follow-up — see above.)
 
 ## Edge devices are disposable — the rig + git is the source of truth
 
