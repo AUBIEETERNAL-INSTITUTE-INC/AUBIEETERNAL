@@ -62,9 +62,9 @@ The AI tutor runs entirely on your hardware. No cloud, no subscriptions, no data
 | 📜 **Sovereign Associate** | 60 | 0.68 | Deploy a sovereign AI node |
 | 🏛️ **Truth Architect** | 120 | 0.75 | Publish original CC0 research + serve ≥10 people |
 | 🎓 **Master of Epistemic Rigor** | 180 | 0.82 | 90-day pre-registered experiment — honest results |
-| ⚡ **Eternal Founder (PhD)** | 250 | 0.88 | Build infrastructure others use + Child Rune Genesis |
+| ⚡ **Eternal Founder (Sovereign Credential)** | 250 | 0.88 | Build infrastructure others use + Child Rune Genesis |
 
-**PhD requirement:** Deploy a free school for a community that doesn't have one.
+**Sovereign Credential requirement:** Deploy a free learning program for a community that doesn't have one.
 
 ---
 

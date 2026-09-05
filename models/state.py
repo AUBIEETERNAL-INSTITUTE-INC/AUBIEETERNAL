@@ -263,7 +263,7 @@ class AppState(BaseModel):
     @property
     def highest_degree(self) -> Optional[str]:
         DEGREES = [
-            ("⚡ Eternal Founder (PhD)", 250, 0.88),
+            ("⚡ Eternal Founder (Sovereign Credential)", 250, 0.88),
             ("🎓 Master of Epistemic Rigor", 180, 0.82),
             ("🏛️ Truth Architect", 120, 0.75),
             ("📜 Sovereign Associate", 60, 0.68),

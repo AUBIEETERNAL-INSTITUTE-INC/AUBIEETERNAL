@@ -67,8 +67,8 @@ DEGREES: List[Dict] = [
         "peer_review": {"min_reviewers": 2, "min_score": 70}, "active_req": None,
     },
     {
-        "id": "eternal_founder", "name": "⚡ Eternal Founder (PhD)", "emoji": "⚡",
-        "credits": 250, "coherence": 0.88, "badge": "PhD", "tier": 5,
+        "id": "eternal_founder", "name": "⚡ Eternal Founder (Sovereign Credential)", "emoji": "⚡",
+        "credits": 250, "coherence": 0.88, "badge": "Sovereign Credential", "tier": 5,
         "description": "Builds infrastructure others use. Dynasty on-chain.",
         "special_rune": 256,
         "peer_review": {"min_reviewers": 2, "min_score": 75}, "active_req": None,
