@@ -1048,6 +1048,27 @@ _last_telemetry_push    = 0.0
 STATUS_FILE               = "STATUS.md"
 _last_status_heartbeat_date = None
 
+# Rolling record of the last few telemetry-branch push attempts, so
+# self_audit.py can detect "failing N cycles in a row" directly instead of
+# parsing this function's print() output out of journalctl (fragile to
+# message-format changes). Best-effort, same as everything else here.
+TELEMETRY_PUSH_STATUS_PATH = (
+    Path.home() / "AUBIEETERNAL" / "memory" / "self_audit" / "telemetry_push_status.json"
+)
+
+
+def _record_telemetry_push_result(ok: bool, detail: str) -> None:
+    try:
+        TELEMETRY_PUSH_STATUS_PATH.parent.mkdir(parents=True, exist_ok=True)
+        history = []
+        if TELEMETRY_PUSH_STATUS_PATH.exists():
+            history = json.loads(TELEMETRY_PUSH_STATUS_PATH.read_text())
+        history.append({"ts": time.time(), "ok": ok, "detail": (detail or "")[:200]})
+        TELEMETRY_PUSH_STATUS_PATH.write_text(json.dumps(history[-10:]))
+    except Exception:
+        pass
+
+
 def _maybe_push_telemetry_branch(repo):
     """Snapshot TELEMETRY_FILES onto the `telemetry` branch ~hourly, without
     ever touching main's working tree, index, or HEAD (throwaway index +
@@ -1113,9 +1134,11 @@ def _maybe_push_telemetry_branch(repo):
             capture_output=True, text=True, timeout=30
         )
         print(f"  📊 telemetry push: {push.returncode} | {push.stderr[:100]}")
+        _record_telemetry_push_result(push.returncode == 0, push.stderr)
         _last_telemetry_push = now
     except Exception as e:
         print(f"  telemetry push error: {e}")
+        _record_telemetry_push_result(False, str(e))
 
 # ── Log rotation ─────────────────────────────────────────────────────────
 # The append-only telemetry logs grow without bound (master_truth_log.jsonl
