@@ -324,12 +324,13 @@ fallout, and a repo-wide degree-language cleanup. All commits below are on `main
   confirm no "Device or resource busy" and that the second greeting still plays
   (delayed, not dropped).
 
-**Still open as of 2026-09-05's follow-up pass:** the ALSA lock fix above,
-pending real-hardware verification; `insights/probe/*.json`/`.md` files (a
-`simulation_probe` sub-step of `morning_synthesis`) not yet in the swarm's
-`github_push_truth_log()` sweep list the way `insights/daily/` is. (The
-`app.py:9845`/`9642` hardcodes and the `"capstone-phd"` key were resolved in
-the same-day follow-up — see above.)
+**Still open as of 2026-09-05's follow-up pass:** the ALSA lock fix above —
+**blocked on hardware, not verified**, board still offline; full reconnect
+test (pull `aubie_listen.py` off the board first) is in `ERROR_LEDGER.md`'s
+2026-09-05 entry, do not mark this fixed until that test actually runs.
+(The `app.py:9845`/`9642` hardcodes, the `"capstone-phd"` key, and the
+`insights/probe/` push gap were all resolved in the same-day follow-up —
+see `87f74db6`.)
 
 ## Edge devices are disposable — the rig + git is the source of truth
 

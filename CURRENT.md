@@ -1,6 +1,6 @@
 # CURRENT.md
 
-Updated: 2026-08-31
+Updated: 2026-09-05
 
 The only file that ages. Grok chat, Grok Build, and Claude Code read this first.
 
@@ -20,6 +20,16 @@ Reuses `handle_build_code_request()` from `aubieeternal_build_code.py`.
 
 - Axioms: `grok-principles.md` (last content pass 2026-05-20)
 - Agent briefing already in repo: `CLAUDE.md` (notes through 2026-08-29)
+
+## 2026-09-05 follow-up pass
+
+Credential UI now reads `degrees.py` directly (no more `"PhD" in name`
+string checks); `capstone-phd` renamed to `capstone-eternal-founder` with a
+back-compat alias; `wonder_index` now decays over real elapsed time so its
+hysteresis can re-arm without a restart; `insights/probe/` added to the
+truth-log push sweep. Landed as `a549f0dc`, `df68baa9`, `9e4ad5ee`,
+`87f74db6`. ALSA lock fix (`132cd8b0`) is still unverified — see
+`ERROR_LEDGER.md`.
 
 ## Still current (2026-08-29)
 
