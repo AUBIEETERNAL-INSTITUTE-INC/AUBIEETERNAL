@@ -82,6 +82,31 @@ left stopped pending review of the fix.
 
 **Related, found while building this fix:** the swarm's git-collision hazard (above) isn't limited to a checked-out feature branch mid-work — while an unrelated review branch sat with an uncommitted `git mv` staged, the swarm's own `git commit` swept that staged rename into a commit under its own message (local-only, never reached `origin/main`, no lasting harm; cleanly undone). Any staged-but-uncommitted change in this working directory is exposed whenever the swarm's loop happens to fire, regardless of which branch is checked out or whether that branch is the one being modified.
 
+### 2026-09-05 — ALSA lock fix: blocked on hardware, not verified
+
+**What happened:** `push_audio_to_aubie()` in `assistant_server.py` (`132cd8b0`)
+now serializes overlapping `/greet`-triggered calls with a `threading.Lock`,
+so the UNO Q board's `aplay` can't be asked to open the ALSA device twice
+concurrently. The fix is committed and deployed to the repo. It has **not**
+been run against real hardware — the UNO Q board (Tailscale `100.66.110.65`)
+has been offline for this entire session and remains offline as of this
+entry. Do not read "committed" as "fixed"; the lock has never actually
+serialized a real overlapping `aplay` call.
+
+**Blocked on:** the board reconnecting to Tailscale.
+
+**Reconnect test (run once it's back, not before):**
+1. Pull `aubie_listen.py` off the board into git (it's still one of the
+   files that only lives on-device — see "Edge devices are disposable"
+   below).
+2. Hit `/greet` twice within ~1s of each other.
+3. Pass = no ALSA "Device or resource busy" error, and the second greeting
+   still plays — delayed by the lock, not dropped. Fail = either an ALSA
+   busy error, or the second greeting silently not playing at all.
+
+Do not mark this fixed in `CLAUDE.md` or `CURRENT.md` until that test has
+actually been run and passed.
+
 ## The standard: worked examples
 
 These commits are what a fix commit should look like — a stranger can read them
