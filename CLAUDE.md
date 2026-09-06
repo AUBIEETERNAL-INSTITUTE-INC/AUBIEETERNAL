@@ -35,13 +35,30 @@ python epistemic_drift_detector.py
 python epistemic_drift_detector.py --baseline        # save a new baseline
 python epistemic_drift_detector.py --ci --fail-on RED  # CI mode, nonzero exit on RED+
 
+# Swarm wonder_index behavior regression (drives the real swarm_v4_1 functions
+# against a mocked clock). Run before ANY change to the delta formula, decay
+# half-life, WONDER_FLOOR, the 1.4/1.2 hysteresis, or TIER2_HOURLY_CAP.
+python test_swarm_behavior.py
+
 # Install deps
 pip install -r requirements.txt
 ```
 
 There is no linter, formatter, or unit-test framework configured (no pytest/flake8/black in
-requirements.txt). `test_pipeline.py` is a standalone script (run directly with `python`, not
-pytest) — it asserts via `sys.exit(0/1)`, not exceptions.
+requirements.txt). `test_pipeline.py` and `test_swarm_behavior.py` are standalone scripts (run
+directly with `python`, not pytest) — they assert via `sys.exit(0/1)`, not exceptions.
+
+## Fix-verification loop (`self_audit.py`)
+
+Swarm-behavior fixes are tracked `deployed → monitoring → verified | regressed`. When you
+deploy a fix for a swarm incident, after restarting `aubie-swarm` register a watch:
+`python aubieeternal_build/self_audit.py --register-fix --incident <id> --commit <sha> --watch
+<check_id[,check_id]> --hours <N>`. `self_audit.py`'s 15-min cycle then confirms (or flags a
+regression) on its own and emails the transition; `--fix-watch-status` prints the table.
+Machine state is `memory/self_audit/fix_watches.json` (gitignored); the `**Status:**` line in
+`ERROR_LEDGER.md` is updated by hand from that table. Per-cycle raw metrics go to
+`memory/self_audit/metric_trend.jsonl`. `self_audit.py` never edits a tracked file — no
+autonomous self-patching.
 
 ## Data directory resolution — read this before touching persistence code
 

@@ -33,6 +33,36 @@ Not everything here is a shipped fix. Some entries are an observed failure
 with the hard data behind it, logged because the error trail staying open
 matters independent of whether a patch has landed yet.
 
+### Fix-status lifecycle
+
+Swarm-behavior incidents carry a `**Status:**` line so a fix is trackable
+through to confirmation, not just "patched and hope":
+
+`deployed` → `monitoring` → `verified` | `regressed`
+
+- **deployed** — fix commit is on `main`. For an in-memory fix (the swarm
+  runs on module globals) it isn't live until `sudo systemctl restart
+  aubie-swarm`.
+- **monitoring** — a watch is registered and `self_audit.py` is checking each
+  15-min cycle whether the named alert condition recurs. Register it *after*
+  the restart so the clock is honest:
+  `python aubieeternal_build/self_audit.py --register-fix --incident <id>
+  --commit <sha> --watch swarm:wonder_pinned,swarm:hormetic_frequency
+  --hours 6`
+- **verified** — the watch window closed with no recurrence. `self_audit.py`
+  emails `[AUBIEETERNAL] Fix verified: <id>` on the transition.
+- **regressed** — a watched condition fired again inside the window;
+  `self_audit.py` emails `[AUBIEETERNAL] Fix REGRESSED: <id>` and ordinary
+  swarm-alert mails for that condition get a "POSSIBLE REGRESSION" banner.
+
+Machine state is `memory/self_audit/fix_watches.json` (gitignored);
+`python aubieeternal_build/self_audit.py --fix-watch-status` prints the table
+to copy the resolved status back into this file by hand. `self_audit.py`
+never edits this file itself. Raw per-cycle metrics
+(`wonder_index` now / 1h min / max, pulse rate, log volume) land in
+`memory/self_audit/metric_trend.jsonl` so a fix's effect is visible as a
+trend, not only as the absence of an alert.
+
 ### 2026-09-04 — 13h46m unattended wonder-spike runaway (501 Tier-2 pulses)
 
 **What happened:** `aubie-swarm.service` ran unattended 08:32–22:18 Eastern
@@ -66,7 +96,7 @@ log file. Everything from today stayed in `master_truth_log.jsonl` /
 branch (see the heartbeat entry above) — never `main`, never anything a
 student session reads.
 
-**Fix (proposed same day, not yet merged):** hysteresis on
+**Fix (`ea586f83`, merged 2026-09-04):** hysteresis on
 `check_wonder_trigger()` — fire only on the upward crossing through 1.4,
 re-arm only once the index drops back below 1.2 — plus a `TIER2_HOURLY_CAP =
 6` backstop inside `run_tier2_core()` itself, independent of trigger type, so
@@ -76,11 +106,70 @@ reproduce the same runaway.
 **Verified:** a standalone simulation of the real shape (rise → 500 ticks
 pinned near the ceiling → cooldown below 1.2 → a second legitimate spike)
 produces exactly 2 Tier-2 fires instead of 500+; the hourly cap holds 20
-rapid calls in one window to 6 and resets after a rolling hour. Not yet
-verified against a live swarm run — `aubie-swarm.service` is intentionally
-left stopped pending review of the fix.
+rapid calls in one window to 6 and resets after a rolling hour.
+
+**Follow-on (2026-09-05 → -06):** `aubie-swarm.service` ran with this fix for
+~19h and did **not** recur the every-tick runaway — but `wonder_index` itself
+stayed pinned at the 2.0 ceiling the whole time, so `check_wonder_trigger()`
+never got back below 1.2 to re-arm and `self_audit.py` kept alerting. The
+`decay_wonder_index()` patch (`9e4ad5ee`) meant to walk it down was ~10× too
+weak against `update_wonder_index()`'s per-result positive `delta`. Fixed by
+rebalancing that `delta` baseline — see the 2026-09-05 `wonder_index` entry
+below. Service running again since 2026-09-06 04:42 EDT.
 
 **Related, found while building this fix:** the swarm's git-collision hazard (above) isn't limited to a checked-out feature branch mid-work — while an unrelated review branch sat with an uncommitted `git mv` staged, the swarm's own `git commit` swept that staged rename into a commit under its own message (local-only, never reached `origin/main`, no lasting harm; cleanly undone). Any staged-but-uncommitted change in this working directory is exposed whenever the swarm's loop happens to fire, regardless of which branch is checked out or whether that branch is the one being modified.
+
+### 2026-09-05 — wonder_index stayed pinned after the runaway fix (decay follow-on)
+
+**What happened:** with `ea586f83` (hysteresis + hourly cap) and `9e4ad5ee`
+(`decay_wonder_index()`, 3h half-life) both merged and live, `self_audit.py`
+kept firing `swarm:hormetic_frequency` (2026-09-05T12:50:03Z — 4 pulses/hr,
+threshold >2) and `swarm:wonder_pinned` (2026-09-05T14:42:03Z —
+`wonder_index >= 1.9` for the whole trailing hour, 485 samples, min 1.9564);
+four alerts that morning, all the same signal — the index sat at the 2.0
+ceiling and hysteresis never re-armed below 1.2. Handoff:
+`2026-09-04-claude-code-handoff-git-error-ledger.md` sibling notes.
+
+**Root cause — checked, not assumed:** the decay term was running but is
+~10× too weak in production. `update_wonder_index()` is called ~once per
+7.4s on a live run, and its `delta = hits*0.003 - 0.001` is *positive on
+100% of the last 6000 calls* — the awe-word list ("truth", "pattern",
+"signal", "synthesis", "bitcoin"…) matches nearly all swarm output, so
+`hits >= 1` always and the index ratchets up ~+0.057/min. A 3h-half-life
+decay removes only ~+0.006/min at `wonder_index = 2.0`. It reaches the
+ceiling within ~15 min of any run and stays there (>= 1.9 on 98% of live
+samples). `9e4ad5ee`'s sims passed only because they used no adds, or a mild
+held re-add at 1.5 — not the real ratchet.
+
+**Fix (`2e05dca5`):** rebalanced the add side, not the decay.
+`update_wonder_index()`'s baseline goes `-0.001` → `-0.009`, so `delta <= 0`
+for ordinary output (hits 1–3, ~80% of live calls) and only awe-*dense*
+output (hits >= 4) moves the index up; the existing decay then walks it back
+toward `WONDER_FLOOR` (0.5) between genuine bursts. Hysteresis and
+`TIER2_HOURLY_CAP = 6` unchanged. Trade-off accepted: `wonder_index` now
+rests at/near the 0.5 floor during ordinary operation (a spike detector, not
+a gauge with mid-range dynamics).
+
+**Verified:** `python3 test_swarm_behavior.py` (`90cc3a82`) — the throwaway
+harness is now a standing regression test that drives the real
+`update_wonder_index` / `decay_wonder_index` / `check_wonder_trigger` against
+a mocked clock and the observed live hits distribution:
+- 3h of typical output → index decays to the 0.5 floor, trailing-hour min
+  0.50, zero Tier-2 fires. Old `-0.001` baseline on the identical input:
+  pinned at 2.0000 (the suite fails if a revert lands).
+- a genuine 25-min awe-dense burst (hits 5–7) → crosses 1.4, fires Tier-2
+  exactly once, decays back below 1.2, re-arms; a later burst fires again.
+`py_compile` clean.
+
+**Status:** `deployed` `2e05dca5` (2026-09-06) — **not yet monitoring**. The
+swarm runs on in-memory globals, so the fix is not live until `sudo
+systemctl restart aubie-swarm`. Right after that restart, start the watch:
+`python aubieeternal_build/self_audit.py --register-fix --incident
+2026-09-05-wonder-index-pinned --commit 2e05dca5 --watch
+swarm:wonder_pinned,swarm:hormetic_frequency --hours 6`. `self_audit.py` then
+moves this to `verified` or `regressed` on its own and emails the transition;
+`memory/self_audit/metric_trend.jsonl` shows `wonder_index_1h_max` falling
+across cycles in the meantime.
 
 ### 2026-09-05 — ALSA lock fix: blocked on hardware, not verified
 
