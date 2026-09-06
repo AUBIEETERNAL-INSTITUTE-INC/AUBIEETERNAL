@@ -151,6 +151,10 @@ def analyze_payload(payload: str, claimed_as: str = "") -> Signals:
     if re.match(r"^https?://", stripped, re.I):
         sig = analyze_url(stripped)
     elif stripped.upper().startswith("WIFI:"):
+        # Normal callers never reach this: airlock.check_qr() short-circuits
+        # WIFI: payloads to the display-only wifi.py path before evaluate() is
+        # called. Kept as a safe fallback for any direct evaluate() call —
+        # still never a "safe" verdict.
         sig = Signals()
         sig.add("wifi_payload", "This QR configures Wi-Fi, not a link — "
                  "review the network name before connecting.")

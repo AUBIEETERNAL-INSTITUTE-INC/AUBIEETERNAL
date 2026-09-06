@@ -1334,6 +1334,21 @@ HTML = r"""<!DOCTYPE html>
         human to review before anything is published — nothing is sent automatically.
       </p>
     </div>
+
+    <!-- WIFI: payload — display only. Never joined, never given a safe/unsafe
+         verdict; it gets this separate path on purpose. -->
+    <div id="qr-wifi" style="display:none;margin-top:12px">
+      <div style="display:inline-block;padding:5px 12px;border-radius:999px;font-weight:700;
+        font-size:13px;background:#1c2f45;color:#cfe8ff">📶 Wi-Fi network code</div>
+      <p style="font-size:11px;color:var(--sub);margin:10px 0 2px">Network name (SSID):</p>
+      <div id="qr-wifi-ssid" style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;
+        background:#0d1520;border:1px solid var(--accent);border-radius:10px;padding:11px;
+        word-break:break-all;user-select:all;-webkit-user-select:all"></div>
+      <p id="qr-wifi-enc" style="font-size:13px;margin:10px 0 4px;font-weight:700"></p>
+      <p id="qr-wifi-note" style="font-size:12px;color:var(--sub);margin:0;line-height:1.45"></p>
+      <p style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--sub);
+        margin:8px 0 0;word-break:break-all">sha256: <span id="qr-wifi-hash"></span></p>
+    </div>
   </div>
 </div><!-- /tab-qr -->
 
@@ -1978,6 +1993,23 @@ function renderQR(d) {
   qrLast = d;
   setResp('qr-resp','', '');
   document.getElementById('qr-resp').className = 'resp';
+
+  // WIFI: payloads are out of the safe/unsafe verdict system entirely — show
+  // the SSID + encryption plainly, never a verdict badge, never auto-join.
+  if (d.kind === 'wifi') {
+    document.getElementById('qr-result').style.display = 'none';
+    document.getElementById('qr-wifi-ssid').textContent = d.ssid_display || d.ssid || '(no network name in code)';
+    const enc = document.getElementById('qr-wifi-enc');
+    enc.textContent = (d.is_open ? '⚠️ ' : '🔒 ') + (d.encryption || 'encryption: unknown')
+      + (d.hidden ? '  ·  hidden network' : '');
+    enc.style.color = d.is_open ? '#ffb3b3' : '#9be8b4';
+    document.getElementById('qr-wifi-note').textContent = d.note || '';
+    document.getElementById('qr-wifi-hash').textContent = d.payload_sha256 || '';
+    document.getElementById('qr-wifi').style.display = 'block';
+    return;
+  }
+  document.getElementById('qr-wifi').style.display = 'none';
+
   const [bg, fg, label] = QR_BADGE[d.verdict] || QR_BADGE.unknown;
   const badge = document.getElementById('qr-badge');
   badge.textContent = label; badge.style.background = bg; badge.style.color = fg;

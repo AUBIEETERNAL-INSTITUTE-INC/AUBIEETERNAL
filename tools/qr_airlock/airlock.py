@@ -15,9 +15,11 @@ from __future__ import annotations
 from typing import Callable, Optional
 
 from .decode import DecodeError, decode_base64_image, normalize_payload
+from .hash_payload import payload_sha256
 from .heuristics import Signals
 from .log import log_check
 from .verdict import evaluate
+from .wifi import is_wifi_payload, parse_wifi_payload
 
 
 def check_qr(
@@ -45,6 +47,25 @@ def check_qr(
         payload = decoded.payload
 
     payload = normalize_payload(payload)
+
+    # WIFI: payloads get their own display-only path — never the safe/unsafe
+    # verdict system, never a model call. Decode stays pyzbar-primary (already
+    # done above); this is a fast local parse only.
+    if is_wifi_payload(payload):
+        wifi = parse_wifi_payload(payload)
+        wifi["payload"] = payload
+        wifi["payload_sha256"] = payload_sha256(payload)
+        log_check(
+            payload_hash=wifi["payload_sha256"],
+            payload_preview=payload,
+            final_url=None,
+            verdict="wifi",
+            who=who,
+            approved=False,
+            source=source,
+        )
+        return wifi
+
     result = evaluate(payload, claimed_as=claimed_as, explain_fn=explain_fn)
 
     log_check(
