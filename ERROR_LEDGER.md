@@ -107,6 +107,53 @@ serialized a real overlapping `aplay` call.
 Do not mark this fixed in `CLAUDE.md` or `CURRENT.md` until that test has
 actually been run and passed.
 
+### 2026-09-05 — anomaly_guard: first pass only, statistical layers deferred
+
+**What this is:** `anomaly_guard.py` (repo root) is a new outside-observer
+check for the swarm's *shape*, aimed at the 2026-09-04 runaway. It does two
+things, both zero-training-data hard rules:
+
+1. **Tick labeler** — maps each ~30s heartbeat to
+   `IDLE|WORK|SPIKE|PUSH|SKIP|ERR|NOOP` by reading the swarm journal
+   (`journalctl -u aubie-swarm.service`). It does not invent fields:
+   `wonder_log.jsonl`'s real schema is `{timestamp, wonder_index, hits,
+   delta}` with no state column, so the journal's `💓 Tick N` line is the
+   spine and the markers between ticks decide the state. Anything
+   unrecognised → IDLE, never SPIKE.
+2. **Two hard-rule signals** — `max_spike_run` (longest consecutive SPIKE
+   run in the last hour) and `ritual_hits` (matches against a frozen lexicon
+   taken verbatim from the Sep-4 quotes above). Page predicate:
+   `max_spike_run > 3 OR ritual_hits >= 3`. A third term — a NOOP "stale
+   hold" (a scheduled trigger that fired but produced no output: the
+   `dc945427` class) — is added behind `PAGE_ON_NOOP_HOLD` to cover that
+   shape at journal granularity. `ritual_hits` counts *distinct* exotic
+   phrases; the bare `wonder_index` / "Wonder Index" self-reference is
+   normal healthy vocabulary and is only credited when an exotic phrase is
+   already present, so it does not false-page on live output (verified: 0
+   exotic-phrase hits in the current `tier2_digest.txt` / truth log).
+
+Wired into `aubieeternal_build/self_audit.py` as `check_anomaly_shape()` —
+same first-detection email path as the runaway checks, no 3-of-16 gate. The
+import adds the repo root to `sys.path` explicitly and keeps the **real
+traceback** on failure (the `dc945427` mislabel-as-"not found" bug must not
+recur). anomaly_guard never imports `swarm_v4_1.py` and is never imported by
+it — outside observer only, no new closed loop.
+
+**Deliberately NOT built this session — deferred pending clean data:** the
+Gold Markov transition matrix and the Isolation Forest window scorer. Both
+need a few real weeks of post-fix "good day" history to calibrate a
+trustworthy baseline; the runaway fixes only landed 2026-09-05, so building
+them now would risk a model that pages on normal variation or misses real
+anomalies. No `sklearn` dependency was added.
+
+**Verified:** `python3 anomaly_guard.py --replay` passes all 4 acceptance
+cases (quiet night → no page; one legal spike → no page; Sep-4 sustained
+SPIKE run + ritual text → pages, and pages on just the first 15-minute
+slice; scheduled job fired-but-no-output → pages on the stale hold). Live
+run against the current swarm journal returns `page: false`. Not yet
+verified against a live *runaway* — none has occurred since the check
+landed.
+
 ## The standard: worked examples
 
 These commits are what a fix commit should look like — a stranger can read them

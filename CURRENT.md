@@ -31,6 +31,24 @@ truth-log push sweep. Landed as `a549f0dc`, `df68baa9`, `9e4ad5ee`,
 `87f74db6`. ALSA lock fix (`132cd8b0`) is still unverified — see
 `ERROR_LEDGER.md`.
 
+## 2026-09-05 evening — travel QR trust + anomaly_guard first pass
+
+- `phone_ui.py` Scan QR tab: a "PIPE" trust strip (green only when the page
+  is genuinely the tailnet host over HTTPS or localhost — exact hostname
+  match + leading-dot suffix, not a bare substring), blocks "Go Live" when
+  UNTRUSTED, logs failed checks to `memory/pipe_trust.log` (gitignored).
+  Plus a static travel-runbook card and `WIFI:` QR parsing in `qr_airlock`
+  (display-only: SSID + open/encrypted wording, never joined, never a
+  safe/unsafe verdict).
+- `anomaly_guard.py` (repo root): tick labeler + `max_spike_run` /
+  `ritual_hits` hard rules, wired into `self_audit.py`. **First pass only —
+  the Markov matrix + Isolation Forest are deferred** pending a few real
+  weeks of clean post-fix data. `python3 anomaly_guard.py --replay` passes
+  4 cases. See `ERROR_LEDGER.md`.
+- All of the above is **landed in the working tree, not committed** — Mateo
+  reviews the diffs and commits; then `sudo systemctl restart aubie-swarm`
+  / assistant restart as needed.
+
 ## Still current (2026-08-29)
 
 - `/converse` prompt is collaborative

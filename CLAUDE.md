@@ -324,6 +324,22 @@ fallout, and a repo-wide degree-language cleanup. All commits below are on `main
   confirm no "Device or resource busy" and that the second greeting still plays
   (delayed, not dropped).
 
+- **Travel QR trust strip + `anomaly_guard.py` first pass (2026-09-05
+  evening, landed in-tree, not yet committed).** `phone_ui.py` Scan QR tab
+  gained a "PIPE" trust strip (green only on the real tailnet host over
+  HTTPS — exact match + leading-dot suffix check, never a bare substring),
+  which blocks "Go Live" when UNTRUSTED and logs failures to
+  `memory/pipe_trust.log`; a static travel-runbook card; and `WIFI:` QR
+  parsing in `tools/qr_airlock/wifi.py` (display-only — SSID + open/encrypted
+  wording, never joined, never a safe/unsafe verdict). New `anomaly_guard.py`
+  at the repo root is an outside-observer tick labeler +
+  `max_spike_run`/`ritual_hits` hard rules, wired into `self_audit.py` as
+  `check_anomaly_shape()` (first-detection email). **First pass only — the
+  Markov matrix and Isolation Forest are deferred** until a few real weeks
+  of clean post-fix data exist; no `sklearn` added. `python3
+  anomaly_guard.py --replay` passes its 4 acceptance cases. Full write-up in
+  `ERROR_LEDGER.md`.
+
 **Still open as of 2026-09-05's follow-up pass:** the ALSA lock fix above —
 **blocked on hardware, not verified**, board still offline; full reconnect
 test (pull `aubie_listen.py` off the board first) is in `ERROR_LEDGER.md`'s
