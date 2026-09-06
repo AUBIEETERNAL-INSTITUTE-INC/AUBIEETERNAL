@@ -15,6 +15,7 @@ import asyncio
 import datetime
 import httpx
 import json
+import logging
 import re
 from pathlib import Path
 
@@ -23,6 +24,26 @@ from family_profiles import FAMILY_REGISTRY, load_family_stats, save_family_stat
 from model_selector import ranked_try_order
 
 router = APIRouter()
+
+# ── Travel "PIPE" trust strip — local debug log ───────────────────────────
+# The Scan QR tab shows a trust strip: green only when the page is genuinely
+# being served over HTTPS from the tailnet host (or localhost). When it reads
+# UNTRUSTED it blocks Live Vision ("Go Live"). Every failed trust check is
+# logged here — not the truth-log, not an email, just enough that Mateo can
+# later answer "why didn't Go Live work on that hotel wifi?". `memory/` is
+# gitignored, so this file never leaves the rig.
+_PIPE_TRUST_LOG = Path(__file__).resolve().parent / "memory" / "pipe_trust.log"
+_pipe_logger = logging.getLogger("aubie.pipe_trust")
+if not _pipe_logger.handlers:
+    try:
+        _PIPE_TRUST_LOG.parent.mkdir(parents=True, exist_ok=True)
+        _h = logging.FileHandler(_PIPE_TRUST_LOG)
+        _h.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+        _pipe_logger.addHandler(_h)
+        _pipe_logger.setLevel(logging.INFO)
+        _pipe_logger.propagate = False
+    except Exception:
+        pass
 
 # ── PWA (Add to Home Screen) ──────────────────────
 # Serves a manifest + a minimal service worker so Safari/Chrome offer a real
@@ -1267,6 +1288,18 @@ HTML = r"""<!DOCTYPE html>
 
 <!-- ── QR Airlock: scan a code, see the raw URL + verdict, never auto-open ── -->
 <div id="tab-qr" class="tab-panel">
+
+  <!-- ── PIPE trust strip (travel) ──────────────────────────────────────
+       Green only when this page is genuinely being served over HTTPS from
+       the tailnet host (or localhost). Anything else → UNTRUSTED, and Live
+       Vision / "Go Live" is blocked. QR decode still works either way. -->
+  <div id="qr-trust-strip" style="display:flex;align-items:center;gap:8px;
+    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;font-weight:700;
+    letter-spacing:.03em;padding:8px 12px;border-radius:10px;margin-bottom:12px;
+    background:#0d1520;color:#cfe8ff;border:1px solid var(--border)">
+    <span id="qr-trust-text">PIPE: checking…</span>
+  </div>
+
   <div class="card">
     <div class="card-title"><span>🔒</span> Check a QR code before you trust it</div>
     <p style="font-size:12px;color:var(--sub);margin:6px 0 12px">
@@ -1929,6 +1962,7 @@ async function scanQR() {
   if(!b64){ return; }  // captureTabletFrame already showed the insecure-origin fix
   document.getElementById('qr-preview').src = 'data:image/jpeg;base64,'+b64;
   document.getElementById('qr-preview').style.display = 'block';
+  // Decode + display works regardless of trust state — only "Go Live" is gated.
   setResp('qr-resp','🔎 Checking…','thinking');
   try {
     const r = await fetch('/qr/check', {
@@ -1954,6 +1988,61 @@ function renderQR(d) {
   document.getElementById('qr-hash').textContent = d.payload_sha256 || '';
   document.getElementById('qr-result').style.display = 'block';
 }
+
+// ── PIPE trust strip (travel) ────────────────────────────────────────────
+// Trusted ONLY when the address bar is genuinely the tailnet host over HTTPS
+// (or localhost). The hostname test is exact, not a loose substring:
+//   h === 'aubieeternal.tail00eb41.ts.net'
+//   h.endsWith('.tail00eb41.ts.net')   ← leading dot is REQUIRED
+//   h === 'localhost'
+// A bare endsWith('tail00eb41.ts.net') (no dot) would pass spoofs like
+// 'nottail00eb41.ts.net' or 'evil-tail00eb41.ts.net.attacker.com' — so the
+// leading dot is a hard requirement, not a style choice.
+function evalPipeTrust() {
+  const h = location.hostname;
+  const p = location.protocol;
+  const hostOk = (h === 'aubieeternal.tail00eb41.ts.net')
+              || h.endsWith('.tail00eb41.ts.net')
+              || (h === 'localhost');
+  const httpsOk = (p === 'https:') || (h === 'localhost');
+  return { trusted: hostOk && httpsOk, hostname: h, protocol: p };
+}
+let _pipeTrustLogged = false;
+function logPipeUntrusted(where) {
+  // One breadcrumb per page load for the plain page-load check; always log a
+  // blocked Go-Live attempt.
+  if (where === 'page-load' && _pipeTrustLogged) return;
+  if (where === 'page-load') _pipeTrustLogged = true;
+  const t = evalPipeTrust();
+  try {
+    fetch('/pipe/trust-log', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ hostname: t.hostname, protocol: t.protocol, where: where })
+    }).catch(() => {});
+  } catch (e) {}
+}
+function renderPipeTrust() {
+  const strip = document.getElementById('qr-trust-strip');
+  const text = document.getElementById('qr-trust-text');
+  if (!strip || !text) return;
+  const t = evalPipeTrust();
+  if (t.trusted) {
+    text.textContent = (t.hostname === 'localhost')
+      ? 'PIPE: localhost'
+      : 'PIPE: tail00eb41.ts.net · https';
+    strip.style.background = '#12351f';
+    strip.style.color = '#9be8b4';
+    strip.style.borderColor = '#1f5c34';
+  } else {
+    text.textContent = 'UNTRUSTED · ' + (t.hostname || '(no host)') + ' · ' + (t.protocol || '?')
+      + '  — Go Live blocked';
+    strip.style.background = '#3d1200';
+    strip.style.color = '#ffccaa';
+    strip.style.borderColor = '#ff520066';
+    logPipeUntrusted('page-load');
+  }
+}
+window.addEventListener('load', renderPipeTrust);
 async function qrCopyUrl() {
   if(!qrLast || !qrLast.payload) return;
   try {
@@ -3231,6 +3320,16 @@ let liveStream = null;
 let liveTimer = null;
 async function toggleLiveVision() {
   if(!liveVisionOn) {
+    // Blocked unless the PIPE trust strip (Scan QR tab) is green — i.e. this
+    // page really is the tailnet host over HTTPS (or localhost). Decode-only
+    // QR checks are unaffected; this only gates the live camera stream.
+    const _t = (typeof evalPipeTrust === 'function') ? evalPipeTrust() : { trusted: true };
+    if(!_t.trusted) {
+      log('Go Live blocked — connection is UNTRUSTED (' + _t.hostname + ' · ' + _t.protocol +
+          '). Open this page via https://aubieeternal.tail00eb41.ts.net/remote and check the trust strip on the Scan QR tab.','err');
+      if (typeof logPipeUntrusted === 'function') logPipeUntrusted('go-live-blocked');
+      return;
+    }
     if(!navigator.mediaDevices) { log('Camera blocked — see the CAMERA BLOCKED banner near the top for the fix','err'); return; }
     try {
       liveStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
@@ -3478,6 +3577,26 @@ async def apple_touch_icon():
 @router.get("/health")
 async def health():
     return {"status": "ok", "service": "AUBIEETERNAL Teaching Station"}
+
+
+@router.post("/pipe/trust-log")
+async def pipe_trust_log(request: Request):
+    """Client posts here when the PIPE trust strip reads UNTRUSTED (on page
+    load, and when a blocked 'Go Live' is attempted). Write-only breadcrumb
+    for later debugging — records the actual hostname/protocol seen, not just
+    'untrusted'."""
+    try:
+        body = await request.json()
+    except Exception:
+        body = {}
+    hostname = str(body.get("hostname") or "")[:200]
+    protocol = str(body.get("protocol") or "")[:20]
+    where = str(body.get("where") or "")[:60]
+    _pipe_logger.warning(
+        "PIPE trust check FAILED: hostname=%r protocol=%r where=%s",
+        hostname, protocol, where or "page-load",
+    )
+    return {"logged": True}
 
 
 @router.post("/ask-text")
