@@ -1350,6 +1350,16 @@ HTML = r"""<!DOCTYPE html>
         margin:8px 0 0;word-break:break-all">sha256: <span id="qr-wifi-hash"></span></p>
     </div>
   </div>
+
+  <!-- ── Travel runbook ────────────────────────────────────────────────── -->
+  <div class="card">
+    <div class="card-title"><span>🧳</span> Travel runbook</div>
+    <ul style="font-size:12px;color:var(--sub);line-height:1.9;margin:6px 0 0;padding-left:18px">
+      <li>Banks &amp; anything with money — use <b>LTE / mobile data</b>, not hotel or café Wi-Fi.</li>
+      <li>Check <b>Tailscale shows “Connected”</b> before you touch a guest network.</li>
+      <li>Scan stickers <b>here on the Scan QR tab</b> — not in the phone's Camera app.</li>
+    </ul>
+  </div>
 </div><!-- /tab-qr -->
 
 
