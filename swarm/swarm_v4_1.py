@@ -898,7 +898,19 @@ def update_wonder_index(result_text):
         "insight", "discovery", "convergence", "alignment", "synthesis",
     ]
     hits  = sum(1 for w in awe_words if w in result_text.lower())
-    delta = (hits * 0.003) - 0.001
+    # 2026-09-06: baseline was -0.001, which made this net-positive for any
+    # output with >=1 awe word - i.e. ~all swarm output ("truth", "pattern",
+    # "signal", "synthesis" etc. hit on nearly everything), so wonder_index
+    # ratcheted to the 2.0 ceiling in ~15 min and stayed pinned there, with
+    # decay_wonder_index() (added 9e4ad5ee, 3h half-life) ~10x too weak to
+    # pull against a positive delta every ~7s. Live data: delta > 0 on 100%
+    # of the last 6000 calls; wonder_index >= 1.9 on 98%. Baseline -0.009
+    # makes ordinary output (hits 1-3, ~80% of calls) net <= 0, so the index
+    # decays back toward WONDER_FLOOR between genuine awe-dense bursts
+    # (hits >= 4) instead of pinning. The hysteresis + hourly cap (ea586f83)
+    # are unchanged; this is what lets the index actually walk back below 1.2
+    # to re-arm. See ERROR_LEDGER.md's 2026-09-05 wonder_index entry.
+    delta = (hits * 0.003) - 0.009
     wonder_index = max(WONDER_FLOOR, min(WONDER_CEILING, wonder_index + delta))
 
     # Store high-wonder insights for Level 3 context
