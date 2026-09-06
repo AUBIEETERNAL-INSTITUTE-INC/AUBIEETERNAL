@@ -23,6 +23,7 @@ Nightly: ask local Qwen for a short "how to get better" note from the day's log.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import os
 import smtplib
@@ -79,6 +80,19 @@ SWARM_ALERT_CHECK_IDS = {
     "swarm:anomaly_shape", "swarm:anomaly_guard_import",
     "swarm:anomaly_guard_error",
 }
+
+# ── Fix-verification tracking (2026-09-06) ─────────────────────────────────
+# fix_watches.json is machine-owned state (this dir is gitignored). A human
+# registers a watch when they deploy a fix (--register-fix); every cycle
+# evaluate_fix_watches() decides on its own whether the fix held. ERROR_LEDGER.md
+# stays hand-maintained — paste from --fix-watch-status.
+FIX_WATCHES_PATH = DIR / "fix_watches.json"
+# metric_trend.jsonl gets one row per cycle regardless of thresholds, so a
+# fix's effect (e.g. wonder_index decaying back down after a restart) shows up
+# as a trend line in real data, not just as the absence of an alert.
+METRIC_TREND_PATH = DIR / "metric_trend.jsonl"
+METRIC_TREND_KEEP_DAYS = 30
+TS_FMT = "%Y-%m-%dT%H:%M:%SZ"  # matches now()
 
 # anomaly_guard.py lives at the repo root (~/AUBIEETERNAL), not in this
 # script's own directory (aubieeternal_build/). WorkingDirectory sets cwd,
@@ -178,6 +192,30 @@ def http_ok(url: str, timeout: float = 3.0) -> bool:
 # journalctl, and (as of the same-day swarm_v4_1.py change) a small telemetry-
 # push status file - no polling of the swarm process itself.
 
+def _wonder_values_last_hour() -> list[float]:
+    """wonder_index samples from the trailing hour of WONDER_LOG. Shared by
+    check_wonder_pinned() (threshold crossing) and collect_trend() (raw trend
+    logging). Tail is enough - wonder_log gets a line every couple seconds
+    during active ticks, so the last 5000 lines cover an hour even on a busy
+    run. Returns [] on a missing/unreadable log."""
+    if not WONDER_LOG.exists():
+        return []
+    cutoff = datetime.now() - timedelta(hours=1)
+    values: list[float] = []
+    try:
+        for line in WONDER_LOG.read_text(errors="ignore").splitlines()[-5000:]:
+            try:
+                rec = json.loads(line)
+                ts = datetime.fromisoformat(rec["timestamp"])
+            except Exception:
+                continue
+            if ts >= cutoff:
+                values.append(rec.get("wonder_index", 0))
+    except Exception:
+        return []
+    return values
+
+
 def check_wonder_pinned() -> dict | None:
     """wonder_index >= 1.9 for the entire trailing hour - the failure mode
     from the 2026-09-04 incident, where it sat pinned near the 2.0 ceiling
@@ -197,24 +235,7 @@ def check_wonder_pinned() -> dict | None:
     above 1.9 too - that's rare enough (6 genuine triggers in one hour) to
     be worth a human glance either way, so it's left as-is rather than
     threaded through the cap counter here."""
-    if not WONDER_LOG.exists():
-        return None
-    cutoff = datetime.now() - timedelta(hours=1)
-    values = []
-    try:
-        # Tail is enough - wonder_log gets a line roughly every couple
-        # seconds during active ticks, so the last 5000 lines comfortably
-        # covers an hour even on a busy run.
-        for line in WONDER_LOG.read_text(errors="ignore").splitlines()[-5000:]:
-            try:
-                rec = json.loads(line)
-                ts = datetime.fromisoformat(rec["timestamp"])
-            except Exception:
-                continue
-            if ts >= cutoff:
-                values.append(rec.get("wonder_index", 0))
-    except Exception:
-        return None
+    values = _wonder_values_last_hour()
     if values and min(values) >= WONDER_PINNED_THRESHOLD:
         return {
             "id": "swarm:wonder_pinned", "sev": "high",
@@ -456,9 +477,21 @@ def maybe_send_swarm_alerts(report: dict) -> None:
     by_id = {f["id"]: f for f in report.get("findings") or []}
     now_active = set(by_id) & SWARM_ALERT_CHECK_IDS
     newly_active = now_active - _load_alert_state()
+    open_watches = [w for w in _load_fix_watches()
+                    if w.get("status") in ("monitoring", "regressed")]
     for fid in newly_active:
         f = by_id[fid]
         body = f"{f['msg']}\n"
+        # If this exact condition is under a recent fix-watch, say so up front -
+        # a recurrence is a regression to act on, not a fresh mystery.
+        w = next((w for w in open_watches
+                  if fid in (w.get("watch_conditions") or [])), None)
+        if w:
+            body = (
+                f"⚠️ POSSIBLE REGRESSION — fix {w.get('fix_commit')} was deployed "
+                f"{w.get('deployed_ts')} for incident {w.get('incident_id')} to "
+                f"address this same condition (watch window {w.get('watch_hours')}h).\n\n"
+            ) + body
         if f.get("detail"):
             body += f"\n{f['detail']}\n"
         body += (
@@ -468,6 +501,206 @@ def maybe_send_swarm_alerts(report: dict) -> None:
         )
         send_alert_email(f"[AUBIEETERNAL] Swarm alert: {fid}", body)
     _save_alert_state(now_active)
+
+
+# ── Fix-verification lifecycle (2026-09-06) ────────────────────────────────
+# Closes the detect → patch → confirm loop. self_audit already *detects*
+# swarm-behavior problems and emails on first sight; nothing confirmed a
+# deployed fix actually worked without a manual restart-and-eyeball. A human
+# registers a watch when they deploy a fix:
+#   self_audit.py --register-fix --incident <id> --commit <sha> \
+#       --watch swarm:wonder_pinned,swarm:hormetic_frequency --hours 6
+# Every cycle evaluate_fix_watches() then decides for itself:
+#   - a watched condition present in this cycle's findings → `regressed`
+#   - watch window elapsed with none seen                  → `verified`
+# and emails on the transition. No autonomous patching — registration is
+# always a human step; ERROR_LEDGER.md stays hand-maintained.
+
+def _load_fix_watches() -> list[dict]:
+    try:
+        data = json.loads(FIX_WATCHES_PATH.read_text())
+        return data if isinstance(data, list) else []
+    except Exception:
+        return []
+
+
+def _save_fix_watches(watches: list[dict]) -> None:
+    try:
+        DIR.mkdir(parents=True, exist_ok=True)
+        FIX_WATCHES_PATH.write_text(json.dumps(watches, indent=2))
+    except Exception:
+        pass
+
+
+def _parse_ts(ts: str) -> datetime | None:
+    try:
+        return datetime.strptime(ts, TS_FMT).replace(tzinfo=timezone.utc)
+    except Exception:
+        return None
+
+
+def register_fix_watch(incident_id: str, commit: str,
+                       conditions: list[str], hours: float) -> dict:
+    """Append a `monitoring` watch record; supersede any open one for the same
+    incident. The watch clock starts now (deployed_ts) - for an in-memory fix
+    like the swarm's, register this right after the service restart, not at
+    commit time."""
+    watches = [w for w in _load_fix_watches()
+               if not (w.get("incident_id") == incident_id
+                       and w.get("status") == "monitoring")]
+    rec = {
+        "incident_id": incident_id,
+        "fix_commit": commit,
+        "watch_conditions": conditions,
+        "watch_hours": hours,
+        "status": "monitoring",
+        "opened_ts": now(),
+        "deployed_ts": now(),
+        "last_checked_ts": None,
+        "resolved_ts": None,
+        "regressed_ts": None,
+        "regression_detail": None,
+    }
+    watches.append(rec)
+    _save_fix_watches(watches)
+    return rec
+
+
+def evaluate_fix_watches(report: dict) -> list[dict]:
+    """Advance every `monitoring` watch one cycle. Sets report["fix_watches"]
+    to the full list and returns just the records that changed state this
+    cycle (for the caller to email on)."""
+    watches = _load_fix_watches()
+    changed: list[dict] = []
+    if watches:
+        active_ids = {f["id"] for f in report.get("findings") or []}
+        stamp = now()
+        for w in watches:
+            if w.get("status") != "monitoring":
+                continue
+            w["last_checked_ts"] = stamp
+            hit = sorted(set(w.get("watch_conditions") or []) & active_ids)
+            if hit:
+                w["status"] = "regressed"
+                w["regressed_ts"] = stamp
+                w["regression_detail"] = "; ".join(
+                    f["msg"] for f in (report.get("findings") or [])
+                    if f["id"] in hit)
+                changed.append(w)
+                continue
+            started = _parse_ts(w.get("deployed_ts") or "")
+            if started and datetime.now(timezone.utc) - started >= timedelta(
+                    hours=float(w.get("watch_hours") or 0)):
+                w["status"] = "verified"
+                w["resolved_ts"] = stamp
+                changed.append(w)
+        _save_fix_watches(watches)
+    report["fix_watches"] = watches
+    return changed
+
+
+def email_fix_watch_transitions(changed: list[dict]) -> None:
+    for w in changed:
+        conds = ", ".join(w.get("watch_conditions") or [])
+        if w["status"] == "verified":
+            send_alert_email(
+                f"[AUBIEETERNAL] Fix verified: {w['incident_id']}",
+                f"Fix {w.get('fix_commit')} for incident {w['incident_id']} held "
+                f"for the full {w.get('watch_hours')}h watch window with no "
+                f"recurrence of: {conds}.\n\n"
+                f"Deployed: {w.get('deployed_ts')}\nVerified: {w.get('resolved_ts')}\n\n"
+                f"Update this incident's Status line in ERROR_LEDGER.md to "
+                f"`verified` (see: self_audit.py --fix-watch-status).",
+            )
+        else:  # regressed
+            send_alert_email(
+                f"[AUBIEETERNAL] Fix REGRESSED: {w['incident_id']}",
+                f"Fix {w.get('fix_commit')} for incident {w['incident_id']} was "
+                f"deployed {w.get('deployed_ts')} but a watched condition fired "
+                f"again at {w.get('regressed_ts')}:\n\n  {w.get('regression_detail')}\n\n"
+                f"This is a regression of a known fix, not a new incident. Re-open "
+                f"the ERROR_LEDGER.md entry and re-investigate.",
+            )
+
+
+def fix_watch_status_table() -> str:
+    watches = _load_fix_watches()
+    if not watches:
+        return "(no fix-watches registered)"
+    rows = ["incident_id | status | fix | deployed_ts | conditions | window | resolved/regressed_ts"]
+    for w in watches:
+        rows.append(" | ".join([
+            str(w.get("incident_id", "?")),
+            str(w.get("status", "?")),
+            (w.get("fix_commit") or "")[:12],
+            str(w.get("deployed_ts") or "?"),
+            ",".join(w.get("watch_conditions") or []),
+            f"{w.get('watch_hours')}h",
+            str(w.get("resolved_ts") or w.get("regressed_ts") or "-"),
+        ]))
+    return "\n".join(rows)
+
+
+# ── Per-cycle metric trend log (2026-09-06) ────────────────────────────────
+def _trim_jsonl_by_age(path: Path, keep_days: int) -> None:
+    """Keep only lines whose leading `ts` field is within keep_days. Lines that
+    don't parse are kept rather than silently dropped."""
+    if not path.exists():
+        return
+    cutoff = datetime.now(timezone.utc) - timedelta(days=keep_days)
+    try:
+        kept = []
+        for line in path.read_text(errors="ignore").splitlines():
+            dt = None
+            try:
+                dt = datetime.strptime(json.loads(line)["ts"], TS_FMT).replace(
+                    tzinfo=timezone.utc)
+            except Exception:
+                kept.append(line)
+                continue
+            if dt >= cutoff:
+                kept.append(line)
+        path.write_text("\n".join(kept) + ("\n" if kept else ""))
+    except Exception:
+        pass
+
+
+def collect_trend() -> dict:
+    """One lightweight row per audit cycle - the raw swarm-behavior metrics,
+    logged every 15 min whether or not a threshold is crossed, so a fix's
+    effect (wonder_index decaying back down, pulse rate settling) is visible
+    as a trend in real telemetry instead of only as the absence of an alert.
+    This is what removes the 'must restart to verify' blocker. Appended to
+    metric_trend.jsonl (gitignored)."""
+    vals = _wonder_values_last_hour()
+    row: dict = {
+        "ts": now(),
+        "wonder_index_now": round(vals[-1], 4) if vals else None,
+        "wonder_index_1h_min": round(min(vals), 4) if vals else None,
+        "wonder_index_1h_max": round(max(vals), 4) if vals else None,
+        "wonder_samples_1h": len(vals),
+    }
+    # same read paths as check_hormetic_frequency / check_swarm_log_volume
+    try:
+        row["hormetic_pulses_1h"] = int(sh(
+            f"journalctl -u {SWARM_UNIT} --since '-1 hour' --no-pager 2>/dev/null "
+            f"| grep -cE 'HORMETIC PULSE|WONDER SPIKE'", timeout=15).strip())
+    except ValueError:
+        row["hormetic_pulses_1h"] = None
+    try:
+        row["swarm_log_lines_1h"] = int(sh(
+            f"journalctl -u {SWARM_UNIT} --since '-1 hour' --no-pager 2>/dev/null "
+            f"| wc -l", timeout=15).strip())
+    except ValueError:
+        row["swarm_log_lines_1h"] = None
+    try:
+        DIR.mkdir(parents=True, exist_ok=True)
+        with METRIC_TREND_PATH.open("a") as f:
+            f.write(json.dumps(row) + "\n")
+        _trim_jsonl_by_age(METRIC_TREND_PATH, METRIC_TREND_KEEP_DAYS)
+    except Exception:
+        pass
+    return row
 
 
 def collect() -> dict:
@@ -688,6 +921,8 @@ def run_once() -> int:
         report["after_repair"] = {"http": follow["http"], "services": follow["services"]}
         report["ok"] = follow["ok"]
     maybe_send_swarm_alerts(report)
+    email_fix_watch_transitions(evaluate_fix_watches(report))
+    collect_trend()
     append_log(report)
     promote_lessons(report)
     write_grok_rule(report)
@@ -698,5 +933,26 @@ def run_once() -> int:
 if __name__ == "__main__":
     if "--nightly" in sys.argv:
         nightly()
+        sys.exit(0)
+    if "--register-fix" in sys.argv:
+        ap = argparse.ArgumentParser(prog="self_audit.py --register-fix",
+                                     description="Register a fix-verification watch.")
+        ap.add_argument("--register-fix", action="store_true")
+        ap.add_argument("--incident", required=True,
+                        help="stable incident id, e.g. 2026-09-05-wonder-index-pinned")
+        ap.add_argument("--commit", required=True, help="fix commit sha")
+        ap.add_argument("--watch", required=True,
+                        help="comma-separated check ids that must stay quiet, "
+                             "e.g. swarm:wonder_pinned,swarm:hormetic_frequency")
+        ap.add_argument("--hours", type=float, default=6.0,
+                        help="watch window in hours (default 6)")
+        a = ap.parse_args()
+        rec = register_fix_watch(
+            a.incident, a.commit,
+            [c.strip() for c in a.watch.split(",") if c.strip()], a.hours)
+        print(json.dumps(rec, indent=2))
+        sys.exit(0)
+    if "--fix-watch-status" in sys.argv:
+        print(fix_watch_status_table())
         sys.exit(0)
     sys.exit(run_once())
