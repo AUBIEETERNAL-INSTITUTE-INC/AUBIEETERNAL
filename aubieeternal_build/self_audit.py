@@ -15,9 +15,9 @@ The stale-output checks look at each job's own on-disk evidence directly,
 independent of the swarm's logs or in-memory state.
 If aubieeternal Build is down, restart it.
 Recurring problems become lessons the next Build/Grok session can see. The
-9 swarm-behavior checks (4 runaway + 5 stale-output) bypass that recurrence
-gate - they alert by email on first detection, not after 45 minutes of
-confirmation.
+swarm-behavior checks (4 runaway + 5 stale-output + anomaly_guard's
+hard-rule shape check, added 2026-09-05) bypass that recurrence gate - they
+alert by email on first detection, not after 45 minutes of confirmation.
 
 Nightly: ask local Qwen for a short "how to get better" note from the day's log.
 """
@@ -74,7 +74,28 @@ SWARM_ALERT_CHECK_IDS = {
     "swarm:stale_morning_synthesis", "swarm:stale_email_digest",
     "swarm:stale_epistemic_commons", "swarm:stale_curriculum_autogen",
     "swarm:stale_living_lattice",
+    # anomaly_guard hard-rule checks (2026-09-05) — first-detection email,
+    # same as the runaway checks above.
+    "swarm:anomaly_shape", "swarm:anomaly_guard_import",
+    "swarm:anomaly_guard_error",
 }
+
+# anomaly_guard.py lives at the repo root (~/AUBIEETERNAL), not in this
+# script's own directory (aubieeternal_build/). WorkingDirectory sets cwd,
+# not sys.path — the exact failure class from dc945427, where a scheduled job
+# silently couldn't see its repo-root sibling. Add the repo root explicitly,
+# then import with the REAL traceback preserved on failure (not a generic
+# "not found in repo" — that mislabel is precisely the dc945427 bug).
+_REPO_ROOT = HOME / "AUBIEETERNAL"
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+try:
+    import anomaly_guard
+    _ANOMALY_GUARD_IMPORT_ERROR = None
+except Exception:
+    import traceback as _tb
+    anomaly_guard = None
+    _ANOMALY_GUARD_IMPORT_ERROR = _tb.format_exc()
 
 
 def scrape_tool_fails(limit: int = 8) -> list[dict]:
@@ -263,6 +284,40 @@ def check_hormetic_frequency() -> dict | None:
     return None
 
 
+# ── anomaly_guard hard-rule shape check (2026-09-05) ────────────────────────
+# Outside-observer read of the swarm journal + recently generated text. Two
+# zero-training-data hard rules that would have caught the 2026-09-04 runaway's
+# *shape* (sustained SPIKE run / ritual language) inside the first 15-minute
+# window, plus a NOOP stale-hold term for the dc945427 class. No Markov matrix,
+# no Isolation Forest, no sklearn this round — those are deferred pending clean
+# post-fix data (see ERROR_LEDGER.md). anomaly_guard never imports the swarm
+# and the swarm never imports it.
+
+def check_anomaly_shape() -> dict | None:
+    if anomaly_guard is None:
+        return {
+            "id": "swarm:anomaly_guard_import", "sev": "high",
+            "msg": "anomaly_guard failed to import — hard-rule anomaly checks are NOT running",
+            "detail": _ANOMALY_GUARD_IMPORT_ERROR or "(no traceback captured)",
+        }
+    try:
+        result = anomaly_guard.run_live()
+    except Exception:
+        import traceback
+        return {
+            "id": "swarm:anomaly_guard_error", "sev": "high",
+            "msg": "anomaly_guard.run_live() raised while analysing the swarm journal",
+            "detail": traceback.format_exc(),
+        }
+    if not result.get("page"):
+        return None
+    return {
+        "id": "swarm:anomaly_shape", "sev": "high",
+        "msg": f"anomaly_guard hard rule tripped: {result.get('reason')}",
+        "detail": anomaly_guard.format_page_detail(result),
+    }
+
+
 # ── Stale scheduled-output detection (2026-09-05) ───────────────────────────
 # The morning_synthesis/email_watch/epistemic_commons/curriculum_autogen/
 # living_lattice triggers all silently failed for 11 days (a sys.path bug in
@@ -403,12 +458,15 @@ def maybe_send_swarm_alerts(report: dict) -> None:
     newly_active = now_active - _load_alert_state()
     for fid in newly_active:
         f = by_id[fid]
-        send_alert_email(
-            f"[AUBIEETERNAL] Swarm alert: {fid}",
-            f"{f['msg']}\n\nDetected: {report.get('ts')}\n"
+        body = f"{f['msg']}\n"
+        if f.get("detail"):
+            body += f"\n{f['detail']}\n"
+        body += (
+            f"\nDetected: {report.get('ts')}\n"
             f"See memory/self_audit/latest.json and ERROR_LEDGER.md's "
-            f"Incidents section for prior context.",
+            f"Incidents section for prior context."
         )
+        send_alert_email(f"[AUBIEETERNAL] Swarm alert: {fid}", body)
     _save_alert_state(now_active)
 
 
@@ -478,6 +536,7 @@ def collect() -> dict:
 
     for check in (check_wonder_pinned, check_swarm_log_volume,
                   check_telemetry_push_failures, check_hormetic_frequency,
+                  check_anomaly_shape,
                   check_stale_morning_synthesis, check_stale_email_digest,
                   check_stale_epistemic_commons, check_stale_curriculum_autogen,
                   check_stale_living_lattice):
