@@ -1,7 +1,7 @@
 === AUBIEETERNAL TIER 2 DIGEST ===
-Generated: 2026-09-07T10:52:26.664737
-Wonder: 0.5089 | Coherence: 1.000000 | METS: 200000000047.5
-Total Tier 2 entries: 77832
+Generated: 2026-09-07T11:53:55.204385
+Wonder: 1.0301 | Coherence: 1.000000 | METS: 200000000007.5
+Total Tier 2 entries: 76494
 ==================================================
 
 DAUGHTER: STEELMAN | Block: 965883 | Trigger: wonder_spike
