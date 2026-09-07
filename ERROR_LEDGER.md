@@ -241,6 +241,83 @@ run against the current swarm journal returns `page: false`. Not yet
 verified against a live *runaway* — none has occurred since the check
 landed.
 
+### 2026-09-07 — epistemic_commons daily job published nothing for 48h+ (no_seeds)
+
+**Separate incident from the wonder_index-pinned entry above.** Different
+subsystem (`epistemic_commons.py`, not `swarm_v4_1.py`), different failure
+mode (a silent `no_seeds` early-return, not a runaway ratchet). It was
+*exposed* by the wonder_index fix, not caused by a regression in it.
+
+**What happened:** `self_audit.py` fired `swarm:stale_epistemic_commons`
+(2026-09-07T12:24:04Z — newest `epistemic_commons/daily/*.json` was 48h old,
+threshold 48h). The 8AM trigger *did* run on both 2026-09-06 and -07 —
+journal shows `[epistemic-commons] ⏰ 8AM trigger fired` → `🌐 Daily publish
+background thread started` → `Commons publish: no_seeds` both days. The API
+half (`epistemic_commons_api.py`) succeeded each time (the `api/*.json`
+publish commits `529e45e8`, `3a47193e` are it), which is why the tab looked
+alive. Only the human-readable `daily/YYYY-MM-DD.{md,json}` letter was
+missing. `run_daily_publish()` returns `{"status": "no_seeds"}` and writes
+nothing when `_extract_epistemic_seeds()` comes back empty.
+
+**Root cause — confirmed against the logs, two compounding parts:**
+`_extract_epistemic_seeds()` scanned only `master_truth_log.jsonl`'s **last
+300 lines** and hard-filtered **`wonder_index >= 1.1`**. Both assumptions
+only ever held because of the pre-2026-09-04 wonder runaway: it fired Tier-2
+on ~every heartbeat tick with `wonder_index` pinned at 2.0, so the last 300
+lines were always saturated with 2.0-wonder tier-2 prose. After the runaway
+fixes (`ea586f83` hysteresis + `TIER2_HOURLY_CAP=6`, then `2e05dca5` delta
+rebalance, live at the 2026-09-06 07:17 EDT swarm restart), the swarm
+behaves correctly: `wonder_index` rests near `WONDER_FLOOR` (0.5) and Tier-2
+runs only on the 4 daily briefings — ~64 `result`-bearing entries/day
+instead of ~14k. Tier-1 heartbeat rows don't count: they store a truncated,
+highly repetitive `results` *list*, and `_extract_epistemic_seeds()` only
+reads a single `result` *string*. Net: at 08:00 the 300-line window covers
+~30–60 min and usually contains zero tier-2 entries; on 2026-09-07 the last
+tier-2 before 08:00 was at 06:01, 318 lines back — outside the window. On
+2026-09-06 there were tier-2 entries in the window but all sat below the
+`>= 1.1` gate. Either part alone is sufficient to produce `no_seeds`.
+
+Ruled out: not a path mismatch — `/mnt/main/repo` is a symlink to
+`~/AUBIEETERNAL`, so `epistemic_commons.py`'s write dir and `self_audit.py`'s
+`COMMONS_DAILY_GLOB` are the same inode. Not a scheduling break — the
+trigger fired both days. Not a `swarm_v4_1.py` proximity bug — `2e05dca5`
+never touched `maybe_trigger_epistemic_commons()`; the coupling is purely
+through the *distribution of `wonder_index` values* the swarm writes to the
+truth log.
+
+**Fix (`91970284`):** `_extract_epistemic_seeds()` (and `_extract_steelmans()`)
+rewritten to scope by **timestamp date** — today, widening to +yesterday
+then to the whole scanned tail (`_SEED_SCAN_LINES = 12000`, ~3 post-fix
+days) only if a day is too thin — instead of a fixed trailing line count.
+The absolute `wonder_index >= 1.1` gate is **removed**; ranking is now
+relative `(wonder_index, confidence)` desc, top `n`, with the real quality
+bar unchanged (substantive length, not an error string, honesty risk
+!= high) plus a first-120-char de-dupe for the repetitive briefing bursts.
+Rationale: the wonder scale gets recalibrated periodically (this is the
+second time in a week a fixed wonder cutoff silently broke a downstream
+consumer); relative top-n survives rescalings.
+
+**Catch-up:** ran `EpistemicCommons().run_daily_publish()` by hand →
+published 2026-09-07 (7 seeds, 5 steelmans; templated fallback letter since
+`qwen2.5:32b` isn't pulled — pre-existing, not part of this bug).
+`check_stale_epistemic_commons()` returns `None` now.
+
+**Verified:** the rewritten extractor returns 7 seeds against the live
+85MB truth log; `run_daily_publish()` completes and writes all four output
+files; `python3 -m py_compile epistemic_commons.py` clean. Not yet verified
+against an unattended 8AM run.
+
+**Status:** `deployed` `91970284`. **Not live** until `sudo systemctl
+restart aubie-swarm` — the swarm process (up since 2026-09-06 07:17 EDT) has
+`epistemic_commons` cached in `sys.modules`, so the lazy
+`from epistemic_commons import EpistemicCommons` on the next 8AM tick still
+gets the old code. After the restart, register the watch:
+`python3 aubieeternal_build/self_audit.py --register-fix --incident
+2026-09-07-epistemic-commons-no-seeds --commit 91970284 --watch
+swarm:stale_epistemic_commons --hours 50` (long enough to span the next two
+08:00 runs and the 48h stale threshold), then move this line to
+`monitoring` / `verified` from `--fix-watch-status`.
+
 ## The standard: worked examples
 
 These commits are what a fix commit should look like — a stranger can read them
