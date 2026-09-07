@@ -161,15 +161,13 @@ a mocked clock and the observed live hits distribution:
   exactly once, decays back below 1.2, re-arms; a later burst fires again.
 `py_compile` clean.
 
-**Status:** `deployed` `2e05dca5` (2026-09-06) — **not yet monitoring**. The
-swarm runs on in-memory globals, so the fix is not live until `sudo
-systemctl restart aubie-swarm`. Right after that restart, start the watch:
-`python aubieeternal_build/self_audit.py --register-fix --incident
-2026-09-05-wonder-index-pinned --commit 2e05dca5 --watch
-swarm:wonder_pinned,swarm:hormetic_frequency --hours 6`. `self_audit.py` then
-moves this to `verified` or `regressed` on its own and emails the transition;
-`memory/self_audit/metric_trend.jsonl` shows `wonder_index_1h_max` falling
-across cycles in the meantime.
+**Status:** `verified` `2e05dca5`. Watch registered after the `aubie-swarm`
+restart (deployed 2026-09-06T11:19:57Z, watching
+`swarm:wonder_pinned,swarm:hormetic_frequency`, 6h window); `self_audit.py`
+held it the full window with no recurrence and moved it to `verified` at
+2026-09-06T17:31:04Z (confirmed via `--fix-watch-status` on 2026-09-07).
+`memory/self_audit/metric_trend.jsonl` showed `wonder_index_1h_max` falling
+across cycles in the interim.
 
 ### 2026-09-05 — ALSA lock fix: blocked on hardware, not verified
 
