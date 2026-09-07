@@ -307,16 +307,13 @@ published 2026-09-07 (7 seeds, 5 steelmans; templated fallback letter since
 files; `python3 -m py_compile epistemic_commons.py` clean. Not yet verified
 against an unattended 8AM run.
 
-**Status:** `deployed` `91970284`. **Not live** until `sudo systemctl
-restart aubie-swarm` — the swarm process (up since 2026-09-06 07:17 EDT) has
-`epistemic_commons` cached in `sys.modules`, so the lazy
-`from epistemic_commons import EpistemicCommons` on the next 8AM tick still
-gets the old code. After the restart, register the watch:
-`python3 aubieeternal_build/self_audit.py --register-fix --incident
-2026-09-07-epistemic-commons-no-seeds --commit 91970284 --watch
-swarm:stale_epistemic_commons --hours 50` (long enough to span the next two
-08:00 runs and the 48h stale threshold), then move this line to
-`monitoring` / `verified` from `--fix-watch-status`.
+**Status:** `monitoring` `91970284`. `aubie-swarm` restarted 2026-09-07
+11:52:02 EDT (the running process had `epistemic_commons` cached in
+`sys.modules`, so a restart was required to load the fix). Watch registered
+2026-09-07T15:53:50Z — `--watch swarm:stale_epistemic_commons --hours 50`,
+spanning the next two 08:00 runs plus the 48h stale threshold. `self_audit.py`
+moves this to `verified` (or `regressed`) on its own; copy the transition
+here from `--fix-watch-status`.
 
 ## The standard: worked examples
 
