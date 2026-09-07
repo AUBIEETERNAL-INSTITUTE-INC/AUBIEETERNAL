@@ -30,11 +30,22 @@ def check_qr(
     who: str = "unknown",
     source: str = "device",
     explain_fn: Optional[Callable[[str, Signals], str]] = None,
+    context_image_b64: Optional[str] = None,
+    context_fn: Optional[Callable[[str], Optional[dict]]] = None,
 ) -> dict:
     """
     Exactly one of payload / image_b64 should be given. Returns a verdict
     dict (see verdict.Verdict.to_dict) plus a household log entry is
     written automatically (household-local only, never uploaded).
+
+    context_fn / context_image_b64 are an optional second pass: when the
+    verdict is ambiguous ("suspicious" or "unknown") and a photo is
+    available, context_fn(image_b64) -> dict|None reads the QR's physical
+    surroundings (see context_vision.read_context). The result is attached
+    as `context_read` and is purely additive - it never changes `verdict`,
+    never clears a flag, is not logged, and is not part of a shared flag.
+    If context_image_b64 is not given, the frame the QR was scanned from
+    (image_b64) is used.
     """
     if not payload and not image_b64:
         return {"error": "Provide either 'payload' or 'image_b64'."}
@@ -67,6 +78,17 @@ def check_qr(
         return wifi
 
     result = evaluate(payload, claimed_as=claimed_as, explain_fn=explain_fn)
+
+    # Optional surrounding-image context read. Additive only: it runs solely
+    # for the ambiguous verdicts (never a clean pass/fail), only when a photo
+    # is actually available, and its failure/absence leaves the verdict
+    # display exactly as it is without this feature.
+    ctx_image = context_image_b64 or image_b64
+    if context_fn and ctx_image and result.verdict in ("suspicious", "unknown"):
+        try:
+            result.context_read = context_fn(ctx_image)
+        except Exception:
+            result.context_read = None
 
     log_check(
         payload_hash=result.payload_sha256,

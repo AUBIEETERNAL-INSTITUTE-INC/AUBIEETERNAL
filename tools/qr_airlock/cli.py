@@ -12,6 +12,7 @@ import json
 
 try:
     from .airlock import check_qr
+    from .context_vision import read_context
 except ImportError:
     # Allow `python tools/qr_airlock/cli.py ...` from the repo root, not just
     # `python -m tools.qr_airlock.cli ...`.
@@ -20,12 +21,15 @@ except ImportError:
 
     sys.path.insert(0, str(pathlib.Path(__file__).resolve().parents[2]))
     from tools.qr_airlock.airlock import check_qr
+    from tools.qr_airlock.context_vision import read_context
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--payload", help="Raw decoded QR text to check directly.")
     ap.add_argument("--image", help="Path to an image file containing a QR code.")
+    ap.add_argument("--context-image", help="Optional separate/wider photo of the "
+                    "QR's surroundings for the context read. Defaults to --image.")
     ap.add_argument("--claimed-as", default="", help="e.g. menu, wifi, payment, coupon")
     ap.add_argument("--who", default="cli")
     args = ap.parse_args()
@@ -35,12 +39,19 @@ def main():
         with open(args.image, "rb") as fh:
             image_b64 = base64.b64encode(fh.read()).decode("ascii")
 
+    context_image_b64 = None
+    if args.context_image:
+        with open(args.context_image, "rb") as fh:
+            context_image_b64 = base64.b64encode(fh.read()).decode("ascii")
+
     result = check_qr(
         payload=args.payload,
         image_b64=image_b64,
+        context_image_b64=context_image_b64,
         claimed_as=args.claimed_as,
         who=args.who,
         source="cli",
+        context_fn=read_context,
     )
     print(json.dumps(result, indent=2))
 
