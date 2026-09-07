@@ -1,8 +1,48 @@
-# Appliance / control-panel explainer — design pass
+# Appliance / control-panel explainer — design + v1
 
-Status: **design only, no code.** From the 2026-09-07 vision-reasoning
-handoff (Feature 2). Feature 1 (QR Airlock context read) shipped separately
-on `feature/qr-airlock-context-check`.
+Status: **v1 implemented on `feature/appliance-explainer`, not merged, not
+restarted.** From the 2026-09-07 vision-reasoning handoff (Feature 2).
+Feature 1 (QR Airlock context read) shipped separately on
+`feature/qr-airlock-context-check`.
+
+The four open questions below were reviewed and approved 2026-09-07:
+**(1)** JSON response — with the spoken WAV embedded as `audio_b64` so the
+structured map and the audio arrive in one call (`/speak_local` has no
+per-language voice, so embedding also gets the language-correct Piper
+voice); **(2)** dedicated kiosk tab; **(3)** wake-word deferred to v1+ —
+core flow only for now; **(4)** no persistence.
+
+## What landed in v1
+
+- `assistant_server.py`: `POST /explain_panel` + `_panel_prompt` /
+  `_parse_panel_json` / `_panel_spoken_fallback` helpers. Accepts `image`
+  (required), optional `audio` **or** `question`, optional `language`.
+  Returns the JSON in "Response" below with `audio_b64` (Piper WAV in the
+  resolved reply language). Degrades to reading the model's prose aloud if
+  the reply isn't parseable JSON — never 500s on a bad model reply. `role`
+  is clamped to a fixed enum.
+- `phone_ui.py`: new **🎛️ Panel** tab (7th), cloned from the Scan QR tab —
+  optional "what are you trying to do?" box, one "Read this panel" button,
+  a **To do that** steps list, an *On the panel / Means / What it does*
+  table, "read aloud again", and a manual-check disclaimer. Auto-plays the
+  walkthrough once.
+- **Not** wired: `PANEL_INTENT_RE` / the `/converse` delegate branch /
+  `aubie_listen.py` — that's the wake-word follow-up (see below), left for
+  a later PR when the board is back online.
+
+Tested via `TestClient` against the real `qwen2.5vl:7b` on a mock
+Spanish-labelled microwave panel: no-question → full control map with
+Spanish→English label translations, `task:null`; with "how do I defrost
+meat" → `task.steps` populated; `language=es` → Spanish `spoken` + Spanish
+voice; missing image → 422. One call ~40–50s on the RTX 3060 with the
+model competing with whisper (warm/idle should be faster) — an explicit
+"read this panel" action with a spinner, not a live loop.
+
+**To go live:** merge to `main` → `sudo systemctl restart aubie-assistant`.
+
+---
+
+## Original design pass (for reference)
 
 ## Goal
 
@@ -194,12 +234,9 @@ offline as of 2026-09-05).
 - **Safety-interlock advice** (oven self-clean, gas ignition). If added,
   needs a careful disclaimer pass — out of scope for the first cut.
 
-## Open questions for review
+## Open questions — resolved 2026-09-07
 
-1. Response as JSON + a follow-up `/speak_local` call (recommended), or
-   WAV-with-headers like `/converse` (loses the structured map on the
-   wire)?
-2. Dedicated kiosk tab, or fold into an existing "Ask Aubie" surface?
-3. Wake-word support in v1, or kiosk/tablet-only first (simpler — no
-   dependency on the currently-offline board)?
-4. Any persistence in v1? (recommend no.)
+1. **JSON** (with `audio_b64` embedded — one call, language-correct voice).
+2. **Dedicated kiosk tab.**
+3. **Wake-word deferred to v1+.** Core flow first.
+4. **No persistence.**
