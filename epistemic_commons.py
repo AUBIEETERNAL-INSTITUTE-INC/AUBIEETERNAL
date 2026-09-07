@@ -151,10 +151,35 @@ class EpistemicCommons:
     # EXTRACT SEEDS FROM TRUTH LOG
     # ══════════════════════════════════════════════════════════════════════════
 
+    # How far back to scan master_truth_log.jsonl. Tier-1 heartbeat writes
+    # thousands of lines/day, so this is a line cap, not a time window — the
+    # actual scoping is by timestamp date below.
+    _SEED_SCAN_LINES = 12000
+
     def _extract_epistemic_seeds(self, n: int = 7) -> list:
         """
-        Pull the highest-quality insights from today's truth log.
-        Filter: honesty-scored as low/medium risk, wonder > 1.2, substantive.
+        Pull the highest-quality substantive insights from the truth log.
+
+        Scope: entries dated today (widening to the last 2 days, then to the
+        whole scanned tail, if today is too thin) — NOT a fixed trailing line
+        count. Quality bar: substantive length + not an error string + honesty
+        risk != high. Ranking: (wonder_index, confidence) desc, top n.
+
+        2026-09-07: this used to hard-filter `wonder_index >= 1.1` over only the
+        last 300 log lines. Both only ever worked because of the pre-2026-09-04
+        wonder_index runaway, which pinned ~every tier-2 entry at 2.0 and fired
+        Tier-2 on nearly every heartbeat tick, so the last 300 lines were always
+        saturated with 2.0-wonder material. Once that runaway was fixed
+        (swarm_v4_1.py ea586f83 hysteresis + TIER2_HOURLY_CAP, then 2e05dca5
+        delta rebalance), wonder_index correctly rests near WONDER_FLOOR and
+        Tier-2 only runs on the 4 daily briefings — so the 300-line window
+        routinely held zero tier-2 entries at 8AM, and the survivors sat below
+        1.1. Result: run_daily_publish() returned {"status": "no_seeds"} and
+        wrote nothing for 48h+. See ERROR_LEDGER.md's 2026-09-07 entry.
+
+        Absolute wonder thresholds are deliberately gone: the wonder scale is
+        recalibrated periodically and any fixed cutoff silently re-breaks this.
+        Relative top-n ranking is stable across rescalings.
         """
         if not TRUTH_LOG.exists():
             return []
@@ -172,53 +197,85 @@ class EpistemicCommons:
                 except Exception:
                     pass
 
-        seeds = []
         try:
-            for line in TRUTH_LOG.read_text().strip().split("\n")[-300:]:
-                try:
-                    e = json.loads(line)
-                    result = e.get("result", "")
-                    if (len(result) < 60 or
-                        result.startswith("⚠️") or
-                        result.startswith("[EVOLUTION]") or
-                        result.startswith("Ollama") or
-                        result.startswith("⚠")):
-                        continue
-
-                    wonder  = float(e.get("wonder_index", 1.0))
-                    if wonder < 1.1:
-                        continue
-
-                    # Check honesty score
-                    preview = result[:80]
-                    h_entry = honesty_map.get(preview, {})
-                    h_risk  = h_entry.get("hallucination_risk", "low")
-                    if h_risk == "high":
-                        continue  # don't publish high-risk outputs to commons
-
-                    confidence = h_entry.get("confidence", 0.7)
-                    claim_type = h_entry.get("claim_type", "analytical")
-
-                    seeds.append({
-                        "result":      result,
-                        "wonder":      wonder,
-                        "daughter":    e.get("daughter", "unknown"),
-                        "timestamp":   e.get("timestamp", ""),
-                        "tier":        e.get("tier", 1),
-                        "confidence":  confidence,
-                        "claim_type":  claim_type,
-                        "h_risk":      h_risk,
-                        "btc_block":   e.get("block", "unknown"),
-                    })
-                except Exception:
-                    pass
-
-            seeds.sort(key=lambda x: (x["wonder"], x["confidence"]), reverse=True)
-            return seeds[:n]
-
+            tail = TRUTH_LOG.read_text().strip().split("\n")[-self._SEED_SCAN_LINES:]
         except Exception as e:
             print(f"[commons] Seed extraction error: {e}")
             return []
+
+        # Parse once; bucket candidates by how recent they are so we can widen
+        # the scope only when a day is too thin to publish from.
+        today = self.today
+        yesterday = (datetime.date.fromisoformat(today) -
+                     datetime.timedelta(days=1)).isoformat()
+        candidates = []  # (recency_rank, seed_dict): 0=today, 1=yesterday, 2=older
+        for line in tail:
+            try:
+                e = json.loads(line)
+            except Exception:
+                continue
+            # Only entries carrying a single `result` string are usable prose.
+            # Tier-1 heartbeat rows store a truncated, highly repetitive
+            # `results` LIST instead — intentionally not commons material.
+            result = e.get("result") or ""
+            if not isinstance(result, str):
+                continue
+            if (len(result) < 60 or
+                    result.startswith("⚠️") or
+                    result.startswith("[EVOLUTION]") or
+                    result.startswith("Ollama") or
+                    result.startswith("⚠")):
+                continue
+
+            ts = e.get("timestamp", "")
+            if ts.startswith(today):
+                recency = 0
+            elif ts.startswith(yesterday):
+                recency = 1
+            else:
+                recency = 2
+
+            preview = result[:80]
+            h_entry = honesty_map.get(preview, {})
+            h_risk  = h_entry.get("hallucination_risk", "low")
+            if h_risk == "high":
+                continue  # don't publish high-risk outputs to commons
+
+            candidates.append((recency, {
+                "result":      result,
+                "wonder":      float(e.get("wonder_index", 1.0)),
+                "daughter":    e.get("daughter", "unknown"),
+                "timestamp":   ts,
+                "tier":        e.get("tier", 1),
+                "confidence":  h_entry.get("confidence", 0.7),
+                "claim_type":  h_entry.get("claim_type", "analytical"),
+                "h_risk":      h_risk,
+                "btc_block":   e.get("block", "unknown"),
+            }))
+
+        if not candidates:
+            print("[commons] No substantive truth-log entries in scan window.")
+            return []
+
+        # Widen scope only as needed: today → +yesterday → everything scanned.
+        for max_recency in (0, 1, 2):
+            pool = [s for r, s in candidates if r <= max_recency]
+            if len(pool) >= n or max_recency == 2:
+                break
+
+        # De-dupe near-identical results (briefing bursts repeat heavily),
+        # keeping the highest-wonder instance of each.
+        pool.sort(key=lambda x: (x["wonder"], x["confidence"]), reverse=True)
+        seen, seeds = set(), []
+        for s in pool:
+            key = s["result"][:120].strip().lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            seeds.append(s)
+            if len(seeds) >= n:
+                break
+        return seeds
 
     def _extract_steelmans(self, n: int = 5) -> list:
         """Pull best steelmanning outputs from truth log."""
@@ -226,7 +283,10 @@ class EpistemicCommons:
             return []
         steelmans = []
         try:
-            for line in TRUTH_LOG.read_text().strip().split("\n")[-500:]:
+            # Same widened scan as _extract_epistemic_seeds — the old 500-line
+            # window only held enough steelman material during the wonder
+            # runaway (see that method's 2026-09-07 note).
+            for line in TRUTH_LOG.read_text().strip().split("\n")[-self._SEED_SCAN_LINES:]:
                 try:
                     e = json.loads(line)
                     d = e.get("daughter", "")
