@@ -44,6 +44,11 @@ class Verdict:
     source: str = "heuristic"    # heuristic | public_flag | allowlist
     explanation: str = ""
     matched_flag: Optional[Dict] = None
+    # Optional surrounding-image "context read" (context_vision.read_context).
+    # Populated by airlock.check_qr() only for suspicious/unknown verdicts
+    # when a photo is available; None otherwise. Never affects `verdict`,
+    # never logged, never included in a shared flag.
+    context_read: Optional[Dict] = None
 
     def to_dict(self) -> dict:
         return {
@@ -56,6 +61,7 @@ class Verdict:
             "source": self.source,
             "explanation": self.explanation,
             "matched_flag": self.matched_flag,
+            "context_read": self.context_read,
         }
 
 
