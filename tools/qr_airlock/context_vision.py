@@ -5,10 +5,13 @@ source.
 
 This never changes the airlock verdict and never clears a flag. It only
 adds a plain-language "context read" alongside the existing heuristic
-verdict, for the ambiguous cases (verdict == "suspicious" or "unknown")
-where a human glancing at the same photo would pick up on cues the payload
-string alone can't carry — e.g. a raw invoice-number payload sitting on an
-obvious retail receipt with "FACTURA NRO", warranty terms and a date range.
+verdict, and only when verdict == "suspicious" (heuristics flagged a
+warning sign) — the case where a human glancing at the same photo would
+pick up on cues the payload string alone can't carry, e.g. a raw
+invoice-number payload (non_url_payload -> "suspicious") sitting on an
+obvious retail receipt with "FACTURA NRO", warranty terms and a date
+range. "unknown" (a first-seen URL with no signals) is excluded so the
+common kiosk scan isn't slowed down.
 
 Design mirrors verdict._try_explain / api._explain_via_qwen exactly:
 
@@ -36,11 +39,11 @@ CONTEXT_MODEL = "qwen2.5vl:7b"
 # description keep qwen2.5vl warm), ~30s cold (6 GB load + first inference).
 # 40s gives the cold case headroom; on timeout the caller just gets no
 # context read, same as if the model weren't installed. This whole path
-# only runs for a "suspicious"/"unknown" verdict, never a clean scan, so it
-# adds no latency to the common case. If the combined /qr/check latency
-# (this + _explain_via_qwen) is ever felt on the kiosk, the fix is a
-# separate /qr/context follow-up call the UI makes after rendering the
-# verdict - see PATCH_NOTES - not a bigger timeout here.
+# only runs for a "suspicious" verdict (not "unknown", not a clean scan),
+# so the common kiosk scan never waits on it. If the combined /qr/check
+# latency on a suspicious scan (this + _explain_via_qwen) is ever felt on
+# the kiosk, the fix is a separate /qr/context follow-up call the UI makes
+# after rendering the verdict - see PATCH_NOTES - not a bigger timeout here.
 CONTEXT_TIMEOUT_S = 40
 
 _SYSTEM = (

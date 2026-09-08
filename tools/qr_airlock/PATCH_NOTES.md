@@ -72,11 +72,15 @@ New file `context_vision.py` + small edits to `airlock.py`, `verdict.py`,
 `README.md` ("Surrounding-image context read"). Summary of the design
 choices worth knowing:
 
-- **Only for `suspicious`/`unknown` with a photo present.** A clean
-  pass/fail (`allowed`, `confirmed_bad`, `withdrawn`, `wifi`) and the
-  no-image case are byte-for-byte unchanged — the `context_fn` is never
-  called for them (verified: `check_qr` gates on
-  `result.verdict in ("suspicious","unknown")` *and* `ctx_image`).
+- **Only for `verdict == "suspicious"` with a photo present.** `unknown`
+  (the default for a first-seen URL with no heuristic signals — i.e. the
+  common kiosk scan) is **excluded**: it was in the gate in the first draft,
+  but `unknown` is the common case and already pays for the
+  `_explain_via_qwen` call, so adding a vision call there regressed the
+  everyday-scan latency. A clean pass/fail (`allowed`, `confirmed_bad`,
+  `withdrawn`, `wifi`) and the no-image case are byte-for-byte unchanged —
+  the `context_fn` is never called for them (verified: `check_qr` gates on
+  `result.verdict == "suspicious"` *and* `ctx_image`).
 - **Additive, never a verdict change.** `context_read` is a new field on
   the response dict; `verdict` is untouched. It is **not** logged and
   **not** included in a shared flag (privacy boundary in `README.md`).
@@ -86,8 +90,10 @@ choices worth knowing:
 
 ## Latency (same concern as #1 above)
 
-The vision call is added to the same synchronous `/qr/check` path as
-`_explain_via_qwen`, so worst case for a suspicious scan is now
+The vision call is on the same synchronous `/qr/check` path as
+`_explain_via_qwen`, but **only for a `suspicious` verdict** — so the common
+kiosk scan (`unknown`) is unaffected and keeps whatever latency it has
+today. For a `suspicious` scan the worst case is now
 `explain (≤15s) + context (≤40s)`. Measured on the rig's RTX 3060:
 
 - **Warm** (`qwen2.5vl` already resident — the usual state, `/greet` and
@@ -95,8 +101,9 @@ The vision call is added to the same synchronous `/qr/check` path as
 - **Cold** (model evicted, 6 GB reload + first inference): ~30s, which is
   why `CONTEXT_TIMEOUT_S = 40`. On timeout you simply get no context read.
 
-**If the combined latency is felt on the kiosk:** the fix is a separate
-`/qr/context` follow-up call the Scan QR tab makes *after* `renderQR()` has
-already shown the verdict — same shape as the `/qr/explain` idea in #1
-above. Don't build it speculatively; test the current behavior on the real
-kiosk first (the model is normally warm, so the common case is ~1s).
+**If the combined latency is felt on a suspicious scan:** the fix is a
+separate `/qr/context` follow-up call the Scan QR tab makes *after*
+`renderQR()` has already shown the verdict — same shape as the `/qr/explain`
+idea in #1 above. Don't build it speculatively; test the current behavior on
+the real kiosk first (the model is normally warm, so the common case is
+~1s, and this only ever runs on a flagged scan now).

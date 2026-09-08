@@ -78,9 +78,9 @@ assigned verbatim instead of falling through).
 
 ### Surrounding-image context read (2026-09-07)
 
-An optional **second pass** for the ambiguous cases only. When the verdict is
-`suspicious` or `unknown` **and** a photo is available, `check_qr()` calls
-`context_vision.read_context()`, which sends the image to the local
+An optional **second pass**, gated to `verdict == "suspicious"` only. When
+heuristics flagged a warning sign **and** a photo is available, `check_qr()`
+calls `context_vision.read_context()`, which sends the image to the local
 `qwen2.5vl:7b` model and asks it to describe *what the QR is physically
 printed on* and whether that setting looks like an everyday, low-risk source
 (shop receipt, product packaging, appliance label, printed ticket) versus
@@ -90,9 +90,12 @@ nothing visible / a code stuck or taped over its surroundings.
   `context_read` and shown under the existing badge + warning signs. It
   **never changes `verdict`**, never clears a flag, and the user still makes
   the allow/flag decision.
-- **Never runs for a clean pass/fail** (`allowed`, `confirmed_bad`,
-  `withdrawn`, `wifi`) or when no photo was supplied — no added latency on
-  the common path.
+- **`suspicious` only.** It does **not** run for `unknown` (the default for
+  a first-seen URL with no signals), nor for a clean pass/fail (`allowed`,
+  `confirmed_bad`, `withdrawn`, `wifi`), nor when no photo was supplied — so
+  the common kiosk scan keeps its current latency. `unknown` was excluded
+  after review specifically because it's the common case and already pays
+  for the `_explain_via_qwen` call.
 - **Degrades to nothing.** Model not pulled / Ollama down / timeout /
   unparseable output → `context_read` is `null` and the display is exactly
   as it was before this feature. No new failure mode.

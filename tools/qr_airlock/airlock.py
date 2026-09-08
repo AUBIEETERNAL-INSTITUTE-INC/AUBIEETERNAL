@@ -39,11 +39,12 @@ def check_qr(
     written automatically (household-local only, never uploaded).
 
     context_fn / context_image_b64 are an optional second pass: when the
-    verdict is ambiguous ("suspicious" or "unknown") and a photo is
-    available, context_fn(image_b64) -> dict|None reads the QR's physical
+    verdict is "suspicious" (heuristics flagged a warning sign) and a photo
+    is available, context_fn(image_b64) -> dict|None reads the QR's physical
     surroundings (see context_vision.read_context). The result is attached
     as `context_read` and is purely additive - it never changes `verdict`,
     never clears a flag, is not logged, and is not part of a shared flag.
+    "unknown" (no signals) is excluded on purpose - see the gate below.
     If context_image_b64 is not given, the frame the QR was scanned from
     (image_b64) is used.
     """
@@ -79,12 +80,15 @@ def check_qr(
 
     result = evaluate(payload, claimed_as=claimed_as, explain_fn=explain_fn)
 
-    # Optional surrounding-image context read. Additive only: it runs solely
-    # for the ambiguous verdicts (never a clean pass/fail), only when a photo
-    # is actually available, and its failure/absence leaves the verdict
-    # display exactly as it is without this feature.
+    # Optional surrounding-image context read. Additive only, and gated to
+    # verdict == "suspicious" specifically: that's the case where heuristics
+    # actually flagged a warning sign and "is this on a real receipt or
+    # pasted over something?" genuinely helps. "unknown" (the default for a
+    # first-seen URL with no signals) is deliberately excluded so the common
+    # kiosk scan keeps its current latency - it already pays for the
+    # _explain_via_qwen call and shouldn't also wait on a vision model.
     ctx_image = context_image_b64 or image_b64
-    if context_fn and ctx_image and result.verdict in ("suspicious", "unknown"):
+    if context_fn and ctx_image and result.verdict == "suspicious":
         try:
             result.context_read = context_fn(ctx_image)
         except Exception:
