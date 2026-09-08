@@ -1321,6 +1321,18 @@ HTML = r"""<!DOCTYPE html>
         word-break:break-all;user-select:all;-webkit-user-select:all"></div>
       <p id="qr-explain" style="font-size:13px;color:var(--text);margin:10px 0 4px;line-height:1.45"></p>
       <p id="qr-signals" style="font-size:11px;color:var(--sub);margin:0"></p>
+      <!-- Surrounding-image "context read" — extra info only, sent by the
+           backend only for a "suspicious" verdict when the vision model had
+           something to say. It never changes the badge above. -->
+      <div id="qr-context" style="display:none;margin-top:10px;padding:9px 11px;border-radius:10px;
+        background:#141d2b;border:1px solid #26364a">
+        <p style="font-size:11px;color:var(--sub);margin:0 0 3px;letter-spacing:.02em">📷 Context read
+          <span id="qr-context-flag" style="font-weight:700"></span></p>
+        <p id="qr-context-read" style="font-size:12px;color:var(--text);margin:0;line-height:1.45"></p>
+        <p id="qr-context-text" style="font-size:11px;color:var(--sub);margin:5px 0 0"></p>
+        <p style="font-size:10px;color:var(--sub);margin:5px 0 0">Extra context only — it does not
+          change the verdict above. Still read the link yourself.</p>
+      </div>
       <p style="font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--sub);
         margin:8px 0 0;word-break:break-all">sha256: <span id="qr-hash"></span></p>
 
@@ -2028,6 +2040,30 @@ function renderQR(d) {
   const sig = (d.signals||[]).join(', ');
   document.getElementById('qr-signals').textContent = sig ? ('Warning signs: ' + sig) : '';
   document.getElementById('qr-hash').textContent = d.payload_sha256 || '';
+
+  // Context read: additive only, sent only for a "suspicious" verdict when the
+  // vision model returned something. Absent/failed -> box stays hidden and the
+  // display is exactly as it was before this feature.
+  const ctxBox = document.getElementById('qr-context');
+  const cr = d.context_read;
+  if (cr && cr.available && cr.read) {
+    const CFLAG = {
+      consistent:   ['#9be8b4', '· looks consistent with an everyday source'],
+      inconsistent: ['#ffb3b3', '· looks out of place / possibly tampered'],
+      unclear:      ['#cfe8ff', '· not enough visible context to tell'],
+    };
+    const [fcol, ftxt] = CFLAG[cr.consistency] || CFLAG.unclear;
+    const flag = document.getElementById('qr-context-flag');
+    flag.textContent = ftxt; flag.style.color = fcol;
+    document.getElementById('qr-context-read').textContent = cr.read;
+    const vt = (cr.visible_text && cr.visible_text.toLowerCase() !== 'none legible')
+      ? ('Text near the code: ' + cr.visible_text) : '';
+    document.getElementById('qr-context-text').textContent = vt;
+    ctxBox.style.display = 'block';
+  } else {
+    ctxBox.style.display = 'none';
+  }
+
   document.getElementById('qr-result').style.display = 'block';
 }
 
