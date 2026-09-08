@@ -2217,7 +2217,15 @@ async function startQrCamera() {
   if (qrScanBusy || qrStream) return;
   if (!navigator.mediaDevices) { cameraBlockedMsg('qr-resp'); return; }
   try {
-    qrStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    // Ask for a high native resolution: more pixels on a small/distant QR
+    // gives the phone's own continuous autofocus more detail and pyzbar/cv2
+    // more signal. `ideal` only — the browser negotiates down on devices
+    // that can't deliver it, never fails.
+    qrStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment',
+               width:  { ideal: 2560 },
+               height: { ideal: 1440 } }
+    });
   } catch(e) { setResp('qr-resp','Camera error: '+e.message,'error'); return; }
   document.getElementById('qr-video').srcObject = qrStream;
   document.getElementById('qr-viewfinder').style.display = 'block';
