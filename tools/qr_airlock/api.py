@@ -98,11 +98,11 @@ def _explain_via_qwen(payload: str, signals) -> str:
 def _read_context_via_qwenvl(image_b64: str):
     """
     Surrounding-image context read via the local qwen2.5vl model (see
-    context_vision.read_context). Only invoked by check_qr() for
-    suspicious/unknown verdicts. Any failure - model not pulled, Ollama
-    down, timeout, bad output - returns None and the caller shows the plain
-    heuristic verdict exactly as before. The photo and this text stay in
-    the /qr/check response: never logged, never in a shared flag.
+    context_vision.read_context). Only invoked by check_qr() for a
+    "suspicious" verdict (not "unknown"). Any failure - model not pulled,
+    Ollama down, timeout, bad output - returns None and the caller shows
+    the plain heuristic verdict exactly as before. The photo and this text
+    stay in the /qr/check response: never logged, never in a shared flag.
     """
     return read_context(image_b64)
 

@@ -45,9 +45,9 @@ class Verdict:
     explanation: str = ""
     matched_flag: Optional[Dict] = None
     # Optional surrounding-image "context read" (context_vision.read_context).
-    # Populated by airlock.check_qr() only for suspicious/unknown verdicts
-    # when a photo is available; None otherwise. Never affects `verdict`,
-    # never logged, never included in a shared flag.
+    # Populated by airlock.check_qr() only for a "suspicious" verdict when a
+    # photo is available; None otherwise. Never affects `verdict`, never
+    # logged, never included in a shared flag.
     context_read: Optional[Dict] = None
 
     def to_dict(self) -> dict:

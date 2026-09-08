@@ -1321,9 +1321,9 @@ HTML = r"""<!DOCTYPE html>
         word-break:break-all;user-select:all;-webkit-user-select:all"></div>
       <p id="qr-explain" style="font-size:13px;color:var(--text);margin:10px 0 4px;line-height:1.45"></p>
       <p id="qr-signals" style="font-size:11px;color:var(--sub);margin:0"></p>
-      <!-- Surrounding-image "context read" — extra info only, shown only for
-           suspicious/unknown when the vision model had something to say. It
-           never changes the badge above. -->
+      <!-- Surrounding-image "context read" — extra info only, sent by the
+           backend only for a "suspicious" verdict when the vision model had
+           something to say. It never changes the badge above. -->
       <div id="qr-context" style="display:none;margin-top:10px;padding:9px 11px;border-radius:10px;
         background:#141d2b;border:1px solid #26364a">
         <p style="font-size:11px;color:var(--sub);margin:0 0 3px;letter-spacing:.02em">📷 Context read
@@ -2041,7 +2041,7 @@ function renderQR(d) {
   document.getElementById('qr-signals').textContent = sig ? ('Warning signs: ' + sig) : '';
   document.getElementById('qr-hash').textContent = d.payload_sha256 || '';
 
-  // Context read: additive only, present only for suspicious/unknown when the
+  // Context read: additive only, sent only for a "suspicious" verdict when the
   // vision model returned something. Absent/failed -> box stays hidden and the
   // display is exactly as it was before this feature.
   const ctxBox = document.getElementById('qr-context');
