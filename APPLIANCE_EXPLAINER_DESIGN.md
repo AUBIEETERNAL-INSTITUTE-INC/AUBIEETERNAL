@@ -34,6 +34,11 @@ core flow only for now; **(4)** no persistence.
   `aubie_listen.py` — that's the wake-word follow-up (see below), left for
   a later PR when the board is back online.
 
+Review fixes applied post-first-cut: dropped the `audio`/STT param (C, D);
+`_panel_spoken_fallback` now emits sentences, not "1. … 2. …", which Piper
+reads as "one dot" (E); "Read this panel" is guarded against double-tap
+during the ~40s call (G).
+
 Tested via `TestClient` against the real `qwen2.5vl:7b` on a mock
 Spanish-labelled microwave panel: no-question → full control map with
 Spanish→English label translations, `task:null`; with "how do I defrost

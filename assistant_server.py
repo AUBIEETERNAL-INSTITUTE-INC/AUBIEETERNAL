@@ -1714,9 +1714,11 @@ def _panel_spoken_fallback(parsed: dict) -> str:
     bits = [f"This looks like {dev}."]
     task = parsed.get("task")
     if task and task.get("steps"):
-        bits.append("Here's how: " + " ".join(
-            f"{i}. {s}" for i, s in enumerate(task["steps"], 1)
-        ))
+        steps = [s.strip().rstrip(".") for s in task["steps"] if s and s.strip()]
+        if steps:
+            # Sentences, not "1. ... 2. ..." - the latter reads as
+            # "one dot ... two dot ..." through Piper.
+            bits.append("Here's how. " + ". ".join(steps) + ".")
     else:
         named = [c for c in parsed.get("controls") or [] if c.get("label_translated")]
         if named:
