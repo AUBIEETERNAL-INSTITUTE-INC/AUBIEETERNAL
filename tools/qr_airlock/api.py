@@ -19,6 +19,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 
 from .airlock import check_qr
+from .context_vision import read_context
 from .flags import add_to_allowlist
 from .hash_payload import payload_sha256
 from .share import share_flag
@@ -30,6 +31,11 @@ router = APIRouter(prefix="/qr", tags=["qr_airlock"])
 class QRCheckRequest(BaseModel):
     payload: Optional[str] = None
     image_b64: Optional[str] = None
+    # Optional separate/wider photo of the QR's physical surroundings. If
+    # omitted, image_b64 (the frame the QR was scanned from) is used for the
+    # context read. Kiosk callers already send the full camera frame as
+    # image_b64, so they get the context read with no extra field.
+    context_image_b64: Optional[str] = None
     claimed_as: str = ""
     who: str = "unknown"
     source: str = "device"
@@ -89,15 +95,29 @@ def _explain_via_qwen(payload: str, signals) -> str:
         return ""  # falls back to canned explanation in verdict.py
 
 
+def _read_context_via_qwenvl(image_b64: str):
+    """
+    Surrounding-image context read via the local qwen2.5vl model (see
+    context_vision.read_context). Only invoked by check_qr() for a
+    "suspicious" verdict (not "unknown"). Any failure - model not pulled,
+    Ollama down, timeout, bad output - returns None and the caller shows
+    the plain heuristic verdict exactly as before. The photo and this text
+    stay in the /qr/check response: never logged, never in a shared flag.
+    """
+    return read_context(image_b64)
+
+
 @router.post("/check")
 def qr_check(req: QRCheckRequest):
     return check_qr(
         payload=req.payload,
         image_b64=req.image_b64,
+        context_image_b64=req.context_image_b64,
         claimed_as=req.claimed_as,
         who=req.who,
         source=req.source,
         explain_fn=_explain_via_qwen,
+        context_fn=_read_context_via_qwenvl,
     )
 
 

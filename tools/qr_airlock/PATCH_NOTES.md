@@ -62,3 +62,48 @@ explanation in the background, e.g. via a second `/qr/explain` call
 from the kiosk after showing the verdict) if the model-swap + shorter
 timeout still feels slow in practice. Don't build that speculatively —
 per the earlier guidance, test the current behavior on the kiosk first.
+
+---
+
+# Surrounding-image context read (2026-09-07)
+
+New file `context_vision.py` + small edits to `airlock.py`, `verdict.py`,
+`api.py`, `cli.py`, and the `phone_ui.py` Scan QR tab. Full description in
+`README.md` ("Surrounding-image context read"). Summary of the design
+choices worth knowing:
+
+- **Only for `verdict == "suspicious"` with a photo present.** `unknown`
+  (the default for a first-seen URL with no heuristic signals — i.e. the
+  common kiosk scan) is **excluded**: it was in the gate in the first draft,
+  but `unknown` is the common case and already pays for the
+  `_explain_via_qwen` call, so adding a vision call there regressed the
+  everyday-scan latency. A clean pass/fail (`allowed`, `confirmed_bad`,
+  `withdrawn`, `wifi`) and the no-image case are byte-for-byte unchanged —
+  the `context_fn` is never called for them (verified: `check_qr` gates on
+  `result.verdict == "suspicious"` *and* `ctx_image`).
+- **Additive, never a verdict change.** `context_read` is a new field on
+  the response dict; `verdict` is untouched. It is **not** logged and
+  **not** included in a shared flag (privacy boundary in `README.md`).
+- **Degrades to `null`.** Any failure in `read_context()` — model not
+  pulled, Ollama down, timeout, unparseable reply — returns `None` and the
+  UI hides the context box. Mirrors the existing `_try_explain` contract.
+
+## Latency (same concern as #1 above)
+
+The vision call is on the same synchronous `/qr/check` path as
+`_explain_via_qwen`, but **only for a `suspicious` verdict** — so the common
+kiosk scan (`unknown`) is unaffected and keeps whatever latency it has
+today. For a `suspicious` scan the worst case is now
+`explain (≤15s) + context (≤40s)`. Measured on the rig's RTX 3060:
+
+- **Warm** (`qwen2.5vl` already resident — the usual state, `/greet` and
+  phone_ui scene description keep it warm): context call ~1s.
+- **Cold** (model evicted, 6 GB reload + first inference): ~30s, which is
+  why `CONTEXT_TIMEOUT_S = 40`. On timeout you simply get no context read.
+
+**If the combined latency is felt on a suspicious scan:** the fix is a
+separate `/qr/context` follow-up call the Scan QR tab makes *after*
+`renderQR()` has already shown the verdict — same shape as the `/qr/explain`
+idea in #1 above. Don't build it speculatively; test the current behavior on
+the real kiosk first (the model is normally warm, so the common case is
+~1s, and this only ever runs on a flagged scan now).

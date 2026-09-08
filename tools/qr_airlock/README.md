@@ -76,6 +76,59 @@ imports standalone. Any failure (model busy, Ollama down) returns `""` and
 fallback path was also fixed here (previously an empty model return was
 assigned verbatim instead of falling through).
 
+### Surrounding-image context read (2026-09-07)
+
+An optional **second pass**, gated to `verdict == "suspicious"` only. When
+heuristics flagged a warning sign **and** a photo is available, `check_qr()`
+calls `context_vision.read_context()`, which sends the image to the local
+`qwen2.5vl:7b` model and asks it to describe *what the QR is physically
+printed on* and whether that setting looks like an everyday, low-risk source
+(shop receipt, product packaging, appliance label, printed ticket) versus
+nothing visible / a code stuck or taped over its surroundings.
+
+- **Additive only.** The result is attached to the response as
+  `context_read` and shown under the existing badge + warning signs. It
+  **never changes `verdict`**, never clears a flag, and the user still makes
+  the allow/flag decision.
+- **`suspicious` only.** It does **not** run for `unknown` (the default for
+  a first-seen URL with no signals), nor for a clean pass/fail (`allowed`,
+  `confirmed_bad`, `withdrawn`, `wifi`), nor when no photo was supplied — so
+  the common kiosk scan keeps its current latency. `unknown` was excluded
+  after review specifically because it's the common case and already pays
+  for the `_explain_via_qwen` call.
+- **Degrades to nothing.** Model not pulled / Ollama down / timeout /
+  unparseable output → `context_read` is `null` and the display is exactly
+  as it was before this feature. No new failure mode.
+- **Privacy.** The photo and the text derived from it stay in the
+  `/qr/check` response. `context_read` is **not** written to
+  `household_log.jsonl` and is **not** part of a shared flag
+  (`QR_FLAG_SPEC`: "no image, no scanner identity").
+
+`context_read` shape:
+
+```json
+{
+  "available": true,
+  "model": "qwen2.5vl:7b",
+  "surface": "printed at the bottom of a paper retail receipt",
+  "visible_text": "FACTURA NRO 0012-... (INVOICE NO 0012-...)",
+  "consistency": "consistent | unclear | inconsistent",
+  "read": "This looks printed on a standard retail receipt with visible invoice and warranty text — consistent with a normal receipt QR, not a sign of tampering.",
+  "note": "Extra context only — this does not change the safety verdict above."
+}
+```
+
+Wiring: `api.py`'s `/qr/check` passes `context_fn=_read_context_via_qwenvl`.
+Callers that decode the QR themselves can still get the read by passing
+`context_image_b64` (a separate/wider shot); if omitted, the frame the QR
+was scanned from (`image_b64`) is used. The kiosk (`phone_ui.py` Scan QR
+tab) already sends the full camera frame as `image_b64`, so it gets the
+context read with no client change; `renderQR()` shows it in a "📷 Context
+read" box.
+
+CLI: `python tools/qr_airlock/cli.py --image receipt.png` (add
+`--context-image wider.png` for a separate context shot).
+
 ## Household data vs public data (the actual privacy boundary)
 
 | Path | Contents | Ever leaves the rig? |
