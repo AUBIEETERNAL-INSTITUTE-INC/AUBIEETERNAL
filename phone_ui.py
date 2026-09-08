@@ -1390,7 +1390,23 @@ HTML = r"""<!DOCTYPE html>
     <input id="pe-q" type="text" placeholder="Optional: what are you trying to do? (e.g. defrost chicken)"
       style="width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid var(--border);
       background:#0d1520;color:var(--text);font-size:13px;margin-bottom:8px">
-    <button id="pe-go" class="btn btn-accent" style="width:100%" onclick="explainPanel()">📷 Read this panel</button>
+    <button id="pe-cam-btn" class="btn btn-accent" style="width:100%" onclick="startPanelCamera()">📷 Read this panel</button>
+
+    <!-- Live viewfinder (hidden until the camera starts) — aim at the whole
+         panel, then tap Capture. WYSIWYG: object-fit:contain so what's shown
+         is exactly the frame that gets sent. The container reserves a stable
+         box (aspect-ratio) so the preview is visibly there the instant the
+         camera opens, before stream metadata gives the <video> its height. -->
+    <div id="pe-viewfinder" style="display:none;border-radius:14px;overflow:hidden;background:#000;
+      margin-top:10px;aspect-ratio:4/3;max-height:60vh">
+      <video id="pe-video" autoplay playsinline muted
+        style="width:100%;height:100%;object-fit:contain;display:block;background:#000"></video>
+    </div>
+    <div id="pe-cam-actions" style="display:none;gap:8px;margin-top:8px">
+      <button id="pe-snap-btn" class="btn btn-accent" style="flex:1" onclick="capturePanel()">📸 Capture</button>
+      <button class="btn btn-sm" style="background:#2a2a2a;color:#ccc" onclick="cancelPanelCamera()">Cancel</button>
+    </div>
+
     <img id="pe-preview" style="display:none;width:100%;border-radius:12px;margin-top:10px" alt="">
     <div id="pe-resp" class="resp"></div>
 
@@ -1652,6 +1668,7 @@ function setFaceColor(part, color) {
 // ── Tab switching ─────────────────────────────────────────────────────────
 function switchTab(name) {
   if (name === 'aubie') moveFaceToAubieTab(); else restoreFaceFromAubieTab();
+  if (name !== 'panel-explain') cancelPanelCamera();  // don't leave the rear camera running
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
@@ -2025,40 +2042,84 @@ async function describeScene() {
 }
 
 // ── Explain a control panel ─────────────────────────────────────────────
-// One photo -> POST /explain_panel -> structured control map + optional task
-// steps + a spoken walkthrough (audio_b64). v1: still image only, no video.
+// Live viewfinder -> deliberate capture -> POST /explain_panel -> structured
+// control map + optional task steps + spoken walkthrough (audio_b64).
+// v1: still image only, no video. The capture flow mirrors the Teach-a-Face
+// enroll camera (markup <video> + getUserMedia + explicit snap button).
 let peLastAudio = null;   // base64 wav from the last successful read, for "read again"
 let peBusy = false;       // one read at a time - the vision call is ~tens of seconds
-async function explainPanel() {
-  if (peBusy) return;
-  peBusy = true;
-  const goBtn = document.getElementById('pe-go');
-  if (goBtn) goBtn.disabled = true;
+let peStream = null;      // live viewfinder MediaStream while the person frames the shot
+
+// Step 1: open a live viewfinder so the person can aim before committing -
+// no instant/blind snapshot. Rear camera (environment).
+async function startPanelCamera() {
+  if (peBusy || peStream) return;
+  if (!navigator.mediaDevices) { cameraBlockedMsg('pe-resp'); return; }
   try {
-    setResp('pe-resp','📷 Opening camera…','thinking');
-    document.getElementById('pe-result').style.display = 'none';
-    let b64;
-    try { b64 = await captureTabletFrame(); }
-    catch(e){ setResp('pe-resp','Camera error: '+e.message,'error'); return; }
-    if(!b64){ return; }  // captureTabletFrame already showed the insecure-origin fix
+    peStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+  } catch(e) { setResp('pe-resp','Camera error: '+e.message,'error'); return; }
+  document.getElementById('pe-video').srcObject = peStream;
+  document.getElementById('pe-viewfinder').style.display = 'block';
+  document.getElementById('pe-cam-actions').style.display = 'flex';
+  document.getElementById('pe-cam-btn').style.display = 'none';
+  document.getElementById('pe-preview').style.display = 'none';
+  document.getElementById('pe-result').style.display = 'none';
+  setResp('pe-resp','📷 Aim at the whole panel — display and all buttons in frame — then tap Capture','ok');
+}
+
+function _peStopStream() {
+  if (peStream) { peStream.getTracks().forEach(t => t.stop()); peStream = null; }
+  const v = document.getElementById('pe-video');
+  if (v) v.srcObject = null;
+  document.getElementById('pe-viewfinder').style.display = 'none';
+  document.getElementById('pe-cam-actions').style.display = 'none';
+  document.getElementById('pe-cam-btn').style.display = 'block';
+}
+
+// Back out of the viewfinder without capturing. Also called by switchTab() so
+// the rear camera doesn't keep running after you leave the tab.
+function cancelPanelCamera() {
+  if (!peStream) return;
+  _peStopStream();
+  document.getElementById('pe-cam-btn').textContent = '📷 Read this panel';
+  setResp('pe-resp','', '');
+}
+
+// Step 2: capture the frame the person framed and send it. From the fetch
+// onward this is byte-for-byte the old explainPanel() body.
+async function capturePanel() {
+  if (peBusy || !peStream) return;
+  peBusy = true;
+  const snap = document.getElementById('pe-snap-btn');
+  if (snap) snap.disabled = true;
+  try {
+    const video = document.getElementById('pe-video');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 960;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    const b64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+    _peStopStream();
+    document.getElementById('pe-cam-btn').textContent = '📷 Retake';
+
     const prev = document.getElementById('pe-preview');
-    prev.src = 'data:image/jpeg;base64,'+b64; prev.style.display = 'block';
+    prev.src = 'data:image/jpeg;base64,' + b64; prev.style.display = 'block';
     setResp('pe-resp','👁️ Reading the panel… this takes a few seconds','thinking');
 
     const form = new FormData();
     form.append('image', b64ToBlob(b64), 'panel.jpg');
     const q = document.getElementById('pe-q').value.trim();
-    if(q) form.append('question', q);
+    if (q) form.append('question', q);
     try {
       const r = await fetch('/explain_panel', {method:'POST', body: form});
       const d = await r.json();
-      if(!r.ok){ setResp('pe-resp', d.detail || 'Panel read failed', 'error'); return; }
+      if (!r.ok) { setResp('pe-resp', d.detail || 'Panel read failed', 'error'); return; }
       renderPanel(d);
       setResp('pe-resp','', '');
-    } catch(e){ setResp('pe-resp','Panel read failed: '+e.message,'error'); }
+    } catch(e) { setResp('pe-resp','Panel read failed: '+e.message,'error'); }
   } finally {
     peBusy = false;
-    if (goBtn) goBtn.disabled = false;
+    if (snap) snap.disabled = false;
   }
 }
 function renderPanel(d) {
