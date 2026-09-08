@@ -2358,89 +2358,140 @@ function _qrWirePinch() {
 // ── Live QR-detection reticle ───────────────────────────────────────────
 // Client-side visual aid only: draws a box around a QR the camera currently
 // sees so the person knows they've got a good shot before tapping Capture.
-// It never gates or replaces Capture / POST /qr/check. BarcodeDetector where
-// supported (Android & Windows Chrome, ChromeOS); where it isn't, the loop
-// no-ops and the viewfinder works exactly as before. A jsQR fallback for
-// Linux-Chromium / iOS is a deliberate follow-up, not v1.
+// Never gates or replaces Capture / POST /qr/check. Detector: BarcodeDetector
+// where present (Android & Windows Chrome, ChromeOS), else self-hosted jsQR
+// (/pwa/jsqr.js) on a downscaled frame — that path covers the iOS Safari
+// kiosk and Linux Chromium. If neither is available the loop no-ops and the
+// viewfinder works exactly as before.
 let qrDetector = null;
 let qrDetectTimer = null;
-let _qrLastSeen = null;   // 'good' | 'hold' | 'far' | null — edge-triggered hint + Capture gate
+let qrDetectMode = null;      // 'native' | 'jsqr'
+let _qrJsqrCanvas = null;     // reused offscreen canvas for the jsQR path
+let _qrJsqrLoad = null;       // memoized <script> load promise
+let _qrLastSeen = null;       // 'good' | 'hold' | 'far' | null — edge-triggered hint + Capture gate
+
+function _qrLoadJsqr() {
+  if (window.jsQR) return Promise.resolve(true);
+  if (_qrJsqrLoad) return _qrJsqrLoad;
+  _qrJsqrLoad = new Promise((resolve) => {
+    const s = document.createElement('script');
+    s.src = '/pwa/jsqr.js'; s.async = true;
+    s.onload = () => resolve(typeof window.jsQR === 'function');
+    s.onerror = () => { _qrJsqrLoad = null; resolve(false); };
+    document.head.appendChild(s);
+  });
+  return _qrJsqrLoad;
+}
 
 async function _qrStartReticle() {
-  if (qrDetectTimer || !('BarcodeDetector' in window)) return;
-  try {
-    const fmts = await BarcodeDetector.getSupportedFormats();
-    if (!fmts.includes('qr_code')) return;
-    qrDetector = qrDetector || new BarcodeDetector({formats:['qr_code']});
-  } catch(e) { return; }
-  if (!qrStream) return;   // user cancelled while we were checking support
+  if (qrDetectTimer) return;
+  qrDetectMode = null;
+
+  if ('BarcodeDetector' in window) {
+    try {
+      const fmts = await BarcodeDetector.getSupportedFormats();
+      if (fmts.includes('qr_code')) {
+        qrDetector = qrDetector || new BarcodeDetector({formats:['qr_code']});
+        qrDetectMode = 'native';
+      }
+    } catch(e) { /* fall through to jsQR */ }
+  }
+  if (!qrDetectMode) {
+    if (await _qrLoadJsqr()) {
+      qrDetectMode = 'jsqr';
+      _qrJsqrCanvas = _qrJsqrCanvas || document.createElement('canvas');
+    }
+  }
+  if (!qrDetectMode || !qrStream) return;   // no detector, or cancelled meanwhile
 
   const vid = document.getElementById('qr-video');
   const overlay = document.getElementById('qr-overlay');
   const reticle = document.getElementById('qr-reticle');
   _qrLastSeen = null; _qrHoldUntil = 0;
+  const tickMs = qrDetectMode === 'jsqr' ? 300 : 250;
 
   qrDetectTimer = setInterval(async () => {
     if (!qrStream || qrScanBusy || vid.readyState < 2 || !vid.videoWidth) return;
-    const vb = `0 0 ${vid.videoWidth} ${vid.videoHeight}`;
+    const vw = vid.videoWidth, vh = vid.videoHeight;
+    const vb = `0 0 ${vw} ${vh}`;
     if (overlay.getAttribute('viewBox') !== vb) overlay.setAttribute('viewBox', vb);
 
-    let codes;
-    try { codes = await qrDetector.detect(vid); }
-    catch(e) { return; }   // transient per-frame decode error — skip this tick
-
-    if (!codes || !codes.length) {
-      reticle.style.display = 'none';
-      if (_qrLastSeen) {
-        _qrLastSeen = null; _qrHoldUntil = 0;
-        setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture','');
-        _qrUpdateSnap();
+    let pts = null;
+    try {
+      if (qrDetectMode === 'native') {
+        const codes = await qrDetector.detect(vid);
+        if (codes && codes.length) {
+          const c = codes[0];
+          const bb = c.boundingBox || {x:0,y:0,width:0,height:0};
+          pts = (c.cornerPoints && c.cornerPoints.length === 4) ? c.cornerPoints : [
+            {x:bb.x,y:bb.y}, {x:bb.x+bb.width,y:bb.y},
+            {x:bb.x+bb.width,y:bb.y+bb.height}, {x:bb.x,y:bb.y+bb.height}];
+        }
+      } else {
+        // jsQR: decode a downscaled frame, scale its corners back to video px.
+        const cw = 400, ch = Math.max(1, Math.round(cw * vh / vw));
+        _qrJsqrCanvas.width = cw; _qrJsqrCanvas.height = ch;
+        const cx = _qrJsqrCanvas.getContext('2d', {willReadFrequently:true});
+        cx.drawImage(vid, 0, 0, cw, ch);
+        const res = window.jsQR(cx.getImageData(0,0,cw,ch).data, cw, ch, {inversionAttempts:'dontInvert'});
+        if (res && res.location) {
+          const sx = vw / cw, sy = vh / ch, L = res.location;
+          pts = [L.topLeftCorner, L.topRightCorner, L.bottomRightCorner, L.bottomLeftCorner]
+            .map(p => ({x: p.x * sx, y: p.y * sy}));
+        }
       }
-      return;
-    }
-    const c = codes[0];
-    const bb = c.boundingBox || {x:0,y:0,width:0,height:0};
-    const pts = (c.cornerPoints && c.cornerPoints.length === 4) ? c.cornerPoints : [
-      {x:bb.x, y:bb.y}, {x:bb.x+bb.width, y:bb.y},
-      {x:bb.x+bb.width, y:bb.y+bb.height}, {x:bb.x, y:bb.y+bb.height}
-    ];
-    reticle.setAttribute('points', pts.map(p => `${Math.round(p.x)},${Math.round(p.y)}`).join(' '));
-    reticle.style.display = 'block';
+    } catch(e) { return; }   // transient per-frame error — skip this tick
 
-    // Fraction of the *visible* frame the QR fills — a QR much under ~5%
-    // usually won't decode. detect() sees the raw (unzoomed) frame, so with
-    // CSS digital zoom the QR fills z*z more of what the person sees and of
-    // the centre crop that gets captured; scale the estimate to match.
-    const w = Math.abs(pts[1].x - pts[0].x) || bb.width;
-    const h = Math.abs(pts[2].y - pts[1].y) || bb.height;
-    const zoomBoost = qrZoomNative ? 1 : (qrZoom * qrZoom);
-    const frac = ((w * h) / (vid.videoWidth * vid.videoHeight || 1)) * zoomBoost;
+    _qrRenderDetection(pts, vw, vh, reticle);
+  }, tickMs);
+}
 
-    if (frac < 0.05) {
-      reticle.setAttribute('stroke', '#ffcc44');
-      if (_qrLastSeen !== 'far') {
-        _qrLastSeen = 'far'; _qrHoldUntil = 0;
-        setResp('qr-resp','🔍 QR seen — move closer','');
-        _qrUpdateSnap();
-      }
-      return;
-    }
-
-    // Well framed. Item 4: on the transition into "framed", show a brief
-    // "hold steady" beat before calling it capture-ready, so iOS autofocus
-    // can settle on the region rather than the shot landing mid focus-hunt.
-    reticle.setAttribute('stroke', '#3ddc84');
-    if (_qrLastSeen === 'far' || _qrLastSeen === null) {
-      _qrLastSeen = 'hold';
-      _qrHoldUntil = Date.now() + QR_HOLD_MS;
-      setResp('qr-resp','✋ Hold steady…','');
-      _qrUpdateSnap();
-    } else if (_qrLastSeen === 'hold' && Date.now() >= _qrHoldUntil) {
-      _qrLastSeen = 'good'; _qrHoldUntil = 0;
-      setResp('qr-resp','✅ QR code in view — tap Capture','ok');
+// Shared box + state machine for both detector paths. `pts` is 4 corner
+// points in video-intrinsic pixels (TL, TR, BR, BL), or null for "nothing".
+function _qrRenderDetection(pts, vw, vh, reticle) {
+  if (!pts) {
+    reticle.style.display = 'none';
+    if (_qrLastSeen) {
+      _qrLastSeen = null; _qrHoldUntil = 0;
+      setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture','');
       _qrUpdateSnap();
     }
-  }, 250);
+    return;
+  }
+  reticle.setAttribute('points', pts.map(p => `${Math.round(p.x)},${Math.round(p.y)}`).join(' '));
+  reticle.style.display = 'block';
+
+  // Fraction of the *visible* frame the QR fills — much under ~5% usually
+  // won't decode. Detection sees the raw (unzoomed) frame, so with CSS
+  // digital zoom the QR fills z*z more of what's shown and captured.
+  const w = Math.abs(pts[1].x - pts[0].x) || Math.abs(pts[2].x - pts[3].x);
+  const h = Math.abs(pts[2].y - pts[1].y) || Math.abs(pts[3].y - pts[0].y);
+  const zoomBoost = qrZoomNative ? 1 : (qrZoom * qrZoom);
+  const frac = ((w * h) / (vw * vh || 1)) * zoomBoost;
+
+  if (frac < 0.05) {
+    reticle.setAttribute('stroke', '#ffcc44');
+    if (_qrLastSeen !== 'far') {
+      _qrLastSeen = 'far'; _qrHoldUntil = 0;
+      setResp('qr-resp','🔍 QR seen — move closer','');
+      _qrUpdateSnap();
+    }
+    return;
+  }
+
+  // Well framed. Item 4: brief "hold steady" beat on the transition into
+  // framed before it reads as capture-ready, so autofocus can settle.
+  reticle.setAttribute('stroke', '#3ddc84');
+  if (_qrLastSeen === 'far' || _qrLastSeen === null) {
+    _qrLastSeen = 'hold';
+    _qrHoldUntil = Date.now() + QR_HOLD_MS;
+    setResp('qr-resp','✋ Hold steady…','');
+    _qrUpdateSnap();
+  } else if (_qrLastSeen === 'hold' && Date.now() >= _qrHoldUntil) {
+    _qrLastSeen = 'good'; _qrHoldUntil = 0;
+    setResp('qr-resp','✅ QR code in view — tap Capture','ok');
+    _qrUpdateSnap();
+  }
 }
 
 function _qrStopReticle() {
@@ -4119,6 +4170,15 @@ async def pwa_service_worker():
 
 @router.get("/pwa/{filename}")
 async def pwa_icon(filename: str):
+    # Self-hosted jsQR (Apache-2.0), the Scan QR reticle's detector fallback
+    # where BarcodeDetector is absent (iOS Safari, Linux Chromium). Kept here
+    # rather than a CDN to preserve the offline-first install.
+    if filename == "jsqr.js":
+        return FileResponse(
+            PWA_ASSETS / "jsqr.js",
+            media_type="application/javascript",
+            headers={"Cache-Control": "public, max-age=604800"},
+        )
     if filename not in PWA_ICON_FILES:
         return Response(status_code=404)
     return FileResponse(
