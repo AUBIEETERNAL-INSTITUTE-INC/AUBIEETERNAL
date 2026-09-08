@@ -2217,6 +2217,7 @@ let qrScanBusy = false;   // one capture+check at a time
 // own continuous autofocus has time to lock before a shot is taken (there is
 // no web API to trigger focus on iOS Safari - this is a timing workaround).
 const QR_SETTLE_MS = 1500;
+const QR_HOLD_MS = 800;   // "hold steady" beat after a code is first framed (item 4)
 let qrSettleTimer = null;
 let _qrSettleDone = false;
 let _qrHoldUntil = 0;     // reticle "hold steady" beat end (item 4); 0 = inactive
@@ -2287,7 +2288,7 @@ function _qrStopStream() {
 // Linux-Chromium / iOS is a deliberate follow-up, not v1.
 let qrDetector = null;
 let qrDetectTimer = null;
-let _qrLastSeen = null;   // 'good' | 'far' | null — for edge-triggered hint text
+let _qrLastSeen = null;   // 'good' | 'hold' | 'far' | null — edge-triggered hint + Capture gate
 
 async function _qrStartReticle() {
   if (qrDetectTimer || !('BarcodeDetector' in window)) return;
@@ -2301,7 +2302,7 @@ async function _qrStartReticle() {
   const vid = document.getElementById('qr-video');
   const overlay = document.getElementById('qr-overlay');
   const reticle = document.getElementById('qr-reticle');
-  _qrLastSeen = null;
+  _qrLastSeen = null; _qrHoldUntil = 0;
 
   qrDetectTimer = setInterval(async () => {
     if (!qrStream || qrScanBusy || vid.readyState < 2 || !vid.videoWidth) return;
@@ -2314,7 +2315,11 @@ async function _qrStartReticle() {
 
     if (!codes || !codes.length) {
       reticle.style.display = 'none';
-      if (_qrLastSeen) { _qrLastSeen = null; setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture',''); }
+      if (_qrLastSeen) {
+        _qrLastSeen = null; _qrHoldUntil = 0;
+        setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture','');
+        _qrUpdateSnap();
+      }
       return;
     }
     const c = codes[0];
@@ -2324,19 +2329,36 @@ async function _qrStartReticle() {
       {x:bb.x+bb.width, y:bb.y+bb.height}, {x:bb.x, y:bb.y+bb.height}
     ];
     reticle.setAttribute('points', pts.map(p => `${Math.round(p.x)},${Math.round(p.y)}`).join(' '));
+    reticle.style.display = 'block';
 
     // Area fraction of the frame — a QR much under ~5% usually won't decode.
     const w = Math.abs(pts[1].x - pts[0].x) || bb.width;
     const h = Math.abs(pts[2].y - pts[1].y) || bb.height;
     const frac = (w * h) / (vid.videoWidth * vid.videoHeight || 1);
-    const state = frac < 0.05 ? 'far' : 'good';
-    reticle.setAttribute('stroke', state === 'good' ? '#3ddc84' : '#ffcc44');
-    reticle.style.display = 'block';
-    if (_qrLastSeen !== state) {
-      _qrLastSeen = state;
-      setResp('qr-resp',
-        state === 'good' ? '✅ QR code in view — tap Capture' : '🔍 QR seen — move closer',
-        state === 'good' ? 'ok' : '');
+
+    if (frac < 0.05) {
+      reticle.setAttribute('stroke', '#ffcc44');
+      if (_qrLastSeen !== 'far') {
+        _qrLastSeen = 'far'; _qrHoldUntil = 0;
+        setResp('qr-resp','🔍 QR seen — move closer','');
+        _qrUpdateSnap();
+      }
+      return;
+    }
+
+    // Well framed. Item 4: on the transition into "framed", show a brief
+    // "hold steady" beat before calling it capture-ready, so iOS autofocus
+    // can settle on the region rather than the shot landing mid focus-hunt.
+    reticle.setAttribute('stroke', '#3ddc84');
+    if (_qrLastSeen === 'far' || _qrLastSeen === null) {
+      _qrLastSeen = 'hold';
+      _qrHoldUntil = Date.now() + QR_HOLD_MS;
+      setResp('qr-resp','✋ Hold steady…','');
+      _qrUpdateSnap();
+    } else if (_qrLastSeen === 'hold' && Date.now() >= _qrHoldUntil) {
+      _qrLastSeen = 'good'; _qrHoldUntil = 0;
+      setResp('qr-resp','✅ QR code in view — tap Capture','ok');
+      _qrUpdateSnap();
     }
   }, 250);
 }
@@ -2347,7 +2369,7 @@ function _qrStopReticle() {
   if (reticle) reticle.style.display = 'none';
   const overlay = document.getElementById('qr-overlay');
   if (overlay) overlay.removeAttribute('viewBox');
-  _qrLastSeen = null;
+  _qrLastSeen = null; _qrHoldUntil = 0;
 }
 
 // Back out of the viewfinder without capturing. Also called by switchTab().
