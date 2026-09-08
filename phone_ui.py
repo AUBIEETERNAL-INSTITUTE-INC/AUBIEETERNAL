@@ -1307,7 +1307,21 @@ HTML = r"""<!DOCTYPE html>
       Aubie decodes it <b>on this device</b>, shows you the real link, and tells you
       what's known about it. It never opens the link for you.
     </p>
-    <button class="btn btn-accent" style="width:100%" onclick="scanQR()">📷 Scan a QR code</button>
+    <button id="qr-cam-btn" class="btn btn-accent" style="width:100%" onclick="startQrCamera()">📷 Scan a QR code</button>
+
+    <!-- Live viewfinder — line the QR up in the box, then tap Capture. Same
+         preview -> deliberate capture flow as the Panel tab (was a blind
+         instant grab before). -->
+    <div id="qr-viewfinder" style="display:none;border-radius:14px;overflow:hidden;background:#000;
+      margin-top:10px;aspect-ratio:4/3;max-height:60vh">
+      <video id="qr-video" autoplay playsinline muted
+        style="width:100%;height:100%;object-fit:contain;display:block;background:#000"></video>
+    </div>
+    <div id="qr-cam-actions" style="display:none;gap:8px;margin-top:8px">
+      <button id="qr-snap-btn" class="btn btn-accent" style="flex:1" onclick="captureQr()">📸 Capture</button>
+      <button class="btn btn-sm" style="background:#2a2a2a;color:#ccc" onclick="cancelQrCamera()">Cancel</button>
+    </div>
+
     <img id="qr-preview" style="display:none;width:100%;border-radius:12px;margin-top:10px" alt="">
     <div id="qr-resp" class="resp"></div>
 
@@ -1669,6 +1683,7 @@ function setFaceColor(part, color) {
 function switchTab(name) {
   if (name === 'aubie') moveFaceToAubieTab(); else restoreFaceFromAubieTab();
   if (name !== 'panel-explain') cancelPanelCamera();  // don't leave the rear camera running
+  if (name !== 'qr') cancelQrCamera();
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
@@ -2182,27 +2197,77 @@ const QR_BADGE = {
   allowed:       ['#12351f', '#9be8b4', '✅ On your household allow list'],
   unknown:       ['#1c2f45', '#cfe8ff', '❔ Nothing on record — read it yourself'],
 };
-async function scanQR() {
-  setResp('qr-resp','📷 Opening camera…','thinking');
+// Live viewfinder -> deliberate capture -> POST /qr/check. Mirrors the Panel
+// tab's flow; replaces the old blind captureTabletFrame() instant grab that
+// gave no chance to line the code up.
+let qrStream = null;      // live viewfinder MediaStream while lining up the QR
+let qrScanBusy = false;   // one capture+check at a time
+
+async function startQrCamera() {
+  if (qrScanBusy || qrStream) return;
+  if (!navigator.mediaDevices) { cameraBlockedMsg('qr-resp'); return; }
+  try {
+    qrStream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+  } catch(e) { setResp('qr-resp','Camera error: '+e.message,'error'); return; }
+  document.getElementById('qr-video').srcObject = qrStream;
+  document.getElementById('qr-viewfinder').style.display = 'block';
+  document.getElementById('qr-cam-actions').style.display = 'flex';
+  document.getElementById('qr-cam-btn').style.display = 'none';
+  document.getElementById('qr-preview').style.display = 'none';
   document.getElementById('qr-result').style.display = 'none';
-  let b64;
+  document.getElementById('qr-wifi').style.display = 'none';
+  setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture','ok');
+}
+
+function _qrStopStream() {
+  if (qrStream) { qrStream.getTracks().forEach(t => t.stop()); qrStream = null; }
+  const v = document.getElementById('qr-video');
+  if (v) v.srcObject = null;
+  document.getElementById('qr-viewfinder').style.display = 'none';
+  document.getElementById('qr-cam-actions').style.display = 'none';
+  document.getElementById('qr-cam-btn').style.display = 'block';
+}
+
+// Back out of the viewfinder without capturing. Also called by switchTab().
+function cancelQrCamera() {
+  if (!qrStream) return;
+  _qrStopStream();
+  document.getElementById('qr-cam-btn').textContent = '📷 Scan a QR code';
+  setResp('qr-resp','', '');
+}
+
+async function captureQr() {
+  if (qrScanBusy || !qrStream) return;
+  qrScanBusy = true;
+  const snap = document.getElementById('qr-snap-btn');
+  if (snap) snap.disabled = true;
   try {
-    b64 = await captureTabletFrame();
-  } catch(e){ setResp('qr-resp','Camera error: '+e.message,'error'); return; }
-  if(!b64){ return; }  // captureTabletFrame already showed the insecure-origin fix
-  document.getElementById('qr-preview').src = 'data:image/jpeg;base64,'+b64;
-  document.getElementById('qr-preview').style.display = 'block';
-  // Decode + display works regardless of trust state — only "Go Live" is gated.
-  setResp('qr-resp','🔎 Checking…','thinking');
-  try {
-    const r = await fetch('/qr/check', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ image_b64: b64, source: 'kiosk', who: 'kiosk' })
-    });
-    const d = await r.json();
-    if(d.error && !d.payload){ setResp('qr-resp', d.error, 'error'); return; }
-    renderQR(d);
-  } catch(e){ setResp('qr-resp','Check failed: '+e.message,'error'); }
+    const video = document.getElementById('qr-video');
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth || 1280;
+    canvas.height = video.videoHeight || 960;
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    const b64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+    _qrStopStream();
+    document.getElementById('qr-cam-btn').textContent = '📷 Rescan';
+
+    document.getElementById('qr-preview').src = 'data:image/jpeg;base64,' + b64;
+    document.getElementById('qr-preview').style.display = 'block';
+    // Decode + display works regardless of trust state — only "Go Live" is gated.
+    setResp('qr-resp','🔎 Checking…','thinking');
+    try {
+      const r = await fetch('/qr/check', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ image_b64: b64, source: 'kiosk', who: 'kiosk' })
+      });
+      const d = await r.json();
+      if(d.error && !d.payload){ setResp('qr-resp', d.error, 'error'); return; }
+      renderQR(d);
+    } catch(e){ setResp('qr-resp','Check failed: '+e.message,'error'); }
+  } finally {
+    qrScanBusy = false;
+    if (snap) snap.disabled = false;
+  }
 }
 function renderQR(d) {
   qrLast = d;
