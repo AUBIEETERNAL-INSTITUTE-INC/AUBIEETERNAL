@@ -1611,6 +1611,185 @@ async def vision_describe(
     return {"description": description}
 
 
+# ── Appliance / control-panel explainer ─────────────────────────────────────
+# Point the camera at an unfamiliar control panel (any language) and get a
+# plain-language map of what each control does + optional task steps, spoken
+# through the same Piper voice /converse uses. v1: one still photo, no video,
+# no persistence. Wake-word ("hey aubie, how do I use this?") routing is a
+# deliberate v1+ follow-up - this endpoint is the core flow only.
+LANG_NAME_BY_CODE = {"en": "English", "es": "Spanish"}
+_PANEL_ROLES = {
+    "preset", "dial", "start", "stop", "power", "time",
+    "temperature", "mode", "display", "other",
+}
+
+
+def _panel_prompt(lang_name: str, question: str | None) -> tuple[str, str]:
+    """(system, user) prompt pair for the vision model. Everything the model
+    writes for a human to read - `does`, `steps`, `spoken` - is asked for in
+    `lang_name` (the resolved reply language); `label_seen` stays verbatim in
+    whatever is printed on the panel."""
+    system = (
+        "You explain unfamiliar appliance control panels to someone who may "
+        "not read the language printed on the device. Be concrete and "
+        "physical: name each control, say roughly where it is, and what it "
+        "does. For every label you can see, give the text EXACTLY as printed "
+        f"and its meaning in {lang_name}. Never invent a control you cannot "
+        "actually see in the photo. Reply with ONLY one JSON object - no "
+        "markdown fences, no text before or after it."
+    )
+    lines = [
+        "Look at this appliance control panel. Return one JSON object with keys:",
+        '- "device_guess": string - what appliance this is (e.g. "microwave oven").',
+        '- "panel_language": ISO 639-1 code of the language printed on the panel, or "unknown".',
+        '- "controls": array, one object per visible button / dial / display, each with:',
+        '    "label_seen"       - text exactly as printed ("" for a wordless icon),',
+        f'    "label_translated" - its meaning in {lang_name} (a short name for an icon),',
+        '    "position"         - plain words, e.g. "top row, third from left",',
+        '    "role"             - one of: preset, dial, start, stop, power, time, temperature, mode, display, other,',
+        f'    "does"            - one plain sentence in {lang_name}.',
+        f'- "spoken": a 2-4 sentence spoken walkthrough in {lang_name}, ready to read aloud.',
+    ]
+    if question:
+        lines.append(
+            f'- "task": object with "asked" (the question) and "steps" '
+            f'(ordered short instructions in {lang_name}) answering: "{question}"'
+        )
+    else:
+        lines.append('- "task": null')
+    return system, "\n".join(lines)
+
+
+def _parse_panel_json(raw: str) -> dict | None:
+    """Pull the JSON object out of the model reply and normalize it. Returns
+    None if there's no parseable object at all - caller then degrades to
+    reading the raw text aloud."""
+    match = re.search(r"\{.*\}", raw or "", re.S)
+    if not match:
+        return None
+    try:
+        data = json.loads(match.group(0))
+    except (json.JSONDecodeError, ValueError):
+        return None
+    if not isinstance(data, dict):
+        return None
+
+    controls = []
+    for c in data.get("controls") or []:
+        if not isinstance(c, dict):
+            continue
+        role = str(c.get("role", "other") or "other").strip().lower()
+        controls.append({
+            "label_seen": str(c.get("label_seen", "") or ""),
+            "label_translated": str(c.get("label_translated", "") or ""),
+            "position": str(c.get("position", "") or ""),
+            "role": role if role in _PANEL_ROLES else "other",
+            "does": str(c.get("does", "") or ""),
+        })
+
+    task = data.get("task")
+    if isinstance(task, dict):
+        steps = task.get("steps")
+        task = {
+            "asked": str(task.get("asked", "") or ""),
+            "steps": [str(s) for s in steps if s] if isinstance(steps, list) else [],
+        }
+    else:
+        task = None
+
+    return {
+        "device_guess": str(data.get("device_guess", "") or ""),
+        "panel_language": str(data.get("panel_language", "") or "unknown"),
+        "controls": controls,
+        "task": task,
+        "spoken": str(data.get("spoken", "") or "").strip(),
+    }
+
+
+def _panel_spoken_fallback(parsed: dict) -> str:
+    """Build a spoken walkthrough from the structured fields when the model
+    didn't supply its own `spoken` - so speech and the on-screen table can
+    never disagree."""
+    dev = parsed.get("device_guess") or "this panel"
+    bits = [f"This looks like {dev}."]
+    task = parsed.get("task")
+    if task and task.get("steps"):
+        steps = [s.strip().rstrip(".") for s in task["steps"] if s and s.strip()]
+        if steps:
+            # Sentences, not "1. ... 2. ..." - the latter reads as
+            # "one dot ... two dot ..." through Piper.
+            bits.append("Here's how. " + ". ".join(steps) + ".")
+    else:
+        named = [c for c in parsed.get("controls") or [] if c.get("label_translated")]
+        if named:
+            bits.append("The main controls are: " + "; ".join(
+                (f"{c['label_seen']}, " if c["label_seen"] else "")
+                + f"{c['label_translated']} - {c['does']}"
+                for c in named[:6]
+            ) + ".")
+    return " ".join(bits)
+
+
+@app.post("/explain_panel")
+async def explain_panel(
+    image: UploadFile = File(...),
+    question: str | None = Form(None),
+    language: str | None = Form(None),
+):
+    """
+    One photo of an appliance control panel -> structured control map
+    (label as printed + translation + position + role + what it does),
+    optional task steps if a typed `question` is given, and a spoken
+    walkthrough as `audio_b64` in the resolved reply language. See
+    _panel_prompt for the model contract. v1: single still image; no video,
+    no persistence, and no spoken question - a mic path arrives with the
+    wake-word routing (see APPLIANCE_EXPLAINER_DESIGN.md).
+    """
+    image_bytes = await image.read()
+    if not image_bytes:
+        raise HTTPException(400, "image required")
+
+    q_text = (question or "").strip()
+    reply_lang = resolve_reply_language(language, None)
+    lang_name = LANG_NAME_BY_CODE.get(reply_lang, "English")
+
+    system, prompt = _panel_prompt(lang_name, q_text or None)
+    image_b64 = base64.b64encode(image_bytes).decode("ascii")
+    try:
+        raw = await asyncio.to_thread(
+            query_ollama, prompt, VISION_MODEL,
+            image_b64=image_b64, system_override=system, timeout=90,
+        )
+    except requests.RequestException as e:
+        raise HTTPException(502, f"vision model failed: {e}")
+
+    parsed = _parse_panel_json(raw)
+    if parsed is None:
+        # No parseable JSON - degrade to reading the model's prose aloud
+        # rather than 500-ing. Structured fields come back empty.
+        spoken = raw.strip() or "Sorry, I couldn't read that panel clearly."
+        parsed = {"device_guess": "", "panel_language": "unknown",
+                  "controls": [], "task": None, "spoken": ""}
+    else:
+        spoken = parsed["spoken"] or _panel_spoken_fallback(parsed)
+
+    wav_bytes = await asyncio.to_thread(
+        synthesize_speech, spoken, VOICE_BY_CODE.get(reply_lang, get_active_voice())
+    )
+
+    return {
+        "device_guess": parsed["device_guess"],
+        "panel_language": parsed["panel_language"],
+        "reply_language": reply_lang,
+        "question": q_text,
+        "controls": parsed["controls"],
+        "task": parsed["task"],
+        "spoken": spoken,
+        "audio_b64": base64.b64encode(wav_bytes).decode("ascii"),
+        "model": VISION_MODEL,
+    }
+
+
 _POLYVAGAL_STATE_MAP = {
     "ventral":     {"value": 2, "emoji": "🟢", "coherence_boost": 0.02},
     "sympathetic": {"value": 1, "emoji": "🟡", "coherence_boost": -0.01},
