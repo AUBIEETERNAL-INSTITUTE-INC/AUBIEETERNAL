@@ -1313,16 +1313,17 @@ HTML = r"""<!DOCTYPE html>
          preview -> deliberate capture flow as the Panel tab (was a blind
          instant grab before). -->
     <div id="qr-viewfinder" style="display:none;position:relative;border-radius:14px;overflow:hidden;
-      background:#000;margin-top:10px;aspect-ratio:4/3;max-height:60vh">
+      background:#000;margin-top:10px;aspect-ratio:4/3;max-height:60vh;touch-action:none">
       <video id="qr-video" autoplay playsinline muted
-        style="width:100%;height:100%;object-fit:contain;display:block;background:#000"></video>
+        style="width:100%;height:100%;object-fit:contain;display:block;background:#000;
+        transform-origin:center"></video>
       <!-- Live QR-detection reticle (BarcodeDetector where supported). viewBox is
            set to the video's intrinsic size and preserveAspectRatio matches
            object-fit:contain, so detected cornerPoints map 1:1 with no manual
            transform. Unsupported (Linux Chromium kiosk, iOS Safari) -> no
            overlay, viewfinder behaves exactly as before. -->
       <svg id="qr-overlay" preserveAspectRatio="xMidYMid meet"
-        style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+        style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;transform-origin:center">
         <polygon id="qr-reticle" points="" fill="none" stroke="#3ddc84" stroke-width="3"
           stroke-linejoin="round" vector-effect="non-scaling-stroke" style="display:none"></polygon>
       </svg>
@@ -2248,6 +2249,7 @@ async function startQrCamera() {
     });
   } catch(e) { setResp('qr-resp','Camera error: '+e.message,'error'); return; }
   document.getElementById('qr-video').srcObject = qrStream;
+  _qrInitZoom();   // item 3: probe hardware zoom, else set up CSS digital zoom
   document.getElementById('qr-viewfinder').style.display = 'block';
   document.getElementById('qr-cam-actions').style.display = 'flex';
   document.getElementById('qr-cam-btn').style.display = 'none';
@@ -2264,6 +2266,7 @@ async function startQrCamera() {
     qrSettleTimer = null; _qrSettleDone = true; _qrUpdateSnap();
   }, QR_SETTLE_MS);
 
+  _qrWirePinch();
   _qrStartReticle();
 }
 
@@ -2274,9 +2277,82 @@ function _qrStopStream() {
   if (qrStream) { qrStream.getTracks().forEach(t => t.stop()); qrStream = null; }
   const v = document.getElementById('qr-video');
   if (v) v.srcObject = null;
+  // item 3: drop any CSS digital-zoom transform (native zoom dies with the track)
+  qrZoom = 1; _qrPinchDist = 0;
+  if (v) v.style.transform = '';
+  const ov = document.getElementById('qr-overlay');
+  if (ov) ov.style.transform = '';
   document.getElementById('qr-viewfinder').style.display = 'none';
   document.getElementById('qr-cam-actions').style.display = 'none';
   document.getElementById('qr-cam-btn').style.display = 'block';
+}
+
+// ── Item 3: pinch-to-zoom on the live QR preview ────────────────────────
+// Real MediaStreamTrack zoom where the platform supports it (some Android
+// Chrome); CSS-transform digital zoom otherwise (iOS Safari has no zoom
+// constraint). Digital zoom trades resolution for framing — fine for a
+// mostly-flat QR, and it lets someone fill the frame without pushing the
+// phone inside its minimum focus distance (the curved-glass blur case).
+let qrZoom = 1;                                  // current factor
+let qrZoomNative = false;                        // true = hardware/track zoom
+let qrZoomRange = { min: 1, max: 4, step: 0.1 }; // CSS-path default range
+let _qrPinchWired = false;
+let _qrPinchDist = 0;
+let _qrPinchZoom0 = 1;
+
+function _qrInitZoom() {
+  qrZoom = 1; _qrPinchDist = 0; qrZoomNative = false;
+  qrZoomRange = { min: 1, max: 4, step: 0.1 };
+  try {
+    const track = qrStream && qrStream.getVideoTracks()[0];
+    const caps = (track && track.getCapabilities) ? track.getCapabilities() : {};
+    if (caps.zoom && Number(caps.zoom.max) > Number(caps.zoom.min || 1)) {
+      qrZoomNative = true;
+      qrZoomRange = { min: caps.zoom.min || 1, max: caps.zoom.max, step: caps.zoom.step || 0.1 };
+      const s = track.getSettings ? track.getSettings() : {};
+      qrZoom = s.zoom || qrZoomRange.min;
+    }
+  } catch(e) { qrZoomNative = false; }
+}
+
+function _qrTouchDist(t) {
+  return Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+}
+
+function _qrSetZoom(z) {
+  z = Math.max(qrZoomRange.min, Math.min(qrZoomRange.max, z));
+  qrZoom = z;
+  if (qrZoomNative) {
+    const track = qrStream && qrStream.getVideoTracks()[0];
+    if (track) track.applyConstraints({ advanced: [{ zoom: z }] }).catch(() => {});
+  } else {
+    const tf = z > 1 ? `scale(${z.toFixed(3)})` : '';
+    const v = document.getElementById('qr-video');
+    const ov = document.getElementById('qr-overlay');
+    if (v) v.style.transform = tf;
+    if (ov) ov.style.transform = tf;   // keep the reticle aligned with the zoomed feed
+  }
+}
+
+function _qrWirePinch() {
+  if (_qrPinchWired) return;
+  _qrPinchWired = true;
+  const vf = document.getElementById('qr-viewfinder');
+  vf.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2 && qrStream) {
+      _qrPinchDist = _qrTouchDist(e.touches);
+      _qrPinchZoom0 = qrZoom;
+    }
+  }, { passive: true });
+  vf.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && qrStream && _qrPinchDist > 0) {
+      e.preventDefault();   // stop Safari's page pinch-zoom while framing
+      _qrSetZoom(_qrPinchZoom0 * (_qrTouchDist(e.touches) / _qrPinchDist));
+    }
+  }, { passive: false });
+  const end = () => { _qrPinchDist = 0; };
+  vf.addEventListener('touchend', end, { passive: true });
+  vf.addEventListener('touchcancel', end, { passive: true });
 }
 
 // ── Live QR-detection reticle ───────────────────────────────────────────
@@ -2331,10 +2407,14 @@ async function _qrStartReticle() {
     reticle.setAttribute('points', pts.map(p => `${Math.round(p.x)},${Math.round(p.y)}`).join(' '));
     reticle.style.display = 'block';
 
-    // Area fraction of the frame — a QR much under ~5% usually won't decode.
+    // Fraction of the *visible* frame the QR fills — a QR much under ~5%
+    // usually won't decode. detect() sees the raw (unzoomed) frame, so with
+    // CSS digital zoom the QR fills z*z more of what the person sees and of
+    // the centre crop that gets captured; scale the estimate to match.
     const w = Math.abs(pts[1].x - pts[0].x) || bb.width;
     const h = Math.abs(pts[2].y - pts[1].y) || bb.height;
-    const frac = (w * h) / (vid.videoWidth * vid.videoHeight || 1);
+    const zoomBoost = qrZoomNative ? 1 : (qrZoom * qrZoom);
+    const frac = ((w * h) / (vid.videoWidth * vid.videoHeight || 1)) * zoomBoost;
 
     if (frac < 0.05) {
       reticle.setAttribute('stroke', '#ffcc44');
@@ -2387,10 +2467,16 @@ async function captureQr() {
   if (snap) snap.disabled = true;
   try {
     const video = document.getElementById('qr-video');
+    const vw = video.videoWidth || 1280, vh = video.videoHeight || 960;
+    // CSS digital zoom (item 3) only crops the displayed feed — send the same
+    // centre crop the person framed. Native/track zoom already produces a
+    // zoomed frame, so there it's a plain full-frame grab (z === 1 here).
+    const z = (!qrZoomNative && qrZoom > 1) ? qrZoom : 1;
+    const sw = Math.round(vw / z), sh = Math.round(vh / z);
+    const sx = Math.round((vw - sw) / 2), sy = Math.round((vh - sh) / 2);
     const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth || 1280;
-    canvas.height = video.videoHeight || 960;
-    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+    canvas.width = sw; canvas.height = sh;
+    canvas.getContext('2d').drawImage(video, sx, sy, sw, sh, 0, 0, sw, sh);
     const b64 = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
     _qrStopStream();
     document.getElementById('qr-cam-btn').textContent = '📷 Rescan';
