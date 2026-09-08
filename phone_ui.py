@@ -2213,6 +2213,25 @@ const QR_BADGE = {
 let qrStream = null;      // live viewfinder MediaStream while lining up the QR
 let qrScanBusy = false;   // one capture+check at a time
 
+// Capture stays disabled for a settle window after the camera opens so iOS's
+// own continuous autofocus has time to lock before a shot is taken (there is
+// no web API to trigger focus on iOS Safari - this is a timing workaround).
+const QR_SETTLE_MS = 1500;
+let qrSettleTimer = null;
+let _qrSettleDone = false;
+let _qrHoldUntil = 0;     // reticle "hold steady" beat end (item 4); 0 = inactive
+
+// Single source of truth for the Capture button's enabled/label state.
+// Gates: the settle window (item 2) and, when the reticle is active, the
+// brief "hold steady" beat after a code is first framed (item 4).
+function _qrUpdateSnap() {
+  const s = document.getElementById('qr-snap-btn');
+  if (!s) return;
+  const holding = Date.now() < _qrHoldUntil;
+  s.disabled = !(_qrSettleDone && !holding);
+  s.textContent = !_qrSettleDone ? '📸 Focusing…' : (holding ? '✋ Hold steady…' : '📸 Capture');
+}
+
 async function startQrCamera() {
   if (qrScanBusy || qrStream) return;
   if (!navigator.mediaDevices) { cameraBlockedMsg('qr-resp'); return; }
@@ -2235,11 +2254,22 @@ async function startQrCamera() {
   document.getElementById('qr-result').style.display = 'none';
   document.getElementById('qr-wifi').style.display = 'none';
   setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture','');
+
+  // Item 2: hold Capture disabled through the autofocus settle window.
+  _qrSettleDone = false; _qrHoldUntil = 0;
+  _qrUpdateSnap();
+  if (qrSettleTimer) clearTimeout(qrSettleTimer);
+  qrSettleTimer = setTimeout(() => {
+    qrSettleTimer = null; _qrSettleDone = true; _qrUpdateSnap();
+  }, QR_SETTLE_MS);
+
   _qrStartReticle();
 }
 
 function _qrStopStream() {
   _qrStopReticle();
+  if (qrSettleTimer) { clearTimeout(qrSettleTimer); qrSettleTimer = null; }
+  _qrSettleDone = false; _qrHoldUntil = 0;
   if (qrStream) { qrStream.getTracks().forEach(t => t.stop()); qrStream = null; }
   const v = document.getElementById('qr-video');
   if (v) v.srcObject = null;
