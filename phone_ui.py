@@ -1375,7 +1375,50 @@ HTML = r"""<!DOCTYPE html>
 </div><!-- /tab-qr -->
 
 
-<!-- ── Tab bar (6 tabs) ───────────────────────────────────────────────── -->
+<!-- ══ Explain a panel ═══════════════════════════════════════════════════
+     Point the camera at an unfamiliar appliance control panel (any
+     language) -> plain-language map of every control + optional task steps
+     + spoken walkthrough. v1: one still photo, kiosk/tablet only. -->
+<div id="tab-panel-explain" class="tab-panel">
+  <div class="card">
+    <div class="card-title"><span>🎛️</span> Explain a control panel</div>
+    <p style="font-size:12px;color:var(--sub);margin:6px 0 12px">
+      Point the camera at a microwave, washer, thermostat — any buttons you
+      don't recognise, in any language. Aubie reads the labels, tells you what
+      each control does, and can walk you through a task.
+    </p>
+    <input id="pe-q" type="text" placeholder="Optional: what are you trying to do? (e.g. defrost chicken)"
+      style="width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid var(--border);
+      background:#0d1520;color:var(--text);font-size:13px;margin-bottom:8px">
+    <button id="pe-go" class="btn btn-accent" style="width:100%" onclick="explainPanel()">📷 Read this panel</button>
+    <img id="pe-preview" style="display:none;width:100%;border-radius:12px;margin-top:10px" alt="">
+    <div id="pe-resp" class="resp"></div>
+
+    <div id="pe-result" style="display:none;margin-top:12px">
+      <div id="pe-head" style="font-weight:700;font-size:14px;margin-bottom:8px"></div>
+      <div id="pe-steps" style="display:none;background:#12351f;border:1px solid #1f5c34;border-radius:10px;
+        padding:10px 12px;margin-bottom:10px">
+        <p style="font-size:11px;color:#9be8b4;margin:0 0 4px;font-weight:700">TO DO THAT:</p>
+        <ol id="pe-steps-list" style="margin:0;padding-left:20px;font-size:13px;line-height:1.6;color:var(--text)"></ol>
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead><tr style="text-align:left;color:var(--sub)">
+          <th style="padding:4px 6px">On the panel</th><th style="padding:4px 6px">Means</th>
+          <th style="padding:4px 6px">What it does</th>
+        </tr></thead>
+        <tbody id="pe-controls"></tbody>
+      </table>
+      <button class="btn btn-teal btn-sm" style="margin-top:10px" onclick="pePlayAgain()">🔊 Read it aloud again</button>
+      <p style="font-size:10px;color:var(--sub);margin-top:8px">
+        Aubie is reading labels from one photo — double-check anything that matters
+        (child locks, gas, self-clean cycles) against the manual.
+      </p>
+    </div>
+  </div>
+</div><!-- /tab-panel-explain -->
+
+
+<!-- ── Tab bar (7 tabs) ───────────────────────────────────────────────── -->
 <div class="tabbar">
   <button class="tab-btn active" id="tbtn-teach" onclick="switchTab('teach')">
     <span class="tab-icon">🧠</span>Teach
@@ -1391,6 +1434,9 @@ HTML = r"""<!DOCTYPE html>
   </button>
   <button class="tab-btn" id="tbtn-qr" onclick="switchTab('qr')">
     <span class="tab-icon">🔒</span>Scan QR
+  </button>
+  <button class="tab-btn" id="tbtn-panel-explain" onclick="switchTab('panel-explain')">
+    <span class="tab-icon">🎛️</span>Panel
   </button>
   <button class="tab-btn" id="tbtn-portal" onclick="window.open('https://aubieeternal.tail00eb41.ts.net:8443/','_blank')">
     <span class="tab-icon">🖥️</span>Portal
@@ -1976,6 +2022,92 @@ async function describeScene() {
     if(!r.ok) { setResp('cam-resp', data.detail||'Vision error', 'error'); return; }
     setResp('cam-resp', data.description||JSON.stringify(data), 'ok'); log('Scene described','ok');
   } catch(e){setResp('cam-resp','Vision error: '+e.message,'error');}
+}
+
+// ── Explain a control panel ─────────────────────────────────────────────
+// One photo -> POST /explain_panel -> structured control map + optional task
+// steps + a spoken walkthrough (audio_b64). v1: still image only, no video.
+let peLastAudio = null;   // base64 wav from the last successful read, for "read again"
+let peBusy = false;       // one read at a time - the vision call is ~tens of seconds
+async function explainPanel() {
+  if (peBusy) return;
+  peBusy = true;
+  const goBtn = document.getElementById('pe-go');
+  if (goBtn) goBtn.disabled = true;
+  try {
+    setResp('pe-resp','📷 Opening camera…','thinking');
+    document.getElementById('pe-result').style.display = 'none';
+    let b64;
+    try { b64 = await captureTabletFrame(); }
+    catch(e){ setResp('pe-resp','Camera error: '+e.message,'error'); return; }
+    if(!b64){ return; }  // captureTabletFrame already showed the insecure-origin fix
+    const prev = document.getElementById('pe-preview');
+    prev.src = 'data:image/jpeg;base64,'+b64; prev.style.display = 'block';
+    setResp('pe-resp','👁️ Reading the panel… this takes a few seconds','thinking');
+
+    const form = new FormData();
+    form.append('image', b64ToBlob(b64), 'panel.jpg');
+    const q = document.getElementById('pe-q').value.trim();
+    if(q) form.append('question', q);
+    try {
+      const r = await fetch('/explain_panel', {method:'POST', body: form});
+      const d = await r.json();
+      if(!r.ok){ setResp('pe-resp', d.detail || 'Panel read failed', 'error'); return; }
+      renderPanel(d);
+      setResp('pe-resp','', '');
+    } catch(e){ setResp('pe-resp','Panel read failed: '+e.message,'error'); }
+  } finally {
+    peBusy = false;
+    if (goBtn) goBtn.disabled = false;
+  }
+}
+function renderPanel(d) {
+  const dev = d.device_guess || 'this panel';
+  const plang = (d.panel_language && d.panel_language !== 'unknown')
+    ? ` · labels in ${d.panel_language}` : '';
+  document.getElementById('pe-head').textContent = `This looks like ${dev}${plang}.`;
+
+  const stepsBox = document.getElementById('pe-steps');
+  const ol = document.getElementById('pe-steps-list');
+  ol.innerHTML = '';
+  if (d.task && Array.isArray(d.task.steps) && d.task.steps.length) {
+    d.task.steps.forEach(s => { const li = document.createElement('li'); li.textContent = s; ol.appendChild(li); });
+    stepsBox.style.display = 'block';
+  } else {
+    stepsBox.style.display = 'none';
+  }
+
+  const tb = document.getElementById('pe-controls');
+  tb.innerHTML = '';
+  (d.controls || []).forEach(c => {
+    const tr = document.createElement('tr');
+    tr.style.borderTop = '1px solid var(--border)';
+    const cell = (txt, muted) => {
+      const td = document.createElement('td');
+      td.style.padding = '6px'; td.style.verticalAlign = 'top';
+      if (muted) td.style.color = 'var(--sub)';
+      td.textContent = txt || '';
+      return td;
+    };
+    const seen = c.label_seen || (c.position ? '(' + c.position + ')' : '(icon)');
+    tr.appendChild(cell(seen));
+    tr.appendChild(cell(c.label_translated, true));
+    tr.appendChild(cell(c.does));
+    tb.appendChild(tr);
+  });
+
+  document.getElementById('pe-result').style.display = 'block';
+  peLastAudio = d.audio_b64 || null;
+  if (peLastAudio) playB64Wav(peLastAudio);
+}
+function pePlayAgain() { if (peLastAudio) playB64Wav(peLastAudio); }
+function playB64Wav(b64) {
+  try {
+    const url = URL.createObjectURL(b64ToBlob(b64, 'audio/wav'));
+    const a = new Audio(url);
+    a.onended = () => URL.revokeObjectURL(url);
+    a.play().catch(()=>{});
+  } catch(e){ log('Audio play failed: '+e.message,'err'); }
 }
 
 // ── QR Airlock ───────────────────────────────────────────────────────────
