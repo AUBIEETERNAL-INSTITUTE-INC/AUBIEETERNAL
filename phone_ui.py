@@ -1378,7 +1378,7 @@ HTML = r"""<!DOCTYPE html>
     <input id="pe-q" type="text" placeholder="Optional: what are you trying to do? (e.g. defrost chicken)"
       style="width:100%;box-sizing:border-box;padding:10px;border-radius:10px;border:1px solid var(--border);
       background:#0d1520;color:var(--text);font-size:13px;margin-bottom:8px">
-    <button class="btn btn-accent" style="width:100%" onclick="explainPanel()">📷 Read this panel</button>
+    <button id="pe-go" class="btn btn-accent" style="width:100%" onclick="explainPanel()">📷 Read this panel</button>
     <img id="pe-preview" style="display:none;width:100%;border-radius:12px;margin-top:10px" alt="">
     <div id="pe-resp" class="resp"></div>
 
@@ -2016,28 +2016,38 @@ async function describeScene() {
 // One photo -> POST /explain_panel -> structured control map + optional task
 // steps + a spoken walkthrough (audio_b64). v1: still image only, no video.
 let peLastAudio = null;   // base64 wav from the last successful read, for "read again"
+let peBusy = false;       // one read at a time - the vision call is ~tens of seconds
 async function explainPanel() {
-  setResp('pe-resp','📷 Opening camera…','thinking');
-  document.getElementById('pe-result').style.display = 'none';
-  let b64;
-  try { b64 = await captureTabletFrame(); }
-  catch(e){ setResp('pe-resp','Camera error: '+e.message,'error'); return; }
-  if(!b64){ return; }  // captureTabletFrame already showed the insecure-origin fix
-  const prev = document.getElementById('pe-preview');
-  prev.src = 'data:image/jpeg;base64,'+b64; prev.style.display = 'block';
-  setResp('pe-resp','👁️ Reading the panel… this takes a few seconds','thinking');
-
-  const form = new FormData();
-  form.append('image', b64ToBlob(b64), 'panel.jpg');
-  const q = document.getElementById('pe-q').value.trim();
-  if(q) form.append('question', q);
+  if (peBusy) return;
+  peBusy = true;
+  const goBtn = document.getElementById('pe-go');
+  if (goBtn) goBtn.disabled = true;
   try {
-    const r = await fetch('/explain_panel', {method:'POST', body: form});
-    const d = await r.json();
-    if(!r.ok){ setResp('pe-resp', d.detail || 'Panel read failed', 'error'); return; }
-    renderPanel(d);
-    setResp('pe-resp','', '');
-  } catch(e){ setResp('pe-resp','Panel read failed: '+e.message,'error'); }
+    setResp('pe-resp','📷 Opening camera…','thinking');
+    document.getElementById('pe-result').style.display = 'none';
+    let b64;
+    try { b64 = await captureTabletFrame(); }
+    catch(e){ setResp('pe-resp','Camera error: '+e.message,'error'); return; }
+    if(!b64){ return; }  // captureTabletFrame already showed the insecure-origin fix
+    const prev = document.getElementById('pe-preview');
+    prev.src = 'data:image/jpeg;base64,'+b64; prev.style.display = 'block';
+    setResp('pe-resp','👁️ Reading the panel… this takes a few seconds','thinking');
+
+    const form = new FormData();
+    form.append('image', b64ToBlob(b64), 'panel.jpg');
+    const q = document.getElementById('pe-q').value.trim();
+    if(q) form.append('question', q);
+    try {
+      const r = await fetch('/explain_panel', {method:'POST', body: form});
+      const d = await r.json();
+      if(!r.ok){ setResp('pe-resp', d.detail || 'Panel read failed', 'error'); return; }
+      renderPanel(d);
+      setResp('pe-resp','', '');
+    } catch(e){ setResp('pe-resp','Panel read failed: '+e.message,'error'); }
+  } finally {
+    peBusy = false;
+    if (goBtn) goBtn.disabled = false;
+  }
 }
 function renderPanel(d) {
   const dev = d.device_guess || 'this panel';
