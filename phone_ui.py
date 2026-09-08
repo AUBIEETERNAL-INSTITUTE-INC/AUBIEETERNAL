@@ -1394,10 +1394,13 @@ HTML = r"""<!DOCTYPE html>
 
     <!-- Live viewfinder (hidden until the camera starts) — aim at the whole
          panel, then tap Capture. WYSIWYG: object-fit:contain so what's shown
-         is exactly the frame that gets sent. -->
-    <div id="pe-viewfinder" style="display:none;border-radius:14px;overflow:hidden;background:#000;margin-top:10px">
+         is exactly the frame that gets sent. The container reserves a stable
+         box (aspect-ratio) so the preview is visibly there the instant the
+         camera opens, before stream metadata gives the <video> its height. -->
+    <div id="pe-viewfinder" style="display:none;border-radius:14px;overflow:hidden;background:#000;
+      margin-top:10px;aspect-ratio:4/3;max-height:60vh">
       <video id="pe-video" autoplay playsinline muted
-        style="width:100%;max-height:60vh;object-fit:contain;display:block;background:#000"></video>
+        style="width:100%;height:100%;object-fit:contain;display:block;background:#000"></video>
     </div>
     <div id="pe-cam-actions" style="display:none;gap:8px;margin-top:8px">
       <button id="pe-snap-btn" class="btn btn-accent" style="flex:1" onclick="capturePanel()">📸 Capture</button>
