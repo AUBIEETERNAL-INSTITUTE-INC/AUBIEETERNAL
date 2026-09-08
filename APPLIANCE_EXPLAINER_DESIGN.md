@@ -16,11 +16,15 @@ core flow only for now; **(4)** no persistence.
 
 - `assistant_server.py`: `POST /explain_panel` + `_panel_prompt` /
   `_parse_panel_json` / `_panel_spoken_fallback` helpers. Accepts `image`
-  (required), optional `audio` **or** `question`, optional `language`.
-  Returns the JSON in "Response" below with `audio_b64` (Piper WAV in the
-  resolved reply language). Degrades to reading the model's prose aloud if
-  the reply isn't parseable JSON — never 500s on a bad model reply. `role`
-  is clamped to a fixed enum.
+  (required), optional typed `question`, optional `language`. Returns the
+  JSON in "Response" below with `audio_b64` (Piper WAV in the resolved
+  reply language). Degrades to reading the model's prose aloud if the reply
+  isn't parseable JSON — never 500s on a bad model reply. `role` is clamped
+  to a fixed enum.
+  - **No `audio`/STT param in v1** (dropped in review): a spoken question
+    means routing wake-word audio, which is the deferred `/converse`
+    delegate path below — adding STT here first would be a second,
+    throwaway entry point. The typed `question` box covers the kiosk need.
 - `phone_ui.py`: new **🎛️ Panel** tab (7th), cloned from the Scan QR tab —
   optional "what are you trying to do?" box, one "Read this panel" button,
   a **To do that** steps list, an *On the panel / Means / What it does*
@@ -91,10 +95,13 @@ kiosk can render as a table now and draw as an on-screen overlay later.
 
 ### Request
 
+> **v1 shipped without `audio`** — see "What landed in v1". The `audio`
+> row below is the wake-word-path shape, kept here for when that lands.
+
 ```
 POST /explain_panel        (multipart/form-data)
   image     : UploadFile          (required — single still photo, no video in v1)
-  audio     : UploadFile | None   (optional spoken question)
+  audio     : UploadFile | None   (deferred — spoken question, arrives with wake-word routing)
   question  : str  Form | None    (optional typed question, kiosk text path)
   language  : str  Form | None    (reply-language override; else STT detect / install default)
 ```
