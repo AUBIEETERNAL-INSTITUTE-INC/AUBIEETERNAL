@@ -1731,35 +1731,24 @@ def _panel_spoken_fallback(parsed: dict) -> str:
 @app.post("/explain_panel")
 async def explain_panel(
     image: UploadFile = File(...),
-    audio: UploadFile | None = File(None),
     question: str | None = Form(None),
     language: str | None = Form(None),
 ):
     """
     One photo of an appliance control panel -> structured control map
     (label as printed + translation + position + role + what it does),
-    optional task steps if a question is given (typed `question` or spoken
-    `audio`), and a spoken walkthrough as `audio_b64` in the resolved reply
-    language. See _panel_prompt for the model contract. v1: single still
-    image; no video, no persistence.
+    optional task steps if a typed `question` is given, and a spoken
+    walkthrough as `audio_b64` in the resolved reply language. See
+    _panel_prompt for the model contract. v1: single still image; no video,
+    no persistence, and no spoken question - a mic path arrives with the
+    wake-word routing (see APPLIANCE_EXPLAINER_DESIGN.md).
     """
     image_bytes = await image.read()
     if not image_bytes:
         raise HTTPException(400, "image required")
 
     q_text = (question or "").strip()
-    detected_lang = None
-    if audio is not None:
-        audio_bytes = await audio.read()
-        if audio_bytes:
-            with tempfile.NamedTemporaryFile(suffix=".wav") as tmp:
-                tmp.write(audio_bytes)
-                tmp.flush()
-                spoken_q, detected_lang = await asyncio.to_thread(transcribe, tmp.name)
-            if spoken_q:
-                q_text = spoken_q.strip()
-
-    reply_lang = resolve_reply_language(language, detected_lang)
+    reply_lang = resolve_reply_language(language, None)
     lang_name = LANG_NAME_BY_CODE.get(reply_lang, "English")
 
     system, prompt = _panel_prompt(lang_name, q_text or None)
