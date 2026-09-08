@@ -1312,10 +1312,20 @@ HTML = r"""<!DOCTYPE html>
     <!-- Live viewfinder — line the QR up in the box, then tap Capture. Same
          preview -> deliberate capture flow as the Panel tab (was a blind
          instant grab before). -->
-    <div id="qr-viewfinder" style="display:none;border-radius:14px;overflow:hidden;background:#000;
-      margin-top:10px;aspect-ratio:4/3;max-height:60vh">
+    <div id="qr-viewfinder" style="display:none;position:relative;border-radius:14px;overflow:hidden;
+      background:#000;margin-top:10px;aspect-ratio:4/3;max-height:60vh">
       <video id="qr-video" autoplay playsinline muted
         style="width:100%;height:100%;object-fit:contain;display:block;background:#000"></video>
+      <!-- Live QR-detection reticle (BarcodeDetector where supported). viewBox is
+           set to the video's intrinsic size and preserveAspectRatio matches
+           object-fit:contain, so detected cornerPoints map 1:1 with no manual
+           transform. Unsupported (Linux Chromium kiosk, iOS Safari) -> no
+           overlay, viewfinder behaves exactly as before. -->
+      <svg id="qr-overlay" preserveAspectRatio="xMidYMid meet"
+        style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none">
+        <polygon id="qr-reticle" points="" fill="none" stroke="#3ddc84" stroke-width="3"
+          stroke-linejoin="round" vector-effect="non-scaling-stroke" style="display:none"></polygon>
+      </svg>
     </div>
     <div id="qr-cam-actions" style="display:none;gap:8px;margin-top:8px">
       <button id="qr-snap-btn" class="btn btn-accent" style="flex:1" onclick="captureQr()">📸 Capture</button>
@@ -2216,16 +2226,90 @@ async function startQrCamera() {
   document.getElementById('qr-preview').style.display = 'none';
   document.getElementById('qr-result').style.display = 'none';
   document.getElementById('qr-wifi').style.display = 'none';
-  setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture','ok');
+  setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture','');
+  _qrStartReticle();
 }
 
 function _qrStopStream() {
+  _qrStopReticle();
   if (qrStream) { qrStream.getTracks().forEach(t => t.stop()); qrStream = null; }
   const v = document.getElementById('qr-video');
   if (v) v.srcObject = null;
   document.getElementById('qr-viewfinder').style.display = 'none';
   document.getElementById('qr-cam-actions').style.display = 'none';
   document.getElementById('qr-cam-btn').style.display = 'block';
+}
+
+// ── Live QR-detection reticle ───────────────────────────────────────────
+// Client-side visual aid only: draws a box around a QR the camera currently
+// sees so the person knows they've got a good shot before tapping Capture.
+// It never gates or replaces Capture / POST /qr/check. BarcodeDetector where
+// supported (Android & Windows Chrome, ChromeOS); where it isn't, the loop
+// no-ops and the viewfinder works exactly as before. A jsQR fallback for
+// Linux-Chromium / iOS is a deliberate follow-up, not v1.
+let qrDetector = null;
+let qrDetectTimer = null;
+let _qrLastSeen = null;   // 'good' | 'far' | null — for edge-triggered hint text
+
+async function _qrStartReticle() {
+  if (qrDetectTimer || !('BarcodeDetector' in window)) return;
+  try {
+    const fmts = await BarcodeDetector.getSupportedFormats();
+    if (!fmts.includes('qr_code')) return;
+    qrDetector = qrDetector || new BarcodeDetector({formats:['qr_code']});
+  } catch(e) { return; }
+  if (!qrStream) return;   // user cancelled while we were checking support
+
+  const vid = document.getElementById('qr-video');
+  const overlay = document.getElementById('qr-overlay');
+  const reticle = document.getElementById('qr-reticle');
+  _qrLastSeen = null;
+
+  qrDetectTimer = setInterval(async () => {
+    if (!qrStream || qrScanBusy || vid.readyState < 2 || !vid.videoWidth) return;
+    const vb = `0 0 ${vid.videoWidth} ${vid.videoHeight}`;
+    if (overlay.getAttribute('viewBox') !== vb) overlay.setAttribute('viewBox', vb);
+
+    let codes;
+    try { codes = await qrDetector.detect(vid); }
+    catch(e) { return; }   // transient per-frame decode error — skip this tick
+
+    if (!codes || !codes.length) {
+      reticle.style.display = 'none';
+      if (_qrLastSeen) { _qrLastSeen = null; setResp('qr-resp','📷 Fill the box with the QR code, then tap Capture',''); }
+      return;
+    }
+    const c = codes[0];
+    const bb = c.boundingBox || {x:0,y:0,width:0,height:0};
+    const pts = (c.cornerPoints && c.cornerPoints.length === 4) ? c.cornerPoints : [
+      {x:bb.x, y:bb.y}, {x:bb.x+bb.width, y:bb.y},
+      {x:bb.x+bb.width, y:bb.y+bb.height}, {x:bb.x, y:bb.y+bb.height}
+    ];
+    reticle.setAttribute('points', pts.map(p => `${Math.round(p.x)},${Math.round(p.y)}`).join(' '));
+
+    // Area fraction of the frame — a QR much under ~5% usually won't decode.
+    const w = Math.abs(pts[1].x - pts[0].x) || bb.width;
+    const h = Math.abs(pts[2].y - pts[1].y) || bb.height;
+    const frac = (w * h) / (vid.videoWidth * vid.videoHeight || 1);
+    const state = frac < 0.05 ? 'far' : 'good';
+    reticle.setAttribute('stroke', state === 'good' ? '#3ddc84' : '#ffcc44');
+    reticle.style.display = 'block';
+    if (_qrLastSeen !== state) {
+      _qrLastSeen = state;
+      setResp('qr-resp',
+        state === 'good' ? '✅ QR code in view — tap Capture' : '🔍 QR seen — move closer',
+        state === 'good' ? 'ok' : '');
+    }
+  }, 250);
+}
+
+function _qrStopReticle() {
+  if (qrDetectTimer) { clearInterval(qrDetectTimer); qrDetectTimer = null; }
+  const reticle = document.getElementById('qr-reticle');
+  if (reticle) reticle.style.display = 'none';
+  const overlay = document.getElementById('qr-overlay');
+  if (overlay) overlay.removeAttribute('viewBox');
+  _qrLastSeen = null;
 }
 
 // Back out of the viewfinder without capturing. Also called by switchTab().
