@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Aubie Home</title>
+<style>
+  :root {
+    --bg:      #070b0f;
+    --card:    #111820;
+    --border:  #1e2d3d;
+    --accent:  #00c9ff;
+    --gold:    #ffaa00;
+    --green:   #00e676;
+    --red:     #ff5252;
+    --purple:  #bb86fc;
+    --text:    #e8f0fe;
+    --sub:     #6c8499;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-user-select: none; user-select: none; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: var(--text); }
+
+  /* ══ Idle screen: the big animated face, ported from phone_ui.py ══ */
+  #face-screen {
+    position: fixed; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    background: radial-gradient(circle at center, #10202e 0%, #070b0f 100%);
+    cursor: pointer;
+  }
+  body.bg-beach #face-screen {
+    background: linear-gradient(180deg, #7ec8ff 0%, #bfe4ff 45%, #f4e2b8 55%, #e8cf8e 100%);
+  }
+  body.bg-beach #face-screen::before {
+    content:''; position:absolute; top:60px; right:90px; width:90px; height:90px;
+    border-radius:50%; background:#ffe066; box-shadow:0 0 60px 20px rgba(255,224,102,.6);
+  }
+  body.bg-space #face-screen {
+    background:
+      radial-gradient(2px 2px at 15% 25%, #fff, transparent),
+      radial-gradient(2px 2px at 75% 15%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 40% 70%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 85% 55%, #fff, transparent),
+      radial-gradient(2px 2px at 25% 85%, #fff, transparent),
+      radial-gradient(1.5px 1.5px at 60% 35%, #fff, transparent),
+      linear-gradient(180deg, #050514 0%, #0a0a2a 100%);
+  }
+  .hint { margin-top: 34px; color: var(--sub); font-size: 20px; letter-spacing: .5px; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
+  #greet-banner {
+    display: none; margin-top: 24px; text-align: center; max-width: 640px; padding: 0 20px;
+  }
+  #greet-banner.show { display: block; }
+  #greet-name-lbl { font-size: 30px; font-weight: 800; color: var(--gold); }
+  #greet-msg-lbl { font-size: 16px; color: var(--sub); margin-top: 6px; line-height: 1.4; }
+
+  /* ── Greet ring / animated face (verbatim from phone_ui.py's shared face system) ── */
+  .greet-ring {
+    width:320px; height:320px; border-radius:50%; margin:0 auto;
+    border:3px solid var(--border); background:#050d15;
+    display:flex; align-items:center; justify-content:center;
+    font-size:48px; position:relative; overflow:visible; transition:.3s;
+  }
+  .aubie-face  { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; z-index:2; }
+  .aubie-eyes  { display:flex; gap:34px; }
+  .aubie-eye   { width:30px; height:30px; border-radius:50%; background:var(--eye-color,var(--green)); box-shadow:0 0 10px var(--eye-color,var(--green)); animation:ablink 4.5s infinite; }
+  .greet-ring.recognized { border-color:var(--gold); box-shadow:0 0 0 16px rgba(255,170,0,.15); }
+  .greet-ring.recognized .aubie-eye { background:var(--gold); box-shadow:0 0 10px var(--gold); }
+
+  /* Special celebration when the idle screen recognizes Gabriela specifically */
+  .greet-ring.dancing { animation: face-dance 0.9s ease-in-out 3; }
+  @keyframes face-dance {
+    0%, 100% { transform: rotate(0deg) translateY(0); }
+    20% { transform: rotate(-8deg) translateY(-6px); }
+    40% { transform: rotate(7deg) translateY(0); }
+    60% { transform: rotate(-6deg) translateY(-4px); }
+    80% { transform: rotate(5deg) translateY(0); }
+  }
+  #celebrate-burst { position: absolute; inset: 0; pointer-events: none; overflow: visible; }
+  .burst-piece {
+    position: absolute; top: 50%; left: 50%; font-size: 34px;
+    transform: translate(-50%, -50%);
+    animation: burst-fly 1.6s ease-out forwards;
+  }
+  @keyframes burst-fly {
+    0% { transform: translate(-50%, -50%) translate(0, 0) scale(0.4) rotate(0deg); opacity: 1; }
+    100% { transform: translate(-50%, -50%) translate(var(--dx), var(--dy)) scale(1.3) rotate(var(--rot)); opacity: 0; }
+  }
+  @keyframes ablink { 0%,92%,100%{transform:scaleY(1)} 96%{transform:scaleY(.15)} }
+  .aubie-nose  { width:14px; height:20px; border-radius:50% 50% 45% 45%/60% 60% 40% 40%; background:var(--nose-color,var(--eye-color,var(--green))); opacity:.85; }
+  .aubie-mouth { width:66px; height:9px; border-radius:4px; background:var(--mouth-color,var(--green)); transition:.15s; }
+  .greet-ring.mouth-smile .aubie-mouth { border-radius:0 0 34px 34px; height:26px; width:78px; }
+  .greet-ring.mouth-frown .aubie-mouth { border-radius:34px 34px 0 0; height:26px; width:78px; margin-top:-10px; }
+  .greet-ring.mouth-open  .aubie-mouth { border-radius:50%; width:28px; height:28px; }
+  .greet-ring.eyes-closed .aubie-eye { height:6px; border-radius:3px; animation:none; }
+
+  .greet-ring.theme-huma { background:linear-gradient(125deg,#ff7a1a 0 48%, #123a8f 52% 100%); }
+  .greet-ring.theme-huma .aubie-eye { background:#fff6d8; box-shadow:0 0 10px #fff6d8; }
+  .greet-ring.theme-huma .aubie-mouth, .greet-ring.theme-huma .aubie-nose { background:#fff6d8; }
+  .horn {
+    display:none; position:absolute; top:50%; left:50%; width:10px; height:40px;
+    margin:-200px 0 0 -5px;
+    background:linear-gradient(to top,#c9720a,#ffe28a); border-radius:50% 50% 3px 3px;
+    transform-origin:50% 200px; z-index:1;
+  }
+  .greet-ring.theme-huma .horn { display:block; }
+  .huma-mark {
+    display:none; position:absolute; width:16px; height:16px; border-radius:50%;
+    background:#ffe28a; box-shadow:0 0 8px #ffb300; z-index:1;
+  }
+  .greet-ring.theme-huma .huma-mark { display:block; }
+  .huma-nose.north { top:-6px; left:50%; margin-left:-8px; }
+  .huma-nose.south { bottom:-6px; left:50%; margin-left:-8px; }
+  .huma-ear.east   { top:50%; right:-6px; margin-top:-8px; }
+  .huma-ear.west   { top:50%; left:-6px; margin-top:-8px; }
+
+  .acc-brow-l, .acc-brow-r, .acc-glass-l, .acc-glass-r, .acc-glass-bridge,
+  .acc-ear-l, .acc-ear-r, .acc-antenna-l, .acc-antenna-r,
+  .acc-heart, .acc-zzz, .acc-tear, .acc-sparkle { display:none; position:absolute; z-index:3; }
+  .greet-ring.acc-brows .acc-brow-l, .greet-ring.acc-brows .acc-brow-r { display:block; }
+  .greet-ring.acc-glasses .acc-glass-l, .greet-ring.acc-glasses .acc-glass-r, .greet-ring.acc-glasses .acc-glass-bridge { display:block; }
+  .greet-ring.acc-ears .acc-ear-l, .greet-ring.acc-ears .acc-ear-r { display:block; }
+  .greet-ring.acc-antennae .acc-antenna-l, .greet-ring.acc-antennae .acc-antenna-r { display:block; }
+  .greet-ring.acc-heart .acc-heart { display:block; }
+  .greet-ring.acc-zzz .acc-zzz { display:block; }
+  .greet-ring.acc-tear .acc-tear { display:block; }
+  .greet-ring.acc-sparkles .acc-sparkle { display:block; }
+
+  .acc-brow-l { width:38px; height:8px; border-radius:4px; background:#3a2a1a; top:36%; left:26%; transform:rotate(-10deg); }
+  .acc-brow-r { width:38px; height:8px; border-radius:4px; background:#3a2a1a; top:36%; right:26%; transform:rotate(10deg); }
+  .greet-ring.preset-angry .acc-brow-l { transform:rotate(18deg); top:38%; }
+  .greet-ring.preset-angry .acc-brow-r { transform:rotate(-18deg); top:38%; }
+  .greet-ring.preset-angry .acc-brow-l, .greet-ring.preset-angry .acc-brow-r { background:#ff4444; }
+
+  .acc-glass-l, .acc-glass-r { width:56px; height:56px; border-radius:50%; top:32%; border:5px solid var(--glass-color,#dfe7ee); background:transparent; }
+  .acc-glass-l { left:16%; } .acc-glass-r { right:16%; }
+  .acc-glass-bridge { width:24px; height:5px; background:var(--glass-color,#dfe7ee); top:calc(32% + 25px); left:50%; margin-left:-12px; }
+  .greet-ring.preset-cool .acc-glass-l, .greet-ring.preset-cool .acc-glass-r { background:#111; }
+  .greet-ring.preset-cool .acc-glass-bridge { background:#111; }
+
+  .acc-ear-l, .acc-ear-r { width:80px; height:130px; background:#6b4a24; border-radius:50% 50% 50% 50%/60% 60% 40% 40%; top:-40px; z-index:0; }
+  .acc-ear-l { left:-24px; transform:rotate(-18deg); }
+  .acc-ear-r { right:-24px; transform:rotate(18deg); }
+
+  .acc-antenna-l, .acc-antenna-r { width:5px; height:50px; background:#8aff00; top:-42px; border-radius:3px; }
+  .acc-antenna-l { left:38%; transform:rotate(-22deg); transform-origin:bottom; }
+  .acc-antenna-r { right:38%; transform:rotate(22deg); transform-origin:bottom; }
+  .acc-antenna-l::after, .acc-antenna-r::after { content:''; position:absolute; top:-8px; left:-3px; width:11px; height:11px; border-radius:50%; background:#8aff00; box-shadow:0 0 6px #8aff00; }
+
+  .acc-heart { top:-38px; left:50%; margin-left:-16px; font-size:32px; }
+  .acc-heart::before { content:'❤️'; }
+  .acc-zzz { top:6%; right:8%; font-size:24px; color:#cdd8e6; font-weight:800; }
+  .acc-zzz::before { content:'Z z z'; }
+  .acc-tear { top:52%; left:32%; width:12px; height:16px; border-radius:50% 50% 50% 0; background:#5599ff; transform:rotate(45deg); }
+  .acc-sparkle { font-size:22px; color:#ffee00; }
+  .acc-sparkle:nth-of-type(1) { top:2%; left:10%; }
+  .acc-sparkle:nth-of-type(2) { top:-6%; right:16%; }
+  .acc-sparkle:nth-of-type(3) { bottom:4%; left:4%; }
+  .acc-sparkle::before { content:'✦'; }
+
+  /* ══ Menu (tap face to reveal) ══ */
+  #menu-screen {
+    position: fixed; inset: 0; display: none;
+    flex-direction: column; align-items: center; justify-content: center; gap: 26px;
+    background: var(--bg);
+  }
+  .app-row { display: flex; gap: 24px; }
+  .app-btn {
+    width: 220px; height: 220px; border-radius: 30px; border: none;
+    background: linear-gradient(160deg, #3aa0ff, #1c6fd6);
+    color: white; font-size: 30px; font-weight: 600;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    box-shadow: 0 8px 0 #12508f;
+  }
+  .app-btn.alt { background: linear-gradient(160deg, #bb86fc, #7c3fd6); box-shadow: 0 8px 0 #4c1f8f; }
+  .app-btn .emoji { font-size: 70px; }
+  .app-btn:active { transform: translateY(6px); box-shadow: 0 2px 0 #12508f; }
+  .app-btn.alt:active { box-shadow: 0 2px 0 #4c1f8f; }
+
+  #close-menu {
+    position: absolute; top: 20px; right: 20px;
+    width: 56px; height: 56px; border-radius: 50%; border: none;
+    background: #1c2f45; color: #cfe8ff; font-size: 26px;
+  }
+
+  /* ══ Face picker modal (ported from phone_ui.py) ══ */
+  #face-picker-modal {
+    display:none; position:fixed; inset:0; z-index:700; background:rgba(0,0,0,.6);
+    align-items:center; justify-content:center; padding:20px;
+  }
+  #face-picker-modal.show { display:flex; }
+  #face-picker-box {
+    background:#0d1520; border:1px solid var(--border); border-radius:18px; padding:20px;
+    max-width:420px; width:100%; max-height:80vh; overflow-y:auto;
+  }
+  #face-preset-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .preset-tile {
+    display:flex; flex-direction:column; align-items:center; gap:4px; padding:8px 2px;
+    border-radius:12px; border:2px solid var(--border); background:#080e15; cursor:pointer;
+  }
+  .preset-tile.active { border-color:var(--accent); box-shadow:0 0 0 3px rgba(0,201,255,.2); }
+  .preset-tile .p-emoji { font-size:26px; }
+  .preset-tile .p-label { font-size:9px; color:var(--sub); text-align:center; line-height:1.2; }
+  .preset-tile.draw-tile { border-color: var(--purple); background: linear-gradient(160deg,#2a1a3f,#180d24); }
+  .btn { border:none; border-radius:12px; padding:12px; font-size:14px; font-weight:700; color:white; background:var(--accent); }
+
+  /* Custom drawn face: an image fills the ring, the CSS rig hides */
+  .greet-ring.preset-custom .aubie-face { display: none; }
+  .greet-ring.preset-custom { background-size: cover; background-position: center; }
+
+  /* Independent accessories - work on top of ANY preset, not tied to a preset's recipe */
+  .indep-glasses-l, .indep-glasses-r, .indep-glasses-bridge, .indep-hat-top, .indep-hat-brim {
+    display: none; position: absolute; z-index: 5;
+  }
+  .greet-ring.wearing-glasses .indep-glasses-l,
+  .greet-ring.wearing-glasses .indep-glasses-r,
+  .greet-ring.wearing-glasses .indep-glasses-bridge { display: block; }
+  .indep-glasses-l, .indep-glasses-r { width:56px; height:56px; border-radius:50%; top:32%; border:5px solid #dfe7ee; background:rgba(255,255,255,.08); }
+  .indep-glasses-l { left:16%; } .indep-glasses-r { right:16%; }
+  .indep-glasses-bridge { width:24px; height:5px; background:#dfe7ee; top:calc(32% + 25px); left:50%; margin-left:-12px; }
+
+  .greet-ring.wearing-hat .indep-hat-top,
+  .greet-ring.wearing-hat .indep-hat-brim { display: block; }
+  .indep-hat-brim { width:230px; height:24px; background:#e8c987; border-radius:50%; top:-30px; left:50%; margin-left:-115px; box-shadow:0 3px 0 #c9a860; }
+  .indep-hat-top { width:130px; height:74px; background:#f0d9a0; border-radius:50% 50% 0 0/70% 70% 0 0; top:-82px; left:50%; margin-left:-65px; border-bottom:6px solid #d9b96a; }
+
+  #picker-section-label { font-size:11px; color:var(--sub); margin:14px 0 8px; text-transform:uppercase; letter-spacing:.5px; }
+  #acc-row, #bg-row { display:flex; gap:10px; }
+  .toggle-tile, .bg-tile {
+    flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; padding:10px 2px;
+    border-radius:12px; border:2px solid var(--border); background:#080e15; cursor:pointer;
+  }
+  .toggle-tile.active, .bg-tile.active { border-color: var(--accent); box-shadow:0 0 0 3px rgba(0,201,255,.2); }
+  .toggle-tile .t-emoji, .bg-tile .t-emoji { font-size:24px; }
+  .toggle-tile .t-label, .bg-tile .t-label { font-size:9px; color:var(--sub); }
+
+  /* ══ Draw-your-own-face screen ══ */
+  #draw-screen {
+    display:none; position:fixed; inset:0; z-index:800; background:var(--bg);
+    flex-direction:column; align-items:center; justify-content:center; gap:14px;
+  }
+  #draw-screen.show { display:flex; }
+  #draw-canvas {
+    background:#050d15; border-radius:50%; border:3px solid var(--border);
+    touch-action:none; box-shadow:0 0 0 8px #0d1520;
+  }
+  #draw-toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:center; max-width:340px; }
+  .swatch { width:38px; height:38px; border-radius:50%; border:3px solid transparent; cursor:pointer; }
+  .swatch.active { border-color:#fff; }
+  .draw-tool-btn { width:44px; height:44px; border-radius:50%; border:none; background:#1c2f45; color:var(--text); font-size:18px; }
+  #draw-actions { display:flex; gap:10px; }
+
+</style>
+</head>
+<body>
+
+  <div id="face-screen" onclick="showMenu()">
+    <div class="greet-ring" id="greet-ring">
+      <div class="aubie-face" id="aubie-face">
+        <div class="aubie-eyes">
+          <div class="aubie-eye"></div>
+          <div class="aubie-eye"></div>
+        </div>
+        <div class="aubie-nose"></div>
+        <div class="aubie-mouth"></div>
+      </div>
+      <div id="celebrate-burst"></div>
+      <div class="indep-glasses-l"></div>
+      <div class="indep-glasses-r"></div>
+      <div class="indep-glasses-bridge"></div>
+      <div class="indep-hat-brim"></div>
+      <div class="indep-hat-top"></div>
+    </div>
+    <div class="hint" id="idle-hint">Tap me!</div>
+    <div id="greet-banner">
+      <div id="greet-name-lbl"></div>
+      <div id="greet-msg-lbl"></div>
+    </div>
+  </div>
+
+  <div id="menu-screen">
+    <button id="close-menu" onclick="showFace()">✕</button>
+    <div class="app-row">
+      <button class="app-btn" onclick="showTutor()">
+        <span class="emoji">🎓</span>
+        Tutor
+      </button>
+      <button class="app-btn" style="background:linear-gradient(160deg,#ffb347,#e07a1f);box-shadow:0 8px 0 #a35513" onclick="showClass()">
+        <span class="emoji">📚</span>
+        Class
+      </button>
+      <button class="app-btn alt" onclick="openFacePicker()">
+        <span class="emoji">🎨</span>
+        My Face
+      </button>
+    </div>
+  </div>
+
+  <div id="face-picker-modal">
+    <div id="face-picker-box">
+      <div style="font-weight:800;font-size:16px;margin-bottom:12px;color:var(--text)">🎨 Choose Your Face</div>
+      <div id="face-preset-grid"></div>
+
+      <div id="picker-section-label">Accessories</div>
+      <div id="acc-row">
+        <div class="toggle-tile" id="tile-glasses" onclick="toggleAcc('glasses')">
+          <div class="t-emoji">👓</div><div class="t-label">Glasses</div>
+        </div>
+        <div class="toggle-tile" id="tile-hat" onclick="toggleAcc('hat')">
+          <div class="t-emoji">🧢</div><div class="t-label">Sun Hat</div>
+        </div>
+      </div>
+
+      <div id="picker-section-label">Background</div>
+      <div id="bg-row">
+        <div class="bg-tile" data-bg="classic" onclick="pickBg('classic')"><div class="t-emoji">🌌</div><div class="t-label">Classic</div></div>
+        <div class="bg-tile" data-bg="beach" onclick="pickBg('beach')"><div class="t-emoji">🏖️</div><div class="t-label">Beach</div></div>
+        <div class="bg-tile" data-bg="space" onclick="pickBg('space')"><div class="t-emoji">🚀</div><div class="t-label">Space</div></div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:14px">
+        <button class="btn" onclick="closeFacePicker(false)" style="flex:1;background:#0d1520;border:1px solid var(--border);color:var(--sub)">✕ Cancel</button>
+        <button class="btn" onclick="closeFacePicker(true)" style="flex:1">💾 Save</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="draw-screen">
+    <div style="font-weight:800;font-size:16px;color:var(--text)">🖌️ Draw Your Face</div>
+    <canvas id="draw-canvas" width="320" height="320"></canvas>
+    <div id="draw-toolbar">
+      <button class="swatch active" style="background:#00e676" data-color="#00e676" onclick="pickColor(this)"></button>
+      <button class="swatch" style="background:#ff5252" data-color="#ff5252" onclick="pickColor(this)"></button>
+      <button class="swatch" style="background:#ffaa00" data-color="#ffaa00" onclick="pickColor(this)"></button>
+      <button class="swatch" style="background:#00c9ff" data-color="#00c9ff" onclick="pickColor(this)"></button>
+      <button class="swatch" style="background:#bb86fc" data-color="#bb86fc" onclick="pickColor(this)"></button>
+      <button class="swatch" style="background:#ffffff" data-color="#ffffff" onclick="pickColor(this)"></button>
+      <button class="draw-tool-btn" onclick="undoStroke()">↩️</button>
+      <button class="draw-tool-btn" onclick="clearCanvas()">🗑️</button>
+    </div>
+    <div id="draw-actions">
+      <button class="btn" onclick="cancelDraw()" style="background:#0d1520;border:1px solid var(--border);color:var(--sub)">✕ Cancel</button>
+      <button class="btn" onclick="saveDraw()">💾 Save & Use</button>
+    </div>
+  </div>
+
+<script>
+  const TUTOR_URL = "http://100.105.81.27:8800/remote";
+
+  // ── Face system, ported from phone_ui.py's shared aubie-face component ──
+  (function setupFaceDecor() {
+    const face = document.getElementById('aubie-face');
+    for (let i = 0; i < 12; i++) {
+      const horn = document.createElement('div');
+      horn.className = 'horn';
+      horn.style.transform = `rotate(${i * 30}deg)`;
+      face.appendChild(horn);
+    }
+    [['huma-nose', 'north'], ['huma-nose', 'south'], ['huma-ear', 'east'], ['huma-ear', 'west']].forEach(([cls, dir]) => {
+      const m = document.createElement('div');
+      m.className = `huma-mark ${cls} ${dir}`;
+      face.appendChild(m);
+    });
+    ['acc-brow-l', 'acc-brow-r', 'acc-glass-l', 'acc-glass-r', 'acc-glass-bridge',
+     'acc-ear-l', 'acc-ear-r', 'acc-antenna-l', 'acc-antenna-r', 'acc-heart', 'acc-zzz', 'acc-tear'].forEach(cls => {
+      const el = document.createElement('div'); el.className = cls; face.appendChild(el);
+    });
+    for (let i = 0; i < 3; i++) { const s = document.createElement('div'); s.className = 'acc-sparkle'; face.appendChild(s); }
+  })();
+
+  const FACE_PRESETS = {
+    default:   {label:'Classic',    emoji:'🙂'},
+    huma:      {label:'Aya Huma',   emoji:'🌞', special:'huma'},
+    puppy:     {label:'Puppy',      emoji:'🐶', eye:'#3a2a1a', mouth:'#3a2a1a', nose:'#1a1008', bg:'#e8c39e', mouthShape:'smile', acc:['ears']},
+    oldman:    {label:'Old Man',    emoji:'👴', eye:'#5c6b78', mouth:'#5c6b78', nose:'#8a7a6a', bg:'#cfd6dc', mouthShape:'flat',  acc:['brows']},
+    hippy:     {label:'Hippy',      emoji:'✌️', eye:'#8a3ffc', mouth:'#ff2fa1', nose:'#ffcc00', bg:'linear-gradient(90deg,#ff5f6d,#ffc371,#47cf73,#00c2ff,#8a3ffc)', mouthShape:'smile'},
+    scientist: {label:'Scientist',  emoji:'🔬', eye:'#00c9ff', mouth:'#213040', nose:'#8a97a6', bg:'#eef3f7', mouthShape:'flat',  acc:['glasses']},
+    happy:     {label:'Happy',      emoji:'😊', eye:'#ffb300', mouth:'#ffb300', nose:'#ffb300', bg:'#3a2a00', mouthShape:'smile'},
+    surprised: {label:'Surprised',  emoji:'😲', eye:'#ffffff', mouth:'#ffffff', nose:'#ffffff', bg:'#1a1030', mouthShape:'open'},
+    angry:     {label:'Angry',      emoji:'😠', eye:'#ff4444', mouth:'#ff4444', nose:'#ff4444', bg:'#2a0000', mouthShape:'frown', acc:['brows']},
+    cool:      {label:'Cool',       emoji:'😎', eye:'#00e5ff', mouth:'#00e5ff', nose:'#00e5ff', bg:'#001820', mouthShape:'smile', acc:['glasses']},
+    love:      {label:'Love',       emoji:'😍', eye:'#ff5c8a', mouth:'#ff5c8a', nose:'#ff5c8a', bg:'#3a0018', mouthShape:'smile', acc:['heart']},
+    sleep:     {label:'Sleep',      emoji:'😴', eye:'#7a8ba0', mouth:'#7a8ba0', nose:'#7a8ba0', bg:'#0a1220', mouthShape:'flat',  acc:['zzz'], eyesClosed:true},
+    sad:       {label:'Sad',        emoji:'😢', eye:'#5599ff', mouth:'#5599ff', nose:'#5599ff', bg:'#0a1830', mouthShape:'frown', acc:['tear']},
+    crazy:     {label:'Crazy',      emoji:'🤪', eye:'#c8ff00', mouth:'#ff00c8', nose:'#00ffea', bg:'#1a0a2a', mouthShape:'open'},
+    bug:       {label:'Bug',        emoji:'🐛', eye:'#8aff00', mouth:'#5a9c00', nose:'#5a9c00', bg:'#0a1a00', mouthShape:'flat',  acc:['antennae']},
+    mind:      {label:'Mind Blown', emoji:'🤯', eye:'#ffee00', mouth:'#ffee00', nose:'#ffee00', bg:'#1a1a00', mouthShape:'open', acc:['sparkles']},
+  };
+  const MOUTH_SHAPES = ['smile', 'frown', 'open'];
+  const ACC_FLAGS = ['brows', 'glasses', 'ears', 'antennae', 'heart', 'zzz', 'tear', 'sparkles'];
+  let savedFacePreset = localStorage.getItem('aubie_face_preset') || 'default';
+  let previewedFacePreset = savedFacePreset;
+
+  // ── Independent accessories + background (work on top of any face preset) ──
+  let savedGlasses = localStorage.getItem('aubie_wear_glasses') === '1';
+  let savedHat = localStorage.getItem('aubie_wear_hat') === '1';
+  let savedBg = localStorage.getItem('aubie_bg_theme') || 'classic';
+  let previewedGlasses = savedGlasses;
+  let previewedHat = savedHat;
+  let previewedBg = savedBg;
+
+  function applyAccessories(glasses, hat) {
+    const ring = document.getElementById('greet-ring');
+    ring.classList.toggle('wearing-glasses', !!glasses);
+    ring.classList.toggle('wearing-hat', !!hat);
+  }
+  function applyBg(theme) {
+    document.body.classList.remove('bg-beach', 'bg-space');
+    if (theme === 'beach' || theme === 'space') document.body.classList.add('bg-' + theme);
+  }
+  function refreshAccBgTiles() {
+    document.getElementById('tile-glasses').classList.toggle('active', previewedGlasses);
+    document.getElementById('tile-hat').classList.toggle('active', previewedHat);
+    document.querySelectorAll('.bg-tile').forEach(t => t.classList.toggle('active', t.dataset.bg === previewedBg));
+  }
+  function toggleAcc(kind) {
+    if (kind === 'glasses') previewedGlasses = !previewedGlasses;
+    if (kind === 'hat') previewedHat = !previewedHat;
+    applyAccessories(previewedGlasses, previewedHat);
+    refreshAccBgTiles();
+  }
+  function pickBg(theme) {
+    previewedBg = theme;
+    applyBg(theme);
+    refreshAccBgTiles();
+  }
+  applyAccessories(savedGlasses, savedHat);
+  applyBg(savedBg);
+
+  function applyFacePreset(key) {
+    const ring = document.getElementById('greet-ring');
+
+    if (key === 'custom') {
+      ring.classList.remove('theme-huma', 'eyes-closed');
+      MOUTH_SHAPES.forEach(s => ring.classList.remove('mouth-' + s));
+      ACC_FLAGS.forEach(a => ring.classList.remove('acc-' + a));
+      Object.keys(FACE_PRESETS).forEach(k => ring.classList.remove('preset-' + k));
+      ring.classList.add('preset-custom');
+      const drawn = localStorage.getItem('aubie_custom_face_img');
+      ring.style.background = drawn ? `url(${drawn})` : '';
+      return;
+    }
+
+    const p = FACE_PRESETS[key] || FACE_PRESETS.default;
+    ring.classList.remove('theme-huma', 'eyes-closed');
+    MOUTH_SHAPES.forEach(s => ring.classList.remove('mouth-' + s));
+    ACC_FLAGS.forEach(a => ring.classList.remove('acc-' + a));
+    Object.keys(FACE_PRESETS).forEach(k => ring.classList.remove('preset-' + k));
+    ring.classList.remove('preset-custom');
+    ring.classList.add('preset-' + key);
+    ring.style.background = '';
+
+    if (p.special === 'huma') {
+      ring.classList.add('theme-huma');
+    } else {
+      const eyeColor = p.eye || localStorage.getItem('aubie_eye_color') || '';
+      const mouthColor = p.mouth || localStorage.getItem('aubie_mouth_color') || '';
+      const noseColor = p.nose || mouthColor || eyeColor || '';
+      if (eyeColor) ring.style.setProperty('--eye-color', eyeColor); else ring.style.removeProperty('--eye-color');
+      if (mouthColor) ring.style.setProperty('--mouth-color', mouthColor); else ring.style.removeProperty('--mouth-color');
+      if (noseColor) ring.style.setProperty('--nose-color', noseColor); else ring.style.removeProperty('--nose-color');
+      ring.style.background = p.bg || '';
+      ring.classList.add('mouth-' + (p.mouthShape || 'flat'));
+      if (p.eyesClosed) ring.classList.add('eyes-closed');
+      (p.acc || []).forEach(a => ring.classList.add('acc-' + a));
+    }
+  }
+  applyFacePreset(savedFacePreset);
+
+  function renderFacePresetGrid() {
+    const grid = document.getElementById('face-preset-grid');
+    const hasCustom = !!localStorage.getItem('aubie_custom_face_img');
+    const drawTile = `
+      <div class="preset-tile draw-tile" onclick="openDrawScreen()">
+        <div class="p-emoji">🖌️</div>
+        <div class="p-label">${hasCustom ? 'Redraw' : 'Draw One'}</div>
+      </div>`;
+    const customTile = hasCustom ? `
+      <div class="preset-tile${previewedFacePreset === 'custom' ? ' active' : ''}" data-key="custom" onclick="previewFacePreset('custom')">
+        <div class="p-emoji">🖼️</div>
+        <div class="p-label">My Drawing</div>
+      </div>` : '';
+    grid.innerHTML = drawTile + customTile + Object.entries(FACE_PRESETS).map(([key, p]) => `
+      <div class="preset-tile${key === previewedFacePreset ? ' active' : ''}" data-key="${key}" onclick="previewFacePreset('${key}')">
+        <div class="p-emoji">${p.emoji}</div>
+        <div class="p-label">${p.label}</div>
+      </div>`).join('');
+  }
+  function previewFacePreset(key) {
+    previewedFacePreset = key;
+    applyFacePreset(key);
+    document.querySelectorAll('.preset-tile').forEach(t => t.classList.toggle('active', t.dataset.key === key));
+  }
+  function openFacePicker() {
+    previewedFacePreset = savedFacePreset;
+    previewedGlasses = savedGlasses;
+    previewedHat = savedHat;
+    previewedBg = savedBg;
+    renderFacePresetGrid();
+    applyFacePreset(previewedFacePreset);
+    applyAccessories(previewedGlasses, previewedHat);
+    applyBg(previewedBg);
+    refreshAccBgTiles();
+    document.getElementById('face-picker-modal').classList.add('show');
+  }
+  function closeFacePicker(save) {
+    if (save) {
+      savedFacePreset = previewedFacePreset;
+      savedGlasses = previewedGlasses;
+      savedHat = previewedHat;
+      savedBg = previewedBg;
+      localStorage.setItem('aubie_face_preset', savedFacePreset);
+      localStorage.setItem('aubie_wear_glasses', savedGlasses ? '1' : '0');
+      localStorage.setItem('aubie_wear_hat', savedHat ? '1' : '0');
+      localStorage.setItem('aubie_bg_theme', savedBg);
+    } else {
+      applyFacePreset(savedFacePreset);
+      applyAccessories(savedGlasses, savedHat);
+      applyBg(savedBg);
+    }
+    document.getElementById('face-picker-modal').classList.remove('show');
+  }
+
+  // ── Draw-your-own-face ──
+  const drawCanvas = document.getElementById('draw-canvas');
+  const drawCtx = drawCanvas.getContext('2d');
+  let drawColor = '#00e676';
+  let drawing = false;
+  let strokes = []; // each stroke: array of {x,y}; redraw all on undo
+  let currentStroke = null;
+
+  function canvasPos(e) {
+    const r = drawCanvas.getBoundingClientRect();
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+  function redrawStrokes() {
+    drawCtx.clearRect(0, 0, drawCanvas.width, drawCanvas.height);
+    strokes.forEach(stroke => {
+      if (stroke.points.length < 2) return;
+      drawCtx.strokeStyle = stroke.color;
+      drawCtx.lineWidth = 7;
+      drawCtx.lineCap = 'round';
+      drawCtx.lineJoin = 'round';
+      drawCtx.beginPath();
+      drawCtx.moveTo(stroke.points[0].x, stroke.points[0].y);
+      stroke.points.slice(1).forEach(pt => drawCtx.lineTo(pt.x, pt.y));
+      drawCtx.stroke();
+    });
+  }
+  drawCanvas.addEventListener('pointerdown', e => {
+    drawing = true;
+    currentStroke = { color: drawColor, points: [canvasPos(e)] };
+    strokes.push(currentStroke);
+  });
+  drawCanvas.addEventListener('pointermove', e => {
+    if (!drawing) return;
+    currentStroke.points.push(canvasPos(e));
+    redrawStrokes();
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(ev =>
+    drawCanvas.addEventListener(ev, () => { drawing = false; currentStroke = null; }));
+
+  function pickColor(btn) {
+    drawColor = btn.dataset.color;
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  function undoStroke() {
+    strokes.pop();
+    redrawStrokes();
+  }
+  function clearCanvas() {
+    strokes = [];
+    redrawStrokes();
+  }
+  function openDrawScreen() {
+    document.getElementById('face-picker-modal').classList.remove('show');
+    clearCanvas();
+    document.getElementById('draw-screen').classList.add('show');
+  }
+  function cancelDraw() {
+    document.getElementById('draw-screen').classList.remove('show');
+    document.getElementById('face-picker-modal').classList.add('show');
+  }
+  function saveDraw() {
+    const dataUrl = drawCanvas.toDataURL('image/png');
+    localStorage.setItem('aubie_custom_face_img', dataUrl);
+    savedFacePreset = 'custom';
+    previewedFacePreset = 'custom';
+    localStorage.setItem('aubie_face_preset', 'custom');
+    applyFacePreset('custom');
+    document.getElementById('draw-screen').classList.remove('show');
+    document.getElementById('face-picker-modal').classList.remove('show');
+  }
+
+  // ── Idle greeting: poll the status file aubie_listen.py's background
+  // idle-scan thread writes (same directory as this page), no camera access
+  // from the browser itself. ──
+  const GREET_STATUS_URL = 'greet_status.json';
+  const GREET_STALE_AFTER_S = 40; // idle-scan runs every ~12s; older than this = camera/rig unreachable or nobody there anymore
+  let lastGreetedName = null;
+
+  async function pollGreetStatus() {
+    // Only matters on the idle face screen - skip entirely elsewhere so a
+    // background poll never fights with the tutor iframe or draw screen.
+    if (document.getElementById('face-screen').style.display === 'none') return;
+    try {
+      const resp = await fetch(GREET_STATUS_URL + '?t=' + Date.now(), {cache: 'no-store'});
+      if (!resp.ok) return;
+      const status = await resp.json();
+      const fresh = status.timestamp && (Date.now() / 1000 - status.timestamp) < GREET_STALE_AFTER_S;
+      const ring = document.getElementById('greet-ring');
+      const banner = document.getElementById('greet-banner');
+      const hint = document.getElementById('idle-hint');
+      if (fresh && status.name) {
+        ring.classList.add('recognized');
+        banner.classList.add('show');
+        hint.style.display = 'none';
+        document.getElementById('greet-name-lbl').textContent = 'Hi, ' + status.name + '!';
+        document.getElementById('greet-msg-lbl').textContent = status.greeting || '';
+        // Fire the celebration once per arrival (not every 4s poll while she's
+        // still standing there) - only when the recognized name changes.
+        if (status.name !== lastGreetedName) {
+          lastGreetedName = status.name;
+          if (status.name.toLowerCase() === 'gabriela') celebrateGabriela();
+        }
+      } else {
+        ring.classList.remove('recognized');
+        banner.classList.remove('show');
+        hint.style.display = '';
+        lastGreetedName = null; // so walking away and back retriggers the celebration
+      }
+    } catch (e) {
+      // rig/idle-scan not producing status yet - fail silently, idle screen just stays neutral
+    }
+  }
+  setInterval(pollGreetStatus, 4000);
+  pollGreetStatus();
+
+  // Special "just for Gabriela" celebration: face dances + a burst of
+  // flowers/hearts/sparkles, repeated a few times over a few seconds so
+  // it's not a blink-and-you-miss-it flash.
+  const CELEBRATE_EMOJI = ['🌸', '💐', '💖', '✨', '🌺', '🎉'];
+  function spawnBurst() {
+    const container = document.getElementById('celebrate-burst');
+    for (let i = 0; i < 14; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'burst-piece';
+      piece.textContent = CELEBRATE_EMOJI[Math.floor(Math.random() * CELEBRATE_EMOJI.length)];
+      const angle = Math.random() * Math.PI * 2;
+      const dist = 140 + Math.random() * 100;
+      piece.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+      piece.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+      piece.style.setProperty('--rot', (Math.random() * 360 - 180) + 'deg');
+      piece.style.animationDelay = (Math.random() * 0.15) + 's';
+      container.appendChild(piece);
+      setTimeout(() => piece.remove(), 2000);
+    }
+  }
+  function celebrateGabriela() {
+    const ring = document.getElementById('greet-ring');
+    let wave = 0;
+    const runWave = () => {
+      ring.classList.remove('dancing');
+      void ring.offsetWidth; // restart the CSS animation each wave
+      ring.classList.add('dancing');
+      spawnBurst();
+      wave++;
+      if (wave < 3) setTimeout(runWave, 1600);
+      else setTimeout(() => ring.classList.remove('dancing'), 1600);
+    };
+    runWave();
+  }
+
+  // ── Screen navigation ──
+  function showFace() {
+    document.getElementById('face-screen').style.display = 'flex';
+    document.getElementById('menu-screen').style.display = 'none';
+    applyFacePreset(savedFacePreset);
+    applyAccessories(savedGlasses, savedHat);
+    applyBg(savedBg);
+  }
+  function showMenu() {
+    document.getElementById('face-screen').style.display = 'none';
+    const menu = document.getElementById('menu-screen');
+    menu.style.display = 'flex';
+    // Guard against the same touch that revealed the menu also registering as
+    // a click on whatever button ends up under your finger (a common
+    // touchscreen "ghost click" - the menu appearing changes what's under the
+    // same coordinates mid-gesture). Ignore taps on the menu for a beat.
+    menu.style.pointerEvents = 'none';
+    setTimeout(() => { menu.style.pointerEvents = ''; }, 400);
+  }
+  function showTutor() {
+    // Full top-level navigation, not an iframe - an iframe's secure-context
+    // status depends on this page's own file:// origin too, which breaks
+    // camera/mic access on the embedded page even though it works fine
+    // loaded directly. phone_ui.py has its own small "back to kiosk home"
+    // button (only visible when loaded on this device) to return here.
+    window.location.href = TUTOR_URL;
+  }
+  function showClass() {
+    // phone_ui.py checks this query param on load and auto-starts the
+    // lesson flow instead of requiring a kid to type "let's go to class".
+    window.location.href = TUTOR_URL + '?kiosk_action=start-class';
+  }
+</script>
+
+</body>
+</html>
