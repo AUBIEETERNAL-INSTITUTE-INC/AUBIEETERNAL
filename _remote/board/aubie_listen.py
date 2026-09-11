@@ -418,7 +418,14 @@ def send_photo_thumbnail(image_path):
         print(f"[photo] sent {len(chunks)}-chunk thumbnail ({PHOTO_THUMB_W}x{PHOTO_THUMB_H})")
     except Exception as e:
         print(f"[photo] thumbnail send failed: {e}")
-RECORD_SECONDS = 5
+# Follow-up turns already avoid re-triggering the wake word (converse_loop
+# below re-opens the mic automatically after each reply) - but 5s gave the
+# person almost no beat to start talking before arecord's fixed window
+# closed, which showed up as "no response heard" (listen_and_converse
+# returning False) dropping straight back to requiring "hey aubie" again for
+# what should have been a normal conversational pause. Widened for more
+# grace; still a fixed window, not true VAD-based silence detection.
+RECORD_SECONDS = 8
 MAX_CONVERSE_TURNS = 3
 def listen_and_converse(speakers_hint="", objects_hint=""):
     """Record one follow-up response, send it (with room-context hints from the
