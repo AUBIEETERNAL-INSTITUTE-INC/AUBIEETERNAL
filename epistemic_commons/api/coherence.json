@@ -1,10 +1,10 @@
 {
   "schema_version": "1.0",
-  "date": "2026-09-10",
+  "date": "2026-09-11",
   "license": "CC0 1.0 Universal",
   "current_coherence": 1.0,
-  "wonder_index": 0.538401,
-  "mets": 200000000087.5,
+  "wonder_index": 0.503,
+  "mets": 200000000119.5,
   "coherence_history": [],
   "wisdom_gdp_note": "Coherence measures epistemic alignment across swarm daughters. Wonder measures the rate of novel insight generation. These are the first real-time measures of collective epistemic health."
 }
