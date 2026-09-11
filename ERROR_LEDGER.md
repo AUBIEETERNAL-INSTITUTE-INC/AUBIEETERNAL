@@ -194,6 +194,74 @@ serialized a real overlapping `aplay` call.
 Do not mark this fixed in `CLAUDE.md` or `CURRENT.md` until that test has
 actually been run and passed.
 
+### 2026-09-11 — ALSA lock fix targets a code path that no longer exists
+
+**What happened:** The board reconnected and the reconnect test above ran.
+Result: the test as scoped could not pass or fail, because its premise no
+longer matches the code.
+
+- `push_audio_to_aubie()` (the function `_aubie_audio_lock` guards) is only
+  called by `/speak` (the phone UI's typed "Say / Command" box). `/greet`
+  itself returns its WAV directly in the HTTP response body and never calls
+  it — the real board (`aubie_listen.py`, pulled this session, see
+  `_remote/board/aubie_listen.py`) plays that response locally via `pw-play`,
+  not `aplay`, and has since moved off `hw:0,0`/`plughw:0,0` entirely
+  (EMEET card id is now autodetected — see `detect_emeet_card_id()`).
+- `push_audio_to_aubie()` POSTs to `AUBIE_CALL_PORT = 8420` on the board.
+  That port belonged to the **retired `spotmicro_dog` app's** own Docker
+  container (`spotmicro_dog-main-1`, a `uvicorn` FastAPI process — see
+  `spotmicro_dog/diag_snapshots/*.log`). The replacement `aubie-tutor` app
+  only maps ports 7000 (WebUI) and 9999 (llamacpp), confirmed via
+  `docker ps` on the board. **Nothing has listened on 8420 since
+  `spotmicro_dog` was destroyed.** Calling `/speak` now reproducibly 500s:
+
+  ```
+  requests.exceptions.ConnectionError: HTTPConnectionPool(host='192.168.1.78',
+  port=8420): ... Failed to establish a new connection: [Errno 111]
+  Connection refused
+  ```
+
+  (confirmed live via `curl -X POST http://localhost:8800/speak -F text=...`
+  against `aubie-assistant.service`, 2026-09-11.) The same dead port breaks
+  `fetch_aubie_snapshot()` (`/snapshot`, used by the person-follow loop),
+  the `/call/stream` websocket, and `call_dog_command()` (used for e.g. the
+  Gabriela `flower_explosion` in `/greet` — silently, since its call sites
+  are best-effort `try/except`). Board-side, `aubie_listen.py`'s own
+  `dog_command()` helper (`rest`/`play_pong` for the idle-Pong feature) POSTs
+  to the same dead `localhost:8420/dog/command` and fails the same way.
+- Separately: even on the code path that *is* live, two overlapping
+  `/greet` wake-word triggers are no longer reachable at all. The current
+  `main()` loop (`aubie_listen.py`) is fully serial — it exits the
+  `AudioImpulseRunner` context before calling `capture_and_greet()`, then
+  `converse_loop()`, then re-enters listening, plus a 5s `COOLDOWN_SECONDS`
+  — so the race the lock was written for cannot occur via real wake-word use
+  with this loop structure.
+- What was actually testable — the board's own playback-overlap guard
+  (`pkill -f pw-play` before every new `pw-play`, in `capture_and_greet()`)
+  — was reproduced directly on hardware (two `pw-play` calls 1s apart against
+  a real `/greet` response WAV, `XDG_RUNTIME_DIR=/run/user/1000` set as
+  `aubie_listen.py` itself sets it for the same reason). Result: **no ALSA
+  "Device or resource busy" error** — but the mechanism is kill-and-restart,
+  not queue-and-delay: the first playback is killed outright, not deferred.
+  That's a real, working guard against a hung ALSA device, just not the
+  "second greeting plays delayed, not dropped" behavior the original fix
+  description called for.
+
+**Verdict:** not a regression of `132cd8b0` — that lock never had a live
+target to protect after the `spotmicro_dog` → `aubie-tutor` migration
+silently orphaned port 8420 (no commit is implicated; the two changes
+happened independently and neither referenced the other). Treat as a new,
+open incident: `/speak`, `/snapshot`-based following, `/call/stream`, the
+`flower_explosion` celebration, and idle-Pong's `rest`/`play_pong` calls are
+all currently non-functional on real hardware. Needs a decision before a fix
+can land: re-expose an equivalent HTTP API inside the new `aubie-tutor`
+Python app (`python/main.py`) on 8420 or a fresh port, or replace these
+calls with the same MCU Bridge-RPC mechanism `face_talk`/`face-text`/`wave`
+already use successfully (`bridge_call()` in `aubie_listen.py`), which does
+not depend on port 8420 at all.
+
+**Status:** open — not yet fixed, root cause identified and confirmed live.
+
 ### 2026-09-05 — anomaly_guard: first pass only, statistical layers deferred
 
 **What this is:** `anomaly_guard.py` (repo root) is a new outside-observer
