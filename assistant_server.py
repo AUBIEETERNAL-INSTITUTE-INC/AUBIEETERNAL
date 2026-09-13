@@ -216,12 +216,42 @@ AUBIE_HOST_LAN = "192.168.1.78"
 AUBIE_CALL_PORT = 8420
 
 # /dog/command, /snapshot, /play_audio - migrated off the dead 8420 to
-# aubie_bridge_api.py (repo root), a new non-Docker service prepared for the
-# board but NOT YET DEPLOYED as of this commit (board offline - see
-# ERROR_LEDGER.md). Deliberately a different port than 8420: a caller that
-# still points at the old port should fail loudly (connection refused), not
-# quietly land on a service it was never verified against.
+# aubie_bridge_api.py (repo root), deployed and live-tested on the board
+# 2026-09-13 (see ERROR_LEDGER.md). Deliberately a different port than 8420:
+# a caller that still points at the old port should fail loudly (connection
+# refused), not quietly land on a service it was never verified against.
 AUBIE_BRIDGE_PORT = 8421
+
+# ---- Dev-only mock mode for the three functions below (ERROR_LEDGER.md,
+# 2026-09-13 Part 3) ----
+# The board has twice gone offline for extended periods and stalled all
+# work that happened to touch these functions, including School/tutor-side
+# code that doesn't actually need real hardware behavior. Set
+# AUBIE_BRIDGE_MOCK=1 to make fetch_aubie_snapshot()/push_audio_to_aubie()/
+# call_dog_command() skip the real network call entirely and return
+# clearly-labeled fake data instead. Opt-in only, never automatic -
+# an automatic fallback-on-failure would risk a genuine hardware outage
+# quietly reading as a "graceful" mocked success instead of a real error.
+# This is a development aid, NOT a substitute for the real live-hardware
+# test required before marking a hardware-dependent fix verified - every
+# mock path below logs "[mock]" so a mocked result is never mistaken for
+# one.
+AUBIE_BRIDGE_MOCK = os.environ.get("AUBIE_BRIDGE_MOCK") == "1"
+
+_mock_snapshot_jpeg: bytes | None = None
+
+
+def _get_mock_snapshot_jpeg() -> bytes:
+    """A flat gray placeholder frame - deliberately not camera-like, so it
+    can never be mistaken for a real capture if it ends up somewhere
+    visible (e.g. a debug view)."""
+    global _mock_snapshot_jpeg
+    if _mock_snapshot_jpeg is None:
+        import cv2
+        frame = np.full((480, 640, 3), 60, dtype=np.uint8)
+        _, jpg = cv2.imencode(".jpg", frame)
+        _mock_snapshot_jpeg = jpg.tobytes()
+    return _mock_snapshot_jpeg
 
 # ---- Movement commands (Bridge RPC on Aubie, via aubie_bridge_api.py) ----
 
@@ -304,6 +334,9 @@ def call_dog_command(payload: dict) -> bool:
     connection failures - a bridge hiccup should get a spoken apology, not a
     500 back to the client.
     """
+    if AUBIE_BRIDGE_MOCK:
+        print(f"[mock] call_dog_command: simulating success for {payload}")
+        return True
     for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):
         try:
             resp = requests.post(
@@ -1109,9 +1142,11 @@ def fetch_aubie_snapshot() -> bytes:
     """GET a fresh JPEG from aubie_bridge_api.py's /snapshot - Tailscale
     first, LAN fallback, same reasoning as _connect_to_aubie_call_stream()'s
     fallback above (Tailscale's TCP path here is known to be intermittently
-    flaky even when reachable). NOT YET VERIFIED against real hardware -
-    aubie_bridge_api.py is prepared but not yet deployed to the board (board
-    offline as of 2026-09-13). See ERROR_LEDGER.md."""
+    flaky even when reachable). Verified live against real hardware
+    2026-09-13 - see ERROR_LEDGER.md."""
+    if AUBIE_BRIDGE_MOCK:
+        print("[mock] fetch_aubie_snapshot: returning a fake placeholder frame")
+        return _get_mock_snapshot_jpeg()
     last_exc = None
     for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):
         try:
@@ -1137,9 +1172,11 @@ def push_audio_to_aubie(wav_bytes: bytes) -> None:
     site). _aubie_audio_lock still serializes overlapping /speak calls so
     two POSTs are never in flight to /play_audio at once. Plays via pw-play
     on the board now, not aplay against the EMEET (which is capture-only -
-    see aubie_bridge_api.py's /play_audio docstring). NOT YET VERIFIED
-    against real hardware - aubie_bridge_api.py is prepared but not yet
-    deployed (board offline as of 2026-09-13). See ERROR_LEDGER.md."""
+    see aubie_bridge_api.py's /play_audio docstring). Verified live against
+    real hardware 2026-09-13 - see ERROR_LEDGER.md."""
+    if AUBIE_BRIDGE_MOCK:
+        print(f"[mock] push_audio_to_aubie: simulating playback of {len(wav_bytes)} bytes")
+        return
     with _aubie_audio_lock:
         last_exc = None
         for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):

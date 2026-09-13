@@ -260,11 +260,19 @@ calls with the same MCU Bridge-RPC mechanism `face_talk`/`face-text`/`wave`
 already use successfully (`bridge_call()` in `aubie_listen.py`), which does
 not depend on port 8420 at all.
 
-**Status:** `verified` (transport) — the port-8420 migration itself is
-confirmed live and correct; the movement/effects/face RPC methods it
-carries are not implemented by the current firmware at all, which is
-tracked as its own incident below rather than folded into this one's
-resolution. See the 2026-09-13 follow-up immediately below.
+**Status:** `resolved` (2026-09-13, commits `f9f095ad` + `4a58fb75`). The
+port-8420 migration itself is fully done and verified live against real
+hardware: `/speak`'s `/play_audio` and person-follow's `/snapshot` both
+confirmed fully working; the Gabriela `flower_explosion` celebration's
+face-ID/request path confirmed reaching the board correctly (the RPC call
+itself failing at the MCU is a separate, narrower issue - see the
+`flower_explosion` follow-up dated 2026-09-13 below); idle-Pong's transport
+confirmed firing naturally end-to-end. What is NOT resolved by this entry -
+the underlying MCU firmware only implementing `wave`/`wave_diag`/`hub_diag`
+- is deliberately tracked as its own separate incident below (now
+descoped to `flower_explosion` only - general dog locomotion is
+descoped, not deferred, as of 2026-09-13) rather than kept open here.
+This incident is closed; do not reopen it for firmware work.
 
 **Follow-up (2026-09-13):** Migrated the three still-relevant features off
 the dead port, split by what was actually reachable to fix:
@@ -440,27 +448,34 @@ above) but because the MCU firmware itself has no handler for any of these
 RPC method names. No amount of further Python-side work fixes this; it
 needs the sketch itself extended.
 
-**Scope for whoever picks this up:** the *old* spotmicro_dog sketch
-(`spotmicro_dog/sketch/sketch.ino` and
-`spotmicro_dog_robot_backup_20260821/sketch/sketch.ino` in this repo)
-implements all of these method names already and is a real reference for
-the MCU-side logic - but it's a different, older sketch built for a
-different app; the servo/PCA9685 wiring the "Edge-only file audit" table
-says was "ported" into aubie-tutor's sketch needs to be checked against
-that old implementation method by method, not assumed compatible. This
-also needs a decision on scope: port the full old action set, or only the
-subset the three features above actually need
-(`stand`/`turn_left`/`turn_right`/`rest`/`play_pong`/`flower_explosion`),
-deferring `sit`/`walk_forward`/`set_servo`/`face_talk`/`face-text`/
-`show_image` until something actually calls them again.
+**Scope narrowed 2026-09-13 - descoped, not deferred:** product focus has
+shifted to the tutor/teacher side (School, Family Co-Learning, the
+appliance/QR vision features), not general dog movement/locomotion.
+`stand`, `sit`, `rest`, `turn_left`, `turn_right`, and `play_pong` are
+**dropped from this incident's required work entirely** - not "later,"
+dropped. Person-follow's actual turning and idle-Pong stay non-functional
+indefinitely; that is an accepted, deliberate outcome, not an open gap.
+Do not port these from the old spotmicro_dog sketch on their account.
 
-**Status:** open - not fixed. Needs someone to extend
-`~/ArduinoApps/aubie-tutor/sketch/sketch.ino` with the missing RPC handlers
-and reflash (`arduino-app-cli app start user:aubie-tutor` - not `restart`;
-see the "no manual restart" note below now needs qualifying: no automated
-watchdog currently exists at all, so a manual start/restart is presently
-the *only* way this app recovers - just confirm nothing else is touching
-the SWD line first, per the existing concurrency-hazard note).
+**Only `flower_explosion` remains in scope** - it is the trigger for the
+Gabriela celebration, the one dog-adjacent feature with real product value
+right now. The *old* spotmicro_dog sketch
+(`spotmicro_dog/sketch/sketch.ino`, `flower_explosion` handler) is a real
+reference implementation to port from, single-command, low complexity.
+`wave`/`wave_diag`/`hub_diag` already work - no action needed there.
+
+**Status:** open, narrow scope. Needs `flower_explosion` (only) ported into
+`~/ArduinoApps/aubie-tutor/sketch/sketch.ino`, reflashed
+(`arduino-app-cli app start user:aubie-tutor` - not `restart`; no automated
+watchdog exists to do this automatically, see the corrected "no manual
+restart" note - a manual start is the only recovery path, just confirm
+nothing else is touching the SWD line first), and live-tested specifically
+by triggering a real `/greet` with Gabriela's enrolled photo and confirming
+`flower_explosion` actually executes on the board - not just that the
+request reaches it. ("Request reached the board" was already mistaken for
+"worked" once, on 2026-09-13, before the silent-failure bug in
+`bridge_call()` was found and fixed - see the port-8420 migration entry
+above.) See `HARDWARE_BACKLOG.md` for this as a ready-to-run item.
 
 ### 2026-09-05 — anomaly_guard: first pass only, statistical layers deferred
 
