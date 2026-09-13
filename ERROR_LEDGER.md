@@ -464,18 +464,43 @@ right now. The *old* spotmicro_dog sketch
 reference implementation to port from, single-command, low complexity.
 `wave`/`wave_diag`/`hub_diag` already work - no action needed there.
 
-**Status:** open, narrow scope. Needs `flower_explosion` (only) ported into
-`~/ArduinoApps/aubie-tutor/sketch/sketch.ino`, reflashed
-(`arduino-app-cli app start user:aubie-tutor` - not `restart`; no automated
-watchdog exists to do this automatically, see the corrected "no manual
-restart" note - a manual start is the only recovery path, just confirm
-nothing else is touching the SWD line first), and live-tested specifically
-by triggering a real `/greet` with Gabriela's enrolled photo and confirming
-`flower_explosion` actually executes on the board - not just that the
-request reaches it. ("Request reached the board" was already mistaken for
-"worked" once, on 2026-09-13, before the silent-failure bug in
-`bridge_call()` was found and fixed - see the port-8420 migration entry
-above.) See `HARDWARE_BACKLOG.md` for this as a ready-to-run item.
+**Status:** `resolved` (narrow scope) - 2026-09-13. `flower_explosion` was
+ported into `~/ArduinoApps/aubie-tutor/sketch/sketch.ino` (see the module
+docstring in this repo's tracked reference copy for the ported
+`drawFlower()`/`drawHeart()`/`drawFlowerExplosion()`/`flower_explosion()`,
+plus a non-blocking `updateFlowerEffect()` timeout mirroring the existing
+`wave`/`updateWave()` pattern - the old sketch's version depended on a much
+larger eye/mouth face-state machine this minimal kiosk sketch doesn't have,
+but `drawFlower`/`drawHeart`/`drawFlowerExplosion` themselves are
+self-contained TFT primitives with no such dependency, so they ported
+cleanly). Reflashed via `arduino-app-cli app start user:aubie-tutor` (sketch
+compiled clean, 113116 bytes, no errors). A pre-flash backup of the old
+sketch.ino was left on the board at
+`sketch.ino.pre-flower-explosion-20260913`.
+
+Live-tested two ways: (1) direct `POST /dog/command {"action":
+"flower_explosion"}` against `aubie_bridge_api.py` returned `{"ok": true,
+"detail": ""}` - a clean success, distinct from every descoped action's
+reliable `method X not available` failure (re-confirmed `stand` still
+fails the same way, ruling out a broken test rather than a real fix). (2) A
+real `POST /greet` with Gabriela's actual enrolled photo
+(`~/faces/gabriela/gabriela_2.jpeg`) correctly fired face ID →
+`call_dog_command({"action": "flower_explosion"})` → the board's
+`aubie-bridge-api.service` journal shows the resulting `/dog/command` call
+completed with **no** `[bridge] ... failed` line, the same clean-success
+signature as (1) (contrast the `stand` call immediately above it in the
+same journal window, which does log a failure line). Since `flower_explosion()`
+draws to the TFT synchronously inline (unlike `photo_render`, which defers
+its draw to `loop()` via a `photoPending` flag), an RPC call that returns
+without error means the actual `tft.fillScreen()`/`fillCircle()`/
+`fillTriangle()` draw calls ran to completion, not just that the method was
+found and accepted. **Not independently confirmed by eye** - no camera was
+pointed at the board's screen during this test, so this is the strongest
+available evidence short of watching the physical TFT, not a substitute for
+someone glancing at the screen next time they're near the robot. If that
+ever contradicts this entry (RPC succeeds but nothing visibly draws),
+reopen as a new incident - don't assume this write-up over what's actually
+observed.
 
 ### 2026-09-05 — anomaly_guard: first pass only, statistical layers deferred
 
