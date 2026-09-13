@@ -188,9 +188,6 @@ def get_active_voice() -> Path:
     """The Piper voice for English replies, per the user's chosen preset."""
     return VOICE_PRESETS.get(selected_voice_preset, VOICE_PRESETS[DEFAULT_VOICE_PRESET])[1]
 
-# ---- Movement commands (Bridge RPC on Aubie, via aubie_dog.py) ----
-DOG_COMMAND_URL = "http://100.66.110.65:8420/dog/command"
-
 # ---- Unsplash image search -> Aubie's TFT (show_image Bridge RPC) ----
 # Key lives in .env (gitignored, see CLAUDE.md's secrets convention) - this
 # repo is public on GitHub, never hardcode it here.
@@ -207,7 +204,26 @@ SHOW_IMAGE_W, SHOW_IMAGE_H = 64, 48
 # live call needs this connection to actually come up.
 AUBIE_HOST_TAILSCALE = "100.66.110.65"
 AUBIE_HOST_LAN = "192.168.1.78"
+
+# /call/stream (the live video/audio call) still targets the retired
+# spotmicro_dog app's port - nothing has listened on it since spotmicro_dog
+# -> aubie-tutor (see ERROR_LEDGER.md's 2026-09-11/09-13 entries). NOT
+# migrated: reviving /call/stream is materially larger than the
+# /dog/command + /snapshot + /play_audio piece below and wasn't in scope
+# for that fix. _connect_to_aubie_call_stream() already fails this
+# gracefully (returns None, /call/ws closes with a clear reason) rather
+# than hanging, so this is a known, visible gap, not a silent one.
 AUBIE_CALL_PORT = 8420
+
+# /dog/command, /snapshot, /play_audio - migrated off the dead 8420 to
+# aubie_bridge_api.py (repo root), a new non-Docker service prepared for the
+# board but NOT YET DEPLOYED as of this commit (board offline - see
+# ERROR_LEDGER.md). Deliberately a different port than 8420: a caller that
+# still points at the old port should fail loudly (connection refused), not
+# quietly land on a service it was never verified against.
+AUBIE_BRIDGE_PORT = 8421
+
+# ---- Movement commands (Bridge RPC on Aubie, via aubie_bridge_api.py) ----
 
 # Channel map + stand angles from sketch/sketch.ino - keep in sync if the
 # firmware's STAND_POSE changes. RR knee stands at 42 (not 90) because that
@@ -280,18 +296,26 @@ MOVEMENT_EXTRACTION_PROMPT = (
 
 
 def call_dog_command(payload: dict) -> bool:
-    """Best-effort POST to aubie_dog.py's Bridge RPC endpoint on the robot.
+    """Best-effort POST to aubie_bridge_api.py's /dog/command on the robot -
+    Tailscale first, LAN fallback, same reasoning as fetch_aubie_snapshot()/
+    push_audio_to_aubie() (previously this function only tried Tailscale,
+    with no LAN fallback at all - aligned here since it's the same gap).
     Mirrors detect_objects()/extract_and_remember_fact() in swallowing
     connection failures - a bridge hiccup should get a spoken apology, not a
     500 back to the client.
     """
-    try:
-        resp = requests.post(DOG_COMMAND_URL, json=payload, timeout=5)
-        resp.raise_for_status()
-        return bool(resp.json().get("ok"))
-    except requests.RequestException as e:
-        print(f"[movement] dog command failed: {e}")
-        return False
+    for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):
+        try:
+            resp = requests.post(
+                f"http://{host}:{AUBIE_BRIDGE_PORT}/dog/command",
+                json=payload,
+                timeout=5,
+            )
+            resp.raise_for_status()
+            return bool(resp.json().get("ok"))
+        except requests.RequestException as e:
+            print(f"[movement] dog command via {host} failed: {e}")
+    return False
 
 
 def image_bytes_to_rgb565_hex(image_bytes: bytes) -> str:
@@ -1082,14 +1106,16 @@ _follow_target: str | None = None
 
 
 def fetch_aubie_snapshot() -> bytes:
-    """GET a fresh JPEG from aubie's /snapshot - Tailscale first, LAN
-    fallback, same reasoning as _connect_to_aubie_call_stream()'s fallback
-    above (Tailscale's TCP path here is known to be intermittently flaky
-    even when reachable)."""
+    """GET a fresh JPEG from aubie_bridge_api.py's /snapshot - Tailscale
+    first, LAN fallback, same reasoning as _connect_to_aubie_call_stream()'s
+    fallback above (Tailscale's TCP path here is known to be intermittently
+    flaky even when reachable). NOT YET VERIFIED against real hardware -
+    aubie_bridge_api.py is prepared but not yet deployed to the board (board
+    offline as of 2026-09-13). See ERROR_LEDGER.md."""
     last_exc = None
     for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):
         try:
-            resp = requests.get(f"http://{host}:{AUBIE_CALL_PORT}/snapshot", timeout=5)
+            resp = requests.get(f"http://{host}:{AUBIE_BRIDGE_PORT}/snapshot", timeout=5)
             resp.raise_for_status()
             return resp.content
         except requests.RequestException as e:
@@ -1102,22 +1128,24 @@ _aubie_audio_lock = threading.Lock()
 
 
 def push_audio_to_aubie(wav_bytes: bytes) -> None:
-    """POST raw WAV bytes to aubie's /play_audio (plays out the EMEET
-    speaker) - Tailscale first, LAN fallback, same reasoning as
-    fetch_aubie_snapshot() above. Serialized with _aubie_audio_lock so two
-    overlapping calls (e.g. rapid back-to-back /greet wake-word triggers)
-    can never both have a POST in flight to the board's /play_audio at
-    once - the board's aplay was hitting "Device or resource busy" trying
-    to open the ALSA device twice concurrently. NOT YET VERIFIED against
-    real hardware (board offline as of 2026-09-04) - once it reconnects,
-    trigger /greet twice in quick succession and confirm no ALSA error in
-    the board's own aplay log."""
+    """POST raw WAV bytes to aubie_bridge_api.py's /play_audio - Tailscale
+    first, LAN fallback, same reasoning as fetch_aubie_snapshot() above.
+    Only called by /speak (the phone UI's typed "Say" box) - NOT /greet,
+    which returns its WAV directly in the HTTP response and never calls this
+    (see ERROR_LEDGER.md's 2026-09-11 entry; the /greet-overlap ALSA-busy
+    reasoning this docstring used to describe doesn't apply to this call
+    site). _aubie_audio_lock still serializes overlapping /speak calls so
+    two POSTs are never in flight to /play_audio at once. Plays via pw-play
+    on the board now, not aplay against the EMEET (which is capture-only -
+    see aubie_bridge_api.py's /play_audio docstring). NOT YET VERIFIED
+    against real hardware - aubie_bridge_api.py is prepared but not yet
+    deployed (board offline as of 2026-09-13). See ERROR_LEDGER.md."""
     with _aubie_audio_lock:
         last_exc = None
         for host in (AUBIE_HOST_TAILSCALE, AUBIE_HOST_LAN):
             try:
                 resp = requests.post(
-                    f"http://{host}:{AUBIE_CALL_PORT}/play_audio",
+                    f"http://{host}:{AUBIE_BRIDGE_PORT}/play_audio",
                     data=wav_bytes,
                     timeout=15,
                 )

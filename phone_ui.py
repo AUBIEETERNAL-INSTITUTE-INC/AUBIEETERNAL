@@ -101,7 +101,17 @@ PWA_SW_JS = (
     "});\n"
 )
 
-AUBIE_URL    = "http://100.66.110.65:8420"   # legacy dog server
+# Was port 8420 (the retired spotmicro_dog app's port, dead since the
+# spotmicro_dog -> aubie-tutor migration - see ERROR_LEDGER.md's 2026-09-11/
+# 09-13 entries). Points at aubie_bridge_api.py's new port now - note that
+# service's /dog/command only implements the action set assistant_server.py
+# actually sends (stand/sit/rest/walk_forward/turn_left/turn_right/
+# set_servo/face_text/flower_explosion/show_image); this file's own /proxy/dog
+# panel buttons (flashlight_on/off, princess_mode, set_face, custom_face,
+# "say") send action names/fields that never matched the old aubie_dog.py's
+# schema either, even before 8420 died - pre-existing dead UI wiring,
+# unrelated to this migration, not fixed here.
+AUBIE_URL    = "http://100.66.110.65:8421"
 OLLAMA_URL   = "http://localhost:11434"       # local Ollama LLM server
 # Qwen models the rig is known to use (tried in order)
 OLLAMA_MODELS = [

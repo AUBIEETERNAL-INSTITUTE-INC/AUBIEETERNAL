@@ -260,7 +260,79 @@ calls with the same MCU Bridge-RPC mechanism `face_talk`/`face-text`/`wave`
 already use successfully (`bridge_call()` in `aubie_listen.py`), which does
 not depend on port 8420 at all.
 
-**Status:** open — not yet fixed, root cause identified and confirmed live.
+**Status:** `deployed` (rig side only) — see 2026-09-13 follow-up below.
+
+**Follow-up (2026-09-13):** Migrated the three still-relevant features off
+the dead port, split by what was actually reachable to fix:
+
+- **idle-Pong** (`aubie_listen.py`'s `dog_command()`, called from the
+  board's own long-running process for the `rest`/`play_pong`/`stand`
+  idle-fun trigger) — this needed no network hop at all. Replaced the POST
+  to `localhost:8420/dog/command` with a direct call to the file's own
+  `bridge_call()` (the same subprocess mechanism already proven live for
+  `face_talk`/`face-text`/`wave`). Checked for the concurrency hazard
+  `dog_command()`'s old docstring was written to avoid (racing
+  `aubie_dog.py`'s own in-process `Bridge.call()`s): that specific hazard is
+  gone because `aubie_dog.py`'s process no longer exists, and confirmed by
+  reading the rest of the file that nothing else here calls `bridge_call()`
+  concurrently with this call site (`idle_scan_loop()`, the only other
+  background thread, never touches the bridge) - so no new lock was needed.
+- **`/speak`, person-follow (`/snapshot`), Gabriela's `flower_explosion`**
+  (all triggered from `assistant_server.py` on the rig, not the board) —
+  these have no direct Bridge-RPC equivalent from the rig's side: `Bridge.call()`
+  only works from a process running on the board itself (it shells out to
+  `/home/arduino/pylib`), so the rig can't invoke it directly no matter
+  what. Flagging this per the handoff's own instruction rather than
+  papering over it: fixing these needs *some* network-reachable service on
+  the board, full stop. Wrote `aubie_bridge_api.py` (repo root) - a new,
+  plain (non-Docker, non-arduino-app-cli) FastAPI service reusing
+  `aubie_listen.py`'s already-proven subprocess `bridge_call()` pattern
+  instead of the old `aubie_dog.py`'s in-process `Bridge` import + `App.run()`
+  (which depended on that process's own Docker/app-lab packaging - a heavier
+  dependency this doesn't take on). It exposes `/dog/command` (only the
+  action set `assistant_server.py` actually sends:
+  stand/sit/rest/walk_forward/turn_left/turn_right/set_servo/face_text/
+  flower_explosion/show_image), `/snapshot`, and `/play_audio` (via `pw-play`
+  against the HDMI sink, not `aplay` against the EMEET - the EMEET is
+  capture-only, confirmed via `arecord`/`aplay -l`; the old aubie_dog.py's
+  `/play_audio` predated that fix and would have silently played to a
+  device with no speaker). `assistant_server.py`'s `AUBIE_CALL_PORT` (8420,
+  still dead, still used only by the un-migrated `/call/stream` relay) was
+  split from a new `AUBIE_BRIDGE_PORT` (8421) so a stale caller fails loudly
+  instead of quietly landing on an unverified service. `phone_ui.py`'s
+  `AUBIE_URL` updated to match.
+- **Explicitly NOT fixed, flagged rather than dropped:** whether the
+  *current* aubie-tutor MCU sketch still implements the
+  `stand`/`sit`/`rest`/`walk_forward`/`turn_left`/`turn_right`/`set_servo`/
+  `flower_explosion`/`show_image` Bridge RPC methods at all is unverified.
+  `ERROR_LEDGER.md`'s 2026-09-11 entry above only confirms
+  `face_talk`/`face-text`/`wave` against the current firmware; the rest are
+  inherited from the *old* spotmicro_dog sketch, and the current
+  aubie-tutor sketch (`sketch/sketch.ino` on the board) has never been
+  pulled into this repo to check (see CLAUDE.md's "Edge devices are
+  disposable" audit) - the "Edge-only file audit" table there already flags
+  this file as not yet in git. If the MCU answers "unknown command" (or
+  doesn't respond) to any of these, that's a firmware gap, not a transport
+  bug, and needs its own scoping to re-add the RPC handler to the sketch -
+  do not assume this fix covers it.
+- **`/call/stream` (live video/audio call) deliberately not migrated** -
+  materially bigger scope (a full websocket video/audio relay with its own
+  mic-arbitration file flag) than the four features in scope here. Still on
+  the dead port; `_connect_to_aubie_call_stream()` already fails this
+  gracefully rather than hanging, so it's a known, visible gap.
+
+**Blocked on:** the board (Tailscale `100.66.110.65`, `aubie`) has been
+offline the entire session (`tailscale status` shows "offline, last seen
+20h ago" as of 2026-09-13; SSH, ping, and `tailscale ping` all time out).
+`aubie_bridge_api.py` is written and `py_compile`-clean but **not deployed**
+- there is no systemd unit for it on the board yet (deploy steps are in its
+own module docstring). None of this session's changes have been run against
+real hardware. Do not mark this incident `resolved` until, once the board
+reconnects: `aubie_bridge_api.py` is deployed, and all four of `/speak`,
+person-follow, the `flower_explosion` celebration, and an idle-Pong trigger
+are each confirmed live - and if any Bridge RPC method above turns out not
+to exist on the current sketch, log that as a new, separate open incident
+rather than folding it into this one's resolution.
 
 ### 2026-09-05 — anomaly_guard: first pass only, statistical layers deferred
 
