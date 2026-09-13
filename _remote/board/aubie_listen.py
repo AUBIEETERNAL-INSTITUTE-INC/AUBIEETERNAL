@@ -47,7 +47,18 @@ def _audio_timeout(path, minimum=15, margin=5):
 
 
 def bridge_call(method, arg="", block=False):
-    """Call Arduino Bridge directly (no Docker)."""
+    """Call Arduino Bridge directly (no Docker).
+
+    block=True now logs a failure (nonzero exit - e.g. "method X not
+    available") instead of silently discarding it. subprocess.run() doesn't
+    raise on a nonzero return code without check=True, so the old version's
+    try/except never actually caught a rejected RPC - only a real subprocess
+    launch error (which basically never happens) - meaning every rejected
+    call (see ERROR_LEDGER.md's 2026-09-13 firmware-gap entry: everything
+    except wave/wave_diag/hub_diag is currently rejected) produced zero
+    log output at all. block=False (fire-and-forget) still can't check this
+    without waiting, which would defeat the point of not blocking.
+    """
     import os
     env = os.environ.copy()
     env["PYTHONPATH"] = "/home/arduino/pylib"
@@ -58,7 +69,11 @@ def bridge_call(method, arg="", block=False):
     ]
     try:
         if block:
-            subprocess.run(cmd, env=env, timeout=5, capture_output=True)
+            proc = subprocess.run(cmd, env=env, timeout=5, capture_output=True)
+            if proc.returncode != 0:
+                stderr = proc.stderr.decode(errors="ignore").strip()
+                detail = stderr.splitlines()[-1] if stderr else f"exit {proc.returncode}"
+                print(f"[bridge] {method} rejected: {detail}")
         else:
             subprocess.Popen(cmd, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except Exception as e:

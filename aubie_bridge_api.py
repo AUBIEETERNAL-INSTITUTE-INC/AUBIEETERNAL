@@ -104,13 +104,16 @@ CAMERA_INDEX = 0
 _bridge_lock = threading.Lock()
 
 
-def bridge_call(method: str, *args: str) -> None:
+def bridge_call(method: str, *args: str) -> tuple[bool, str]:
     """Same subprocess-based call aubie_listen.py's bridge_call() uses
-    (proven working for face_talk/face-text/wave against the current
-    firmware) - not aubie_dog.py's old in-process `Bridge.call()`, which
-    depended on that process's own App.run()/Docker packaging. Serialized
-    with _bridge_lock since, unlike aubie_listen.py (single-threaded for
-    every Bridge call site), this process handles concurrent HTTP requests.
+    (proven working for `wave` against the current firmware - see
+    ERROR_LEDGER.md's 2026-09-13 firmware-gap entry, which also found
+    face_talk/face-text are NOT actually registered despite an earlier
+    entry assuming they were) - not aubie_dog.py's old in-process
+    `Bridge.call()`, which depended on that process's own App.run()/Docker
+    packaging. Serialized with _bridge_lock since, unlike aubie_listen.py
+    (single-threaded for every Bridge call site), this process handles
+    concurrent HTTP requests.
 
     Generalized to *args (aubie_listen.py's own copy only ever needed a
     single string arg) because set_servo needs channel and angle passed as
@@ -118,6 +121,15 @@ def bridge_call(method: str, *args: str) -> None:
     called `Bridge.call("set_servo", channel, angle)` - a single
     comma-joined string would be a guess about how the MCU parses it, with
     no evidence either way.
+
+    Returns (ok, detail) instead of swallowing the result the way
+    aubie_listen.py's copy does - that was fine there (fire-and-forget,
+    no caller ever checked it), but here it would mean /dog/command telling
+    every caller {"ok": true} even when the MCU rejected the RPC outright
+    (confirmed live: unregistered methods raise ValueError inside the
+    subprocess, exit 1, "method X not available (2)" on stderr) - exactly
+    the silently-dropped-functionality failure mode this whole fix exists
+    to avoid.
     """
     env = os.environ.copy()
     env["PYTHONPATH"] = "/home/arduino/pylib"
@@ -128,9 +140,18 @@ def bridge_call(method: str, *args: str) -> None:
     ]
     with _bridge_lock:
         try:
-            subprocess.run(cmd, env=env, timeout=5, capture_output=True)
-        except Exception as e:
-            print(f"[bridge] {method} failed: {e}")
+            proc = subprocess.run(cmd, env=env, timeout=5, capture_output=True)
+        except subprocess.TimeoutExpired:
+            print(f"[bridge] {method} timed out")
+            return False, "bridge call timed out"
+    if proc.returncode == 0:
+        return True, ""
+    stderr = proc.stderr.decode(errors="ignore").strip()
+    # Bridge.call()'s own ValueError message is the last line of the
+    # traceback - that's the useful part, not the traceback framing.
+    detail = stderr.splitlines()[-1] if stderr else f"exit {proc.returncode}"
+    print(f"[bridge] {method} failed: {detail}")
+    return False, detail
 
 
 @app.get("/snapshot")
@@ -231,24 +252,24 @@ class DogCommand(BaseModel):
 @app.post("/dog/command")
 def dog_command(cmd: DogCommand):
     if cmd.action in ("stand", "sit", "rest", "walk_forward", "turn_left", "turn_right"):
-        bridge_call(cmd.action)
-        return {"ok": True}
+        ok, detail = bridge_call(cmd.action)
+        return {"ok": ok, "detail": detail}
 
     if cmd.action == "set_servo":
         if cmd.channel is None or cmd.angle is None:
             raise HTTPException(400, "set_servo requires channel and angle")
-        bridge_call("set_servo", str(cmd.channel), str(cmd.angle))
-        return {"ok": True}
+        ok, detail = bridge_call("set_servo", str(cmd.channel), str(cmd.angle))
+        return {"ok": ok, "detail": detail}
 
     if cmd.action == "face_text":
         if cmd.text is None:
             raise HTTPException(400, "face_text requires text")
-        bridge_call("face-text", cmd.text)
-        return {"ok": True}
+        ok, detail = bridge_call("face-text", cmd.text)
+        return {"ok": ok, "detail": detail}
 
     if cmd.action == "flower_explosion":
-        bridge_call("flower_explosion")
-        return {"ok": True}
+        ok, detail = bridge_call("flower_explosion")
+        return {"ok": ok, "detail": detail}
 
     if cmd.action == "show_image":
         if not cmd.image_hex:
@@ -259,11 +280,15 @@ def dog_command(cmd: DogCommand):
                 f"image_hex must be {SHOW_IMAGE_BYTES * 2} hex chars "
                 f"({SHOW_IMAGE_W}x{SHOW_IMAGE_H} RGB565), got {len(cmd.image_hex)}",
             )
-        bridge_call("photo_chunk_start", "")
-        for i in range(0, len(cmd.image_hex), PHOTO_CHUNK_HEX_LEN):
-            bridge_call("photo_chunk", cmd.image_hex[i:i + PHOTO_CHUNK_HEX_LEN])
-        bridge_call("photo_render", "")
-        return {"ok": True}
+        ok, detail = bridge_call("photo_chunk_start", "")
+        if ok:
+            for i in range(0, len(cmd.image_hex), PHOTO_CHUNK_HEX_LEN):
+                ok, detail = bridge_call("photo_chunk", cmd.image_hex[i:i + PHOTO_CHUNK_HEX_LEN])
+                if not ok:
+                    break
+        if ok:
+            ok, detail = bridge_call("photo_render", "")
+        return {"ok": ok, "detail": detail}
 
 
 if __name__ == "__main__":
