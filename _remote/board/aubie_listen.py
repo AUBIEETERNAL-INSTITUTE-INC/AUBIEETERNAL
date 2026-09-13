@@ -65,27 +65,36 @@ def bridge_call(method, arg="", block=False):
         print(f"[bridge] {method} failed: {e}")
 
 
-def dog_command(action, timeout=8, **kwargs):
-    """Calls aubie_dog.py's own /dog/command HTTP API instead of spawning a
-    fresh bridge_call() subprocess. aubie_dog.py wraps every Bridge.call() in
-    a lock (see its own header comment) because concurrent Bridge.call()s
-    from separate processes/threads were confirmed (2026-08-17) to wedge the
-    shared RPC link and hang the whole board - a standalone bridge_call()
-    subprocess racing against aubie_dog.py's own in-process calls hits
-    exactly that hazard. Used for the idle "find your own fun" trigger below
-    since it fires from this same long-running process on a timer, not in
-    response to a one-off wake word, so it's more likely to land concurrently
-    with something else touching the bridge."""
-    try:
-        r = requests.post(
-            "http://localhost:8420/dog/command",
-            json={"action": action, **kwargs},
-            timeout=timeout,
-        )
-        return r.ok
-    except Exception as e:
-        print(f"[dog_command] {action} failed: {e}")
-        return False
+def dog_command(action, **kwargs):
+    """Calls bridge_call() directly (see ERROR_LEDGER.md, 2026-09-11 /
+    2026-09-13 entries). This used to POST to aubie_dog.py's own
+    /dog/command HTTP API instead of spawning a fresh bridge_call()
+    subprocess, specifically to avoid racing aubie_dog.py's own in-process
+    Bridge.call()s (confirmed 2026-08-17 to wedge the shared RPC link) - see
+    git history for that version. aubie_dog.py's process (the retired
+    spotmicro_dog app's Docker container) no longer exists, so the port it
+    listened on (8420) has been dead since spotmicro_dog -> aubie-tutor;
+    every call here was silently failing with ConnectionRefused. Calling
+    bridge_call() directly is safe now specifically because nothing else in
+    this process touches the bridge concurrently with this call site:
+    idle_scan_loop() (the only other background thread) never calls
+    bridge_call()/dog_command(), and every other bridge_call() site in this
+    file runs in the same single main-loop thread as this one, never
+    concurrently with it. If a future change adds a second thread that also
+    calls bridge_call(), add a shared lock here first.
+
+    "play_pong" takes a String on the MCU side ("true"/"false"), matching
+    the convention the old aubie_dog.py used for this same action - not the
+    plain bool `block=` bridge_call() itself takes.
+
+    bridge_call() already swallows and logs its own subprocess errors, so
+    there's no exception here to catch - unlike the old HTTP version this
+    can't distinguish success from failure, only "the call was made."
+    """
+    if action == "play_pong":
+        bridge_call("play_pong", "true" if kwargs.get("on") else "false", block=True)
+    else:
+        bridge_call(action, block=True)
 
 # Shared across the wake-word capture path and the idle-scan thread below so
 # they never call fswebcam on CAMERA_DEVICE at the same time (most UVC
