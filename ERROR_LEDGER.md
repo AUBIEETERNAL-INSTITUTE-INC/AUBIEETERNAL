@@ -260,7 +260,11 @@ calls with the same MCU Bridge-RPC mechanism `face_talk`/`face-text`/`wave`
 already use successfully (`bridge_call()` in `aubie_listen.py`), which does
 not depend on port 8420 at all.
 
-**Status:** `deployed` (rig side only) — see 2026-09-13 follow-up below.
+**Status:** `verified` (transport) — the port-8420 migration itself is
+confirmed live and correct; the movement/effects/face RPC methods it
+carries are not implemented by the current firmware at all, which is
+tracked as its own incident below rather than folded into this one's
+resolution. See the 2026-09-13 follow-up immediately below.
 
 **Follow-up (2026-09-13):** Migrated the three still-relevant features off
 the dead port, split by what was actually reachable to fix:
@@ -321,18 +325,142 @@ the dead port, split by what was actually reachable to fix:
   the dead port; `_connect_to_aubie_call_stream()` already fails this
   gracefully rather than hanging, so it's a known, visible gap.
 
-**Blocked on:** the board (Tailscale `100.66.110.65`, `aubie`) has been
-offline the entire session (`tailscale status` shows "offline, last seen
-20h ago" as of 2026-09-13; SSH, ping, and `tailscale ping` all time out).
-`aubie_bridge_api.py` is written and `py_compile`-clean but **not deployed**
-- there is no systemd unit for it on the board yet (deploy steps are in its
-own module docstring). None of this session's changes have been run against
-real hardware. Do not mark this incident `resolved` until, once the board
-reconnects: `aubie_bridge_api.py` is deployed, and all four of `/speak`,
-person-follow, the `flower_explosion` celebration, and an idle-Pong trigger
-are each confirmed live - and if any Bridge RPC method above turns out not
-to exist on the current sketch, log that as a new, separate open incident
-rather than folding it into this one's resolution.
+**Deployed and live-tested (2026-09-13, board back online):**
+
+- `aubie_bridge_api.py` deployed to `~/aubie_bridge_api.py` on the board,
+  running as a **user** systemd unit (`aubie-bridge-api.service`, port
+  8421) - not a system unit, since the `arduino` user has no passwordless
+  sudo for writing `/etc/systemd/system/*` (only for running `systemctl`
+  itself, plus a short explicit allowlist - checked via `sudo -n -l`). User
+  units need no privilege escalation at all and `loginctl show-user arduino`
+  confirms `Linger=yes`, so this survives reboot the same as a system unit
+  would.
+- Discovered and fixed along the way: `arduino-app-cli app list` showed the
+  `aubie-tutor` app itself in `failed` status (last successful start
+  2026-09-11 - it hadn't been touched since). **The `*/5 cron watchdog`
+  previous memory/notes referenced as auto-restarting this does not
+  exist** - the actual cron job that used to do this
+  (`scripts/aubie_monitor.sh`) was intentionally disabled 2026-09-08 with
+  the comment "spotmicro_dog app retired, avoids SWD collision with new app
+  builds", and nothing replaced it. Ran `arduino-app-cli app start
+  user:aubie-tutor` by hand (nothing else was concurrently touching the
+  SWD line - confirmed via `ps aux` before starting) - this recompiled and
+  reflashed the sketch and brought the app to `running`. That stale
+  "don't restart it, a watchdog will" assumption should be corrected
+  wherever else it's written down.
+- `aubie-listen.service` restarted (`sudo -n systemctl restart` - this
+  specific unit *is* NOPASSWD-listed) to pick up the fixed `aubie_listen.py`.
+
+**Live-test results, all three requested features plus `/speak`:**
+
+- **`/snapshot` (person-follow's camera dependency):** works. Real 640x480
+  JPEGs confirmed both via direct `curl` and via the real
+  `assistant_server.py` follow loop (`POST /follow/start`) hitting the new
+  port from the actual running rig process. Occasional transient 503
+  ("camera not available") when it lands at the same instant as
+  `aubie_listen.py`'s own capture - exactly the documented, accepted,
+  pre-existing collision this file's docstring called out; resolves on the
+  follow loop's own 1s retry.
+- **`/play_audio` (`/speak`'s actual mechanism):** works. A synthesized test
+  tone POSTed directly to `/play_audio` returned `{"ok": true}` and the
+  board's journal confirms `pw-play` ran successfully.
+- **Person-follow's movement (`stand`/`turn_left`/`turn_right`), the
+  Gabriela `flower_explosion` celebration, and idle-Pong's
+  `rest`/`play_pong`:** transport confirmed working end-to-end for all
+  three (the request reaches `aubie_bridge_api.py` or, for idle-Pong,
+  `bridge_call()` directly - no more `ConnectionRefused`) - but every one of
+  them **fails at the MCU**, cleanly, with `method <name> not available
+  (2)`. This is not a transport bug; see the new firmware-gap incident
+  immediately below. Confirmed via:
+  - real `POST /greet` with Gabriela's actual enrolled photo
+    (`~/faces/gabriela/gabriela_1.jpeg`) → face ID correctly fired
+    `call_dog_command({"action": "flower_explosion"})` → board log:
+    `[bridge] flower_explosion failed: ... method flower_explosion not
+    available (2)` → `/greet` itself still completed and returned a normal
+    200 (best-effort call site, as designed).
+  - real `POST /follow/start` → repeated `stand` calls (target not in
+    frame) → same `method stand not available` on every attempt, `/follow`
+    loop unaffected.
+  - idle-Pong fired **naturally** (no simulation) 180s after
+    `aubie-listen.service`'s restart: journal shows `[idle] no interaction
+    in 180s - laying down for some fun...` followed by `[bridge] rest
+    rejected: ... method rest not available (2)` and `[bridge] play_pong
+    rejected: ... method play_pong not available (2)` - both now visibly
+    logged, where the pre-fix code would have swallowed a rejected call
+    with zero log output at all (fixed the same silent-swallow bug in both
+    `aubie_bridge_api.py`'s and `aubie_listen.py`'s `bridge_call()` once the
+    live test exposed it - see git history same commit).
+
+**Correction to this entry's own earlier claim:** the 2026-09-11 write-up
+above states `face_talk`/`face-text`/`wave` were confirmed working via
+`bridge_call()`. Direct testing today shows only `wave` actually is -
+`face_talk` and `face-text` both return the identical `method ... not
+available (2)`. Whether that's a firmware regression since 09-11 or the
+earlier claim was never actually verified against the MCU (only that the
+*Python side* didn't raise, which - per the silent-swallow bug just fixed -
+proves nothing) is not established either way; not worth spending time on
+now that the real current state is directly confirmed. Treat any future
+"confirmed working via bridge_call()" claim in this file as suspect unless
+it names the actual MCU-side response, not just the absence of a Python
+exception.
+
+### 2026-09-13 — aubie-tutor MCU sketch only implements wave/wave_diag/hub_diag
+
+**Separate incident from the port-8420 migration above - a firmware gap,
+not a transport bug.** Opened per that fix's own instruction not to fold a
+firmware problem into a transport incident's resolution.
+
+**What happened:** Read `~/ArduinoApps/aubie-tutor/sketch/sketch.ino`
+directly on the board (197 lines - never pulled into this repo before; see
+CLAUDE.md's "Edge devices are disposable" audit, which already flagged this
+exact file as missing). Its entire RPC surface is three lines:
+
+```
+Bridge.provide_safe("wave", wave);
+Bridge.provide_safe("wave_diag", wave_diag);
+Bridge.provide_safe("hub_diag", hub_diag);
+```
+
+Confirmed empirically (not just by reading source) with a probe script run
+directly on the board against the live, running app: `wave` succeeds
+cleanly (`Bridge.call('wave')` → `None`, no error). Every one of `stand`,
+`sit`, `rest`, `walk_forward`, `turn_left`, `turn_right`,
+`flower_explosion`, `face_talk`, `face-text`, `play_pong`, `set_servo`
+fails identically: `ValueError: Request '<name>' failed: method <name> not
+available (2)` - a distinct, clean "not registered" error (error code 2),
+different from the "wrong argument count" error the same MCU returns for a
+badly-called *registered* method (error code 253, seen when probing `wave`
+with an extra unwanted argument).
+
+**Consequence:** person-follow's `turn_left`/`turn_right`/`stand`, the
+Gabriela `flower_explosion` celebration, and idle-Pong's
+`rest`/`play_pong` are all structurally blocked - not by the network
+transport (now fixed and confirmed reaching the board correctly, see
+above) but because the MCU firmware itself has no handler for any of these
+RPC method names. No amount of further Python-side work fixes this; it
+needs the sketch itself extended.
+
+**Scope for whoever picks this up:** the *old* spotmicro_dog sketch
+(`spotmicro_dog/sketch/sketch.ino` and
+`spotmicro_dog_robot_backup_20260821/sketch/sketch.ino` in this repo)
+implements all of these method names already and is a real reference for
+the MCU-side logic - but it's a different, older sketch built for a
+different app; the servo/PCA9685 wiring the "Edge-only file audit" table
+says was "ported" into aubie-tutor's sketch needs to be checked against
+that old implementation method by method, not assumed compatible. This
+also needs a decision on scope: port the full old action set, or only the
+subset the three features above actually need
+(`stand`/`turn_left`/`turn_right`/`rest`/`play_pong`/`flower_explosion`),
+deferring `sit`/`walk_forward`/`set_servo`/`face_talk`/`face-text`/
+`show_image` until something actually calls them again.
+
+**Status:** open - not fixed. Needs someone to extend
+`~/ArduinoApps/aubie-tutor/sketch/sketch.ino` with the missing RPC handlers
+and reflash (`arduino-app-cli app start user:aubie-tutor` - not `restart`;
+see the "no manual restart" note below now needs qualifying: no automated
+watchdog currently exists at all, so a manual start/restart is presently
+the *only* way this app recovers - just confirm nothing else is touching
+the SWD line first, per the existing concurrency-hazard note).
 
 ### 2026-09-05 — anomaly_guard: first pass only, statistical layers deferred
 
