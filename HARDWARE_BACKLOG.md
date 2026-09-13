@@ -30,23 +30,9 @@ can keep moving regardless of board status.
 
 *(none currently - see "In progress" below)*
 
-## In progress
+## Ready to test/flash now
 
-- [ ] **`flower_explosion` port** - ported from the old
-  `spotmicro_dog/sketch/sketch.ino` reference implementation into the
-  current `aubie-tutor` sketch.ino, uploaded, and a reflash
-  (`arduino-app-cli app restart user:aubie-tutor`) was kicked off
-  2026-09-13. The board became slow/unreachable mid-provisioning (heavy
-  docker pull load, not a flash failure as far as observed) before the
-  outcome could be confirmed. **Next step: once the board is reliably
-  reachable again, confirm `arduino-app-cli app list` shows `aubie-tutor`
-  `running`, then live-test with a real `/greet` for Gabriela's enrolled
-  photo and confirm the flower animation actually executes on the board's
-  screen** - not just that the request reaches it (see `ERROR_LEDGER.md`'s
-  port-8420 migration incident for why that distinction matters here). A
-  pre-flash backup of the old sketch.ino was left on the board at
-  `~/ArduinoApps/aubie-tutor/sketch/sketch.ino.pre-flower-explosion-20260913`
-  in case a revert is ever needed.
+*(none currently)*
 
 ## Blocked on board being online
 
@@ -54,6 +40,17 @@ can keep moving regardless of board status.
 
 ## Done
 
+- [x] **2026-09-13** - `flower_explosion` ported from the old
+  `spotmicro_dog/sketch/sketch.ino` reference implementation into the
+  current `aubie-tutor` sketch.ino (tracked copy now at
+  `_remote/board/aubie-tutor/sketch/sketch.ino`), reflashed, and
+  live-tested two ways: a direct `/dog/command` call returning a clean
+  `{"ok": true}`, and a real `/greet` with Gabriela's enrolled photo
+  correctly triggering it end-to-end with no failure logged - both distinct
+  from every descoped action's reliable `method X not available` failure.
+  **Not independently confirmed by eye** - no camera was on the board's
+  screen during the test. See `ERROR_LEDGER.md`'s 2026-09-13 firmware-gap
+  entry for full detail.
 - [x] **2026-09-13** - `aubie_bridge_api.py` deployed to the board (user
   systemd unit, port 8421), `/snapshot` and `/play_audio` live-tested.
   Person-follow's movement and idle-Pong's `rest`/`play_pong` confirmed
