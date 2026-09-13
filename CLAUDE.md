@@ -409,6 +409,41 @@ recreate by hand.
 `spotmicro_dog_robot_backup_20260821/` is a full backup. Retired in favor of the
 tutor kit anyway.
 
+## Hardware offline doesn't mean work stops
+
+**Principle:** the UNO Q board going offline has twice stalled *all*
+progress in a session, including work that never actually needed live
+hardware. That's a process failure, not an acceptable cost of remote
+hardware — fix it going forward with a clear separation of concerns
+(ERROR_LEDGER.md, 2026-09-13):
+
+1. **Never let a hardware-dependent task block hardware-independent ones.**
+   When the board is offline or flaky, keep working on anything that
+   doesn't need it (School/tutor features, `self_audit.py` work, QR/vision
+   features, documentation, code review, etc.) and flag only the specific
+   blocked step, naming exactly what it's waiting on (e.g. "blocked: needs
+   the board online to flash/test `flower_explosion`") — not the whole
+   session.
+2. **The Bridge API layer supports a mock mode for development.**
+   `assistant_server.py`'s `fetch_aubie_snapshot()`/`push_audio_to_aubie()`/
+   `call_dog_command()` (the callers of `aubie_bridge_api.py`) return
+   clearly `[mock]`-labeled fake data when `AUBIE_BRIDGE_MOCK=1` is set in
+   the environment, instead of hitting the network at all. Opt-in only —
+   never an automatic fallback on a real connection failure, which would
+   risk a genuine outage quietly reading as a graceful mocked success. This
+   lets non-hardware logic (routing, error handling, the tutor/School side
+   of things) be developed without live hardware. **It is never a
+   substitute for the real live-hardware test** before calling a
+   hardware-dependent fix verified — see the port-8420 migration incident
+   in `ERROR_LEDGER.md` for a concrete case where "the request reached the
+   board" was mistaken for "it worked" before a live test caught the
+   difference.
+3. **Hardware-dependent work items are tracked explicitly in
+   `HARDWARE_BACKLOG.md`**, separate from `ERROR_LEDGER.md`'s incident
+   history — so when the board comes back online there's a short, current
+   "test/flash this now" list instead of reconstructing one from git log or
+   old conversations.
+
 ### Inference hardware: 32B now, not 70B
 
 Decided against Qwen 70B (needs ~45-55 GB VRAM for 2-3 concurrent users → dual-GPU, $3-4K+,
