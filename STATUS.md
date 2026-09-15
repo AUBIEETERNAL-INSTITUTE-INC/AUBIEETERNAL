@@ -2,9 +2,9 @@
 
 The `aubieeternal` inference rig is alive and the swarm loop is running.
 
-- Date: 2026-09-14 (America/New_York)
+- Date: 2026-09-15 (America/New_York)
 - Swarm: v4.1
 - Model spend today: $0.00 / $2.50 cap (0%)
-- Wonder index: 0.5172 (internal drift signal, not a claim about anything)
+- Wonder index: 0.5101 (internal drift signal, not a claim about anything)
 
 This file is a once-a-day liveness pulse. Real changes land as their own commits - see ERROR_LEDGER.md and `git log --oneline` on main.
