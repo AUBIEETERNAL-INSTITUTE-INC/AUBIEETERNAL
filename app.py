@@ -9831,6 +9831,7 @@ if "Sovereign Builder" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 if "University Registrar" in active:
     st.markdown('<div class="card-title">🎓 SOVEREIGN UNIVERSITY — Registrar</div>', unsafe_allow_html=True)
+    st.caption("⚠️ Self-issued credential platform. Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees.")
 
     _fid_ur = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
@@ -11261,6 +11262,7 @@ python epistemic_drift_detector.py --ci
 if "Transcripts" in active:
     st.markdown('<div class="card-title">📜 OFFICIAL TRANSCRIPT SYSTEM — Bitcoin-Anchored Credentials</div>',
                 unsafe_allow_html=True)
+    st.caption("⚠️ Self-issued credential platform. Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees.")
     _fid_tr = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
     _tr_tabs = st.tabs(["📄 My Transcript", "🎓 Award Degree", "✅ Verify", "📊 Degrees"])

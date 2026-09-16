@@ -17,6 +17,8 @@ Your degree is sealed on Bitcoin. The knowledge belongs to no one and cannot be 
 
 [Quick Start](#quick-start) · [Orphanages](#-for-orphanages) · [Degrees](#-four-degree-programs) · [Curriculum](#-265-lessons-51-tracks) · [Tools](#-tools) · [Reliability](#-reliability) · [API](#-epistemic-commons-api)
 
+> ⚠️ **Self-issued credential platform.** Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees.
+
 🐾 **Optional hardware add-on:** [Aubie the Robot Dog](AUBIE_DOG.md) — if you want a physical build, the same AI voice/vision assistant runs on a 12-servo quadruped. The school works fully without it.
 
 </div>
