@@ -1350,7 +1350,7 @@ def query_ollama(
     context: str | None = None,
     system_override: str | None = None,
     lang: str = "en",
-    timeout: int = 60,
+    timeout: int = 240,
 ) -> str:
     if system_override is not None:
         system = system_override
@@ -1364,7 +1364,12 @@ def query_ollama(
         "stream": False,
     }
     if image_b64:
-        payload["images"] = [image_b64]
+        # Vision models need /api/chat format, not /api/generate
+        chat_url = OLLAMA_URL.replace("/api/generate", "/api/chat")
+        chat_payload = {"model": model, "messages": [{"role": "user", "content": prompt, "images": [image_b64]}], "stream": False, "options": {"num_predict": 2048, "num_ctx": 8192}}
+        resp = requests.post(chat_url, json=chat_payload, timeout=max(timeout, 180))
+        resp.raise_for_status()
+        return resp.json().get("message", {}).get("content", "").strip()
     resp = requests.post(OLLAMA_URL, json=payload, timeout=timeout)
     resp.raise_for_status()
     return resp.json().get("response", "").strip()
@@ -2228,3 +2233,107 @@ def language_config():
         "supported": list(SUPPORTED_LANGS),
         "source": str(LANGUAGE_CONFIG_PATH),
     }
+
+
+# ── /chat  –  text + optional image, no STT, feeds portal memory ──────────────
+from pydantic import BaseModel
+
+class ChatRequest(BaseModel):
+    message: str
+    image_b64: str | None = None
+    speaker: str | None = None
+    language: str | None = None
+
+@app.post("/chat")
+async def chat(req: ChatRequest):
+    speaker       = (req.speaker or "").strip().lower() or "mateo"
+    speaker_names = [speaker]
+    objects_seen  = []
+    reply_lang    = resolve_reply_language(req.language, "en")
+    context_block = build_context_block(speaker_names, objects_seen,
+                                        user_message=req.message)
+    try:
+        tutor_stats = load_family_stats(TUTOR_FAMILY_ID)
+        xp     = tutor_stats.get("xp", 0)
+        level  = tutor_stats.get("level", 1)
+        streak = tutor_stats.get("streak_days", 0)
+        if reply_lang == "es":
+            context_block += f"\n[Tutor: Nivel {level} · {xp} XP · racha {streak} días]"
+        else:
+            context_block += f"\n[Tutor: Level {level} · {xp} XP · {streak}-day streak]"
+    except Exception:
+        pass
+    prompt = f"[Speaking: {speaker}] {req.message}" if speaker else req.message
+    if req.image_b64:
+        reply = query_ollama(prompt, VISION_MODEL, image_b64=req.image_b64,
+                             context=context_block, lang=reply_lang)
+    else:
+        reply = query_ollama(prompt, "qwen2.5:14b", context=context_block, lang=reply_lang)
+    remember_exchange(speaker, speaker_names, req.message, reply, objects_seen)
+    maybe_trigger_compaction()
+    return {"reply": reply, "speaker": speaker, "language": reply_lang}
+
+
+# ── /v1/chat/completions  –  OpenAI wrapper so Open WebUI connects ─────────────
+import time as _time, uuid as _uuid
+
+class OAIMessage(BaseModel):
+    role: str
+    content: str | list
+
+class OAIRequest(BaseModel):
+    model: str = "aubie-assistant"
+    messages: list[OAIMessage]
+    stream: bool = False
+
+@app.post("/v1/chat/completions")
+async def oai_completions(req: OAIRequest):
+    user_msg  = ""
+    image_b64 = None
+    for m in reversed(req.messages):
+        if m.role == "user":
+            if isinstance(m.content, str):
+                user_msg = m.content
+            else:
+                for part in m.content:
+                    if isinstance(part, dict):
+                        if part.get("type") == "text":
+                            user_msg = part.get("text", "")
+                        elif part.get("type") == "image_url":
+                            url = part["image_url"].get("url", "")
+                            if url.startswith("data:"):
+                                image_b64 = url.split(",", 1)[1]
+            break
+    # Face recognition — inject name into prompt before chat
+    if image_b64:
+        import base64 as _b64, numpy as _np, io as _io
+        from PIL import Image as _Img
+        try:
+            _bytes = _b64.b64decode(image_b64)
+            _img = _np.array(_Img.open(_io.BytesIO(_bytes)).convert("RGB"))
+            _faces = scan_faces(_bytes)
+            if _faces:
+                user_msg = f"{user_msg} [Face recognition identified: {", ".join(_faces)}]"
+        except Exception as _fr_e:
+            print(f"[face_rec] error: {_fr_e}", flush=True)
+    cr     = ChatRequest(message=user_msg, image_b64=image_b64, speaker="mateo")
+    result = await chat(cr)
+    reply  = result["reply"]
+    return {
+        "id": f"chatcmpl-{_uuid.uuid4().hex[:8]}",
+        "object": "chat.completion",
+        "created": int(_time.time()),
+        "model": req.model,
+        "choices": [{"index": 0, "message": {"role": "assistant", "content": reply}, "finish_reason": "stop"}],
+        "usage": {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+    }
+
+@app.get("/v1/models")
+async def oai_models():
+    return {
+        "object": "list",
+        "data": [
+            {"id": "aubie-assistant", "object": "model", "created": 1700000000, "owned_by": "aubieeternal"}
+        ]
+    }
+
