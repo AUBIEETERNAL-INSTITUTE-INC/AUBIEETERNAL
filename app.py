@@ -1071,7 +1071,7 @@ with st.sidebar:
 st.markdown(f'''
 <div class="hero">
   <div class="hero-title">AUBIEETERNAL</div>
-  <div class="hero-sub">Sovereign · Local-First · Hyperlattice · Powered by Grok</div>
+  <div class="hero-sub">Sovereign · Local-First · Hyperlattice · Powered by Local AI</div>
 </div>
 ''', unsafe_allow_html=True)
 
