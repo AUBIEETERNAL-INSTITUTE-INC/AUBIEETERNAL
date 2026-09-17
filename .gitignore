@@ -114,3 +114,4 @@ memory/
 conversations/
 agent_runs/
 spotmicro_dog_robot_backup_20260821/
+finetune/*.jsonl
