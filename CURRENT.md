@@ -1,5 +1,24 @@
 # CURRENT.md
 
+### IT-support model — knowledge + tools (2026-09-21)
+
+Open WebUI model `vanhorn-org--aubieeternal-it-support` (qwen2.5:14b) now has:
+- Knowledge: "AUBIEETERNAL Error Ledger" collection (ERROR_LEDGER.md +
+  aubie-error-ledger.md). Attach the COLLECTION, not individual files.
+- Tools: "Rig Diagnostics" — read-only. service_status, ollama_health,
+  assistant_health, tailscale_status, recent_logs, gpu_and_disk.
+  subprocess with arg lists, no shell, unit allow-list. Nothing can start/stop/restart.
+- System prompt starts with "Always respond in English." (qwen2.5 drifts to other
+  languages when narrating tool calls). `/no_think` is a Qwen3 directive, inert here.
+
+Verified: names real services and the live model list instead of guessing.
+CAVEAT: it garbles code when paraphrasing from the ledger (dropped the <|im_start|>
+tokens from the TEMPLATE fix, invented `ollama info`). Trust its diagnosis, open the
+ledger for the exact commands.
+
+Done: extra_checks.py (control chars, EIN-shaped digits, personal names).
+Run after validate_steelman.py.
+
 ## Aubie model — 2026-09-21
 
 NOW: `aubie` = r10, temp 0.45. Modelfile has explicit TEMPLATE, no stop strings.
@@ -12,7 +31,6 @@ also carried a leading preamble paragraph — the model learned it from there.
 filter_r10.py strips preambles and drops off-task records: 157 → 100 clean.
 
 NEXT: 35 claims in review_queue.txt need the fact pass.
-Add to validate_steelman.py: control-char check, EIN-digit check.
 
 DO NOT: put vision / follow-up / org-identity records back in the teaching set.
 Org facts belong to the assistant and IT-support models, not Aubie.
