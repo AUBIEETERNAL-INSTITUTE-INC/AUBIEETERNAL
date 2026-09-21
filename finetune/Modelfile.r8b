@@ -1,4 +1,4 @@
-FROM /home/aubieeternal/aubieeternal_finetune/output/aubie_r10.gguf
+FROM /home/aubieeternal/aubieeternal_finetune/output/aubie_r8.gguf
 PARAMETER temperature 0.45
 PARAMETER top_p 0.9
 PARAMETER repeat_penalty 1.1
