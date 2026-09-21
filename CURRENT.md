@@ -1,6 +1,23 @@
 # CURRENT.md
 
-Updated: 2026-09-05
+## Aubie model — 2026-09-21
+
+NOW: `aubie` = r10, temp 0.45. Modelfile has explicit TEMPLATE, no stop strings.
+3/58 structure failures. Services: ollama, aubie-swarm, aubie-assistant + 5 others active.
+
+ROOT CAUSE FOUND (r9→r10): training_data_r9.jsonl held 157 records but only ~41
+taught the steelman form. The rest were vision records, follow-up JSON, markdown
+org-identity records (incl. EINs and names) from other features. 26 good answers
+also carried a leading preamble paragraph — the model learned it from there.
+filter_r10.py strips preambles and drops off-task records: 157 → 100 clean.
+
+NEXT: 35 claims in review_queue.txt need the fact pass.
+Add to validate_steelman.py: control-char check, EIN-digit check.
+
+DO NOT: put vision / follow-up / org-identity records back in the teaching set.
+Org facts belong to the assistant and IT-support models, not Aubie.
+
+Updated: 2026-09-21
 
 The only file that ages. Grok chat, Grok Build, and Claude Code read this first.
 
@@ -20,6 +37,27 @@ Reuses `handle_build_code_request()` from `aubieeternal_build_code.py`.
 
 - Axioms: `grok-principles.md` (last content pass 2026-05-20)
 - Agent briefing already in repo: `CLAUDE.md` (notes through 2026-08-29)
+
+## 2026-09-18 — weekend lane
+
+HEAD `031f5e86` is in sync with `origin/main`. Untracked local junk
+(curriculum-proposals, jsonl, wav, grokipedia/, `phone_ui.pyscp`) stays
+untracked — do not `git add` it.
+
+Claude Code is dark until Sun 2026-09-20 23:00. Weekend work is Grok
+chat (ideas) + Grok Build on this checkout. Do not edit Python until
+Mateo says so.
+
+assistant_server / Open WebUI / InsightFace face-rec (matthew, gabriela)
+is already on `main`, not new this weekend:
+
+- `assistant_server.py` + `/enroll_face` since `015b8840` (2026-08-14)
+- enrolled embeddings live on the rig at `~/aubie_storage/faces/faces.npz`
+  (not in git)
+- mid-September refinement already landed as `a89553d7` (2026-09-16):
+  Open WebUI `/v1/chat/completions` wrapper, face-threshold revert to
+  0.5, `organize_photos.py`. `aubie-webui.service` is a rig systemd
+  unit, not a repo file.
 
 ## 2026-09-05 follow-up pass
 
@@ -45,9 +83,8 @@ truth-log push sweep. Landed as `a549f0dc`, `df68baa9`, `9e4ad5ee`,
   the Markov matrix + Isolation Forest are deferred** pending a few real
   weeks of clean post-fix data. `python3 anomaly_guard.py --replay` passes
   4 cases. See `ERROR_LEDGER.md`.
-- All of the above is **landed in the working tree, not committed** — Mateo
-  reviews the diffs and commits; then `sudo systemctl restart aubie-swarm`
-  / assistant restart as needed.
+- That evening's tree later landed on `main` (`234b59df`, `05d8c42d`,
+  `5eb5dcc7`, `d35bea68`).
 
 ## Still current (2026-08-29)
 
