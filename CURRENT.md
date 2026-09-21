@@ -1,5 +1,23 @@
 # CURRENT.md
 
+## Repos and keys on the rig (2026-09-21)
+
+- `~/AUBIEETERNAL` — Institute repo (public). SSH deploy key, scoped to this repo only.
+  `ssh -T git@github.com` greets as the repo name, not a user — that is expected.
+- `~/vanhorn-repo` — VanHorn Org repo `hodlmateo/aubieeternal` (skills/it-support etc).
+  Separate deploy key `~/.ssh/id_vanhorn`, reached via the `github-vanhorn` host alias
+  in `~/.ssh/config`. Neither key can reach the other repo. Keep it that way.
+- `/srv/vanhorn` — business working data (invoices, jobs, pitches). NOT a git repo and
+  must never become one; the VanHorn remote is public.
+
+Finetune scripts live in `finetune/` in this repo. The working copy is
+`~/aubieeternal_finetune` (its own local git, no remote). Two copies WILL drift:
+edit in `~/aubieeternal_finetune`, then cp to `finetune/` and commit in the same sitting.
+
+`~/aubieeternal_finetune/.gitignore` now covers output/, raw_data/, raw_conversations.json,
+unsloth_compiled_cache/, *.bak. `output/training_data.jsonl` had been staged for commit
+and was unstaged with `git rm --cached` — check `git status` there before any commit.
+
 ## Aubie model — 2026-09-21
 
 NOW: `aubie` = r10, temp 0.45. Modelfile has explicit TEMPLATE, no stop strings.
