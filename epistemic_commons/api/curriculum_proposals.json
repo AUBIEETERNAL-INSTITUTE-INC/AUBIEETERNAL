@@ -1,1 +1,296 @@
-[]
+[
+  {
+    "id": "tommy_building_seed",
+    "type": "track",
+    "author": "Tommy",
+    "track_name": "Building & Hurricane Hardening",
+    "target_track": null,
+    "lesson": null,
+    "lessons": [
+      {
+        "key": "building-1",
+        "title": "Building L1 \u2014 How Houses Fail"
+      },
+      {
+        "key": "building-2",
+        "title": "Building L2 \u2014 Wind Load Physics"
+      },
+      {
+        "key": "building-3",
+        "title": "Building L3 \u2014 The $500 Retrofit"
+      },
+      {
+        "key": "building-4",
+        "title": "Building L4 \u2014 Insurance & Building Codes"
+      },
+      {
+        "key": "building-5",
+        "title": "Building L5 \u2014 Community Resilience \u2605"
+      }
+    ],
+    "rationale": "Tommy has direct field experience hardening homes on the Gulf Coast. This track turns his knowledge into teachable modules that directly reduce insurance risk for families.",
+    "approved_at": "2026-08-24T11:55:25.944823",
+    "coherence_score": 0.92,
+    "license": "CC0"
+  },
+  {
+    "id": "gabriela_baking_seed",
+    "type": "track",
+    "author": "Gabriela",
+    "track_name": "Deep Baking & Self-Sufficiency",
+    "target_track": null,
+    "lesson": null,
+    "lessons": [
+      {
+        "key": "baking-1",
+        "title": "Deep Baking L1 \u2014 Fermentation is Antifragile"
+      },
+      {
+        "key": "baking-2",
+        "title": "Deep Baking L2 \u2014 Local Food Systems"
+      },
+      {
+        "key": "baking-3",
+        "title": "Deep Baking L3 \u2014 Nutrition as Antifragility"
+      },
+      {
+        "key": "baking-4",
+        "title": "Deep Baking L4 \u2014 Self-Sufficiency Economics \u2605"
+      }
+    ],
+    "rationale": "Self-sufficiency in food is a foundational sovereignty skill. Gabriela's deep baking practice makes this hands-on and immediately applicable.",
+    "approved_at": "2026-08-24T11:55:25.945097",
+    "coherence_score": 0.9,
+    "license": "CC0"
+  },
+  {
+    "id": "d4692253f5e6",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Antifragile Courage",
+    "lesson": {
+      "key": "bitcoin-antifragility",
+      "title": "Bitcoin and Antifragility",
+      "topic": "Exploring how Bitcoin's design features contribute to its antifragile nature, making it stronger through stress and adversity.",
+      "steelman": "How does the fixed supply of Bitcoin act as a protective mechanism against inflationary pressures?",
+      "example": "Analyzing historical financial crises and how Bitcoin's protocol would fare compared to traditional fiat currencies during such events.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "ANTIFRAGILE\u2022COURAGE\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "This lesson underscores the practical application of antifragility principles within the context of Bitcoin's robust design.",
+    "approved_at": "2026-09-22T10:29:42.558359",
+    "coherence_score": 0.0,
+    "license": "CC0"
+  },
+  {
+    "id": "8e0d061cb3de",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Your Keys = Your Coins",
+    "lesson": {
+      "key": "bitcoin-time-lock-contracts",
+      "title": "Time-Locked Treasure Chests",
+      "topic": "Teaching the concept of time-lock contracts in Bitcoin and how they ensure secure, timed-release transactions.",
+      "steelman": "How can we design a system that prevents both premature access and permanent loss of funds using blockchain technology?",
+      "example": "Explaining how a user might use a time-locked contract to safely store an inheritance or important asset until a specified date arrives.",
+      "age_hint": "12+",
+      "xp": 20,
+      "rune": "YOUR\u2022KEYS\u2022=\u2022YOUR\u2022COINS\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Introduces advanced Bitcoin security concepts in an accessible way, enhancing users' understanding and application of digital self-sovereignty.",
+    "approved_at": "2026-09-22T10:29:42.561606",
+    "coherence_score": 0.0,
+    "license": "CC0"
+  },
+  {
+    "id": "54b69359cb5c",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Bitcoin Reality Anchor",
+    "lesson": {
+      "key": "bitcoin-time-anchors",
+      "title": "Bitcoin as Temporal Anchor",
+      "topic": "Understanding how Bitcoin's blockchain provides a reliable timestamping mechanism that serves as an anchor for time-based systems and agreements.",
+      "steelman": "How does the concept of 'time anchoring' in Bitcoin enhance the reliability and trustworthiness of digital transactions?",
+      "example": "Exploring how Timestamp Service (taal) uses Bitcoin's blockchain to verify and timestamp documents, ensuring their integrity over time.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "BITCOIN\u2022REALITY\u2022ANCHOR\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "This lesson highlights the less-discussed but crucial aspect of Bitcoin's role in establishing a universal, tamper-proof timeline.",
+    "approved_at": "2026-09-22T10:29:42.562218",
+    "coherence_score": 0.0,
+    "license": "CC0"
+  },
+  {
+    "id": "3102b9add4e5",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Antifragile Courage",
+    "lesson": {
+      "key": "antifragile-thinking-beyond-bitcoin",
+      "title": "Antifragility Beyond Bitcoin",
+      "topic": "Exploring how antifragile principles apply beyond cryptocurrency to personal growth and resilience in various aspects of life.",
+      "steelman": "How can individuals adopt an antifragile mindset to enhance their personal development, mental health, and career prospects?",
+      "example": "Discussing how embracing challenges in personal relationships or professional projects can lead to stronger, more resilient outcomes.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "ANTIFRAGILE\u2022COURAGE\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Expanding the concept of antifragility beyond its application in cryptocurrency to broader personal and professional contexts.",
+    "approved_at": "2026-09-22T10:29:42.562842",
+    "coherence_score": 0.0,
+    "license": "CC0"
+  },
+  {
+    "id": "523867149c4d",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder",
+    "lesson": {
+      "key": "observer-effect-exploration",
+      "title": "Exploring the Observer Effect",
+      "topic": "Understanding how observation can alter what is being observed, from quantum physics to human behavior.",
+      "steelman": "How might the observer effect be leveraged for personal development and scientific inquiry?",
+      "example": "The influence of medical staff on patient recovery rates when they are informed about a new treatment's efficacy.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "WONDER\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Adding this lesson helps students understand the profound implications of observer effects across various fields.",
+    "approved_at": "2026-09-22T10:29:42.563229",
+    "coherence_score": 0.0,
+    "license": "CC0"
+  },
+  {
+    "id": "6411eb121e1e",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder",
+    "lesson": {
+      "key": "wonder-philosophical-paradoxes",
+      "title": "Philosophy's Great Questions",
+      "topic": "Exploring philosophical paradoxes that challenge our understanding of reality and existence, fostering wonder and critical thinking.",
+      "steelman": "How can we use paradoxes to better understand the limits of human knowledge?",
+      "example": "The Ship of Theseus - examining identity and change through a classic thought experiment.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "WONDER\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Adding philosophical paradoxes enriches the curriculum by encouraging deep reflection on reality's mysteries.",
+    "approved_at": "2026-09-22T15:16:07.523049",
+    "coherence_score": 0.75,
+    "license": "CC0"
+  },
+  {
+    "id": "3296528f4748",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Antifragile Courage",
+    "lesson": {
+      "key": "antifragile-education-systems",
+      "title": "Educate Antifragilly",
+      "topic": "Exploring how education systems can be made antifragile to better prepare students for uncertainty and growth.",
+      "steelman": "How might a school system's curriculum benefit from incorporating hormesis, challenging students with progressively harder problems?",
+      "example": "A high school that rotates teaching methods and subjects unpredictably each year to simulate real-world variability and stress resilience.",
+      "age_hint": "13+",
+      "xp": 20,
+      "rune": "ANTIFRAGILE\u2022COURAGE\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Adding this lesson emphasizes the application of antifragility principles in a critical area like education, enhancing students' adaptability.",
+    "approved_at": "2026-09-22T15:16:46.380469",
+    "coherence_score": 0.75,
+    "license": "CC0"
+  },
+  {
+    "id": "8e774898f322",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder",
+    "lesson": {
+      "key": "quantum-curiosity",
+      "title": "Quantum Curiosity",
+      "topic": "Exploring how quantum mechanics challenges our classical understanding of reality and encourages a sense of wonder.",
+      "steelman": "How can the principles of quantum mechanics, like superposition and entanglement, be used to rethink common assumptions about technology and society?",
+      "example": "Discussion on Schr\u00f6dinger's cat thought experiment as a gateway to deeper philosophical questions about observation and reality in digital contexts.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "WONDER\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "This lesson bridges scientific inquiry with existential curiosity, vital for fostering an open-minded approach to both physical sciences and digital sovereignty.",
+    "approved_at": "2026-09-22T15:17:33.733761",
+    "coherence_score": 0.75,
+    "license": "CC0"
+  },
+  {
+    "id": "6e4ab25e71e6",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Antifragile Courage",
+    "lesson": {
+      "key": "antifragility-in-practice",
+      "title": "Mastering Antifragility",
+      "topic": "Practical strategies to enhance personal resilience and thrive in challenging environments through antifragile principles.",
+      "steelman": "How can one apply the concept of hormesis (stress-induced growth) across various aspects of life, such as health, finance, and mental well-being?",
+      "example": "Implementing intermittent fasting and cold showers to improve physical resilience and adaptability.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "ANTIFRAGILE\u2022COURAGE\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Expanding the understanding of antifragility beyond theory to actionable practices for personal growth.",
+    "approved_at": "2026-09-22T15:16:49.646959",
+    "coherence_score": 0.75,
+    "license": "CC0"
+  },
+  {
+    "id": "18d9b1542a36",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder as Detector",
+    "lesson": {
+      "key": "wonderful-uncertainty",
+      "title": "Embrace Uncertainty with Wonder",
+      "topic": "Teaching how to approach uncertainty and the unknown with curiosity and openness, fostering a mindset of wonder.",
+      "steelman": "How can embracing uncertainty lead to personal growth and discovery?",
+      "example": "Exploring the concept through examples like Einstein's thought experiments or scientific discoveries made by questioning established truths.",
+      "age_hint": "12+",
+      "xp": 20,
+      "rune": "WONDER\u2022AS\u2022DETECTOR\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Encouraging a mindset that views uncertainty not as a barrier but as an opportunity for wonder and discovery.",
+    "approved_at": "2026-09-22T15:17:13.634627",
+    "coherence_score": 0.75,
+    "license": "CC0"
+  }
+]
