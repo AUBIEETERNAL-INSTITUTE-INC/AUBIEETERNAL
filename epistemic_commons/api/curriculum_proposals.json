@@ -292,5 +292,74 @@
     "approved_at": "2026-09-22T15:17:13.634627",
     "coherence_score": 0.75,
     "license": "CC0"
+  },
+  {
+    "id": "83af77542b8a",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder",
+    "lesson": {
+      "key": "wonder-as-inquiry-tool",
+      "title": "Wonder as Inquiry Tool",
+      "topic": "How genuine wonder can act as a powerful tool for inquiry and discovery in various fields of study.",
+      "steelman": "Can the practice of maintaining constant wonder be considered an essential skill for all scientists and philosophers?",
+      "example": "Einstein's use of thought experiments driven by his curiosity about the nature of reality to develop groundbreaking theories like relativity.",
+      "age_hint": "10+",
+      "xp": 20,
+      "rune": "WONDER\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Encouraging students to see wonder as a methodological approach enhances their ability to explore complex topics creatively and critically.",
+    "approved_at": "2026-09-22T10:29:42.564067",
+    "coherence_score": 0.0,
+    "license": "CC0"
+  },
+  {
+    "id": "6849b582eff2",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder",
+    "lesson": {
+      "key": "wonder-as-inspiration",
+      "title": "Wonder Inspires Action",
+      "topic": "How maintaining a sense of wonder about the world can drive curiosity, exploration and personal growth.",
+      "steelman": "Can the feeling of genuine wonder be harnessed as an effective tool for daily motivation?",
+      "example": "The story of Galileo using his wonder about celestial bodies to challenge established astronomical beliefs.",
+      "age_hint": "10+",
+      "xp": 20,
+      "rune": "WONDER\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "Encourages learners to see the practical benefits of maintaining a sense of wonder.",
+    "approved_at": "2026-09-22T15:18:28.440487",
+    "coherence_score": 0.75,
+    "license": "CC0"
+  },
+  {
+    "id": "0f1b26686067",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder",
+    "lesson": {
+      "key": "wonder-as-discovery-tool",
+      "title": "Wonder as Discovery Tool",
+      "topic": "How cultivating genuine curiosity and wonder can enhance learning and discovery in various fields, from science to philosophy.",
+      "steelman": "In what ways does the practice of wonder improve one's ability to ask insightful questions that lead to new discoveries?",
+      "example": "The story of Galileo using his sense of wonder about the heavens to question established beliefs and pioneer observational astronomy.",
+      "age_hint": "All ages",
+      "xp": 20,
+      "rune": "WONDER\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "This lesson highlights how wonder is not just an emotion but a powerful cognitive tool for advancing knowledge.",
+    "approved_at": "2026-09-22T15:18:01.201768",
+    "coherence_score": 0.75,
+    "license": "CC0"
   }
 ]
