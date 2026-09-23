@@ -152,6 +152,7 @@ def capture_and_greet():
         print("[error] fswebcam timed out")
         return None
 
+    set_face_state("thinking")
     print("[trigger] Sending photo to rig...")
     try:
         with open(CAPTURE_PATH, "rb") as f:
@@ -180,6 +181,7 @@ def capture_and_greet():
         except Exception:
             pass
 
+    set_face_state("speaking")
     print("[trigger] Playing greeting...")
     try:
         bridge_call("face_talk", block=True)
@@ -459,6 +461,7 @@ def listen_and_converse(speakers_hint="", objects_hint=""):
     should continue), False if there was silence/an error (so the caller
     should stop looping and return to wake-word listening).
     """
+    set_face_state("listening")
     print("[converse] Recording response...")
     try:
         subprocess.run(
@@ -505,6 +508,7 @@ def listen_and_converse(speakers_hint="", objects_hint=""):
     except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
         print(f"[converse] photo capture failed, continuing without it: {e}")
 
+    set_face_state("thinking")
     print("[converse] Sending response to rig...")
     try:
         with open(RECORD_PATH, "rb") as f:
@@ -529,6 +533,7 @@ def listen_and_converse(speakers_hint="", objects_hint=""):
     if used_vision and have_photo:
         send_photo_thumbnail(CAPTURE_PATH)
 
+    set_face_state("speaking")
     print("[converse] Playing reply...")
     try:
         bridge_call("face_talk", block=True)
@@ -578,6 +583,33 @@ def converse_loop(speakers_hint="", objects_hint=""):
 IDLE_SCAN_INTERVAL_S = 12
 IDLE_CAPTURE_PATH = "/home/arduino/idle_scan.jpg"
 IDLE_STATUS_PATH = Path("/home/arduino/kiosk/greet_status.json")
+
+# ── Face state: a small file the kiosk page polls so the touchscreen can show
+# whether Aubie is listening, thinking or speaking. Separate from
+# greet_status.json (that one carries the greeting text and is polled slowly);
+# this one is written on every transition and polled fast. main()'s existing
+# WAKE_BUSY finally-block resets it to idle on every exit path, errors
+# included, so no code path can leave the face stuck mid-conversation. The
+# timestamp is belt-and-braces for the page.
+FACE_STATE_PATH = Path("/home/arduino/kiosk/face_state.json")
+_face_state = "idle"
+
+
+def set_face_state(state):
+    """Best-effort. Never raises - a face that doesn't update must never break
+    the conversation."""
+    global _face_state
+    if state == _face_state:
+        return
+    _face_state = state
+    try:
+        FACE_STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        FACE_STATE_PATH.write_text(
+            json.dumps({"state": state, "timestamp": _time.time()})
+        )
+    except OSError:
+        pass
+
 
 
 def _idle_scan_once():
@@ -718,6 +750,7 @@ def main():
                     converse_loop(speakers_hint, objects_hint)
             finally:
                 WAKE_BUSY.clear()
+                set_face_state("idle")
             last_interaction_time = _time.time()
 
 if __name__ == "__main__":
