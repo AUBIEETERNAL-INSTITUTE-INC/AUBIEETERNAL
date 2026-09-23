@@ -7,6 +7,13 @@
 sleep 6
 
 export XDG_RUNTIME_DIR=/run/user/1000
+# Keep the touchscreen awake. X blanks the screen after 10 minutes by
+# default and DPMS powers it down after 20; both survive a reboot, so
+# they have to be turned off every session, same as the audio profile.
+export DISPLAY=${DISPLAY:-:0}
+xset s off          # no screensaver
+xset s noblank      # don't blank the framebuffer
+xset -dpms          # no power-management standby/suspend/off
 BUILTIN_ID=$(wpctl status 2>/dev/null | grep "Built-in Audio" | grep -v "playback\|microphone" | head -1 | grep -oE '[0-9]+' | head -1)
 if [ -n "$BUILTIN_ID" ]; then
   wpctl set-profile "$BUILTIN_ID" 2 2>/dev/null  # profile index 2 = HDMI (confirmed via pw-cli enum-params)
