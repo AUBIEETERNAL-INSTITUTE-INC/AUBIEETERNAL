@@ -93,6 +93,32 @@
   .greet-ring.mouth-open  .aubie-mouth { border-radius:50%; width:28px; height:28px; }
   .greet-ring.eyes-closed .aubie-eye { height:6px; border-radius:3px; animation:none; }
 
+  /* ══ Conversation states, driven by face_state.json ══ */
+
+  /* Listening: the ring breathes and the eyes open wide and stop blinking,
+     so it reads as attentive rather than idle. This is the one that matters -
+     without it you can't tell whether to keep talking. */
+  .greet-ring.state-listening { animation: listen-pulse 1.4s ease-in-out infinite; }
+  @keyframes listen-pulse {
+    0%, 100% { box-shadow: 0 0 18px 2px var(--green); }
+    50%      { box-shadow: 0 0 34px 8px var(--green); }
+  }
+  .greet-ring.state-listening .aubie-eye { width:36px; height:36px; animation:none; }
+
+  /* Thinking: eyes narrow, everything dims slightly. Deliberately calmer than
+     listening so the two are never confused at a glance from across a room. */
+  .greet-ring.state-thinking .aubie-eye { height:10px; border-radius:5px; animation:none; opacity:.75; }
+  .greet-ring.state-thinking .aubie-mouth { width:40px; opacity:.6; }
+  .greet-ring.state-thinking { animation: think-dim 2s ease-in-out infinite; }
+  @keyframes think-dim {
+    0%, 100% { opacity:.75; }
+    50%      { opacity:1; }
+  }
+
+  /* Speaking: mouth-open is toggled from JS on a timer. The faster transition
+     is what makes it look like talking rather than blinking. */
+  .greet-ring.state-speaking .aubie-mouth { transition:.09s; }
+
   .greet-ring.theme-huma { background:linear-gradient(125deg,#ff7a1a 0 48%, #123a8f 52% 100%); }
   .greet-ring.theme-huma .aubie-eye { background:#fff6d8; box-shadow:0 0 10px #fff6d8; }
   .greet-ring.theme-huma .aubie-mouth, .greet-ring.theme-huma .aubie-nose { background:#fff6d8; }
@@ -634,6 +660,56 @@
     }
   }
   setInterval(pollGreetStatus, 4000);
+
+  /* ── Face state ───────────────────────────────────────────────────────
+     aubie_listen.py writes face_state.json on every transition. Polled much
+     faster than the greeting (300ms vs 4s) because a listening indicator is
+     useless if it lags behind the conversation.
+
+     The staleness check is belt-and-braces: main()'s WAKE_BUSY finally-block
+     resets to idle on every exit path, but if the listener were killed
+     mid-conversation the file would freeze on "speaking" forever.
+     ------------------------------------------------------------------- */
+  const FACE_STATE_URL = 'face_state.json';
+  const STATE_MAX_AGE_MS = 45000;
+  const FACE_STATES = ['state-listening', 'state-thinking', 'state-speaking'];
+
+  let mouthTimer = null;
+
+  function applyFaceState(state) {
+    const ring = document.getElementById('greet-ring');
+    if (!ring) return;
+
+    FACE_STATES.forEach(c => ring.classList.remove(c));
+    if (state !== 'idle') ring.classList.add('state-' + state);
+
+    // Talking mouth: flap mouth-open on a timer while speaking, and clear it
+    // the moment we stop so the mouth never freezes open.
+    if (state === 'speaking') {
+      if (!mouthTimer) {
+        mouthTimer = setInterval(() => ring.classList.toggle('mouth-open'), 160);
+      }
+    } else if (mouthTimer) {
+      clearInterval(mouthTimer);
+      mouthTimer = null;
+      ring.classList.remove('mouth-open');
+    }
+  }
+
+  async function pollFaceState() {
+    try {
+      const resp = await fetch(FACE_STATE_URL + '?t=' + Date.now(), {cache: 'no-store'});
+      if (!resp.ok) return;
+      const data = await resp.json();
+      const ageMs = Date.now() - (data.timestamp * 1000);
+      applyFaceState(ageMs > STATE_MAX_AGE_MS ? 'idle' : (data.state || 'idle'));
+    } catch (e) {
+      // Missing before the first conversation, or a partial read while Python
+      // is mid-write. Both normal - leave the face as it is.
+    }
+  }
+
+  setInterval(pollFaceState, 300);
   pollGreetStatus();
 
   // Special "just for Gabriela" celebration: face dances + a burst of
