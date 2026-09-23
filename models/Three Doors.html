@@ -1,0 +1,725 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Three Doors</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<style>
+:root {
+  --bg: #0B0D14;
+  --surface: #111420;
+  --surface-raised: #181C2C;
+  --border: #1E2438;
+  --border-sub: #161929;
+
+  --text-primary: #D4D8E8;
+  --text-secondary: #5A607A;
+  --text-muted: #2E3348;
+
+  --mounted: #22C55E;
+  --unmounted: #2A2F44;
+
+  --accent: #B57BFF;
+  --accent-dim: rgba(181,123,255,0.13);
+  --accent-subtle: rgba(181,123,255,0.06);
+
+  --personal: #F5A623;
+  --personal-dim: rgba(245,166,35,0.13);
+  --personal-sub: rgba(245,166,35,0.06);
+
+  --institute: #1DE9B6;
+  --institute-dim: rgba(29,233,182,0.13);
+  --institute-sub: rgba(29,233,182,0.06);
+
+  --vanhorn: #B57BFF;
+  --vanhorn-dim: rgba(181,123,255,0.13);
+  --vanhorn-sub: rgba(181,123,255,0.06);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #EDEEF3;
+    --surface: #F5F6FA;
+    --surface-raised: #FFFFFF;
+    --border: #DDE0EE;
+    --border-sub: #E8EAF2;
+    --text-primary: #12152A;
+    --text-secondary: #7078A0;
+    --text-muted: #B4BAD0;
+    --mounted: #16A34A;
+    --unmounted: #C4C9DE;
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg: #0B0D14;
+  --surface: #111420;
+  --surface-raised: #181C2C;
+  --border: #1E2438;
+  --border-sub: #161929;
+  --text-primary: #D4D8E8;
+  --text-secondary: #5A607A;
+  --text-muted: #2E3348;
+  --mounted: #22C55E;
+  --unmounted: #2A2F44;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.app {
+  display: flex;
+  height: 100%;
+  max-height: 100dvh;
+}
+
+/* ─── SIDEBAR ─── */
+
+.sidebar {
+  width: 224px;
+  min-width: 224px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-head {
+  padding: 18px 16px 14px;
+  border-bottom: 1px solid var(--border-sub);
+}
+
+.rig-eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 3px;
+}
+
+.rig-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.ws-list {
+  flex: 1;
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ws-btn {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 16px;
+  border-left: 3px solid transparent;
+  transition: background 0.12s ease;
+  position: relative;
+}
+
+.ws-btn:hover { background: var(--border-sub); }
+
+.ws-btn.active {
+  border-left-color: var(--ws-accent);
+  background: var(--ws-dim);
+}
+
+.ws-pip {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ws-accent);
+  flex-shrink: 0;
+  opacity: 0.35;
+  transition: opacity 0.12s;
+}
+
+.ws-btn.active .ws-pip { opacity: 1; }
+
+.ws-meta { min-width: 0; }
+
+.ws-name {
+  font-family: 'Syne', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.ws-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mount panel */
+.mount-panel {
+  border-top: 1px solid var(--border-sub);
+  padding: 12px 16px 16px;
+}
+
+.mount-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 9px;
+}
+
+.mount-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 0;
+}
+
+.mount-pip {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.mount-pip.on { background: var(--mounted); }
+.mount-pip.off { background: var(--unmounted); }
+
+.mount-path {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mount-row.on .mount-path { color: var(--text-primary); }
+
+/* ─── CHAT AREA ─── */
+
+.chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* Top bar */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 22px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.topbar-rail {
+  width: 3px;
+  height: 30px;
+  border-radius: 2px;
+  background: var(--accent);
+  flex-shrink: 0;
+  transition: background 0.2s ease;
+}
+
+.topbar-info { flex: 1; min-width: 0; }
+
+.topbar-ws {
+  font-family: 'Syne', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.topbar-entity {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.model-chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 4px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  flex-shrink: 0;
+  white-space: nowrap;
+  transition: background 0.2s, color 0.2s;
+}
+
+/* System card */
+.sys-card {
+  margin: 14px 22px 0;
+  padding: 10px 13px;
+  border-radius: 6px;
+  background: var(--accent-subtle);
+  border: 1px solid var(--accent-dim);
+  display: flex;
+  gap: 12px;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.sys-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  white-space: nowrap;
+  padding-top: 1px;
+  opacity: 0.75;
+  transition: color 0.2s;
+}
+
+.sys-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+
+/* Messages */
+.msgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 22px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.msgs::-webkit-scrollbar { width: 3px; }
+.msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.msg {
+  display: flex;
+  gap: 11px;
+  max-width: 680px;
+}
+
+.msg.user {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.avatar {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: 1px;
+}
+
+.avatar.ai {
+  background: var(--accent-dim);
+  color: var(--accent);
+  transition: background 0.2s, color 0.2s;
+}
+
+.avatar.human {
+  background: var(--border);
+  color: var(--text-secondary);
+}
+
+.msg-col { display: flex; flex-direction: column; gap: 3px; }
+
+.bubble {
+  padding: 9px 13px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+
+.msg.ai .bubble {
+  background: var(--surface-raised);
+  border-top-left-radius: 2px;
+}
+
+.msg.user .bubble {
+  background: var(--accent-dim);
+  border-top-right-radius: 2px;
+  transition: background 0.2s;
+}
+
+.ts {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--text-muted);
+}
+
+.msg.user .ts { text-align: right; }
+
+/* Input */
+.input-area {
+  padding: 14px 22px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.input-wrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  transition: border-color 0.15s;
+}
+
+.input-wrap:focus-within { border-color: var(--accent); }
+
+textarea.field {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px;
+  line-height: 1.55;
+  resize: none;
+  min-height: 21px;
+  max-height: 110px;
+}
+
+textarea.field::placeholder { color: var(--text-muted); }
+
+.send {
+  all: unset;
+  cursor: pointer;
+  width: 27px;
+  height: 27px;
+  border-radius: 6px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.2s, opacity 0.15s;
+}
+
+.send:hover { opacity: 0.82; }
+.send:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.input-foot {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 2px 0;
+}
+
+.foot-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+
+.foot-ein {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  color: var(--accent);
+  opacity: 0.55;
+  transition: color 0.2s;
+}
+
+/* Responsive */
+@media (max-width: 580px) {
+  .sidebar { display: none; }
+  .topbar, .msgs, .input-area { padding-inline: 16px; }
+  .sys-card { margin-inline: 16px; }
+}
+</style>
+
+<div class="app">
+  <aside class="sidebar">
+    <div class="sidebar-head">
+      <div class="rig-eyebrow">aubie-rig · local</div>
+      <div class="rig-title">Three Doors</div>
+    </div>
+    <div class="ws-list" id="wsList"></div>
+    <div class="mount-panel">
+      <div class="mount-label">Memory mounts</div>
+      <div id="mountList"></div>
+    </div>
+  </aside>
+
+  <main class="chat">
+    <div class="topbar">
+      <div class="topbar-rail" id="rail"></div>
+      <div class="topbar-info">
+        <div class="topbar-ws" id="topWs"></div>
+        <div class="topbar-entity" id="topEntity"></div>
+      </div>
+      <div class="model-chip" id="modelChip"></div>
+    </div>
+
+    <div class="sys-card" id="sysCard">
+      <div class="sys-tag" id="sysTag">system</div>
+      <div class="sys-text" id="sysText"></div>
+    </div>
+
+    <div class="msgs" id="msgs"></div>
+
+    <div class="input-area">
+      <div class="input-wrap">
+        <textarea class="field" id="field" placeholder="Message…" rows="1" aria-label="Message input"></textarea>
+        <button class="send" id="sendBtn" aria-label="Send message">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+            <path d="M0.5 12L12.5 6.5L0.5 1V5L8.5 6.5L0.5 8V12Z" fill="white"/>
+          </svg>
+        </button>
+      </div>
+      <div class="input-foot">
+        <span class="foot-hint" id="footHint"></span>
+        <span class="foot-ein" id="footEin"></span>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+const WS = [
+  {
+    id: 'personal',
+    name: 'Personal',
+    sub: 'grok · private',
+    accent: '#F5A623',
+    dim: 'rgba(245,166,35,0.13)',
+    sub2: 'rgba(245,166,35,0.06)',
+    entity: 'Matthew VanHorn (personal)',
+    model: 'grok-4 · xAI',
+    sys: 'Personal assistant. Read ~/grok/memory.md for context on family, personal goals, and home. Never read /srv/institute or /srv/vanhorn. Keep this context private.',
+    mounted: ['~/grok/memory.md'],
+    unmounted: ['/srv/institute/memory.md', '/srv/vanhorn/memory.md'],
+    msgs: [
+      { r:'user', t:"What's left on my to-do before Aubie's vet appointment?", ts:'9:12 AM' },
+      { r:'ai',   t:"From your memory — vet is Dr. Kern at Gulf Coast Animal Clinic. You noted to confirm the heartworm test is included in the wellness visit. Appointment is Thursday at 2 PM. Want a reminder for Wednesday night?", ts:'9:12 AM' },
+      { r:'user', t:'Yeah, 8 PM Wednesday.', ts:'9:13 AM' },
+      { r:'ai',   t:"Done — reminder set: 'Aubie vet tomorrow 2 PM — confirm heartworm test.' Anything else for Thursday?", ts:'9:13 AM' },
+    ]
+  },
+  {
+    id: 'institute',
+    name: 'Institute',
+    sub: 'N26000008523 · nonprofit',
+    accent: '#1DE9B6',
+    dim: 'rgba(29,233,182,0.13)',
+    sub2: 'rgba(29,233,182,0.06)',
+    entity: 'AUBIEETERNAL INSTITUTE, INC. · EIN 42-3145820',
+    model: 'qwen3:32b · ollama',
+    sys: 'You are the AUBIEETERNAL Institute assistant. Read /srv/institute/memory.md only — school context, student records, DOE. Never read /srv/vanhorn or ~/grok/memory.md. Institute EIN 42-3145820 stays here; it never appears on a Vanhorn invoice.',
+    mounted: ['/srv/institute/memory.md'],
+    unmounted: ['~/grok/memory.md', '/srv/vanhorn/memory.md'],
+    msgs: [
+      { r:'user', t:"Where are we on the do_not_drag School course handoff?", ts:'11:04 AM' },
+      { r:'ai',   t:'HANDOFF_DO_NOT_DRAG_CLASS.md was reviewed and confirmed internally consistent last session. Implementation status is unclear — the handoff doc exists in the repo but no build has been picked up yet. Want me to scope the first concrete step?', ts:'11:04 AM' },
+      { r:'user', t:"Yes, let's scope step one.", ts:'11:05 AM' },
+      { r:'ai',   t:"First step from the handoff: stand up the course data schema in /school/courses/truth_systems/. The doc expects a JSON structure — tracks, lessons, completion flags. Single file, no UI changes required yet. ~20 minutes. Want me to draft it?", ts:'11:05 AM' },
+    ]
+  },
+  {
+    id: 'vanhorn',
+    name: 'VanHorn Org',
+    sub: 'P22000021621 · d/b/a AUBIEETERNAL',
+    accent: '#B57BFF',
+    dim: 'rgba(181,123,255,0.13)',
+    sub2: 'rgba(181,123,255,0.06)',
+    entity: 'The Vanhorn Organization Inc. d/b/a AUBIEETERNAL · EIN 88-1390433',
+    model: 'qwen3:32b · ollama',
+    sys: 'You are ops for The Vanhorn Organization Inc. d/b/a AUBIEETERNAL. Read /srv/vanhorn/memory.md for clients, rates, active gigs, and Casa Azul B&B ops. Never read /srv/institute or ~/grok/memory.md. Invoices use EIN 88-1390433 only — never 42-3145820.',
+    mounted: ['/srv/vanhorn/memory.md'],
+    unmounted: ['~/grok/memory.md', '/srv/institute/memory.md'],
+    msgs: [
+      { r:'user', t:"Draft invoice for Casa Azul September maintenance contract.", ts:'2:30 PM' },
+      { r:'ai',   t:"From /srv/vanhorn/memory.md — Casa Azul rate is $850/month for property ops and AI tooling maintenance. Billing: The Vanhorn Organization Inc., EIN 88-1390433. Any additional line items this month?", ts:'2:30 PM' },
+      { r:'user', t:"Add 3 hours on-call support at standard rate.", ts:'2:31 PM' },
+      { r:'ai',   t:"Added. On-call rate $95/hr × 3 hrs = $285. Invoice total: $1,135. Generate PDF to /srv/vanhorn/invoices/2026-09-casaazul.pdf?", ts:'2:31 PM' },
+    ]
+  }
+];
+
+let active = 'vanhorn';
+
+function ws(id) { return WS.find(w => w.id === id); }
+
+function setVars(w) {
+  const r = document.documentElement;
+  r.style.setProperty('--accent', w.accent);
+  r.style.setProperty('--accent-dim', w.dim);
+  r.style.setProperty('--accent-subtle', w.sub2);
+}
+
+function renderSidebar() {
+  const cur = ws(active);
+
+  document.getElementById('wsList').innerHTML = WS.map(w => `
+    <button class="ws-btn ${w.id === active ? 'active' : ''}"
+            data-id="${w.id}"
+            style="--ws-accent:${w.accent};--ws-dim:${w.dim};"
+            aria-pressed="${w.id === active}">
+      <span class="ws-pip" style="background:${w.accent};"></span>
+      <span class="ws-meta">
+        <span class="ws-name">${w.name}</span>
+        <span class="ws-sub">${w.sub}</span>
+      </span>
+    </button>
+  `).join('');
+
+  const allPaths = ['~/grok/memory.md', '/srv/institute/memory.md', '/srv/vanhorn/memory.md'];
+  document.getElementById('mountList').innerHTML = allPaths.map(p => {
+    const on = cur.mounted.includes(p);
+    return `
+      <div class="mount-row ${on ? 'on' : ''}">
+        <div class="mount-pip ${on ? 'on' : 'off'}"></div>
+        <div class="mount-path">${p}</div>
+      </div>
+    `;
+  }).join('');
+
+  document.querySelectorAll('.ws-btn').forEach(b =>
+    b.addEventListener('click', () => switchTo(b.dataset.id))
+  );
+}
+
+function renderTopbar() {
+  const w = ws(active);
+  document.getElementById('rail').style.background = w.accent;
+  document.getElementById('topWs').textContent = w.name;
+  document.getElementById('topEntity').textContent = w.entity;
+  const chip = document.getElementById('modelChip');
+  chip.textContent = w.model;
+  chip.style.cssText = `background:${w.dim};color:${w.accent};`;
+}
+
+function renderSysCard() {
+  const w = ws(active);
+  const card = document.getElementById('sysCard');
+  card.style.background = w.sub2;
+  card.style.borderColor = w.dim;
+  document.getElementById('sysTag').style.color = w.accent;
+  document.getElementById('sysText').textContent = w.sys;
+}
+
+function renderMsgs() {
+  const w = ws(active);
+  const init = w.id === 'vanhorn' ? w.id[0].toUpperCase() : w.name[0];
+  document.getElementById('msgs').innerHTML = w.msgs.map(m => `
+    <div class="msg ${m.r}">
+      <div class="avatar ${m.r === 'ai' ? 'ai' : 'human'}"
+           style="${m.r === 'ai' ? `background:${w.dim};color:${w.accent};` : ''}"
+           aria-hidden="true">
+        ${m.r === 'ai' ? init : 'M'}
+      </div>
+      <div class="msg-col">
+        <div class="bubble" style="${m.r === 'user' ? `background:${w.dim};` : ''}">${m.t}</div>
+        <div class="ts">${m.ts}</div>
+      </div>
+    </div>
+  `).join('');
+  const c = document.getElementById('msgs');
+  c.scrollTop = c.scrollHeight;
+}
+
+function renderInput() {
+  const w = ws(active);
+  const hints = {
+    personal: 'grok-4 · personal memory only',
+    institute: 'qwen3 · institute memory only',
+    vanhorn: 'qwen3 · vanhorn memory only'
+  };
+  const eins = {
+    personal: '',
+    institute: 'EIN 42-3145820',
+    vanhorn: 'EIN 88-1390433'
+  };
+  document.getElementById('footHint').textContent = hints[w.id];
+  const ein = document.getElementById('footEin');
+  ein.textContent = eins[w.id];
+  ein.style.color = w.accent;
+  document.getElementById('sendBtn').style.background = w.accent;
+}
+
+function switchTo(id) {
+  active = id;
+  setVars(ws(id));
+  renderSidebar();
+  renderTopbar();
+  renderSysCard();
+  renderMsgs();
+  renderInput();
+}
+
+// Boot
+switchTo(active);
+
+// Textarea auto-height
+const field = document.getElementById('field');
+field.addEventListener('input', () => {
+  field.style.height = 'auto';
+  field.style.height = Math.min(field.scrollHeight, 110) + 'px';
+});
+
+// Send (visual only in mockup)
+document.getElementById('sendBtn').addEventListener('click', () => {
+  if (!field.value.trim()) return;
+  const w = ws(active);
+  const msgs = document.getElementById('msgs');
+  const bubble = document.createElement('div');
+  bubble.className = 'msg user';
+  bubble.innerHTML = `
+    <div class="avatar human" aria-hidden="true">M</div>
+    <div class="msg-col">
+      <div class="bubble" style="background:${w.dim};">${field.value.trim()}</div>
+      <div class="ts">now</div>
+    </div>
+  `;
+  msgs.appendChild(bubble);
+  field.value = '';
+  field.style.height = 'auto';
+  msgs.scrollTop = msgs.scrollHeight;
+});
+</script>
+
+</body></html>
