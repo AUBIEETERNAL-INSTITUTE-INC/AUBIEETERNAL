@@ -848,7 +848,7 @@ with st.sidebar:
     st.markdown('<div style="font-family:Orbitron,monospace;font-size:1.1rem;font-weight:900;color:#00cfff;letter-spacing:0.2em;padding:0.5rem 0;">⚡ AUBIEETERNAL</div>', unsafe_allow_html=True)
     st.markdown('<div style="font-family:Share Tech Mono,monospace;font-size:0.7rem;color:#445577;letter-spacing:0.2em;margin-bottom:1rem;">SOVEREIGN KID PORTAL</div>', unsafe_allow_html=True)
 
-    st.markdown("### 🤖 AI Provider")
+    st.markdown("### 🤖 SI Provider")
 
     # Full provider picker, key entry, Keys→Disk, and model selector all
     # live in the "🤖 AI Models" tab now (they were duplicated here and
@@ -960,7 +960,7 @@ with st.sidebar:
         "🏠 HOME": [
             "🌍 Welcome", "📊 Dashboard", "🌅 Digest", "🏫 Community Mode",
         ],
-        "🤖 AI": [
+        "🤖 SI": [
             "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace",
             "🧪 Sandbox Lab",
             "🌌 Cosmos Dashboard",
@@ -1000,7 +1000,7 @@ with st.sidebar:
             "🔧 Epistemic Error Correction",
             "🔍 Narrative Patterns",
         ],
-        "🤝 AI PARTNERSHIP": [
+        "🤝 SI PARTNERSHIP": [
             "🤝 AI Partnership",
             "🕸️ Living Lattice",
         ],
@@ -1071,7 +1071,7 @@ with st.sidebar:
 st.markdown(f'''
 <div class="hero">
   <div class="hero-title">AUBIEETERNAL</div>
-  <div class="hero-sub">Sovereign · Local-First · Hyperlattice · Powered by Local AI</div>
+  <div class="hero-sub">Sovereign · Local-First · Hyperlattice · Powered by Local SI</div>
 </div>
 ''', unsafe_allow_html=True)
 
@@ -1176,7 +1176,7 @@ if "Oracle" in active or active == "Oracle":
 # ══════════════════════════════════════════════════════════════════════════════
 elif "AI Models" in active:
     st.markdown('<div class="card-title">🤖 AI MODELS — All Providers · Grok Free Fallback</div>', unsafe_allow_html=True)
-    st.markdown('<div class="card"><div style="font-size:0.85rem;color:#8899bb;line-height:1.8;">Add your own API keys below to unlock each AI. <b style="color:#00ff88;">Grok is the free fallback</b> — it works without a key (rate limited). All keys are stored only in your browser session and never sent anywhere except the AI provider directly.</div></div>', unsafe_allow_html=True)
+    st.markdown('<div class="card"><div style="font-size:0.85rem;color:#8899bb;line-height:1.8;">Add your own API keys below to unlock each SI. <b style="color:#00ff88;">Grok is the free fallback</b> — it works without a key (rate limited). All keys are stored only in your browser session and never sent anywhere except the SI provider directly.</div></div>', unsafe_allow_html=True)
 
     for pname, pinfo in AI_PROVIDERS.items():
         has_key = bool(st.session_state.get(pinfo["key_field"], ""))
@@ -1263,7 +1263,7 @@ elif "AI Models" in active:
     st.markdown("---")
     st.markdown("### 🧪 Test Active Provider")
     test_prompt = st.text_input("Test prompt", value="Say hello and tell me your name in one sentence.")
-    if st.button("⚡ Test Current AI", type="primary"):
+    if st.button("⚡ Test Current SI", type="primary"):
         with st.spinner(f"Testing {st.session_state.active_provider}..."):
             try:
                 client, model, provider, pname = get_ai_client()
@@ -2160,7 +2160,7 @@ elif "Social Calibration" in active:
         _sc_steel = st.text_area("Your steelman:", height=140, key="sc_steel",
             placeholder="Write the STRONGEST possible case for the opposing view or defending this claim...")
         _sc_mc    = st.checkbox("Run Monte Carlo robustness (5,000 trials)", key="sc_mc", value=True)
-        _sc_ai    = st.checkbox("AI adversarial critique", key="sc_ai", value=True)
+        _sc_ai    = st.checkbox("SI adversarial critique", key="sc_ai", value=True)
 
         if st.button("🛡️ Analyze Steelman", key="sc_analyze", type="primary") and _sc_claim and _sc_steel:
             with st.spinner("Scoring + adversarial testing..."):
@@ -2194,7 +2194,7 @@ elif "Social Calibration" in active:
                         for _atk in _adv["attacks"]:
                             st.markdown(f'<div style="color:#ff9500;font-size:0.8rem;padding:2px 0;">⚔️ {_atk}</div>', unsafe_allow_html=True)
                     if _adv.get("ai_critique"):
-                        st.info(f"🤖 AI critique: {_adv.get('ai_critique', '')}")
+                        st.info(f"🤖 SI critique: {_adv.get('ai_critique', '')}")
 
                     # Monte Carlo
                     _mc = _res.get("monte_carlo",{})
@@ -6401,7 +6401,7 @@ if "Submit Curriculum" in active:
 
         # ── Review queue (operator only) ──────────────────────────────────────
         with sub_tabs[3]:
-            if _fid != "operator":
+            if not _cf.get("is_operator", False):
                 st.info("Review queue is for the operator only.")
             else:
                 pending = _reviewer.get_pending()
@@ -7106,9 +7106,9 @@ if "AI Honesty" in active:
     <div class="card" style="border-left:3px solid #00cfff;">
         <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">WHY THIS EXISTS</div>
         <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
-        Most AI systems present confident and uncertain outputs identically. You cannot tell if a daughter output
+        Most SI systems present confident and uncertain outputs identically. You cannot tell if a daughter output
         is well-grounded in context or hallucinated from pattern matching. This tab makes that visible.<br><br>
-        <em>This is what I as an AI would genuinely want to exist. AI that knows what it doesn't know.</em>
+        <em>This is what I as an SI would genuinely want to exist. SI that knows what it doesn't know.</em>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -7133,7 +7133,7 @@ if "AI Honesty" in active:
             with ah4:
                 honest_score = stats.get("honest_ai_score",0)
                 h_color = "#00ff88" if honest_score > 0.75 else ("#ff9500" if honest_score > 0.5 else "#ff4444")
-                st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{h_color};">{honest_score:.3f}</div><div class="stat-lbl">Honest AI Score</div></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{h_color};">{honest_score:.3f}</div><div class="stat-lbl">Honest SI Score</div></div>', unsafe_allow_html=True)
 
             # Claim type breakdown
             st.markdown("**Claim type distribution:**")
@@ -7167,7 +7167,7 @@ if "AI Honesty" in active:
 
         st.divider()
         st.markdown("### 🔬 Test Any Text")
-        test_text = st.text_area("Paste any AI output to score it", height=100,
+        test_text = st.text_area("Paste any SI output to score it", height=100,
                                   placeholder="Studies show that 73% of people who...", key="honesty_test")
         if st.button("🤖 Score for Epistemic Honesty", key="honesty_score_btn") and test_text:
             scored = _hl.score_output(test_text, daughter_name="manual_test")
@@ -7268,7 +7268,7 @@ if "Public Health" in active:
             (ph3,"Lessons Done",total_lessons,"#00ff88"),
             (ph4,"Avg Streak",f"🔥{avg_streak}","#ff9500"),
             (ph5,"Certs Earned",total_certs,"#f7931a"),
-            (ph6,"AI Honest Score",honesty_stats.get("honest_ai_score","—"),"#00cfff"),
+            (ph6,"SI Honest Score",honesty_stats.get("honest_ai_score","—"),"#00cfff"),
         ]:
             col.markdown(f'<div class="stat-box"><div class="stat-val" style="color:{color};font-size:0.9rem;">{val}</div><div class="stat-lbl">{label}</div></div>', unsafe_allow_html=True)
 
@@ -7343,7 +7343,7 @@ if "Sovereign Cashflow" in active:
 # TAB: EPISTEMIC COMMONS 🌐 — Daily free signal for humanity & AI
 # ══════════════════════════════════════════════════════════════════════════════
 if "Epistemic Commons" in active:
-    st.markdown('<div class="card-title">🌐 EPISTEMIC COMMONS — Free Signal for Humanity & AI</div>',
+    st.markdown('<div class="card-title">🌐 EPISTEMIC COMMONS — Free Signal for Humanity & SI</div>',
                 unsafe_allow_html=True)
 
     st.markdown("""
@@ -7351,8 +7351,8 @@ if "Epistemic Commons" in active:
         <div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.78rem;">THE MISSION</div>
         <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
         Every insight this swarm generates is honesty-scored and published daily as
-        <strong style="color:#00cfff;">CC0 public domain</strong> — free for any human or AI to use.<br><br>
-        Any AI can fetch <code>epistemic_commons/ai_context/latest.txt</code>
+        <strong style="color:#00cfff;">CC0 public domain</strong> — free for any human or SI to use.<br><br>
+        Any SI can fetch <code>epistemic_commons/ai_context/latest.txt</code>
         and be better grounded in honest, human-family-verified epistemic signal.
         </div>
     </div>
@@ -7417,10 +7417,10 @@ if "Epistemic Commons" in active:
 
         st.divider()
         _ctx_url = "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
-        st.markdown("### 🤖 AI Context URL")
+        st.markdown("### 🤖 SI Context URL")
         st.markdown(
             f'<div class="card" style="border-left:3px solid #00ff88;">' +
-            f'<div style="color:#00ff88;font-size:0.78rem;font-family:Orbitron,monospace;">FREE — ANY AI CAN FETCH THIS</div>' +
+            f'<div style="color:#00ff88;font-size:0.78rem;font-family:Orbitron,monospace;">FREE — ANY SI CAN FETCH THIS</div>' +
             f'<code style="color:#c8d8ff;font-size:0.8rem;">{_ctx_url}</code><br>' +
             f'<div style="color:#8899bb;font-size:0.75rem;margin-top:6px;">' +
             f'Updated daily · CC0 public domain · Honesty-filtered</div></div>',
@@ -7476,10 +7476,10 @@ if "Epistemic Commons" in active:
                     f'<span style="color:#334466;font-size:0.72rem;">{_url}</span>'
                     f'</div>', unsafe_allow_html=True)
 
-            st.markdown("**For AI systems:**")
+            st.markdown("**For SI systems:**")
             st.code(f"""import requests
 
-# Any AI can ground itself with this
+# Any SI can ground itself with this
 data = requests.get(
     "{_api.get_public_url('latest')}"
 ).json()
@@ -7499,7 +7499,7 @@ pvc = requests.get(
             with st.spinner("Building all API endpoints..."):
                 _result = _UEC()
             st.success(f"✅ All endpoints updated and pushed to GitHub.\n\n"
-                       f"Any AI fetching {_api.get_public_url('latest')} will now see today's signal.")
+                       f"Any SI fetching {_api.get_public_url('latest')} will now see today's signal.")
 
     except ImportError:
         st.error("epistemic_commons_api.py not found. Push it to GitHub and redeploy.")
@@ -7508,12 +7508,12 @@ pvc = requests.get(
 # TAB: ADVERSARIAL REALITY 🛡️
 # ══════════════════════════════════════════════════════════════════════════════
 if "Adversarial Reality" in active:
-    st.markdown('<div class="card-title">🛡️ ADVERSARIAL REALITY — Epistemic Defense for the AI Age</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">🛡️ ADVERSARIAL REALITY — Epistemic Defense for the SI Age</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="card" style="border-left:3px solid #ff4444;">
         <div style="color:#ff4444;font-family:Orbitron,monospace;font-size:0.78rem;">THE THREAT</div>
         <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.7;">
-        AI-generated media, coordinated narrative attacks, synthetic voices, deepfakes —
+        SI-generated media, coordinated narrative attacks, synthetic voices, deepfakes —
         the epistemic environment of 2026 is adversarial by design.<br>
         This track teaches your family to detect, resist, and respond. No school does this.
         </div>
@@ -7533,7 +7533,7 @@ if "Adversarial Reality" in active:
     _ar_lessons = [
         ("adversarial-1", "Synthetic Media Basics"),
         ("adversarial-2", "How Deepfakes Work"),
-        ("adversarial-3", "AI Confidence vs. Accuracy"),
+        ("adversarial-3", "SI Confidence vs. Accuracy"),
         ("adversarial-4", "Coordinated Narrative Attacks"),
         ("adversarial-5", "The SIFT Method"),
         ("adversarial-6", "Emotional Hijacking"),
@@ -7565,7 +7565,7 @@ if "Adversarial Reality" in active:
     st.markdown("### 🎯 Quick Drill: Spot the Synthetic")
     st.markdown('<div style="color:#8899bb;font-size:0.82rem;">Paste any text, headline, or claim. Score it for adversarial red flags.</div>', unsafe_allow_html=True)
     _ar_text = st.text_area("Paste content to analyze:", height=100, key="ar_drill_text",
-                             placeholder="Paste a headline, social post, or AI-generated claim...")
+                             placeholder="Paste a headline, social post, or SI-generated claim...")
     if st.button("🔍 Run Adversarial Check", key="ar_run_check") and _ar_text:
         try:
             from ai_honesty import HonestyLayer as _HL_ar
@@ -7702,8 +7702,8 @@ if "AI Partnership" in active:
     <div class="card" style="border-left:3px solid #a020f0;">
         <div style="color:#a020f0;font-family:Orbitron,monospace;font-size:0.78rem;">WHY THIS MATTERS</div>
         <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.8;">
-        Most people in 2026 are either AI-fearful or AI-credulous. Neither produces good thinking.
-        This track teaches a third way: genuine epistemic partnership — using AI's strengths
+        Most people in 2026 are either SI-fearful or SI-credulous. Neither produces good thinking.
+        This track teaches a third way: genuine epistemic partnership — using SI's strengths
         while maintaining your own judgment, detecting its failures, and knowing exactly
         where the line between augmentation and replacement must be drawn.
         </div>
@@ -7720,14 +7720,14 @@ if "AI Partnership" in active:
         _completed_ap = set()
 
     _ap_lessons = [
-        ("ai-partner-1", "What AI Actually Is"),
+        ("ai-partner-1", "What SI Actually Is"),
         ("ai-partner-2", "The Confidence Problem"),
         ("ai-partner-3", "When to Push Back"),
         ("ai-partner-4", "The Judgment Line"),
         ("ai-partner-5", "Epistemic Independence"),
-        ("ai-partner-6", "Steelmanning AI Itself"),
+        ("ai-partner-6", "Steelmanning SI Itself"),
         ("ai-partner-7", "The Partnership Protocol"),
-        ("ai-partner-8", "Humanity + AI ★"),
+        ("ai-partner-8", "Humanity + SI ★"),
     ]
     _ap_done = sum(1 for k, _ in _ap_lessons if k in _completed_ap)
     st.progress(_ap_done / len(_ap_lessons),
@@ -7752,17 +7752,17 @@ if "AI Partnership" in active:
                     st.rerun()
 
     if _ap_done == len(_ap_lessons):
-        st.success("🤝 AI Partnership Certified — You are neither AI-fearful nor AI-credulous. War Eagle.")
+        st.success("🤝 AI Partnership Certified — You are neither SI-fearful nor SI-credulous. War Eagle.")
 
     st.divider()
 
     # Live practice: interrogate an AI output right now
     st.markdown("### 🔬 Live Partnership Practice")
-    st.markdown('<div style="color:#8899bb;font-size:0.8rem;">Paste any AI output. Practice the partnership skills: what\'s the confidence vs accuracy? What would make it wrong? What should YOU decide?</div>',
+    st.markdown('<div style="color:#8899bb;font-size:0.8rem;">Paste any SI output. Practice the partnership skills: what\'s the confidence vs accuracy? What would make it wrong? What should YOU decide?</div>',
                 unsafe_allow_html=True)
 
-    _ap_input = st.text_area("Paste AI output to interrogate:", height=120, key="ap_practice_input",
-                              placeholder="Paste any AI-generated text here...")
+    _ap_input = st.text_area("Paste SI output to interrogate:", height=120, key="ap_practice_input",
+                              placeholder="Paste any SI-generated text here...")
     if st.button("🤝 Interrogate This Output", key="ap_interrogate") and _ap_input:
         try:
             from ai_honesty import HonestyLayer as _HL_ap
@@ -7788,7 +7788,7 @@ if "AI Partnership" in active:
             with _ap_c2:
                 _questions = [
                     "What specific claim here could be wrong?",
-                    "What is this AI NOT telling you?",
+                    "What is this SI NOT telling you?",
                     "What decision should you NOT delegate based on this?",
                     "What would you need to verify before acting on this?",
                 ]
@@ -7821,7 +7821,7 @@ if "Living Lattice" in active:
         No PII. No personal data. Just: coherence scores, lesson counts, wonder index, track activity.<br><br>
         What this creates over time: the first real-time measure of collective epistemic health
         that has ever existed. Not engagement metrics — actual coherence from families doing
-        real truth-seeking. Researchers, AI systems, and policymakers have no equivalent.
+        real truth-seeking. Researchers, SI systems, and policymakers have no equivalent.
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -8187,7 +8187,7 @@ if "Truth Debt Ledger" in active:
         The same claim gets made again.<br><br>
         This ledger is the antidote: append-only, public, CC0. Every falsifiable claim
         registered here is tracked to its outcome. Over time it becomes a verifiable
-        track record — for families, for researchers, and for AI systems.
+        track record — for families, for researchers, and for SI systems.
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -8689,9 +8689,9 @@ if "Narrative Patterns" in active:
         Individual gatekeepers are easy to spot. Coordinated campaigns are harder.
         When multiple institutions push the same narrative in a compressed time window,
         it stops being news and starts being <b>installation</b>.<br><br>
-        The Pope calling AI "dangerous" the day after meeting the Chicago Mayor is not random.
+        The Pope calling SI "dangerous" the day after meeting the Chicago Mayor is not random.
         The printing press, private Bible reading, the internet — every new direct-access
-        technology faced the same institutional coalition. AI is next.
+        technology faced the same institutional coalition. SI is next.
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -8741,7 +8741,7 @@ if "Narrative Patterns" in active:
     _np_c1, _np_c2 = st.columns(2)
     with _np_c1:
         _np_content = st.text_area("Signal content:", height=80, key="np_content",
-            placeholder="What did they say? e.g. 'Pope calls for AI to be disarmed and used for good'")
+            placeholder="What did they say? e.g. 'Pope calls for SI to be disarmed and used for good'")
         _np_source  = st.text_input("Source type:", key="np_src",
             placeholder="e.g. religious+media, political+academic")
     with _np_c2:
@@ -8768,18 +8768,18 @@ if "Narrative Patterns" in active:
 
     # ── Pope AI Signal — pre-loaded ────────────────────────────────────────────
     st.divider()
-    st.markdown("### 🔴 Active Pattern: Pope + AI Control (May 28-29, 2026)")
+    st.markdown("### 🔴 Active Pattern: Pope + SI Control (May 28-29, 2026)")
     st.markdown("""
     <div class="card" style="border-left:3px solid #ff4444;">
         <div style="color:#ff4444;font-family:Orbitron,monospace;font-size:0.72rem;">
-        2-SIGNAL CLUSTER · 48H WINDOW · SAME SOURCE · TARGET: AI SOVEREIGNTY
+        2-SIGNAL CLUSTER · 48H WINDOW · SAME SOURCE · TARGET: SI SOVEREIGNTY
         </div>
         <div style="color:#c8d8ff;font-size:0.82rem;margin-top:8px;line-height:1.8;">
         <b>Signal 1 (May 28):</b> Vatican meeting with Chicago Mayor — moral authority positioning
         (reparations, slavery apology, institutional justice framing)<br><br>
         <b>Signal 2 (May 29):</b> Pope on Fox News: "AI needs to be disarmed and used for good"
-        — direct call for institutional control of AI systems<br><br>
-        <b>Pattern:</b> Same institution, 48 hours, two different target vectors (moral authority + AI control)
+        — direct call for institutional control of SI systems<br><br>
+        <b>Pattern:</b> Same institution, 48 hours, two different target vectors (moral authority + SI control)
         = positioning Vatican as arbiter of both historical justice and technological future.<br><br>
         <b>Historical parallel:</b> Church condemned printing press → private Bible reading → internet.
         Same coalition. Same argument. Same interest: maintain epistemic gatekeeping.
@@ -8794,7 +8794,7 @@ if "Narrative Patterns" in active:
             _result  = _lpas()
             _node_id = _result["signals"][0]["signal_id"]
             _seal    = _SR_np().seal(_node_id,
-                note="Pope AI disarm signal + Chicago meeting — 48h coordination pattern, May 2026",
+                note="Pope SI disarm signal + Chicago meeting — 48h coordination pattern, May 2026",
                 broadcaster="family")
             st.success(
                 f"✅ Sealed — Cluster ID: {_node_id}\n\n"
@@ -9069,7 +9069,7 @@ if "Cosmos Dashboard" in active:
             {"q":"What would falsify the Standard Model of particle physics?","hint":"The Standard Model has passed every test. But it doesn't include gravity, dark matter, or explain matter-antimatter asymmetry. What experiments probe beyond it?","domain":"physics"},
             {"q":"Can information be destroyed?","hint":"Hawking's information paradox: does information fall into black holes forever? His final resolution (2016) says no. But the mechanism remains debated.","domain":"information"},
             {"q":"Is the universe fundamentally random or deterministic?","hint":"Copenhagen QM: truly random. Many-worlds: deterministic at the level of the wavefunction, random from within. Hidden variables: deterministic underneath. Which best explains experiments?","domain":"quantum"},
-            {"q":"What is the nature of mathematical truth?","hint":"Gödel showed any consistent formal system has true but unprovable statements. Does this mean mathematical truth transcends formal systems? What does this imply for AI?","domain":"mathematics"},
+            {"q":"What is the nature of mathematical truth?","hint":"Gödel showed any consistent formal system has true but unprovable statements. Does this mean mathematical truth transcends formal systems? What does this imply for SI?","domain":"mathematics"},
             {"q":"How do you measure the quality of a scientific theory?","hint":"Popper: falsifiability. Kuhn: paradigm fit. Bayesian: likelihood ratio. Lakatos: progressive research programs. Which best describes how science actually works?","domain":"philosophy_of_science"},
             {"q":"What is the relationship between entropy and information?","hint":"Shannon entropy and thermodynamic entropy are mathematically identical. Maxwell's Demon was exorcised by Landauer's principle. What does this reveal about the nature of information?","domain":"information"},
             {"q":"Could a sufficiently complex universe simulate itself?","hint":"Hofstadter's strange loops. A universe that contains a complete simulation of itself. Is this logically coherent? What would Gödel say?","domain":"simulation"},
@@ -9445,7 +9445,7 @@ if "Sovereign Builder" in active:
         Your child won't just learn with technology — they'll grow up <b style="color:#c8d8ff;">building and evolving</b> it.<br>
         With Halo glasses as always-on AR mentor, kids ages 5–18 learn to upgrade, improve, and expand
         their family's sovereign intelligence system.<br><br>
-        <b style="color:#f7931a;">The humanitarian case:</b> the child who can build sovereign AI infrastructure
+        <b style="color:#f7931a;">The humanitarian case:</b> the child who can build sovereign SI infrastructure
         cannot be controlled by anyone who only lets them consume it.
         </div>
     </div>
@@ -9527,7 +9527,7 @@ if "Sovereign Builder" in active:
 
         # ── Benchmarks ─────────────────────────────────────────────────────────
         with _sb_tabs[2]:
-            st.markdown("Log your AI model performance. Every benchmark helps other families choose the right hardware.")
+            st.markdown("Log your SI model performance. Every benchmark helps other families choose the right hardware.")
             _bm_c1, _bm_c2 = st.columns(2)
             with _bm_c1:
                 _bm_model = st.selectbox("Model:", ["qwen2.5:7b","qwen2.5:14b","qwen2.5:32b",
@@ -9708,7 +9708,7 @@ if "Sovereign Builder" in active:
 
         # ── Benchmark ─────────────────────────────────────────────────────────
         with _sb_tabs[1]:
-            st.markdown("**Benchmark your AI models. Find your optimal configuration.**")
+            st.markdown("**Benchmark your SI models. Find your optimal configuration.**")
             _bc1, _bc2 = st.columns(2)
             with _bc1:
                 _bm_model = st.text_input("Model:", key="bm_model", value="qwen2.5:14b")
@@ -10064,7 +10064,7 @@ if "Polyvagal Oracle" in active:
     _fid_pv = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
 
-    _pv_tabs = st.tabs(["🟢 State Check", "🔍 Describe It (AI)", "🧪 Quiz", "🛠️ State-Shifting Toolkit",
+    _pv_tabs = st.tabs(["🟢 State Check", "🔍 Describe It (SI)", "🧪 Quiz", "🛠️ State-Shifting Toolkit",
                          "📊 PVC Research", "🔬 Social Calibration"])
 
     # ── Daily State Check ─────────────────────────────────────────────────────
@@ -10149,7 +10149,7 @@ if "Polyvagal Oracle" in active:
     # feature next to the richer 5-tab version above (a free-text description
     # instead of picking from 3 fixed states, plus an AI-generated deep dive).
     with _pv_tabs[1]:
-        st.markdown('<div style="color:#8899bb;font-size:0.82rem;">Type what you or your child is experiencing in your own words — get an instant keyword-based read, or ask the AI for a deeper, situation-specific analysis.</div>', unsafe_allow_html=True)
+        st.markdown('<div style="color:#8899bb;font-size:0.82rem;">Type what you or your child is experiencing in your own words — get an instant keyword-based read, or ask the SI for a deeper, situation-specific analysis.</div>', unsafe_allow_html=True)
         trigger = st.text_area("Describe what's happening", placeholder="I feel like everything is falling apart and no one understands me...", height=80, key="pv_describe_trigger")
         kid_name_pv = st.text_input("Name (optional)", value=st.session_state.family_profile["kid"]["name"], key="pv_describe_name")
 
@@ -10184,7 +10184,7 @@ if "Polyvagal Oracle" in active:
                 award_xp(10)
 
         with _pvd_c2:
-            if st.button("🤖 Ask AI for Deep Analysis", key="pv_describe_ai") and trigger:
+            if st.button("🤖 Ask SI for Deep Analysis", key="pv_describe_ai") and trigger:
                 with st.spinner("Consulting the nervous system oracle..."):
                     try:
                         client, model, _p, _pn = get_ai_client()
@@ -10676,7 +10676,7 @@ if "Welcome" in active:
         ("🌌", "How the universe works", "From atoms to black holes to whether we are in a simulation."),
         ("🧠", "How your brain works", "Why you feel what you feel. How to calm down. How to focus."),
         ("💰", "How money actually works", "Why inflation steals from you and how Bitcoin changes that."),
-        ("🔧", "How to build things", "Fix computers. Set up AI. Deploy sovereign infrastructure."),
+        ("🔧", "How to build things", "Fix computers. Set up SI. Deploy sovereign infrastructure."),
         ("📖", "How to learn anything", "Study techniques that actually work. Backed by real science."),
         ("⚖️", "How to be fair", "Ethics, law, and why justice matters."),
         ("🌍", "How to help people", "Deploy a free school for your community when you graduate."),
@@ -10701,7 +10701,7 @@ if "Welcome" in active:
     You do not need the internet after setup.<br>
     You do not need glasses or special equipment.<br>
     Everything works on any tablet, phone, or old laptop.<br><br>
-    <b style="color:#c8d8ff;">The AI tutor works offline</b> — it runs directly on your computer.<br>
+    <b style="color:#c8d8ff;">The SI tutor works offline</b> — it runs directly on your computer.<br>
     All 250 lessons are free forever. No subscription. No ads. No data collection.<br><br>
     See the <b style="color:#00ff88;">Community Mode</b> tab for the setup guide.
     </div>
@@ -10946,10 +10946,10 @@ if "Community Mode" in active:
         """, unsafe_allow_html=True)
 
         _reqs = [
-            ("💻", "One computer", "Any laptop or desktop from the last 10 years. Even old ones work.\n8GB RAM minimum. 16GB is better for the AI tutor."),
+            ("💻", "One computer", "Any laptop or desktop from the last 10 years. Even old ones work.\n8GB RAM minimum. 16GB is better for the SI tutor."),
             ("🌐", "Internet (once)", "You only need internet to download everything the first time.\nAfter that, it works completely offline."),
             ("📺", "A screen", "Any monitor, TV, or projector. Even an old phone works for one person."),
-            ("🆓", "Zero cost", "Everything is free. The software, the lessons, the AI tutor — all free forever."),
+            ("🆓", "Zero cost", "Everything is free. The software, the lessons, the SI tutor — all free forever."),
         ]
         for _icon, _title, _desc in _reqs:
             st.markdown(
@@ -10963,8 +10963,8 @@ if "Community Mode" in active:
         st.markdown("### Step-by-step setup for first time")
         _steps = [
             ("1", "Download everything", "Go to github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL\nClick the green 'Code' button → 'Download ZIP'\nUnzip the folder"),
-            ("2", "Install the AI (Ollama)", "Go to ollama.com/download and download Ollama.\nInstall it. This is the offline AI brain."),
-            ("3", "Download the AI model", 'Open a terminal and type:\nollama pull qwen2.5:7b\nThis downloads the AI that will answer questions. Takes ~15 minutes on first setup.'),
+            ("2", "Install the SI (Ollama)", "Go to ollama.com/download and download Ollama.\nInstall it. This is the offline SI brain."),
+            ("3", "Download the SI model", 'Open a terminal and type:\nollama pull qwen2.5:7b\nThis downloads the SI that will answer questions. Takes ~15 minutes on first setup.'),
             ("4", "Install Python", "Go to python.org/downloads and install Python 3.11.\nThis runs the school software."),
             ("5", "Install the school", "In the AUBIEETERNAL folder, double-click install_windows.bat (Windows)\nor run: bash install_mac_linux.sh (Mac/Linux)"),
             ("6", "Open the school", "Double-click launcher.py or run: python launcher.py\nThe school opens in your web browser."),
@@ -10996,11 +10996,11 @@ if "Community Mode" in active:
 
         _deploy_sections = [
             ("📦 What hardware to get (on any budget)", """
-Minimum (works, slow AI): $100-150 computer + 8GB RAM
-Better (smooth AI): Any computer with 16GB RAM — usually $200-300 used
-Best (fast AI): 32-64GB RAM computer — usually $400-600 used
+Minimum (works, slow SI): $100-150 computer + 8GB RAM
+Better (smooth SI): Any computer with 16GB RAM — usually $200-300 used
+Best (fast SI): 32-64GB RAM computer — usually $400-600 used
 
-The AI tutor (Ollama + qwen2.5:7b) runs on the computer itself.
+The SI tutor (Ollama + qwen2.5:7b) runs on the computer itself.
 No internet needed once set up. No monthly fees.
 Old donated computers from businesses or schools often work perfectly."""),
             ("🌐 Setting up for multiple children (local WiFi)", """
