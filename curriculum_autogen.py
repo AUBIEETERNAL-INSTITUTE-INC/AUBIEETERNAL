@@ -184,3 +184,39 @@ def run_curriculum_autogen(force: bool = False) -> dict:
 
     _save_state({"last_run_date": datetime.date.today().isoformat(), "last_proposal_id": proposal["id"]})
     return {"ok": True, "proposal_id": proposal["id"], "title": lesson["title"], "target_track": target_track}
+
+
+def send_curriculum_proposed_email(result: dict) -> bool:
+    """One email when a pending proposal was actually submitted.
+
+    Uses aubieeternal_build/self_audit.py's Proton Bridge helper. Does not
+    send on already-ran, force=False no-op, or generation failure — callers
+    must only invoke this when result["ok"] is True, and this function
+    checks that again. Never raises. Not the swarm:anomaly_shape channel.
+    """
+    if not result or not result.get("ok"):
+        return False
+    title = " ".join(str(result.get("title") or "").split())
+    track = str(result.get("target_track") or "")
+    proposal_id = str(result.get("proposal_id") or "")
+    subject = f"[AUBIEETERNAL] Curriculum proposed: {title}"
+    body = (
+        f"title: {title}\n"
+        f"target_track: {track}\n"
+        f"proposal_id: {proposal_id}\n"
+        "author: Aubie (auto-proposed)\n"
+        "status: pending — not live\n"
+        "\n"
+        "Review in the portal Review Queue (Submit Curriculum). "
+        "Approve is still required. Publish to commons is a separate action.\n"
+    )
+    try:
+        import sys
+        build_dir = str(Path(__file__).resolve().parent / "aubieeternal_build")
+        if build_dir not in sys.path:
+            sys.path.insert(0, build_dir)
+        from self_audit import send_alert_email
+        return bool(send_alert_email(subject, body))
+    except Exception as exc:
+        print(f"[curriculum-autogen] propose mail failed: {exc}")
+        return False

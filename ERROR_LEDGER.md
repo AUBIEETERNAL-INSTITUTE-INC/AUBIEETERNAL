@@ -623,6 +623,21 @@ spanning the next two 08:00 runs plus the 48h stale threshold. `self_audit.py`
 moves this to `verified` (or `regressed`) on its own; copy the transition
 here from `--fix-watch-status`.
 
+### 2026-09-24 — curriculum_autogen skip-already-ran false page
+
+**Status:** deployed
+
+**Watch:** swarm:anomaly_shape (skip must not page; real hang still pages)
+
+09:00 fired, the worker started, and `already_ran_today()` logged
+`⚠️  Skipped: already ran today`. That is idempotency, not a hang.
+`anomaly_guard` required `✅ Proposed` and mailed `swarm:anomaly_shape`.
+The curriculum ok-pattern now accepts that one skip only. A fire with no
+ok line, generation failure / unusable JSON, or an explicit ❌ still pages.
+A real pending proposal mails `[AUBIEETERNAL] Curriculum proposed: <title>`
+(not a Swarm alert). Swarm still reports; it does not auto-fix or
+auto-approve. Not live until a manual `sudo systemctl restart aubie-swarm`.
+
 ## The standard: worked examples
 
 These commits are what a fix commit should look like — a stranger can read them

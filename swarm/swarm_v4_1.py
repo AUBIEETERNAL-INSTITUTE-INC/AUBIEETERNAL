@@ -474,13 +474,18 @@ _curriculum_autogen_last_run_date = None
 def _run_curriculum_autogen_background():
     global _curriculum_autogen_last_run_date
     try:
-        from curriculum_autogen import run_curriculum_autogen
+        from curriculum_autogen import (
+            run_curriculum_autogen, send_curriculum_proposed_email,
+        )
         print("[curriculum-autogen] 🌱 Background thread started...")
         result = run_curriculum_autogen()
         if result.get("ok"):
             _curriculum_autogen_last_run_date = datetime.date.today()
-            print(f"[curriculum-autogen] ✅ Proposed \"{result['title']}\" "
-                  f"(id: {result['proposal_id']}) — awaiting human review")
+            # Journal the ok-line before mail so a concurrent anomaly scan
+            # sees ✅ Proposed, not a fire with no success line.
+            print(f"[curriculum-autogen] ✅ Proposed {result['title']} "
+                  f"[{result['proposal_id']}] → {result.get('target_track', '')}")
+            send_curriculum_proposed_email(result)
         else:
             print(f"[curriculum-autogen] ⚠️  Skipped: {result.get('reason')}")
     except ImportError:

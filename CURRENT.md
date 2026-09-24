@@ -38,6 +38,10 @@ Updated: 2026-09-21
 
 The only file that ages. Grok chat, Grok Build, and Claude Code read this first.
 
+## 2026-09-24 — curriculum_autogen false page
+
+The 9AM job logged `⚠️  Skipped: already ran today` (`already_ran_today()` idempotency, not a hang) and `anomaly_guard` paged `swarm:anomaly_shape`. The curriculum ok-pattern now accepts that one skip; a fire with no success line, a generation failure, or an explicit ❌ still pages. A submitted pending proposal sends one mail, subject `[AUBIEETERNAL] Curriculum proposed: <title>` — not a Swarm alert. Review Queue approve and commons publish are unchanged. Wonder hysteresis was not touched.
+
 ## Identity
 
 - Owner: AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL (org, not a one-person repo)

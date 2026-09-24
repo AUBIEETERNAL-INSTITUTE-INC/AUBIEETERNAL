@@ -47,7 +47,7 @@ This module is a pure OUTSIDE OBSERVER. It never imports swarm_v4_1.py and is
 never imported by it — no new closed loop, same principle as the wonder
 hysteresis fix. It only reads files / shells out to journalctl.
 
-Standalone:  python3 anomaly_guard.py --replay     # 4 synthetic cases, exits 0/1
+Standalone:  python3 anomaly_guard.py --replay     # synthetic cases, exits 0/1
              python3 anomaly_guard.py --live        # print the live analysis JSON
 Imported:    from anomaly_guard import run_live, analyze, label_ticks
 """
@@ -99,6 +99,7 @@ _MARKERS: list[tuple[str, re.Pattern]] = [
     (WORK, re.compile(
         r"\[synthesis\] ✅ Complete"
         r"|\[curriculum-autogen\] ✅ Proposed"
+        r"|\[curriculum-autogen\] ⚠️  Skipped: already ran today"
         r"|\[email-watch\] ✅ Digest written"
         r"|\[epistemic-commons\] Commons publish: (?!.*error)"
         r"|\[epistemic-commons\] API endpoints updated:"
@@ -119,7 +120,12 @@ _SCHED_TRIGGERS: dict[str, dict[str, re.Pattern]] = {
     },
     "curriculum_autogen": {
         "fired": re.compile(r"\[curriculum-autogen\] ⏰ .*trigger fired"),
-        "ok": re.compile(r"\[curriculum-autogen\] ✅ Proposed"),
+        # already_ran_today() is idempotency, not a hang. Any other
+        # "Skipped:" (generation failed, unusable JSON) stays a hold.
+        "ok": re.compile(
+            r"\[curriculum-autogen\] ✅ Proposed"
+            r"|\[curriculum-autogen\] ⚠️  Skipped: already ran today"
+        ),
     },
     "email_digest": {
         "fired": re.compile(r"\[email-watch\] ⏰ .*digest trigger fired"),
@@ -642,6 +648,43 @@ def _replay() -> int:
          lines4, ["quiet otherwise"], now=base,
          expect_page=True, expect_reason_contains="noop")
 
+    # 5. curriculum_autogen idempotent skip is not a stale hold.
+    #    Other skips and a fire with no ok line still page.
+    c_start = base - timedelta(minutes=40)
+    lines5 = _synth(c_start, minutes=40, markers_at={
+        2: ["[curriculum-autogen] ⏰ 9AM trigger fired for 2026-09-24",
+            "[curriculum-autogen] 🌱 Background thread started...",
+            "[curriculum-autogen] ⚠️  Skipped: already ran today"],
+    })
+    case("5. curriculum already-ran skip (idempotent, no page)",
+         lines5, ["quiet otherwise"], now=base, expect_page=False)
+
+    lines6 = _synth(c_start, minutes=40, markers_at={
+        2: ["[curriculum-autogen] ⏰ 9AM trigger fired for 2026-09-24",
+            "[curriculum-autogen] 🌱 Background thread started..."],
+    })
+    case("6. curriculum fire with no ok line (stale hold)",
+         lines6, ["quiet otherwise"], now=base,
+         expect_page=True, expect_reason_contains="curriculum_autogen")
+
+    lines7 = _synth(c_start, minutes=40, markers_at={
+        2: ["[curriculum-autogen] ⏰ 9AM trigger fired for 2026-09-24",
+            "[curriculum-autogen] 🌱 Background thread started...",
+            "[curriculum-autogen] ⚠️  Skipped: generation failed or returned unusable JSON"],
+    })
+    case("7. curriculum other skip still pages",
+         lines7, ["quiet otherwise"], now=base,
+         expect_page=True, expect_reason_contains="curriculum_autogen")
+
+    lines8 = _synth(c_start, minutes=40, markers_at={
+        2: ["[curriculum-autogen] ⏰ 9AM trigger fired for 2026-09-24",
+            "[curriculum-autogen] 🌱 Background thread started...",
+            "[curriculum-autogen] ❌ Error: generator blew up"],
+    })
+    case("8. curriculum explicit failure still pages",
+         lines8, ["quiet otherwise"], now=base,
+         expect_page=True, expect_reason_contains="curriculum_autogen")
+
     # Optional extra: a real wonder_log.jsonl if one is on the rig.
     wl = run_wonder_log_case()
     if wl:
@@ -658,7 +701,7 @@ def _replay() -> int:
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--replay", action="store_true",
-                    help="run the 4 synthetic acceptance cases and exit 0/1")
+                    help="run the synthetic acceptance cases and exit 0/1")
     ap.add_argument("--live", action="store_true",
                     help="print the live analysis JSON from the swarm journal")
     ap.add_argument("--since", default="-90 min",
