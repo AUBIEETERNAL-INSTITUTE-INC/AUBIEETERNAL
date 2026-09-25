@@ -673,7 +673,7 @@ def idle_scan_loop():
 def main():
     global AUDIO_DEVICE, RECORD_DEVICE, PLAYBACK_DEVICE
     print(f"Loading model from {MODEL_PATH} ...")
-    threading.Thread(target=idle_scan_loop, daemon=True).start()
+    # threading.Thread(target=idle_scan_loop, daemon=True).start()  # 2026-09-25: photo greet evicts 14b
     last_interaction_time = _time.time()
     idle_fun_active = False
     while True:
