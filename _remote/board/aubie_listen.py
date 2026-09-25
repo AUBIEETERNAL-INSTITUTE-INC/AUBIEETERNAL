@@ -356,7 +356,7 @@ def _post_to_rig(path, files=None, data=None):
     the retry.
     """
     last_exc = None
-    for host in (RIG_HOST_TAILSCALE, RIG_HOST_LAN):
+    for host in (RIG_HOST_LAN, RIG_HOST_TAILSCALE):
         url = f"http://{host}:{RIG_PORT}{path}"
         try:
             return requests.post(url, files=files, data=data,
