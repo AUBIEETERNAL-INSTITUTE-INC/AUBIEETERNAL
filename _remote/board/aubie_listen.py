@@ -319,7 +319,7 @@ def detect_audio_devices():
 CALL_ACTIVE_FLAG = Path("/home/arduino/spotmicro_dog/.call_active")
 
 MODEL_PATH = "/home/arduino/aubie-wake.eim"
-CAMERA_DEVICE = "/dev/video0"
+CAMERA_DEVICE = "/dev/video1"
 CAPTURE_PATH = "/home/arduino/wake_capture.jpg"
 GREETING_PATH = "/home/arduino/greeting.wav"
 AUDIO_DEVICE, RECORD_DEVICE, PLAYBACK_DEVICE = None, None, None
