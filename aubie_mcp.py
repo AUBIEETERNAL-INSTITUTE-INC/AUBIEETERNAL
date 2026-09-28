@@ -13,9 +13,19 @@ Run standalone to test:
 
 Connect from another machine over SSH stdio:
     ssh aubieeternal@100.105.81.27 python3 /home/aubieeternal/AUBIEETERNAL/aubie_mcp.py
+
+HTTP/SSE mode (Tailscale):
+    export AUBIE_MCP_TOKEN="$(openssl rand -hex 32)"
+    python3 aubie_mcp.py --http --host 100.105.81.27
+  Every request except /health needs:  Authorization: Bearer $AUBIE_MCP_TOKEN
+  rig_shell is OFF in HTTP mode unless AUBIE_MCP_ALLOW_SHELL=1.
+
+Requires the 1.x SDK (the low-level Server decorators were removed in 2.x):
+    pip install "mcp>=1.2,<2" --break-system-packages
 """
 
 import asyncio
+import hmac
 import json
 import os
 import subprocess
@@ -37,6 +47,14 @@ SHELL_BLOCKLIST = [
     "shutdown", "reboot", "poweroff", "halt",
     "> /dev/sda", "chown -R / ",
 ]
+
+# Hard caps so a model can't ask for an hour-long command or a million lines.
+MAX_SHELL_TIMEOUT = 120
+MAX_READ_LINES = 2000
+MAX_SEARCH_LIMIT = 200
+
+# Set at startup: stdio (behind SSH) keeps the shell; HTTP needs explicit opt-in.
+SHELL_ENABLED = True
 
 server = Server("aubie-eternal")
 
@@ -77,6 +95,48 @@ def run_shell(cmd: str, timeout: int = 20) -> str:
         return "Timed out after " + str(timeout) + "s"
     except Exception as e:
         return "Error: " + str(e)
+
+
+def clamp(value, default: int, lo: int, hi: int) -> int:
+    """Coerce a model-supplied number into [lo, hi]; fall back to default on junk."""
+    try:
+        n = int(value)
+    except (TypeError, ValueError):
+        return default
+    return max(lo, min(n, hi))
+
+
+def safe_path(path: str):
+    """Resolve symlinks and '..' and return the real path only if it sits inside
+    CODE_DIR or MEMORY_DIR. A plain startswith() check lets '../' escape and also
+    matches sibling dirs like /home/aubieeternal/AUBIEETERNAL_anything."""
+    if not path:
+        return None
+    real = os.path.realpath(path)
+    for root in (CODE_DIR, MEMORY_DIR):
+        root_real = os.path.realpath(root)
+        try:
+            if os.path.commonpath([real, root_real]) == root_real:
+                return real
+        except ValueError:
+            continue
+    return None
+
+
+def run_argv(argv: list, timeout: int = 20) -> str:
+    """Run a command WITHOUT a shell, so user text is never parsed as bash."""
+    try:
+        p = subprocess.run(argv, capture_output=True, text=True, timeout=timeout)
+        return (p.stdout.strip() or "(no matches)")[:6000]
+    except subprocess.TimeoutExpired:
+        return "Timed out after " + str(timeout) + "s"
+    except Exception as e:
+        return "Error: " + str(e)
+
+
+async def sh(cmd: str, timeout: int = 20) -> str:
+    """run_shell off the event loop so one slow command doesn't freeze the server."""
+    return await asyncio.to_thread(run_shell, cmd, timeout)
 
 
 def ok(text: str):
@@ -129,7 +189,8 @@ async def list_tools() -> list[Tool]:
             description=(
                 "Run a shell command directly on the Ryzen rig (aubieeternal, Ubuntu). "
                 "Use for file listing, disk checks, log reading, grep, service status, etc. "
-                "Destructive commands are blocked. Read-only and inspection commands are preferred."
+                "Read-only and inspection commands only. Disabled in HTTP mode unless the "
+                "operator sets AUBIE_MCP_ALLOW_SHELL=1."
             ),
             inputSchema={
                 "type": "object",
@@ -270,8 +331,13 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
     if name == "aubie_vision":
         try:
             res = await post_json(RIG + "/proxy/vision", {}, timeout=45)
-            if "error" in res:
-                return ok("Vision failed: " + str(res["error"]))
+            # post_json turns non-JSON replies (500 pages, proxy errors) into
+            # {"status": "error", "detail": ...}. Treat that as a failure, not as
+            # "nothing in view", or the model will confidently report an empty room.
+            if not isinstance(res, dict):
+                return ok("Vision failed: unexpected response " + pretty(res)[:500])
+            if "error" in res or res.get("status") == "error":
+                return ok("Vision failed: " + str(res.get("error") or res.get("detail")))
             summary = res.get("summary") or "(no objects detected)"
             return ok("Aubie currently sees:\n\n" + summary)
         except Exception as e:
@@ -286,9 +352,14 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
 
     # ---- Rig shell / code ----
     if name == "rig_shell":
+        if not SHELL_ENABLED:
+            return ok(
+                "rig_shell is disabled in HTTP mode. Use rig_status, catch_errors, "
+                "rig_read_file or memory_search instead, or connect over SSH stdio."
+            )
         cmd = args.get("command", "")
-        timeout = int(args.get("timeout", 20))
-        return ok(run_shell(cmd, timeout))
+        timeout = clamp(args.get("timeout"), 20, 1, MAX_SHELL_TIMEOUT)
+        return ok(await sh(cmd, timeout))
 
     if name == "rig_interpret":
         task = args.get("task", "")
@@ -323,25 +394,26 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
         query = args.get("query", "").strip()
         if not query:
             return ok("No query provided.")
-        limit = int(args.get("limit", 40))
+        limit = clamp(args.get("limit"), 40, 1, MAX_SEARCH_LIMIT)
         contents = bool(args.get("search_contents", False))
 
-        safe_q = query.replace("'", "'\\''")
-        name_cmd = (
-            "find " + MEMORY_DIR + " -type f -iname '*" + safe_q + "*' 2>/dev/null "
-            "| head -" + str(limit)
-        )
-        name_hits = run_shell(name_cmd, timeout=30)
+        def first_n(text: str) -> str:
+            return "\n".join(text.splitlines()[:limit])
+
+        name_hits = first_n(await asyncio.to_thread(
+            run_argv, ["find", MEMORY_DIR, "-type", "f", "-iname", "*" + query + "*"], 30))
 
         out = "=== Filename matches for '" + query + "' ===\n" + name_hits
 
         if contents:
-            grep_cmd = (
-                "grep -ril --include='*.txt' --include='*.md' --include='*.py' "
-                "--include='*.json' --include='*.csv' -- '" + safe_q + "' "
-                + MEMORY_DIR + " 2>/dev/null | head -" + str(limit)
-            )
-            grep_hits = run_shell(grep_cmd, timeout=60)
+            grep_hits = first_n(await asyncio.to_thread(
+                run_argv,
+                ["grep", "-ril", "-F",
+                 "--include=*.txt", "--include=*.md", "--include=*.py",
+                 "--include=*.json", "--include=*.csv",
+                 "--", query, MEMORY_DIR],
+                60,
+            ))
             out += "\n\n=== Files containing '" + query + "' ===\n" + grep_hits
 
         return ok(out[:6000])
@@ -363,46 +435,58 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
             ("CODE FILES", "ls " + CODE_DIR + "/*.py 2>/dev/null | xargs -n1 basename | tr '\\n' ' '"),
         ]
         for label, cmd in checks:
-            parts.append("[" + label + "]\n" + run_shell(cmd, timeout=12))
+            parts.append("[" + label + "]\n" + await sh(cmd, 12))
 
         # Dog reachability
-        dog_ping = run_shell("ping -c 1 -W 2 100.66.110.65 >/dev/null 2>&1 "
-                             "&& echo 'ONLINE' || echo 'OFFLINE / unreachable'", timeout=8)
+        dog_ping = await sh("ping -c 1 -W 2 100.66.110.65 >/dev/null 2>&1 "
+                             "&& echo 'ONLINE' || echo 'OFFLINE / unreachable'", 8)
         parts.append("[AUBIE DOG]\n" + dog_ping)
 
         return ok("\n\n".join(parts)[:6000])
 
     if name == "rig_read_file":
-        path = args.get("path", "")
-        max_lines = int(args.get("max_lines", 300))
-        if not (path.startswith(CODE_DIR) or path.startswith(MEMORY_DIR)):
+        max_lines = clamp(args.get("max_lines"), 300, 1, MAX_READ_LINES)
+        real = safe_path(args.get("path", ""))
+        if real is None:
             return ok(
-                "Refused: path must be under " + CODE_DIR + " or " + MEMORY_DIR
+                "Refused: path must resolve to a file under " + CODE_DIR + " or " + MEMORY_DIR
             )
-        return ok(run_shell("head -" + str(max_lines) + " '" + path + "'", timeout=15))
+        if not os.path.isfile(real):
+            return ok("Not a file: " + real)
+        # Read in Python, not via `head '<path>'`, so a quote in the path can't
+        # break out into the shell.
+        lines = []
+        try:
+            with open(real, "r", errors="replace") as f:
+                for i, line in enumerate(f):
+                    if i >= max_lines:
+                        break
+                    lines.append(line)
+        except OSError as e:
+            return ok("Read error: " + str(e))
+        return ok("".join(lines)[:6000] or "(empty file)")
 
     if name == "catch_errors":
-        parts = [
-            "[AUBIE-ASSISTANT] " + run_shell("systemctl is-active aubie-assistant", 8),
-            "[AUBIE-MCP] " + run_shell("systemctl is-active aubie-mcp", 8),
-            "[AUBIE-BUILD] " + run_shell("systemctl --user is-active aubie-build.service", 8),
-            "[OLLAMA] " + run_shell("systemctl is-active ollama 2>/dev/null || pgrep -a ollama | head -1", 8),
-            "[DISK] " + run_shell("df -h / | tail -1", 8),
-            "[RAM] " + run_shell("free -h | awk 'NR==2{print}'", 8),
-            "[AUBIE PING] " + run_shell(
-                "ping -c 1 -W 2 100.66.110.65 >/dev/null 2>&1 && echo ONLINE || echo OFFLINE",
-                8,
-            ),
-            "[MONITOR TAIL]\n" + run_shell("tail -n 12 /home/aubieeternal/scripts/aubie_monitor.log 2>/dev/null || echo none", 8),
-            "[ASSISTANT LOG]\n" + run_shell("journalctl -u aubie-assistant.service --no-pager -n 8 2>/dev/null | tail -n 8", 8),
-            "[SELF-AUDIT]\n" + run_shell("tail -c 2000 /home/aubieeternal/AUBIEETERNAL/memory/self_audit/latest.json 2>/dev/null || echo none", 8),
+        checks = [
+            ("[AUBIE-ASSISTANT] ", "systemctl is-active aubie-assistant"),
+            ("[AUBIE-MCP] ", "systemctl is-active aubie-mcp"),
+            ("[AUBIE-BUILD] ", "systemctl --user is-active aubie-build.service"),
+            ("[OLLAMA] ", "systemctl is-active ollama 2>/dev/null || pgrep -a ollama | head -1"),
+            ("[DISK] ", "df -h / | tail -1"),
+            ("[RAM] ", "free -h | awk 'NR==2{print}'"),
+            ("[AUBIE PING] ", "ping -c 1 -W 2 100.66.110.65 >/dev/null 2>&1 && echo ONLINE || echo OFFLINE"),
+            ("[MONITOR TAIL]\n", "tail -n 12 /home/aubieeternal/scripts/aubie_monitor.log 2>/dev/null || echo none"),
+            ("[ASSISTANT LOG]\n", "journalctl -u aubie-assistant.service --no-pager -n 8 2>/dev/null | tail -n 8"),
+            ("[SELF-AUDIT]\n", "tail -c 2000 /home/aubieeternal/AUBIEETERNAL/memory/self_audit/latest.json 2>/dev/null || echo none"),
         ]
+        # Run all checks at once instead of one after another (worst case ~8s, not ~80s).
+        results = await asyncio.gather(*(sh(cmd, 8) for _label, cmd in checks))
+        parts = [label + out for (label, _cmd), out in zip(checks, results)]
         return ok("\n".join(parts)[:6000])
 
     if name == "monitor_log":
-        n = int(args.get("lines", 30) or 30)
-        n = max(1, min(n, 200))
-        return ok(run_shell("tail -n " + str(n) + " /home/aubieeternal/scripts/aubie_monitor.log 2>/dev/null || echo none", 8))
+        n = clamp(args.get("lines"), 30, 1, 200)
+        return ok(await sh("tail -n " + str(n) + " /home/aubieeternal/scripts/aubie_monitor.log 2>/dev/null || echo none", 8))
 
     return ok("Unknown tool: " + name)
 
@@ -418,17 +502,47 @@ async def run_stdio():
         )
 
 
-def run_http(host: str = "0.0.0.0", port: int = 8801):
+def require_token(app, token: str):
+    """ASGI wrapper: every HTTP request except /health must carry the bearer token.
+    Without this, anything that can reach port 8801 gets every tool, rig_shell included."""
+    expected = ("Bearer " + token).encode()
+
+    async def guarded(scope, receive, send):
+        if scope["type"] == "http" and scope.get("path") != "/health":
+            headers = dict(scope.get("headers") or [])
+            given = headers.get(b"authorization", b"")
+            if not hmac.compare_digest(given, expected):
+                await send({"type": "http.response.start", "status": 401,
+                            "headers": [(b"content-type", b"application/json")]})
+                await send({"type": "http.response.body",
+                            "body": b'{"error": "missing or bad bearer token"}'})
+                return
+        await app(scope, receive, send)
+
+    return guarded
+
+
+def run_http(host: str = "127.0.0.1", port: int = 8801):
     """
-    HTTP/SSE mode: reachable by any device on the Tailscale network.
-    Run with:  python3 aubie_mcp.py --http
-    Endpoint:  http://100.105.81.27:8801/sse
+    HTTP/SSE mode for devices on the Tailscale network.
+    Run with:  AUBIE_MCP_TOKEN=... python3 aubie_mcp.py --http --host 100.105.81.27
+    Endpoint:  http://100.105.81.27:8801/sse   (header: Authorization: Bearer <token>)
+
+    Binds to localhost by default. Pass --host with the Tailscale IP rather than
+    0.0.0.0, which would also expose the server on the home LAN.
     """
+    global SHELL_ENABLED
     import uvicorn
     from starlette.applications import Starlette
     from starlette.routing import Route, Mount
-    from starlette.responses import JSONResponse as StarletteJSON
+    from starlette.responses import JSONResponse as StarletteJSON, Response
     from mcp.server.sse import SseServerTransport
+
+    token = os.environ.get("AUBIE_MCP_TOKEN", "").strip()
+    if len(token) < 24:
+        sys.exit("Refusing to start HTTP mode: set AUBIE_MCP_TOKEN to a long random value "
+                 "(e.g. `openssl rand -hex 32`).")
+    SHELL_ENABLED = os.environ.get("AUBIE_MCP_ALLOW_SHELL") == "1"
 
     sse = SseServerTransport("/messages/")
 
@@ -441,9 +555,13 @@ def run_http(host: str = "0.0.0.0", port: int = 8801):
                 write_stream,
                 server.create_initialization_options(),
             )
+        # Starlette calls whatever the endpoint returns; returning None made
+        # every client disconnect log "TypeError: 'NoneType' object is not callable".
+        return Response()
 
     async def health(request):
-        return StarletteJSON({"status": "ok", "server": "aubie-eternal-mcp"})
+        return StarletteJSON({"status": "ok", "server": "aubie-eternal-mcp",
+                              "shell_enabled": SHELL_ENABLED})
 
     app = Starlette(
         debug=False,
@@ -454,17 +572,20 @@ def run_http(host: str = "0.0.0.0", port: int = 8801):
         ],
     )
 
-    print("Aubie MCP server (HTTP/SSE) on http://" + host + ":" + str(port) + "/sse",
-          file=sys.stderr)
-    uvicorn.run(app, host=host, port=port, log_level="warning")
+    print("Aubie MCP server (HTTP/SSE) on http://" + host + ":" + str(port) + "/sse"
+          + " | rig_shell " + ("ON" if SHELL_ENABLED else "OFF"), file=sys.stderr)
+    uvicorn.run(require_token(app, token), host=host, port=port, log_level="warning")
+
+
+def arg_value(flag: str, default):
+    for i, a in enumerate(sys.argv):
+        if a == flag and i + 1 < len(sys.argv):
+            return sys.argv[i + 1]
+    return default
 
 
 if __name__ == "__main__":
     if "--http" in sys.argv:
-        port = 8801
-        for i, a in enumerate(sys.argv):
-            if a == "--port" and i + 1 < len(sys.argv):
-                port = int(sys.argv[i + 1])
-        run_http(port=port)
+        run_http(host=arg_value("--host", "127.0.0.1"), port=int(arg_value("--port", 8801)))
     else:
         asyncio.run(run_stdio())

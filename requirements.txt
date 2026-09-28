@@ -43,3 +43,4 @@ numpy>=1.24
 # decode.py falls back to cv2 automatically if it's missing. Needs the system
 # library libzbar0:  sudo apt-get install libzbar0
 pyzbar>=0.1.9
+mcp>=1.2,<2
