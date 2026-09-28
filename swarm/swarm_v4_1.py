@@ -1336,6 +1336,18 @@ def maybe_trigger_log_rotation():
         except Exception as e:
             print(f"  log rotation error ({getattr(path, 'name', path)}): {e}")
 
+def _unpushed_human_commits(repo):
+    """Subjects of unpushed commits on main that the swarm did NOT author.
+    Every swarm push checks this first: hand-authored commits are pushed by
+    a human, never swept up by a background loop (2026-09-28)."""
+    unpushed = subprocess.run(
+        ["git", "-C", repo, "log", "origin/main..main", "--format=%s"],
+        capture_output=True, text=True, timeout=15
+    ).stdout.splitlines()
+    return [m for m in unpushed
+            if not m.startswith(("chore(swarm):", "chore(status):"))]
+
+
 def _maybe_daily_status_heartbeat(repo):
     """Once per calendar day (Eastern), refresh STATUS.md and commit it to
     main as a single honest 'rig alive' pulse. This is the deliberate
@@ -1368,7 +1380,7 @@ def _maybe_daily_status_heartbeat(repo):
                        capture_output=True, text=True, timeout=15)
         commit = subprocess.run(
             ["git", "-C", repo, "commit", "-m",
-             f"chore(status): rig alive {today}"],
+             f"chore(status): rig alive {today}", "--", STATUS_FILE],
             capture_output=True, text=True, timeout=15
         )
         if "nothing to commit" in (commit.stdout + commit.stderr):
@@ -1382,6 +1394,12 @@ def _maybe_daily_status_heartbeat(repo):
             )
         subprocess.run(["git", "-C", repo, "pull", "--rebase", "--autostash"],
                        capture_output=True, text=True, timeout=30)
+        human = _unpushed_human_commits(repo)
+        if human:
+            print(f"  💓 status committed locally; push skipped: {len(human)} "
+                  f"hand-authored commit(s) unpushed - push manually")
+            _last_status_heartbeat_date = today
+            return
         push = subprocess.run(["git", "-C", repo, "push", "origin", "main"],
                               capture_output=True, text=True, timeout=30)
         print(f"  💓 daily status push: {push.returncode} | {push.stderr[:100]}")
@@ -1526,11 +1544,7 @@ def github_push_truth_log():
                 )
             subprocess.run(["git", "-C", repo, "pull", "--rebase", "--autostash"],
                           capture_output=True, text=True, timeout=30)
-            unpushed = subprocess.run(
-                ["git", "-C", repo, "log", "origin/main..main", "--format=%s"],
-                capture_output=True, text=True, timeout=15
-            ).stdout.splitlines()
-            human = [m for m in unpushed if not m.startswith("chore(swarm):")]
+            human = _unpushed_human_commits(repo)
             if human:
                 print(f"  ⚠️ main push skipped: {len(human)} hand-authored commit(s) "
                       f"unpushed ({human[0][:60]}...) - push manually")
