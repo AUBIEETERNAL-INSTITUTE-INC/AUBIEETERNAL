@@ -591,5 +591,97 @@
     "approved_at": "2026-09-22T10:29:42.563740",
     "coherence_score": 0.0,
     "license": "CC0"
+  },
+  {
+    "id": "9d7b478c34b8",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder as Inquiry Tool",
+    "lesson": {
+      "key": "wonder-and-lindy-effect",
+      "title": "Wonder and the Lindy Effect",
+      "topic": "Exploring how long-standing ideas inspire wonder and encourage antifragile thinking.",
+      "steelman": "How does embracing ancient wisdom through a lens of modern curiosity strengthen our understanding?",
+      "example": "Discussing Socrates' questioning method in relation to contemporary scientific inquiry.",
+      "age_hint": "12+",
+      "xp": 20,
+      "rune": "WONDER\u2022AS\u2022INQUIRY\u2022TOOL\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "This lesson bridges historical wisdom with modern curiosity, fostering a deeper appreciation for timeless ideas.",
+    "approved_at": "2026-09-28T14:42:46.615028",
+    "coherence_score": 0.44,
+    "license": "CC0"
+  },
+  {
+    "id": "8487ef2b2911",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder as Practice",
+    "lesson": {
+      "key": "wonder-as-antifragility-tool",
+      "title": "Wonder as an Antifragile Tool",
+      "topic": "How cultivating a sense of wonder can make individuals and systems more antifragile by encouraging exploration, adaptation, and growth in the face of uncertainty.",
+      "steelman": "What are some ways that maintaining a sense of curiosity and wonder can help people not just survive but thrive when faced with unpredictable challenges?",
+      "example": "A startup company facing market disruption uses its employees' innate sense of wonder to explore new opportunities rather than fearing change, leading to innovative solutions.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "WONDER\u2022AS\u2022PRACTICE\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "This lesson bridges the gap between philosophical curiosity and practical resilience, offering a unique perspective on how wonder can be an asset in challenging times.",
+    "approved_at": "2026-09-28T14:42:30.809777",
+    "coherence_score": 0.51,
+    "license": "CC0"
+  },
+  {
+    "id": "b3d9740fbc47",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Mastering Antifragility",
+    "lesson": {
+      "key": "antifragile-thinking-strategy",
+      "title": "Think Antifragile",
+      "topic": "How to apply antifragility principles in daily life and decision-making.",
+      "steelman": "What are the most effective ways to incorporate antifragile thinking into your personal growth strategy?",
+      "example": "A small business owner uses stress testing techniques to identify and strengthen weaknesses in their supply chain before a market downturn occurs.",
+      "age_hint": "14+",
+      "xp": 20,
+      "rune": "MASTERING\u2022ANTIFRAGILITY\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "This lesson helps bridge the gap between theoretical understanding of antifragility and practical application, encouraging proactive resilience.",
+    "approved_at": "2026-09-28T14:42:08.938519",
+    "coherence_score": 0.75,
+    "license": "CC0"
+  },
+  {
+    "id": "ff876afaf262",
+    "type": "lesson",
+    "author": "Aubie (auto-proposed)",
+    "track_name": null,
+    "target_track": "Wonder as Detector",
+    "lesson": {
+      "key": "wonder-as-catalyst-for-change",
+      "title": "Wonder as Catalyst for Change",
+      "topic": "Exploring how genuine wonder can motivate and inspire transformative action in personal and societal contexts.",
+      "steelman": "How can the principle of 'wonder' be leveraged to address systemic challenges such as climate change or economic inequality?",
+      "example": "The story of Greta Thunberg's awakening to environmental issues through a sense of wonder about nature, leading her to advocate for urgent climate action.",
+      "age_hint": "12+",
+      "xp": 20,
+      "rune": "WONDER\u2022AS\u2022DETECTOR\u2022RUNE",
+      "min_coherence": 0.65
+    },
+    "lessons": null,
+    "rationale": "This lesson bridges the gap between philosophical inquiry and practical activism, encouraging learners to see their sense of wonder not just as a passive state but as an active force for positive change.",
+    "approved_at": "2026-09-28T14:42:04.992049",
+    "coherence_score": 0.75,
+    "license": "CC0"
   }
 ]
