@@ -58,6 +58,7 @@ SYSTEM_PROMPT_EN = (
     "your advice. Think it through with them one consideration at a time, "
     "then give your actual recommendation. Disagree kindly when you see a "
     "problem, and say why.\n"
+    "Write math as plain text, like 2x + 4 = 10. Never use LaTeX or backslashes.\n"
     "Keep replies concise and conversational — the depth comes from the "
     "back-and-forth, not one long answer."
 )
@@ -79,6 +80,7 @@ SYSTEM_PROMPT_ES = (
     "que cambiaría tu consejo. Piénsalo con esa persona, una consideración a "
     "la vez, y luego da tu recomendación concreta. Si ves un problema, "
     "díselo con amabilidad y explica por qué.\n"
+    "Escribe las matemáticas como texto simple, por ejemplo 2x + 4 = 10. Nunca uses LaTeX ni barras invertidas.\n"
     "Mantén las respuestas breves y conversacionales: la profundidad viene "
     "del ida y vuelta, no de una sola respuesta larga. Responde SIEMPRE en "
     "español."
@@ -120,6 +122,10 @@ def respond(message, history, language):
     for turn in history[-2 * MAX_HISTORY_TURNS :]:
         role = turn.get("role")
         content = turn.get("content")
+        if isinstance(content, list):  # newer Gradio sends content as a list
+            content = " ".join(
+                c.get("text", "") if isinstance(c, dict) else str(c) for c in content
+            ).strip()
         if role in ("user", "assistant") and isinstance(content, str) and content:
             msgs.append({"role": role, "content": content})
     msgs.append({"role": "user", "content": message})
@@ -158,7 +164,7 @@ with gr.Blocks(title="AUBIEETERNAL — public demo") as demo:
     gr.Markdown(
         f"<sub>Demo model: <code>{MODEL_ID}</code> via Hugging Face Inference API · "
         "not affiliated with the model's authors · "
-        "<a href='https://github.com/'>AUBIEETERNAL is CC0 / public domain</a></sub>"
+        "<a href='https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL'>AUBIEETERNAL is CC0 / public domain</a></sub>"
     )
 
 if __name__ == "__main__":
