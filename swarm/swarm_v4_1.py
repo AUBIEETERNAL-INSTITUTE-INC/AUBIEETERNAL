@@ -1498,8 +1498,11 @@ def github_push_truth_log():
         # Wonder:/Coherence: decoration: inter_rune_coherence is seeded at
         # 1.0 and clamped min(1.0, ...), i.e. pinned at 1.000000, so it was
         # never a measurement. See ERROR_LEDGER.md.
+        # Pathspec-limited: a bare `git diff --cached` also listed files a human
+        # had staged by hand, and the bare `git commit` below swept them into a
+        # swarm commit and pushed them (2026-09-28, commit 1de2f57f).
         staged = subprocess.run(
-            ["git", "-C", repo, "diff", "--cached", "--name-only"],
+            ["git", "-C", repo, "diff", "--cached", "--name-only", "--"] + existing,
             capture_output=True, text=True, timeout=15
         ).stdout.split()
         if not staged:
@@ -1509,7 +1512,7 @@ def github_push_truth_log():
         today = _now_eastern().strftime("%Y-%m-%d")
         msg = f"chore(swarm): publish {len(staged)} artifact(s) [{summary}] ({today})"
         result = subprocess.run(
-            ["git", "-C", repo, "commit", "-m", msg],
+            ["git", "-C", repo, "commit", "-m", msg, "--"] + staged,
             capture_output=True, text=True, timeout=15
         )
         print(f"  git commit: {result.returncode} | {(result.stdout+result.stderr)[:100]}")
@@ -1523,6 +1526,15 @@ def github_push_truth_log():
                 )
             subprocess.run(["git", "-C", repo, "pull", "--rebase", "--autostash"],
                           capture_output=True, text=True, timeout=30)
+            unpushed = subprocess.run(
+                ["git", "-C", repo, "log", "origin/main..main", "--format=%s"],
+                capture_output=True, text=True, timeout=15
+            ).stdout.splitlines()
+            human = [m for m in unpushed if not m.startswith("chore(swarm):")]
+            if human:
+                print(f"  ⚠️ main push skipped: {len(human)} hand-authored commit(s) "
+                      f"unpushed ({human[0][:60]}...) - push manually")
+                return
             push = subprocess.run(
                 ["git", "-C", repo, "push", "origin", "main"],
                 capture_output=True, text=True, timeout=30
