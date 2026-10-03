@@ -251,6 +251,10 @@ footer{
 }
 footer .logo{font-size:16px;display:block;margin-bottom:8px}
 footer p{font-size:12px;color:var(--muted)}
+.social{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:22px auto 0;max-width:640px}
+.social a{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid rgba(0,201,255,.3);border-radius:100px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--cyan);text-decoration:none}
+.social a:hover{background:rgba(0,201,255,.08)}
+.social svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
 </style>
 
 <!-- INTEREST MODAL OVERLAY -->
@@ -304,401 +308,197 @@ function submitInterest(){
 <!-- NAV -->
 <nav>
   <div class="logo">AUBIE<em>ETERNAL</em> · INSTITUTE</div>
-  <div class="nav-tag">AI ASSISTANT BUILDS</div>
+  <div class="nav-tag">FAMILY HARDWARE</div>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-eye">Open Hardware · Local AI · 3D Printable Cases</div>
-  <h1>Build Your<br><span class="c">AI Assistant</span><br>Node</h1>
-  <p>Four tiers from classroom starter to full studio rig — every build runs local LLM, touch display, voice, and vision. No cloud subscription required.</p>
+  <div class="hero-eye">One computer · Every phone · No custom node</div>
+  <h1>One tower.<br><span class="c">Every phone</span><br>is a seat.</h1>
+  <p>The tutor runs on one upgradeable desktop. Students and parents open it on the phones they already have. A tablet is only a seat. Screen size does not make it smarter.</p>
 </section>
 
-<!-- ─── TIER CARDS ─── -->
-<div class="tiers">
-
-  <!-- MICRO -->
-  <div class="tier tier-micro">
-    <div class="box-art">
-      <svg width="160" height="155" viewBox="0 0 160 155">
-        <defs>
-          <linearGradient id="m-top" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#1e3a52"/><stop offset="100%" stop-color="#122538"/>
-          </linearGradient>
-          <linearGradient id="m-front" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#132235"/><stop offset="100%" stop-color="#0a1820"/>
-          </linearGradient>
-          <linearGradient id="m-side" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#0e1e2e"/><stop offset="100%" stop-color="#0a1820"/>
-          </linearGradient>
-        </defs>
-        <!-- isometric box – micro (small) -->
-        <!-- top face -->
-        <polygon points="80,18 140,48 140,62 80,32" fill="url(#m-top)" stroke="#1e3050" stroke-width="1"/>
-        <polygon points="20,48 80,18 80,32 20,62" fill="url(#m-top)" stroke="#1e3050" stroke-width="1"/>
-        <!-- front face -->
-        <polygon points="20,62 80,32 80,120 20,150" fill="url(#m-front)" stroke="#162032" stroke-width="1"/>
-        <!-- right face -->
-        <polygon points="80,32 140,62 140,150 80,120" fill="url(#m-side)" stroke="#162032" stroke-width="1"/>
-        <!-- screen on front -->
-        <polygon points="28,72 68,52 68,108 28,128" fill="#040c18" stroke="#3a5a72" stroke-width="0.8"/>
-        <!-- screen glow -->
-        <polygon points="30,74 66,54 66,106 30,126" fill="#5a7a92" opacity="0.06"/>
-        <text transform="matrix(0.87,0.5,-0.5,0.87,38,90)" font-family="IBM Plex Mono,monospace" font-size="5" fill="#5a7a92" letter-spacing="1">MICRO</text>
-        <!-- led -->
-        <circle cx="24" cy="145" r="3" fill="#5a7a92" opacity="0.6"/>
-        <!-- port -->
-        <polygon points="85,110 95,115 95,122 85,117" fill="#040c18" stroke="#1e3050" stroke-width="0.6"/>
-        <!-- vent lines on right side -->
-        <line x1="110" y1="75" x2="130" y2="85" stroke="#1e3050" stroke-width="1.2" stroke-linecap="round"/>
-        <line x1="110" y1="83" x2="130" y2="93" stroke="#1e3050" stroke-width="1.2" stroke-linecap="round"/>
-        <line x1="110" y1="91" x2="130" y2="101" stroke="#1e3050" stroke-width="1.2" stroke-linecap="round"/>
-      </svg>
-    </div>
-    <div class="tier-body">
-      <div class="tier-name">Micro Node</div>
-      <div class="tier-code">AN-001 · STARTER</div>
-      <div class="price-row">
-        <div class="price">$89</div>
-        <div class="price-note">est. parts</div>
-      </div>
-      <div class="build-label">Raspberry Pi 4 · 4GB · Basic vision</div>
-      <ul class="specs">
-        <li><span class="spec-check chk-p">✓</span><b>Brain:</b> Raspberry Pi 4B 4GB</li>
-        <li><span class="spec-check chk-p">✓</span><b>Display:</b> 5″ HDMI Touch</li>
-        <li><span class="spec-check chk-p">✓</span><b>Camera:</b> RPi Camera v2</li>
-        <li><span class="spec-check chk-n">—</span><b>LLM:</b> Small (phi3-mini only)</li>
-        <li><span class="spec-check chk-n">—</span><b>Mic:</b> USB clip-on (not incl.)</li>
-        <li><span class="spec-check chk-p">✓</span><b>Case:</b> 2-part printed shell</li>
-        <li><span class="spec-check chk-n">—</span><b>Face ID:</b> Basic (1-person)</li>
-      </ul>
-      <button class="tier-cta cta-ghost" onclick="showInterest('Micro Node')">📋 View Parts List</button>
-    </div>
-  </div>
-
-  <!-- TEACHER (recommended) -->
-  <div class="tier tier-teacher">
-    <div class="recommended-badge">★ Recommended</div>
-    <div class="box-art" style="background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,201,255,0.06) 0%,transparent 70%)">
-      <svg width="180" height="165" viewBox="0 0 180 165">
-        <defs>
-          <linearGradient id="t-top" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#1a3a5a"/><stop offset="100%" stop-color="#102035"/>
-          </linearGradient>
-          <linearGradient id="t-front" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#0d2338"/><stop offset="100%" stop-color="#08141e"/>
-          </linearGradient>
-          <linearGradient id="t-side" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#0e2035"/><stop offset="100%" stop-color="#080f18"/>
-          </linearGradient>
-          <filter id="cglow"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <!-- top face (wider = bigger box) -->
-        <polygon points="90,10 162,45 162,60 90,25" fill="url(#t-top)" stroke="#1e4060" stroke-width="1"/>
-        <polygon points="18,45 90,10 90,25 18,60" fill="url(#t-top)" stroke="#1e4060" stroke-width="1"/>
-        <!-- front face -->
-        <polygon points="18,60 90,25 90,130 18,165" fill="url(#t-front)" stroke="#142030" stroke-width="1"/>
-        <!-- right face -->
-        <polygon points="90,25 162,60 162,165 90,130" fill="url(#t-side)" stroke="#142030" stroke-width="1"/>
-        <!-- 7" screen on front face -->
-        <polygon points="26,72 76,48 76,116 26,140" fill="#030810" stroke="#00c9ff" stroke-width="0.8" opacity="0.9"/>
-        <!-- screen glow + content -->
-        <polygon points="28,74 74,50 74,114 28,138" fill="#00c9ff" opacity="0.04"/>
-        <text transform="matrix(0.87,0.5,-0.5,0.87,30,96)" font-family="IBM Plex Mono,monospace" font-size="4.5" fill="#00c9ff" opacity="0.55" letter-spacing="1.5">AUBIEETERNAL</text>
-        <text transform="matrix(0.87,0.5,-0.5,0.87,32,106)" font-family="IBM Plex Mono,monospace" font-size="3.5" fill="#ffaa00" opacity="0.5" letter-spacing="2">INSTITUTE</text>
-        <!-- scan line -->
-        <line x1="26" y1="110" x2="76" y2="85" stroke="#00c9ff" stroke-width="0.4" opacity="0.25"/>
-        <!-- badge emboss on front below screen -->
-        <polygon points="34,146 68,129 68,138 34,155" fill="none" stroke="#00c9ff" stroke-width="0.5" opacity="0.4"/>
-        <!-- cyan power LED -->
-        <circle cx="22" cy="160" r="3.5" fill="#00c9ff" opacity="0.85" filter="url(#cglow)"/>
-        <!-- USB-C port right side -->
-        <polygon points="95,118 108,125 108,132 95,125" fill="#030810" stroke="#1a3550" stroke-width="0.7"/>
-        <!-- honeycomb vents on right face -->
-        <g fill="none" stroke="#1a3550" stroke-width="0.7" opacity="0.6">
-          <polygon points="125,75 130,72 135,75 135,81 130,84 125,81"/>
-          <polygon points="135,75 140,72 145,75 145,81 140,84 135,81"/>
-          <polygon points="125,84 130,81 135,84 135,90 130,93 125,90"/>
-          <polygon points="135,84 140,81 145,84 145,90 140,93 135,90"/>
-          <polygon points="125,93 130,90 135,93 135,99 130,102 125,99"/>
-          <polygon points="135,93 140,90 145,93 145,99 140,102 135,99"/>
-          <polygon points="125,102 130,99 135,102 135,108 130,111 125,108"/>
-          <polygon points="135,102 140,99 145,102 145,108 140,111 135,108"/>
-        </g>
-        <!-- webcam cradle on top -->
-        <polygon points="95,10 140,28 140,34 95,16" fill="#0d2035" stroke="#1a4060" stroke-width="0.8"/>
-        <polygon points="115,8 140,20 140,28 115,16" fill="#0a1828" stroke="#1a4060" stroke-width="0.8"/>
-        <ellipse cx="127" cy="20" rx="6" ry="4" fill="#030810" stroke="#00c9ff" stroke-width="0.6" opacity="0.7" transform="rotate(-20,127,20)"/>
-      </svg>
-    </div>
-    <div class="tier-body">
-      <div class="tier-name">Teacher Node</div>
-      <div class="tier-code">AN-002 · v0.1 · INSTITUTE BUILD</div>
-      <div class="price-row">
-        <div class="price" style="color:var(--cyan)">$178</div>
-        <div class="price-note">full build</div>
-      </div>
-      <div class="build-label">Arduino UNO Q 4GB · 7″ Touch · EMEET C960</div>
-      <ul class="specs">
-        <li><span class="spec-check chk-y">✓</span><b>Brain:</b> UNO Q 4GB Qualcomm</li>
-        <li><span class="spec-check chk-y">✓</span><b>Display:</b> 7″ Hosyond Touch 1024×600</li>
-        <li><span class="spec-check chk-y">✓</span><b>Camera:</b> EMEET C960 4K + AI mic</li>
-        <li><span class="spec-check chk-y">✓</span><b>LLM:</b> qwen2.5:7b local</li>
-        <li><span class="spec-check chk-y">✓</span><b>Hub:</b> UGREEN Revodok 7-in-1</li>
-        <li><span class="spec-check chk-y">✓</span><b>Case:</b> 4-part AUBIE branded</li>
-        <li><span class="spec-check chk-y">✓</span><b>Face ID:</b> Multi-person enroll</li>
-      </ul>
-      <button class="tier-cta cta-cyan" onclick="showInterest('Teacher Node')">📩 Request Build Guide</button>
-    </div>
-  </div>
-
-  <!-- STUDIO -->
-  <div class="tier tier-studio">
-    <div class="box-art" style="background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(0,230,118,0.05) 0%,transparent 70%)">
-      <svg width="180" height="165" viewBox="0 0 180 165">
-        <defs>
-          <linearGradient id="s-top" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#0e2e20"/><stop offset="100%" stop-color="#081a10"/>
-          </linearGradient>
-          <linearGradient id="s-front" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#0a201a"/><stop offset="100%" stop-color="#060e0a"/>
-          </linearGradient>
-          <linearGradient id="s-side" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#091810"/><stop offset="100%" stop-color="#060e08"/>
-          </linearGradient>
-        </defs>
-        <!-- wider/taller box = more power -->
-        <polygon points="90,8 162,44 162,60 90,24" fill="url(#s-top)" stroke="#1a4030" stroke-width="1"/>
-        <polygon points="18,44 90,8 90,24 18,60" fill="url(#s-top)" stroke="#1a4030" stroke-width="1"/>
-        <polygon points="18,60 90,24 90,140 18,176" fill="url(#s-front)" stroke="#102018" stroke-width="1"/>
-        <polygon points="90,24 162,60 162,176 90,140" fill="url(#s-side)" stroke="#102018" stroke-width="1"/>
-        <!-- dual display slots on front -->
-        <polygon points="24,72 60,53 60,116 24,135" fill="#040e08" stroke="#00e676" stroke-width="0.8" opacity="0.9"/>
-        <polygon points="62,63 80,54 80,108 62,117" fill="#040e08" stroke="#1a4030" stroke-width="0.7"/>
-        <!-- screen glow -->
-        <polygon points="26,74 58,55 58,114 26,133" fill="#00e676" opacity="0.03"/>
-        <text transform="matrix(0.87,0.5,-0.5,0.87,28,98)" font-family="IBM Plex Mono,monospace" font-size="4" fill="#00e676" opacity="0.5" letter-spacing="1">STUDIO</text>
-        <!-- green LED -->
-        <circle cx="21" cy="170" r="3.5" fill="#00e676" opacity="0.8"/>
-        <!-- fan grill on right -->
-        <circle cx="128" cy="100" r="22" fill="none" stroke="#1a4030" stroke-width="0.8" opacity="0.5"/>
-        <circle cx="128" cy="100" r="14" fill="none" stroke="#1a4030" stroke-width="0.6" opacity="0.4"/>
-        <circle cx="128" cy="100" r="6" fill="#040e08" stroke="#1a4030" stroke-width="0.8"/>
-        <line x1="106" y1="100" x2="150" y2="100" stroke="#1a4030" stroke-width="0.5" opacity="0.4"/>
-        <line x1="128" y1="78" x2="128" y2="122" stroke="#1a4030" stroke-width="0.5" opacity="0.4"/>
-        <!-- USB ports rear -->
-        <polygon points="95,136 112,144 112,158 95,150" fill="#040e08" stroke="#1a4030" stroke-width="0.7"/>
-      </svg>
-    </div>
-    <div class="tier-body">
-      <div class="tier-name">Studio Node</div>
-      <div class="tier-code">AN-003 · CREATOR EDITION</div>
-      <div class="price-row">
-        <div class="price" style="color:var(--green)">$380</div>
-        <div class="price-note">est. build</div>
-      </div>
-      <div class="build-label">Jetson Orin Nano · Dual display · 4K cam</div>
-      <ul class="specs">
-        <li><span class="spec-check chk-y">✓</span><b>Brain:</b> Jetson Orin Nano 8GB</li>
-        <li><span class="spec-check chk-y">✓</span><b>Display:</b> 10.1″ + secondary 5″</li>
-        <li><span class="spec-check chk-y">✓</span><b>Camera:</b> 4K USB + wide lens</li>
-        <li><span class="spec-check chk-y">✓</span><b>LLM:</b> qwen2.5:14b local</li>
-        <li><span class="spec-check chk-y">✓</span><b>GPU:</b> 1024-core CUDA ML</li>
-        <li><span class="spec-check chk-y">✓</span><b>Case:</b> 5-part fan-cooled shell</li>
-        <li><span class="spec-check chk-y">✓</span><b>Face ID:</b> Real-time multi-face</li>
-      </ul>
-      <button class="tier-cta cta-green" onclick="showInterest('Studio Node')">🔔 Notify Me</button>
-    </div>
-  </div>
-
-  <!-- PRO -->
-  <div class="tier tier-pro">
-    <div class="box-art" style="background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(255,107,53,0.05) 0%,transparent 70%)">
-      <svg width="180" height="165" viewBox="0 0 180 165">
-        <defs>
-          <linearGradient id="p-top" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#2e1810"/><stop offset="100%" stop-color="#1a0e08"/>
-          </linearGradient>
-          <linearGradient id="p-front" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#1e1008"/><stop offset="100%" stop-color="#0a0604"/>
-          </linearGradient>
-          <linearGradient id="p-side" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#180e06"/><stop offset="100%" stop-color="#0a0604"/>
-          </linearGradient>
-          <filter id="oglow"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-        </defs>
-        <!-- largest box -->
-        <polygon points="90,6 165,44 165,62 90,24" fill="url(#p-top)" stroke="#3a2010" stroke-width="1"/>
-        <polygon points="15,44 90,6 90,24 15,62" fill="url(#p-top)" stroke="#3a2010" stroke-width="1"/>
-        <polygon points="15,62 90,24 90,145 15,183" fill="url(#p-front)" stroke="#1a0e06" stroke-width="1"/>
-        <polygon points="90,24 165,62 165,183 90,145" fill="url(#p-side)" stroke="#1a0e06" stroke-width="1"/>
-        <!-- large screen -->
-        <polygon points="22,74 78,46 78,130 22,158" fill="#040806" stroke="#ff6b35" stroke-width="0.9" opacity="0.9"/>
-        <polygon points="24,76 76,48 76,128 24,156" fill="#ff6b35" opacity="0.04"/>
-        <text transform="matrix(0.87,0.5,-0.5,0.87,28,104)" font-family="IBM Plex Mono,monospace" font-size="4.5" fill="#ff6b35" opacity="0.55" letter-spacing="1">PRO NODE</text>
-        <!-- orange LED (bright) -->
-        <circle cx="18" cy="178" r="4" fill="#ff6b35" opacity="0.9" filter="url(#oglow)"/>
-        <!-- front panel buttons -->
-        <circle cx="82" cy="110" r="4" fill="#ff6b35" opacity="0.6"/>
-        <circle cx="82" cy="125" r="4" fill="#3a2010" stroke="#ff6b35" stroke-width="0.6"/>
-        <!-- NVMe slot label on right -->
-        <polygon points="100,78 125,90 125,98 100,86" fill="#100806" stroke="#3a2010" stroke-width="0.7"/>
-        <text transform="matrix(0.87,0.5,-0.5,0.87,99,90)" font-family="IBM Plex Mono,monospace" font-size="3.5" fill="#ff6b35" opacity="0.4">NVMe</text>
-        <!-- dual fan on right -->
-        <circle cx="138" cy="90" r="15" fill="none" stroke="#3a2010" stroke-width="0.8" opacity="0.6"/>
-        <circle cx="138" cy="90" r="8" fill="none" stroke="#3a2010" stroke-width="0.6" opacity="0.5"/>
-        <circle cx="138" cy="90" r="3" fill="#100806" stroke="#3a2010" stroke-width="0.8"/>
-        <line x1="123" y1="90" x2="153" y2="90" stroke="#3a2010" stroke-width="0.4" opacity="0.5"/>
-        <line x1="138" y1="75" x2="138" y2="105" stroke="#3a2010" stroke-width="0.4" opacity="0.5"/>
-        <circle cx="138" cy="130" r="12" fill="none" stroke="#3a2010" stroke-width="0.8" opacity="0.5"/>
-        <circle cx="138" cy="130" r="3" fill="#100806" stroke="#3a2010" stroke-width="0.8"/>
-        <line x1="126" y1="130" x2="150" y2="130" stroke="#3a2010" stroke-width="0.4" opacity="0.5"/>
-        <line x1="138" y1="118" x2="138" y2="142" stroke="#3a2010" stroke-width="0.4" opacity="0.5"/>
-      </svg>
-    </div>
-    <div class="tier-body">
-      <div class="tier-name">Pro Node</div>
-      <div class="tier-code">AN-004 · LAB STATION</div>
-      <div class="price-row">
-        <div class="price" style="color:var(--orange)">$650</div>
-        <div class="price-note">est. build</div>
-      </div>
-      <div class="build-label">Mini-PC / NUC · NVMe SSD · Full LLM stack</div>
-      <ul class="specs">
-        <li><span class="spec-check chk-o">✓</span><b>Brain:</b> Intel N100 / Ryzen 16GB</li>
-        <li><span class="spec-check chk-o">✓</span><b>Display:</b> 13.3″ IPS Touch</li>
-        <li><span class="spec-check chk-o">✓</span><b>Camera:</b> PTZ 4K + mic array</li>
-        <li><span class="spec-check chk-o">✓</span><b>LLM:</b> qwen2.5:32b + multi-model</li>
-        <li><span class="spec-check chk-o">✓</span><b>Storage:</b> 1TB NVMe SSD</li>
-        <li><span class="spec-check chk-o">✓</span><b>Case:</b> Aluminium + 6-part print</li>
-        <li><span class="spec-check chk-o">✓</span><b>Face ID:</b> Multi-room, persistent</li>
-      </ul>
-      <button class="tier-cta cta-orange" onclick="showInterest('Pro Node')">📩 Request Info</button>
-    </div>
-  </div>
-
-</div><!-- /tiers -->
-
-<!-- ─── COMPARE TABLE ─── -->
-<div class="compare-wrap">
+<div style="max-width:1180px;margin:0 auto;padding:0 32px 80px">
   <div class="compare-head">
-    <h2 class="compare-title">Feature Comparison</h2>
-    <span class="compare-tag">ALL TIERS</span>
+    <h2 class="compare-title">Tablet seats</h2>
+    <span class="compare-tag">BUY · DON'T BUILD</span>
   </div>
-  <div style="overflow-x:auto;border-radius:12px;border:1px solid var(--border)">
-    <table class="cmp-table">
-      <thead>
-        <tr>
-          <th>Feature</th>
-          <th style="color:var(--muted)">Micro<br><span style="color:#3a5a72;font-size:9px">$89</span></th>
-          <th class="col-teacher" style="color:var(--cyan)">Teacher ★<br><span style="font-size:9px">$178</span></th>
-          <th style="color:var(--green)">Studio<br><span style="color:#1a4030;font-size:9px">$380</span></th>
-          <th style="color:var(--orange)">Pro<br><span style="color:#3a2010;font-size:9px">$650</span></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Local LLM (no cloud)</td>
-          <td><span class="tick-y">✓</span></td>
-          <td class="col-teacher"><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-        </tr>
-        <tr>
-          <td>Touch Display</td>
-          <td><span class="tick-p">5″</span></td>
-          <td class="col-teacher"><span class="tick-p">7″</span></td>
-          <td><span class="tick-p">10.1″</span></td>
-          <td><span class="tick-p">13.3″</span></td>
-        </tr>
-        <tr>
-          <td>Webcam</td>
-          <td><span class="tick-p">720p</span></td>
-          <td class="col-teacher"><span class="tick-p">4K AI</span></td>
-          <td><span class="tick-p">4K wide</span></td>
-          <td><span class="tick-p">4K PTZ</span></td>
-        </tr>
-        <tr>
-          <td>Face Enrollment</td>
-          <td><span class="tick-p">1 person</span></td>
-          <td class="col-teacher"><span class="tick-p">multi</span></td>
-          <td><span class="tick-p">real-time</span></td>
-          <td><span class="tick-p">persistent</span></td>
-        </tr>
-        <tr>
-          <td>Voice Input (SpeechRecognition)</td>
-          <td><span class="tick-y">✓</span></td>
-          <td class="col-teacher"><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-        </tr>
-        <tr>
-          <td>Text-to-Speech</td>
-          <td><span class="tick-y">✓</span></td>
-          <td class="col-teacher"><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-        </tr>
-        <tr>
-          <td>Max LLM model</td>
-          <td><span class="tick-p">3B</span></td>
-          <td class="col-teacher"><span class="tick-p">7B</span></td>
-          <td><span class="tick-p">14B</span></td>
-          <td><span class="tick-p">32B+</span></td>
-        </tr>
-        <tr>
-          <td>3D Printed Case</td>
-          <td><span class="tick-p">2-part</span></td>
-          <td class="col-teacher"><span class="tick-p">4-part</span></td>
-          <td><span class="tick-p">5-part</span></td>
-          <td><span class="tick-p">6-part+Al</span></td>
-        </tr>
-        <tr>
-          <td>AUBIEETERNAL Branding</td>
-          <td><span class="tick-y">✓</span></td>
-          <td class="col-teacher"><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-        </tr>
-        <tr>
-          <td>SCAD Files Included</td>
-          <td><span class="tick-y">✓</span></td>
-          <td class="col-teacher"><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-        </tr>
-        <tr>
-          <td>Tailscale Mesh Ready</td>
-          <td><span class="tick-n">—</span></td>
-          <td class="col-teacher"><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-          <td><span class="tick-y">✓</span></td>
-        </tr>
-        <tr>
-          <td>GPU Acceleration</td>
-          <td><span class="tick-n">—</span></td>
-          <td class="col-teacher"><span class="tick-n">—</span></td>
-          <td><span class="tick-y">✓ CUDA</span></td>
-          <td><span class="tick-y">✓ iGPU</span></td>
-        </tr>
-        <tr>
-          <td>NVMe SSD</td>
-          <td><span class="tick-n">—</span></td>
-          <td class="col-teacher"><span class="tick-n">—</span></td>
-          <td><span class="tick-n">—</span></td>
-          <td><span class="tick-y">1TB</span></td>
-        </tr>
-        <tr>
-          <td>Curriculum Build Guide</td>
-          <td><span class="tick-y">PDF</span></td>
-          <td class="col-teacher"><span class="tick-y">Full</span></td>
-          <td><span class="tick-y">Full</span></td>
-          <td><span class="tick-y">Full</span></td>
-        </tr>
-      </tbody>
-    </table>
+  <p style="font-size:15px;color:#4e6a82;max-width:640px;margin:-12px 0 28px;font-weight:300">These are store purchases, not kits we assemble. Any size works. A phone is a full seat.</p>
+  <div class="tiers" style="padding:0 0 20px">
+    <div class="tier tier-micro">
+      <div class="tier-body">
+        <div class="tier-name">Phone you have</div>
+        <div class="tier-code">SEAT · $0</div>
+        <div class="price-row"><div class="price">$0</div><div class="price-note">already owned</div></div>
+        <div class="build-label">Parent phones count too</div>
+        <ul class="specs">
+          <li><span class="spec-check chk-y">✓</span><b>Role:</b> Screen, mic, short camera</li>
+          <li><span class="spec-check chk-n">—</span><b>Brain:</b> Not the computer</li>
+          <li><span class="spec-check chk-y">✓</span><b>House:</b> Every phone, one tower</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tier tier-teacher">
+      <div class="recommended-badge">Any size</div>
+      <div class="tier-body">
+        <div class="tier-name">Everyday tablet</div>
+        <div class="tier-code">SEAT · STORE BUY</div>
+        <div class="price-row"><div class="price">$150</div><div class="price-note">about</div></div>
+        <div class="build-label">Any Android tablet already in the house, or a basic one</div>
+        <ul class="specs">
+          <li><span class="spec-check chk-p">✓</span><b>Size:</b> Does not matter</li>
+          <li><span class="spec-check chk-p">✓</span><b>Role:</b> Desk seat only</li>
+          <li><span class="spec-check chk-n">—</span><b>Brain:</b> Still the tower</li>
+        </ul>
+      </div>
+    </div>
+    <div class="tier tier-studio">
+      <div class="tier-body">
+        <div class="tier-name">Lesson tablet</div>
+        <div class="tier-code">SEAT · PLUGGED IN</div>
+        <div class="price-row"><div class="price">$220</div><div class="price-note">about</div></div>
+        <div class="build-label">Only if a camera stays on for a whole lesson</div>
+        <ul class="specs">
+          <li><span class="spec-check chk-y">✓</span><b>Power:</b> Leave it on a charger</li>
+          <li><span class="spec-check chk-y">✓</span><b>Others:</b> Still use their phones</li>
+          <li><span class="spec-check chk-n">—</span><b>Inches:</b> Not a feature</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>
+
+<div id="fit" style="background:#0b1520;border-top:1px solid rgba(0,201,255,0.12);border-bottom:1px solid rgba(0,201,255,0.12);padding:72px 24px">
+  <div style="max-width:720px;margin:0 auto">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#ffaa00;margin-bottom:12px">SEAT FIT</div>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,5vw,40px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:10px">What should this house buy?</h2>
+    <p id="fit-q" style="color:#cde0ef;font-size:18px;margin-bottom:6px"></p>
+    <p id="fit-h" style="color:#4e6a82;font-size:14px;margin-bottom:18px"></p>
+    <div id="fit-choices" style="display:flex;flex-direction:column;gap:10px"></div>
+    <div id="fit-result" style="display:none;background:#0e1c2a;border:1px solid rgba(0,201,255,0.25);border-radius:16px;padding:24px"></div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button id="fit-back" type="button" style="padding:10px 16px;background:transparent;color:#4e6a82;border:1px solid #1e3040;border-radius:8px;cursor:pointer">Back</button>
+      <button id="fit-reset" type="button" style="display:none;padding:10px 16px;background:transparent;color:#00c9ff;border:1px solid rgba(0,201,255,.3);border-radius:8px;cursor:pointer">Start over</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var a = {computer:null, box:null, vram:null, people:null, camera:null};
+  var step = 0;
+  var order = ["computer"];
+  var Q = {
+    computer: ["What computer is already in the house?", "The tutor runs on a computer. Phones and tablets are seats.", [
+      ["gpu","It has a graphics card","Gaming PC, or a laptop that says RTX or RX."],
+      ["ordinary","An ordinary computer","Office PC, school laptop, or you are not sure."],
+      ["none","No usable computer","Phones and tablets only."]
+    ]],
+    box: ["What kind of computer is it?", "A tower you can open can take a new card later. A laptop cannot. No terminal needed — just look at it.", [
+      ["tower","A tower I can open","A separate box with a side panel."],
+      ["laptop","A laptop","Screen and keyboard are one piece."],
+      ["stuck","All-in-one or sealed","No room for a graphics card."],
+      ["unsure","Not sure","We will not tell you to buy a card."]
+    ]],
+    vram: ["How much graphics memory?", "Ctrl+Shift+Esc, then Performance, then GPU. Read Dedicated GPU memory. That is a window, not a command.", [
+      ["unknown","I don't know","We will guess low."],
+      ["under8","Under 8 GB","Stay on a small model."],
+      ["8to12","8–12 GB","3060 or 4060 class. Run 14B."],
+      ["16","16 GB","14B is easy."],
+      ["24","24 GB or more","You already bought the big step."]
+    ]],
+    people: ["Who will open Aubie?", "Count parents. One computer serves every phone.", [
+      ["one","One student","A parent can still use their phone later."],
+      ["pair","A student and a parent","Two phones, one computer."],
+      ["several","More than one student","Parent phones count. Still one computer."]
+    ]],
+    camera: ["How long does the camera stay on?", "A long camera session needs a charger. The model does not drain the phone. Lessons do.", [
+      ["burst","Only while talking","A phone is fine."],
+      ["long","On for a whole lesson","Use a plugged-in tablet."]
+    ]]
+  };
+  function flow(){
+    var q = ["computer"];
+    if(a.computer==="gpu"||a.computer==="ordinary") q.push("box");
+    if(a.computer==="gpu") q.push("vram");
+    if(a.computer) q.push("people","camera");
+    return q;
+  }
+  function plan(){
+    var phone = a.people==="one" ? "The phone you already have is a full seat." : "Every phone in the house is a seat, parents included. Do not buy a computer per person.";
+    var cam = a.camera==="long" ? "One tablet on a charger for the lesson. Any size. Everyone else stays on a phone." : "Open the camera for a question, then close it.";
+    if(a.computer==="none") return {
+      t:"Start with an entry tower. Upgrade the card later.",
+      d:"Buy a desktop with an 8–12 GB card, new or used. Run Qwen 14B. "+phone+" "+cam+" When 14B feels thin, swap only the graphics card."
+    };
+    if(a.box==="laptop"||a.box==="stuck") return {
+      t:"Use this computer for now. It cannot grow.",
+      d:"Laptops and sealed boxes cannot take a new graphics card. Run the small model it can hold. "+phone+" The next purchase is an entry tower, not a card for this machine."
+    };
+    if(a.box==="unsure") return {
+      t:"Do not buy a graphics card yet.",
+      d:"If it is a tower, a later card swap is the cheap upgrade. If it is a laptop, the next purchase is an entry tower. "+phone
+    };
+    if(a.vram==="24") return { t:"You already have the expensive step.", d:"Do not add hardware to chase a giant model. "+phone+" "+cam };
+    if(a.vram==="8to12"||a.vram==="16") return {
+      t:"Use this tower. Keep the phones.",
+      d:"Run Qwen 14B. "+phone+" "+cam+" Swap the card to 16–24 GB only when 14B feels thin."
+    };
+    return {
+      t:"Use what you have. Add an 8–12 GB card before anything else.",
+      d:phone+" "+cam+" That card is cheaper than a 24 GB card on day one."
+    };
+  }
+  function show(){
+    var result = document.getElementById("fit-result");
+    var choices = document.getElementById("fit-choices");
+    var reset = document.getElementById("fit-reset");
+    order = flow();
+    if(step >= order.length){
+      var p = plan();
+      document.getElementById("fit-q").textContent = p.t;
+      document.getElementById("fit-h").textContent = "";
+      choices.innerHTML = "";
+      result.style.display = "block";
+      result.innerHTML = "<p style='color:#cde0ef;font-size:15px;line-height:1.7'>"+p.d+"</p>";
+      reset.style.display = "inline-block";
+      return;
+    }
+    result.style.display = "none";
+    reset.style.display = "none";
+    var key = order[step];
+    var spec = Q[key];
+    document.getElementById("fit-q").textContent = spec[0];
+    document.getElementById("fit-h").textContent = spec[1];
+    choices.innerHTML = "";
+    spec[2].forEach(function(opt){
+      var b = document.createElement("button");
+      b.type = "button";
+      b.style.cssText = "text-align:left;padding:14px 16px;border-radius:12px;border:1px solid #1e3040;background:#0e1c2a;color:#cde0ef;cursor:pointer";
+      if(a[key]===opt[0]) b.style.borderColor = "#00c9ff";
+      b.innerHTML = "<strong style='display:block;color:#fff'>"+opt[1]+"</strong><span style='color:#4e6a82;font-size:13px'>"+opt[2]+"</span>";
+      b.onclick = function(){
+        a[key] = opt[0];
+        if(key==="computer" && opt[0]!=="gpu") a.vram = null;
+        if(key==="computer" && opt[0]==="none") a.box = null;
+        step += 1;
+        show();
+      };
+      choices.appendChild(b);
+    });
+  }
+  document.getElementById("fit-back").onclick = function(){
+    if(step===0) return;
+    step -= 1;
+    show();
+  };
+  document.getElementById("fit-reset").onclick = function(){
+    a = {computer:null, box:null, vram:null, people:null, camera:null};
+    step = 0;
+    show();
+  };
+  show();
+})();
+</script>
 
 <!-- ─── PC BUILDS SECTION ─── -->
 <div style="max-width:1180px;margin:0 auto;padding:0 32px 40px">
@@ -706,12 +506,13 @@ function submitInterest(){
     <h2 style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff">Custom AI PC Builds</h2>
     <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--cyan);border:1px solid rgba(0,201,255,.25);padding:3px 10px;border-radius:3px;letter-spacing:.14em">DESKTOP · WORKSTATION</span>
   </div>
-  <p style="font-size:15px;color:#4e6a82;max-width:600px;margin-bottom:36px;font-weight:300">Full desktop AI rigs — GPU-powered, local LLM, no subscription. We help you pick parts, build it, and get the AUBIEETERNAL stack running.</p>
+  <p style="font-size:15px;color:#4e6a82;max-width:640px;margin-bottom:36px;font-weight:300">One tower for the house. Start with the entry build, an 8–12 GB card. Swap only the graphics card later if 14B feels thin. A laptop cannot take that swap. The Pro rig is not the first purchase.</p>
 
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px">
 
     <!-- BUDGET AI PC -->
-    <div class="tier" style="border-color:rgba(120,180,255,0.15)">
+    <div class="tier" style="border-color:rgba(0,201,255,0.35);box-shadow:0 0 40px rgba(0,201,255,0.07)">
+      <div class="recommended-badge">★ Start here</div>
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#6eb4ff,transparent)"></div>
       <div class="box-art" style="background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(110,180,255,0.05) 0%,transparent 70%)">
         <svg width="185" height="160" viewBox="0 0 185 160">
@@ -759,7 +560,7 @@ function submitInterest(){
           <li><span class="spec-check" style="background:rgba(110,180,255,0.12);color:#6eb4ff">✓</span><b>GPU:</b> RTX 3060 12GB (AI inference)</li>
           <li><span class="spec-check" style="background:rgba(110,180,255,0.12);color:#6eb4ff">✓</span><b>RAM:</b> 16GB DDR4 3200MHz</li>
           <li><span class="spec-check" style="background:rgba(110,180,255,0.12);color:#6eb4ff">✓</span><b>Storage:</b> 512GB NVMe SSD</li>
-          <li><span class="spec-check" style="background:rgba(110,180,255,0.12);color:#6eb4ff">✓</span><b>LLM:</b> qwen2.5:7b GPU-accelerated</li>
+          <li><span class="spec-check" style="background:rgba(110,180,255,0.12);color:#6eb4ff">✓</span><b>LLM:</b> Qwen 14B on the 12 GB card</li>
           <li><span class="spec-check chk-n">—</span><b>RAM:</b> Upgrade path to 32GB</li>
         </ul>
         <button class="tier-cta" style="background:transparent;color:#6eb4ff;border:1px solid rgba(110,180,255,0.3);margin-top:22px;display:block;width:100%;padding:12px;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer" onclick="showInterest('Entry AI PC')">📋 See Full Parts List</button>
@@ -880,79 +681,53 @@ function submitInterest(){
   </div><!-- /pc grid -->
 </div>
 
-<!-- ─── HOW TO BUILD WITH US ─── -->
+
+
 <div style="background:linear-gradient(135deg,#080f18,#0b1825);border-top:1px solid rgba(0,201,255,0.12);border-bottom:1px solid rgba(0,201,255,0.12);padding:80px 40px">
-  <div style="max-width:1060px;margin:0 auto">
-    <div style="text-align:center;margin-bottom:56px">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#ffaa00;margin-bottom:14px">HOW TO BUILD WITH US</div>
-      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,5vw,44px);font-weight:800;color:#fff;line-height:1.1;text-wrap:balance;margin-bottom:12px">We'll guide you<br>every step of the way.</h2>
-      <p style="font-size:16px;color:#4e6a82;max-width:500px;margin:0 auto;font-weight:300">Whether you're across the street or across the country — we make it work.</p>
+  <div style="max-width:760px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:36px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#ffaa00;margin-bottom:14px">SCHEDULED EVENTS</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,5vw,44px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:12px">When and where.</h2>
+      <p style="font-size:16px;color:#4e6a82;font-weight:300">This list is the calendar. It changes when a date and a place are set. No private lesson on a call.</p>
     </div>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px">
-
-      <!-- IN PERSON -->
-      <div style="background:#0e1c2a;border:1px solid rgba(0,201,255,0.14);border-radius:16px;padding:32px;position:relative;overflow:hidden">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ffaa00,transparent)"></div>
-        <div style="font-size:40px;margin-bottom:16px">🏫</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;color:#ffaa00;margin-bottom:8px">IN-PERSON</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:10px">Come to Englewood</h3>
-        <p style="font-size:13px;color:#4e6a82;margin-bottom:20px;line-height:1.7">Hands-on build session at the AUBIEETERNAL Institute. Sit down, pick your parts, and we build it together. Best way to learn every connector, cable, and setting.</p>
-        <div style="background:#060a0e;border:1px solid #1e3040;border-radius:8px;padding:12px 16px;margin-bottom:20px">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#4e6a82;margin-bottom:4px;letter-spacing:.1em">LOCATION</div>
-          <div style="font-size:13px;color:#cde0ef;font-weight:500">Englewood, FL</div>
-          <div style="font-size:12px;color:#4e6a82">By appointment only</div>
-        </div>
-        <button onclick="showInterest('In-Person Build Session – Englewood')" style="width:100%;padding:12px;background:var(--gold-dim,rgba(255,170,0,0.12));color:#ffaa00;border:1px solid rgba(255,170,0,0.25);border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer">📅 Book a Session</button>
-      </div>
-
-      <!-- BUILD EVENTS -->
-      <div style="background:#0e1c2a;border:1px solid rgba(0,230,118,0.2);border-radius:16px;padding:32px;position:relative;overflow:hidden;box-shadow:0 0 30px rgba(0,230,118,0.05)">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00e676,transparent)"></div>
-        <div style="font-size:40px;margin-bottom:16px">🛠️</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;color:#00e676;margin-bottom:8px">GROUP EVENTS</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:10px">Build Events</h3>
-        <p style="font-size:13px;color:#4e6a82;margin-bottom:20px;line-height:1.7">Community build days — bring your parts or use our kit list. Small groups (4–8 people), guided build from unboxing to first boot. Great for schools, teams, and maker clubs.</p>
-        <div style="background:#060a0e;border:1px solid #1e3040;border-radius:8px;padding:12px 16px;margin-bottom:20px">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#4e6a82;margin-bottom:4px;letter-spacing:.1em">FORMAT</div>
-          <div style="font-size:13px;color:#cde0ef;font-weight:500">3–4 hr workshop</div>
-          <div style="font-size:12px;color:#4e6a82">Englewood, FL or your location</div>
-        </div>
-        <button onclick="showInterest('Build Event – Group Workshop')" style="width:100%;padding:12px;background:rgba(0,230,118,0.1);color:#00e676;border:1px solid rgba(0,230,118,0.25);border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer">📋 Join the Interest List</button>
-      </div>
-
-      <!-- VIRTUAL / ZOOM -->
-      <div style="background:#0e1c2a;border:1px solid rgba(0,201,255,0.2);border-radius:16px;padding:32px;position:relative;overflow:hidden;box-shadow:0 0 30px rgba(0,201,255,0.05)">
-        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00c9ff,transparent)"></div>
-        <div style="font-size:40px;margin-bottom:16px">💻</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.18em;color:#00c9ff;margin-bottom:8px">REMOTE · VIRTUAL</div>
-        <h3 style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:10px">Virtual Build Session</h3>
-        <p style="font-size:13px;color:#4e6a82;margin-bottom:20px;line-height:1.7">Can't make it to Englewood? No problem. We jump on a Zoom call, you share your screen, and we walk through parts selection, assembly tips, and getting the AI stack running — step by step.</p>
-        <div style="background:#060a0e;border:1px solid #1e3040;border-radius:8px;padding:12px 16px;margin-bottom:20px">
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#4e6a82;margin-bottom:4px;letter-spacing:.1em">FORMAT</div>
-          <div style="font-size:13px;color:#cde0ef;font-weight:500">Zoom / Google Meet</div>
-          <div style="font-size:12px;color:#4e6a82">Available anywhere — book your slot</div>
-        </div>
-        <button onclick="showInterest('Virtual Build Session – Zoom')" style="width:100%;padding:12px;background:rgba(0,201,255,0.1);color:#00c9ff;border:1px solid rgba(0,201,255,0.25);border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer">🎥 Book a Zoom Session</button>
-      </div>
-
-    </div><!-- /3-col -->
+    <div id="event-list" style="display:flex;flex-direction:column;gap:14px"></div>
   </div>
 </div>
+<script>
+// Edit this list to keep the page current. Leave it empty when nothing is scheduled.
+var EVENTS = [
+  // { when: "Saturday, Nov 14, 2026 · 10:00 AM–1:00 PM", where: "Englewood, FL", title: "Family tower morning", note: "Open shop time. Not a private lesson." }
+];
+(function(){
+  var box = document.getElementById("event-list");
+  if(!EVENTS.length){
+    box.innerHTML = "<div style='background:#0e1c2a;border:1px solid #1e3040;border-radius:16px;padding:28px;text-align:center'><div style='font-family:Space Grotesk,sans-serif;font-size:20px;color:#fff;margin-bottom:8px'>Nothing scheduled</div><p style='color:#4e6a82;font-size:14px'>When an event has a date and a place, it goes here. Until then, this line stays empty on purpose.</p></div>";
+    return;
+  }
+  EVENTS.forEach(function(ev){
+    var d = document.createElement("article");
+    d.style.cssText = "background:#0e1c2a;border:1px solid rgba(0,201,255,0.2);border-radius:16px;padding:22px 24px";
+    d.innerHTML = "<div style='font-family:IBM Plex Mono,monospace;font-size:11px;letter-spacing:.14em;color:#ffaa00;margin-bottom:8px'>"+ev.when+"</div><h3 style='font-family:Space Grotesk,sans-serif;color:#fff;font-size:20px;margin-bottom:6px'>"+ev.title+"</h3><p style='color:#cde0ef;font-size:14px;margin-bottom:4px'>"+ev.where+"</p><p style='color:#4e6a82;font-size:13px'>"+(ev.note||"")+"</p>";
+    box.appendChild(d);
+  });
+})();
+</script>
 
-<!-- COMING SOON BANNER -->
-<div style="background:linear-gradient(135deg,#0b1a26,#0d2230);border-top:1px solid rgba(0,201,255,0.15);border-bottom:1px solid rgba(0,201,255,0.15);padding:56px 40px;text-align:center">
-  <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:#ffaa00;margin-bottom:14px">SHOP · COMING SOON</div>
-  <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,4vw,36px);font-weight:700;color:#fff;margin-bottom:12px;text-wrap:balance">Pre-assembled nodes &amp; build kits<br>launching soon.</h2>
-  <p style="font-size:15px;color:#4e6a82;max-width:480px;margin:0 auto 28px;font-weight:300">In the meantime, every build is fully open-source — grab the parts list, SCAD files, and build guide by dropping us your email.</p>
-  <button onclick="showInterest('AUBIEETERNAL Build Kit')" style="padding:14px 36px;background:#00c9ff;color:#000;border:none;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .15s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
-    📩 Get Early Access Info
-  </button>
-  <p style="margin-top:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#2a3f52">aubieeternal_institute@pm.me &nbsp;·&nbsp; Englewood, FL &nbsp;·&nbsp; aubieeternal-institute.org</p>
+<div style="background:linear-gradient(135deg,#0b1a26,#0d2230);border-top:1px solid rgba(0,201,255,0.15);padding:56px 40px;text-align:center">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:#ffaa00;margin-bottom:14px">PARTS · NOT A PRIVATE CLASS</div>
+  <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,4vw,36px);font-weight:700;color:#fff;margin-bottom:12px">The entry tower is a parts list.</h2>
+  <p style="font-size:15px;color:#4e6a82;max-width:520px;margin:0 auto 20px;font-weight:300">Email for the entry-tower parts list. That note is not a live lesson and not a video call.</p>
+  <button onclick="showInterest('Entry tower parts list')" style="padding:14px 36px;background:#00c9ff;color:#000;border:none;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;cursor:pointer">Send the parts list</button>
+  <p style="margin-top:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#2a3f52">aubieeternal_institute@pm.me · Englewood, FL · aubieeternal-institute.org</p>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="logo">AUBIE<em>ETERNAL</em> · INSTITUTE</div>
-  <p>Open Hardware · Local AI · No cloud subscription · All prices are estimated component costs · © 2026 AUBIEETERNAL Institute</p>
+  <p>One tower for the house · Phones and tablets are seats · Prices are estimates · © 2026 AUBIEETERNAL Institute</p>
+  <div class="social" aria-label="Follow and contact us">
+    <a href="https://www.facebook.com/profile.php?id=61594661892373" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Facebook</a>
+    <a href="https://www.instagram.com/aubieeternal_institute_inc/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1.1.4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1.1.4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1.1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1.1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 8.1a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zm6.2-8.3a1.1 1.1 0 1 1-2.3 0 1.1 1.1 0 0 1 2.3 0z"/></svg>Instagram</a>
+    <a href="https://t.me/aubieeternal_institute" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm5.6 8.2-1.9 8.9c-.1.6-.5.8-1 .5l-2.9-2.1-1.4 1.3c-.2.2-.3.3-.6.3l.2-3 5.4-4.9c.2-.2 0-.3-.4-.1l-6.7 4.2-2.9-.9c-.6-.2-.6-.6.1-.9l11.3-4.4c.5-.2 1 .1.8 1.1z"/></svg>Telegram</a>
+    <a href="https://wa.me/19312665632" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zM20.5 3.5A11.8 11.8 0 0 0 1.9 17.7L.2 24l6.4-1.7A11.8 11.8 0 0 0 24 12c0-3.2-1.2-6.1-3.5-8.5z"/></svg>WhatsApp</a>
+  </div>
 </footer>
