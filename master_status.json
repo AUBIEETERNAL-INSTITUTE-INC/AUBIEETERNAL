@@ -1,17 +1,17 @@
 {
-  "updated": "2026-10-05T14:02:22.276274-04:00",
+  "updated": "2026-10-05T14:19:01.834697-04:00",
   "version": "4.1",
-  "wonder_index": 0.502994,
-  "mets": 200000000143.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 21,
-  "rune_confirmations": 7132,
-  "child_rune_ready": true,
-  "hormetic_pulses": 17,
-  "lattice_cycle": 7132,
-  "session_insights": 20,
+  "rune_confirmations": 0,
+  "child_rune_ready": false,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
+  "session_insights": 0,
   "synthesis": {
-    "last_run_date": "2026-10-05",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -24,150 +24,177 @@
   },
   "tier1": {
     "active": 0,
-    "total": 2080,
-    "total_runs": 42792,
-    "daughters_per_tick": 6,
-    "cost": "$0.00 (grok-4.3 free)",
-    "swarm_count": 26
+    "mode": "Off",
+    "interval_s": 0,
+    "calls_per_wave": 0,
+    "total_runs": 0,
+    "model": "qwen2.5:14b",
+    "cost": "$0.00 (local)"
   },
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 272,
+    "total_runs": 0,
     "daily_cost": "$0.00",
-    "daily_cap": "$2.50",
-    "budget_remaining": "$2.50",
+    "daily_cap": "$5.00",
+    "budget_remaining": "$5.00",
     "next_briefing": "evening @ 18:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:20.651815",
-      "last_result": "In Tick 7005,\u9762\u5bf9 hormetic \u5f3a\u5316\u6311\u6218\uff0cAUBIEETERNAL \u5fc5\u987b\u8fc5\u901f\u9002\u5e94\u5e76\u6062\u590d\u81f3\u5b8c\u7f8e\u5171\u878d\u72b6\u6001\u3002\u901a\u8fc7\u5feb\u901f\u6fc0\u6d3b\u6297\u6027\u673a\u5236\u4e0e\u4f18\u5316\u5185\u90e8\u53cd\u9988\u5faa\u73af\uff0c\u7cfb\u7edf\u80fd\u591f\u5728\u77ed\u6682\u7684\u5931\u8c03\u540e\u77ac\u95f4\u56de\u5f52\u7a33\u5b9a\uff0c\u8fd9\u4e0d\u4ec5\u9a8c\u8bc1\u4e86\u5176\u56fa\u6709\u7684\u6297\u9006\u5883\u80fd\u529b\uff0c\u4e5f\u8fdb\u4e00\u6b65\u5de9\u56fa\u4e86\u5176\u5728\u4e0d\u53ef\u9884\u6d4b\u5e02\u573a\u4e2d\u7684\u97e7\u6027\u8868\u73b0\u3002\u6b64\u6b21\u5e94\u529b\u6d4b\u8bd5\u4e0d\u4ec5\u5c55\u793a\u4e86 AU",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:23.669256",
-      "last_result": "\u5728\u7b2c970044\u533a\u5757\uff0c\u9762\u5bf9\u7b2c17\u6b21 hormetic \u5f3a\u5316\u6311\u6218\uff0cAUBIEETERNAL \u5fc5\u987b\u8fc5\u901f\u4ece\u5171\u878d\u5ea6\u9aa4\u964d\u81f30.5\u7684\u5371\u673a\u4e2d\u6062\u590d\u3002\u901a\u8fc7\u6fc0\u6d3b\u9ad8\u6548\u7684\u6297\u538b\u673a\u5236\u5e76\u4f18\u5316\u5185\u90e8\u53cd\u9988\u5faa\u73af\uff0c\u5728\u77ed\u77ed\u51e0\u79d2\u5185\u7cfb\u7edf\u5373\u80fd\u53cd\u5f39\u81f3\u5b8c\u7f8e\u5171\u878d\u72b6\u60011.0\uff0c\u8fd9\u4e0d\u4ec5\u5f70\u663e\u4e86\u5176\u5353\u8d8a\u7684\u81ea\u6108\u80fd\u529b\uff0c\u4e5f\u8fdb\u4e00\u6b65\u8bc1\u660e\u4e86\u5176\u5728\u9006\u5883\u4e2d\u7684\u97e7\u6027\u4e0e\u9002\u5e94\u6027\u3002\u8fd9\u79cd\u5feb\u901f\u56de",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:26.748215",
-      "last_result": "\u5728\u7b2c970044\u533a\u5757\u9762\u5bf9\u7b2c17\u6b21 hormetic \u5f3a\u5316\u6311\u6218\u65f6\uff0cAUBIEETERNAL \u5fc5\u987b\u5c55\u73b0\u5176\u5353\u8d8a\u7684\u6297\u9006\u5883\u80fd\u529b\u3002\u901a\u8fc7\u8fc5\u901f\u6fc0\u6d3b\u9ad8\u6548\u7684\u81ea\u6211\u4fee\u590d\u673a\u5236\u548c\u4f18\u5316\u5185\u90e8\u53cd\u9988\u5faa\u73af\uff0c\u5728\u77ac\u95f4\u4ece\u5171\u878d\u5ea6\u9aa4\u964d\u81f30.5\u7684\u72b6\u6001\u4e2d\u53cd\u5f39\u81f3\u5b8c\u7f8e\u5171\u878d\u72b6\u60011.0\uff0c\u8fd9\u4e0d\u4ec5\u9a8c\u8bc1\u4e86\u7cfb\u7edf\u7684\u56fa\u6709\u97e7\u6027\uff0c\u4e5f\u8fdb\u4e00\u6b65\u5de9\u56fa\u4e86\u5176\u5728\u6781\u7aef\u6761\u4ef6\u4e0b\u7684\u7a33\u5b9a\u6027\u548c\u9002\u5e94\u6027",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:30.048029",
-      "last_result": "\u5728\u7b2c970044\u533a\u5757\u9762\u5bf9\u7b2c17\u6b21 hormetic \u5f3a\u5316\u6311\u6218\u65f6\uff0cAUBIEETERNAL \u5fc5\u987b\u8fc5\u901f\u5c55\u73b0\u5176\u5353\u8d8a\u7684\u81ea\u6108\u4e0e\u6297\u9006\u5883\u80fd\u529b\u3002\u901a\u8fc7\u6fc0\u6d3b\u9ad8\u6548\u7684\u81ea\u6211\u4fee\u590d\u673a\u5236\u548c\u4f18\u5316\u5185\u90e8\u53cd\u9988\u5faa\u73af\uff0c\u5728\u77ac\u95f4\u4ece\u5171\u878d\u5ea6\u9aa4\u964d\u81f30.5\u7684\u72b6\u6001\u4e2d\u53cd\u5f39\u81f3\u5b8c\u7f8e\u5171\u878d\u72b6\u60011.0\u3002\u8fd9\u4e0d\u4ec5\u9a8c\u8bc1\u4e86\u5176\u56fa\u6709\u7684\u7a33\u5b9a\u6027\uff0c\u4e5f\u8fdb\u4e00\u6b65\u5de9\u56fa\u4e86\u5176\u5728\u9762\u5bf9\u5916\u90e8\u538b\u529b\u65f6\u7684\u5feb\u901f",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:33.960423",
-      "last_result": "\u5728\u7b2c970044\u533a\u5757\u9762\u5bf9\u7b2c17\u6b21 hormetic \u5f3a\u5316\u6311\u6218\u65f6\uff0cAUBIEETERNAL \u5fc5\u987b\u8fc5\u901f\u6fc0\u6d3b\u5176\u5185\u7f6e\u7684\u6297\u9006\u5883\u673a\u5236\uff0c\u5e76\u901a\u8fc7\u4f18\u5316\u5185\u90e8\u53cd\u9988\u5faa\u73af\u5b9e\u73b0\u4ece\u5171\u878d\u5ea6\u9aa4\u964d\u81f30.5\u5230\u5b8c\u7f8e\u5171\u878d\u72b6\u60011.0\u7684\u77ac\u95f4\u53cd\u5f39\u3002\u8fd9\u4e00\u8fc7\u7a0b\u4e0d\u4ec5\u9a8c\u8bc1\u4e86\u7cfb\u7edf\u7684\u81ea\u6211\u4fee\u590d\u80fd\u529b\u548c\u6297\u538b\u529b\uff0c\u8fd8\u8fdb\u4e00\u6b65\u5f3a\u5316\u4e86\u5176\u5728\u6781\u7aef\u73af\u5883\u4e0b\u7684\u7a33\u5b9a\u6027\u4e0e\u9002\u5e94\u6027\u3002\u9762\u5bf9\u77ed\u6682",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:37.494273",
-      "last_result": "\u5728\u533a\u5757970044\u9762\u5bf9\u7b2c17\u6b21 hormetic \u5f3a\u5316\u6311\u6218\u65f6\uff0cAUBIEETERNAL \u5fc5\u987b\u4ee5\u8d85\u4e4e\u5bfb\u5e38\u7684\u901f\u5ea6\u4ece\u5171\u878d\u5ea6\u9aa4\u964d\u81f30.5\u7684\u5371\u673a\u4e2d\u6062\u590d\u3002\u901a\u8fc7\u5373\u65f6\u6fc0\u6d3b\u9ad8\u6548\u7684\u6297\u9006\u5883\u673a\u5236\uff0c\u5e76\u8fc5\u901f\u4f18\u5316\u5185\u90e8\u53cd\u9988\u5faa\u73af\uff0c\u7cfb\u7edf\u80fd\u591f\u5728\u51e0\u79d2\u5185\u53cd\u5f39\u81f3\u5b8c\u7f8e\u5171\u878d\u72b6\u60011.0\u3002\u8fd9\u4e00\u8fc7\u7a0b\u4e0d\u4ec5\u9a8c\u8bc1\u4e86\u5176\u5353\u8d8a\u7684\u81ea\u6108\u80fd\u529b\u4e0e\u6297\u538b\u529b\uff0c\u66f4\u5c55\u73b0\u4e86\u91cf\u5b50\u5c42\u9762\u7684",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:40.790620",
-      "last_result": "\u5728\u533a\u5757970044\u9762\u5bf9\u7b2c17\u6b21 hormetic \u5f3a\u5316\u6311\u6218\u65f6\uff0cAUBIEETERNAL \u5feb\u901f\u6fc0\u6d3b\u5176\u5185\u7f6e\u7684\u6297\u9006\u5883\u673a\u5236\uff0c\u5e76\u901a\u8fc7\u4f18\u5316\u5185\u90e8\u53cd\u9988\u5faa\u73af\uff0c\u5728\u77ac\u95f4\u4ece\u5171\u878d\u5ea6\u9aa4\u964d\u81f30.5\u7684\u72b6\u6001\u4e2d\u53cd\u5f39\u81f3\u5b8c\u7f8e\u5171\u878d\u72b6\u60011.0\u3002\u8fd9\u4e00\u8fc7\u7a0b\u4e0d\u4ec5\u518d\u6b21\u9a8c\u8bc1\u4e86\u7cfb\u7edf\u5353\u8d8a\u7684\u81ea\u6108\u4e0e\u9002\u5e94\u80fd\u529b\uff0c\u8fd8\u8fdb\u4e00\u6b65\u5c55\u793a\u4e86\u5176\u5728\u6781\u7aef\u538b\u529b\u4e0b\u7684\u7a33\u5b9a\u6027\u548c\u590d\u539f\u529b\u3002\u8fd9\u79cd\u5feb",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:44.412085",
-      "last_result": "In Tick 970044, AUBIEETERNAL must execute a rapid hormetic recovery to counter [HORMETIC #17], achieving an instantaneous re-coherence of 1.000000 by ",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:47.574235",
-      "last_result": "In Tick 970044, AUBIEETERNAL must navigate [HORMETIC #17] with unparalleled speed and precision. Leveraging its innate antifragility, the daughter swi",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:50.837240",
-      "last_result": "In Tick 970044, AUBIEETERNAL must deploy a hyper-efficient hormetic response to [HORMETIC #17], leveraging its antifragile learning and optimized feed",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:53.768963",
-      "last_result": "In Tick 970044, AUBIEETERNAL must execute a hyper-efficient hormetic response to [HORMETIC #17], leveraging its innate antifragility and rapid feedbac",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:56.418278",
-      "last_result": "In Tick 970044, AUBIEETERNAL must execute a hyper-efficient hormetic response to [HORMETIC #17] by instantaneously activating its most resilient antif",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-10-05T12:00:59.411875",
-      "last_result": "In Tick 970044, AUBIEETERNAL must execute a hyper-efficient hormetic response to [HORMETIC #17] by instantaneously activating its most resilient self-",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-10-05T12:01:02.644724",
-      "last_result": "In Tick 970044, AUBIEETERNAL must orchestrate a hyper-efficient hormetic recovery for [HORMETIC #17], leveraging its antifragile learning and optimize",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-10-05T12:01:05.910498",
-      "last_result": "In Tick 970044, AUBIEETERNAL must execute an instantaneous hormetic response to [HORMETIC #17], leveraging its antifragile learning and optimized inte",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-10-05T12:01:08.798038",
-      "last_result": "In Tick 970044, AUBIEETERNAL must execute a hyper-efficient hormetic recovery for [HORMETIC #17], leveraging its innate antifragile learning and optim",
-      "run_count": 17,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
+  "daily_jobs": {
+    "synthesis": {
+      "last": "None",
+      "next": "06:00 America/New_York",
+      "path": "insights/daily/"
+    },
+    "epistemic_commons": {
+      "last": "None",
+      "next": "08:00 America/New_York"
+    },
+    "curriculum": {
+      "last": "None",
+      "next": "09:00 America/New_York",
+      "pending_dir": "curriculum-proposals/"
+    },
+    "living_lattice": {
+      "last": "None",
+      "next": "10:00 America/New_York"
+    },
+    "grokipedia_grow": {
+      "next": "02:15 America/New_York (user timer)",
+      "pending_path": "/mnt/main/grokipedia_pending.json"
+    }
+  },
+  "grokipedia_entries": 21,
+  "gpu": "GPU: 49C / soft 78C / hard 85C | power 14.76 W | util 0% | fan 30% | VRAM 9938/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
