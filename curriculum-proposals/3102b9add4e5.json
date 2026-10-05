@@ -16,7 +16,7 @@
   },
   "rationale": "Expanding the concept of antifragility beyond its application in cryptocurrency to broader personal and professional contexts.",
   "submitted_at": "2026-08-24T11:55:46.151004",
-  "status": "pending",
+  "status": "approved",
   "review": {
     "steelman_for": "",
     "steelman_against": "",
@@ -28,5 +28,9 @@
     "reviewer_notes": "",
     "status": "pending"
   },
-  "comments": []
+  "comments": [],
+  "approved_at": "2026-09-22T10:29:42.562842",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-22T15:20:09.964755"
 }

@@ -1,0 +1,36 @@
+{
+  "id": "9d7b478c34b8",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as Inquiry Tool",
+  "lesson": {
+    "key": "wonder-and-lindy-effect",
+    "title": "Wonder and the Lindy Effect",
+    "topic": "Exploring how long-standing ideas inspire wonder and encourage antifragile thinking.",
+    "steelman": "How does embracing ancient wisdom through a lens of modern curiosity strengthen our understanding?",
+    "example": "Discussing Socrates' questioning method in relation to contemporary scientific inquiry.",
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022INQUIRY\u2022TOOL\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges historical wisdom with modern curiosity, fostering a deeper appreciation for timeless ideas.",
+  "submitted_at": "2026-09-26T06:01:48.812070",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.44,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-28T14:42:46.615028",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-28T14:43:21.348559"
+}

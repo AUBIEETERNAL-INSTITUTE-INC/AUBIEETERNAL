@@ -1,0 +1,36 @@
+{
+  "id": "54b69359cb5c",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Bitcoin Reality Anchor",
+  "lesson": {
+    "key": "bitcoin-time-anchors",
+    "title": "Bitcoin as Temporal Anchor",
+    "topic": "Understanding how Bitcoin's blockchain provides a reliable timestamping mechanism that serves as an anchor for time-based systems and agreements.",
+    "steelman": "How does the concept of 'time anchoring' in Bitcoin enhance the reliability and trustworthiness of digital transactions?",
+    "example": "Exploring how Timestamp Service (taal) uses Bitcoin's blockchain to verify and timestamp documents, ensuring their integrity over time.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "BITCOIN\u2022REALITY\u2022ANCHOR\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson highlights the less-discussed but crucial aspect of Bitcoin's role in establishing a universal, tamper-proof timeline.",
+  "submitted_at": "2026-09-10T09:00:38.497374",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-22T10:29:42.562218",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-22T15:20:08.337571"
+}

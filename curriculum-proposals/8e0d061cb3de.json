@@ -1,0 +1,36 @@
+{
+  "id": "8e0d061cb3de",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Your Keys = Your Coins",
+  "lesson": {
+    "key": "bitcoin-time-lock-contracts",
+    "title": "Time-Locked Treasure Chests",
+    "topic": "Teaching the concept of time-lock contracts in Bitcoin and how they ensure secure, timed-release transactions.",
+    "steelman": "How can we design a system that prevents both premature access and permanent loss of funds using blockchain technology?",
+    "example": "Explaining how a user might use a time-locked contract to safely store an inheritance or important asset until a specified date arrives.",
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "YOUR\u2022KEYS\u2022=\u2022YOUR\u2022COINS\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Introduces advanced Bitcoin security concepts in an accessible way, enhancing users' understanding and application of digital self-sovereignty.",
+  "submitted_at": "2026-09-12T09:00:47.424806",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-22T10:29:42.561606",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-22T15:20:06.214674"
+}

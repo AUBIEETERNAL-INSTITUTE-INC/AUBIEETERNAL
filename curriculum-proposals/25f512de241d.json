@@ -1,0 +1,32 @@
+{
+  "id": "25f512de241d",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as an Antifragile Tool",
+  "lesson": {
+    "key": "wonder-and-lindy-effect",
+    "title": "Wonder and the Lindy Effect",
+    "topic": "Exploring how our sense of wonder can be cultivated over time, like ideas that persist in history.",
+    "steelman": "How does the concept of the Lindy effect relate to fostering a lifelong curiosity about reality?",
+    "example": "Discussing how Einstein's thought experiments continued to evolve and inspire throughout his life.",
+    "age_hint": "13+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022AN\u2022ANTIFRAGILE\u2022TOOL\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the gap between philosophical wonder and practical antifragility by showing how curiosity can endure.",
+  "submitted_at": "2026-09-29T06:01:52.404957",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

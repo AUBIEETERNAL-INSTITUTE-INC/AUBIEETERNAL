@@ -1,0 +1,36 @@
+{
+  "id": "3296528f4748",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Antifragile Courage",
+  "lesson": {
+    "key": "antifragile-education-systems",
+    "title": "Educate Antifragilly",
+    "topic": "Exploring how education systems can be made antifragile to better prepare students for uncertainty and growth.",
+    "steelman": "How might a school system's curriculum benefit from incorporating hormesis, challenging students with progressively harder problems?",
+    "example": "A high school that rotates teaching methods and subjects unpredictably each year to simulate real-world variability and stress resilience.",
+    "age_hint": "13+",
+    "xp": 20,
+    "rune": "ANTIFRAGILE\u2022COURAGE\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Adding this lesson emphasizes the application of antifragility principles in a critical area like education, enhancing students' adaptability.",
+  "submitted_at": "2026-09-17T09:02:09.058579",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-22T15:16:46.380469",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-22T15:20:25.326030"
+}

@@ -6401,7 +6401,7 @@ if "Submit Curriculum" in active:
 
         # ── Review queue (operator only) ──────────────────────────────────────
         with sub_tabs[3]:
-            if not _cf.get("is_operator", False):
+            if not (_cf.get("is_operator", False) or _cf.get("can_review", False)):
                 st.info("Review queue is for the operator only.")
             else:
                 pending = _reviewer.get_pending()

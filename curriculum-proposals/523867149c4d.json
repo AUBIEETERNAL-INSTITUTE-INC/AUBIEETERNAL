@@ -1,0 +1,36 @@
+{
+  "id": "523867149c4d",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder",
+  "lesson": {
+    "key": "observer-effect-exploration",
+    "title": "Exploring the Observer Effect",
+    "topic": "Understanding how observation can alter what is being observed, from quantum physics to human behavior.",
+    "steelman": "How might the observer effect be leveraged for personal development and scientific inquiry?",
+    "example": "The influence of medical staff on patient recovery rates when they are informed about a new treatment's efficacy.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "WONDER\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Adding this lesson helps students understand the profound implications of observer effects across various fields.",
+  "submitted_at": "2026-09-15T09:00:51.798897",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-22T10:29:42.563229",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-22T15:20:11.885708"
+}

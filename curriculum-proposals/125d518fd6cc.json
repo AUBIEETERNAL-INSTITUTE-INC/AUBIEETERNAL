@@ -1,0 +1,36 @@
+{
+  "id": "125d518fd6cc",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder",
+  "lesson": {
+    "key": "wonder-as-practice",
+    "title": "Wonder as Practice",
+    "topic": "How cultivating wonder can enhance curiosity and lead to new insights about reality",
+    "steelman": "Can systematic wonder be a more effective approach to learning than traditional methods?",
+    "example": "Using the example of Einstein's thought experiments inspired by his sense of wonder about the universe",
+    "age_hint": "All ages",
+    "xp": 20,
+    "rune": "WONDER\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Encouraging students to practice wonder as a method for exploration and discovery",
+  "submitted_at": "2026-09-22T09:33:01.013300",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-22T10:29:42.563740",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-24T13:50:35.236616"
+}

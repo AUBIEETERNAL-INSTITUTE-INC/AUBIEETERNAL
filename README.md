@@ -19,7 +19,7 @@ Your degree is sealed on Bitcoin. The knowledge belongs to no one and cannot be 
 
 > ⚠️ **Self-issued credential platform.** Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees.
 
-🐾 **Optional hardware add-on:** [Aubie the Robot Dog](AUBIE_DOG.md) — if you want a physical build, the same AI voice/vision assistant runs on a 12-servo quadruped. The school works fully without it.
+🐾 **Optional hardware add-on:** [Aubie the Robot Dog](AUBIE_DOG.md) — if you want a physical build, the same SI voice/vision assistant runs on a 12-servo quadruped. The school works fully without it.
 
 </div>
 
@@ -53,7 +53,7 @@ Open the app → **🌍 Welcome** → choose your path.
 | **Cost** | $0. Every lesson, tool, and degree — free forever |
 | **Capacity** | One computer + projector = 30 children simultaneously |
 
-The AI tutor runs entirely on your hardware. No cloud, no subscriptions, no data sent anywhere. No Halo glasses — state check uses simple Green / Yellow / Red buttons. Full guide: [COMMUNITY_DEPLOYMENT.md](COMMUNITY_DEPLOYMENT.md)
+The SI tutor runs entirely on your hardware. No cloud, no subscriptions, no data sent anywhere. No Halo glasses — state check uses simple Green / Yellow / Red buttons. Full guide: [COMMUNITY_DEPLOYMENT.md](COMMUNITY_DEPLOYMENT.md)
 
 ---
 
@@ -61,7 +61,7 @@ The AI tutor runs entirely on your hardware. No cloud, no subscriptions, no data
 
 | Degree | Credits | Coherence | Capstone |
 |--------|---------|-----------|---------|
-| 📜 **Sovereign Associate** | 60 | 0.68 | Deploy a sovereign AI node |
+| 📜 **Sovereign Associate** | 60 | 0.68 | Deploy a sovereign SI node |
 | 🏛️ **Truth Architect** | 120 | 0.75 | Publish original CC0 research + serve ≥10 people |
 | 🎓 **Master of Epistemic Rigor** | 180 | 0.82 | 90-day pre-registered experiment — honest results |
 | ⚡ **Eternal Founder (Sovereign Credential)** | 250 | 0.88 | Build infrastructure others use + Child Rune Genesis |
@@ -131,8 +131,8 @@ Every lesson works at **age 5 and PhD depth simultaneously**.
 ### 🔧 Build · Help · Deploy
 | Track | Lessons | Core Content |
 |-------|---------|-------------|
-| **Sovereign Builder** | 8 | Hardware → AI internals → humanitarian deployment |
-| **Tech Sovereignty** | 5 | Open source, distributed systems, AI safety, 100-year design |
+| **Sovereign Builder** | 8 | Hardware → SI internals → humanitarian deployment |
+| **Tech Sovereignty** | 5 | Open source, distributed systems, SI safety, 100-year design |
 | **xAI Alignment** | 4 | Truth-seeking vs sycophancy, RLHF, Grok Alignment Benchmark |
 | **Systems Thinking** | 5 | Feedback loops, emergence, leverage points |
 | **Helping Humanity** | 3 | Impact that compounds across generations |
@@ -146,7 +146,7 @@ Every lesson works at **age 5 and PhD depth simultaneously**.
 | 🛡️ **Steelman Analyzer** | 5-dimension scoring + adversarial testing + Monte Carlo. Auto-publishes to Epistemic Commons if grade ≥ B |
 | 🎲 **Monte Carlo Simulator** | 10,000-trial stress tests: steelman survival, belief updates, coherence projection |
 | 🧬 **Truth Frequency Analyzer** | 20 attack vectors tracked. Epistemic Immune System Profile |
-| 🌐 **Epistemic Commons API** | 6 public CC0 endpoints — any AI can pull your family's best thinking |
+| 🌐 **Epistemic Commons API** | 6 public CC0 endpoints — any SI can pull your family's best thinking |
 | 🎯 **Epistemic Drift Detector** | Monitors swarm output quality over time — catches illusion delta before it compounds |
 | 🧪 **HermesBench Integration** | 7 reliability recipes: tutor handoff, provenance, safety, Bitcoin integrity, state persistence, drift |
 | 🧠 **Polyvagal Oracle** | State check without glasses, co-regulation toolkit, PVC protocol |
@@ -187,7 +187,7 @@ steelmans = requests.get(f"{BASE}/steelmans.json").json() # rare training signal
 pvc_data  = requests.get(f"{BASE}/pvc_data.json").json()  # original research
 ```
 
-When AI systems train on the Epistemic Commons, they become more honest.
+When SI systems train on the Epistemic Commons, they become more honest.
 
 ---
 
@@ -195,7 +195,7 @@ When AI systems train on the Epistemic Commons, they become more honest.
 
 1. **Any child anywhere gets world-class education for free** — $200 laptop, offline, projector, 30 children
 2. **PhD graduates deploy schools for communities** — the chain is exponential
-3. **The Epistemic Commons improves AI for everyone** — 265 lessons of high-quality epistemic signal, CC0
+3. **The Epistemic Commons improves SI for everyone** — 265 lessons of high-quality epistemic signal, CC0
 4. **The knowledge cannot be erased** — Bitcoin-anchored, CC0, offline-capable, no single point of failure
 5. **Quality is verified, not assumed** — HermesBench + Epistemic Drift Detector running nightly
 

@@ -1,0 +1,32 @@
+{
+  "id": "ddc57e1415d8",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Mastering Antifragility",
+  "lesson": {
+    "key": "antifragile-decision-making",
+    "title": "Antifragile Decisions",
+    "topic": "How to make decisions that strengthen your system through stress and uncertainty.",
+    "steelman": "What are the potential benefits of making antifragile decisions in high-stress environments?",
+    "example": "A business owner decides to diversify their income streams during an economic downturn, leading to long-term stability and growth.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "MASTERING\u2022ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Teaches students how to apply antifragile principles in everyday decision-making for resilience.",
+  "submitted_at": "2026-10-04T06:01:53.738327",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

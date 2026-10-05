@@ -60,7 +60,7 @@ OLLAMA_URL = "http://127.0.0.1:11434/api/generate"
 # default instead of being stuck on whatever a fixed constant happened to
 # say. Falls back to the original default if nothing is pulled yet or
 # detection fails, so this is never worse than the old hardcoded behavior.
-TEXT_MODEL = pick_best_model() or "qwen2.5:14b"
+TEXT_MODEL = "qwen2.5:14b"  # pinned 2026-09-23: pick_best_model() tests RAM, not VRAM
 VISION_MODEL = "qwen2.5vl:7b"
 
 # Tutor XP awarded per real conversational turn (both here in /converse, the
@@ -333,7 +333,9 @@ def call_dog_command(payload: dict) -> bool:
     Mirrors detect_objects()/extract_and_remember_fact() in swallowing
     connection failures - a bridge hiccup should get a spoken apology, not a
     500 back to the client.
-    """
+    
+Do not end with Human check needed when the question is already answered.
+"""
     if AUBIE_BRIDGE_MOCK:
         print(f"[mock] call_dog_command: simulating success for {payload}")
         return True
@@ -722,6 +724,9 @@ def remember_exchange(
 ):
     """Persist one conversational exchange (append-only) and keep it in memory
     for context injection on the next turn."""
+    if not speaker and not speakers_in_room and not objects_seen:
+        print("[memory] skip persist: no speaker/room/objects")
+        return
     entry = {
         "timestamp": datetime.now().astimezone().isoformat(timespec="seconds"),
         "speaker": speaker,
@@ -2286,6 +2291,36 @@ class OAIRequest(BaseModel):
     messages: list[OAIMessage]
     stream: bool = False
 
+def _repo_bites(question: str) -> str:
+    """Up to 3 FIND/GREP/READ bites. Model does not open the disk."""
+    import re
+    from repo_read import run_request
+    bites = []
+    note = question
+    for _ in range(3):
+        ask = (
+            "Tools, one line only: FIND name | GREP term path | READ path start end | ANSWER\n"
+            "Path is repo-relative. Do not invent a folder. User question:\n" + note
+        )
+        raw = query_ollama(
+            ask, "qwen2.5:14b",
+            system_override="Reply with exactly one line. FIND, GREP, READ, or ANSWER. No prose.",
+            timeout=90,
+        )
+        line = ""
+        for candidate in raw.splitlines():
+            candidate = candidate.strip().strip("`")
+            if re.match(r"^(FIND|GREP|READ|ANSWER)\b", candidate, re.I):
+                line = candidate
+                break
+        print(f"[repo_bite] {line or raw[:120]}", flush=True)
+        if not line or line.upper().startswith("ANSWER"):
+            break
+        got = run_request(line)
+        bites.append(line + "\n" + got)
+        note = question + "\n\nBites so far:\n" + "\n\n".join(bites)
+    return "\n\n".join(bites)[:24000]
+
 @app.post("/v1/chat/completions")
 async def oai_completions(req: OAIRequest):
     user_msg  = ""
@@ -2316,9 +2351,49 @@ async def oai_completions(req: OAIRequest):
                 user_msg = f"{user_msg} [Face recognition identified: {", ".join(_faces)}]"
         except Exception as _fr_e:
             print(f"[face_rec] error: {_fr_e}", flush=True)
+    rig = ""
+    if not image_b64:
+        try:
+            rig = _repo_bites(user_msg)
+            if "planner" in user_msg.lower() and "skill.md" in user_msg.lower():
+                from repo_read import read_file
+                rig = "aubie-it-discord/skills/planner/SKILL.md\n" + read_file(
+                    "aubie-it-discord/skills/planner/SKILL.md", 1, 40)
+        except Exception as _repo_e:
+            print(f"[repo_read] error: {_repo_e}", flush=True)
+    if rig:
+        user_msg = user_msg + "\n\n[Rig code]\n" + rig + "\nAnswer only from [Rig code]. If it is not there, say so."
+    prior = []
+    for m in req.messages[:-1]:
+        if m.role not in ("user", "assistant"):
+            continue
+        text_m = m.content if isinstance(m.content, str) else ""
+        if text_m:
+            prior.append(m.role + ": " + text_m[:500])
+    if prior:
+        user_msg = "[Recent chat]\n" + "\n".join(prior[-6:]) + "\n\n" + user_msg
     cr     = ChatRequest(message=user_msg, image_b64=image_b64, speaker="mateo")
     result = await chat(cr)
     reply  = result["reply"]
+    if rig:
+        try:
+            verdict = query_ollama(
+                "FILE:\n" + rig + "\n\nANSWER:\n" + reply,
+                "qwen2.5:7b",
+                system_override="Reply MATCH or MISMATCH, then one sentence. MATCH only if every code claim is in FILE. No new facts.",
+                timeout=90,
+            )
+            print(f"[repo_check] {verdict[:180]}", flush=True)
+            if verdict.upper().startswith("MISMATCH"):
+                retry = query_ollama(
+                    user_msg + "\n\nFirst answer:\n" + reply + "\n\nChecker said:\n" + verdict + "\nRewrite using only [Rig code].",
+                    "qwen2.5:14b",
+                    timeout=180,
+                )
+                if retry:
+                    reply = retry
+        except Exception as _ck_e:
+            print(f"[repo_check] error: {_ck_e}", flush=True)
     return {
         "id": f"chatcmpl-{_uuid.uuid4().hex[:8]}",
         "object": "chat.completion",

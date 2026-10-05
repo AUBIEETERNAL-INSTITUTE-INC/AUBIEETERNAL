@@ -1,0 +1,36 @@
+{
+  "id": "401131b50aef",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as Inquiry Tool",
+  "lesson": {
+    "key": "wonder-thought-experiment",
+    "title": "Wonder Thought Experiment",
+    "topic": "Exploring reality through thought experiments that challenge our assumptions and expand our wonder about the universe.",
+    "steelman": "How can we design a thought experiment that not only questions current scientific understanding but also fosters genuine curiosity and wonder?",
+    "example": "Einstein's famous elevator thought experiment to question gravity and introduce the concept of spacetime curvature.",
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022INQUIRY\u2022TOOL\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Encourages critical thinking and imagination to deepen our understanding and appreciation of complex concepts.",
+  "submitted_at": "2026-09-23T06:01:47.662102",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-24T13:42:38.302538",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-24T13:50:11.388184"
+}

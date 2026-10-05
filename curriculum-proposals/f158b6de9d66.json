@@ -1,0 +1,32 @@
+{
+  "id": "f158b6de9d66",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder and Antifragility",
+  "lesson": {
+    "key": "wonder-as-antifragility-primer",
+    "title": "Wonder as an Antifragile Primer",
+    "topic": "Exploring how a sense of wonder can act as a catalyst for personal and intellectual antifragility, encouraging curiosity and resilience in the face of uncertainty.",
+    "steelman": "How does fostering a mindset of wonder contribute to one's ability to thrive under unpredictable conditions?",
+    "example": "A researcher using a sense of wonder to continuously explore new areas of knowledge, adapting their expertise as fields evolve.",
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "WONDER\u2022AND\u2022ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the gap between philosophical inquiry and practical resilience, essential for growing a curious yet robust mindset.",
+  "submitted_at": "2026-09-30T06:01:48.100489",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

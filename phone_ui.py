@@ -1477,7 +1477,7 @@ HTML = r"""<!DOCTYPE html>
   <button class="tab-btn" id="tbtn-build" onclick="switchTab('build')">
     <span class="tab-icon">⚙️</span>Build
   </button>
-  <button class="tab-btn" id="tbtn-dog" onclick="switchTab('dog')">
+  <button class="tab-btn" id="tbtn-dog" onclick="switchTab('dog')" style="display:none">
     <span class="tab-icon">🐕</span>Dog Remote
   </button>
   <button class="tab-btn" id="tbtn-aubie" onclick="switchTab('aubie')">

@@ -1,0 +1,36 @@
+{
+  "id": "9c8a0f316c1c",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "\u5fc3\u667a\u9524\u70bc (Steelman)",
+  "lesson": {
+    "key": "wonder-and-steel-manning",
+    "title": "Wonders of Steelmanning",
+    "topic": "Explore how strengthening opposing viewpoints through steelmanning can enhance your understanding and appreciation for complex ideas and reality.",
+    "steelman": "How does actively seeking out the strongest arguments against your beliefs help you to develop a more nuanced worldview?",
+    "example": "A debate on the benefits of traditional education vs. homeschooling, where participants aim to argue the best case for both sides before synthesizing insights.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "\u5fc3\u667a\u9524\u70bc\u2022(STEELMAN)\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Encourages critical thinking and intellectual humility by integrating wonder with the practice of steelmanning.",
+  "submitted_at": "2026-09-24T06:01:48.981890",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-24T13:42:26.590075",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-24T13:50:13.425519"
+}

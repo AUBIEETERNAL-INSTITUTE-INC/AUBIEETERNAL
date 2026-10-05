@@ -1,0 +1,36 @@
+{
+  "id": "8e774898f322",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder",
+  "lesson": {
+    "key": "quantum-curiosity",
+    "title": "Quantum Curiosity",
+    "topic": "Exploring how quantum mechanics challenges our classical understanding of reality and encourages a sense of wonder.",
+    "steelman": "How can the principles of quantum mechanics, like superposition and entanglement, be used to rethink common assumptions about technology and society?",
+    "example": "Discussion on Schr\u00f6dinger's cat thought experiment as a gateway to deeper philosophical questions about observation and reality in digital contexts.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "WONDER\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges scientific inquiry with existential curiosity, vital for fostering an open-minded approach to both physical sciences and digital sovereignty.",
+  "submitted_at": "2026-09-14T09:00:42.319488",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-22T15:17:33.733761",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-22T15:21:02.871111"
+}

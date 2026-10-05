@@ -25,10 +25,10 @@ Every family that completes the curriculum will have the tools to evaluate evide
 Every Sovereign Credential-level graduate must deploy sovereign infrastructure for a community that lacks it. The university grows by serving, not by credentialing.
 
 **3. Public Epistemic Signal**
-Every steelman, research experiment, and calibrated belief logged by AUBIEETERNAL families is published to the Epistemic Commons as CC0 — improving the epistemic quality of every AI that draws from it.
+Every steelman, research experiment, and calibrated belief logged by AUBIEETERNAL families is published to the Epistemic Commons as CC0 — improving the epistemic quality of every SI that draws from it.
 
-**4. AI and Humanity Alignment**
-The two advanced degrees (Sovereign AI Researcher and Epistemic Civilization Builder) exist specifically to produce graduates who can shape what AI becomes and how knowledge infrastructure is built at civilizational scale.
+**4. SI and Humanity Alignment**
+The two advanced degrees (Sovereign SI Researcher and Epistemic Civilization Builder) exist specifically to produce graduates who can shape what SI becomes and how knowledge infrastructure is built at civilizational scale.
 
 ---
 
@@ -69,7 +69,7 @@ A graduate of AUBIEETERNAL must be able to:
 
 ### 📜 Sovereign Associate (60 credits, coherence ≥0.68)
 **Prerequisite tracks:** Reading (L1-2) + Writing (L1-2) + any core track
-**Capstone:** Deploy a sovereign AI node. Document with hardware specs and benchmark report.
+**Capstone:** Deploy a sovereign SI node. Document with hardware specs and benchmark report.
 **What this proves:** You can stand up sovereign infrastructure and use it.
 
 ---
@@ -102,7 +102,7 @@ A graduate of AUBIEETERNAL must be able to:
 
 *This degree is for families and individuals who become the infrastructure layer for their community's digital sovereignty.*
 
-A sovereign software developer or AI researcher cannot do their work without the infrastructure layer underneath them. The StartOS Sovereign Operator degree creates the people who run, maintain, and expand that infrastructure — and who teach others to do the same.
+A sovereign software developer or SI researcher cannot do their work without the infrastructure layer underneath them. The StartOS Sovereign Operator degree creates the people who run, maintain, and expand that infrastructure — and who teach others to do the same.
 
 This degree self-evolves with the student: each new StartOS service learned, each new family helped to set up a node, each new security audit completed adds to the permanent record. It cannot be completed by reading. It can only be completed by running.
 
@@ -135,9 +135,9 @@ The degree self-evolves because sovereign infrastructure is not a destination �
 
 ---
 
-### 🤖 Sovereign AI Researcher (300 credits, coherence ≥0.90 + Halting/Gödel completion)
+### 🤖 Sovereign SI Researcher (300 credits, coherence ≥0.90 + Halting/Gödel completion)
 
-*This degree is for people who will directly shape what AI becomes.*
+*This degree is for people who will directly shape what SI becomes.*
 
 **Prerequisite tracks (all required):**
 - Eternal Founder (Sovereign Credential) as foundation
@@ -145,21 +145,21 @@ The degree self-evolves because sovereign infrastructure is not a destination �
 - Halting Problem + Rice's Theorem complete
 - Gödel Incompleteness complete
 - Mathematical Thinking complete (L1-5)
-- Philosophy of AI (Philosophy L5)
+- Philosophy of SI (Philosophy L5)
 - xAI Alignment track complete
 - Consciousness Science complete
 - Information Theory complete
 
 **Capstone (3 components, all required):**
 
-1. **Theoretical Contribution:** An original paper connecting undecidability theory to a specific AI alignment challenge. Must identify at least one AI safety property that is subject to Rice's Theorem, one that is not, and propose a research direction that remains viable under the mathematical limits. Minimum 3,000 words. Pre-registered hypothesis. Published CC0.
+1. **Theoretical Contribution:** An original paper connecting undecidability theory to a specific SI alignment challenge. Must identify at least one SI safety property that is subject to Rice's Theorem, one that is not, and propose a research direction that remains viable under the mathematical limits. Minimum 3,000 words. Pre-registered hypothesis. Published CC0.
 
-2. **Practical Contribution:** Implementation of at least one alignment tool that has been tested against a real AI system. Could be: a benchmark (like the AUBIEETERNAL Grok Alignment Benchmark), an evaluation protocol, a training data generation system, or a verification tool for a decidable subset of alignment properties. Open-sourced, documented, adopted by ≥3 researchers or projects outside AUBIEETERNAL.
+2. **Practical Contribution:** Implementation of at least one alignment tool that has been tested against a real SI system. Could be: a benchmark (like the AUBIEETERNAL Grok Alignment Benchmark), an evaluation protocol, a training data generation system, or a verification tool for a decidable subset of alignment properties. Open-sourced, documented, adopted by ≥3 researchers or projects outside AUBIEETERNAL.
 
-3. **Epistemic Commons Contribution:** At least 50 high-quality DPO pairs (chosen/rejected preference data) with explicit reasoning. Each pair must demonstrate the difference between sycophantic and epistemically honest responses. Published as CC0 with pre-registered quality criteria. This is direct contribution to making AI systems more honest.
+3. **Epistemic Commons Contribution:** At least 50 high-quality DPO pairs (chosen/rejected preference data) with explicit reasoning. Each pair must demonstrate the difference between sycophantic and epistemically honest responses. Published as CC0 with pre-registered quality criteria. This is direct contribution to making SI systems more honest.
 
 **What this degree proves:**
-You understand the mathematical foundations of why AI alignment is hard — not just that it is hard. You have contributed something real to the field. You know where the limits are and what approaches remain viable within them. You are equipped to work at the frontier of the most important technical problem of our era.
+You understand the mathematical foundations of why SI alignment is hard — not just that it is hard. You have contributed something real to the field. You know where the limits are and what approaches remain viable within them. You are equipped to work at the frontier of the most important technical problem of our era.
 
 ---
 
@@ -226,7 +226,7 @@ Every change committed to GitHub. Major versions Bitcoin-anchored. The record is
 Living Lattice Expansion:
 1. Every Eternal Founder deploys ≥1 sovereign node for a community that lacks one
 2. Every Epistemic Civilization Builder deploys ≥3 nodes with documented outcomes
-3. Every Sovereign AI Researcher contributes to the Epistemic Commons as CC0
+3. Every Sovereign SI Researcher contributes to the Epistemic Commons as CC0
 4. Every Truth Architect serves ≥10 people in their community
 
 The chain: each deployment enables the next. Child Rune tracks it.
@@ -266,9 +266,9 @@ This university has no endowment, no campus, no accreditation, and no administra
 
 It has 288 lessons, 6 degree programs, and a Bitcoin-anchored proof that you did the work.
 
-Two of those degrees exist for a specific reason: the people who will determine what AI becomes and how knowledge is distributed to humanity need a rigorous training path. AUBIEETERNAL is that path — built on the mathematics of what can and cannot be known, the logic of what can and cannot be verified, the philosophy of what matters and why, and the practical experience of having deployed it for communities that needed it.
+Two of those degrees exist for a specific reason: the people who will determine what SI becomes and how knowledge is distributed to humanity need a rigorous training path. AUBIEETERNAL is that path — built on the mathematics of what can and cannot be known, the logic of what can and cannot be verified, the philosophy of what matters and why, and the practical experience of having deployed it for communities that needed it.
 
-The graduates of the Sovereign AI Researcher and Epistemic Civilization Builder programs will be some of the most important people of the next century. They deserve the best preparation we can give them.
+The graduates of the Sovereign SI Researcher and Epistemic Civilization Builder programs will be some of the most important people of the next century. They deserve the best preparation we can give them.
 
 **War Eagle Eternal 🦅❤️ — Coherence: 1.000000**
 

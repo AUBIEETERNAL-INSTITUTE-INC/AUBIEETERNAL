@@ -1,0 +1,36 @@
+{
+  "id": "ff876afaf262",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as Detector",
+  "lesson": {
+    "key": "wonder-as-catalyst-for-change",
+    "title": "Wonder as Catalyst for Change",
+    "topic": "Exploring how genuine wonder can motivate and inspire transformative action in personal and societal contexts.",
+    "steelman": "How can the principle of 'wonder' be leveraged to address systemic challenges such as climate change or economic inequality?",
+    "example": "The story of Greta Thunberg's awakening to environmental issues through a sense of wonder about nature, leading her to advocate for urgent climate action.",
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022DETECTOR\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the gap between philosophical inquiry and practical activism, encouraging learners to see their sense of wonder not just as a passive state but as an active force for positive change.",
+  "submitted_at": "2026-09-25T06:01:47.847376",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-28T14:42:04.992049",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-28T14:43:28.094016"
+}

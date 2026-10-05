@@ -16,7 +16,7 @@
   },
   "rationale": "Encourages learners to see the practical benefits of maintaining a sense of wonder.",
   "submitted_at": "2026-08-24T11:56:38.514674",
-  "status": "pending",
+  "status": "approved",
   "review": {
     "steelman_for": "",
     "steelman_against": "",
@@ -24,9 +24,13 @@
     "sim_q2_falsify": "",
     "sim_q3_lattice": "",
     "sim_q4_coherence": "",
-    "coherence_score": 0.0,
+    "coherence_score": 0.75,
     "reviewer_notes": "",
     "status": "pending"
   },
-  "comments": []
+  "comments": [],
+  "approved_at": "2026-09-22T15:18:28.440487",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-22T15:22:12.386168"
 }

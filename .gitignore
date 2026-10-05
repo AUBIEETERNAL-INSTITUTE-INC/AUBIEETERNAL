@@ -116,3 +116,14 @@ agent_runs/
 spotmicro_dog_robot_backup_20260821/
 finetune/*.jsonl
 master_truth_log.jsonl
+*.bak-*
+
+# Rig runtime state - written by the swarm / browser extension on the rig,
+# local only, never pushed (2026-10-04 sync).
+ai_honesty_log.jsonl
+child_rune_trigger.json
+rune_memory_index.json
+rune_seals/
+/cmd.wav
+*.pyscp
+*.bak[0-9]*

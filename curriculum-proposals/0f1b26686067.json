@@ -1,0 +1,36 @@
+{
+  "id": "0f1b26686067",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder",
+  "lesson": {
+    "key": "wonder-as-discovery-tool",
+    "title": "Wonder as Discovery Tool",
+    "topic": "How cultivating genuine curiosity and wonder can enhance learning and discovery in various fields, from science to philosophy.",
+    "steelman": "In what ways does the practice of wonder improve one's ability to ask insightful questions that lead to new discoveries?",
+    "example": "The story of Galileo using his sense of wonder about the heavens to question established beliefs and pioneer observational astronomy.",
+    "age_hint": "All ages",
+    "xp": 20,
+    "rune": "WONDER\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson highlights how wonder is not just an emotion but a powerful cognitive tool for advancing knowledge.",
+  "submitted_at": "2026-09-07T09:00:24.971664",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-22T15:18:01.201768",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-22T15:22:48.343920"
+}

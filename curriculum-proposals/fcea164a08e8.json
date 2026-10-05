@@ -1,0 +1,34 @@
+{
+  "id": "fcea164a08e8",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder",
+  "lesson": {
+    "key": "wonder-as-inspiration",
+    "title": "Wonder as Inspiration",
+    "topic": "How cultivating genuine wonder can inspire creativity and innovation across various fields of study.",
+    "steelman": "Can sustained curiosity driven by wonder be the primary driver of significant scientific breakthroughs?",
+    "example": "The story of Albert Einstein's thought experiments, sparked by a sense of awe at the workings of nature.",
+    "age_hint": "8+",
+    "xp": 20,
+    "rune": "WONDER\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Encouraging wonder as a catalyst for creativity aligns with fostering an open mindset and questioning reality.",
+  "submitted_at": "2026-09-22T09:41:03.109653",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-09-28T14:42:25.084551",
+  "rejection_reason": ""
+}

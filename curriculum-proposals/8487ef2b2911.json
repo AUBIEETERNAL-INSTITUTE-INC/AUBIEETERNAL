@@ -1,0 +1,36 @@
+{
+  "id": "8487ef2b2911",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as Practice",
+  "lesson": {
+    "key": "wonder-as-antifragility-tool",
+    "title": "Wonder as an Antifragile Tool",
+    "topic": "How cultivating a sense of wonder can make individuals and systems more antifragile by encouraging exploration, adaptation, and growth in the face of uncertainty.",
+    "steelman": "What are some ways that maintaining a sense of curiosity and wonder can help people not just survive but thrive when faced with unpredictable challenges?",
+    "example": "A startup company facing market disruption uses its employees' innate sense of wonder to explore new opportunities rather than fearing change, leading to innovative solutions.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022PRACTICE\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the gap between philosophical curiosity and practical resilience, offering a unique perspective on how wonder can be an asset in challenging times.",
+  "submitted_at": "2026-09-28T06:01:49.912985",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.51,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-28T14:42:30.809777",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-28T14:43:23.986846"
+}

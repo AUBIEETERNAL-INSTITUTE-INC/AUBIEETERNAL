@@ -753,7 +753,8 @@ def collect() -> dict:
             findings.append({"id": "dog:repaired", "sev": "low", "msg": last[-180:]})
         elif "unhealthy" in last or "repair-failed" in last or "timed out" in last:
             dog = "unreachable"
-            findings.append({"id": "dog:down", "sev": "med", "msg": "Aubie dog not reachable (monitor)"})
+            if os.environ.get("AUBIE_DOG_ENABLED") == "1":
+                findings.append({"id": "dog:down", "sev": "med", "msg": "Aubie dog not reachable (monitor)"})
 
     ollama = sh("ollama list 2>/dev/null | awk 'NR>1{print $1}' | tr '\\n' ' '")
     if "qwen2.5:14b" not in ollama:

@@ -1,0 +1,36 @@
+{
+  "id": "39dd64a28cc3",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "\u5fc3\u667a\u9524\u70bc (Steelman)",
+  "lesson": {
+    "key": "narrative-coherence-strategy",
+    "title": "Narrative Coherence Strategy",
+    "topic": "Teaching the importance of maintaining a coherent narrative when making decisions and communicating ideas, especially in complex or ambiguous situations.",
+    "steelman": "How can one use the concept of narrative coherence to strengthen their argument against competing narratives?",
+    "example": "Using historical events where conflicting narratives played a significant role in shaping public perception and decision-making outcomes.",
+    "age_hint": "13+",
+    "xp": 20,
+    "rune": "\u5fc3\u667a\u9524\u70bc\u2022(STEELMAN)\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "\u589e\u5f3a\u5728\u590d\u6742\u60c5\u5883\u4e2d\u51b3\u7b56\u548c\u6c9f\u901a\u7684\u80fd\u529b\uff0c\u901a\u8fc7\u4fdd\u6301\u8fde\u8d2f\u7684\u53d9\u4e8b\u7b56\u7565\u6765\u5f3a\u5316\u8bba\u8bc1\u3002",
+  "submitted_at": "2026-09-16T09:02:28.403729",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-22T15:17:08.358866",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-24T13:50:29.200764"
+}

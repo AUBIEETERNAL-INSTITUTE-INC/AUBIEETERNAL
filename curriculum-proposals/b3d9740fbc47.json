@@ -1,0 +1,36 @@
+{
+  "id": "b3d9740fbc47",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Mastering Antifragility",
+  "lesson": {
+    "key": "antifragile-thinking-strategy",
+    "title": "Think Antifragile",
+    "topic": "How to apply antifragility principles in daily life and decision-making.",
+    "steelman": "What are the most effective ways to incorporate antifragile thinking into your personal growth strategy?",
+    "example": "A small business owner uses stress testing techniques to identify and strengthen weaknesses in their supply chain before a market downturn occurs.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "MASTERING\u2022ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson helps bridge the gap between theoretical understanding of antifragility and practical application, encouraging proactive resilience.",
+  "submitted_at": "2026-09-27T06:01:48.833078",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-09-28T14:42:08.938519",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-28T14:43:26.274030"
+}

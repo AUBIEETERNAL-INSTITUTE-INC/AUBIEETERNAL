@@ -1,0 +1,32 @@
+{
+  "id": "6f5c25ce3766",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as Antifragile Tool",
+  "lesson": {
+    "key": "wonder-and-resilience",
+    "title": "Wonder and Resilience",
+    "topic": "How embracing wonder enhances personal resilience in the face of uncertainty and stress.",
+    "steelman": "What are the mechanisms through which cultivating a sense of wonder can contribute to antifragility?",
+    "example": "A case study of an individual who used curiosity about complex problems to build mental resilience during challenging times.",
+    "age_hint": "14+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022ANTIFRAGILE\u2022TOOL\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the gap between philosophical wonder and practical antifragility, offering a new perspective on stress resistance.",
+  "submitted_at": "2026-10-03T06:01:48.196422",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

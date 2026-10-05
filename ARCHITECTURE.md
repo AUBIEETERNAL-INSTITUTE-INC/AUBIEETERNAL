@@ -138,7 +138,7 @@ master_truth_log.jsonl         →  swarm_v4_1.py (24/7)
         ↓
 tier2_digest.txt               →  GitHub (every 24s)
         ↓
-epistemic_commons/api/*.json   →  PUBLIC (CC0, any AI can fetch)
+epistemic_commons/api/*.json   →  PUBLIC (CC0, any SI can fetch)
 ```
 
 ---

@@ -16,7 +16,7 @@
   },
   "rationale": "Encourages a sense of connection to something larger than oneself, vital for both personal development and community engagement.",
   "submitted_at": "2026-08-24T12:20:18.217276",
-  "status": "pending",
+  "status": "approved",
   "review": {
     "steelman_for": "",
     "steelman_against": "",
@@ -24,9 +24,13 @@
     "sim_q2_falsify": "",
     "sim_q3_lattice": "",
     "sim_q4_coherence": "",
-    "coherence_score": 0.0,
+    "coherence_score": 0.75,
     "reviewer_notes": "",
     "status": "pending"
   },
-  "comments": []
+  "comments": [],
+  "approved_at": "2026-09-22T15:18:35.674015",
+  "merged_to_curriculum": true,
+  "published_to_commons": true,
+  "published_to_commons_at": "2026-09-24T13:50:15.509507"
 }

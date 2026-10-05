@@ -1,0 +1,34 @@
+{
+  "id": "4aa033d0307a",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder",
+  "lesson": {
+    "key": "wonder-as-inspiration",
+    "title": "Wonder as Inspiration",
+    "topic": "How cultivating a sense of wonder can inspire creativity and innovation in problem-solving.",
+    "steelman": "What are the most effective ways to maintain a sense of wonder about the world, and how does this impact personal growth?",
+    "example": "Using historical figures like Leonardo da Vinci or Einstein as examples of individuals who maintained a sense of wonder throughout their lives, leading to groundbreaking discoveries.",
+    "age_hint": "9+",
+    "xp": 20,
+    "rune": "WONDER\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "Cultivating wonder inspires innovation and can serve as a powerful motivator for learning and discovery.",
+  "submitted_at": "2026-09-22T09:49:43.122685",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-09-28T14:42:19.432134",
+  "rejection_reason": ""
+}

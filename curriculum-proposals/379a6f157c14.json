@@ -1,0 +1,32 @@
+{
+  "id": "379a6f157c14",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as Antifragile Tool",
+  "lesson": {
+    "key": "wonder-through-antifragility",
+    "title": "Wonder Through Antifragility",
+    "topic": "Exploring how embracing uncertainty and wonder can make us more antifragile in our thinking and decision-making.",
+    "steelman": "How can we apply the concept of antifragility to our approach to knowledge acquisition and problem-solving?",
+    "example": "Discussing a scientist who thrives on challenging hypotheses with novel data, thereby making their theories stronger over time.",
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022ANTIFRAGILE\u2022TOOL\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the gap between philosophical wonder and practical decision-making frameworks like antifragility.",
+  "submitted_at": "2026-10-01T06:01:48.430855",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}
