@@ -424,9 +424,10 @@ AI_PROVIDERS = {
     "Local Aubie (FREE — on this computer)": {
         "icon": "🏠", "color": "#00ff88",
         "models": [
-            "qwen2.5:14b",     # ← RECOMMENDED: fast + smart sweet spot
-            "qwen2.5:7b",      # fastest, lightest (Tier-1 bulk)
-            "qwen3:32b",       # needs ~20GB VRAM / bigger GPU
+            "qwen2.5:14b",     # ← RECOMMENDED: everyday default
+            "qwen2.5:7b",      # light / Fast fallback
+            "aubie-r8b:latest",# optional fine-tune (Fast preference)
+            "qwen3:32b",       # needs ~20GB VRAM / bigger GPU — not for 12GB
         ],
         "base_url": f"{OLLAMA_BASE_URL}/v1",
         "key_field": "key_ollama",
@@ -913,29 +914,20 @@ with st.sidebar:
     st.session_state.thinking_mode = thinking_mode
 
     if any(x in st.session_state.get("active_provider", "") for x in ("Local Ollama", "Local Aubie")):
-        # Was a hardcoded model-per-mode map (fixed at qwen2.5:14b for both
-        # Balanced and Deep Thinking, with a stale comment about a 12GB VRAM
-        # limit) - didn't reflect what's actually pulled on this machine, so
-        # it could show a model name that's wrong or doesn't exist here at
-        # all. Now sourced from model_selector.py (the same hardware-aware
-        # logic assistant_server.py's TEXT_MODEL already uses) - real data
-        # about what's really pulled on THIS machine, always shown clearly
-        # since thinking-mode is rarely changed day-to-day.
+        # Single config: thinking_mode_config.py (Fast / Balanced / Deep)
         try:
-            from model_selector import ranked_try_order as _rto
-            _real_models = _rto()
+            from thinking_mode_config import model_for_mode as _mfm
+            _auto_model = _mfm(thinking_mode)
         except Exception:
-            _real_models = []
-
-        if _real_models:
-            # Fast = the smallest model actually pulled here (quickest
-            # replies); Balanced/Deep both use the best-fit model this
-            # machine can comfortably run.
-            _auto_model = _real_models[-1] if thinking_mode == "⚡ Fast" else _real_models[0]
-        else:
-            _auto_model = "qwen2.5:7b"  # nothing pulled yet - name only, not a real pick
+            _auto_model = "qwen2.5:14b"
         st.session_state.active_model = _auto_model
-        st.caption(f"🤖 Model in use: `{_auto_model}`" + (" (only one model pulled)" if len(_real_models) <= 1 else ""))
+        _tm_note = {
+            "⚡ Fast": "small/fast local model",
+            "⚖️ Balanced": "everyday qwen2.5:14b",
+            "🧠 Deep Thinking": "qwen2.5:14b + step-by-step prompt (no 32b on 12GB)",
+        }.get(thinking_mode, "")
+        st.caption(f"🤖 Model in use: `{_auto_model}`" + (f" — {_tm_note}" if _tm_note else ""))
+
 
 
     st.markdown("---")
@@ -1141,6 +1133,13 @@ if "Oracle" in active or active == "Oracle":
         try:
             client, model, provider, pname = get_ai_client()
             system = SYSTEM_PROMPTS[mode]
+            try:
+                from thinking_mode_config import system_addon_for_mode as _sa
+                _addon = _sa(st.session_state.get("thinking_mode", ""))
+                if _addon:
+                    system = system + "\n\n" + _addon
+            except Exception:
+                pass
             response = client.chat.completions.create(
                 model=model,
                 messages=[{"role": "system", "content": system}] + st.session_state.messages,
@@ -3312,7 +3311,7 @@ if "Digest" in active:
         f'{banner_icon} MORNING SYNTHESIS · {banner_msg}'
         f'</div>'
         f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">'
-        f'Auto-fires 6AM · qwen3:32b (local, $0.00) · insights/daily/YYYY-MM-DD.md → GitHub'
+        f'Auto-fires 6AM · qwen2.5:14b (local, $0.00) · insights/daily/YYYY-MM-DD.md → GitHub'
         f'</div></div>', unsafe_allow_html=True)
 
     col_b1, col_b2 = st.columns([1, 3])
@@ -3483,7 +3482,7 @@ if "Family Co-Learning" in active:
     _STARTOS_ALIVE = _Path("/mnt/main/swarm_status.json").exists()
     mode_color  = "#00ff88" if _STARTOS_ALIVE else "#ff9500"
     mode_label  = "🟢 FULL SOVEREIGN (StartOS connected)" if _STARTOS_ALIVE else "🟡 NOSTR BRIDGE MODE (no local StartOS detected)"
-    mode_detail = "Swarm processing locally · qwen3:32b · max privacy" if _STARTOS_ALIVE else "Encrypted Nostr events · public relay fallback · sovereign keys"
+    mode_detail = "Swarm processing locally · qwen2.5:14b · max privacy" if _STARTOS_ALIVE else "Encrypted Nostr events · public relay fallback · sovereign keys"
     hud_status  = "🧠 family_hud.py loaded — real scoring active" if _HUD_AVAILABLE else "⚠️ family_hud.py not found — using local fallback"
     hud_color   = "#00cfff" if _HUD_AVAILABLE else "#ff9500"
 
