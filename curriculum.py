@@ -83,6 +83,18 @@ CURRICULUM_TREE = [
         ("stoic-2", "Negative Visualization", "11+", 22),
         ("stoic-3", "Amor Fati",              "13+", 28),
     ]},
+    {"track_id": "money-mindset", "track": "💰 Money & Mindset", "color": "#00c853", "levels": [
+        ("money-mindset-1",  "Needs vs Wants",                 "All ages", 15),
+        ("money-mindset-2",  "Saving & Pay Yourself First",    "All ages", 15),
+        ("money-mindset-3",  "Assets vs Liabilities",          "8+",       18),
+        ("money-mindset-4",  "Income Types",                   "8+",       18),
+        ("money-mindset-5",  "Cash Flow",                      "8+",       20),
+        ("money-mindset-6",  "Good vs Bad Debt & Leverage",    "10+",      22),
+        ("money-mindset-7",  "Compounding & Scaling",          "11+",      22),
+        ("money-mindset-8",  "Broke vs Poor",                  "10+",      18),
+        ("money-mindset-9",  "Rich vs Poor Mindset (habits)",  "10+",      20),
+        ("money-mindset-10", "Earning vs Borrowing on Assets", "13+",      25),
+    ]},
 ]
 
 

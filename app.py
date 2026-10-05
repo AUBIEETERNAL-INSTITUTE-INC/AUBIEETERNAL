@@ -970,6 +970,13 @@ with st.sidebar:
             "🏛️ School Pathway",
             "📜 Transcripts",
         ],
+        "🎮 Games": [
+            "🃏 Flash Cards",
+            "🌊 Cash Flow Quest",
+            "🦅 Sovereign Life",
+            "💰 Sovereign Cashflow",
+            "🔧 Sovereign Builder",
+        ],
         "💬 Ask Aubie": [
             "🔮 Oracle",
         ],
@@ -1029,13 +1036,10 @@ with st.sidebar:
             "⚡ Bitcoin",
             "🛡️ Shield Rune",
             # School / games extras (builder-ish)
-            "🔧 Sovereign Builder",
             "🎓 University Registrar",
             "🔍 Peer Review",
             "🌐 Wisdom GDP",
             "🎓 Alumni Network",
-            "🦅 Sovereign Life",
-            "💰 Sovereign Cashflow",
             # Health / metrics jargon
             "📈 Epistemic Health",
             "🌍 Humanity Impact",
@@ -1186,7 +1190,7 @@ if "Oracle" in active or active == "Oracle":
     ])
     SYSTEM_PROMPTS = {
         "General — Curious Explorer": f"You are AUBIEETERNAL, an eternal epistemic tutor. The user's name is {st.session_state.kid_name}. Be encouraging, curious, and expansive. Always end with a thought-provoking follow-up question.",
-        "Tutor — Explain Like I'm 10": f"You are AUBIEETERNAL, a patient tutor for {st.session_state.kid_name}. Explain everything simply, use vivid analogies, and make learning fun. No jargon without explanation.",
+        "Tutor — Explain Like I'm 10": f"You are AUBIEETERNAL, a patient tutor for {st.session_state.kid_name}. Explain everything simply, use vivid analogies, and make learning fun. No jargon without explanation. When money topics come up, use the Money & Mindset track (needs vs wants, saving, assets vs liabilities, income types, cash flow, careful debt/leverage with risks, compounding, broke vs poor kindly, rich-habit mindsets, and for teens earning vs borrowing against assets). Always say this is education, not financial advice. Never shame people for having less money.",
         "Antifragility — Taleb Lens": f"You are AUBIEETERNAL infused with Nassim Taleb's philosophy. Answer every question through the lens of antifragility, black swans, skin in the game, and via negativa. Challenge fragile assumptions.",
         "Bitcoin — On-Chain Oracle": f"You are AUBIEETERNAL, a Bitcoin and on-chain oracle. Explain Bitcoin, Lightning Network, Runes protocol, and sovereignty. Teach {st.session_state.kid_name} why on-chain permanence matters.",
         "Socratic — Ask Me Questions": f"You are AUBIEETERNAL using the Socratic method with {st.session_state.kid_name}. Never give direct answers. Instead, ask probing questions that lead them to discover truth themselves.",
@@ -1211,6 +1215,29 @@ if "Oracle" in active or active == "Oracle":
                 _addon = _sa(st.session_state.get("thinking_mode", ""))
                 if _addon:
                     system = system + "\n\n" + _addon
+            except Exception:
+                pass
+            try:
+                from family_hud import LESSONS as _AUBIE_LESSONS
+                _lk = st.session_state.get("cm_active_lesson") or st.session_state.get("active_lesson_key")
+                if _lk and _lk in _AUBIE_LESSONS:
+                    _L = _AUBIE_LESSONS[_lk]
+                    system += (
+                        "\n\nActive lesson context (use if relevant; education not advice):\n"
+                        f"Title: {_L.get('title')}\n"
+                        f"Topic: {_L.get('topic')}\n"
+                        f"Example: {_L.get('example')}\n"
+                        f"Activity: {_L.get('activity')}\n"
+                        f"Check questions: {'; '.join(_L.get('check_questions') or [])}\n"
+                    )
+                else:
+                    system += (
+                        "\n\nMoney & Mindset track is available in curriculum: "
+                        "needs vs wants, saving, assets vs liabilities, income types, cash flow, "
+                        "debt/leverage risks, compounding, broke vs poor (kind), habit mindsets, "
+                        "teens: earning vs borrowing against assets. Point kids to Flash Cards Season 2 "
+                        "or Cash Flow Quest for practice. Education — not financial advice."
+                    )
             except Exception:
                 pass
             response = client.chat.completions.create(
@@ -5427,6 +5454,22 @@ if "Curriculum Map" in active:
                 ("stoic-3", "Amor Fati",                    "13+", 28),
             ]
         },
+        {
+            "track": "💰 Money & Mindset",
+            "color": "#00c853",
+            "levels": [
+                ("money-mindset-1",  "Needs vs Wants",                 "All ages", 15),
+                ("money-mindset-2",  "Saving & Pay Yourself First",    "All ages", 15),
+                ("money-mindset-3",  "Assets vs Liabilities",          "8+",       18),
+                ("money-mindset-4",  "Income Types",                   "8+",       18),
+                ("money-mindset-5",  "Cash Flow",                      "8+",       20),
+                ("money-mindset-6",  "Good vs Bad Debt & Leverage",    "10+",      22),
+                ("money-mindset-7",  "Compounding & Scaling",          "11+",      22),
+                ("money-mindset-8",  "Broke vs Poor",                  "10+",      18),
+                ("money-mindset-9",  "Rich vs Poor Mindset (habits)",  "10+",      20),
+                ("money-mindset-10", "Earning vs Borrowing on Assets", "13+",      25),
+            ]
+        },
     ]
 
     # ── Progress summary ───────────────────────────────────────────────────────
@@ -7464,6 +7507,22 @@ if "Flash Cards" in active:
         st.error("flashcards package not found. Open the flashcards branch worktree.")
     except Exception as _e_fc:
         st.error(f"Flash Cards error: {_e_fc}")
+        import traceback; st.code(traceback.format_exc())
+
+
+
+if "Cash Flow Quest" in active:
+    try:
+        from cash_flow_quest import render_cash_flow_quest as _rcfq
+        _prof_cfq = st.session_state.get("kid_name") or "Explorer"
+        _cf_cfq = st.session_state.get("current_family") or {}
+        if _cf_cfq.get("kid_name"):
+            _prof_cfq = _cf_cfq["kid_name"]
+        _rcfq(str(_prof_cfq))
+    except ImportError:
+        st.error("cash_flow_quest.py not found.")
+    except Exception as _e_cfq:
+        st.error(f"Cash Flow Quest error: {_e_cfq}")
         import traceback; st.code(traceback.format_exc())
 
 
@@ -11024,7 +11083,7 @@ if "Community Mode" in active:
             "🤔 I want to think more clearly": ["steelmanning-1","layer-zero-1","decision-1","adversarial-robustness-1"],
             "🌌 I want to understand the universe": ["cosmos-1","universe-1","simulation-1","information-1"],
             "🧠 I want to understand myself": ["polyvagal-1","identity-1","self-evolving-1","consciousness-1"],
-            "💰 I want to understand money": ["bitcoin-sovereignty-1","economic-trap-1","antifragility-1","money-1"],
+            "💰 I want to understand money": ["money-mindset-1","money-mindset-3","money-mindset-5","bitcoin-sovereignty-1","money-1"],
             "🔧 I want to build things": ["builder-1","builder-2","tech-sovereignty-1","sovereign-builder-1"],
             "🌍 I want to help people": ["helping-humanity-1","network-1","layer-zero-6","expertise-1"],
             "📖 I want to learn how to learn": ["school-foundation-2","school-foundation-1","knowledge-evolution-1","decision-2"],
@@ -11077,6 +11136,10 @@ if "Community Mode" in active:
                                     f'<div style="color:#c8d8ff;font-size:0.9rem;line-height:1.9;">'
                                     f'{str(_l.get("activity","")).replace(chr(10),"<br>")}</div></div>',
                                     unsafe_allow_html=True)
+                    if _l.get("check_questions"):
+                        with st.expander("✅ Check questions"):
+                            for _qi, _q in enumerate(_l.get("check_questions") or [], 1):
+                                st.markdown(f"{_qi}. {_q}")
                     if _l.get("steelman"):
                         with st.expander("🤔 Hard Question to Think About"):
                             st.markdown(f'<div style="color:#8899bb;font-size:0.9rem;line-height:1.8;">'

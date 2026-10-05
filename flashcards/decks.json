@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "notes": "Edit this file to change static decks. basic_math, arithmetic, and coins are generated in code (never run out). Money Smarts decks are leveled: little / middle / older. Progress is stored locally per profile — card id, box, last seen only.",
+  "notes": "Edit this file to change static decks. basic_math, arithmetic, and coins are generated in code (never run out). Money Smarts decks are leveled: little / middle / older. Progress is stored locally per profile — card id, box, last seen only. Money Smarts Season 2 decks added (cash flow, leverage, kind mindsets).",
   "decks": [
     {
       "id": "abc",
@@ -1053,6 +1053,285 @@
           "front": "Unit price check: $6 for 20 oz vs $4 for 12 oz — which is cheaper per oz?",
           "back": "$6/20 = $0.30 per oz. $4/12 ≈ $0.333 per oz. The 20 oz option is cheaper per ounce.",
           "hint": "📊"
+        }
+      ]
+    },
+    {
+      "id": "money_s2_little",
+      "title": "Money Smarts · Season 2 · Little",
+      "emoji": "🌱",
+      "age_level": "little",
+      "ages": "4-7",
+      "group": "money_smarts",
+      "description": "Season 2: assets/liabilities, cash flow, kind money habits (incl. broke vs poor). Learning only — not advice.",
+      "cards": [
+        {
+          "id": "ms2-l-01",
+          "front": "What is an asset (simple)?",
+          "back": "An asset is something that can put money in your pocket later — like a piggy bank you keep filling, or a lemonade stand that earns coins.",
+          "hint": "puts money in"
+        },
+        {
+          "id": "ms2-l-02",
+          "front": "What is a liability (simple)?",
+          "back": "A liability takes money out of your pocket — like a toy that breaks and needs fixing, or buying snacks every day.",
+          "hint": "takes money out"
+        },
+        {
+          "id": "ms2-l-03",
+          "front": "What is cash flow (simple)?",
+          "back": "Cash flow is money in minus money out. If you earn $5 and spend $3, your cash flow is +$2.",
+          "hint": "in minus out"
+        },
+        {
+          "id": "ms2-l-04",
+          "front": "Earned income — what is it?",
+          "back": "Money you get for work you do yourself, like chores or a lemonade stand.",
+          "hint": "you work for it"
+        },
+        {
+          "id": "ms2-l-05",
+          "front": "Habit: \"How can I afford it?\"",
+          "back": "Instead of only saying \"I can't,\" ask \"How could I earn, save, or wait for it?\" That is a learning habit — not about being better than anyone.",
+          "hint": "curious question"
+        },
+        {
+          "id": "ms2-l-06",
+          "front": "Habit: pay yourself first",
+          "back": "When you get money, put a little in savings before you spend. Even one coin counts.",
+          "hint": "save a bit first"
+        },
+        {
+          "id": "ms2-l-07",
+          "front": "Habit: learn from oops moments",
+          "back": "If you spend all your coins and feel sad, that is a lesson — not a shame. Next time you can plan.",
+          "hint": "mistakes teach"
+        },
+        {
+          "id": "ms2-l-08",
+          "front": "Broke vs poor (kid version)",
+          "back": "Being broke means you are out of money right now — that can change. A \"poor mindset\" means giving up on learning and planning. You can be broke and still learn, save, and build. (Idea popularized by Robert Kiyosaki — said kindly.)",
+          "hint": "temporary vs habit"
+        },
+        {
+          "id": "ms2-l-09",
+          "front": "Why can deals lose money?",
+          "back": "Sometimes something you buy costs more to keep than it earns. That is okay to notice — noticing helps you choose better next time.",
+          "hint": "costs can be higher"
+        },
+        {
+          "id": "ms2-l-10",
+          "front": "Long-term vs right now",
+          "back": "Instant fun is fine sometimes. Long-term thinking means also saving for bigger goals later.",
+          "hint": "wait and grow"
+        }
+      ]
+    },
+    {
+      "id": "money_s2_middle",
+      "title": "Money Smarts · Season 2 · Middle",
+      "emoji": "💵",
+      "age_level": "middle",
+      "ages": "8-12",
+      "group": "money_smarts",
+      "description": "Season 2: cash flow, leverage math, income types, rich-habit mindsets (respectful). Not financial advice.",
+      "cards": [
+        {
+          "id": "ms2-m-01",
+          "front": "Asset vs liability",
+          "back": "Asset: puts money in your pocket (or can). Liability: takes money out. Example: a bike you use for a paper route can help earn; a gadget that only costs repairs takes money out.",
+          "hint": "in vs out"
+        },
+        {
+          "id": "ms2-m-02",
+          "front": "Three income types",
+          "back": "Earned = from your work (job/chores). Passive = keeps coming with less day-to-day work (like rent from a small rental in a game). Portfolio = from investments you own (like stocks in a game). These are labels for learning — not advice.",
+          "hint": "earned / passive / portfolio"
+        },
+        {
+          "id": "ms2-m-03",
+          "front": "Cash flow formula",
+          "back": "Cash flow = income − expenses. Positive means more coming in than going out this month. Negative means the opposite.",
+          "hint": "income minus expenses"
+        },
+        {
+          "id": "ms2-m-04",
+          "front": "What is net worth?",
+          "back": "Net worth = what you own (assets) minus what you owe (liabilities). It is a snapshot, not a grade on your worth as a person.",
+          "hint": "own minus owe"
+        },
+        {
+          "id": "ms2-m-05",
+          "front": "Good debt vs bad debt (learning labels)",
+          "back": "In money games, \"good debt\" often means borrowing to buy something that can put money in your pocket. \"Bad debt\" often means borrowing for things that only take money out. Real life is more complex — this is for practice only, not advice.",
+          "hint": "purpose of the loan"
+        },
+        {
+          "id": "ms2-m-06",
+          "front": "Leverage (simple)",
+          "back": "Leverage means using borrowed money to buy an asset. Example: buy a $80,000 practice house with $16,000 down and a $64,000 loan. If rent is higher than the loan payment and costs, cash flow can be positive — but rates, empty months (vacancy), and repairs can flip it negative. You can lose money.",
+          "hint": "borrow + asset + risk"
+        },
+        {
+          "id": "ms2-m-07",
+          "front": "Leverage math check",
+          "back": "Loan $64,000 at 6%/year for 30 years → about $384 per month payment (standard mortgage math). If rent is $700 and upkeep $50, net before other costs ≈ $700 − $384 − $50 = $266. If the house is empty a month, rent is $0 and you still owe ~$384.",
+          "hint": "700-384-50"
+        },
+        {
+          "id": "ms2-m-08",
+          "front": "Compounding and scaling",
+          "back": "Compounding means earnings can earn more later (like interest on savings in examples). Scaling means repeating a working idea (×10 or ×100 only if the numbers still work — bigger also means bigger risk).",
+          "hint": "grow and repeat"
+        },
+        {
+          "id": "ms2-m-09",
+          "front": "Why risk and losses matter",
+          "back": "Investing practice includes losing sometimes. Losses teach limits. Fear of any mistake can freeze learning; ignoring risk can wipe out gains. Balance both.",
+          "hint": "risk is real"
+        },
+        {
+          "id": "ms2-m-10",
+          "front": "Mindset: \"How can I afford it?\" vs \"I can't\"",
+          "back": "One habit asks for a plan (earn, save, wait, learn). The other stops the question. Neither insults people who have less — it is about curiosity.",
+          "hint": "plan vs stop"
+        },
+        {
+          "id": "ms2-m-11",
+          "front": "Mindset: assets first vs liabilities first",
+          "back": "A growth habit asks: \"Will this put money in or take money out?\" before buying. Everyone starts somewhere; the habit is the practice.",
+          "hint": "in or out first"
+        },
+        {
+          "id": "ms2-m-12",
+          "front": "Mindset: money works for you",
+          "back": "Working for money (earned income) is normal. Another habit is also building things that can earn while you sleep (passive/portfolio in game terms). Both can coexist.",
+          "hint": "earned and built"
+        },
+        {
+          "id": "ms2-m-13",
+          "front": "Pay yourself first",
+          "back": "Set aside savings before spending the rest. Even a small percent builds the habit.",
+          "hint": "save before spend"
+        },
+        {
+          "id": "ms2-m-14",
+          "front": "Broke vs poor",
+          "back": "Broke = temporary — out of money right now. \"Poor mindset\" (as Kiyosaki popularized the phrase) means staying stuck in \"I can't learn/plan/build.\" You can be broke and still think ahead: learn, plan, build assets. Kind truth: money troubles are not a moral failure.",
+          "hint": "temporary vs stuck habit"
+        },
+        {
+          "id": "ms2-m-15",
+          "front": "Long-term vs instant gratification",
+          "back": "Instant buys feel good now. Long-term goals need waiting and cash flow. Both have a place; practice choosing on purpose.",
+          "hint": "now vs later"
+        }
+      ]
+    },
+    {
+      "id": "money_s2_older",
+      "title": "Money Smarts · Season 2 · Older",
+      "emoji": "📈",
+      "age_level": "older",
+      "ages": "13+",
+      "group": "money_smarts",
+      "description": "Season 2: leverage risks, compounding/scaling, broke vs poor (Kiyosaki idea, kindly). Educational only.",
+      "cards": [
+        {
+          "id": "ms2-o-01",
+          "front": "Assets vs liabilities (pocket test)",
+          "back": "Ask: does this typically put money in my pocket or take it out? Assets aim for in; liabilities for out. Context matters (a car can be either depending on use). Educational only — not advice.",
+          "hint": "pocket test"
+        },
+        {
+          "id": "ms2-o-02",
+          "front": "Income types",
+          "back": "Earned (wages), passive (ongoing with limited day-to-day labor, e.g. rent in examples), portfolio (securities/business equity returns in examples). Mixes exist. Not advice.",
+          "hint": "three buckets"
+        },
+        {
+          "id": "ms2-o-03",
+          "front": "Cash flow & net worth",
+          "back": "Monthly cash flow = income − expenses. Net worth = assets − liabilities. You can have high net worth and tight cash flow, or the reverse.",
+          "hint": "flow vs stock"
+        },
+        {
+          "id": "ms2-o-04",
+          "front": "Good vs bad debt (careful framing)",
+          "back": "Learning labels: debt tied to cash-flowing assets vs debt for consumption. Real credit decisions need adult guidance; this card is vocabulary for games/classes only.",
+          "hint": "vocabulary only"
+        },
+        {
+          "id": "ms2-o-05",
+          "front": "Leverage with risk",
+          "back": "Borrowing at a lower rate than an asset earns can amplify gains — and losses. Risks include rate increases, vacancy, maintenance, and price drops. Example: $64k loan @ 6% ≈ $384/mo; @ 9% ≈ $515/mo. Same rent may flip from positive to negative cash flow.",
+          "hint": "384 vs 515"
+        },
+        {
+          "id": "ms2-o-06",
+          "front": "Vacancy stress test",
+          "back": "If rent is $700 and payment $384, one empty month means $0 rent while $384 still due → −$384 that month before other bills. Leverage makes empty months louder.",
+          "hint": "empty month"
+        },
+        {
+          "id": "ms2-o-07",
+          "front": "Compounding & scaling",
+          "back": "Compounding: returns reinvested can grow non-linearly over long time. Scaling ×10/×100 only works if unit economics stay positive after costs and risk — bigger bets, bigger drawdowns.",
+          "hint": "math + risk"
+        },
+        {
+          "id": "ms2-o-08",
+          "front": "Losses are data",
+          "back": "In investing practice, losses happen. A useful habit is reviewing why — not shaming yourself or others. Fear of mistakes blocks learning; denial of risk blocks survival.",
+          "hint": "review not shame"
+        },
+        {
+          "id": "ms2-o-09",
+          "front": "Mindset pair: afford it",
+          "back": "\"How can I afford it?\" invites skills (earn, budget, delay, partner). \"I can't afford it\" can be a true snapshot — and still leave room for a later plan. Respect both honesty and creativity.",
+          "hint": "honesty + plan"
+        },
+        {
+          "id": "ms2-o-10",
+          "front": "Mindset pair: assets vs liabilities",
+          "back": "Habit: check cash-flow direction before buying. Not a judgment on people who must buy needs first — needs come first.",
+          "hint": "needs first"
+        },
+        {
+          "id": "ms2-o-11",
+          "front": "Mindset pair: money working",
+          "back": "You work for money (earned). Building systems where money also works for you is an additional skill path. Neither path insults labor.",
+          "hint": "both valid"
+        },
+        {
+          "id": "ms2-o-12",
+          "front": "Pay yourself first",
+          "back": "Automate savings when possible; treat savings as a bill you owe your future self. Amounts vary by situation — kindness over comparison.",
+          "hint": "future self"
+        },
+        {
+          "id": "ms2-o-13",
+          "front": "Broke vs poor (Kiyosaki idea, kindly)",
+          "back": "Broke describes a temporary cash position. Kiyosaki popularized contrasting that with a lasting \"poor mindset\" of helplessness. Critique the habit, never the person. You can be broke and still study, plan, and build assets over time.",
+          "hint": "cash now vs habit"
+        },
+        {
+          "id": "ms2-o-14",
+          "front": "Instant vs long-term",
+          "back": "Instant gratification spends cash flow now. Long-term goals need surplus and patience. Wise budgets allow some fun so plans are sustainable.",
+          "hint": "surplus + fun"
+        },
+        {
+          "id": "ms2-o-15",
+          "front": "No financial advice disclaimer",
+          "back": "These cards teach vocabulary and game math. They are not recommendations to borrow, invest, or buy real assets. Real decisions need trusted adults and licensed professionals.",
+          "hint": "learning only"
+        },
+        {
+          "id": "ms2-o-16",
+          "front": "Earning vs borrowing against assets (education only)",
+          "back": "Earning $10,000 after taxes at a job can take many months of work. Someone who already owns an asset (like a rental in a game) may be able to borrow against it faster — and loan proceeds are generally not taxed as income because the money must be repaid. Honest risks: you pay interest, you must repay, you can lose the asset if you cannot pay, and it only works when the asset's cash flow beats the loan cost. Education — not financial advice.",
+          "hint": "speed vs obligation"
         }
       ]
     }
