@@ -372,7 +372,7 @@ def init_state():
         "key_mistral": "",
         "key_groq": "",
         "key_deepseek": "",
-        "active_provider": "Local Aubie (FREE ? on this computer)",
+        "active_provider": "Local Aubie (FREE — on this computer)",
         # v65/v66 features
         "truth_log": [],
         "calibration_history": [],
@@ -421,7 +421,7 @@ def award_xp(amount):
 
 # ── Multi-AI Provider Config ──────────────────────────────────────────────────
 AI_PROVIDERS = {
-    "Local Aubie (FREE ? on this computer)": {
+    "Local Aubie (FREE — on this computer)": {
         "icon": "🏠", "color": "#00ff88",
         "models": [
             "qwen2.5:14b",     # ← RECOMMENDED: fast + smart sweet spot
@@ -513,20 +513,20 @@ def get_ai_client(provider_name=None):
     """Returns (client, model, provider_info) for the selected provider.
     Priority: Local Ollama (free) → Grok (if key) → fallback demo."""
     if provider_name is None:
-        provider_name = st.session_state.get("active_provider", "Local Aubie (FREE ? on this computer)")
+        provider_name = st.session_state.get("active_provider", "Local Aubie (FREE — on this computer)")
 
-    provider = AI_PROVIDERS.get(provider_name, AI_PROVIDERS["Local Aubie (FREE ? on this computer)"])
+    provider = AI_PROVIDERS.get(provider_name, AI_PROVIDERS["Local Aubie (FREE — on this computer)"])
     key_field = provider["key_field"]
     api_key   = st.session_state.get(key_field, "") or st.session_state.get("key_xai", "")
 
     # Local Ollama needs no key — use placeholder
-    if provider_name == "Local Aubie (FREE ? on this computer)":
+    if provider_name == "Local Aubie (FREE — on this computer)":
         api_key = "ollama"  # OpenAI client requires non-empty string; Ollama ignores it
 
     # If paid provider has no key, fall back to Local Ollama
     elif not api_key and not provider["free"]:
-        provider      = AI_PROVIDERS["Local Aubie (FREE ? on this computer)"]
-        provider_name = "Local Aubie (FREE ? on this computer)"
+        provider      = AI_PROVIDERS["Local Aubie (FREE — on this computer)"]
+        provider_name = "Local Aubie (FREE — on this computer)"
         api_key       = "ollama"
 
     # xAI free fallback with no key — demo mode
@@ -855,7 +855,7 @@ with st.sidebar:
     # live in the "🤖 AI Models" tab now (they were duplicated here and
     # there - found live 2026-08-25). Sidebar keeps a read-only status line
     # since it's the one thing worth seeing from every tab.
-    _sb_prov  = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Aubie (FREE ? on this computer)"])
+    _sb_prov  = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Aubie (FREE — on this computer)"])
     _sb_model = st.session_state.get("active_model", _sb_prov["models"][0])
     st.markdown(
         f'<div class="memory-node" style="border-left:3px solid {_sb_prov["color"]};">'
@@ -1224,7 +1224,7 @@ elif "AI Models" in active:
 
     st.markdown("---")
     st.markdown("### 🎯 Active Model")
-    _am_prov = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Aubie (FREE ? on this computer)"])
+    _am_prov = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Aubie (FREE — on this computer)"])
     _am_models = _am_prov["models"]
     _am_idx = _am_models.index(st.session_state["active_model"]) if st.session_state.get("active_model") in _am_models else 0
     st.session_state.active_model = st.selectbox(
