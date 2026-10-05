@@ -21,6 +21,7 @@ OLLAMA_URL = "http://localhost:11434"
 # pull via Ollama - generous enough to avoid recommending something that'll
 # swap/OOM, not an exact science. Keyed by rounded parameter count (billions).
 TIER_RAM_GB = {32: 24, 14: 10, 8: 6, 7: 6, 3: 4, 2: 3, 1: 2}
+TIER_VRAM_GB = {32: 20, 14: 9, 8: 6, 7: 5, 3: 3, 2: 2, 1: 2}
 
 
 def detect_ram_gb() -> float | None:
@@ -35,6 +36,23 @@ def detect_ram_gb() -> float | None:
     except Exception:
         pass
     return None
+
+
+def detect_vram_gb() -> float | None:
+    """GPU VRAM in GB, or None if it can't be detected.
+    nvidia-smi --format=csv,noheader,nounits returns MiB for memory.total."""
+    import subprocess
+    try:
+        result = subprocess.run(
+            ["nvidia-smi", "--query-gpu=memory.total", "--format=csv,noheader,nounits"],
+            capture_output=True, text=True, timeout=5,
+        )
+        if result.returncode != 0:
+            return None
+        mib = float(result.stdout.strip().splitlines()[0].strip())
+        return round(mib / 1024.0, 1)
+    except Exception:
+        return None
 
 
 def _model_size_b(name: str) -> float:
@@ -53,24 +71,35 @@ def list_available_models() -> list[str]:
 
 
 def pick_best_model(candidates: list[str] | None = None) -> str | None:
-    """Largest already-pulled model whose RAM requirement comfortably fits
-    this machine, ranked by parameter size. Falls back to the single
-    largest available model if RAM can't be detected - safer than silently
-    defaulting to the smallest model on every machine just because RAM
-    detection failed."""
+    """Largest already-pulled model this machine can actually run.
+
+    When GPU VRAM is detectable, VRAM fitness wins (a 12GB card prefers 14b over
+    32b even if system RAM is huge). When VRAM is unknown, fall back to system RAM.
+    """
     available = candidates if candidates is not None else list_available_models()
     if not available:
         return None
     ranked = sorted(available, key=_model_size_b, reverse=True)
+    vram = detect_vram_gb()
     ram = detect_ram_gb()
-    if ram is None:
+
+    if vram is None and ram is None:
         return ranked[0]
+
     for name in ranked:
         size_b = _model_size_b(name)
-        needed = TIER_RAM_GB.get(round(size_b)) or (size_b * 0.8 + 2)
-        if needed <= ram:
+        if vram is not None:
+            needed_vram = TIER_VRAM_GB.get(round(size_b))
+            if needed_vram is None:
+                needed_vram = size_b * 0.7 + 1
+            if needed_vram <= vram:
+                return name
+            continue
+        # VRAM unknown ? RAM path
+        needed_ram = TIER_RAM_GB.get(round(size_b)) or (size_b * 0.8 + 2)
+        if needed_ram <= ram:
             return name
-    return ranked[-1]  # nothing comfortably fits - smallest pulled is the least-bad option
+    return ranked[-1]
 
 
 def ranked_try_order(candidates: list[str] | None = None) -> list[str]:

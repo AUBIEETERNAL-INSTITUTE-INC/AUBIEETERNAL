@@ -345,7 +345,8 @@ def init_state():
         "badges": [],
         "runes": [],
         "swarm_log": [],
-        "active_tab": "Oracle",
+        "active_tab": "Welcome",
+
         "api_key": "",
         "model": "grok-3",
         "kid_name": "Explorer",
@@ -371,7 +372,7 @@ def init_state():
         "key_mistral": "",
         "key_groq": "",
         "key_deepseek": "",
-        "active_provider": "Local Ollama (FREE — qwen3:32b)",
+        "active_provider": "Local Aubie (FREE ? on this computer)",
         # v65/v66 features
         "truth_log": [],
         "calibration_history": [],
@@ -420,22 +421,22 @@ def award_xp(amount):
 
 # ── Multi-AI Provider Config ──────────────────────────────────────────────────
 AI_PROVIDERS = {
-    "Local Ollama (FREE — qwen3:32b)": {
+    "Local Aubie (FREE ? on this computer)": {
         "icon": "🏠", "color": "#00ff88",
         "models": [
             "qwen2.5:14b",     # ← RECOMMENDED: fast + smart sweet spot
-            "qwen2.5:32b",     # deep reasoning / Tier-2 quality
             "qwen2.5:7b",      # fastest, lightest (Tier-1 bulk)
-            "qwen3:32b",       # best quality, slowest
+            "qwen3:32b",       # needs ~20GB VRAM / bigger GPU
             "llama3.3:70b",    # ⚠️ avoid — hits 94°C
         ],
         "base_url": f"{OLLAMA_BASE_URL}/v1",
         "key_field": "key_ollama",
         "placeholder": "no key needed",
         "free": True,
-        "note": "100% local · sovereign · $0.00 · qwen3:32b on your rig",
+        "note": "100% local ? sovereign ? $0.00 ? everyday model qwen2.5:14b on a typical 12GB GPU",
         "get_url": "http://painful-recess.local:62222",
     },
+
     "xAI Grok (Free Fallback)": {
         "icon": "⚡", "color": "#00cfff",
         "models": ["grok-3", "grok-3-fast", "grok-2-1212"],
@@ -512,20 +513,20 @@ def get_ai_client(provider_name=None):
     """Returns (client, model, provider_info) for the selected provider.
     Priority: Local Ollama (free) → Grok (if key) → fallback demo."""
     if provider_name is None:
-        provider_name = st.session_state.get("active_provider", "Local Ollama (FREE — qwen3:32b)")
+        provider_name = st.session_state.get("active_provider", "Local Aubie (FREE ? on this computer)")
 
-    provider = AI_PROVIDERS.get(provider_name, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
+    provider = AI_PROVIDERS.get(provider_name, AI_PROVIDERS["Local Aubie (FREE ? on this computer)"])
     key_field = provider["key_field"]
     api_key   = st.session_state.get(key_field, "") or st.session_state.get("key_xai", "")
 
     # Local Ollama needs no key — use placeholder
-    if provider_name == "Local Ollama (FREE — qwen3:32b)":
+    if provider_name == "Local Aubie (FREE ? on this computer)":
         api_key = "ollama"  # OpenAI client requires non-empty string; Ollama ignores it
 
     # If paid provider has no key, fall back to Local Ollama
     elif not api_key and not provider["free"]:
-        provider      = AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"]
-        provider_name = "Local Ollama (FREE — qwen3:32b)"
+        provider      = AI_PROVIDERS["Local Aubie (FREE ? on this computer)"]
+        provider_name = "Local Aubie (FREE ? on this computer)"
         api_key       = "ollama"
 
     # xAI free fallback with no key — demo mode
@@ -854,7 +855,7 @@ with st.sidebar:
     # live in the "🤖 AI Models" tab now (they were duplicated here and
     # there - found live 2026-08-25). Sidebar keeps a read-only status line
     # since it's the one thing worth seeing from every tab.
-    _sb_prov  = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
+    _sb_prov  = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Aubie (FREE ? on this computer)"])
     _sb_model = st.session_state.get("active_model", _sb_prov["models"][0])
     st.markdown(
         f'<div class="memory-node" style="border-left:3px solid {_sb_prov["color"]};">'
@@ -911,7 +912,7 @@ with st.sidebar:
     )
     st.session_state.thinking_mode = thinking_mode
 
-    if "Local Ollama" in st.session_state.get("active_provider", ""):
+    if any(x in st.session_state.get("active_provider", "") for x in ("Local Ollama", "Local Aubie")):
         # Was a hardcoded model-per-mode map (fixed at qwen2.5:14b for both
         # Balanced and Deep Thinking, with a stale comment about a 12GB VRAM
         # limit) - didn't reflect what's actually pulled on this machine, so
@@ -1076,17 +1077,27 @@ st.markdown(f'''
 ''', unsafe_allow_html=True)
 
 # ── Stats Row ─────────────────────────────────────────────────────────────────
-c1, c2, c3, c4, c5 = st.columns(5)
-with c1:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{st.session_state.total_queries}</div><div class="stat-lbl">Queries</div></div>', unsafe_allow_html=True)
-with c2:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{st.session_state.xp}</div><div class="stat-lbl">XP</div></div>', unsafe_allow_html=True)
-with c3:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(load_memory_palace())}</div><div class="stat-lbl">Memories</div></div>', unsafe_allow_html=True)
-with c4:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(st.session_state.badges)}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
-with c5:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(load_runes())}</div><div class="stat-lbl">Runes</div></div>', unsafe_allow_html=True)
+q = st.session_state.total_queries
+xp = st.session_state.xp
+memories = len(load_memory_palace())
+badges = len(st.session_state.badges)
+stamps = len(load_runes())
+
+if q == 0 and xp == 0 and memories == 0 and badges == 0 and stamps == 0:
+    pass
+else:
+    c1, c2, c3, c4, c5 = st.columns(5)
+    with c1:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{q}</div><div class="stat-lbl">Queries</div></div>', unsafe_allow_html=True)
+    with c2:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{xp}</div><div class="stat-lbl">XP</div></div>', unsafe_allow_html=True)
+    with c3:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{memories}</div><div class="stat-lbl">Memories</div></div>', unsafe_allow_html=True)
+    with c4:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{badges}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
+    with c5:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{stamps}</div><div class="stat-lbl">Stamps</div></div>', unsafe_allow_html=True)
+
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1098,15 +1109,15 @@ active = st.session_state.active_tab
 if "Oracle" in active or active == "Oracle":
     prov_name = st.session_state.active_provider
     prov_info = AI_PROVIDERS.get(prov_name, AI_PROVIDERS["xAI Grok (Free Fallback)"])
-    st.markdown(f'<div class="card-title">🔮 ETERNAL ORACLE — {prov_info["icon"]} {prov_name}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="card-title">?? Ask Aubie ? {prov_info["icon"]} {prov_name}</div>', unsafe_allow_html=True)
 
     # System prompt selector
-    mode = st.selectbox("Oracle Mode", [
-        "General — Curious Explorer",
-        "Tutor — Explain Like I'm 10",
-        "Antifragility — Taleb Lens",
-        "Bitcoin — On-Chain Oracle",
-        "Socratic — Ask Me Questions",
+    mode = st.selectbox("How should Aubie help?", [
+        "Tutor ? Explain Like I'm 10",
+        "General ? Curious Explorer",
+        "Antifragility ? Taleb Lens",
+        "Bitcoin ? On-Chain Oracle",
+        "Socratic ? Ask Me Questions",
     ])
 
     SYSTEM_PROMPTS = {
@@ -1125,7 +1136,7 @@ if "Oracle" in active or active == "Oracle":
             st.markdown(f'<div class="chat-grok"><div class="chat-label">{prov_info["icon"]} AUBIEETERNAL · {prov_name}</div>{msg["content"]}</div>', unsafe_allow_html=True)
 
     # Input
-    user_input = st.chat_input(f"Ask the Oracle, {st.session_state.kid_name}...")
+    user_input = st.chat_input("Ask Aubie anything...")
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
         try:
@@ -1213,7 +1224,7 @@ elif "AI Models" in active:
 
     st.markdown("---")
     st.markdown("### 🎯 Active Model")
-    _am_prov = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
+    _am_prov = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Aubie (FREE ? on this computer)"])
     _am_models = _am_prov["models"]
     _am_idx = _am_models.index(st.session_state["active_model"]) if st.session_state.get("active_model") in _am_models else 0
     st.session_state.active_model = st.selectbox(
