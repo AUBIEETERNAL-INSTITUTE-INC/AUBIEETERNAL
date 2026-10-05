@@ -964,7 +964,7 @@ with st.sidebar:
         ],
         "👨‍👩‍👧 FAMILY": [
             "🥽 Family Co-Learning", "🧬 Family Lattice",
-            "👨‍👩‍👧 Parent Guide", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
+            "👨‍👩‍👧 Parent Guide", "🛡️ Child Privacy", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
             "👑 Family Dynasty",
         ],
         "💬 CONNECT": [
@@ -1861,6 +1861,38 @@ elif "Kid Curriculum" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: PARENT GUIDE
 # ══════════════════════════════════════════════════════════════════════════════
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: CHILD PRIVACY — plain-English parent page
+# ══════════════════════════════════════════════════════════════════════════════
+elif "Child Privacy" in active:
+    st.markdown('<div class="card-title">🛡️ How Aubie protects your child\'s privacy</div>', unsafe_allow_html=True)
+    st.caption("Warm and plain. Labels say True today vs Coming soon — we do not claim unfinished features.")
+    try:
+        from pathlib import Path as _PrivPath
+        _priv = _PrivPath(__file__).resolve().parent / "docs" / "PARENT_PRIVACY.md"
+        if _priv.exists():
+            st.markdown(_priv.read_text(encoding="utf-8"))
+        else:
+            st.info("Privacy doc missing. See docs/PARENT_PRIVACY.md in the repo.")
+    except Exception as _pe:
+        st.error(f"Could not load privacy page: {_pe}")
+    st.divider()
+    st.markdown("### What is on this computer for your family right now?")
+    try:
+        from family_profiles import load_family_stats as _lfs_priv
+        _fid_priv = st.session_state.get("current_family", {}) or {}
+        _fid_priv = (_fid_priv.get("family_id") if isinstance(_fid_priv, dict) else None) or "default"
+        _st_priv = _lfs_priv(_fid_priv)
+        _mem_n = len(_st_priv.get("memory_palace") or [])
+        st.write(
+            f"**Family id:** `{_fid_priv}` · **XP:** {_st_priv.get('total_xp', 0)} · "
+            f"**Level:** {_st_priv.get('level', 1)} · **Memory Palace notes:** {_mem_n}"
+        )
+        st.caption("Chat in Ask Aubie is session-only (True today). Full wipe button: Coming soon.")
+    except Exception:
+        st.caption("Log in as a family to see live local counts.")
+
 elif "Parent Guide" in active:
     st.markdown('<div class="card-title">👨‍👩‍👧 PARENT / CAREGIVER — Deep Antifragile Household Guide</div>', unsafe_allow_html=True)
 
@@ -11046,6 +11078,7 @@ If you deploy this school for a community:
 Every deployment is permanent. Every child you teach is part of the chain."""),
             ("📞 Getting help", """
 GitHub: github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL (file an issue)
+Child privacy: open the 🛡️ Child Privacy tab (or read docs/PARENT_PRIVACY.md)
 Email: aubieeternal_institute@pm.me
 Facebook: https://www.facebook.com/profile.php?id=61594661892373
 Instagram: https://www.instagram.com/aubieeternal_institute_inc/
