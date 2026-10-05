@@ -14,6 +14,8 @@ OLLAMA_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").rstrip(
 
 # Preference order for Fast (first match that is actually pulled wins).
 FAST_CANDIDATES = [
+    "aubie-r10:latest",  # newest registered fine-tune (bench winner vs r8b/r9)
+    "aubie-r9:latest",
     "aubie-r8b:latest",
     "aubie-r8:latest",
     "aubie:latest",
