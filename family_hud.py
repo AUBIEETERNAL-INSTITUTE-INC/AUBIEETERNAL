@@ -10560,6 +10560,99 @@ LESSONS = {
         "age_hint": "13+",
         "xp": 25, "rune": "MONEY•MINDSET•10", "min_coherence": 0.60,
     },
+
+    # ── Build Your Own Path (neutral, kind; made-up names only) ──────────────
+    "build-path-1": {
+        "title": "Build Your Path — Victim or Builder",
+        "topic": "Some things you do not control (weather, other people's choices). Some things you do (your next small step, your effort, your honesty). A builder focuses on the next step they can take. This is not blaming people who face hard limits — it is a habit of agency.",
+        "example": "Story: Mira's science fair board got soaked when the roof leaked. She could not control the leak. She dried the pages, redrew one chart, and asked a neighbor for cardboard. She still felt upset — and she still took a builder step.",
+        "activity": "Write two lists: (A) things I cannot control today, (B) one small next step I can take in 10 minutes. Do the step if it is safe.",
+        "check_questions": [
+            "What is one thing Mira could not control?",
+            "What builder step did she take anyway?",
+            "Name one thing you control and one you do not.",
+        ],
+        "steelman": "When does telling someone to 'just take a next step' ignore a real barrier they need help with?",
+        "age_hint": "All ages",
+        "xp": 15, "rune": "BUILD•PATH•1", "min_coherence": 0.55,
+    },
+    "build-path-2": {
+        "title": "Build Your Path — Seek the Truth",
+        "topic": "Truth-seeking means asking clear questions, checking more than one source, and updating your mind when evidence is better. Changing your mind is strength, not weakness.",
+        "example": "Story: Jordan heard that a new snack 'makes you run faster.' Jordan asked: Who measured that? How many kids? Jordan checked the package and a library article; the claim was only a slogan. Jordan updated: 'It tastes good; the speed claim is unproven.'",
+        "activity": "Pick one claim you heard this week. Write: (1) the claim, (2) one good question about it, (3) one place you could check, (4) what would change your mind.",
+        "check_questions": [
+            "What question did Jordan ask?",
+            "Why is updating on evidence a strength?",
+            "What would be a weak way to 'check' a claim?",
+        ],
+        "steelman": "When is it reasonable to trust a trusted adult without re-checking everything yourself?",
+        "age_hint": "8+",
+        "xp": 18, "rune": "BUILD•PATH•2", "min_coherence": 0.55,
+    },
+    "build-path-3": {
+        "title": "Build Your Path — Steelman the Other Side",
+        "topic": "Steelmanning means stating someone else's view as strongly and fairly as you can before you disagree. Practice on ideas, not on attacking people. Respect sincere views on all sides.",
+        "example": (
+            "Story: In class, Sam and Riley disagreed about how a town should run a lemonade stand day. "
+            "Sam favored open competition: anyone may sell, prices free, winners earn more. "
+            "Riley favored shared rules: the class pools supplies, sets one fair price, and splits earnings. "
+            "Before arguing, each had to steelman the other: Sam said Riley wants fairness and no one left out; "
+            "Riley said Sam wants effort rewarded and more choices for buyers. "
+            "Only then did they list tradeoffs. Neither view was mocked. (Made-up classmates; not about any party or leader.)"
+        ),
+        "activity": "Pick a disagreement (school rule, game rule, or capitalism-vs-socialism as abstract ideas). Write the other side at full strength in 4–6 sentences. Then write your view. No name-calling.",
+        "check_questions": [
+            "What does steelman mean?",
+            "In the story, what fair point did each person grant the other?",
+            "Why steelman before deciding?",
+        ],
+        "steelman": "When might steelmanning be used in bad faith to stall needed action?",
+        "age_hint": "10+",
+        "xp": 22, "rune": "BUILD•PATH•3", "min_coherence": 0.58,
+    },
+    "build-path-4": {
+        "title": "Build Your Path — Owning Your Tools",
+        "topic": "Owning your tools means building skills and setups you control — like notes on your own computer, learning to run a local helper AI, or keeping keys/passwords you own. The point is resilience: fewer single switches that can turn off your learning. Not isolation — still ask for help.",
+        "example": "Story: Avi used only a locked classroom tablet that wiped overnight. Avi started copying important notes into a notebook and practiced the same math app on a home computer the family controlled. When the tablet wiped, Avi still had the notebook and the practice.",
+        "activity": "Name one skill and one tool you control (notebook, local files, offline practice). Back up one important note somewhere you own.",
+        "check_questions": [
+            "What problem did Avi face?",
+            "What is one benefit of tools you control?",
+            "How is this different from refusing all help?",
+        ],
+        "steelman": "When is a shared school tool better than a personal one?",
+        "age_hint": "11+",
+        "xp": 20, "rune": "BUILD•PATH•4", "min_coherence": 0.55,
+    },
+    "build-path-5": {
+        "title": "Build Your Path — Your Money, Your Choices",
+        "topic": "Your money path includes earning, saving, building assets over time, and giving on your terms. Link to Money & Mindset for vocabulary (cash flow, assets, kind mindsets). Education — not financial advice. Respect people with less money.",
+        "example": "Story: Nova earned $20 from neighborhood pet-sitting. Nova saved $8 first, bought a used tool for $7 that helped do the job faster, and gave $5 to a friend raising funds for animal food — because Nova chose to. Nobody forced the split; Nova owned the choices.",
+        "activity": "Open Money & Mindset lesson 1 or 2, or Flash Cards Season 2. Then write your own earn / save / build / give plan with play numbers.",
+        "check_questions": [
+            "What four choice-words appear in this lesson?",
+            "How did Nova 'pay herself first'?",
+            "Why is giving stronger when it is chosen, not forced?",
+        ],
+        "steelman": "When might a family need to override a kid's spending plan for safety?",
+        "age_hint": "10+",
+        "xp": 20, "rune": "BUILD•PATH•5", "min_coherence": 0.55,
+    },
+    "build-path-6": {
+        "title": "Build Your Path — Make Your Own Luck",
+        "topic": "Luck often looks like preparation meeting chance. You make more 'lucky' moments by starting small, learning from fails, and building things that help others. Fail forward means the failure teaches the next try.",
+        "example": "Story: Quin’s first cardboard phone-stand fell apart. Quin fixed the fold, made five stands, and gave two to classmates who needed freer hands for reading. A teacher noticed and asked Quin to demo the design. The 'lucky' invite came after the messy first try.",
+        "activity": "Start one tiny helpful thing this week (a fix, a card, a tool, a kind system). If it fails, write one lesson and one next try.",
+        "check_questions": [
+            "What did Quin's first try teach?",
+            "How did helping others connect to the later opportunity?",
+            "What does fail forward mean in your own words?",
+        ],
+        "steelman": "When is 'make your own luck' unfair to someone facing closed doors?",
+        "age_hint": "All ages",
+        "xp": 18, "rune": "BUILD•PATH•6", "min_coherence": 0.55,
+    },
 }
 
 # ── Polyvagal State Detector ──────────────────────────────────────────────────

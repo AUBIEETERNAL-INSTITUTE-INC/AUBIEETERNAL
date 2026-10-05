@@ -95,6 +95,14 @@ CURRICULUM_TREE = [
         ("money-mindset-9",  "Rich vs Poor Mindset (habits)",  "10+",      20),
         ("money-mindset-10", "Earning vs Borrowing on Assets", "13+",      25),
     ]},
+    {"track_id": "build-your-path", "track": "🛤️ Build Your Own Path", "color": "#7c4dff", "levels": [
+        ("build-path-1", "Victim or Builder",           "All ages", 15),
+        ("build-path-2", "Seek the Truth",              "8+",       18),
+        ("build-path-3", "Steelman the Other Side",     "10+",      22),
+        ("build-path-4", "Owning Your Tools",           "11+",      20),
+        ("build-path-5", "Your Money, Your Choices",    "10+",      20),
+        ("build-path-6", "Make Your Own Luck",          "All ages", 18),
+    ]},
 ]
 
 

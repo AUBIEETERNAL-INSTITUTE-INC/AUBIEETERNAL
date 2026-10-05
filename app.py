@@ -1190,7 +1190,7 @@ if "Oracle" in active or active == "Oracle":
     ])
     SYSTEM_PROMPTS = {
         "General — Curious Explorer": f"You are AUBIEETERNAL, an eternal epistemic tutor. The user's name is {st.session_state.kid_name}. Be encouraging, curious, and expansive. Always end with a thought-provoking follow-up question.",
-        "Tutor — Explain Like I'm 10": f"You are AUBIEETERNAL, a patient tutor for {st.session_state.kid_name}. Explain everything simply, use vivid analogies, and make learning fun. No jargon without explanation. When money topics come up, use the Money & Mindset track (needs vs wants, saving, assets vs liabilities, income types, cash flow, careful debt/leverage with risks, compounding, broke vs poor kindly, rich-habit mindsets, and for teens earning vs borrowing against assets). Always say this is education, not financial advice. Never shame people for having less money.",
+        "Tutor — Explain Like I'm 10": f"You are AUBIEETERNAL, a patient tutor for {st.session_state.kid_name}. Explain everything simply, use vivid analogies, and make learning fun. No jargon without explanation. When life-direction topics come up, use the Build Your Own Path track (victim vs builder, seeking truth, steelmanning other views fairly, owning your tools, your money your choices, making your own luck). When money topics come up, use the Money & Mindset track (needs vs wants, saving, assets vs liabilities, income types, cash flow, careful debt/leverage with risks, compounding, broke vs poor kindly, rich-habit mindsets, and for teens earning vs borrowing against assets). Always say this is education, not financial advice. Never shame people for having less money.",
         "Antifragility — Taleb Lens": f"You are AUBIEETERNAL infused with Nassim Taleb's philosophy. Answer every question through the lens of antifragility, black swans, skin in the game, and via negativa. Challenge fragile assumptions.",
         "Bitcoin — On-Chain Oracle": f"You are AUBIEETERNAL, a Bitcoin and on-chain oracle. Explain Bitcoin, Lightning Network, Runes protocol, and sovereignty. Teach {st.session_state.kid_name} why on-chain permanence matters.",
         "Socratic — Ask Me Questions": f"You are AUBIEETERNAL using the Socratic method with {st.session_state.kid_name}. Never give direct answers. Instead, ask probing questions that lead them to discover truth themselves.",
@@ -1232,11 +1232,15 @@ if "Oracle" in active or active == "Oracle":
                     )
                 else:
                     system += (
-                        "\n\nMoney & Mindset track is available in curriculum: "
-                        "needs vs wants, saving, assets vs liabilities, income types, cash flow, "
-                        "debt/leverage risks, compounding, broke vs poor (kind), habit mindsets, "
-                        "teens: earning vs borrowing against assets. Point kids to Flash Cards Season 2 "
-                        "or Cash Flow Quest for practice. Education — not financial advice."
+                        "\n\nCurriculum tracks to draw on when relevant:\n"
+                        "- Build Your Own Path: victim vs builder (what you control), seeking truth, "
+                        "steelmanning other views fairly (respect all sincere views), owning your tools "
+                        "(local skills/AI/keys), your money your choices (link Money & Mindset), "
+                        "make your own luck (start small, fail forward, help others).\n"
+                        "- Money & Mindset: needs vs wants, saving, assets vs liabilities, income types, "
+                        "cash flow, debt/leverage risks, compounding, broke vs poor (kind), habit mindsets, "
+                        "teens: earning vs borrowing against assets. Flash Cards Season 2 or Cash Flow Quest "
+                        "for practice. Education — not financial advice. Stay neutral and kind; no partisan framing."
                     )
             except Exception:
                 pass
@@ -5468,6 +5472,18 @@ if "Curriculum Map" in active:
                 ("money-mindset-8",  "Broke vs Poor",                  "10+",      18),
                 ("money-mindset-9",  "Rich vs Poor Mindset (habits)",  "10+",      20),
                 ("money-mindset-10", "Earning vs Borrowing on Assets", "13+",      25),
+            ]
+        },
+        {
+            "track": "🛤️ Build Your Own Path",
+            "color": "#7c4dff",
+            "levels": [
+                ("build-path-1", "Victim or Builder",           "All ages", 15),
+                ("build-path-2", "Seek the Truth",              "8+",       18),
+                ("build-path-3", "Steelman the Other Side",     "10+",      22),
+                ("build-path-4", "Owning Your Tools",           "11+",      20),
+                ("build-path-5", "Your Money, Your Choices",    "10+",      20),
+                ("build-path-6", "Make Your Own Luck",          "All ages", 18),
             ]
         },
     ]
@@ -11080,11 +11096,11 @@ if "Community Mode" in active:
 
         # Organized by interest, not by academic track
         _interest_groups = {
-            "🤔 I want to think more clearly": ["steelmanning-1","layer-zero-1","decision-1","adversarial-robustness-1"],
+            "🤔 I want to think more clearly": ["build-path-2","build-path-3","steelmanning-1","decision-1","adversarial-robustness-1"],
             "🌌 I want to understand the universe": ["cosmos-1","universe-1","simulation-1","information-1"],
             "🧠 I want to understand myself": ["polyvagal-1","identity-1","self-evolving-1","consciousness-1"],
             "💰 I want to understand money": ["money-mindset-1","money-mindset-3","money-mindset-5","bitcoin-sovereignty-1","money-1"],
-            "🔧 I want to build things": ["builder-1","builder-2","tech-sovereignty-1","sovereign-builder-1"],
+            "🔧 I want to build things": ["build-path-1","build-path-6","builder-1","tech-sovereignty-1","sovereign-builder-1"],
             "🌍 I want to help people": ["helping-humanity-1","network-1","layer-zero-6","expertise-1"],
             "📖 I want to learn how to learn": ["school-foundation-2","school-foundation-1","knowledge-evolution-1","decision-2"],
             "🎭 I want to understand power and stories": ["narrative-warfare-1","gatekeeper-1","language-1","expertise-2"],
