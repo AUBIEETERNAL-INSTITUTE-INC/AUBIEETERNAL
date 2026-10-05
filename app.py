@@ -345,7 +345,8 @@ def init_state():
         "badges": [],
         "runes": [],
         "swarm_log": [],
-        "active_tab": "Oracle",
+        "active_tab": "Welcome",
+
         "api_key": "",
         "model": "grok-3",
         "kid_name": "Explorer",
@@ -435,6 +436,8 @@ AI_PROVIDERS = {
         "note": "Runs on this computer · no key needed · $0.00 · everyday model qwen2.5:14b on a typical 12GB GPU",
         "get_url": "",
     },
+
+
     "xAI Grok (Free Fallback)": {
         "icon": "⚡", "color": "#00cfff",
         "models": ["grok-3", "grok-3-fast", "grok-2-1212"],
@@ -961,7 +964,7 @@ with st.sidebar:
         ],
         "👨‍👩‍👧 FAMILY": [
             "🥽 Family Co-Learning", "🧬 Family Lattice",
-            "👨‍👩‍👧 Parent Guide", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
+            "👨‍👩‍👧 Parent Guide", "🛡️ Child Privacy", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
             "👑 Family Dynasty",
         ],
         "💬 CONNECT": [
@@ -1066,17 +1069,27 @@ st.markdown(f'''
 ''', unsafe_allow_html=True)
 
 # ── Stats Row ─────────────────────────────────────────────────────────────────
-c1, c2, c3, c4, c5 = st.columns(5)
-with c1:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{st.session_state.total_queries}</div><div class="stat-lbl">Queries</div></div>', unsafe_allow_html=True)
-with c2:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{st.session_state.xp}</div><div class="stat-lbl">XP</div></div>', unsafe_allow_html=True)
-with c3:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(load_memory_palace())}</div><div class="stat-lbl">Memories</div></div>', unsafe_allow_html=True)
-with c4:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(st.session_state.badges)}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
-with c5:
-    st.markdown(f'<div class="stat-box"><div class="stat-val">{len(load_runes())}</div><div class="stat-lbl">Runes</div></div>', unsafe_allow_html=True)
+q = st.session_state.total_queries
+xp = st.session_state.xp
+memories = len(load_memory_palace())
+badges = len(st.session_state.badges)
+stamps = len(load_runes())
+
+if q == 0 and xp == 0 and memories == 0 and badges == 0 and stamps == 0:
+    pass
+else:
+    c1, c2, c3, c4, c5 = st.columns(5)
+    with c1:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{q}</div><div class="stat-lbl">Queries</div></div>', unsafe_allow_html=True)
+    with c2:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{xp}</div><div class="stat-lbl">XP</div></div>', unsafe_allow_html=True)
+    with c3:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{memories}</div><div class="stat-lbl">Memories</div></div>', unsafe_allow_html=True)
+    with c4:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{badges}</div><div class="stat-lbl">Badges</div></div>', unsafe_allow_html=True)
+    with c5:
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{stamps}</div><div class="stat-lbl">Stamps</div></div>', unsafe_allow_html=True)
+
 
 st.markdown("<br>", unsafe_allow_html=True)
 
@@ -1088,17 +1101,16 @@ active = st.session_state.active_tab
 if "Oracle" in active or active == "Oracle":
     prov_name = st.session_state.active_provider
     prov_info = AI_PROVIDERS.get(prov_name, AI_PROVIDERS["xAI Grok (Free Fallback)"])
-    st.markdown(f'<div class="card-title">🔮 ETERNAL ORACLE — {prov_info["icon"]} {prov_name}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="card-title">💬 Ask Aubie — {prov_info["icon"]} {prov_name}</div>', unsafe_allow_html=True)
 
     # System prompt selector
-    mode = st.selectbox("Oracle Mode", [
-        "General — Curious Explorer",
+    mode = st.selectbox("How should Aubie help?", [
         "Tutor — Explain Like I'm 10",
+        "General — Curious Explorer",
         "Antifragility — Taleb Lens",
         "Bitcoin — On-Chain Oracle",
         "Socratic — Ask Me Questions",
     ])
-
     SYSTEM_PROMPTS = {
         "General — Curious Explorer": f"You are AUBIEETERNAL, an eternal epistemic tutor. The user's name is {st.session_state.kid_name}. Be encouraging, curious, and expansive. Always end with a thought-provoking follow-up question.",
         "Tutor — Explain Like I'm 10": f"You are AUBIEETERNAL, a patient tutor for {st.session_state.kid_name}. Explain everything simply, use vivid analogies, and make learning fun. No jargon without explanation.",
@@ -1115,7 +1127,7 @@ if "Oracle" in active or active == "Oracle":
             st.markdown(f'<div class="chat-grok"><div class="chat-label">{prov_info["icon"]} AUBIEETERNAL · {prov_name}</div>{msg["content"]}</div>', unsafe_allow_html=True)
 
     # Input
-    user_input = st.chat_input(f"Ask the Oracle, {st.session_state.kid_name}...")
+    user_input = st.chat_input("Ask Aubie anything...")
     if user_input:
         st.session_state.messages.append({"role": "user", "content": user_input})
         try:
@@ -1848,6 +1860,38 @@ elif "Kid Curriculum" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: PARENT GUIDE
 # ══════════════════════════════════════════════════════════════════════════════
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB: CHILD PRIVACY — plain-English parent page
+# ══════════════════════════════════════════════════════════════════════════════
+elif "Child Privacy" in active:
+    st.markdown('<div class="card-title">🛡️ How Aubie protects your child\'s privacy</div>', unsafe_allow_html=True)
+    st.caption("Warm and plain. Labels say True today vs Coming soon — we do not claim unfinished features.")
+    try:
+        from pathlib import Path as _PrivPath
+        _priv = _PrivPath(__file__).resolve().parent / "docs" / "PARENT_PRIVACY.md"
+        if _priv.exists():
+            st.markdown(_priv.read_text(encoding="utf-8"))
+        else:
+            st.info("Privacy doc missing. See docs/PARENT_PRIVACY.md in the repo.")
+    except Exception as _pe:
+        st.error(f"Could not load privacy page: {_pe}")
+    st.divider()
+    st.markdown("### What is on this computer for your family right now?")
+    try:
+        from family_profiles import load_family_stats as _lfs_priv
+        _fid_priv = st.session_state.get("current_family", {}) or {}
+        _fid_priv = (_fid_priv.get("family_id") if isinstance(_fid_priv, dict) else None) or "default"
+        _st_priv = _lfs_priv(_fid_priv)
+        _mem_n = len(_st_priv.get("memory_palace") or [])
+        st.write(
+            f"**Family id:** `{_fid_priv}` · **XP:** {_st_priv.get('total_xp', 0)} · "
+            f"**Level:** {_st_priv.get('level', 1)} · **Memory Palace notes:** {_mem_n}"
+        )
+        st.caption("Chat in Ask Aubie is session-only (True today). Full wipe button: Coming soon.")
+    except Exception:
+        st.caption("Log in as a family to see live local counts.")
+
 elif "Parent Guide" in active:
     st.markdown('<div class="card-title">👨‍👩‍👧 PARENT / CAREGIVER — Deep Antifragile Household Guide</div>', unsafe_allow_html=True)
 
@@ -4376,8 +4420,9 @@ if any(t in active for t in _family_tabs):
         _family_login_block()
         st.stop()
 
-_cf = st.session_state.get("current_family", {})
-_fid = _cf.get("family_id", "operator") if _cf else "operator"
+_cf = st.session_state.get("current_family") or {}
+_fid = _cf.get("family_id", "operator")
+
 
 # ── Family badge in header (when logged in) ───────────────────────────────────
 if _cf:
@@ -6412,7 +6457,7 @@ if "Submit Curriculum" in active:
 
         # ── Review queue (operator only) ──────────────────────────────────────
         with sub_tabs[3]:
-            if not (_cf.get("is_operator", False) or _cf.get("can_review", False)):
+            if not ((_cf or {}).get("is_operator", False) or (_cf or {}).get("can_review", False)):
                 st.info("Review queue is for the operator only.")
             else:
                 pending = _reviewer.get_pending()
@@ -11043,11 +11088,18 @@ If you deploy this school for a community:
 Every deployment is permanent. Every child you teach is part of the chain."""),
             ("📞 Getting help", """
 GitHub: github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL (file an issue)
+Child privacy: open the 🛡️ Child Privacy tab (or read docs/PARENT_PRIVACY.md)
+Email: aubieeternal_institute@pm.me
+Facebook: https://www.facebook.com/profile.php?id=61594661892373
+Instagram: https://www.instagram.com/aubieeternal_institute_inc/
+Telegram: https://t.me/aubieeternal_institute
+WhatsApp: https://wa.me/19312665632
 Twitter/X: @MateoVanhorn
 Everything is open source — someone will help.
 
 If you need a setup translated into another language:
 submit a PR or contact us — translation is the second-highest-impact contribution."""),
+
         ]
 
         for _sec_title, _sec_body in _deploy_sections:
