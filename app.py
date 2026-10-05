@@ -371,7 +371,7 @@ def init_state():
         "key_mistral": "",
         "key_groq": "",
         "key_deepseek": "",
-        "active_provider": "Local Ollama (FREE — qwen3:32b)",
+        "active_provider": "Local Aubie (FREE — on this computer)",
         # v65/v66 features
         "truth_log": [],
         "calibration_history": [],
@@ -420,21 +420,20 @@ def award_xp(amount):
 
 # ── Multi-AI Provider Config ──────────────────────────────────────────────────
 AI_PROVIDERS = {
-    "Local Ollama (FREE — qwen3:32b)": {
+    "Local Aubie (FREE — on this computer)": {
         "icon": "🏠", "color": "#00ff88",
         "models": [
-            "qwen2.5:14b",     # ← RECOMMENDED: fast + smart sweet spot
-            "qwen2.5:32b",     # deep reasoning / Tier-2 quality
-            "qwen2.5:7b",      # fastest, lightest (Tier-1 bulk)
-            "qwen3:32b",       # best quality, slowest
-            "llama3.3:70b",    # ⚠️ avoid — hits 94°C
+            "qwen2.5:14b",     # ← RECOMMENDED: everyday default
+            "qwen2.5:7b",      # light / Fast fallback
+            "aubie-r8b:latest",# optional fine-tune (Fast preference)
+            "qwen3:32b",       # needs ~20GB VRAM / bigger GPU — not for 12GB
         ],
         "base_url": f"{OLLAMA_BASE_URL}/v1",
         "key_field": "key_ollama",
         "placeholder": "no key needed",
         "free": True,
-        "note": "100% local · sovereign · $0.00 · qwen3:32b on your rig",
-        "get_url": "http://painful-recess.local:62222",
+        "note": "Runs on this computer · no key needed · $0.00 · everyday model qwen2.5:14b on a typical 12GB GPU",
+        "get_url": "",
     },
     "xAI Grok (Free Fallback)": {
         "icon": "⚡", "color": "#00cfff",
@@ -512,20 +511,20 @@ def get_ai_client(provider_name=None):
     """Returns (client, model, provider_info) for the selected provider.
     Priority: Local Ollama (free) → Grok (if key) → fallback demo."""
     if provider_name is None:
-        provider_name = st.session_state.get("active_provider", "Local Ollama (FREE — qwen3:32b)")
+        provider_name = st.session_state.get("active_provider", "Local Aubie (FREE — on this computer)")
 
-    provider = AI_PROVIDERS.get(provider_name, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
+    provider = AI_PROVIDERS.get(provider_name, AI_PROVIDERS["Local Aubie (FREE — on this computer)"])
     key_field = provider["key_field"]
     api_key   = st.session_state.get(key_field, "") or st.session_state.get("key_xai", "")
 
     # Local Ollama needs no key — use placeholder
-    if provider_name == "Local Ollama (FREE — qwen3:32b)":
+    if provider_name == "Local Aubie (FREE — on this computer)":
         api_key = "ollama"  # OpenAI client requires non-empty string; Ollama ignores it
 
     # If paid provider has no key, fall back to Local Ollama
     elif not api_key and not provider["free"]:
-        provider      = AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"]
-        provider_name = "Local Ollama (FREE — qwen3:32b)"
+        provider      = AI_PROVIDERS["Local Aubie (FREE — on this computer)"]
+        provider_name = "Local Aubie (FREE — on this computer)"
         api_key       = "ollama"
 
     # xAI free fallback with no key — demo mode
@@ -854,7 +853,7 @@ with st.sidebar:
     # live in the "🤖 AI Models" tab now (they were duplicated here and
     # there - found live 2026-08-25). Sidebar keeps a read-only status line
     # since it's the one thing worth seeing from every tab.
-    _sb_prov  = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
+    _sb_prov  = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Aubie (FREE — on this computer)"])
     _sb_model = st.session_state.get("active_model", _sb_prov["models"][0])
     st.markdown(
         f'<div class="memory-node" style="border-left:3px solid {_sb_prov["color"]};">'
@@ -911,30 +910,21 @@ with st.sidebar:
     )
     st.session_state.thinking_mode = thinking_mode
 
-    if "Local Ollama" in st.session_state.get("active_provider", ""):
-        # Was a hardcoded model-per-mode map (fixed at qwen2.5:14b for both
-        # Balanced and Deep Thinking, with a stale comment about a 12GB VRAM
-        # limit) - didn't reflect what's actually pulled on this machine, so
-        # it could show a model name that's wrong or doesn't exist here at
-        # all. Now sourced from model_selector.py (the same hardware-aware
-        # logic assistant_server.py's TEXT_MODEL already uses) - real data
-        # about what's really pulled on THIS machine, always shown clearly
-        # since thinking-mode is rarely changed day-to-day.
+    if any(x in st.session_state.get("active_provider", "") for x in ("Local Ollama", "Local Aubie")):
+        # Single config: thinking_mode_config.py (Fast / Balanced / Deep)
         try:
-            from model_selector import ranked_try_order as _rto
-            _real_models = _rto()
+            from thinking_mode_config import model_for_mode as _mfm
+            _auto_model = _mfm(thinking_mode)
         except Exception:
-            _real_models = []
-
-        if _real_models:
-            # Fast = the smallest model actually pulled here (quickest
-            # replies); Balanced/Deep both use the best-fit model this
-            # machine can comfortably run.
-            _auto_model = _real_models[-1] if thinking_mode == "⚡ Fast" else _real_models[0]
-        else:
-            _auto_model = "qwen2.5:7b"  # nothing pulled yet - name only, not a real pick
+            _auto_model = "qwen2.5:14b"
         st.session_state.active_model = _auto_model
-        st.caption(f"🤖 Model in use: `{_auto_model}`" + (" (only one model pulled)" if len(_real_models) <= 1 else ""))
+        _tm_note = {
+            "⚡ Fast": "small/fast local model",
+            "⚖️ Balanced": "everyday qwen2.5:14b",
+            "🧠 Deep Thinking": "qwen2.5:14b + step-by-step prompt (no 32b on 12GB)",
+        }.get(thinking_mode, "")
+        st.caption(f"🤖 Model in use: `{_auto_model}`" + (f" — {_tm_note}" if _tm_note else ""))
+
 
 
     st.markdown("---")
@@ -1131,6 +1121,13 @@ if "Oracle" in active or active == "Oracle":
         try:
             client, model, provider, pname = get_ai_client()
             system = SYSTEM_PROMPTS[mode]
+            try:
+                from thinking_mode_config import system_addon_for_mode as _sa
+                _addon = _sa(st.session_state.get("thinking_mode", ""))
+                if _addon:
+                    system = system + "\n\n" + _addon
+            except Exception:
+                pass
             response = client.chat.completions.create(
                 model=model,
                 messages=[{"role": "system", "content": system}] + st.session_state.messages,
@@ -1199,7 +1196,10 @@ elif "AI Models" in active:
                         st.session_state.api_key = new_key
 
                 st.markdown(f'<div style="font-size:0.75rem;color:#556677;">{pinfo["note"]}</div>', unsafe_allow_html=True)
-                st.markdown(f'<a href="{pinfo["get_url"]}" target="_blank" style="font-size:0.75rem;color:{pinfo["color"]};">🔑 Get your key at {pinfo["get_url"]} →</a>', unsafe_allow_html=True)
+                if pinfo.get("get_url"):
+                    st.markdown(f'<a href="{pinfo["get_url"]}" target="_blank" style="font-size:0.75rem;color:{pinfo["color"]};">🔑 Get your key at {pinfo["get_url"]} →</a>', unsafe_allow_html=True)
+                else:
+                    st.markdown('<span style="font-size:0.75rem;color:#666;">🏠 Runs on this computer — no key needed</span>', unsafe_allow_html=True)
 
             with col2:
                 st.markdown(f'<div class="stat-box" style="border-color:{border};"><div class="stat-val" style="font-size:1.2rem;">{pinfo["icon"]}</div><div class="stat-lbl">{"✅ Active" if has_key else ("Free" if pinfo["free"] else "Add Key")}</div></div>', unsafe_allow_html=True)
@@ -1213,7 +1213,7 @@ elif "AI Models" in active:
 
     st.markdown("---")
     st.markdown("### 🎯 Active Model")
-    _am_prov = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Ollama (FREE — qwen3:32b)"])
+    _am_prov = AI_PROVIDERS.get(st.session_state.active_provider, AI_PROVIDERS["Local Aubie (FREE — on this computer)"])
     _am_models = _am_prov["models"]
     _am_idx = _am_models.index(st.session_state["active_model"]) if st.session_state.get("active_model") in _am_models else 0
     st.session_state.active_model = st.selectbox(
@@ -3295,7 +3295,7 @@ if "Digest" in active:
         f'{banner_icon} MORNING SYNTHESIS · {banner_msg}'
         f'</div>'
         f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">'
-        f'Auto-fires 6AM · qwen3:32b (local, $0.00) · insights/daily/YYYY-MM-DD.md → GitHub'
+        f'Auto-fires 6AM · qwen2.5:14b (local, $0.00) · insights/daily/YYYY-MM-DD.md → GitHub'
         f'</div></div>', unsafe_allow_html=True)
 
     col_b1, col_b2 = st.columns([1, 3])
@@ -3466,7 +3466,7 @@ if "Family Co-Learning" in active:
     _STARTOS_ALIVE = _Path("/mnt/main/swarm_status.json").exists()
     mode_color  = "#00ff88" if _STARTOS_ALIVE else "#ff9500"
     mode_label  = "🟢 FULL SOVEREIGN (StartOS connected)" if _STARTOS_ALIVE else "🟡 NOSTR BRIDGE MODE (no local StartOS detected)"
-    mode_detail = "Swarm processing locally · qwen3:32b · max privacy" if _STARTOS_ALIVE else "Encrypted Nostr events · public relay fallback · sovereign keys"
+    mode_detail = "Swarm processing locally · qwen2.5:14b · max privacy" if _STARTOS_ALIVE else "Encrypted Nostr events · public relay fallback · sovereign keys"
     hud_status  = "🧠 family_hud.py loaded — real scoring active" if _HUD_AVAILABLE else "⚠️ family_hud.py not found — using local fallback"
     hud_color   = "#00cfff" if _HUD_AVAILABLE else "#ff9500"
 
