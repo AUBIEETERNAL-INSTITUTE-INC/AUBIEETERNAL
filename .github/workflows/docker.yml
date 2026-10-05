@@ -1,14 +1,10 @@
 name: Build and Push Docker
 
+# Disabled for automatic pushes: GitHub is backup only for this project.
+# Live portal runs via systemd + venv on the rig, not ghcr.io/hodlmateo/aubieeternal.
+# Push to that personal GHCR tag fails from the org repo (permission_denied).
+# Keep this file for manual re-enable: Actions → Build and Push Docker → Run workflow.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'Dockerfile'
-      - 'start.sh'
-      - 'app.py'
-      - 'swarm/**'
-      - 'requirements.txt'
   workflow_dispatch:
 
 jobs:
