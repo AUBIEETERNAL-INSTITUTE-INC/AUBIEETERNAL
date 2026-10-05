@@ -850,7 +850,7 @@ with st.sidebar:
     st.markdown('<div style="font-family:Orbitron,monospace;font-size:1.1rem;font-weight:900;color:#00cfff;letter-spacing:0.2em;padding:0.5rem 0;">⚡ AUBIEETERNAL</div>', unsafe_allow_html=True)
     st.markdown('<div style="font-family:Share Tech Mono,monospace;font-size:0.7rem;color:#445577;letter-spacing:0.2em;margin-bottom:1rem;">SOVEREIGN KID PORTAL</div>', unsafe_allow_html=True)
 
-    st.markdown("### 🤖 SI Provider")
+    st.markdown("### 🤖 Aubie")
 
     # Full provider picker, key entry, Keys→Disk, and model selector all
     # live in the "🤖 AI Models" tab now (they were duplicated here and
@@ -865,7 +865,7 @@ with st.sidebar:
         f'<span style="font-size:0.7rem;color:#556677;">{_sb_model}</span>'
         f'</div>', unsafe_allow_html=True
     )
-    st.caption("Switch provider, add keys, or change model in the 🤖 AI Models tab")
+    st.caption("Switch provider, add keys, or change model in Admin view → AI Models")
 
     st.markdown("---")
     st.markdown("### 👤 Profile")
@@ -949,85 +949,151 @@ with st.sidebar:
     st.markdown("---")
 
     # ── Categorized Navigation ────────────────────────────────────────────────
-    _NAV_CATEGORIES = {
-        "🏠 HOME": [
-            "🌍 Welcome", "📊 Dashboard", "🌅 Digest", "🏫 Community Mode",
+    # Family-facing nav is always shown. Builder / jargon tabs live under
+    # "Behind the scenes" and only appear when Admin view is on (default off).
+    # Routes are unchanged: deep links and active_tab still render every tab.
+    _NAV_FAMILY = {
+        "🏠 Home": [
+            "🌍 Welcome",
+            "📊 Dashboard",
+            "🌅 Digest",
+            "🏫 Community Mode",
         ],
-        "🤖 SI": [
-            "🔮 Oracle", "🤖 AI Models", "🧠 Memory Palace",
-            "🧪 Sandbox Lab",
-            "🌌 Cosmos Dashboard",
-        ],
-        "👾 SWARM": [
-            "👾 Swarm", "⚔️ Swarm Mode", "🔴 DEFCON", "📚 Grokipedia", "🌐 Epistemic Commons",
-            "⚡ Reliability",
-        ],
-        "👨‍👩‍👧 FAMILY": [
-            "🥽 Family Co-Learning", "🧬 Family Lattice",
-            "👨‍👩‍👧 Parent Guide", "🛡️ Child Privacy", "📈 Parent Dashboard", "👵 Grandparent Wisdom",
-            "👑 Family Dynasty",
-        ],
-        "💬 CONNECT": [
-            "💬 Family Messaging", "👥 Family Groups",
-            "📣 Share to X", "📡 Nostr Bridge",
-        ],
-        "🏫 SCHOOL": [
-            "🏫 School", "🗺️ Curriculum Map", "📥 Submit Curriculum",
-            "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
+        "🏫 School": [
+            "🏫 School",
+            "🗺️ Curriculum Map",
+            "📥 Submit Curriculum",
+            "📚 Taleb Curriculum",
+            "👧 Kid Curriculum",
+            "🎮 Daily Quests",
             "🃏 Flash Cards",
             "🏛️ School Pathway",
-            "🔧 Sovereign Builder",
-            "🎓 University Registrar",
-            "🌌 Cosmos Dashboard",
             "📜 Transcripts",
-            "🔍 Peer Review",
-            "🌐 Wisdom GDP",
-            "🎓 Alumni Network",
         ],
-        "🛡️ ADVERSARIAL": [
-            "🛡️ Adversarial Reality", "📚 Grokipedia", "🔗 Provenance",
+        "💬 Ask Aubie": [
+            "🔮 Oracle",
+        ],
+        "👨‍👩‍👧 Family": [
+            "🥽 Family Co-Learning",
+            "🧬 Family Lattice",
+            "👨‍👩‍👧 Parent Guide",
+            "🛡️ Child Privacy",
+            "📈 Parent Dashboard",
+            "👵 Grandparent Wisdom",
+            "👑 Family Dynasty",
+            "💬 Family Messaging",
+            "👥 Family Groups",
+        ],
+        "📚 Grokipedia": [
+            "📚 Grokipedia",
+        ],
+        "🆘 Getting help": [
+            "👨‍👩‍👧 Parent Guide",
+        ],
+    }
+
+    _NAV_BEHIND = {
+        "🛠️ Behind the scenes": [
+            # Models & labs
+            "🤖 AI Models",
+            "🧠 Memory Palace",
+            "🧪 Sandbox Lab",
+            "🌌 Cosmos Dashboard",
+            # Swarm / builders
+            "👾 Swarm",
+            "⚔️ Swarm Mode",
+            "🔴 DEFCON",
+            "🌐 Epistemic Commons",
+            "⚡ Reliability",
+            # Adversarial / lattice / truth
+            "🛡️ Adversarial Reality",
+            "🔗 Provenance",
             "🔓 Gatekeeper Detector",
-        ],
-        "🔗 LATTICE": [
             "🔗 Lattice Nodes",
             "⚡ Admin Dashboard",
             "🔧 Epistemic Error Correction",
             "🔍 Narrative Patterns",
-        ],
-        "🤝 SI PARTNERSHIP": [
             "🤝 AI Partnership",
             "🕸️ Living Lattice",
-        ],
-        "🧬 TRUTH": [
             "🔮 Truth Lattice",
-            "🧠 Polyvagal Oracle", "⚖️ Social Calibration", "🌀 Quantum Lab",
-        ],
-        "🌉 X BRIDGE": [
+            "🧠 Polyvagal Oracle",
+            "⚖️ Social Calibration",
+            "🌀 Quantum Lab",
+            # Bridges & bitcoin-tech
             "🌉 X Bridge",
             "🔭 Simulation Probe",
             "📋 Truth Debt Ledger",
-        ],
-        "₿ BITCOIN": [
-            "₿ Rune-Palace", "⚡ Bitcoin", "🛡️ Shield Rune",
-        ],
-        "🎮 GAMES": [
-            "🃏 Flash Cards", "🦅 Sovereign Life", "💰 Sovereign Cashflow",
-        ],
-        "📊 HEALTH": [
-            "📈 Epistemic Health", "🌍 Humanity Impact",
-            "🎓 Certifications", "🤖 AI Honesty", "📊 Public Health",
+            "📣 Share to X",
+            "📡 Nostr Bridge",
+            "₿ Rune-Palace",
+            "⚡ Bitcoin",
+            "🛡️ Shield Rune",
+            # School / games extras (builder-ish)
+            "🔧 Sovereign Builder",
+            "🎓 University Registrar",
+            "🔍 Peer Review",
+            "🌐 Wisdom GDP",
+            "🎓 Alumni Network",
+            "🦅 Sovereign Life",
+            "💰 Sovereign Cashflow",
+            # Health / metrics jargon
+            "📈 Epistemic Health",
+            "🌍 Humanity Impact",
+            "🎓 Certifications",
+            "🤖 AI Honesty",
+            "📊 Public Health",
         ],
     }
 
+    # Admin view toggle — default off; persist on this computer
+    from pathlib import Path as _NavPath
+    _ADMIN_PREFS = _NavPath("/mnt/main/portal_ui_prefs.json")
+    if "admin_view" not in st.session_state:
+        _av = False
+        try:
+            if _ADMIN_PREFS.exists():
+                _av = bool(json.loads(_ADMIN_PREFS.read_text()).get("admin_view", False))
+        except Exception:
+            _av = False
+        st.session_state.admin_view = _av
+
+    _admin_on = st.checkbox(
+        "Admin view",
+        value=bool(st.session_state.admin_view),
+        help="Show builder and technical tabs under Behind the scenes. Off by default for families.",
+        key="admin_view_checkbox",
+    )
+    if _admin_on != bool(st.session_state.admin_view):
+        st.session_state.admin_view = _admin_on
+        try:
+            _ADMIN_PREFS.parent.mkdir(parents=True, exist_ok=True)
+            _prev = {}
+            if _ADMIN_PREFS.exists():
+                try:
+                    _prev = json.loads(_ADMIN_PREFS.read_text())
+                except Exception:
+                    _prev = {}
+            _prev["admin_view"] = bool(_admin_on)
+            _ADMIN_PREFS.write_text(json.dumps(_prev, indent=2))
+        except Exception:
+            pass
+        st.rerun()
+
+    _NAV_CATEGORIES = dict(_NAV_FAMILY)
+    if st.session_state.admin_view:
+        _NAV_CATEGORIES.update(_NAV_BEHIND)
+
     # Expand/collapse state per category
     if "nav_open" not in st.session_state:
-        st.session_state.nav_open = {"🏠 HOME": True}
+        st.session_state.nav_open = {"🏠 Home": True, "💬 Ask Aubie": True}
+    if st.session_state.admin_view:
+        st.session_state.nav_open.setdefault("🛠️ Behind the scenes", True)
 
     _active_now = st.session_state.get("active_tab", "Oracle")
 
     for _cat, _cat_tabs in _NAV_CATEGORIES.items():
         # Check if any tab in this category is active
-        _cat_active = any(_active_now in t or t.split(" ",1)[-1] in _active_now
+        _cat_active = any(_active_now in t or t.split(" ", 1)[-1] in _active_now
                           for t in _cat_tabs)
         _is_open = st.session_state.nav_open.get(_cat, _cat_active)
 
@@ -1045,10 +1111,16 @@ with st.sidebar:
         if _is_open:
             for _tab in _cat_tabs:
                 _tab_name = _tab.split(" ", 1)[1] if " " in _tab else _tab
+                # Friendlier sidebar labels; route names stay the same
+                _label = _tab
+                if _tab_name == "Oracle":
+                    _label = "💬 Ask Aubie"
+                elif _cat.startswith("🆘") and _tab_name == "Parent Guide":
+                    _label = "🆘 Getting help"
                 _is_active_tab = (_active_now in _tab or _tab_name in _active_now)
                 _btn_style = "primary" if _is_active_tab else "secondary"
                 if st.button(
-                    f"  {_tab}",
+                    f"  {_label}",
                     key=f"nav_{_cat}_{_tab}",
                     use_container_width=True,
                     type=_btn_style,
