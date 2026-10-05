@@ -4375,8 +4375,9 @@ if any(t in active for t in _family_tabs):
         _family_login_block()
         st.stop()
 
-_cf = st.session_state.get("current_family", {})
-_fid = _cf.get("family_id", "operator") if _cf else "operator"
+_cf = st.session_state.get("current_family") or {}
+_fid = _cf.get("family_id", "operator")
+
 
 # ── Family badge in header (when logged in) ───────────────────────────────────
 if _cf:
@@ -6411,7 +6412,7 @@ if "Submit Curriculum" in active:
 
         # ── Review queue (operator only) ──────────────────────────────────────
         with sub_tabs[3]:
-            if not (_cf.get("is_operator", False) or _cf.get("can_review", False)):
+            if not ((_cf or {}).get("is_operator", False) or (_cf or {}).get("can_review", False)):
                 st.info("Review queue is for the operator only.")
             else:
                 pending = _reviewer.get_pending()
@@ -11042,11 +11043,17 @@ If you deploy this school for a community:
 Every deployment is permanent. Every child you teach is part of the chain."""),
             ("📞 Getting help", """
 GitHub: github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL (file an issue)
+Email: aubieeternal_institute@pm.me
+Facebook: https://www.facebook.com/profile.php?id=61594661892373
+Instagram: https://www.instagram.com/aubieeternal_institute_inc/
+Telegram: https://t.me/aubieeternal_institute
+WhatsApp: https://wa.me/19312665632
 Twitter/X: @MateoVanhorn
 Everything is open source — someone will help.
 
 If you need a setup translated into another language:
 submit a PR or contact us — translation is the second-highest-impact contribution."""),
+
         ]
 
         for _sec_title, _sec_body in _deploy_sections:
