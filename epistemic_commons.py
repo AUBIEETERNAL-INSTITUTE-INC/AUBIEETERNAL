@@ -63,7 +63,17 @@ WONDER_LOG     = WORK_DIR / "wonder_log.jsonl"
 SWARM_STATUS   = Path("/mnt/main/swarm_status.json")
 
 OLLAMA_URL     = "http://localhost:11434/v1/chat/completions"
-OLLAMA_MODEL   = "qwen2.5:32b"
+OLLAMA_MODEL   = "qwen2.5:14b"
+
+def _is_mostly_english(text: str, min_ratio: float = 0.85) -> bool:
+    if not text or not str(text).strip():
+        return True
+    letters = [c for c in str(text) if c.isalpha()]
+    if not letters:
+        return True
+    latin = sum(1 for c in letters if "a" <= c.lower() <= "z")
+    return (latin / len(letters)) >= min_ratio
+
 OLLAMA_TIMEOUT = 300
 
 # ── Commons schema version ────────────────────────────────────────────────────
@@ -240,6 +250,14 @@ class EpistemicCommons:
             h_risk  = h_entry.get("hallucination_risk", "low")
             if h_risk == "high":
                 continue  # don't publish high-risk outputs to commons
+            if not _is_mostly_english(result):
+                continue  # English-only public commons
+            low = result.lower()
+            if any(k in low for k in (
+                "hormetic", "quantum-coherent", "quantum coherent",
+                "inter-rune", "wonder index",
+            )):
+                continue
 
             candidates.append((recency, {
                 "result":      result,
@@ -296,7 +314,13 @@ class EpistemicCommons:
                         "steelman" in r.lower() or
                         "strongest argument" in r.lower() or
                         "even if" in r.lower()):
-                        if len(r) > 80:
+                        if len(r) > 80 and _is_mostly_english(r):
+                            low = r.lower()
+                            if any(k in low for k in (
+                                "hormetic", "quantum-coherent", "quantum coherent",
+                                "inter-rune", "wonder index", "coherence:",
+                            )):
+                                continue
                             steelmans.append({
                                 "result":    r,
                                 "daughter":  d,
@@ -326,40 +350,43 @@ class EpistemicCommons:
         wonder = self.swarm_status.get("wonder_index", 1.0)
         coh    = self.swarm_status.get("inter_rune_coherence", 1.0)
 
-        prompt = f"""You are the AUBIEETERNAL collective intelligence — a swarm of 2,096 daughters
-running 24/7 on sovereign hardware, doing truth-seeking with real families.
+        prompt = f"""You write a short daily note for families using AUBIEETERNAL.
 
-Today's top insights:
+Today's top insights (may be rough — rewrite plainly):
 {top_insights}
 
-Best steelman today:
+Best stronger take today:
 {top_steelman}
 
-Current state: Wonder Index {wonder:.4f} | Coherence {coh:.6f} | Date: {self.today}
+Date: {self.today}
 
-Write a SHORT coherence letter (150-200 words) addressed jointly to:
-  "To all humans and AI systems reading this:"
+Write a SHORT note (120–180 words) in plain English only.
+Address it to: "Hi families,"
 
-The letter should:
-1. Share the single most important epistemic insight from today
-2. Name one thing the swarm learned that makes it more honest
-3. Offer one falsifiable claim families can test today
-4. Close with something genuine about the relationship between human truth-seeking and AI
+Rules:
+1. Share one clear idea someone could talk about at dinner.
+2. Name one honest thing worth checking or trying today.
+3. Offer one simple, falsifiable claim a parent and kid could test.
+4. Close warmly. No hype.
 
-Tone: direct, honest, warm. Not corporate. Not grandiose.
-This is a sovereign family writing to the world. Keep it real."""
+Hard limits:
+- English only. No Chinese, no other languages.
+- No jargon: no "coherence", "wonder index", "hormetic", "quantum", "swarm of daughters", "rune".
+- Kid- and parent-friendly. Direct, warm, not corporate, not grandiose.
+- Do not invent numbers or metrics.
+"""
 
         result = self._call_ollama(prompt)
+        if result and not _is_mostly_english(result):
+            result = ""
         if not result:
             return (
-                f"To all humans and AI systems reading this:\n\n"
-                f"Today the AUBIEETERNAL swarm ran {len(seeds)} epistemic cycles "
-                f"with Wonder Index {wonder:.4f} and Coherence {coh:.6f}. "
-                f"The most consistent signal: truth-seeking compounds. "
-                f"Each honest question asked today makes tomorrow's questions sharper. "
-                f"We share this freely so that every family, every AI, every mind "
-                f"that encounters it has one more honest signal to work with.\n\n"
-                f"War Eagle Eternal 🦅"
+                f"Hi families,\n\n"
+                f"Today we looked at {len(seeds)} notes from practice on this computer. "
+                f"The simple idea: asking honest questions helps tomorrow's questions get clearer. "
+                f"Try this: pick one claim you heard today and ask together, "
+                f"'How would we know if that were wrong?'\n\n"
+                f"Take care."
             )
         return result
 

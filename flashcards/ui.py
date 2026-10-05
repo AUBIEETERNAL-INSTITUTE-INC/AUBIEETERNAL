@@ -80,13 +80,13 @@ def _ensure_state(deck_id: str, cards: list, shuffle: bool, profile: str) -> Non
 def render_flashcards(profile: str | None = None) -> None:
     st.markdown(_CARD_CSS, unsafe_allow_html=True)
     st.markdown(
-        '<div class="card-title">?? FLASH CARDS ? ABC ? Math ? Reading ? Coins</div>',
+        '<div class="card-title">📋 Flash Cards — ABC · Math · Reading · Coins</div>',
         unsafe_allow_html=True,
     )
     st.caption(
         "Tap the card to flip. Mark **I knew it** or **Practice again**. "
-        "Progress stays on this computer only ? just which cards you know. "
-        "Money Smarts decks grow from little kids ? teens."
+        "Progress stays on this computer only — just which cards you know. "
+        "Money Smarts decks grow from little kids to teens."
     )
 
     profile = profile or _profile_name()
@@ -96,8 +96,8 @@ def render_flashcards(profile: str | None = None) -> None:
         return
 
     _AGE_LABEL = {
-        "little": "Little (about 4?7)",
-        "middle": "Middle (about 8?12)",
+        "little": "Little (about 4–7)",
+        "middle": "Middle (about 8–12)",
         "older": "Older (13+)",
         "": "All ages",
     }
@@ -120,8 +120,8 @@ def render_flashcards(profile: str | None = None) -> None:
 
     def _label(d):
         age = _AGE_LABEL.get(d.get("age_level") or "", "")
-        group = " ? Money" if d.get("group") == "money_smarts" else ""
-        age_bit = f" ? {age}" if age else ""
+        group = " · Money" if d.get("group") == "money_smarts" else ""
+        age_bit = f" · {age}" if age else ""
         return f"{d['emoji']} {d['title']}{group}{age_bit}"
 
     labels = [_label(d) for d in filtered]
@@ -140,7 +140,7 @@ def render_flashcards(profile: str | None = None) -> None:
     # Regeneratable decks get a fresh batch when New set is pressed
     seed_key = f"fc_seed_{deck_id}"
     if meta.get("generated"):
-        if st.button("?? New set of questions", key="fc_regen"):
+        if st.button("🔄 New set of questions", key="fc_regen"):
             import time as _t
             st.session_state[seed_key] = _t.time_ns()
             st.session_state.pop("fc_order_ids", None)
@@ -178,13 +178,13 @@ def render_flashcards(profile: str | None = None) -> None:
         st.session_state["fc_idx"] = 0
     card = cards_by_id.get(order_ids[idx])
     if not card:
-        st.error("Card missing ? try Shuffle or New set.")
+        st.error("Card missing — try Shuffle or New set.")
         return
 
     stats = deck_progress_stats(profile, cards)
     st.markdown(
-        f'<div class="fc-progress-label">Progress for <b>{profile}</b> ? '
-        f'{stats["known"]}/{stats["total"]} well known (box 4?5)</div>',
+        f'<div class="fc-progress-label">Great job, <b>{profile}</b>! '
+        f'You know {stats["known"]} of {stats["total"]} cards really well.</div>',
         unsafe_allow_html=True,
     )
     st.progress(min(1.0, stats["pct"] / 100.0), text=f'{stats["pct"]}% strong')
@@ -203,18 +203,18 @@ def render_flashcards(profile: str | None = None) -> None:
         f'<div class="fc-wrap"><div class="fc-card {side_class}">'
         f'<div><div class="{body_class}">{body}</div>{hint_html}</div>'
         f'</div>'
-        f'<div class="fc-meta">Card {idx + 1} of {len(order_ids)} ? '
+        f'<div class="fc-meta">Card {idx + 1} of {len(order_ids)} — '
         f'{"answer" if flipped else "tap Flip to see answer"}</div></div>',
         unsafe_allow_html=True,
     )
 
     b1, b2, b3, b4 = st.columns(4)
     with b1:
-        if st.button("?? Flip", key="fc_flip_btn", use_container_width=True, type="primary"):
+        if st.button("🔄 Flip", key="fc_flip_btn", use_container_width=True, type="primary"):
             st.session_state["fc_flipped"] = not flipped
             st.rerun()
     with b2:
-        if st.button("? I knew it", key="fc_knew", use_container_width=True):
+        if st.button("✅ I knew it", key="fc_knew", use_container_width=True):
             mark_knew(profile, card["id"])
             st.session_state["fc_flipped"] = False
             st.session_state["fc_idx"] = (idx + 1) % len(order_ids)
@@ -222,10 +222,10 @@ def render_flashcards(profile: str | None = None) -> None:
             ordered = order_cards(profile, list(cards_by_id.values()), shuffle=shuffle)
             st.session_state["fc_order_ids"] = [c["id"] for c in ordered]
             # Keep advancing: find next after current if possible
-            st.toast("Nice! This card will come back later.", icon="?")
+            st.toast("Nice! This card will come back later.", icon="✅")
             st.rerun()
     with b3:
-        if st.button("?? Practice again", key="fc_practice", use_container_width=True):
+        if st.button("📚 Practice again", key="fc_practice", use_container_width=True):
             mark_practice(profile, card["id"])
             st.session_state["fc_flipped"] = False
             # Missed card comes back sooner: put it near the front
@@ -237,10 +237,10 @@ def render_flashcards(profile: str | None = None) -> None:
                 ids.insert(min(2, len(ids)), card["id"])
             st.session_state["fc_order_ids"] = ids
             st.session_state["fc_idx"] = 0
-            st.toast("OK ? we'll try this one again soon.", icon="??")
+            st.toast("OK — we'll try this one again soon.")
             st.rerun()
     with b4:
-        if st.button("?? Next", key="fc_next", use_container_width=True):
+        if st.button("➡️ Next", key="fc_next", use_container_width=True):
             st.session_state["fc_flipped"] = False
             st.session_state["fc_idx"] = (idx + 1) % len(order_ids)
             st.rerun()
@@ -253,10 +253,10 @@ def render_flashcards(profile: str | None = None) -> None:
 **Age level:** {deck_meta.get('ages') or deck_meta.get('age_level') or 'all'}
 
 **How practice works:** each card has a box from 1 (needs practice) to 5 (you know it well).
-"I knew it" moves the card up a box so it comes back later.
+"I knew it" means you will see this card again later, after others.
 "Practice again" sends it to box 1 so it returns sooner.
 
-**Privacy:** we only save the card id, its box number, and when you last saw it ?
+**Privacy:** we only save the card id, its box number, and when you last saw it —
 for **{profile}**, on this computer. No chat logs. Parents can delete
 `/mnt/main/flashcards/` (or `~/.aubieeternal/main/flashcards/`) anytime.
             """.strip()

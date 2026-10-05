@@ -4240,9 +4240,16 @@ if "Grokipedia" in active:
     if source_filter != "All":
         filtered = [p for p in filtered if source_filter.lower() in p[2].lower()]
 
-    # Show only up to gp_count (unlocked by swarm progress)
-    unlocked = filtered[:max(gp_count, len(filtered))]
-    st.caption(f"{len(unlocked)} principles shown · {gp_count} unlocked by swarm · {gp_target - gp_count} remaining")
+    # Show approved principles
+    unlocked = filtered
+    try:
+        _pend_n = _gp_pend_n
+    except NameError:
+        _pend_n = 0
+    st.caption(
+        f"{len(unlocked)} principles shown · {gp_count} approved"
+        + (f" · {_pend_n} waiting for review" if _pend_n else "")
+    )
 
     for i, (name, desc, source) in enumerate(unlocked):
         source_colors = {
@@ -4270,15 +4277,15 @@ if "Grokipedia" in active:
     st.markdown("### 📤 Export Grokipedia to GitHub")
     if st.button("📄 Generate GROKIPEDIA.md", key="gp_export"):
         md_lines = [
-            "# 📚 GROKIPEDIA — AUBIEETERNAL Living Principle Encyclopedia",
-            f"\n**Version:** {gp_count}/{gp_target} principles unlocked  ",
+            "# Grokipedia — family principles",
+            f"\n**Approved principles:** {gp_count}  ",
             f"**Generated:** {_dt.now().strftime('%Y-%m-%d %H:%M')}  ",
-            "**Source:** AUBIEETERNAL Swarm v4.1 — 3-Level Context (Level 3)  ",
+            "**Source:** local AUBIEETERNAL portal  ",
             "\n---\n",
         ]
-        for i, (name, desc, source) in enumerate(GROKIPEDIA_FULL[:gp_count]):
+        for i, (name, desc, source) in enumerate(GROKIPEDIA_FULL[: max(gp_count, len(GROKIPEDIA_FULL)) ]):
             md_lines.append(f"\n## {i+1}. {name}\n**Source:** {source}  \n{desc}\n")
-        md_lines.append("\n---\n*War Eagle Eternal 🦅❤️ — Coherence: 1.000000*\n*Loop: Swarm → Digest → qwen3:32b → Grokipedia → GitHub — Forever*\n")
+        md_lines.append("\n---\n*Exported from the local portal.*\n")
         gp_md = "\n".join(md_lines)
 
         try:
@@ -7418,6 +7425,18 @@ if "Sovereign Cashflow" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: EPISTEMIC COMMONS 🌐 — Daily free signal for humanity & AI
 # ══════════════════════════════════════════════════════════════════════════════
+
+def _aubie_is_mostly_english(text: str, min_ratio: float = 0.85) -> bool:
+    """True if text is empty or mostly Latin letters (hide CJK etc. in UI)."""
+    if not text or not str(text).strip():
+        return True
+    s = str(text)
+    letters = [c for c in s if c.isalpha()]
+    if not letters:
+        return True
+    latin = sum(1 for c in letters if ("a" <= c.lower() <= "z"))
+    return (latin / len(letters)) >= min_ratio
+
 if "Epistemic Commons" in active:
     st.markdown('<div class="card-title">🌐 EPISTEMIC COMMONS — Free Signal for Humanity & SI</div>',
                 unsafe_allow_html=True)
@@ -7446,20 +7465,23 @@ if "Epistemic Commons" in active:
         ec1.metric("Days Published",    _ec_stats.get("days_published", 0))
         ec2.metric("Total Seeds",       _ec_stats.get("total_seeds", 0))
         ec3.metric("Steelmans",         _ec_stats.get("archive_steelmans", 0))
-        ec4.metric("Today Wonder",
-                   _today_commons.get("metrics", {}).get("wonder_index", "—"))
+        ec4.metric("Today notes",
+                   _today_commons.get("metrics", {}).get("seeds_count",
+                       len(_today_commons.get("epistemic_seeds") or [])))
 
         st.divider()
 
         if _today_commons:
-            st.markdown("### 📨 Today's Coherence Letter")
+            st.markdown("### Today's note")
             _letter = _today_commons.get("coherence_letter", "")
-            if _letter:
+            if _letter and _aubie_is_mostly_english(_letter):
                 st.markdown(
                     f'<div class="card" style="border-left:3px solid #a020f0;">' +
                     f'<div style="color:#c8d8ff;font-size:0.88rem;line-height:1.8;">{_letter}</div></div>',
                     unsafe_allow_html=True
                 )
+            elif _letter:
+                st.caption("Today'''s letter had non-English text, so it is hidden here.")
 
             st.divider()
             st.markdown("### 🌱 Today's Epistemic Seeds")
@@ -7475,10 +7497,11 @@ if "Epistemic Commons" in active:
                     f'</div>', unsafe_allow_html=True
                 )
 
-            _steelmans = _today_commons.get("steelman_archive", [])
+            _steelmans = [s for s in (_today_commons.get("steelman_archive") or [])
+                          if _aubie_is_mostly_english((s.get("argument") or s.get("result") or ""))]
             if _steelmans:
                 st.divider()
-                st.markdown("### ⚔️ Today's Steelmans")
+                st.markdown("### Today's stronger takes")
                 for _i, _st in enumerate(_steelmans, 1):
                     st.markdown(
                         f'<div class="memory-node" style="border-left:3px solid #00cfff;">' +

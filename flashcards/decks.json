@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "notes": "Edit this file to change static decks. basic_math, arithmetic, and coins are generated in code (never run out). Money Smarts decks are leveled: little / middle / older. Progress is stored locally per profile ? card id, box, last seen only.",
+  "notes": "Edit this file to change static decks. basic_math, arithmetic, and coins are generated in code (never run out). Money Smarts decks are leveled: little / middle / older. Progress is stored locally per profile — card id, box, last seen only.",
   "decks": [
     {
       "id": "abc",
@@ -347,7 +347,7 @@
         {
           "id": "read-006",
           "front": "I",
-          "back": "means me ? the person talking",
+          "back": "means me — the person talking",
           "hint": "",
           "kind": "sight"
         },
@@ -604,121 +604,121 @@
           "id": "money-little-01",
           "front": "Is candy a need or a want?",
           "back": "Candy is a want.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-02",
           "front": "What does $3 on a price tag mean?",
           "back": "$3 means the item costs 3 dollars.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-03",
           "front": "Can you save money in a piggy bank?",
           "back": "Yes, putting coins in a jar helps save money.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-04",
           "front": "How do you make change for $1?",
           "back": "Use pennies, nickels, dimes, and quarters to reach 1 dollar.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-05",
           "front": "Should I share my toys or keep them all?",
           "back": "Sharing is nice but you can also decide which ones to keep.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-06",
           "front": "Can I earn money by helping at home?",
           "back": "Yes, doing chores like cleaning up can earn allowance.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-07",
           "front": "Is a toy car a need or want?",
           "back": "A toy car is a want.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-08",
           "front": "How do you count 5 pennies?",
           "back": "Count them as 1, 2, 3, 4, 5 to make 5 cents.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-09",
           "front": "Is a sandwich a need or want?",
           "back": "A sandwich is a need for food.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-10",
           "front": "Can I buy two toys with $2?",
           "back": "Only if the two toys together cost $2 or less.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-11",
           "front": "Is a new shirt a need or want?",
           "back": "Clothes can be a need. An extra fancy shirt is usually a want.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-12",
           "front": "How do you count 3 dimes?",
           "back": "Count them as 10, 20, 30 to make 30 cents.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-13",
           "front": "Should I spend all my money at once?",
           "back": "It's better to save some for later needs or wants.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-14",
           "front": "Can I earn more by doing extra chores?",
           "back": "Yes, talk with parents about earning more allowance.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-15",
           "front": "Is a new game a need or want?",
           "back": "A new game is usually a want.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-16",
           "front": "How do you count 4 quarters?",
           "back": "Count them as 25, 50, 75, 100 to make 1 dollar.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-17",
           "front": "Should I share my snacks with friends?",
           "back": "Sharing is kind but you can keep some for yourself too.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-18",
           "front": "Can I earn money by helping neighbors?",
           "back": "Yes, doing small jobs like raking leaves can earn allowance.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-19",
           "front": "Is a new crayon set a need or want?",
           "back": "A new crayon set is usually a want unless it's very old.",
-          "hint": "?"
+          "hint": ""
         },
         {
           "id": "money-little-20",
           "front": "How do you count 5 nickels?",
           "back": "Count them as 5, 10, 15, 20, 25 to make 25 cents.",
-          "hint": "?"
+          "hint": ""
         }
       ]
     },
@@ -961,7 +961,7 @@
         {
           "id": "money-older-13",
           "front": "What does APR mean on a credit card?",
-          "back": "Annual Percentage Rate ? the yearly cost of borrowing if you carry a balance.",
+          "back": "Annual Percentage Rate — the yearly cost of borrowing if you carry a balance.",
           "hint": "💳"
         },
         {
@@ -1044,13 +1044,13 @@
         },
         {
           "id": "money-older-27",
-          "front": "Emergency fund ? why?",
+          "front": "Emergency fund — why?",
           "back": "Cash set aside for surprise needs (broken phone, lost shift) so you do not need high-interest debt.",
           "hint": "🛡"
         },
         {
           "id": "money-older-28",
-          "front": "Unit price check: $6 for 20 oz vs $4 for 12 oz ? which is cheaper per oz?",
+          "front": "Unit price check: $6 for 20 oz vs $4 for 12 oz — which is cheaper per oz?",
           "back": "$6/20 = $0.30 per oz. $4/12 ≈ $0.333 per oz. The 20 oz option is cheaper per ounce.",
           "hint": "📊"
         }
