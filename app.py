@@ -427,15 +427,15 @@ AI_PROVIDERS = {
             "qwen2.5:14b",     # ← RECOMMENDED: fast + smart sweet spot
             "qwen2.5:7b",      # fastest, lightest (Tier-1 bulk)
             "qwen3:32b",       # needs ~20GB VRAM / bigger GPU
-            "llama3.3:70b",    # ⚠️ avoid — hits 94°C
         ],
         "base_url": f"{OLLAMA_BASE_URL}/v1",
         "key_field": "key_ollama",
         "placeholder": "no key needed",
         "free": True,
-        "note": "100% local ? sovereign ? $0.00 ? everyday model qwen2.5:14b on a typical 12GB GPU",
-        "get_url": "http://painful-recess.local:62222",
+        "note": "Runs on this computer · no key needed · $0.00 · everyday model qwen2.5:14b on a typical 12GB GPU",
+        "get_url": "",
     },
+
 
     "xAI Grok (Free Fallback)": {
         "icon": "⚡", "color": "#00cfff",
@@ -1209,7 +1209,11 @@ elif "AI Models" in active:
                         st.session_state.api_key = new_key
 
                 st.markdown(f'<div style="font-size:0.75rem;color:#556677;">{pinfo["note"]}</div>', unsafe_allow_html=True)
-                st.markdown(f'<a href="{pinfo["get_url"]}" target="_blank" style="font-size:0.75rem;color:{pinfo["color"]};">🔑 Get your key at {pinfo["get_url"]} →</a>', unsafe_allow_html=True)
+                if pinfo.get("get_url"):
+                    st.markdown(f'<a href="{pinfo["get_url"]}" target="_blank" style="font-size:0.75rem;color:{pinfo["color"]};">🔑 Get your key at {pinfo["get_url"]} →</a>', unsafe_allow_html=True)
+                else:
+                    st.markdown('<span style="font-size:0.75rem;color:#666;">🏠 Runs on this computer — no key needed</span>', unsafe_allow_html=True)
+
 
             with col2:
                 st.markdown(f'<div class="stat-box" style="border-color:{border};"><div class="stat-val" style="font-size:1.2rem;">{pinfo["icon"]}</div><div class="stat-lbl">{"✅ Active" if has_key else ("Free" if pinfo["free"] else "Add Key")}</div></div>', unsafe_allow_html=True)
