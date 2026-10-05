@@ -58,6 +58,23 @@ WORK_DIR.mkdir(parents=True, exist_ok=True)
 # silently blocked all 7 scheduled triggers since their call sites were wired
 # in around 2026-08-25 (see ERROR_LEDGER.md).
 sys.path.insert(0, str(WORK_DIR))
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+try:
+    import thermal as _gpu_thermal
+except Exception:  # pragma: no cover
+    class _gpu_thermal:  # type: ignore
+        class TooHot(Exception):
+            pass
+        @staticmethod
+        def wait_for_cool(reason: str = ""):
+            return {}
+        @staticmethod
+        def status_line() -> str:
+            return "GPU: thermal unavailable"
+try:
+    import grokipedia_lib as _gpedia
+except Exception:
+    _gpedia = None
 
 VISION_TRIGGER   = WORK_DIR / "vision_trigger.json"
 DEFCON_TRIGGER   = Path("/mnt/main/defcon_trigger.json")  # read by Streamlit UI
@@ -107,37 +124,45 @@ SWARMS_PER_TICK          = 2   # how many of the 26 Tier1 swarm groups get a wav
 # Grok key is ever enabled.
 # ══════════════════════════════════════════════════════════════════════════════
 SWARM_MODE_FILE = Path("/mnt/main/swarm_mode.json")
+# Honest background activity (no fake $ caps). Daily jobs always run.
+# Off    = no background model chatter (default)
+# Light  = at most 1 short background call every ~10 min
+# Normal = at most 1 short background call every ~5 min
 SWARM_MODE_CONFIG = {
-    "Standard":     {"swarms_per_tick": 2, "daughters_per_tick": 3, "budget_cap": 2.50},
-    "Full":         {"swarms_per_tick": 2, "daughters_per_tick": 3, "budget_cap": 5.00},
-    "Experimental": {"swarms_per_tick": 4, "daughters_per_tick": 5, "budget_cap": 8.00},
+    "Off":    {"tier1_interval_s": 0,   "tier1_calls": 0},
+    "Light":  {"tier1_interval_s": 600, "tier1_calls": 1},
+    "Normal": {"tier1_interval_s": 300, "tier1_calls": 1},
 }
-_current_swarm_mode = None  # tracks last-applied mode so we only log on change
+_current_swarm_mode = None
+_tier1_last_run_ts = 0.0
+TIER1_INTERVAL_S = 0
+TIER1_CALLS = 0
 
 def apply_swarm_mode():
-    """Called every tick. Reads swarm_mode.json (written by the Streamlit
-    Swarm Mode tab) and applies its mode to the real per-tick throughput
-    and budget cap. Cheap (~100 bytes) - fine to check every tick so a
-    mode change takes effect on the very next one, matching what the UI
-    already told the user ('swarm picks it up on next tick')."""
-    global _current_swarm_mode, TIER1_DAUGHTERS_PER_TICK, SWARMS_PER_TICK, DAILY_BUDGET_CAP
+    """Read swarm_mode.json each tick. Default Off (no background Tier-1)."""
+    global _current_swarm_mode, TIER1_INTERVAL_S, TIER1_CALLS
+    global TIER1_DAUGHTERS_PER_TICK, SWARMS_PER_TICK
     try:
-        mode = json.loads(SWARM_MODE_FILE.read_text()).get("mode", "Standard")
+        raw = json.loads(SWARM_MODE_FILE.read_text())
+        mode = raw.get("mode", "Off")
+        # Migrate old paid-tier names
+        if mode in ("Standard", "Full", "Experimental"):
+            mode = "Off"
     except Exception:
-        mode = "Standard"
+        mode = "Off"
 
     if mode not in SWARM_MODE_CONFIG:
-        mode = "Standard"
+        mode = "Off"
 
     if mode != _current_swarm_mode:
         cfg = SWARM_MODE_CONFIG[mode]
-        TIER1_DAUGHTERS_PER_TICK = cfg["daughters_per_tick"]
-        SWARMS_PER_TICK          = cfg["swarms_per_tick"]
-        DAILY_BUDGET_CAP         = cfg["budget_cap"]
-        _current_swarm_mode      = mode
-        print(f"[swarm-mode] ⚔️  Mode → {mode} | "
-              f"{SWARMS_PER_TICK} swarms/tick × {TIER1_DAUGHTERS_PER_TICK} daughters | "
-              f"budget cap ${DAILY_BUDGET_CAP:.2f}/day")
+        TIER1_INTERVAL_S = cfg["tier1_interval_s"]
+        TIER1_CALLS = cfg["tier1_calls"]
+        TIER1_DAUGHTERS_PER_TICK = TIER1_CALLS
+        SWARMS_PER_TICK = 1 if TIER1_CALLS else 0
+        _current_swarm_mode = mode
+        print(f"[swarm-mode] Background activity → {mode} | "
+              f"interval={TIER1_INTERVAL_S}s calls={TIER1_CALLS}")
 
 # ── Briefing Schedule ─────────────────────────────────────────────────────────
 BRIEFING_SCHEDULE = [
@@ -990,14 +1015,17 @@ def run_truth_lattice_cycle():
 # ══════════════════════════════════════════════════════════════════════════════
 
 def update_grokipedia():
-    global grokipedia_count
-    if grokipedia_count < len(GROKOPEDIA_PRINCIPLES):
-        grokipedia_count += 1
-    principle = GROKOPEDIA_PRINCIPLES[
-        (grokipedia_count - 1) % len(GROKOPEDIA_PRINCIPLES)
-    ]
-    if grokipedia_count % 10 == 0:
-        print(f"  📚 Grokipedia: {grokipedia_count}/256 | {principle[:60]}")
+    """Refresh count from grokipedia_principles.json (real approved entries)."""
+    global grokipedia_count, GROKOPEDIA_PRINCIPLES
+    if _gpedia is not None:
+        try:
+            lines = _gpedia.principle_lines()
+            if lines:
+                GROKOPEDIA_PRINCIPLES = lines
+            grokipedia_count = _gpedia.principle_count()
+        except Exception as e:
+            print(f"  [grokipedia] refresh failed: {e}")
+    principle = GROKOPEDIA_PRINCIPLES[(max(grokipedia_count, 1) - 1) % max(1, len(GROKOPEDIA_PRINCIPLES))] if GROKOPEDIA_PRINCIPLES else ""
     return grokipedia_count, principle
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1589,15 +1617,19 @@ def get_btc_block():
 # (e.g. http://192.168.1.50:11434 for a GPU box). Defaults to the StartOS Ollama.
 OLLAMA_BASE_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
 OLLAMA_URL      = f"{OLLAMA_BASE_URL}/v1/chat/completions"
-OLLAMA_MODEL_T1 = "qwen2.5:7b"   # Tier 1 swarm — fast, light 7B model (bulk swarm)
-OLLAMA_MODEL_T2 = "qwen2.5:7b"   # Tier 2 daughters — same 7B; bump to 14b later if RAM allows
+OLLAMA_MODEL_T1 = "qwen2.5:14b"  # same model as portal/Aubie — avoids GPU model swapping
+OLLAMA_MODEL_T2 = "qwen2.5:14b"
 OLLAMA_MODEL    = OLLAMA_MODEL_T1  # default alias
 OLLAMA_TIMEOUT  = 600              # 5 min — CPU inference is slow, be patient
 
 def _call_local(prompt: str, system: str = "", max_tokens: int = 150,
                 model: str = "") -> str:
-    """Call local Ollama — $0.00, no API key needed."""
+    """Call local Ollama — $0.00, no API key needed. Heat-guarded."""
     use_model = model or OLLAMA_MODEL_T1
+    try:
+        _gpu_thermal.wait_for_cool("swarm-local")
+    except _gpu_thermal.TooHot as e:
+        return f"⚠️ GPU too hot — skipped ({e})"
     try:
         msgs = []
         if system: msgs.append({"role": "system", "content": system})
@@ -1789,9 +1821,10 @@ def run_tier2_core(context, trigger_type="manual"):
     base_prompt = (
         f"BTC Block {block} | Price ${btc} | Trigger: {trigger_type}\n"
         f"Context: {context}\n"
-        f"Hormetic Challenge: {hormetic_ctx[:100]}\n"
-        f"Give your sharpest one-paragraph lattice insight. "
-        f"Synthesize from prior daughters. Do not repeat what they said."
+        f"Challenge note: {hormetic_ctx[:100]}\n"
+        f"Write ONE short paragraph in clear English only "
+        f"(no Chinese, no other languages). Be concrete and useful. "
+        f"Do not invent metrics. Do not repeat earlier paragraphs."
     )
 
     for did, config in TIER2_DAUGHTERS.items():
@@ -1944,8 +1977,18 @@ def check_defcon_trigger():
 heartbeat_tick = 0
 
 def run_tier1_heartbeat():
-    global heartbeat_tick
+    global heartbeat_tick, _tier1_last_run_ts
     heartbeat_tick += 1
+    # Background activity gate (Off / Light / Normal)
+    if TIER1_CALLS <= 0 or TIER1_INTERVAL_S <= 0:
+        run_truth_lattice_cycle()  # cheap local counters only if still called below — skip waves
+        update_grokipedia()
+        return
+    now = time.time()
+    if _tier1_last_run_ts and (now - _tier1_last_run_ts) < TIER1_INTERVAL_S:
+        update_grokipedia()
+        return
+    _tier1_last_run_ts = now
     btc   = get_btc_price() or "unknown"
     block = get_btc_block()
     context = (
@@ -2037,11 +2080,12 @@ def write_status():
         },
         "tier1": {
             "active":            t1_active,
-            "total":             2080,
+            "mode":              _current_swarm_mode or "Off",
+            "interval_s":        TIER1_INTERVAL_S,
+            "calls_per_wave":    TIER1_CALLS,
             "total_runs":        total_free_runs,
-            "daughters_per_tick": TIER1_DAUGHTERS_PER_TICK * 2,
-            "cost":              "$0.00 (grok-4.3 free)",
-            "swarm_count":       len(TIER1_SWARMS),
+            "model":             OLLAMA_MODEL_T1,
+            "cost":              "$0.00 (local)",
         },
         "tier2": {
             "active":            t2_active,
@@ -2063,6 +2107,32 @@ def write_status():
             }
             for did in TIER2_DAUGHTERS
         },
+        "daily_jobs": {
+            "synthesis": {
+                "last": str(_synthesis_last_run_date),
+                "next": "06:00 America/New_York",
+                "path": "insights/daily/",
+            },
+            "epistemic_commons": {
+                "last": str(_epistemic_commons_last_run_date),
+                "next": "08:00 America/New_York",
+            },
+            "curriculum": {
+                "last": str(_curriculum_autogen_last_run_date),
+                "next": "09:00 America/New_York",
+                "pending_dir": "curriculum-proposals/",
+            },
+            "living_lattice": {
+                "last": str(_living_lattice_last_run_date),
+                "next": "10:00 America/New_York",
+            },
+            "grokipedia_grow": {
+                "next": "02:15 America/New_York (user timer)",
+                "pending_path": str(Path("/mnt/main/grokipedia_pending.json")),
+            },
+        },
+        "grokipedia_entries": grokipedia_count,
+        "gpu": _gpu_thermal.status_line(),
         "war_eagle": True,
     }
     for f_path in [MASTER_STATUS, SWARM_STATUS]:
@@ -2080,12 +2150,11 @@ def write_status():
 
 def launch_swarm():
     print("=" * 70)
-    print("🦅 AUBIEETERNAL SWARM v4.1 — Full Context Injection")
+    print("AUBIEETERNAL background worker v4.1 (trimmed)")
     print("=" * 70)
-    print(f"  Tier 1: 2080 daughters → grok-4.3 (FREE) | 26 swarms")
-    print(f"  Tier 2: 16 daughters → grok-4.3 | full 3-level context each call")
-    print(f"  Budget: ${DAILY_BUDGET_CAP}/day hard cap")
-    print(f"  Grok key: {'✅ SET' if XAI_KEY else '⚠️  NOT SET — set XAI_API_KEY in .env'}")
+    print(f"  Background activity: Off/Light/Normal (default Off)")
+    print(f"  Model: {OLLAMA_MODEL_T1} local · heat-guarded")
+    print(f"  Paid API: {'on' if (USE_GROK and XAI_KEY) else 'off (local only)'}")
     print(f"")
     print(f"  CONTEXT INJECTION:")
     print(f"  Level 1 — Live metrics (Wonder/METS/Coherence/Grokipedia)")
@@ -2108,8 +2177,8 @@ def launch_swarm():
         get_state(did, tier2_states)
 
     total_t1 = sum(c["count"] for c in TIER1_SWARMS.values())
-    print(f"\n✅ {total_t1} Tier1 + 16 Tier2 daughters initialized (latent)")
-    print(f"📚 {len(GROKOPEDIA_PRINCIPLES)} Grokipedia principles loaded")
+    print(f"\nReady: {len(TIER1_SWARMS)} topic groups + {len(TIER2_DAUGHTERS)} named roles (background Off by default)")
+    print(f"Grokipedia: {(_gpedia.principle_count() if _gpedia else len(GROKOPEDIA_PRINCIPLES))} approved entries")
     print(f"🔬 {len(LATTICE_HYPOTHESES)} Truth Lattice hypotheses ready")
     print(f"🔴 {len(DEFCON_EXPERIMENTS)} DEFCON experiments armed")
     print(f"🧠 3-Level context injection ACTIVE")
@@ -2120,6 +2189,7 @@ def launch_swarm():
     print(f"🕸️  Living Lattice ACTIVE — daily anonymous signal publish at 10AM")
     print(f"🥽 Glasses signal handler ACTIVE — /mnt/main/glasses_signal.json\n")
 
+    update_grokipedia()  # load real count from JSON
     tick        = 0
     github_tick = 0
 
@@ -2174,14 +2244,10 @@ def launch_swarm():
             # ── GLASSES SIGNAL — Halo HUD bridge (StartOS + Nostr modes) ──
             handle_glasses_signal()
             # ──────────────────────────────────────────────────────────────
-            pct = (daily_cost / DAILY_BUDGET_CAP) * 100
             print(
-                f"💓 Tick {tick} | "
-                f"Free:{total_free_runs} | Pro:{total_pro_runs} "
-                f"(${daily_cost:.2f} {pct:.0f}%) | "
-                f"W:{wonder_index:.4f} | C:{inter_rune_coherence:.6f} | "
-                f"G:{grokipedia_count} | METS:{mets_counter:.0f} | "
-                f"Insights:{len(session_insights)}"
+                f"tick {tick} | mode={_current_swarm_mode or 'Off'} | "
+                f"bg_calls={total_free_runs} | briefings={total_pro_runs} | "
+                f"grokipedia={grokipedia_count} | {_gpu_thermal.status_line()}"
             )
             tick += 1
             time.sleep(30)

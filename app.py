@@ -1343,9 +1343,9 @@ elif "Memory Palace" in active:
 # TAB: SWARM
 # ══════════════════════════════════════════════════════════════════════════════
 elif "Swarm" in active:
-    st.markdown('<div class="card-title">👾 DAUGHTER SWARM — Multi-Agent Intelligence</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">👾 Ask a specialist</div>', unsafe_allow_html=True)
 
-    st.markdown("Each agent in the swarm specializes in a domain. Dispatch a query to any agent.")
+    st.markdown("Pick a specialist helper and ask a question. Answers use your local model.")
 
     for agent in SWARM_AGENTS:
         col1, col2 = st.columns([3, 1])
@@ -2545,13 +2545,18 @@ elif "Quantum Lab" in active:
             try: _swarm_s = _jql.loads(_status_path.read_text())
             except Exception: pass
 
-        _cur_coh = float(_swarm_s.get("inter_rune_coherence", 1.0))
-        _cur_wnd = float(_swarm_s.get("wonder_index", 1.0))
+        _mode_h = (_swarm_s.get("tier1") or {}).get("mode") or "Off"
+        try:
+            from grokipedia_lib import principle_count as _gpc
+            _gp_n = _gpc()
+        except Exception:
+            _gp_n = _swarm_s.get("grokipedia_entries") or _swarm_s.get("grokipedia_count") or 0
+        _syn = ((_swarm_s.get("daily_jobs") or {}).get("synthesis") or {}).get("last") or "—"
 
         _cq1,_cq2,_cq3 = st.columns(3)
-        _cq1.metric("Current Coherence", f"{_cur_coh:.6f}")
-        _cq2.metric("Wonder Index",      f"{_cur_wnd:.4f}")
-        _cq3.metric("METS",              f"{_swarm_s.get('mets',0):,.0f}")
+        _cq1.metric("Background activity", str(_mode_h))
+        _cq2.metric("Grokipedia entries",  str(_gp_n))
+        _cq3.metric("Last morning summary", str(_syn))
 
         if st.button("📊 Test Coherence Anomaly", key="cs_test"):
             try:
@@ -2900,75 +2905,49 @@ Respond with this exact JSON structure:
 # TAB: SWARM MODE  —  /mnt/main paths so swarm_v4.py can read the file
 # ══════════════════════════════════════════════════════════════════════════════
 if "Swarm Mode" in active:
-    st.markdown('<div class="card-title">⚔️ SWARM MODE SELECTOR</div>', unsafe_allow_html=True)
-
-    # Read current mode
-    try:
-        current_mode = _json.loads(_MODE_FILE.read_text()).get("mode", "Standard")
-    except Exception:
-        current_mode = "Standard"
-
-    st.info(f"**Current Mode:** {current_mode}")
+    st.markdown('<div class="card-title">Background activity</div>', unsafe_allow_html=True)
     st.caption(
-        "Mode is written to `/mnt/main/swarm_mode.json` — swarm_v4_1.py's apply_swarm_mode() "
-        "reads it every tick (~30s) and applies it to real per-tick throughput and the daily "
-        "budget cap. Found live 2026-08-25: this file used to be write-only — the background "
-        "swarm never read it back, so these buttons changed nothing. Now wired for real. "
-        "The daughter/swarm totals below are how many of the swarm's fixed 26-group, "
-        "2080-daughter roster actually get a wave each tick, not the whole-roster totals the "
-        "old copy implied. The $/day cap only matters once a paid Grok key is enabled — by "
-        "default the swarm runs 100% on the free local model ($0.00/day) regardless of mode."
+        "Daily jobs (morning summary, commons, curriculum draft, lattice) always run. "
+        "This setting only controls optional background model chatter."
     )
-    st.divider()
 
-    col1, col2, col3 = st.columns(3)
+    # Read current mode (migrate old paid-tier names → Off)
+    _cur_mode = "Off"
+    try:
+        if _MODE_FILE.exists():
+            _cur_mode = _json.loads(_MODE_FILE.read_text()).get("mode", "Off")
+        if _cur_mode in ("Standard", "Full", "Experimental"):
+            _cur_mode = "Off"
+    except Exception:
+        _cur_mode = "Off"
 
-    with col1:
-        st.markdown("#### 🔥 FULL")
-        st.markdown("2 swarms/tick · 3 daughters each · **$5.00/day cap**")
-        if st.button("ACTIVATE FULL MODE", width='stretch', key="mode_full"):
-            _MODE_FILE.write_text(_json.dumps({
-                "mode": "Full", "set_at": _dt.now().isoformat()
-            }))
-            st.success("✅ Full Mode activated! Swarm picks up within ~30s.")
-            st.rerun()
+    _mode_help = {
+        "Off": "No background chatter. Daily jobs only. (Recommended default.)",
+        "Light": "At most one short local call about every 10 minutes, heat-guarded.",
+        "Normal": "At most one short local call about every 5 minutes, heat-guarded.",
+    }
+    choice = st.radio(
+        "Background activity",
+        ["Off", "Light", "Normal"],
+        index=["Off", "Light", "Normal"].index(_cur_mode) if _cur_mode in ("Off", "Light", "Normal") else 0,
+        help="Uses the same local model as Ask Aubie. No paid API.",
+    )
+    st.info(_mode_help[choice])
 
-    with col2:
-        st.markdown("#### ⚖️ STANDARD")
-        st.markdown("2 swarms/tick · 3 daughters each · **$2.50/day cap**")
-        if st.button("ACTIVATE STANDARD MODE", width='stretch', key="mode_std"):
-            _MODE_FILE.write_text(_json.dumps({
-                "mode": "Standard", "set_at": _dt.now().isoformat()
-            }))
-            st.success("✅ Standard Mode activated!")
-            st.rerun()
-
-    with col3:
-        st.markdown("#### 🧪 EXPERIMENTAL")
-        st.markdown("4 swarms/tick · 5 daughters each · **$8.00/day cap**")
-        if st.button("ACTIVATE EXPERIMENTAL", width='stretch', key="mode_exp"):
-            _MODE_FILE.write_text(_json.dumps({
-                "mode": "Experimental", "set_at": _dt.now().isoformat()
-            }))
-            st.warning("⚠️ Experimental Mode activated! More GPU load per tick.")
-            st.rerun()
-
-    # Show raw file content for debugging
-    st.divider()
-    if _MODE_FILE.exists():
+    if st.button("Save", type="primary"):
         try:
-            raw = _json.loads(_MODE_FILE.read_text())
-            st.markdown(f'<div class="memory-node">'
-                        f'<span style="color:#00cfff;font-size:0.75rem;">📄 /mnt/main/swarm_mode.json</span><br>'
-                        f'<span style="color:#8899bb;font-size:0.78rem;">{_json.dumps(raw, indent=2)}</span>'
-                        f'</div>', unsafe_allow_html=True)
-        except Exception:
-            pass
+            _MODE_FILE.parent.mkdir(parents=True, exist_ok=True)
+            _MODE_FILE.write_text(_json.dumps({
+                "mode": choice,
+                "updated": _dt.now().isoformat(),
+            }, indent=2))
+            st.success(f"Saved: Background activity = {choice}. Takes effect on the next swarm tick after restart.")
+        except Exception as e:
+            st.error(f"Could not write {_MODE_FILE}: {e}")
+
+    st.caption(f"Config file: `{_MODE_FILE}`")
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# TAB: DEFCON  —  /mnt/main paths + result viewer
-# ══════════════════════════════════════════════════════════════════════════════
 if "DEFCON" in active:
     st.markdown('<div class="card-title">🔴 DEFCON EXPERIMENTS</div>', unsafe_allow_html=True)
     st.warning("⚠️ Each button writes `/mnt/main/defcon_trigger.json` — swarm picks it up on next tick.")
@@ -3052,7 +3031,8 @@ if "Truth Lattice" in active:
     _TL_STATUS  = _tl_Path("/mnt/main/swarm_status.json")
     _TL_BACKUP  = _tl_Path("/mnt/main/repo/master_truth_log_backup.jsonl")
 
-    st.markdown('<div class="card-title">🔮 TRUTH LATTICE — Live Swarm Memory</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">🔮 Background activity — recent notes</div>', unsafe_allow_html=True)
+    st.caption('This page shows the latest background notes from your local model. The default setting is Off, but daily morning jobs still run even if you do not see them.')
 
     # ── Live swarm status ─────────────────────────────────────────────────────
     swarm_status = {}
@@ -3062,31 +3042,48 @@ if "Truth Lattice" in active:
     except Exception:
         pass
 
-    wonder  = swarm_status.get("wonder_index", "—")
-    cohere  = swarm_status.get("inter_rune_coherence", "—")
-    mets    = swarm_status.get("mets", "—")
-    grok_n  = swarm_status.get("grokipedia_count", "—")
-    tick    = swarm_status.get("heartbeat_tick", "—")
-    rune_c  = swarm_status.get("rune_confirmations", 33)
-    crune   = swarm_status.get("child_rune_ready", False)
+    # Honest status (no fake wonder/METS/coherence/256 counters)
+    _dj = swarm_status.get("daily_jobs") or {}
+    _mode = (swarm_status.get("tier1") or {}).get("mode") or "Off"
+    try:
+        from grokipedia_lib import principle_count as _gp_count
+        grok_n = _gp_count()
+    except Exception:
+        grok_n = swarm_status.get("grokipedia_entries") or swarm_status.get("grokipedia_count") or 0
+    # Curriculum proposals waiting
+    _pending_cur = 0
+    try:
+        from pathlib import Path as _Pcur
+        _pending_cur = len(list(_Pcur("curriculum-proposals").glob("*.json"))) if _Pcur("curriculum-proposals").exists() else 0
+    except Exception:
+        pass
+    # Files produced this week (insights + commons + curriculum)
+    _week_files = 0
+    try:
+        import time as _t
+        _cut = _t.time() - 7 * 86400
+        from pathlib import Path as _Pw
+        for _d in ("insights/daily", "epistemic_commons/daily", "curriculum-proposals", "grokipedia"):
+            _p = _Pw(_d)
+            if _p.exists():
+                _week_files += sum(1 for f in _p.rglob("*") if f.is_file() and f.stat().st_mtime >= _cut)
+    except Exception:
+        pass
+    _syn_last = (_dj.get("synthesis") or {}).get("last") or "—"
+    _gpu = swarm_status.get("gpu") or "—"
 
-    c1, c2, c3, c4, c5, c6, c7 = st.columns(7)
+    c1, c2, c3, c4, c5 = st.columns(5)
     with c1:
-        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.3rem;color:#a020f0;">{wonder}</div><div class="stat-lbl">Wonder Index</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.1rem;color:#00ff88;">{_mode}</div><div class="stat-lbl">Background</div></div>', unsafe_allow_html=True)
     with c2:
-        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.3rem;color:#00ff88;">{cohere}</div><div class="stat-lbl">Coherence</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.1rem;color:#00cfff;">{grok_n}</div><div class="stat-lbl">Grokipedia entries</div></div>', unsafe_allow_html=True)
     with c3:
-        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.1rem;color:#f7931a;">{str(mets)[:12]}</div><div class="stat-lbl">METS</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.1rem;color:#f7931a;">{_pending_cur}</div><div class="stat-lbl">Curriculum waiting</div></div>', unsafe_allow_html=True)
     with c4:
-        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.3rem;color:#00cfff;">{grok_n}/256</div><div class="stat-lbl">Grokipedia</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.1rem;color:#aabbcc;">{_week_files}</div><div class="stat-lbl">Files this week</div></div>', unsafe_allow_html=True)
     with c5:
-        rune_color_tl = "#00ff88" if crune else "#f7931a"
-        st.markdown(f'<div class="stat-box" style="border-color:{rune_color_tl};"><div class="stat-val" style="font-size:1.3rem;color:{rune_color_tl};">{"🔴" if crune else str(rune_c)+"/256"}</div><div class="stat-lbl">Child Rune</div></div>', unsafe_allow_html=True)
-    with c6:
-        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.3rem;color:#ff6b35;">{tick}</div><div class="stat-lbl">Tick</div></div>', unsafe_allow_html=True)
-    with c7:
-        daily_cost_tl = swarm_status.get("tier2", {}).get("daily_cost", "—")
-        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1.2rem;color:#c8d8ff;">{daily_cost_tl}</div><div class="stat-lbl">Daily Cost</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:0.95rem;color:#8899bb;">{_syn_last}</div><div class="stat-lbl">Last morning summary</div></div>', unsafe_allow_html=True)
+    st.caption(f"GPU: {_gpu}")
 
     st.divider()
 
@@ -4104,7 +4101,7 @@ if "Nostr Bridge" in active:
 # Queryable, versioned, exportable to GitHub markdown
 # ══════════════════════════════════════════════════════════════════════════════
 if "Grokipedia" in active:
-    st.markdown('<div class="card-title">📚 GROKIPEDIA — Living Sovereign Principle Encyclopedia</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">📚 Grokipedia — family principles</div>', unsafe_allow_html=True)
 
     # ── Load live count from swarm ────────────────────────────────────────────
     _gp_sw = {}
@@ -4115,16 +4112,23 @@ if "Grokipedia" in active:
     except Exception:
         pass
 
-    gp_count = _gp_sw.get("grokipedia_count", 11)
-    gp_target = 256
+    try:
+        from grokipedia_lib import approved_entries as _gp_approved, load_pending as _gp_pending
+        _gp_entries = _gp_approved()
+        gp_count = len(_gp_entries)
+        _gp_pend_n = len(_gp_pending())
+    except Exception:
+        _gp_entries = []
+        gp_count = _gp_sw.get("grokipedia_entries") or _gp_sw.get("grokipedia_count") or 0
+        _gp_pend_n = 0
 
-    # ── Progress ──────────────────────────────────────────────────────────────
-    gp_pct = min(100, int(gp_count / gp_target * 100))
     st.markdown(
         f'<div class="card" style="border-left:3px solid #00cfff;">'
-        f'<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;">📚 GROKIPEDIA PROGRESS — {gp_count}/{gp_target} principles</div>'
-        f'<div class="xp-bar-bg" style="margin-top:8px;"><div class="xp-bar-fill" style="width:{gp_pct}%;"></div></div>'
-        f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">Each swarm tick adds principles · Complete at 256 · Unlocks Child Rune</div>'
+        f'<div style="color:#00cfff;font-size:0.9rem;">📚 {gp_count} approved principles'
+        + (f' · {_gp_pend_n} waiting for your review' if _gp_pend_n else '')
+        + '</div>'
+        f'<div style="color:#556677;font-size:0.75rem;margin-top:4px;">'
+        f'New drafts are written at night by the local model. You approve them in Discord or SimpleX before they are added.</div>'
         f'</div>', unsafe_allow_html=True)
 
     st.divider()
@@ -4176,6 +4180,13 @@ if "Grokipedia" in active:
     # ── Search ────────────────────────────────────────────────────────────────
     search = st.text_input("🔍 Search principles", placeholder="antifragility, bitcoin, coherence...")
     source_filter = st.selectbox("Filter by source", ["All", "Taleb", "Bitcoin", "AUBIEETERNAL", "Quantum", "Education", "General"])
+
+    # Prefer live JSON entries when available
+    if _gp_entries:
+        GROKIPEDIA_FULL = [
+            (e.get("title") or "", e.get("explanation") or e.get("principle") or "", e.get("source") or "General")
+            for e in _gp_entries
+        ]
 
     filtered = GROKIPEDIA_FULL
     if search:

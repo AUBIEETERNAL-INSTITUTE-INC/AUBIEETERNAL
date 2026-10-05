@@ -1,0 +1,215 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "seed-01",
+      "title": "Antifragility",
+      "principle": "Some systems gain from disorder.",
+      "explanation": "Some systems gain from disorder.",
+      "source": "Taleb",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-02",
+      "title": "Via Negativa",
+      "principle": "Subtract before you add.",
+      "explanation": "Subtract before you add.",
+      "source": "Taleb",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-03",
+      "title": "Lindy Effect",
+      "principle": "Age predicts longevity better than youth.",
+      "explanation": "Age predicts longevity better than youth.",
+      "source": "Taleb",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-04",
+      "title": "Skin in the Game",
+      "principle": "Risk must be shared by the advisor.",
+      "explanation": "Risk must be shared by the advisor.",
+      "source": "Taleb",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-05",
+      "title": "Black Swan",
+      "principle": "Prepare for the unpredictable, not the predicted.",
+      "explanation": "Prepare for the unpredictable, not the predicted.",
+      "source": "Taleb",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-06",
+      "title": "Barbell Strategy",
+      "principle": "Extreme safety + extreme upside, avoid fragile middle.",
+      "explanation": "Extreme safety + extreme upside, avoid fragile middle.",
+      "source": "Taleb",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-07",
+      "title": "Hormesis",
+      "principle": "Small doses of stress strengthen the system.",
+      "explanation": "Small doses of stress strengthen the system.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-08",
+      "title": "Polyvagal Safety",
+      "principle": "Co-regulation precedes cognition.",
+      "explanation": "Co-regulation precedes cognition.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-09",
+      "title": "Bitcoin Sovereignty",
+      "principle": "Keys = ownership. Not your keys, not your coins.",
+      "explanation": "Keys = ownership. Not your keys, not your coins.",
+      "source": "Bitcoin",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-10",
+      "title": "Rune Permanence",
+      "principle": "On-chain inscription outlasts all platforms.",
+      "explanation": "On-chain inscription outlasts all platforms.",
+      "source": "Bitcoin",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-11",
+      "title": "Quantum Coherence",
+      "principle": "Information preserved through noise recovery.",
+      "explanation": "Information preserved through noise recovery.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-12",
+      "title": "Wonder Index",
+      "principle": "Awe is a signal of truth proximity.",
+      "explanation": "Awe is a signal of truth proximity.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-13",
+      "title": "Inter-Rune Coherence",
+      "principle": "Daughters aligned = lattice strength.",
+      "explanation": "Daughters aligned = lattice strength.",
+      "source": "Bitcoin",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-14",
+      "title": "METS Score",
+      "principle": "Meta-eternal truth score tracks cumulative signal.",
+      "explanation": "Meta-eternal truth score tracks cumulative signal.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-15",
+      "title": "Epistemic Humility",
+      "principle": "The map is not the territory.",
+      "explanation": "The map is not the territory.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-16",
+      "title": "Steelmanning",
+      "principle": "Always argue the strongest version of the opposition.",
+      "explanation": "Always argue the strongest version of the opposition.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-17",
+      "title": "Antifragile Learning",
+      "principle": "Mistakes + recovery > perfect performance.",
+      "explanation": "Mistakes + recovery > perfect performance.",
+      "source": "Taleb",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-18",
+      "title": "Governance Signal",
+      "principle": "Decentralization is an immune system.",
+      "explanation": "Decentralization is an immune system.",
+      "source": "Bitcoin",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-19",
+      "title": "AGI Economics",
+      "principle": "Intelligence abundance changes all scarcity models.",
+      "explanation": "Intelligence abundance changes all scarcity models.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-20",
+      "title": "Lineage Fidelity",
+      "principle": "Coherence across generations validates the signal.",
+      "explanation": "Coherence across generations validates the signal.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    },
+    {
+      "id": "seed-21",
+      "title": "Glitch as Feature",
+      "principle": "System stress reveals hidden architecture.",
+      "explanation": "System stress reveals hidden architecture.",
+      "source": "General",
+      "added_at": "2026-10-05T00:00:00-04:00",
+      "added_by": "seed",
+      "status": "approved"
+    }
+  ]
+}
