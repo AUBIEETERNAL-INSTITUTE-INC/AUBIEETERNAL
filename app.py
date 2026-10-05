@@ -1109,17 +1109,16 @@ active = st.session_state.active_tab
 if "Oracle" in active or active == "Oracle":
     prov_name = st.session_state.active_provider
     prov_info = AI_PROVIDERS.get(prov_name, AI_PROVIDERS["xAI Grok (Free Fallback)"])
-    st.markdown(f'<div class="card-title">?? Ask Aubie ? {prov_info["icon"]} {prov_name}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="card-title">💬 Ask Aubie — {prov_info["icon"]} {prov_name}</div>', unsafe_allow_html=True)
 
     # System prompt selector
     mode = st.selectbox("How should Aubie help?", [
-        "Tutor ? Explain Like I'm 10",
-        "General ? Curious Explorer",
-        "Antifragility ? Taleb Lens",
-        "Bitcoin ? On-Chain Oracle",
-        "Socratic ? Ask Me Questions",
+        "Tutor — Explain Like I'm 10",
+        "General — Curious Explorer",
+        "Antifragility — Taleb Lens",
+        "Bitcoin — On-Chain Oracle",
+        "Socratic — Ask Me Questions",
     ])
-
     SYSTEM_PROMPTS = {
         "General — Curious Explorer": f"You are AUBIEETERNAL, an eternal epistemic tutor. The user's name is {st.session_state.kid_name}. Be encouraging, curious, and expansive. Always end with a thought-provoking follow-up question.",
         "Tutor — Explain Like I'm 10": f"You are AUBIEETERNAL, a patient tutor for {st.session_state.kid_name}. Explain everything simply, use vivid analogies, and make learning fun. No jargon without explanation.",
