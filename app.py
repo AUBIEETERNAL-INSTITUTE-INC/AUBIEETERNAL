@@ -974,6 +974,7 @@ with st.sidebar:
         "🏫 SCHOOL": [
             "🏫 School", "🗺️ Curriculum Map", "📥 Submit Curriculum",
             "📚 Taleb Curriculum", "👧 Kid Curriculum", "🎮 Daily Quests",
+            "🃏 Flash Cards",
             "🏛️ School Pathway",
             "🔧 Sovereign Builder",
             "🎓 University Registrar",
@@ -1010,7 +1011,7 @@ with st.sidebar:
             "₿ Rune-Palace", "⚡ Bitcoin", "🛡️ Shield Rune",
         ],
         "🎮 GAMES": [
-            "🦅 Sovereign Life", "💰 Sovereign Cashflow",
+            "🃏 Flash Cards", "🦅 Sovereign Life", "💰 Sovereign Cashflow",
         ],
         "📊 HEALTH": [
             "📈 Epistemic Health", "🌍 Humanity Impact",
@@ -7368,6 +7369,25 @@ if "Public Health" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: SOVEREIGN LIFE 🦅 — 6-chapter family financial sovereignty game
 # ══════════════════════════════════════════════════════════════════════════════
+
+# ??????????????????????????????????????????????????????????????????????????????
+# TAB: FLASH CARDS 🃏 ? ABC ? Math ? Reading ? Coins ? Money Smarts
+# ??????????????????????????????????????????????????????????????????????????????
+if "Flash Cards" in active:
+    try:
+        from flashcards import render_flashcards as _rfc
+        _prof_fc = st.session_state.get("kid_name") or "Explorer"
+        _cf_fc = st.session_state.get("current_family") or {}
+        if _cf_fc.get("kid_name"):
+            _prof_fc = _cf_fc["kid_name"]
+        _rfc(str(_prof_fc))
+    except ImportError:
+        st.error("flashcards package not found. Open the flashcards branch worktree.")
+    except Exception as _e_fc:
+        st.error(f"Flash Cards error: {_e_fc}")
+        import traceback; st.code(traceback.format_exc())
+
+
 if "Sovereign Life" in active:
     try:
         from sovereign_life_game import render_sovereign_life as _rsl

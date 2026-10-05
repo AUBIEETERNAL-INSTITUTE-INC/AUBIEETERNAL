@@ -127,3 +127,6 @@ rune_seals/
 /cmd.wav
 *.pyscp
 *.bak[0-9]*
+
+# Local Aubie deck drafts (not for repo)
+flashcards/_aubie_drafts/

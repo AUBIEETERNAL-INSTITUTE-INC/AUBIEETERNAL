@@ -1,0 +1,1060 @@
+{
+  "version": 1,
+  "notes": "Edit this file to change static decks. basic_math, arithmetic, and coins are generated in code (never run out). Money Smarts decks are leveled: little / middle / older. Progress is stored locally per profile ? card id, box, last seen only.",
+  "decks": [
+    {
+      "id": "abc",
+      "title": "ABC",
+      "emoji": "🔠",
+      "age_level": "little",
+      "ages": "4-7",
+      "group": "basics",
+      "description": "Letters with an example word",
+      "cards": [
+        {
+          "id": "abc-a",
+          "front": "A a",
+          "back": "Apple",
+          "hint": "🍎"
+        },
+        {
+          "id": "abc-b",
+          "front": "B b",
+          "back": "Ball",
+          "hint": "⚽"
+        },
+        {
+          "id": "abc-c",
+          "front": "C c",
+          "back": "Cat",
+          "hint": "🐱"
+        },
+        {
+          "id": "abc-d",
+          "front": "D d",
+          "back": "Dog",
+          "hint": "🐶"
+        },
+        {
+          "id": "abc-e",
+          "front": "E e",
+          "back": "Elephant",
+          "hint": "🐘"
+        },
+        {
+          "id": "abc-f",
+          "front": "F f",
+          "back": "Fish",
+          "hint": "🐟"
+        },
+        {
+          "id": "abc-g",
+          "front": "G g",
+          "back": "Goat",
+          "hint": "🐐"
+        },
+        {
+          "id": "abc-h",
+          "front": "H h",
+          "back": "Hat",
+          "hint": "🎩"
+        },
+        {
+          "id": "abc-i",
+          "front": "I i",
+          "back": "Ice cream",
+          "hint": "🍦"
+        },
+        {
+          "id": "abc-j",
+          "front": "J j",
+          "back": "Juice",
+          "hint": "🧃"
+        },
+        {
+          "id": "abc-k",
+          "front": "K k",
+          "back": "Key",
+          "hint": "🔑"
+        },
+        {
+          "id": "abc-l",
+          "front": "L l",
+          "back": "Lemon",
+          "hint": "🍋"
+        },
+        {
+          "id": "abc-m",
+          "front": "M m",
+          "back": "Monkey",
+          "hint": "🐒"
+        },
+        {
+          "id": "abc-n",
+          "front": "N n",
+          "back": "Nest",
+          "hint": "🥚"
+        },
+        {
+          "id": "abc-o",
+          "front": "O o",
+          "back": "Orange",
+          "hint": "🍊"
+        },
+        {
+          "id": "abc-p",
+          "front": "P p",
+          "back": "Pen",
+          "hint": "🖊"
+        },
+        {
+          "id": "abc-q",
+          "front": "Q q",
+          "back": "Queen",
+          "hint": "👑"
+        },
+        {
+          "id": "abc-r",
+          "front": "R r",
+          "back": "Rainbow",
+          "hint": "🌈"
+        },
+        {
+          "id": "abc-s",
+          "front": "S s",
+          "back": "Sun",
+          "hint": "☀️"
+        },
+        {
+          "id": "abc-t",
+          "front": "T t",
+          "back": "Tree",
+          "hint": "🌳"
+        },
+        {
+          "id": "abc-u",
+          "front": "U u",
+          "back": "Umbrella",
+          "hint": "☔"
+        },
+        {
+          "id": "abc-v",
+          "front": "V v",
+          "back": "Van",
+          "hint": "🚐"
+        },
+        {
+          "id": "abc-w",
+          "front": "W w",
+          "back": "Watermelon",
+          "hint": "🍉"
+        },
+        {
+          "id": "abc-x",
+          "front": "X x",
+          "back": "Xylophone",
+          "hint": "🎹"
+        },
+        {
+          "id": "abc-y",
+          "front": "Y y",
+          "back": "Yarn",
+          "hint": "🧶"
+        },
+        {
+          "id": "abc-z",
+          "front": "Z z",
+          "back": "Zebra",
+          "hint": "🦓"
+        }
+      ]
+    },
+    {
+      "id": "123",
+      "title": "123",
+      "emoji": "🔢",
+      "age_level": "little",
+      "ages": "4-7",
+      "group": "basics",
+      "description": "Numbers 1 to 20 with counting pictures",
+      "cards": [
+        {
+          "id": "num-1",
+          "front": "1",
+          "back": "one\n⭐",
+          "hint": "⭐"
+        },
+        {
+          "id": "num-2",
+          "front": "2",
+          "back": "two\n⭐⭐",
+          "hint": "⭐⭐"
+        },
+        {
+          "id": "num-3",
+          "front": "3",
+          "back": "three\n⭐⭐⭐",
+          "hint": "⭐⭐⭐"
+        },
+        {
+          "id": "num-4",
+          "front": "4",
+          "back": "four\n⭐⭐⭐⭐",
+          "hint": "⭐⭐⭐⭐"
+        },
+        {
+          "id": "num-5",
+          "front": "5",
+          "back": "five\n⭐⭐⭐⭐⭐",
+          "hint": "⭐⭐⭐⭐⭐"
+        },
+        {
+          "id": "num-6",
+          "front": "6",
+          "back": "six\n⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-7",
+          "front": "7",
+          "back": "seven\n⭐⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-8",
+          "front": "8",
+          "back": "eight\n⭐⭐⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-9",
+          "front": "9",
+          "back": "nine\n⭐⭐⭐⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-10",
+          "front": "10",
+          "back": "ten\n⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-11",
+          "front": "11",
+          "back": "eleven\n🔟⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-12",
+          "front": "12",
+          "back": "twelve\n🔟⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-13",
+          "front": "13",
+          "back": "thirteen\n🔟⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-14",
+          "front": "14",
+          "back": "fourteen\n🔟⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-15",
+          "front": "15",
+          "back": "fifteen\n🔟⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-16",
+          "front": "16",
+          "back": "sixteen\n🔟⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-17",
+          "front": "17",
+          "back": "seventeen\n🔟⭐⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-18",
+          "front": "18",
+          "back": "eighteen\n🔟⭐⭐⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-19",
+          "front": "19",
+          "back": "nineteen\n🔟⭐⭐⭐⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        },
+        {
+          "id": "num-20",
+          "front": "20",
+          "back": "twenty\n🔟⭐⭐⭐⭐⭐⭐⭐⭐⭐⭐",
+          "hint": "🔢"
+        }
+      ]
+    },
+    {
+      "id": "reading",
+      "title": "Reading",
+      "emoji": "📖",
+      "age_level": "little",
+      "ages": "5-8",
+      "group": "basics",
+      "description": "Sight words and short CVC words",
+      "cards": [
+        {
+          "id": "read-001",
+          "front": "the",
+          "back": "a little word used a lot, like 'the cat'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-002",
+          "front": "and",
+          "back": "joins two things, like 'cat and dog'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-003",
+          "front": "is",
+          "back": "tells what something is, like 'the sun is hot'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-004",
+          "front": "you",
+          "back": "means the person you are talking to",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-005",
+          "front": "a",
+          "back": "means one of something, like 'a ball'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-006",
+          "front": "I",
+          "back": "means me ? the person talking",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-007",
+          "front": "it",
+          "back": "means a thing, like 'it is big'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-008",
+          "front": "in",
+          "back": "means inside, like 'in the box'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-009",
+          "front": "that",
+          "back": "points to something, like 'that dog'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-010",
+          "front": "he",
+          "back": "a boy or man",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-011",
+          "front": "of",
+          "back": "belongs to, like 'a cup of milk'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-012",
+          "front": "was",
+          "back": "happened before, like 'it was cold'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-013",
+          "front": "with",
+          "back": "together, like 'with my friend'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-014",
+          "front": "for",
+          "back": "meant to help or give, like 'a gift for you'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-015",
+          "front": "on",
+          "back": "on top of, like 'on the table'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-016",
+          "front": "they",
+          "back": "more than one person",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-017",
+          "front": "as",
+          "back": "like or while, like 'as big as a house'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-018",
+          "front": "she",
+          "back": "a girl or woman",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-019",
+          "front": "at",
+          "back": "a place, like 'at school'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-020",
+          "front": "by",
+          "back": "next to, like 'by the door'",
+          "hint": "",
+          "kind": "sight"
+        },
+        {
+          "id": "read-021",
+          "front": "cat",
+          "back": "a small pet with fur and sharp claws",
+          "hint": "🐱",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-022",
+          "front": "dog",
+          "back": "a friendly animal that barks",
+          "hint": "🐶",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-023",
+          "front": "sun",
+          "back": "the bright star in the sky during the day",
+          "hint": "🌞",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-024",
+          "front": "pen",
+          "back": "a writing tool with ink inside",
+          "hint": "✍️",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-025",
+          "front": "mom",
+          "back": "the mother of a child or someone's family",
+          "hint": "👩",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-026",
+          "front": "dad",
+          "back": "the father of a child or someone's family",
+          "hint": "👨",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-027",
+          "front": "bed",
+          "back": "a place to sleep at night",
+          "hint": "🛏️",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-028",
+          "front": "red",
+          "back": "the color of a fire truck or apple",
+          "hint": "🍎",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-029",
+          "front": "hen",
+          "back": "a female chicken that lays eggs",
+          "hint": "🐔",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-030",
+          "front": "hop",
+          "back": "to jump with both feet off the ground at once",
+          "hint": "🦥",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-031",
+          "front": "hot",
+          "back": "having a high temperature, like summer days",
+          "hint": "🌡️",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-032",
+          "front": "dot",
+          "back": "a small round mark or spot",
+          "hint": "●",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-033",
+          "front": "net",
+          "back": "a mesh used to catch fish or balls",
+          "hint": "🎣",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-034",
+          "front": "web",
+          "back": "the internet, or a spider's home",
+          "hint": "🕸️",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-035",
+          "front": "win",
+          "back": "to be the best in a game or competition",
+          "hint": "🏆",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-036",
+          "front": "box",
+          "back": "a container with a lid to hold things",
+          "hint": "📦",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-037",
+          "front": "bus",
+          "back": "a large vehicle that carries many people",
+          "hint": "🚌",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-038",
+          "front": "cut",
+          "back": "to use a knife or scissors to remove something",
+          "hint": "🔪",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-039",
+          "front": "cup",
+          "back": "a container for drinking liquids",
+          "hint": "☕️",
+          "kind": "cvc"
+        },
+        {
+          "id": "read-040",
+          "front": "fun",
+          "back": "enjoyable and entertaining activities",
+          "hint": "🎨",
+          "kind": "cvc"
+        }
+      ]
+    },
+    {
+      "id": "money_little",
+      "title": "Money Smarts · Little",
+      "emoji": "🪙",
+      "age_level": "little",
+      "ages": "4-7",
+      "group": "money_smarts",
+      "description": "Needs vs wants, saving jar, price tags, making change",
+      "cards": [
+        {
+          "id": "money-little-01",
+          "front": "Is candy a need or a want?",
+          "back": "Candy is a want.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-02",
+          "front": "What does $3 on a price tag mean?",
+          "back": "$3 means the item costs 3 dollars.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-03",
+          "front": "Can you save money in a piggy bank?",
+          "back": "Yes, putting coins in a jar helps save money.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-04",
+          "front": "How do you make change for $1?",
+          "back": "Use pennies, nickels, dimes, and quarters to reach 1 dollar.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-05",
+          "front": "Should I share my toys or keep them all?",
+          "back": "Sharing is nice but you can also decide which ones to keep.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-06",
+          "front": "Can I earn money by helping at home?",
+          "back": "Yes, doing chores like cleaning up can earn allowance.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-07",
+          "front": "Is a toy car a need or want?",
+          "back": "A toy car is a want.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-08",
+          "front": "How do you count 5 pennies?",
+          "back": "Count them as 1, 2, 3, 4, 5 to make 5 cents.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-09",
+          "front": "Is a sandwich a need or want?",
+          "back": "A sandwich is a need for food.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-10",
+          "front": "Can I buy two toys with $2?",
+          "back": "Only if the two toys together cost $2 or less.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-11",
+          "front": "Is a new shirt a need or want?",
+          "back": "Clothes can be a need. An extra fancy shirt is usually a want.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-12",
+          "front": "How do you count 3 dimes?",
+          "back": "Count them as 10, 20, 30 to make 30 cents.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-13",
+          "front": "Should I spend all my money at once?",
+          "back": "It's better to save some for later needs or wants.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-14",
+          "front": "Can I earn more by doing extra chores?",
+          "back": "Yes, talk with parents about earning more allowance.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-15",
+          "front": "Is a new game a need or want?",
+          "back": "A new game is usually a want.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-16",
+          "front": "How do you count 4 quarters?",
+          "back": "Count them as 25, 50, 75, 100 to make 1 dollar.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-17",
+          "front": "Should I share my snacks with friends?",
+          "back": "Sharing is kind but you can keep some for yourself too.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-18",
+          "front": "Can I earn money by helping neighbors?",
+          "back": "Yes, doing small jobs like raking leaves can earn allowance.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-19",
+          "front": "Is a new crayon set a need or want?",
+          "back": "A new crayon set is usually a want unless it's very old.",
+          "hint": "?"
+        },
+        {
+          "id": "money-little-20",
+          "front": "How do you count 5 nickels?",
+          "back": "Count them as 5, 10, 15, 20, 25 to make 25 cents.",
+          "hint": "?"
+        }
+      ]
+    },
+    {
+      "id": "money_middle",
+      "title": "Money Smarts · Middle",
+      "emoji": "💵",
+      "age_level": "middle",
+      "ages": "8-12",
+      "group": "money_smarts",
+      "description": "Budgeting, simple interest, comparing prices, unit price",
+      "cards": [
+        {
+          "id": "money-middle-01",
+          "front": "What is a job?",
+          "back": "A job is work you do to earn money.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-02",
+          "front": "What are chores?",
+          "back": "Chores are tasks at home that help keep things clean and tidy.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-03",
+          "front": "Why save money?",
+          "back": "Saving money helps you buy things later or in case of emergencies.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-04",
+          "front": "What is a budget?",
+          "back": "A budget is a plan that shows how much money you have and where it goes.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-05",
+          "front": "Give, save, spend jars",
+          "back": "Separate your money into jars for giving to others, saving for later, or spending now.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-06",
+          "front": "What is interest?",
+          "back": "Interest is extra money you earn when you keep money in a savings account.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-07",
+          "front": "Simple interest example: $100 at 5% for 1 year",
+          "back": "$100 × 0.05 × 1 year = $5 interest. You would have $105.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-08",
+          "front": "How to compare prices?",
+          "back": "Look at the price tag and decide if it's worth what you pay.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-09",
+          "front": "What is unit price?",
+          "back": "Unit price tells you how much one item costs, like per ounce or per pound.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-10",
+          "front": "Which cereal is cheaper: $3 for 12oz or $4 for 16oz?",
+          "back": "$3 for 12oz = $0.25/oz; $4 for 16oz = $0.25/oz; Both are the same price per ounce.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-11",
+          "front": "Why set goals?",
+          "back": "Goals help you decide what to save money for and work towards them.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-12",
+          "front": "What is delayed gratification?",
+          "back": "It's waiting to buy something now so you can have more later.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-13",
+          "front": "Simple interest example: $50 at 4% for 2 years",
+          "back": "$50 at 4% simple interest for 2 years earns $4 total ($50 × 0.04 × 2 = $4). About $2 per year.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-14",
+          "front": "How to earn money?",
+          "back": "You can earn money by doing jobs or chores around the house.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-15",
+          "front": "What is a piggy bank?",
+          "back": "A place where you keep your saved coins and money safe.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-16",
+          "front": "Why make a wish list?",
+          "back": "It helps you remember what you want to buy with your savings.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-17",
+          "front": "Simple interest example: $20 at 3% for 5 years",
+          "back": "$20 × 0.03 × 5 years = $3 interest total ($0.60 per year).",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-18",
+          "front": "What is a bank account?",
+          "back": "A place where you keep your money safe and earn interest.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-19",
+          "front": "Why save for emergencies?",
+          "back": "Saving for unexpected things helps you feel secure and not worry.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-20",
+          "front": "What is a debit card?",
+          "back": "A card that lets you spend money from your bank account.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-21",
+          "front": "Why track expenses?",
+          "back": "It helps you know where your money goes and if you have enough left over.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-22",
+          "front": "What is a credit card?",
+          "back": "A card that lets you borrow money to buy things, but must be paid back.",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-23",
+          "front": "Simple interest example: $150 at 6% for 3 years",
+          "back": "$150 × 0.06 × 3 years = $27 interest total ($9 per year).",
+          "hint": ""
+        },
+        {
+          "id": "money-middle-24",
+          "front": "What is a checking account?",
+          "back": "A bank account where you can deposit and withdraw money easily.",
+          "hint": ""
+        }
+      ]
+    },
+    {
+      "id": "money_older",
+      "title": "Money Smarts · Older",
+      "emoji": "📈",
+      "age_level": "older",
+      "ages": "13+",
+      "group": "money_smarts",
+      "description": "Compound interest, credit, scams, inflation, Bitcoin basics (neutral)",
+      "cards": [
+        {
+          "id": "money-older-01",
+          "front": "What is compound interest?",
+          "back": "Interest earned on both the initial principal and the accumulated interest from previous periods.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-02",
+          "front": "Example of compound interest: $100 at 10% compounded yearly for 2 years",
+          "back": "Year 1: $100 × 1.10 = $110. Year 2: $110 × 1.10 = $121. You earned $21 total (more than $20 simple interest).",
+          "hint": ""
+        },
+        {
+          "id": "money-older-03",
+          "front": "How does credit card interest work?",
+          "back": "Interest is charged on unpaid balances each month.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-04",
+          "front": "Example: $100 balance, 20% APR, paid off in one month",
+          "back": "Monthly rate ≈ 20% ÷ 12 = 1.667%. One month on $100 ≈ $1.67 if no grace period. Pay in full during the grace period and you owe $0 interest.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-05",
+          "front": "What is a phishing scam?",
+          "back": "Fraudulent attempt to obtain sensitive information by disguising as a trustworthy entity in electronic communication.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-06",
+          "front": "Red flag: Unsolicited request for gift cards",
+          "back": "Legitimate organizations do not ask for payment via gift card.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-07",
+          "front": "What is inflation?",
+          "back": "Increase in prices over time, reducing the purchasing power of money.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-08",
+          "front": "Example: $1 candy bar now costs $2 due to inflation",
+          "back": "If a candy bar cost $1 last year and now costs $2, it's an example of inflation.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-09",
+          "front": "What is money?",
+          "back": "A medium of exchange that allows people to buy goods and services. It also stores value over time.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-10",
+          "front": "Bitcoin basics: What is it?",
+          "back": "Bitcoin is digital money recorded on a public network. Supply is limited by design. This is a description, not advice to buy or sell.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-11",
+          "front": "Why does Bitcoin have a volatile price?",
+          "back": "Supply and demand in the market can cause large fluctuations.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-12",
+          "front": "Is Bitcoin issued by any government?",
+          "back": "No, it is decentralized and not controlled by any single entity or country.",
+          "hint": ""
+        },
+        {
+          "id": "money-older-13",
+          "front": "What does APR mean on a credit card?",
+          "back": "Annual Percentage Rate ? the yearly cost of borrowing if you carry a balance.",
+          "hint": "💳"
+        },
+        {
+          "id": "money-older-14",
+          "front": "If you only pay the minimum on a credit card, what happens?",
+          "back": "The leftover balance keeps earning interest, so the debt can grow and take much longer to pay off.",
+          "hint": "⚠️"
+        },
+        {
+          "id": "money-older-15",
+          "front": "Compound vs simple: $100 at 10% for 2 years",
+          "back": "Simple: $100 + $10 + $10 = $120. Compound yearly: $121. The extra $1 is interest on interest.",
+          "hint": "📈"
+        },
+        {
+          "id": "money-older-16",
+          "front": "Red flag: a message says 'act now or your account will be locked' with a link",
+          "back": "Pressure + unexpected link is a common phishing trick. Go to the real site yourself instead of tapping the link.",
+          "hint": "🚨"
+        },
+        {
+          "id": "money-older-17",
+          "front": "Red flag: someone asks you to pay with gift cards or crypto to 'fix a problem'",
+          "back": "Real companies and agencies do not collect that way. It is a scam.",
+          "hint": "🚨"
+        },
+        {
+          "id": "money-older-18",
+          "front": "Red flag: an offer that promises guaranteed huge returns with no risk",
+          "back": "If it sounds too good to be true, it usually is. High return always pairs with risk.",
+          "hint": "🚨"
+        },
+        {
+          "id": "money-older-19",
+          "front": "What is purchasing power?",
+          "back": "How many goods or services your money can buy. Inflation lowers purchasing power over time.",
+          "hint": "🛒"
+        },
+        {
+          "id": "money-older-20",
+          "front": "If prices rise 5% in a year and your cash earns 1%, what happened?",
+          "back": "Your cash buys less than before. 5% inflation vs 1% interest means you lost about 4% in buying power.",
+          "hint": "📉"
+        },
+        {
+          "id": "money-older-21",
+          "front": "Three roles of money (plain words)",
+          "back": "1) Medium of exchange (you trade it for stuff). 2) Unit of account (prices). 3) Store of value (hold for later).",
+          "hint": "💰"
+        },
+        {
+          "id": "money-older-22",
+          "front": "What is debt?",
+          "back": "Money you borrowed and must pay back, often with interest.",
+          "hint": "💸"
+        },
+        {
+          "id": "money-older-23",
+          "front": "Good habit before using a credit card",
+          "back": "Have a plan to pay the statement balance in full each month so interest does not start.",
+          "hint": "✅"
+        },
+        {
+          "id": "money-older-24",
+          "front": "Bitcoin: who creates new rules?",
+          "back": "No single company or government issues it. Changes need wide agreement across the network. Still: not buy/sell advice.",
+          "hint": "₿"
+        },
+        {
+          "id": "money-older-25",
+          "front": "Bitcoin: what does volatile mean here?",
+          "back": "The price can jump up or down a lot in short times. That risk is part of why it is not the same as cash in a bank.",
+          "hint": "📈"
+        },
+        {
+          "id": "money-older-26",
+          "front": "What is a budget for a teen?",
+          "back": "A written plan for income (job, gifts) split into save / spend / give, reviewed each month.",
+          "hint": "📋"
+        },
+        {
+          "id": "money-older-27",
+          "front": "Emergency fund ? why?",
+          "back": "Cash set aside for surprise needs (broken phone, lost shift) so you do not need high-interest debt.",
+          "hint": "🛡"
+        },
+        {
+          "id": "money-older-28",
+          "front": "Unit price check: $6 for 20 oz vs $4 for 12 oz ? which is cheaper per oz?",
+          "back": "$6/20 = $0.30 per oz. $4/12 ≈ $0.333 per oz. The 20 oz option is cheaper per ounce.",
+          "hint": "📊"
+        }
+      ]
+    }
+  ]
+}
