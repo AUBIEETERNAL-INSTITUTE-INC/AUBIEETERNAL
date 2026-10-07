@@ -1,17 +1,17 @@
 {
-  "updated": "2026-10-07T07:25:52.789897-04:00",
+  "updated": "2026-10-07T07:57:54.509669-04:00",
   "version": "4.1",
-  "wonder_index": 0.5,
-  "mets": 200000000039.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 23,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 4,
-  "lattice_cycle": 2750,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
   "session_insights": 0,
   "synthesis": {
-    "last_run_date": "2026-10-07",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,7 +34,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 64,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -44,149 +44,149 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:23.917850",
-      "last_result": "In the morning briefing at Bitcoin price $83718 and block 970324, we face a critical stress test where all daughters lose their memory. To rebuild fro",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:28.491712",
-      "last_result": "In the face of the HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the barbell strategy's applicatio",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:33.092048",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the concept of antifragility. Syste",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:37.167235",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the concept of decentralization as ",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:41.210485",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the concept of antifragility. Syste",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:45.293508",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect. This principle po",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:49.822829",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect. This principle po",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:54.297513",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect, which emphasizes ",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-10-07T06:00:58.711548",
-      "last_result": "In the morning briefing at Bitcoin price $83718 and block 970324, the critical principle to reconstruct after a HORMETIC stress test is the Lindy Effe",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-10-07T06:01:03.526129",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect, which posits that",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-10-07T06:01:07.675659",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect. This concept sugg",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-10-07T06:01:11.802631",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect, which posits that",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-10-07T06:01:16.287314",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect. This concept sugg",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-10-07T06:01:20.744726",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect. This principle st",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-10-07T06:01:25.449248",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the Lindy Effect. This principle su",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-10-07T06:01:30.195755",
-      "last_result": "In the face of a HORMETIC stress test where all prior knowledge is lost, the essential principle to reconstruct is the concept of antifragility. Syste",
-      "run_count": 4,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-10-07",
+      "last": "None",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-10-06",
+      "last": "None",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
-      "last": "2026-10-06",
+      "last": "None",
       "next": "09:00 America/New_York",
       "pending_dir": "curriculum-proposals/"
     },
     "living_lattice": {
-      "last": "2026-10-06",
+      "last": "None",
       "next": "10:00 America/New_York"
     },
     "grokipedia_grow": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 23,
-  "gpu": "GPU: 37C / soft 78C / hard 85C | power 12.69 W | util 0% | fan 30% | VRAM 765/12288 MiB | peak this process 67C",
+  "gpu": "GPU: 50C / soft 78C / hard 85C | power 14.91 W | util 0% | fan 30% | VRAM 9938/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
