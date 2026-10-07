@@ -483,7 +483,7 @@ if __name__ == "__main__":
         tags=["decision-theory", "lesson"]
     ))
     print(f"Truth log: {len(state.truth_log)} entries")
-    print(f"Degree: {state.highest_degree or 'None yet'}")
+    print(f"Completion level: {state.highest_degree or 'None yet'}")
     print(f"Badges: {[b.name for b in state.badges]}")
     state.save(Path("/tmp/test_app_state.json"))
     loaded = AppState.load(Path("/tmp/test_app_state.json"))

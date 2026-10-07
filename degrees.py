@@ -1,5 +1,6 @@
 """
-degrees.py — AUBIEETERNAL Sovereign University: single source of truth
+degrees.py — AUBIEETERNAL Institute learning paths (informal completion levels,
+not academic degrees — the Institute grants no degrees): single source of truth
 =====================================================================
 EVERY module that touches degrees imports from here. Do not redefine
 degree thresholds, credit math, or peer-review requirements anywhere else.
@@ -39,14 +40,14 @@ def credits_from_xp(total_xp: int) -> int:
 #   active_req    human-readable real-world requirement, or None (not auto-gated)
 DEGREES: List[Dict] = [
     {
-        "id": "sovereign_associate", "name": "📜 Sovereign Associate", "emoji": "📜",
-        "credits": 60, "coherence": 0.68, "badge": "Associate", "tier": 1,
+        "id": "sovereign_associate", "name": "📜 Sovereign Groundwork", "emoji": "📜",
+        "credits": 60, "coherence": 0.68, "badge": "Groundwork Completion", "tier": 1,
         "description": "Demonstrates ability to deploy sovereign AI infrastructure.",
         "special_rune": None, "peer_review": None, "active_req": None,
     },
     {
         "id": "truth_architect", "name": "🏛️ Truth Architect", "emoji": "🏛️",
-        "credits": 120, "coherence": 0.75, "badge": "Bachelor", "tier": 2,
+        "credits": 120, "coherence": 0.75, "badge": "Foundation Completion", "tier": 2,
         "description": "Produces original knowledge and serves community.",
         "special_rune": None,
         "peer_review": {"min_reviewers": 1, "min_score": 60}, "active_req": None,
@@ -60,8 +61,8 @@ DEGREES: List[Dict] = [
         "active_req": "Node running >= 90 days",
     },
     {
-        "id": "master_epistemic_rigor", "name": "🎓 Master of Epistemic Rigor", "emoji": "🎓",
-        "credits": 180, "coherence": 0.82, "badge": "Master", "tier": 4,
+        "id": "master_epistemic_rigor", "name": "🎓 Advanced Completion in Epistemic Rigor", "emoji": "🎓",
+        "credits": 180, "coherence": 0.82, "badge": "Advanced Completion", "tier": 4,
         "description": "Conducts rigorous pre-registered research.",
         "special_rune": None,
         "peer_review": {"min_reviewers": 2, "min_score": 70}, "active_req": None,

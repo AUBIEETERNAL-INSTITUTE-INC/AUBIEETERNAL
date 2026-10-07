@@ -1,18 +1,18 @@
-# AUBIEETERNAL Sovereign University — School Charter
+# AUBIEETERNAL Institute — Learning Program Charter
 ## Version 3.0 | 2026 | CC0 Public Domain
-### Six Degree Programs · 288 Lessons · 51+ Tracks
+### Six Learning Paths · 288 Lessons · 51+ Tracks
 
 ---
 
 ## Preamble
 
-AUBIEETERNAL Sovereign University exists to deliver university-level education
+AUBIEETERNAL Institute exists to deliver rigorous, free education
 to every family on earth, without tuition, paperwork, gatekeepers, or
 institutional capture. It was built as a sovereign lattice: each family
 maintains full control while participating in a shared, high-coherence
 knowledge network secured by Bitcoin Runes and the Epistemic Commons.
 
-This charter is CC0 — public domain. Build sovereign universities anywhere.
+This charter is CC0 — public domain. Build sovereign learning programs anywhere.
 
 ---
 
@@ -22,13 +22,13 @@ This charter is CC0 — public domain. Build sovereign universities anywhere.
 Every family that completes the curriculum will have the tools to evaluate evidence, resist manipulation, and reason honestly under uncertainty.
 
 **2. Humanitarian Deployment**
-Every Sovereign Credential-level graduate must deploy sovereign infrastructure for a community that lacks it. The university grows by serving, not by credentialing.
+Every learner who completes the Sovereign Credential level must deploy sovereign infrastructure for a community that lacks it. The Institute grows by serving, not by credentialing.
 
 **3. Public Epistemic Signal**
 Every steelman, research experiment, and calibrated belief logged by AUBIEETERNAL families is published to the Epistemic Commons as CC0 — improving the epistemic quality of every SI that draws from it.
 
 **4. SI and Humanity Alignment**
-The two advanced degrees (Sovereign SI Researcher and Epistemic Civilization Builder) exist specifically to produce graduates who can shape what SI becomes and how knowledge infrastructure is built at civilizational scale.
+The two advanced learning paths (Sovereign SI Researcher and Epistemic Civilization Builder) exist specifically to prepare people who can shape what SI becomes and how knowledge infrastructure is built at civilizational scale.
 
 ---
 
@@ -53,7 +53,7 @@ Progress anchored on Bitcoin. 256 fragments = Child Rune Genesis. This record be
 
 ## Article III — Academic Standards
 
-A graduate of AUBIEETERNAL must be able to:
+A learner who completes AUBIEETERNAL must be able to:
 - Identify the strongest argument against their own position
 - Evaluate primary evidence, not just expert summaries
 - Acknowledge uncertainty with calibrated confidence
@@ -65,23 +65,23 @@ A graduate of AUBIEETERNAL must be able to:
 
 ---
 
-## Article IV — Six Degree Programs
+## Article IV — Six Learning Paths
 
-### 📜 Sovereign Associate (60 credits, coherence ≥0.68)
+### 📜 Sovereign Groundwork (60 credits, coherence ≥0.68)
 **Prerequisite tracks:** Reading (L1-2) + Writing (L1-2) + any core track
 **Capstone:** Deploy a sovereign SI node. Document with hardware specs and benchmark report.
 **What this proves:** You can stand up sovereign infrastructure and use it.
 
 ---
 
-### 🏛️ Truth Architect — Bachelor Equivalent (120 credits, coherence ≥0.75)
-**Prerequisite tracks:** Sovereign Associate + Logic (L1-3) + Philosophy (L1-2) + Decision Theory
+### 🏛️ Truth Architect — Foundation Completion (120 credits, coherence ≥0.75)
+**Prerequisite tracks:** Sovereign Groundwork + Logic (L1-3) + Philosophy (L1-2) + Decision Theory
 **Capstone:** Original research paper (1,500+ words), falsifiable thesis, steelmanned opposition, pre-registered prediction. Published CC0. Community contribution reaching ≥10 people. External peer review.
 **What this proves:** You can produce original knowledge and serve your community.
 
 ---
 
-### 🎓 Master of Epistemic Rigor (180 credits, coherence ≥0.82)
+### 🎓 Advanced Completion in Epistemic Rigor (180 credits, coherence ≥0.82)
 **Prerequisite tracks:** Truth Architect + Gödel Incompleteness + Mathematical Thinking + Evolutionary Biology
 **Capstone:** 90-day pre-registered experiment. Hypothesis sealed in Truth Debt Ledger before data collection. Honest results whether confirmed or not. Full methodology and raw data published CC0.
 **What this proves:** You can do real science. Results matter more than comfort.
@@ -89,7 +89,7 @@ A graduate of AUBIEETERNAL must be able to:
 ---
 
 ### ⚡ Eternal Founder — Sovereign Credential (250 credits, coherence ≥0.88 + Child Rune Genesis)
-**Prerequisite tracks:** Master + Halting Problem/Rice's Theorem + Ethics from First Principles + Voluntary Incarnation
+**Prerequisite tracks:** Advanced Completion in Epistemic Rigor + Halting Problem/Rice's Theorem + Ethics from First Principles + Voluntary Incarnation
 **Capstone:** Build infrastructure ≥3 external families use. CC0 pull request merged into AUBIEETERNAL repo. Honest 500-word post-mortem including failures. Child Rune Genesis.
 **What this proves:** You build things others use. The dynasty is on-chain.
 
@@ -98,13 +98,13 @@ A graduate of AUBIEETERNAL must be able to:
 
 ---
 
-### 🖥️ StartOS Sovereign Operator — Infrastructure Degree (200 credits, coherence ≥0.82 + node running ≥90 days)
+### 🖥️ StartOS Sovereign Operator — Infrastructure Learning Path (200 credits, coherence ≥0.82 + node running ≥90 days)
 
-*This degree is for families and individuals who become the infrastructure layer for their community's digital sovereignty.*
+*This learning path is for families and individuals who become the infrastructure layer for their community's digital sovereignty.*
 
-A sovereign software developer or SI researcher cannot do their work without the infrastructure layer underneath them. The StartOS Sovereign Operator degree creates the people who run, maintain, and expand that infrastructure — and who teach others to do the same.
+A sovereign software developer or SI researcher cannot do their work without the infrastructure layer underneath them. The StartOS Sovereign Operator learning path creates the people who run, maintain, and expand that infrastructure — and who teach others to do the same.
 
-This degree self-evolves with the student: each new StartOS service learned, each new family helped to set up a node, each new security audit completed adds to the permanent record. It cannot be completed by reading. It can only be completed by running.
+This learning path self-evolves with the learner: each new StartOS service learned, each new family helped to set up a node, each new security audit completed adds to the permanent record. It cannot be completed by reading. It can only be completed by running.
 
 **Prerequisite tracks (all required):**
 - Bitcoin on StartOS complete (L1-8)
@@ -128,16 +128,16 @@ This degree self-evolves with the student: each new StartOS service learned, eac
 
 3. **90-Day Operations Report:** Log every notable event from 90 days of operating your node: uptime incidents, software updates, security events, Lightning channel opens/closes, routing fees earned/paid. Honest assessment of what worked and what was harder than expected. This is the operational research that helps the next family deploy more successfully.
 
-**What this degree proves:**
+**What this learning path proves:**
 You are not just a Bitcoin user — you are Bitcoin infrastructure. Your node verifies transactions. Your Lightning channels route payments. Your Nostr relay distributes messages. You have helped another family achieve the same sovereignty. The network is stronger because you participated.
 
-The degree self-evolves because sovereign infrastructure is not a destination — it is a practice. Every new service learned, every new family helped, every security incident handled correctly adds to the Living Lattice.
+The learning path self-evolves because sovereign infrastructure is not a destination — it is a practice. Every new service learned, every new family helped, every security incident handled correctly adds to the Living Lattice.
 
 ---
 
 ### 🤖 Sovereign SI Researcher (300 credits, coherence ≥0.90 + Halting/Gödel completion)
 
-*This degree is for people who will directly shape what SI becomes.*
+*This learning path is for people who will directly shape what SI becomes.*
 
 **Prerequisite tracks (all required):**
 - Eternal Founder (Sovereign Credential) as foundation
@@ -158,16 +158,16 @@ The degree self-evolves because sovereign infrastructure is not a destination �
 
 3. **Epistemic Commons Contribution:** At least 50 high-quality DPO pairs (chosen/rejected preference data) with explicit reasoning. Each pair must demonstrate the difference between sycophantic and epistemically honest responses. Published as CC0 with pre-registered quality criteria. This is direct contribution to making SI systems more honest.
 
-**What this degree proves:**
+**What this learning path proves:**
 You understand the mathematical foundations of why SI alignment is hard — not just that it is hard. You have contributed something real to the field. You know where the limits are and what approaches remain viable within them. You are equipped to work at the frontier of the most important technical problem of our era.
 
 ---
 
 ### 🌍 Epistemic Civilization Builder (300 credits, coherence ≥0.90 + ≥3 community deployments)
 
-*This degree is for people who will build the knowledge infrastructure humanity needs.*
+*This learning path is for people who will build the knowledge infrastructure humanity needs.*
 
-The knowledge commons of humanity — the systems by which information is generated, validated, stored, distributed, and applied — are currently fragile, captured, and degrading. Someone needs to build better infrastructure. This degree is for them.
+The knowledge commons of humanity — the systems by which information is generated, validated, stored, distributed, and applied — are currently fragile, captured, and degrading. Someone needs to build better infrastructure. This learning path is for them.
 
 **Prerequisite tracks (all required):**
 - Eternal Founder (Sovereign Credential) as foundation
@@ -188,7 +188,7 @@ The knowledge commons of humanity — the systems by which information is genera
 
 3. **Public Epistemic Health Contribution:** A pre-registered study of epistemic quality in a real community you have worked with. Measure baseline (calibration, steelman ability, manipulation detection). Intervene with curriculum. Measure again. Report honestly. Contribute the methodology and results to the Epistemic Commons. This is the kind of research that tells humanity what actually improves collective reasoning.
 
-**What this degree proves:**
+**What this learning path proves:**
 You have not just learned epistemic rigor — you have deployed it for communities that needed it. You understand how knowledge systems work at scale. You have contributed original research on what improves collective epistemic health. You are equipped to build the infrastructure that gives every future human the same chance to understand the universe.
 
 ---
@@ -262,16 +262,16 @@ Cannot be shut down by any company, government, or single point of failure.
 
 ## Founding Statement
 
-This university has no endowment, no campus, no accreditation, and no administrators.
+This Institute is not a college or university and does not grant degrees. It has no endowment, no campus, no accreditation, and no administrators.
 
-It has 288 lessons, 6 degree programs, and a Bitcoin-anchored proof that you did the work.
+It has 288 lessons, 6 learning paths, and a Bitcoin-anchored proof that you did the work.
 
-Two of those degrees exist for a specific reason: the people who will determine what SI becomes and how knowledge is distributed to humanity need a rigorous training path. AUBIEETERNAL is that path — built on the mathematics of what can and cannot be known, the logic of what can and cannot be verified, the philosophy of what matters and why, and the practical experience of having deployed it for communities that needed it.
+Two of those learning paths exist for a specific reason: the people who will determine what SI becomes and how knowledge is distributed to humanity need a rigorous training path. AUBIEETERNAL is that path — built on the mathematics of what can and cannot be known, the logic of what can and cannot be verified, the philosophy of what matters and why, and the practical experience of having deployed it for communities that needed it.
 
-The graduates of the Sovereign SI Researcher and Epistemic Civilization Builder programs will be some of the most important people of the next century. They deserve the best preparation we can give them.
+The people who complete the Sovereign SI Researcher and Epistemic Civilization Builder learning paths will be some of the most important people of the next century. They deserve the best preparation we can give them.
 
 **War Eagle Eternal 🦅❤️ — Coherence: 1.000000**
 
 ---
-*Version 3.0 | 288 lessons | 6 degree programs | CC0 — public domain*
-*Copy, adapt, and build sovereign universities everywhere.*
+*Version 3.0 | 288 lessons | 6 learning paths | CC0 — public domain*
+*Copy, adapt, and build sovereign learning programs everywhere.*

@@ -4,7 +4,7 @@ sovereign_builder.py — AUBIEETERNAL Sovereign Builder Module
 Tracks hardware upgrades, AI benchmarks, AR overlay hooks,
 and humanitarian contributions for the Sovereign Builder curriculum.
 
-The humanitarian mission: every graduate deploys one sovereign node
+The humanitarian mission: every learner who completes the track deploys one sovereign node
 for a community that has none.
 
 Usage:

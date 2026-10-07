@@ -1,7 +1,7 @@
 """
 alumni_deployment_tracker.py — AUBIEETERNAL Alumni and Deployment Tracker
 =========================================================================
-Tracks graduates, their community deployments, and the growth of the
+Tracks learners who complete learning paths, their community deployments, and the growth of the
 Living Lattice over time.
 
 This is not vanity metrics. It answers the most important questions:
@@ -58,7 +58,7 @@ class AlumniRegistry:
         record = {
             "alumni_id":        alumni_id,
             "family_id":        family_id if public_consent else f"anon_{alumni_id[:8]}",
-            "student_name":     student_name if public_consent else "Anonymous Graduate",
+            "student_name":     student_name if public_consent else "Anonymous Learner",
             "degree_name":      degree_name,
             "credits":          credits,
             "coherence":        round(coherence, 4),
@@ -246,7 +246,7 @@ class LivingLattice:
         state  = self.get_lattice_state()
         public = {
             "schema_version":    "1.0",
-            "institution":       "AUBIEETERNAL Sovereign University",
+            "institution":       "AUBIEETERNAL Institute",
             "license":           "CC0",
             "report_date":       datetime.date.today().isoformat(),
             "humanitarian_impact": state["public_mission_progress"],
@@ -255,8 +255,8 @@ class LivingLattice:
                 "coherence":     state["swarm"]["coherence"],
                 "grokipedia_entries": state["swarm"]["grokipedia"],
             },
-            "degree_programs_active": list(state["graduates"]["by_degree"].keys()),
-            "total_graduates":   state["graduates"]["total"],
+            "learning_paths_active": list(state["graduates"]["by_degree"].keys()),
+            "total_completions": state["graduates"]["total"],
         }
 
         # Write to repo for GitHub push
@@ -285,7 +285,7 @@ if __name__ == "__main__":
     lattice = LivingLattice()
     state   = lattice.get_lattice_state()
     print("\n🌐 LIVING LATTICE STATE")
-    print(f"  Graduates:    {state['graduates']['total']}")
+    print(f"  Completions:  {state['graduates']['total']}")
     print(f"  Deployments:  {state['deployments']['total_deployments']}")
     print(f"  People served:{state['deployments']['total_people_served']}")
     print(f"  Wonder Index: {state['swarm']['wonder_index']}")

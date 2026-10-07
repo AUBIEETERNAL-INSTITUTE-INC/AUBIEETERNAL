@@ -264,9 +264,9 @@ class AppState(BaseModel):
     def highest_degree(self) -> Optional[str]:
         DEGREES = [
             ("⚡ Eternal Founder (Sovereign Credential)", 250, 0.88),
-            ("🎓 Master of Epistemic Rigor", 180, 0.82),
+            ("🎓 Advanced Completion in Epistemic Rigor", 180, 0.82),
             ("🏛️ Truth Architect", 120, 0.75),
-            ("📜 Sovereign Associate", 60, 0.68),
+            ("📜 Sovereign Groundwork", 60, 0.68),
         ]
         coh  = self.coherence.current
         cred = self.credits
@@ -490,7 +490,7 @@ if __name__ == "__main__":
         tags=["decision-theory", "lesson"]
     ))
     print(f"Truth log: {len(state.truth_log)} entries")
-    print(f"Degree: {state.highest_degree or 'None yet'}")
+    print(f"Completion level: {state.highest_degree or 'None yet'}")
     print(f"Badges: {[b.name for b in state.badges]}")
     state.save(Path("/tmp/test_app_state.json"))
     loaded = AppState.load(Path("/tmp/test_app_state.json"))

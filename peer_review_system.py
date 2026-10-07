@@ -1,12 +1,12 @@
 """
 peer_review_system.py — AUBIEETERNAL Peer Review System
 ========================================================
-Structured peer review for Truth Architect and higher degree capstones.
+Structured peer review for Truth Architect and higher learning-path capstones.
 
 Required for:
   - Truth Architect: ≥1 reviewer outside household
-  - Master: ≥2 reviewers, at least one at Master level or above
-  - PhD: ≥2 reviewers, at least one holding a degree in the relevant track
+  - Advanced Completion (Epistemic Rigor): ≥2 reviewers, at least one at that level or above
+  - Sovereign Credential (Eternal Founder): ≥2 reviewers, at least one who has completed the relevant track
 
 Review structure follows academic conventions adapted for sovereign context:
   - Blind review where possible (reviewer sees work, not identity)

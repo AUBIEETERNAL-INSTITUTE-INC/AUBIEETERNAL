@@ -132,7 +132,7 @@ def summarize_source(name: str, url: str) -> dict:
         return {"name": name, "url": url, "ok": False, "reason": "fetch failed"}
 
     prompt = f"""You are doing competitive-intelligence research for a small
-nonprofit "sovereign university" (AUBIEETERNAL) that teaches K-12 topics
+nonprofit learning institute (AUBIEETERNAL) that teaches K-12 topics
 plus antifragility, sovereignty, and financial/civic literacy. Below is raw
 public webpage text scraped from {name} ({url}). It will contain a lot of
 navigation/marketing noise mixed with real content — ignore the noise.

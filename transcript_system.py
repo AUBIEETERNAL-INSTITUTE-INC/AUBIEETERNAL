@@ -1,7 +1,9 @@
 """
-transcript_system.py — AUBIEETERNAL Official Transcript System
+transcript_system.py — AUBIEETERNAL Learning Record System
 ==============================================================
-Generates Bitcoin-anchored, publicly verifiable academic transcripts.
+Generates Bitcoin-anchored, publicly verifiable learning records. These are
+informal completion records, not academic transcripts: AUBIEETERNAL Institute
+is not a college or university and does not grant degrees.
 
 Features:
   - JSON transcript with cryptographic hash
@@ -9,7 +11,7 @@ Features:
   - Public verification endpoint
   - PDF-quality text export
   - QR code for verification URL
-  - Degree award automation with coherence gate
+  - Completion-level automation with coherence gate
   - Peer-readable format for external institutions
 
 Verification workflow:
@@ -49,7 +51,7 @@ from degrees import DEGREES, credits_from_xp
 
 class TranscriptGenerator:
     """
-    Generates official, Bitcoin-anchored academic transcripts.
+    Generates Bitcoin-anchored learning records (not academic transcripts).
     """
 
     def __init__(self, family_id: str = "default",
@@ -76,7 +78,7 @@ class TranscriptGenerator:
         return {}
 
     def generate(self) -> Dict:
-        """Generate a complete academic transcript."""
+        """Generate a complete learning record."""
         state    = self._load_state()
         lessons  = self._load_lessons()
         now      = datetime.datetime.now(datetime.timezone.utc)
@@ -129,7 +131,7 @@ class TranscriptGenerator:
         # Build transcript
         transcript = {
             "schema_version":    "1.0",
-            "institution":       "AUBIEETERNAL Sovereign University",
+            "institution":       "AUBIEETERNAL Institute",
             "institution_url":   "https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL",
             "license":           "CC0 1.0 Universal — Public Domain",
             "student_name":      self.student_name,
@@ -198,7 +200,7 @@ class TranscriptGenerator:
                 **anchor,
                 "shield_sealed": True,
                 "seal_hash":     tx_hash,
-                "content":       f"TRANSCRIPT: {transcript['student_name']} — "
+                "content":       f"LEARNING RECORD: {transcript['student_name']} — "
                                  f"{', '.join(transcript['academic_record']['degrees_earned']) or 'In Progress'}",
             }) + "\n")
 
@@ -215,14 +217,14 @@ class TranscriptGenerator:
         rec = transcript["academic_record"]
         lines = [
             "=" * 60,
-            "  AUBIEETERNAL SOVEREIGN UNIVERSITY",
-            "  Official Academic Transcript",
+            "  AUBIEETERNAL INSTITUTE",
+            "  Learning Record (informal; not an academic transcript)",
             "=" * 60,
             f"  Student:   {transcript['student_name']}",
             f"  Issued:    {transcript['issued_at'][:10]}",
             f"  Hash:      {transcript['sha256'][:16]}...{transcript['sha256'][-8:]}",
             "",
-            "  ACADEMIC RECORD",
+            "  LEARNING RECORD",
             f"  Credits Earned:    {rec['total_credits']}",
             f"  XP Earned:         {rec['total_xp']}",
             f"  Coherence:         {rec['coherence']:.6f}",
@@ -230,7 +232,7 @@ class TranscriptGenerator:
             "",
         ]
         if rec["degrees_earned"]:
-            lines.append("  DEGREES AWARDED")
+            lines.append("  LEARNING PATHS COMPLETED")
             for deg in rec["degrees_earned"]:
                 lines.append(f"    ✓ {deg}")
             lines.append("")
@@ -241,9 +243,9 @@ class TranscriptGenerator:
                 lines.append(f"    🏅 {b}")
             lines.append("")
 
-        lines.append("  COMPLETED COURSES")
+        lines.append("  COMPLETED LESSONS")
         for lesson in transcript["completed_lessons"][:20]:
-            phd = " [PhD]" if lesson["has_phd"] else ""
+            phd = " [Research]" if lesson["has_phd"] else ""
             lines.append(f"    {lesson['credits']} cr  {lesson['title'][:50]}{phd}")
         if len(transcript["completed_lessons"]) > 20:
             lines.append(f"    ... and {len(transcript['completed_lessons'])-20} more")
@@ -253,7 +255,9 @@ class TranscriptGenerator:
             "  VERIFICATION",
             "  SHA-256: " + transcript["sha256"],
             "  Anchor:  Bitcoin Rune (see rune_memory.jsonl)",
-            "  License: CC0 — this transcript is public domain",
+            "  License: CC0 — this record is public domain",
+            "  Not a degree or academic transcript. AUBIEETERNAL Institute",
+            "  is not a college or university and does not grant degrees.",
             "=" * 60,
         ])
         return "\n".join(lines)

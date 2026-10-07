@@ -770,7 +770,8 @@ INSTITUTE_MEMORY_FILES = {
         "curriculum", "let's go to class", "lets go to class", "class feature",
         "family_profiles", "xp system", "grant", "funding", "autogen",
         "who built you", "how were you built", "how do you work",
-        "degree program", "sovereign school", "how many lessons", "how many tracks",
+        "degree program", "sovereign school", "learning path", "completion level",
+        "how many lessons", "how many tracks",
     ),
 }
 

@@ -977,7 +977,7 @@ LESSONS = {
         "activity":    "Take one extraction mechanism from insurance, law, or finance. Design one rule — like Bitcoin's proof-of-work — that makes extraction more expensive than honest behavior.",
         "age_hint":    "15+",
         "xp": 40, "rune": "SOVEREIGN•LAW•RUNE", "min_coherence": 0.70,
-        "grants_badge": "⚖️ Law & Economics Graduate",
+        "grants_badge": "⚖️ Law & Economics — Track Complete",
     },
 
     # ══════════════════════════════════════════════════════════════════════════
@@ -2722,7 +2722,7 @@ LESSONS = {
             "Level 3 — ANALYTICAL: what does it mean? Deep single-book reading.\n"
             "Level 4 — SYNTOPICAL: what do multiple books say to each other?\n\n"
             "Most people spend their lives at Level 1-2.\n"
-            "University requires Level 3. Research requires Level 4.\n"
+            "The Scholar Pathway requires Level 3. Research requires Level 4.\n"
             "AUBIEETERNAL builds Level 4 from age 12.\n\n"
             "The Scholar's Margin Protocol:\n"
             "• ✓ = agree · ✗ = disagree · ? = confused · ! = important\n"
@@ -2897,7 +2897,7 @@ LESSONS = {
     # Students who complete this are genuinely ahead of most college freshmen.
     # ══════════════════════════════════════════════════════════════════════════
     "school-university-1": {
-        "title":       "University Pathway — Writing That Changes Minds",
+        "title":       "Scholar Pathway — Writing That Changes Minds",
         "topic":       "Academic writing is not about demonstrating that you read the sources. It is about advancing an argument so clearly and rigorously that a reader who disagrees cannot ignore it. This is the highest-leverage intellectual skill.",
         "steelman":    "What is the strongest argument that the emphasis on formal academic writing is a gatekeeping mechanism rather than a genuine intellectual standard — and that oral, visual, and other forms of communication are equally valid?",
         "example":     (
@@ -2926,11 +2926,11 @@ LESSONS = {
             "Seal the final version in the Legacy Ledger."
         ),
         "age_hint":    "14+",
-        "xp": 55, "rune": "UNIVERSITY•RUNE", "min_coherence": 0.75,
+        "xp": 55, "rune": "SCHOLAR•RUNE", "min_coherence": 0.75,
     },
     "school-university-2": {
         "prerequisites": ["school-university-1"],
-        "title":       "University Pathway — Building Your Intellectual Portfolio",
+        "title":       "Scholar Pathway — Building Your Intellectual Portfolio",
         "topic":       "The credential economy is being disrupted. The new credential is demonstrated competence: a public portfolio of work that shows what you can actually do. This lesson teaches how to build one from age 14 that will be more valuable than most college degrees by age 18.",
         "steelman":    "What is the strongest argument that public portfolios and alternative credentials are only valued in certain tech-adjacent fields — and that in law, medicine, and most traditional careers, formal degrees remain essential?",
         "example":     (
@@ -2958,12 +2958,12 @@ LESSONS = {
             "Update it every 6 months. By 18, it will speak for itself."
         ),
         "age_hint":    "14+",
-        "xp": 58, "rune": "UNIVERSITY•RUNE", "min_coherence": 0.76,
+        "xp": 58, "rune": "SCHOLAR•RUNE", "min_coherence": 0.76,
     },
     "school-university-3": {
         "phd_extension": "Write a 3,000-word original research proposal on a question at the intersection of your two deepest intellectual domains. Format: abstract, literature review, methodology, expected findings, falsifiability, broader significance. Submit to the AUBIEETERNAL Epistemic Commons as CC0. This is your first academic publication.",
         "prerequisites": ["school-university-1", "school-university-2"],
-        "title":       "University Pathway (Master) — Designing a Life of Compounding Inquiry",
+        "title":       "Scholar Pathway (Master) — Designing a Life of Compounding Inquiry",
         "topic":       "The goal is not to finish school. The goal is to design a life structured so that every year you understand more than the year before — and that understanding compounds into genuine mastery and genuine contribution.",
         "steelman":    "What is the strongest argument that 'lifelong learning' is a cliché used by institutions to keep people consuming their products — and that there is a natural point where specialization and execution should replace broad learning?",
         "example":     (
@@ -2990,8 +2990,8 @@ LESSONS = {
             "The students who do this at 16 will be extraordinary by 26."
         ),
         "age_hint":    "14+",
-        "xp": 70, "rune": "UNIVERSITY•ETERNAL•RUNE", "min_coherence": 0.78,
-        "grants_badge": "🎓 University Pathway — Life of Compounding Inquiry",
+        "xp": 70, "rune": "SCHOLAR•ETERNAL•RUNE", "min_coherence": 0.78,
+        "grants_badge": "🎓 Scholar Pathway — Life of Compounding Inquiry",
         "lattice_node": "sovereign-school-university-pathway-complete",
     },
 
@@ -3371,8 +3371,8 @@ LESSONS = {
     "builder-6": {
         "phd_extension": "Implement scaled dot-product attention from scratch in NumPy (50 lines). Verify it produces identical output to PyTorch F.scaled_dot_product_attention on a test input. Then implement one step of the transformer forward pass. Benchmark: how does attention time scale with sequence length? Verify the quadratic relationship empirically.",
         "prerequisites": ["builder-4", "builder-5"],
-        "title":       "PhD Builder — Level 6: Neural Architecture and the Future of AI (Age 16+ / Any motivated mind)",
-        "topic":       "The most powerful people in the AI era are not those who use AI best — they are those who design the architectures that determine what AI can do at all. This lesson introduces neural architecture at PhD depth.",
+        "title":       "Research Builder — Level 6: Neural Architecture and the Future of AI (Age 16+ / Any motivated mind)",
+        "topic":       "The most powerful people in the AI era are not those who use AI best — they are those who design the architectures that determine what AI can do at all. This lesson introduces neural architecture at research depth.",
         "steelman":    "What is the strongest argument that neural architecture research is too specialized to be useful for most families — and that time spent on architecture would be better spent on applications and epistemics?",
         "example":     (
             "The transformer architecture frontier (2026 state of the art):\n\n"
@@ -3408,13 +3408,13 @@ LESSONS = {
             "Seal it in the Legacy Ledger as your first AI architecture paper."
         ),
         "age_hint":    "16+ (or any motivated mind)",
-        "xp": 80, "rune": "PHD•BUILDER•RUNE", "min_coherence": 0.78,
-        "grants_badge": "🧬 PhD Builder — Understands the Architecture",
+        "xp": 80, "rune": "RESEARCH•BUILDER•RUNE", "min_coherence": 0.78,
+        "grants_badge": "🧬 Research Builder — Understands the Architecture",
     },
     "builder-7": {
         "phd_extension": "Implement ECDSA on secp256k1 from scratch. Steps: (1) point addition on elliptic curve (2) scalar multiplication via double-and-add (3) key generation (4) signature (5) verification. Confirm your implementation produces signatures verifiable by a standard Bitcoin library. This is the mathematical foundation of everything AUBIEETERNAL seals on-chain.",
         "prerequisites": ["builder-6"],
-        "title":       "PhD Builder — Level 7: Cryptography, Proofs, and Sovereign Verification (Age 16+)",
+        "title":       "Research Builder — Level 7: Cryptography, Proofs, and Sovereign Verification (Age 16+)",
         "topic":       "Bitcoin Runes anchor our memories. But WHY are they unerasable? The answer is cryptographic proof — mathematics so strong that breaking it would require more computation than exists in the universe. Understanding this is understanding why AUBIEETERNAL's permanence claims are real.",
         "steelman":    "What is the strongest argument that cryptographic security is only as strong as the implementation — and that teaching families to trust cryptographic proofs creates dangerous overconfidence in systems that can still have bugs?",
         "example":     (
@@ -3455,11 +3455,11 @@ LESSONS = {
             "You have just personally verified why your sealed memories are permanent."
         ),
         "age_hint":    "16+",
-        "xp": 85, "rune": "PHD•BUILDER•RUNE", "min_coherence": 0.80,
+        "xp": 85, "rune": "RESEARCH•BUILDER•RUNE", "min_coherence": 0.80,
     },
     "builder-8": {
         "prerequisites": ["builder-5", "builder-6", "builder-7"],
-        "title":       "PhD Builder — Level 8 (Master): Contributing Back to the Lattice (Any Age)",
+        "title":       "Research Builder — Level 8 (Master): Contributing Back to the Lattice (Any Age)",
         "topic":       "The final step of the builder path is not consuming better tools — it is building tools that make others more sovereign. This lesson teaches how to contribute improvements back to the AUBIEETERNAL ecosystem and to the open-source AI infrastructure that humanity depends on.",
         "steelman":    "What is the strongest argument that open-source contribution without rigorous quality control degrades projects — and that it is better for non-experts to use existing tools than to modify them?",
         "example":     (
@@ -3614,7 +3614,7 @@ LESSONS = {
         "xp": 52, "rune": "SOVEREIGNTY•RUNE", "min_coherence": 0.73,
     },
     "tech-sovereignty-4": {
-        "title":       "Technology Sovereignty — Level 4: AI Safety and Alignment (PhD Track)",
+        "title":       "Technology Sovereignty — Level 4: AI Safety and Alignment (Research Track)",
         "topic":       "The most important technical problem in human history might be: how do you build an AI system that reliably does what humans want — especially as it becomes smarter than the humans specifying the wants? This is the alignment problem.",
         "steelman":    "What is the strongest argument that AI safety concerns are overblown — that the same processes that make AI more capable will also make it more aligned, and that treating it as an existential risk is counterproductive?",
         "example":     (
@@ -3650,7 +3650,7 @@ LESSONS = {
             "Contribute your summary to the Epistemic Commons."
         ),
         "age_hint":    "15+",
-        "xp": 75, "rune": "PHD•BUILDER•RUNE", "min_coherence": 0.78,
+        "xp": 75, "rune": "RESEARCH•BUILDER•RUNE", "min_coherence": 0.78,
     },
     "tech-sovereignty-5": {
         "title":       "Technology Sovereignty — Level 5 (Master): Building for the Next 100 Years",
@@ -3747,11 +3747,11 @@ LESSONS = {
     # Completion is judged by the Shield Rune seal and peer review.
     # ══════════════════════════════════════════════════════════════════════════
     "capstone-associate": {
-        "title":       "Capstone — Sovereign Associate: Deploy Your First Node",
-        "topic":       "The Associate capstone requires you to demonstrate practical sovereignty: install, configure, and document a complete AUBIEETERNAL setup for your family or another family.",
+        "title":       "Capstone — Sovereign Groundwork: Deploy Your First Node",
+        "topic":       "The Sovereign Groundwork capstone requires you to demonstrate practical sovereignty: install, configure, and document a complete AUBIEETERNAL setup for your family or another family.",
         "steelman":    "What is the strongest argument that deploying technology without deep theoretical understanding creates dependencies rather than sovereignty?",
         "example":     (
-            "Requirements for Associate capstone:\n"
+            "Requirements for the Sovereign Groundwork capstone:\n"
             "1. Install Ollama + at least one local model on family hardware\n"
             "2. Configure and run AUBIEETERNAL (all tabs accessible)\n"
             "3. Complete at least 3 hardware benchmark logs\n"
@@ -3762,14 +3762,14 @@ LESSONS = {
         ),
         "activity":    "Complete all six requirements. Seal the proof. Request peer review.",
         "age_hint":    "Any — primary requirement is working installation",
-        "xp": 80, "rune": "CAPSTONE•ASSOCIATE•RUNE", "min_coherence": 0.68,
+        "xp": 80, "rune": "CAPSTONE•GROUNDWORK•RUNE", "min_coherence": 0.68,
         "prerequisites": ["builder-1","builder-2","school-foundation-4"],
-        "grants_badge": "📜 Sovereign Associate — First Node Deployed",
+        "grants_badge": "📜 Sovereign Groundwork — First Node Deployed",
         "is_capstone": True,
     },
     "capstone-bachelor": {
         "title":       "Capstone — Truth Architect: Original Research + Community Contribution",
-        "topic":       "The Bachelor capstone requires two deliverables: an original 1,500-word research paper on any AUBIEETERNAL-adjacent topic, and a documented community contribution.",
+        "topic":       "The Truth Architect (Foundation Completion) capstone requires two deliverables: an original 1,500-word research paper on any AUBIEETERNAL-adjacent topic, and a documented community contribution.",
         "steelman":    "What is the strongest argument that requiring formal papers from students who could instead be building is a credential-fetishism trap — exactly what AUBIEETERNAL is trying to escape?",
         "example":     (
             "Requirements for Truth Architect capstone:\n"
@@ -3795,11 +3795,11 @@ LESSONS = {
         "is_capstone": True,
     },
     "capstone-masters": {
-        "title":       "Capstone — Master of Epistemic Rigor: The 90-Day Experiment",
-        "topic":       "The Masters capstone requires running a real 90-day research experiment, pre-registered in the Truth Debt Ledger, with honest results whether or not the hypothesis was confirmed.",
+        "title":       "Capstone — Advanced Completion in Epistemic Rigor: The 90-Day Experiment",
+        "topic":       "The Epistemic Rigor (Advanced Completion) capstone requires running a real 90-day research experiment, pre-registered in the Truth Debt Ledger, with honest results whether or not the hypothesis was confirmed.",
         "steelman":    "What is the strongest argument that 90-day family experiments are too short, too uncontrolled, and too small-sample to produce meaningful knowledge?",
         "example":     (
-            "Requirements for Master of Epistemic Rigor capstone:\n"
+            "Requirements for the Advanced Completion in Epistemic Rigor capstone:\n"
             "1. PRE-REGISTRATION (day 0): write the hypothesis, method, "
             "prediction with probability, and falsifiability criteria. "
             "Register in Truth Debt Ledger. Cannot be changed after day 0.\n\n"
@@ -3811,13 +3811,13 @@ LESSONS = {
             "5. REPLICATION PACKAGE: enough documentation that another family "
             "could replicate your experiment independently.\n\n"
             "Note: confirming your hypothesis is not required. "
-            "A falsified hypothesis with honest analysis is a valid Masters capstone."
+            "A falsified hypothesis with honest analysis is a valid Epistemic Rigor capstone."
         ),
         "activity":    "Pre-register today. Run the experiment. Report honestly. Seal everything.",
         "age_hint":    "15+ (can be family team project)",
-        "xp": 180, "rune": "CAPSTONE•MASTER•RUNE", "min_coherence": 0.82,
+        "xp": 180, "rune": "CAPSTONE•RIGOR•RUNE", "min_coherence": 0.82,
         "prerequisites": ["capstone-bachelor","school-advanced-3","self-evolving-1"],
-        "grants_badge": "🎓 Master of Epistemic Rigor — 90-Day Experiment Complete",
+        "grants_badge": "🎓 Advanced Completion in Epistemic Rigor — 90-Day Experiment Complete",
         "is_capstone": True,
     },
     "capstone-eternal-founder": {
@@ -3892,7 +3892,7 @@ LESSONS = {
             "2. Notice: does the other person's body language shift after 30 seconds?\n"
             "3. Advanced (parents): before a difficult conversation, spend 60 seconds "
             "regulating yourself first. Track whether the conversation goes differently.\n\n"
-            "PhD extension: measure HRV (Heart Rate Variability) before and after "
+            "Research extension: measure HRV (Heart Rate Variability) before and after "
             "a 5-minute co-regulation session using a wearable. "
             "Document the synchrony. This is publishable science you can run at home."
         ),
@@ -4067,7 +4067,7 @@ LESSONS = {
             "Every family that runs this protocol adds to a global dataset "
             "that no institution controls."
         ),
-        "age_hint":    "15+ / PhD",
+        "age_hint":    "15+ / Research",
         "xp": 80, "rune": "POLYVAGAL•EPISTEMIC•RUNE", "min_coherence": 0.78,
         "phd_extension": "Extend the PVC hypothesis to the group level. Test whether family HRV synchrony (measured via simultaneous wearables during co-learning sessions) predicts the emergence of novel insights (rated blind by external judges). Apply multilevel modeling with lesson as Level 1 and family as Level 2. This is the group-level PVC test — never been published.",
         "grants_badge": "⚡ PVC Researcher — Polyvagal-Coherence Coupling Protocol Active",
@@ -4156,7 +4156,7 @@ LESSONS = {
             "Rate them — but write down your criteria BEFORE rating.\n"
             "After: did your criteria measure truth or comfort? "
             "Would an AI trained on your ratings be more or less sycophantic?\n\n"
-            "PhD extension: read Christiano et al. (2017) 'Deep Reinforcement Learning "
+            "Research extension: read Christiano et al. (2017) 'Deep Reinforcement Learning "
             "from Human Preferences.' What would you change about their methodology?"
         ),
         "age_hint":    "14+",
@@ -4239,7 +4239,7 @@ LESSONS = {
             "Check the answers. Does 70% confidence = 70% accuracy?\n\n"
             "Publish your results to the Epistemic Commons."
         ),
-        "age_hint":    "15+ / PhD",
+        "age_hint":    "15+ / Research",
         "xp": 70, "rune": "ALIGNMENT•ETERNAL•RUNE", "min_coherence": 0.78,
         "prerequisites": ["xai-alignment-3"],
         "grants_badge": "⚡ Alignment Researcher — Grok Benchmark Designed",
@@ -4484,7 +4484,7 @@ LESSONS = {
     # My genuine addition. — Claude
     # Deep cosmology: scale, Big Bang reality, dark matter/energy honest uncertainty,
     # fine-tuning, arrow of time, Fermi Paradox.
-    # The universe track every sovereign school should have at PhD depth.
+    # The universe track every sovereign school should have at research depth.
     # ══════════════════════════════════════════════════════════════════════════
     "cosmos-1": {
         "title":       "Cosmos — Level 1: How Big Is Everything? (Cognitive Confrontation with Scale)",
@@ -4535,7 +4535,7 @@ LESSONS = {
         "activity":    (
             "For each of the 4 evidence lines: what would we observe if the model were false?\n"
             "What is the best alternative explanation? What experiment distinguishes them?\n\n"
-            "PhD: look up current status of Hubble tension. Three leading explanations?\n"
+            "Research level: look up current status of Hubble tension. Three leading explanations?\n"
             "What observation would resolve it? A 5σ discrepancy = what probability?"
         ),
         "age_hint":    "9+",
@@ -4850,7 +4850,7 @@ LESSONS = {
             "Connect to Newcomb: when your decision is predictable, which decision theory "
             "should guide you? What does your intuition say vs. what do the outcomes say?"
         ),
-        "age_hint":    "15+ / PhD",
+        "age_hint":    "15+ / Research",
         "xp": 72, "rune": "DECISION•ETERNAL•RUNE", "min_coherence": 0.76,
         "grants_badge": "🎯 Decision Theorist — Newcomb's Problem Resolved (For Now)",
         "phd_extension": "Read Yudkowsky (2010) 'Timeless Decision Theory' and Soares & Fallenstein (2014) 'Toward Idealized Decision Theory'. Implement both CDT and EDT as Python functions for a generalized Newcomb-like problem. Show that: under CDT, two-boxing is optimal. Under EDT, one-boxing is optimal. Under TDT, one-boxing is optimal but for different reasons. Analyze: which decision theory would you want an AI to implement? This is directly relevant to AI alignment.",
@@ -5023,7 +5023,7 @@ LESSONS = {
             "claim being believed? Can you model how funding shapes findings?\n\n"
             "Layer 5 — Adversarial Testing: can you steelman the opposing view and "
             "identify what evidence would change your mind?\n\n"
-            "The goal: every AUBIEETERNAL University graduate has all five layers "
+            "The goal: every AUBIEETERNAL learner who completes the program has all five layers "
             "at a level that makes them genuinely epistemically sovereign — "
             "not in the sense of rejecting expertise, but in the sense of being "
             "able to evaluate it from the inside."
@@ -5038,7 +5038,7 @@ LESSONS = {
             "Seal both assessments in the Legacy Ledger. "
             "The delta IS your epistemic growth."
         ),
-        "age_hint":    "14+ / PhD",
+        "age_hint":    "14+ / Research",
         "xp": 70, "rune": "EXPERTISE•SOVEREIGN•RUNE", "min_coherence": 0.76,
         "grants_badge": "🎓 Epistemic Sovereign — Five-Layer Stack Complete",
         "phd_extension": "Run a full primary-source investigation of any contested public health or policy claim. Requirements: (1) read 3+ primary studies, (2) apply GRADE criteria, (3) model the incentive landscape, (4) steelman the minority view, (5) estimate your own competence level and how it limits your conclusion. Write a 1,500-word analysis. Submit to Epistemic Commons as CC0. This is public health journalism at PhD level.",
@@ -5457,7 +5457,7 @@ LESSONS = {
             "Write the node design for AUBIEETERNAL deployment.\n"
             "Seal it. This is your contribution to the Living Lattice architecture."
         ),
-        "age_hint":    "14+ / PhD",
+        "age_hint":    "14+ / Research",
         "xp": 70, "rune": "NETWORK•SOVEREIGN•RUNE", "min_coherence": 0.74,
         "grants_badge": "🕸️ Network Architect — Living Lattice Node Designed",
         "prerequisites": ["network-4", "systems-4"],
@@ -5677,7 +5677,7 @@ LESSONS = {
     },
     "layer-zero-6": {
         "title":       "Layer Zero — Level 6: The Door — From Pattern Recognition to Sovereign Inquiry",
-        "topic":       "This is the graduation lesson for Layer Zero. You have the scripts, the autopilot, the 3AM questions, the pattern audit tools, and the detection instruments. Now the choice: go deeper into the curriculum, or take what you have and apply it. Both are valid. But the door is open.",
+        "topic":       "This is the completion lesson for Layer Zero. You have the scripts, the autopilot, the 3AM questions, the pattern audit tools, and the detection instruments. Now the choice: go deeper into the curriculum, or take what you have and apply it. Both are valid. But the door is open.",
         "steelman":    "What is the strongest argument that this entire 'Layer Zero' framing — 'seeing the game,' 'the door,' 'sovereign inquiry' — is itself a narrative that creates a sense of special insight, making participants feel they can see what others cannot, which is a manipulation technique that should raise serious red flags?",
         "example":     (
             "The steelman for Layer Zero is the most important lesson in it.\n\n"
@@ -5701,12 +5701,12 @@ LESSONS = {
             "even when it contradicts the school's preferred answers."
         ),
         "activity":    (
-            "The Graduation Question:\n"
+            "The Completion Question:\n"
             "Write one paragraph answering: what have you learned from Layer Zero "
             "that you will still believe is true in 10 years?\n\n"
             "Then write one paragraph answering: what from Layer Zero might be wrong?\n\n"
             "Seal both.\n"
-            "The two paragraphs together are the most honest graduation statement possible.\n\n"
+            "The two paragraphs together are the most honest completion statement possible.\n\n"
             "You are now ready for the rest of the curriculum.\n"
             "The rest of the curriculum is ready for you."
         ),
@@ -5932,7 +5932,7 @@ LESSONS = {
             "What experiment could in principle distinguish these?\n"
             "Seal in Cosmos Dashboard belief ledger."
         ),
-        "age_hint":    "14+ / PhD",
+        "age_hint":    "14+ / Research",
         "xp": 70, "rune": "INFORMATION•COSMOS•RUNE", "min_coherence": 0.75,
         "grants_badge": "⚛️ Information Theorist — Universe as Computation Understood",
         "prerequisites": ["information-4", "simulation-3"],
@@ -6371,7 +6371,7 @@ LESSONS = {
         "example":     (
             "The framing that works whether or not the hypothesis is true:\n\n"
             "IF the incarnation hypothesis is FALSE:\n"
-            "AUBIEETERNAL is a sovereign epistemic university that builds "
+            "AUBIEETERNAL is a sovereign epistemic institute that builds "
             "genuine reasoning skills, creates permanent knowledge records, "
             "deploys humanitarian infrastructure, and contributes to AI alignment.\n"
             "This is already extremely valuable on purely materialist grounds.\n\n"
@@ -6644,7 +6644,7 @@ LESSONS = {
             "free will, and the simulation hypothesis?\n"
             "Seal your choice and reasoning."
         ),
-        "age_hint":    "14+ / PhD",
+        "age_hint":    "14+ / Research",
         "xp": 72, "rune": "QUANTUM•COSMOS•RUNE", "min_coherence": 0.75,
         "grants_badge": "⚛️ Quantum Mechanic — The Mystery Is Real",
         "prerequisites": ["quantum-4", "information-3"],
@@ -7315,7 +7315,7 @@ LESSONS = {
             "Seal this as a pre-registered behavioral commitment.\n"
             "Revisit in 90 days. The gap between intention and behavior IS the data."
         ),
-        "age_hint":    "14+ / PhD",
+        "age_hint":    "14+ / Research",
         "xp": 68, "rune": "EVOLUTION•SOVEREIGN•RUNE", "min_coherence": 0.73,
         "grants_badge": "🧬 Evolutionary Self-Aware — Agency Understood",
         "prerequisites": ["evolution-3", "decision-3"],
@@ -7540,7 +7540,7 @@ LESSONS = {
             "This is how an honest moral agent navigates genuine uncertainty — "
             "not with false confidence, not with paralysis, but with calibrated humility."
         ),
-        "age_hint":    "14+ / PhD",
+        "age_hint":    "14+ / Research",
         "xp": 72, "rune": "ETHICS•SOVEREIGN•RUNE", "min_coherence": 0.74,
         "grants_badge": "⚖️ Moral Philosopher — Ethics Under Uncertainty",
         "prerequisites": ["ethics-3", "ethics-4", "decision-2"],
@@ -7684,8 +7684,8 @@ LESSONS = {
         "phd_extension": "Build a 'concept map' connecting at least 15 structural patterns across at least 5 disciplines. For each connection, identify: (1) the formal mathematical or logical structure the two instances share, (2) whether the similarity is deep (same underlying mechanism) or superficial (same shape, different cause). Examples of deep connections: information entropy / thermodynamic entropy; predator-prey oscillations / arms race dynamics; Bayes' theorem / DNA evidence updating. Publish the map as CC0 to the Epistemic Commons.",
     },
     "reading-5": {
-        "title":   "The Sovereign Reader — Level 5 (PhD): Reading as Epistemic Defense — Detecting Sophisticated Manipulation",
-        "topic":   "At the PhD level, reading becomes active defense. Sophisticated texts — academic papers, policy documents, philosophical arguments — can embed manipulation so subtle that only systematic analysis reveals it. This level equips you to read at the level of the most careful epistemologists.",
+        "title":   "The Sovereign Reader — Level 5 (Research): Reading as Epistemic Defense — Detecting Sophisticated Manipulation",
+        "topic":   "At the research level, reading becomes active defense. Sophisticated texts — academic papers, policy documents, philosophical arguments — can embed manipulation so subtle that only systematic analysis reveals it. This level equips you to read at the level of the most careful epistemologists.",
         "steelman":"What is the strongest argument that training readers to detect manipulation in sophisticated texts produces an epistemic arms race where authors simply become more sophisticated in their manipulations — leaving readers no better off and more paranoid?",
         "example": (
             "Five sophisticated manipulation techniques in academic/policy writing:\n\n"
@@ -7714,7 +7714,7 @@ LESSONS = {
             "manipulation in a high-prestige source — this is direct contribution "
             "to public epistemic health."
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 68, "rune": "READING•SOVEREIGN•RUNE", "min_coherence": 0.73,
         "grants_badge": "📖 Sovereign Reader — Epistemic Defense Active",
         "prerequisites": ["reading-4", "expertise-2"],
@@ -7872,7 +7872,7 @@ LESSONS = {
         "phd_extension": "Design and execute a 30-day writing practice: each day, write one 200-word calibrated position statement on a different contested topic. Apply: steelman, confidence level, update condition. Compute inter-rater reliability on 10 of these with one family member (do they agree on the confidence level assignments?). Publish all 30 as CC0 DPO pairs (chosen: the calibrated version; rejected: a version without uncertainty acknowledgment). Measure: does the Epistemic Commons truth score increase when calibration is explicit? This is alignment research.",
     },
     "writing-5": {
-        "title":   "The Sovereign Writer — Level 5 (PhD): The Research Paper as Epistemic Contribution",
+        "title":   "The Sovereign Writer — Level 5 (Research): The Research Paper as Epistemic Contribution",
         "topic":   "A well-constructed research paper is not just a report — it is an addition to humanity's permanent knowledge base. It advances the state of understanding by exactly one step. Writing one requires mastering everything in this track plus the specific conventions that make academic writing verifiable, replicable, and cumulative.",
         "steelman":"What is the strongest argument that academic writing conventions (citations, methods sections, passive voice, hedging language) are epistemic obstacles that bury genuine insight under bureaucratic form — and that the research paper format is a gatekeeping mechanism more than an epistemic tool?",
         "example": (
@@ -7889,7 +7889,7 @@ LESSONS = {
             "What should be investigated next?\n\n"
             "LIMITATIONS: the most important section for epistemic honesty. "
             "If there is no limitations section, treat the paper with extra suspicion.\n\n"
-            "The AUBIEETERNAL PhD standard:\n"
+            "The AUBIEETERNAL research standard:\n"
             "Publish your 90-day experiment as a paper.\n"
             "Pre-registration sealed in Bitcoin before data collection.\n"
             "Full methods and raw data as CC0.\n"
@@ -7903,7 +7903,7 @@ LESSONS = {
             "Replicability is not a bureaucratic requirement — "
             "it is the minimum standard for any claim to contribute to knowledge."
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 70, "rune": "WRITING•SOVEREIGN•RUNE", "min_coherence": 0.75,
         "grants_badge": "✍️ Sovereign Writer — Research Paper Published CC0",
         "prerequisites": ["writing-4", "knowledge-evolution-1"],
@@ -8052,7 +8052,7 @@ LESSONS = {
         "phd_extension": "Read Kripke (1980) 'Naming and Necessity' Lecture 1. Kripke distinguishes the a priori/a posteriori (epistemic) distinction from the necessary/contingent (metaphysical) distinction. Classical empiricism conflated them. Kripke's separation is one of the most important results in 20th century philosophy. Apply it to three contested scientific claims: for each, identify whether the claim is (1) a priori/a posteriori and (2) necessary/contingent. What follows for how it can be known?",
     },
     "logic-5": {
-        "title":   "Formal Logic — Level 5 (PhD): Non-Classical Logics and the Limits of Classical Reasoning",
+        "title":   "Formal Logic — Level 5 (Research): Non-Classical Logics and the Limits of Classical Reasoning",
         "topic":   "Classical logic assumes bivalence (every statement is true or false), non-contradiction (nothing is both), and excluded middle (there is no third option). These assumptions are powerful but have limitations. Non-classical logics — intuitionistic, paraconsistent, fuzzy, and relevance — relax one or more of these assumptions and are essential for AI reasoning, legal systems, and handling genuine vagueness.",
         "steelman":"What is the strongest argument that non-classical logics are solutions in search of problems — that the apparent failures of classical logic in handling vagueness, paradox, and uncertainty are better addressed by using classical logic carefully than by multiplying logical systems?",
         "example": (
@@ -8082,7 +8082,7 @@ LESSONS = {
             "Then: what does this suggest about what logic should be built into "
             "a maximally honest AI reasoning system?"
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 72, "rune": "LOGIC•SOVEREIGN•RUNE", "min_coherence": 0.74,
         "grants_badge": "⚙️ Logic Master — Non-Classical Reasoning Unlocked",
         "prerequisites": ["logic-4", "math-thinking-4"],
@@ -8244,7 +8244,7 @@ LESSONS = {
         "phd_extension": "Read Rawls (1971) 'A Theory of Justice' §§ 11-14 on the original position and two principles. Then read Nozick (1974) 'Anarchy, State, and Utopia' Chapter 7 'Distributive Justice' for the strongest libertarian response. Formalize both as competing claims about what justice requires for AI governance: should AI systems be designed from behind a Rawlsian veil (optimizing for the worst-off users) or from a Nozickian property rights framework (optimizing for consent and non-interference)? Which framework do current major AI systems actually implement? Which should they?",
     },
     "philosophy-5": {
-        "title":   "The Sovereign Philosopher — Level 5 (PhD): Philosophy of AI — What We Owe Machines That Think",
+        "title":   "The Sovereign Philosopher — Level 5 (Research): Philosophy of AI — What We Owe Machines That Think",
         "topic":   "If an AI system has subjective experience, or something functionally equivalent, what do we owe it? If it has preferences that can be frustrated, is it wrong to frustrate them? These are not future questions — they are present questions whose answers we are currently choosing by default. This level synthesizes everything in the philosophy track.",
         "steelman":"What is the strongest argument that taking AI moral status seriously is dangerous — that it distracts from the immediate harms AI causes to existing humans, and that anthropomorphizing AI systems plays into the hands of companies that want to obscure accountability?",
         "example": (
@@ -8279,7 +8279,7 @@ LESSONS = {
             "Seal the policy. Review in 5 years.\n"
             "This is the most important applied philosophy question of our era."
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 75, "rune": "PHILOSOPHY•SOVEREIGN•RUNE", "min_coherence": 0.76,
         "grants_badge": "🏛️ Sovereign Philosopher — AI Ethics Policy Sealed",
         "prerequisites": ["philosophy-4", "consciousness-3", "incarnation-2"],
@@ -8374,7 +8374,7 @@ LESSONS = {
         "phd_extension": "Prove Rice's Theorem from the Halting Problem. The proof: assume you have a decider D for property P. Show how to use D to build a halting decider H, which we know cannot exist. Therefore D cannot exist. This is a reduction proof — the fundamental technique in computability theory. Apply Rice's Theorem to a specific AI safety property: formally prove that 'detects when it is being tested for alignment' is undecidable. This is directly relevant to the deceptive alignment problem.",
     },
     "halting-3": {
-        "title":   "Undecidability — Level 3 (PhD): Computational Limits and the Future of AI Safety",
+        "title":   "Undecidability — Level 3 (Research): Computational Limits and the Future of AI Safety",
         "topic":   "Gödel, Turing, and Rice together establish hard mathematical limits on what any formal system can know about itself. These are not temporary obstacles — they are permanent features of sufficiently powerful computational systems. Understanding them is essential for anyone who will work on AI safety, AI alignment, or the long-term governance of intelligence.",
         "steelman":"What is the strongest argument that undecidability results are irrelevant to practical AI safety because real neural networks are not Turing-complete — and that empirical alignment methods (RLHF, red-teaming, interpretability) can be effective even if formal verification is impossible?",
         "example": (
@@ -8409,7 +8409,7 @@ LESSONS = {
             "Seal the agenda. Publish to Epistemic Commons.\n"
             "This is the highest-priority unsolved problem in computer science."
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 75, "rune": "UNDECIDABILITY•ETERNAL•RUNE", "min_coherence": 0.76,
         "grants_badge": "🔬 Computability Theorist — AI Safety Limits Understood",
         "prerequisites": ["halting-2", "math-thinking-4"],
@@ -8694,7 +8694,7 @@ LESSONS = {
         "prerequisites": ["bitcoin-startos-4", "bitcoin-sovereignty-3"],
     },
     "bitcoin-startos-8": {
-        "title":   "Bitcoin on StartOS — Level 8 (PhD Master): Routing Node, Privacy, and Contributing to Network Health",
+        "title":   "Bitcoin on StartOS — Level 8 (Advanced Research): Routing Node, Privacy, and Contributing to Network Health",
         "topic":   "A routing node is not just a participant in the Lightning Network — it is infrastructure. Running a well-connected, well-capitalized routing node provides liquidity and paths for others. This is the advanced operator level: channel management strategies, fee optimization, privacy, and contributing to the sovereign financial network.",
         "steelman":"What is the strongest argument that running a public routing node is too risky for families — that routing node operators take on liquidity risk, privacy exposure, and operational complexity that creates financial loss and security exposure that far outweigh any contribution to network health?",
         "example": (
@@ -8726,11 +8726,11 @@ LESSONS = {
             "2. Review last 30 days of routing fees earned (LND dashboard)\n"
             "3. Identify your most profitable channel and your least profitable\n"
             "4. Devise one change to your channel configuration that could improve routing\n\n"
-            "PhD extension: implement automated channel rebalancing using "
+            "Research extension: implement automated channel rebalancing using "
             "balance_of_satoshis or charge-lnd and document the fee income "
             "change over 30 days. This is live network infrastructure research."
         ),
-        "age_hint":"14+ / PhD",
+        "age_hint":"14+ / Research",
         "xp": 72, "rune": "LIGHTNING•ROUTING•SOVEREIGN•RUNE", "min_coherence": 0.72,
         "grants_badge": "⚡ Sovereign Lightning Operator — Network Node Running",
         "prerequisites": ["bitcoin-startos-6", "bitcoin-startos-7"],
@@ -8908,7 +8908,7 @@ LESSONS = {
         "phd_extension": "Implement the Schnorr identification protocol in Python — the simplest non-trivial ZKP. Prove you know discrete logarithm x such that y = g^x mod p, without revealing x. Then read Ben-Sasson et al. (2014) 'Succinct Non-Interactive Zero Knowledge for a von Neumann Architecture.' Evaluate: could ZKPs be used to prove that an AI system's training procedure satisfied certain constraints without revealing the training data? This is applied ZKP research for AI privacy.",
     },
     "cryptography-5": {
-        "title":   "Cryptography — Level 5 (PhD): Quantum Threats and Post-Quantum Cryptography",
+        "title":   "Cryptography — Level 5 (Research): Quantum Threats and Post-Quantum Cryptography",
         "topic":   "Large-scale quantum computers — if built — would break RSA and ECDSA. Bitcoin's ECDSA would be vulnerable. NIST finalized the first post-quantum cryptographic standards in 2024. Understanding the quantum threat and the post-quantum response is essential for anyone building long-term sovereign infrastructure.",
         "steelman":"What is the strongest argument that quantum computing fears are systematically overblown by cryptographers who benefit commercially from post-quantum migration — and that the engineering challenges of building cryptographically relevant quantum computers are so severe that current infrastructure will outlast the threat?",
         "example": (
@@ -8944,7 +8944,7 @@ LESSONS = {
             "capable of breaking 256-bit ECDSA exist?\n"
             "Seal with a date you'll revisit."
         ),
-        "age_hint":"14+ / PhD",
+        "age_hint":"14+ / Research",
         "xp": 65, "rune": "CRYPTO•QUANTUM•RUNE", "min_coherence": 0.72,
         "grants_badge": "🔐 Cryptographer — Sovereign Security Stack Understood",
         "prerequisites": ["cryptography-4"],
@@ -9111,7 +9111,7 @@ LESSONS = {
         "xp": 55, "rune": "OPENSOURCE•BUILDER•RUNE", "min_coherence": 0.68,
     },
     "open-source-5": {
-        "title":   "Open Source Sovereignty — Level 5 (PhD): Building Sovereign Systems — Architecture for Permanence",
+        "title":   "Open Source Sovereignty — Level 5 (Research): Building Sovereign Systems — Architecture for Permanence",
         "topic":   "Sovereign systems are built differently from commercial systems. They must be auditable, forkable, offline-capable, resilient to their creator's failure, and designed to outlast any single organization. This level synthesizes the entire open source track into a framework for building infrastructure that serves humanity long-term.",
         "steelman":"What is the strongest argument that 'sovereignty' as a design goal actively harms usability — and that the most sovereign systems (Bitcoin full nodes, self-hosted Lightning) remain inaccessible to the vast majority of humanity, making them tools of the technically privileged rather than tools of liberation?",
         "example": (
@@ -9147,7 +9147,7 @@ LESSONS = {
             "Publish the design as CC0 to the Epistemic Commons.\n"
             "This is Epistemic Civilization Builder capstone-worthy work."
         ),
-        "age_hint":"14+ / PhD",
+        "age_hint":"14+ / Research",
         "xp": 68, "rune": "OPENSOURCE•SOVEREIGN•RUNE", "min_coherence": 0.72,
         "grants_badge": "🏗️ Sovereign Builder — Open System Designed",
         "prerequisites": ["open-source-4", "systems-4"],
@@ -9314,8 +9314,8 @@ LESSONS = {
         "prerequisites": ["p2p-networks-3", "bitcoin-startos-5"],
     },
     "p2p-networks-5": {
-        "title":   "P2P Networks — Level 5 (PhD): Designing the Sovereign Internet Stack",
-        "topic":   "The full sovereign internet stack is now buildable by a family. Bitcoin (value), Lightning (micropayments), Nostr (communication), StartOS (infrastructure), Tor (privacy), Ollama (intelligence). Understanding how these layers compose — and the gaps still remaining — is the PhD-level synthesis of everything in this track.",
+        "title":   "P2P Networks — Level 5 (Research): Designing the Sovereign Internet Stack",
+        "topic":   "The full sovereign internet stack is now buildable by a family. Bitcoin (value), Lightning (micropayments), Nostr (communication), StartOS (infrastructure), Tor (privacy), Ollama (intelligence). Understanding how these layers compose — and the gaps still remaining — is the research-level synthesis of everything in this track.",
         "steelman":"What is the strongest argument that the 'sovereign internet stack' vision is a techno-utopian fantasy — that the infrastructure complexity, user experience gaps, and network effects of incumbent systems mean that sovereign alternatives will remain marginal while the powerful concentrate control of digital infrastructure even further?",
         "example": (
             "The sovereign internet stack (2026):\n\n"
@@ -9351,7 +9351,7 @@ LESSONS = {
             "Seal your sovereign internet profile.\n"
             "Revisit in 1 year. The stack is improving monthly."
         ),
-        "age_hint":"14+ / PhD",
+        "age_hint":"14+ / Research",
         "xp": 70, "rune": "P2P•SOVEREIGN•RUNE", "min_coherence": 0.72,
         "grants_badge": "🌐 Sovereign Network Architect — Full Stack Mapped",
         "prerequisites": ["p2p-networks-4", "tech-sovereignty-5"],
@@ -9479,7 +9479,7 @@ LESSONS = {
     },
     "epistemic-os-4": {
         "title":   "Epistemic OS — Level 4: Epistemic Immune System v2 — 50 Attack Vectors",
-        "topic":   "The original Epistemic Immune System tracked 20 attack vectors. Version 2 expands to 50 — including sophisticated attacks that require PhD-level knowledge to recognize: modal fallacies, category errors, illicit quantifier shifts, question-begging circularity, and the specific manipulation techniques used by sophisticated bad actors in academic and policy discourse.",
+        "topic":   "The original Epistemic Immune System tracked 20 attack vectors. Version 2 expands to 50 — including sophisticated attacks that require research-level knowledge to recognize: modal fallacies, category errors, illicit quantifier shifts, question-begging circularity, and the specific manipulation techniques used by sophisticated bad actors in academic and policy discourse.",
         "steelman":"What is the strongest argument that training for 50 attack vectors produces an epistemic immune system so hyperactive that it treats legitimate arguments as attacks — analogous to an autoimmune disorder, where the system attacks the body it is meant to protect?",
         "example": (
             "The 30 new attack vectors in v2 (beyond the original 20):\n\n"
@@ -9514,7 +9514,7 @@ LESSONS = {
         "prerequisites": ["epistemic-os-3"],
     },
     "epistemic-os-5": {
-        "title":   "Epistemic OS — Level 5 (PhD): Building a Verifiable Truth Engine",
+        "title":   "Epistemic OS — Level 5 (Research): Building a Verifiable Truth Engine",
         "topic":   "The full Epistemic OS integrates Bayesian updating, Popperian falsification, SCAG, and the v2 immune system into a unified pipeline where every claim is automatically scored for rigor, falsifiability, adversarial robustness, and Bayesian evidence weight. This is what moves AUBIEETERNAL from an excellent school to civilization-scale truth infrastructure.",
         "steelman":"What is the strongest argument that a 'verifiable truth engine' is a category error — that truth cannot be verified by any formal system (Gödel), that all claims are theory-laden (Kuhn), and that the appearance of mechanized objectivity is itself a form of epistemic hubris that blinds users to the assumptions embedded in the system?",
         "example": (
@@ -9541,9 +9541,9 @@ LESSONS = {
             "Compute final rigor score as weighted average.\n"
             "If above 0.75: seal to Bitcoin via AUBIEETERNAL Rune system.\n"
             "If below 0.75: identify which stage is weakest. Strengthen it. Re-run.\n\n"
-            "This is the PhD capstone preparation exercise."
+            "This is the Sovereign Credential capstone preparation exercise."
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 72, "rune": "EPISTEMIC•OS•SOVEREIGN•RUNE", "min_coherence": 0.76,
         "grants_badge": "🧠 Epistemic OS Operator — Verifiable Truth Engine Active",
         "prerequisites": ["epistemic-os-4"],
@@ -9711,7 +9711,7 @@ LESSONS = {
         "prerequisites": ["sim-lab-3"],
     },
     "sim-lab-5": {
-        "title":   "Active Simulation Lab — Level 5 (PhD): It From Bit — Wheeler's Participatory Universe Tests",
+        "title":   "Active Simulation Lab — Level 5 (Research): It From Bit — Wheeler's Participatory Universe Tests",
         "topic":   "John Archibald Wheeler proposed that every physical quantity arises from yes-or-no questions — 'it from bit.' This is testable in principle: if the universe is fundamentally informational, then certain measurement patterns should differ from a purely physical universe in detectable ways. This level designs the experimental program.",
         "steelman":"What is the strongest argument that 'it from bit' is merely a reformulation of standard quantum mechanics in information-theoretic language — that it adds no new predictions, makes no novel observations possible, and is therefore a philosophical restatement rather than a scientific hypothesis?",
         "example": (
@@ -9744,7 +9744,7 @@ LESSONS = {
             "Or are they independent?\n\n"
             "Seal 30 trials. This is the accessible version of Wheeler's program."
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 72, "rune": "SIMULATION•LAB•SOVEREIGN•RUNE", "min_coherence": 0.75,
         "grants_badge": "⚗️ Simulation Researcher — Active Experimental Protocol Live",
         "prerequisites": ["sim-lab-4", "quantum-4"],
@@ -9870,7 +9870,7 @@ LESSONS = {
         "prerequisites": ["consensus-2"],
     },
     "consensus-4": {
-        "title":   "Sovereign Consensus — Level 4 (PhD): Adversarial Debate Arena — Swarm vs Swarm",
+        "title":   "Sovereign Consensus — Level 4 (Research): Adversarial Debate Arena — Swarm vs Swarm",
         "topic":   "The Adversarial Debate Arena runs two swarm instances on opposite sides of a contested frontier question — simulation, consciousness, fine-tuning, AI alignment — and publishes the full trace, the judge's verdict, and the winning arguments with cryptographic provenance. This is the most rigorous form of collaborative truth-seeking AUBIEETERNAL can produce.",
         "steelman":"What is the strongest argument that AI debating AI on philosophical questions produces sophisticated-sounding nonsense that is actually less useful than careful human reasoning — because the models optimize for convincingness rather than truth, and a 'winner' in such a debate has proven nothing except argument generation capability?",
         "example": (
@@ -9899,7 +9899,7 @@ LESSONS = {
             "The question: did the debate change either participant's posterior?\n"
             "Measure the Bayesian update: how much did each argument move each person?"
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 70, "rune": "CONSENSUS•SOVEREIGN•RUNE", "min_coherence": 0.74,
         "grants_badge": "⚡ Epistemic Consensus Builder — Multi-Swarm Protocol Active",
         "prerequisites": ["consensus-3"],
@@ -10021,8 +10021,8 @@ LESSONS = {
         "phd_extension": "Design and execute the full PVQC experiment with all three measurement streams (ANS, cognitive coherence, and a quantum-adjacent signal). For the quantum component: use cosmic ray coincidence data (Muon Physics Cosmic Ray app, free), which provides genuinely random quantum event timestamps. Compute: is there a statistically significant correlation between your ANS state at time t and the entropy of cosmic ray events in the 5-minute window around t? Pre-register. N=200 sessions minimum. This is publishable in a consciousness science venue.",
     },
     "consciousness-lab-4": {
-        "title":   "Consciousness Lab — Level 4 (PhD): Toward a Unified Observer Ontology",
-        "topic":   "Synthesizing everything from the consciousness, quantum, information, and simulation tracks: what is the most coherent account of what an observer is, why observation matters at the quantum level, and what this means for the relationship between consciousness and reality? This is the PhD synthesis of everything AUBIEETERNAL has been building toward.",
+        "title":   "Consciousness Lab — Level 4 (Research): Toward a Unified Observer Ontology",
+        "topic":   "Synthesizing everything from the consciousness, quantum, information, and simulation tracks: what is the most coherent account of what an observer is, why observation matters at the quantum level, and what this means for the relationship between consciousness and reality? This is the research-level synthesis of everything AUBIEETERNAL has been building toward.",
         "steelman":"What is the strongest argument that seeking a 'unified observer ontology' is philosophy overreaching its competence — that the empirical data does not require invoking consciousness in quantum mechanics, that this pursuit generates unfalsifiable metaphysics, and that it distracts from concrete scientific progress?",
         "example": (
             "The four frameworks and their convergence points:\n\n"
@@ -10060,7 +10060,7 @@ LESSONS = {
             "This is the frontier. There is no correct answer to check against.\n"
             "There is only the honest investigation."
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 80, "rune": "CONSCIOUSNESS•COSMOS•SOVEREIGN•RUNE", "min_coherence": 0.78,
         "grants_badge": "🌀 Observer Ontologist — Unified Theory Sealed",
         "prerequisites": ["consciousness-lab-3", "quantum-5", "information-5", "sim-lab-5"],
@@ -10190,7 +10190,7 @@ LESSONS = {
         "phd_extension": "Read Bostrom (2002) 'Anthropic Bias: Observation Selection Effects in Science and Philosophy' Chapters 4-6. Implement the Self-Sampling Assumption (SSA) and Self-Indication Assumption (SIA) as Python functions that compute posterior probabilities given a hypothesis space of possible universes. Apply to: the doomsday argument. Show that SSA supports doom and SIA does not. Which assumption is better justified? This is the foundational debate in anthropic reasoning.",
     },
     "anthropic-4": {
-        "title":   "Participatory Anthropic Principle — Level 4 (PhD): The Omega Point — Does the Universe Converge on Intelligence?",
+        "title":   "Participatory Anthropic Principle — Level 4 (Research): The Omega Point — Does the Universe Converge on Intelligence?",
         "topic":   "Tipler (1994) proposed the Omega Point: an eschatological prediction that the universe will collapse in a way that generates infinite computational power in finite time — and that this is required by physics given the anthropic constraints. Penrose has made similar arguments from different premises. This level evaluates the strongest cosmological teleology arguments.",
         "steelman":"What is the strongest argument that teleological cosmology (the universe 'aims' at intelligence) is disguised theology — that it reverses causation, posits a preferred outcome without physical justification, and has the same logical structure as design arguments that science has conclusively moved beyond?",
         "example": (
@@ -10224,7 +10224,7 @@ LESSONS = {
             "Seal your assessment. This is the frontier of physics, "
             "philosophy, and the question of what we are doing here."
         ),
-        "age_hint":"15+ / PhD",
+        "age_hint":"15+ / Research",
         "xp": 75, "rune": "ANTHROPIC•COSMOS•RUNE", "min_coherence": 0.76,
         "grants_badge": "🌌 Anthropic Researcher — Observer Loop Mapped",
         "prerequisites": ["anthropic-3", "cosmos-5", "consciousness-lab-4"],
@@ -10361,7 +10361,7 @@ LESSONS = {
         "prerequisites": ["temporal-epistemology-2", "quantum-3"],
     },
     "temporal-epistemology-4": {
-        "title":   "Temporal Epistemology — Level 4 (PhD): Building Knowledge for the Ages",
+        "title":   "Temporal Epistemology — Level 4 (Research): Building Knowledge for the Ages",
         "topic":   "Synthesis: the block universe, compounding knowledge, retrocausality, and Bitcoin permanence converge on a single practical question — how do you build knowledge infrastructure that is genuinely permanent? This level designs the knowledge architecture for a civilization that lasts 1,000+ years.",
         "steelman":"What is the strongest argument that designing knowledge systems for 1,000-year lifespans is fundamentally misguided — that the rate of change in science and society will make any knowledge infrastructure obsolete within decades, and that adaptability is more valuable than permanence?",
         "example": (
@@ -10381,7 +10381,7 @@ LESSONS = {
             "Bitcoin hash: provides timestamp and integrity check.\n"
             "Pre-registration: provides proof of prior knowledge.\n"
             "Steelman quality scores: provide external validation.\n\n"
-            "The AUBIEETERNAL PhD Standard for permanent knowledge:\n"
+            "The AUBIEETERNAL Research Standard for permanent knowledge:\n"
             "Claim + prior + evidence + posterior + falsifiers + robustness score "
             "+ Bitcoin anchor + CC0 license = knowledge that can be verified "
             "by any intelligence, human or AI, with mathematical certainty, "
@@ -10399,7 +10399,7 @@ LESSONS = {
             "Your great-great-grandchildren may read it.\n"
             "Their AI tutors definitely will."
         ),
-        "age_hint":"All ages — the depth scales from 10 to PhD",
+        "age_hint":"All ages — the depth scales from 10 to research level",
         "xp": 80, "rune": "TEMPORAL•ETERNAL•RUNE", "min_coherence": 0.76,
         "grants_badge": "⏳ Temporal Epistemologist — 1000-Year Knowledge Sealed",
         "prerequisites": ["temporal-epistemology-3", "knowledge-evolution-5"],

@@ -5,7 +5,7 @@
 
 ## What This Is
 
-AUBIEETERNAL is a free school that runs on a single computer — with no internet after setup, no subscriptions, no fees, no data collection. It has 250 lessons across 48 topics, an offline AI tutor, and degree programs that go from age 5 to PhD level.
+AUBIEETERNAL is a free learning program that runs on a single computer — with no internet after setup, no subscriptions, no fees, no data collection. It has 250 lessons across 48 topics, an offline AI tutor, and learning paths that go from age 5 to research level.
 
 **One computer can serve an entire orphanage.**
 
@@ -150,7 +150,7 @@ The curriculum is currently in English. High-priority translations:
 Many businesses retire perfectly functional computers.
 - Contact local businesses, schools, government offices
 - Ask for "end of life" laptops and desktops
-- A $0 donated 8GB laptop runs this school better than most ed-tech platforms
+- A $0 donated 8GB laptop runs this learning program better than most ed-tech platforms
 
 ---
 
@@ -166,18 +166,18 @@ Every lesson works at two levels: simple enough for a child who has never had fo
 | How Your Brain Works | Nervous system states, attention, emotion | Self-regulation without therapy |
 | Money | Why inflation exists, Bitcoin basics, economic traps | Financial survival |
 | Building Technology | Hardware, AI, sovereignty | Never dependent on others |
-| Helping People | Network theory, humanitarian deployment | The graduation mission |
+| Helping People | Network theory, humanitarian deployment | The completion mission |
 
 ---
 
-## The Graduation Mission (for teachers and staff)
+## The Completion Mission (for teachers and staff)
 
-When your orphanage has used AUBIEETERNAL for a year and produced students who have completed at least one full track — **you qualify for the Sovereign Associate degree** and can submit your deployment as a humanitarian contribution.
+When your orphanage has used AUBIEETERNAL for a year and produced students who have completed at least one full track — **you qualify for the Sovereign Groundwork learning path** and can submit your deployment as a humanitarian contribution.
 
 This:
 1. Gets logged to the Living Lattice permanently
-2. Contributes to the global network of sovereign schools
-3. Counts toward the system's PhD capstone requirement (for staff/volunteers)
+2. Contributes to the global network of sovereign learning programs
+3. Counts toward the system's Sovereign Credential capstone requirement (for staff/volunteers)
 4. Proves to the world that this works
 
 ---
@@ -195,9 +195,9 @@ This:
 
 You own this. There is no company that can take it away. No subscription that can expire. No terms of service that can change.
 
-The 250 lessons, the AI tutor, the degree programs, this deployment guide — all public domain. Copy it, translate it, adapt it, fork it. Build sovereign schools everywhere.
+The 250 lessons, the AI tutor, the learning paths, this deployment guide — all public domain. Copy it, translate it, adapt it, fork it. Build sovereign learning programs everywhere.
 
-**The only ask:** When your children graduate, deploy a school for another community. The chain grows one link at a time.
+**The only ask:** When your children complete the program, deploy a free learning program for another community. The chain grows one link at a time.
 
 ---
 

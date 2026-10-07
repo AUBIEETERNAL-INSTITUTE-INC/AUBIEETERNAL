@@ -967,8 +967,8 @@ with st.sidebar:
             "👧 Kid Curriculum",
             "🎮 Daily Quests",
             "🃏 Flash Cards",
-            "🏛️ School Pathway",
-            "📜 Transcripts",
+            "🏛️ Learning Pathway",
+            "📜 Learning Records",
         ],
         "🎮 Games": [
             "🃏 Flash Cards",
@@ -1036,7 +1036,7 @@ with st.sidebar:
             "⚡ Bitcoin",
             "🛡️ Shield Rune",
             # School / games extras (builder-ish)
-            "🎓 University Registrar",
+            "🎓 Institute Registrar",
             "🔍 Peer Review",
             "🌐 Wisdom GDP",
             "🎓 Alumni Network",
@@ -9553,13 +9553,13 @@ if "Cosmos Dashboard" in active:
 # Foundation (5-12) → Advanced (11-15) → University (14-18+)
 # Self-upgradable at every level
 # ══════════════════════════════════════════════════════════════════════════════
-if "School Pathway" in active:
-    st.markdown('<div class="card-title">🏛️ SOVEREIGN SCHOOL — University-Level Rigor at Any Age</div>', unsafe_allow_html=True)
+if "Learning Pathway" in active:
+    st.markdown('<div class="card-title">🏛️ SOVEREIGN LEARNING PATHWAY — Real Rigor at Any Age</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="card" style="border-left:3px solid #f7931a;">
-        <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE SOVEREIGN SCHOOL PROMISE</div>
+        <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE SOVEREIGN LEARNING PROMISE</div>
         <div style="color:#8899bb;font-size:0.82rem;margin-top:6px;line-height:1.9;">
-        We operate as a school, but we teach at university level.<br>
+        We are a free learning program — not a school, college, or university — but we teach with real rigor.<br>
         Every class is self-upgradable — start where you are, go as deep as you want.<br>
         Any student who completes our full program will be ahead of most traditional college
         students if they choose to attend conventional university later.<br><br>
@@ -9570,7 +9570,7 @@ if "School Pathway" in active:
 
     # ── Three-layer display ────────────────────────────────────────────────────
     _sp_tabs = st.tabs(["🌱 Foundation (5-12)", "🔬 Advanced (11-15)",
-                         "🎓 University (14-18+)", "🔄 Systems Thinking"])
+                         "🎓 Scholar (14-18+)", "🔄 Systems Thinking"])
 
     # Define the layer content
     _layers = {
@@ -9600,18 +9600,18 @@ if "School Pathway" in active:
         "university": {
             "color": "#a020f0",
             "emoji": "🎓",
-            "desc": "College-level rigor, self-directed, portfolio-building. Genuinely ahead of most freshmen.",
+            "desc": "Advanced, self-directed rigor and portfolio-building. Genuinely ahead of most freshmen.",
             "tracks": [
                 ("Writing That Changes Minds", "Thesis, argument, steelman, conclusion. The structure that works from high school to PhD."),
                 ("Building Your Intellectual Portfolio", "The new credential is demonstrated competence. Bitcoin-timestamped. Permanently verifiable."),
                 ("Designing a Life of Compounding Inquiry", "Ten-year intellectual compound plan. The students who do this at 16 are extraordinary by 26."),
             ],
-            "badge": "🎓 University Pathway — Life of Compounding Inquiry",
+            "badge": "🎓 Scholar Pathway — Life of Compounding Inquiry",
         },
         "systems": {
             "color": "#f7931a",
             "emoji": "🔄",
-            "desc": "The lens through which everything else becomes clearer. Age 8 to PhD territory.",
+            "desc": "The lens through which everything else becomes clearer. Age 8 to research-level territory.",
             "tracks": [
                 ("Everything Is Connected", "Feedback loops. Reinforcing vs balancing. Housing trap as a systems diagram."),
                 ("Emergence", "Traffic jams, ant colonies, markets, consciousness. The whole is more than the sum."),
@@ -9649,7 +9649,7 @@ if "School Pathway" in active:
     st.markdown("""
     <div class="card">
         <div style="font-size:0.82rem;color:#8899bb;line-height:2.0;">
-        Every lesson in the Sovereign School has four upgrade paths:<br><br>
+        Every lesson in the Sovereign Learning Pathway has four upgrade paths:<br><br>
         <b style="color:#00ff88;">Level 1 (Age 5+)</b> — Core concept, family activity, reflection question<br>
         <b style="color:#00cfff;">Level 2 (Age 11+)</b> — Research context, primary sources, independent project<br>
         <b style="color:#a020f0;">Level 3 (Age 14+)</b> — Competing theories, methodology critique, original argument<br>
@@ -9683,7 +9683,7 @@ if "School Pathway" in active:
 # Age 5 → PhD. AR/Halo always-on mentor. Hardware → AI architecture → contribution.
 # ══════════════════════════════════════════════════════════════════════════════
 if "Sovereign Builder" in active:
-    st.markdown('<div class="card-title">🔧 SOVEREIGN BUILDER — Age 5 to PhD, Always Building</div>', unsafe_allow_html=True)
+    st.markdown('<div class="card-title">🔧 SOVEREIGN BUILDER — Age 5 to Research Level, Always Building</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="card" style="border-left:3px solid #f7931a;">
         <div style="color:#f7931a;font-family:Orbitron,monospace;font-size:0.78rem;">THE BUILDER'S PROMISE</div>
@@ -10063,7 +10063,7 @@ if "Sovereign Builder" in active:
             Age 5-8 (Junior Builder): Kitchen analogy, supervised hands-on, XP celebrations<br>
             Age 8-12 (Builder): Full upgrade walkthroughs, benchmark before/after, part identification<br>
             Age 13-16 (Advanced): Bottleneck analysis, quantization testing, performance optimization<br>
-            Age 16+ / PhD: Architecture deep-dives, RLHF pipeline, custom inference stack
+            Age 16+ / Research: Architecture deep-dives, RLHF pipeline, custom inference stack
             </div>""", unsafe_allow_html=True)
 
     except ImportError:
@@ -10075,9 +10075,9 @@ if "Sovereign Builder" in active:
 # TAB: UNIVERSITY REGISTRAR 🎓
 # Degree programs · Prerequisites · Capstone submission · Transcript
 # ══════════════════════════════════════════════════════════════════════════════
-if "University Registrar" in active:
-    st.markdown('<div class="card-title">🎓 SOVEREIGN UNIVERSITY — Registrar</div>', unsafe_allow_html=True)
-    st.caption("⚠️ Self-issued credential platform. Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees.")
+if "Institute Registrar" in active:
+    st.markdown('<div class="card-title">🎓 INSTITUTE REGISTRAR — Learning Paths</div>', unsafe_allow_html=True)
+    st.caption("⚠️ Self-issued credential platform. Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees. AUBIEETERNAL Institute is not a college or university and does not grant degrees.")
 
     _fid_ur = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
@@ -10095,7 +10095,7 @@ if "University Registrar" in active:
 
     # ── Current standing ───────────────────────────────────────────────────────
     _highest = _deg_data.get("highest_degree")
-    _hname   = _highest["name"] if _highest else "No degree yet"
+    _hname   = _highest["name"] if _highest else "No completion level yet"
     _hemoji  = _highest["emoji"] if _highest else "📋"
     # Keyed off degrees.py's canonical `tier`, not the display name/emoji -
     # those can change (they did, cc63eb06: "PhD" -> "Sovereign Credential")
@@ -10127,11 +10127,11 @@ if "University Registrar" in active:
     _ur4.metric("Rune %",     f"{_deg_data['child_rune_pct']:.0f}%")
 
     st.divider()
-    _ur_tabs = st.tabs(["🎓 Degrees", "📋 Transcript", "🎯 Capstone", "🔓 Prerequisites", "⚡ Mark Complete"])
+    _ur_tabs = st.tabs(["🎓 Learning Paths", "📋 Learning Record", "🎯 Capstone", "🔓 Prerequisites", "⚡ Mark Complete"])
 
     # ── Degree programs ────────────────────────────────────────────────────────
     with _ur_tabs[0]:
-        st.markdown("### Degree Programs")
+        st.markdown("### Learning Paths")
         for _d in _deg_data.get("all_degrees",[]):
             _curr_credits = _deg_data["credits"]
             _curr_coh     = _deg_data["coherence"]
@@ -10166,9 +10166,9 @@ if "University Registrar" in active:
                     badges.append(badge); _ur_session.state["badges"] = badges; _ur_session._save_state()
                 try:
                     from rune_memory import ShieldRune, RuneMemory
-                    eid = RuneMemory().record(f"DEGREE AWARDED: {_highest['name']} | Credits:{_deg_data['credits']} | Coherence:{_deg_data['coherence']}",
+                    eid = RuneMemory().record(f"LEARNING PATH COMPLETED: {_highest['name']} | Credits:{_deg_data['credits']} | Coherence:{_deg_data['coherence']}",
                                               source="registrar", coherence=_deg_data["coherence"], tags=["degree",_highest["name"].lower().replace(" ","-")])
-                    ShieldRune().seal(eid, note=f"Degree: {_highest['name']}", broadcaster=_fid_ur)
+                    ShieldRune().seal(eid, note=f"Completion: {_highest['name']}", broadcaster=_fid_ur)
                     st.success(f"✅ {_highest['emoji']} {_highest['name']} — Awarded and Bitcoin-anchored permanently.")
                     st.balloons()
                 except Exception as _e: st.success(f"✅ {_highest['emoji']} {_highest['name']} — Awarded!")
@@ -10177,7 +10177,7 @@ if "University Registrar" in active:
     with _ur_tabs[1]:
         if _ur_session:
             _completed = _ur_session.state.get("lessons_completed",[])
-            st.markdown(f"**Official Transcript** — {len(_completed)} courses completed")
+            st.markdown(f"**Learning Record** — {len(_completed)} lessons completed")
             if _completed:
                 for _lk in reversed(_completed[-15:]):
                     try:
@@ -10189,7 +10189,7 @@ if "University Registrar" in active:
                             f'</div>', unsafe_allow_html=True)
                     except Exception: pass
             else:
-                st.info("No lessons completed yet. Start learning to build your transcript.")
+                st.info("No lessons completed yet. Start learning to build your learning record.")
 
     # ── Capstone ───────────────────────────────────────────────────────────────
     with _ur_tabs[2]:
@@ -10205,9 +10205,9 @@ if "University Registrar" in active:
         """, unsafe_allow_html=True)
 
         _cap_levels = [
-            ("📜 Associate", "Deploy your first sovereign node", "capstone-associate", 0.68),
+            ("📜 Sovereign Groundwork", "Deploy your first sovereign node", "capstone-associate", 0.68),
             ("🏛️ Truth Architect", "Research paper + community contribution (10+ people)", "capstone-bachelor", 0.75),
-            ("🎓 Master", "90-day pre-registered experiment + honest results", "capstone-masters", 0.82),
+            ("🎓 Advanced Completion", "90-day pre-registered experiment + honest results", "capstone-masters", 0.82),
             ("⚡ Eternal Founder", "Build infrastructure others use + CC0 contribution", "capstone-eternal-founder", 0.88),
         ]
         # Back-compat: a family's saved lessons_completed may still carry the
@@ -10233,7 +10233,7 @@ if "University Registrar" in active:
         st.markdown("**Submit Capstone Completion**")
         _cap_select = st.selectbox("Capstone:", ["capstone-associate","capstone-bachelor","capstone-masters","capstone-eternal-founder"], key="cap_sel")
         _cap_proof  = st.text_area("Evidence / proof URL / description:", height=80, key="cap_proof")
-        _cap_peer   = st.text_input("Peer reviewer name (required for Bachelor+):", key="cap_peer")
+        _cap_peer   = st.text_input("Peer reviewer name (required for Truth Architect and above):", key="cap_peer")
         if st.button("🎓 Submit Capstone", key="cap_submit", type="primary") and _cap_proof and _ur_session:
             result = _ur_session.mark_lesson_completed(_cap_select)
             try:
@@ -10602,7 +10602,7 @@ if "Polyvagal Oracle" in active:
                     "hrv_ms":_pvc_hrv,"coherence_post":None}
             with open(_pvl,"a") as f: f.write(_jpvc.dumps(_rec)+"\n")
             st.success(f"✅ Pre-session logged — State:{_sv_int} | IA:{_pvc_ia:.2f} | Lesson:{_pvc_lesson}")
-            st.info("Complete the lesson. After, use 'Mark Complete' in University Registrar to record your coherence score.")
+            st.info("Complete the lesson. After, use 'Mark Complete' in Institute Registrar to record your coherence score.")
 
         # Simple correlation display if data exists
         import pathlib as _pp2
@@ -10854,7 +10854,7 @@ if "Welcome" in active:
     </style>
     <div class="welcome-big">🦅 Welcome to AUBIEETERNAL</div>
     <div class="welcome-sub">
-    A free school for anyone, anywhere in the world.<br>
+    A free learning program for anyone, anywhere in the world.<br>
     You do not need special glasses. You do not need to pay anything.<br>
     You do not need to be good at school already.<br><br>
     <b style="color:#f7931a;">You just need to be curious.</b>
@@ -10925,7 +10925,7 @@ if "Welcome" in active:
         ("🔧", "How to build things", "Fix computers. Set up SI. Deploy sovereign infrastructure."),
         ("📖", "How to learn anything", "Study techniques that actually work. Backed by real science."),
         ("⚖️", "How to be fair", "Ethics, law, and why justice matters."),
-        ("🌍", "How to help people", "Deploy a free school for your community when you graduate."),
+        ("🌍", "How to help people", "Deploy a free learning program for your community when you finish."),
     ]
     _pc1, _pc2 = st.columns(2)
     for _idx, (_emoji, _title, _desc) in enumerate(_tracks_preview):
@@ -11002,7 +11002,7 @@ if "Community Mode" in active:
         st.markdown("""
         <div style="font-size:1rem;color:#c8d8ff;line-height:2.2;padding:8px 0;">
         Welcome. You are in the right place.<br><br>
-        This school has <b style="color:#f7931a;">250 lessons</b> across 48 topics.<br>
+        This learning program has <b style="color:#f7931a;">250 lessons</b> across 48 topics.<br>
         You can start at any age. You can go as deep as you want.<br>
         A 7-year-old and a university professor can learn the same lesson — at different depths.<br><br>
         <b>How it works:</b><br>
@@ -11277,7 +11277,7 @@ If you deploy this school for a community:
 1. Document it: photos, number of children served, date
 2. Submit it as a humanitarian contribution in the Sovereign Builder tab
 3. This counts toward the Eternal Founder capstone requirement
-4. It contributes to the Living Lattice — the global network of sovereign schools
+4. It contributes to the Living Lattice — the global network of sovereign learning programs
 
 Every deployment is permanent. Every child you teach is part of the chain."""),
             ("📞 Getting help", """
@@ -11516,18 +11516,18 @@ python epistemic_drift_detector.py --ci
 # TAB: TRANSCRIPTS 📜
 # Bitcoin-anchored official academic transcripts
 # ══════════════════════════════════════════════════════════════════════════════
-if "Transcripts" in active:
-    st.markdown('<div class="card-title">📜 OFFICIAL TRANSCRIPT SYSTEM — Bitcoin-Anchored Credentials</div>',
+if "Learning Records" in active:
+    st.markdown('<div class="card-title">📜 LEARNING RECORDS — Bitcoin-Anchored Completion Records</div>',
                 unsafe_allow_html=True)
-    st.caption("⚠️ Self-issued credential platform. Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees.")
+    st.caption("⚠️ Self-issued credential platform. Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees. AUBIEETERNAL Institute is not a college or university and does not grant degrees.")
     _fid_tr = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
-    _tr_tabs = st.tabs(["📄 My Transcript", "🎓 Award Degree", "✅ Verify", "📊 Degrees"])
+    _tr_tabs = st.tabs(["📄 My Learning Record", "🎓 Record Completions", "✅ Verify", "📊 Learning Paths"])
 
     with _tr_tabs[0]:
-        _sname = st.text_input("Your name for the transcript:", key="tr_name",
+        _sname = st.text_input("Your name for the learning record:", key="tr_name",
                                value="Sovereign Student")
-        if st.button("🔄 Generate Transcript", key="tr_gen", type="primary"):
+        if st.button("🔄 Generate Learning Record", key="tr_gen", type="primary"):
             try:
                 from transcript_system import TranscriptGenerator
                 gen = TranscriptGenerator(_fid_tr, _sname)
@@ -11539,28 +11539,28 @@ if "Transcripts" in active:
                             f'SHA-256: {tx["sha256"]}</div>', unsafe_allow_html=True)
                 if st.button("⚡ Anchor to Bitcoin", key="tr_anchor"):
                     anchor = gen.anchor_to_bitcoin(tx)
-                    st.success(f"✅ Transcript anchored.\n\nHash: {tx['sha256'][:32]}...\n\n"
+                    st.success(f"✅ Learning record anchored.\n\nHash: {tx['sha256'][:32]}...\n\n"
                                f"This record is now permanent. Anyone can verify it.")
             except ImportError:
                 st.error("transcript_system.py not found in repo root.")
 
     with _tr_tabs[1]:
-        st.markdown("**Check degree eligibility and award new degrees.**")
-        if st.button("🎓 Check and Award Degrees", key="tr_award", type="primary"):
+        st.markdown("**Check learning-path eligibility and record new completions.**")
+        if st.button("🎓 Check and Record Completions", key="tr_award", type="primary"):
             try:
                 from transcript_system import award_if_eligible
                 new_deg = award_if_eligible(_fid_tr, st.session_state.get("kid_name","Student"))
                 if new_deg:
                     st.balloons()
-                    st.success(f"🎓 DEGREE AWARDED: {new_deg}\n\n"
-                               f"Transcript anchored to Bitcoin. Permanent record created.")
+                    st.success(f"🎓 LEARNING PATH COMPLETED: {new_deg}\n\n"
+                               f"Learning record anchored to Bitcoin. Permanent record created.")
                 else:
                     from transcript_system import get_transcript, DEGREES as _DEGS
                     tx = get_transcript(_fid_tr)
                     rec = tx["academic_record"]
-                    st.info(f"No new degrees at this time.\n\n"
+                    st.info(f"No new completions at this time.\n\n"
                             f"Credits: {rec['total_credits']} | Coherence: {rec['coherence']:.4f}")
-                    st.markdown("**Progress toward next degree:**")
+                    st.markdown("**Progress toward next learning path:**")
                     for deg in _DEGS:
                         cr_needed  = max(0, deg["credits"] - rec["total_credits"])
                         coh_needed = max(0, deg["coherence"] - rec["coherence"])
@@ -11577,9 +11577,9 @@ if "Transcripts" in active:
                 st.error("transcript_system.py not found.")
 
     with _tr_tabs[2]:
-        st.markdown("**Verify any transcript by its SHA-256 hash.**")
-        _verify_hash = st.text_input("Paste transcript SHA-256 hash:", key="tr_verify_hash")
-        _verify_json = st.text_area("Paste transcript JSON:", height=100, key="tr_verify_json")
+        st.markdown("**Verify any learning record by its SHA-256 hash.**")
+        _verify_hash = st.text_input("Paste learning record SHA-256 hash:", key="tr_verify_hash")
+        _verify_json = st.text_area("Paste learning record JSON:", height=100, key="tr_verify_json")
         if st.button("✅ Verify", key="tr_verify_btn") and _verify_hash and _verify_json:
             import json as _jv, hashlib as _hv
             try:
@@ -11590,17 +11590,17 @@ if "Transcripts" in active:
                 )
                 computed = _hv.sha256(canonical.encode()).hexdigest()
                 if computed == _verify_hash:
-                    st.success(f"✅ VERIFIED — This transcript is authentic.\n\n"
+                    st.success(f"✅ VERIFIED — This learning record is authentic.\n\n"
                                f"Student: {tx_obj.get('student_name')}\n"
-                               f"Degrees: {tx_obj.get('academic_record',{}).get('degrees_earned')}\n"
+                               f"Completions: {tx_obj.get('academic_record',{}).get('degrees_earned')}\n"
                                f"Credits: {tx_obj.get('academic_record',{}).get('total_credits')}")
                 else:
-                    st.error("❌ Hash mismatch — transcript has been modified.")
+                    st.error("❌ Hash mismatch — learning record has been modified.")
             except Exception as e:
                 st.error(f"Parse error: {e}")
 
     with _tr_tabs[3]:
-        st.markdown("**All degree programs and requirements.**")
+        st.markdown("**All learning paths and requirements.**")
         try:
             from transcript_system import DEGREES as _DEGS2
             for d in _DEGS2:
@@ -11631,7 +11631,7 @@ if "Peer Review" in active:
         _pr_title    = st.text_input("Title:", key="pr_title")
         _pr_abstract = st.text_area("Abstract (250 words max):", height=80, key="pr_abs")
         _pr_content  = st.text_area("Full capstone content:", height=200, key="pr_content")
-        _pr_degree   = st.selectbox("Degree level:", [
+        _pr_degree   = st.selectbox("Learning path:", [
             "truth_architect", "master_epistemic_rigor", "eternal_founder",
             "startos_operator", "sovereign_ai_researcher", "epistemic_civilization_builder"
         ], key="pr_degree")
@@ -11661,7 +11661,7 @@ if "Peer Review" in active:
                 for sub in open_subs[:5]:
                     with st.expander(f"📄 {sub['title']} — {sub['degree_level']}"):
                         st.markdown(f"**Abstract:** {sub.get('abstract','')}")
-                        st.markdown(f"**Degree:** {sub['degree_level']}")
+                        st.markdown(f"**Learning path:** {sub['degree_level']}")
 
                         _reviewer_name = st.text_input("Your name:", key=f"rev_name_{sub['submission_id']}")
                         _reviewer_coh  = st.slider("Your coherence:", 0.5, 1.0, 0.75, 0.01,
@@ -11726,7 +11726,7 @@ if "Peer Review" in active:
                     f'<span style="color:#445577;">(max {item["max_score"]} pts)</span><br>'
                     f'<span style="color:#8899bb;font-size:0.82rem;">{item["description"]}</span>'
                     f'</div>', unsafe_allow_html=True)
-            st.markdown("**Total: 100 points.** Pass threshold varies by degree level.")
+            st.markdown("**Total: 100 points.** Pass threshold varies by learning path.")
         except ImportError:
             st.error("peer_review_system.py not found.")
 
@@ -11836,7 +11836,7 @@ if "Alumni Network" in active:
     _fid_al = st.session_state.get("current_family", {}).get("family_id", "default") \
               if st.session_state.get("current_family") else "default"
 
-    _al_tabs = st.tabs(["🌐 Lattice State", "📍 Log Deployment", "🎓 Graduates", "🌍 Impact"])
+    _al_tabs = st.tabs(["🌐 Lattice State", "📍 Log Deployment", "🎓 Completions", "🌍 Impact"])
 
     with _al_tabs[0]:
         if st.button("🔄 Refresh Lattice", key="al_refresh", type="primary"):
@@ -11847,7 +11847,7 @@ if "Alumni Network" in active:
                 swarm  = state["swarm"]
 
                 _alc1, _alc2, _alc3 = st.columns(3)
-                _alc1.metric("Total Graduates",   state["graduates"]["total"])
+                _alc1.metric("Total Completions",   state["graduates"]["total"])
                 _alc2.metric("Deployments",        impact["total_deployments"])
                 _alc3.metric("People Served",      impact["total_people_served"])
 
@@ -11857,12 +11857,12 @@ if "Alumni Network" in active:
                 _alc6.metric("Coherence",           f"{swarm['coherence']:.6f}")
 
                 if state["graduates"]["by_degree"]:
-                    st.markdown("**Graduates by degree:**")
+                    st.markdown("**Completions by learning path:**")
                     for deg, count in state["graduates"]["by_degree"].items():
                         st.markdown(
                             f'<div style="padding:3px 0;border-bottom:1px solid #1e2a3a;">'
                             f'<span style="color:#f7931a;">{deg}</span> '
-                            f'<span style="color:#8899bb;">— {count} graduate{"s" if count != 1 else ""}</span>'
+                            f'<span style="color:#8899bb;">— {count} completion{"s" if count != 1 else ""}</span>'
                             f'</div>', unsafe_allow_html=True)
             except ImportError:
                 st.error("alumni_deployment_tracker.py not found.")
@@ -11893,13 +11893,13 @@ if "Alumni Network" in active:
                 st.error("alumni_deployment_tracker.py not found.")
 
     with _al_tabs[2]:
-        st.markdown("**AUBIEETERNAL graduates — the Living Lattice.**")
+        st.markdown("**AUBIEETERNAL completions — the Living Lattice.**")
         try:
             from alumni_deployment_tracker import AlumniRegistry
             registry   = AlumniRegistry()
             graduates  = registry.get_all_graduates(public_only=True)
             if not graduates:
-                st.info("No public graduates recorded yet. Be the first.")
+                st.info("No public completions recorded yet. Be the first.")
             for g in graduates[:20]:
                 st.markdown(
                     f'<div class="memory-node">'

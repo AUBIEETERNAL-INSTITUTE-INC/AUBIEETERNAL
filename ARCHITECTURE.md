@@ -1,5 +1,5 @@
 # AUBIEETERNAL — Architecture Guide
-## Version 69.0 | Sovereign University Stack
+## Version 69.0 | Sovereign Learning Stack
 
 ---
 

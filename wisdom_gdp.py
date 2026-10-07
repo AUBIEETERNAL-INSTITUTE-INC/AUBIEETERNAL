@@ -258,7 +258,7 @@ class WisdomGDPCalculator:
         if wgdp >= 80:
             tier = "🌟 Civilization-Grade"
         elif wgdp >= 65:
-            tier = "🎓 University-Grade"
+            tier = "🎓 Scholar-Grade"
         elif wgdp >= 50:
             tier = "📚 Study-Group-Grade"
         elif wgdp >= 30:

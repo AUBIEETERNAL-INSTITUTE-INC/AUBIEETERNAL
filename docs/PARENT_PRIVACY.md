@@ -22,7 +22,7 @@ On a typical home install, learning progress lives in local files under `/mnt/ma
 
 **Not stored today as a permanent kid profile:** full chat transcripts, emotion scores, personality scores, or ad IDs.
 
-Other institute files on the machine (swarm logs, curriculum drafts, etc.) are about the **system**, not a child's private chat. Academic "transcript" features, if used, are separate learning records you choose to generate — not chat logs.
+Other institute files on the machine (swarm logs, curriculum drafts, etc.) are about the **system**, not a child's private chat. "Learning record" features (informal progress records, not academic transcripts), if used, are separate records you choose to generate — not chat logs.
 
 ## Our principles
 

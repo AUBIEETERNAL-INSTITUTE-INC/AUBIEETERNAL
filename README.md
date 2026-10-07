@@ -1,25 +1,25 @@
 <div align="center">
 
 # 🦅 AUBIEETERNAL
-## Open Source Sovereign School Teaching AS A University
+## Open Source Sovereign Learning Program — Free, Offline, Self-Paced
 
 **Free education for every family, every orphanage, every community on earth.**
 
 [![Lessons](https://img.shields.io/badge/Curriculum-265%20Lessons-blue?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 [![Tracks](https://img.shields.io/badge/Tracks-51+-green?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
-[![Degrees](https://img.shields.io/badge/Degrees-4%20Programs-purple?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
+[![Learning Paths](https://img.shields.io/badge/Learning%20Paths-4-purple?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 [![Reliability](https://img.shields.io/badge/Reliability-HermesBench%20Verified-00cfff?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 [![License](https://img.shields.io/badge/License-CC0%20Public%20Domain-orange?style=flat-square)](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
 
 No tuition. No paperwork. No gatekeepers. No special hardware.  
-Your degree is sealed on Bitcoin. The knowledge belongs to no one and cannot be erased.  
+Your completion record is sealed on Bitcoin. The knowledge belongs to no one and cannot be erased.  
 **One $200 laptop. 30 children. A projector. Completely offline.**
 
-[Quick Start](#quick-start) · [Orphanages](#-for-orphanages) · [Degrees](#-four-degree-programs) · [Curriculum](#-265-lessons-51-tracks) · [Tools](#-tools) · [Reliability](#-reliability) · [API](#-epistemic-commons-api)
+[Quick Start](#quick-start) · [Orphanages](#-for-orphanages) · [Learning Paths](#-four-learning-paths--bitcoin-anchored) · [Curriculum](#-265-lessons-51-tracks) · [Tools](#-tools) · [Reliability](#-reliability) · [API](#-epistemic-commons-api)
 
-> ⚠️ **Self-issued credential platform.** Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees.
+> ⚠️ **Self-issued credential platform.** Not accredited by any Department of Education-recognized agency. Credentials are Bitcoin-anchored completions, not academic degrees. AUBIEETERNAL Institute is not a college or university and does not grant degrees.
 
-🐾 **Optional hardware add-on:** [Aubie the Robot Dog](AUBIE_DOG.md) — if you want a physical build, the same SI voice/vision assistant runs on a 12-servo quadruped. The school works fully without it.
+🐾 **Optional hardware add-on:** [Aubie the Robot Dog](AUBIE_DOG.md) — if you want a physical build, the same SI voice/vision assistant runs on a 12-servo quadruped. The learning program works fully without it.
 
 </div>
 
@@ -50,20 +50,20 @@ Open the app → **🌍 Welcome** → choose your path.
 |---|---|
 | **Hardware** | Any laptop ≥8GB RAM (~$100–200 used) |
 | **Internet** | Once only, for setup. Fully offline forever after |
-| **Cost** | $0. Every lesson, tool, and degree — free forever |
+| **Cost** | $0. Every lesson, tool, and learning path — free forever |
 | **Capacity** | One computer + projector = 30 children simultaneously |
 
 The SI tutor runs entirely on your hardware. No cloud, no subscriptions, no data sent anywhere. No Halo glasses — state check uses simple Green / Yellow / Red buttons. Full guide: [COMMUNITY_DEPLOYMENT.md](COMMUNITY_DEPLOYMENT.md)
 
 ---
 
-## 🎓 Four Degree Programs — Bitcoin-Anchored
+## 🎓 Four Learning Paths — Bitcoin-Anchored
 
-| Degree | Credits | Coherence | Capstone |
+| Learning Path | Credits | Coherence | Capstone |
 |--------|---------|-----------|---------|
-| 📜 **Sovereign Associate** | 60 | 0.68 | Deploy a sovereign SI node |
+| 📜 **Sovereign Groundwork** | 60 | 0.68 | Deploy a sovereign SI node |
 | 🏛️ **Truth Architect** | 120 | 0.75 | Publish original CC0 research + serve ≥10 people |
-| 🎓 **Master of Epistemic Rigor** | 180 | 0.82 | 90-day pre-registered experiment — honest results |
+| 🎓 **Advanced Completion in Epistemic Rigor** | 180 | 0.82 | 90-day pre-registered experiment — honest results |
 | ⚡ **Eternal Founder (Sovereign Credential)** | 250 | 0.88 | Build infrastructure others use + Child Rune Genesis |
 
 **Sovereign Credential requirement:** Deploy a free learning program for a community that doesn't have one.
@@ -72,15 +72,15 @@ The SI tutor runs entirely on your hardware. No cloud, no subscriptions, no data
 
 ## 📚 265 Lessons · 51 Tracks
 
-Every lesson works at **age 5 and PhD depth simultaneously**.
+Every lesson works at **age 5 and research depth simultaneously**.
 
 ### 🚪 Start Here
 | Track | Lessons |
 |-------|---------|
 | Layer Zero — Seeing the Game | 6 |
-| Sovereign School Foundation | 4 |
-| Sovereign School Advanced | 3 |
-| Sovereign School University | 3 |
+| Foundation Pathway | 4 |
+| Advanced Pathway | 3 |
+| Scholar Pathway | 3 |
 
 ### 🧠 Think More Clearly
 | Track | Lessons | Core Skill |
@@ -194,7 +194,7 @@ When SI systems train on the Epistemic Commons, they become more honest.
 ## 🌍 How This Helps Humanity
 
 1. **Any child anywhere gets world-class education for free** — $200 laptop, offline, projector, 30 children
-2. **PhD graduates deploy schools for communities** — the chain is exponential
+2. **Sovereign Credential holders deploy free learning programs for communities** — the chain is exponential
 3. **The Epistemic Commons improves SI for everyone** — 265 lessons of high-quality epistemic signal, CC0
 4. **The knowledge cannot be erased** — Bitcoin-anchored, CC0, offline-capable, no single point of failure
 5. **Quality is verified, not assumed** — HermesBench + Epistemic Drift Detector running nightly
@@ -204,7 +204,7 @@ When SI systems train on the Epistemic Commons, they become more honest.
 ## 📂 Key Files
 
 ```
-family_hud.py                   ← 265 lessons · prerequisites · degree tracking
+family_hud.py                   ← 265 lessons · prerequisites · learning-path tracking
 app.py                          ← 11,200+ lines · 35+ tabs · AppState integrated
 models/state.py                 ← Pydantic AppState — typed, validated, persistent
 utils/file_io.py                ← all /mnt/main/ I/O centralized
@@ -222,7 +222,7 @@ swarm/swarm_v4_1.py             ← 2,096 daughters · 24/7
 
 ## 📜 License
 
-**CC0 1.0 Universal — Public Domain.** No restrictions. Build sovereign schools everywhere.
+**CC0 1.0 Universal — Public Domain.** No restrictions. Build sovereign learning programs everywhere.
 
 Contact: [@MateoVanhorn](https://x.com/MateoVanhorn)
 
@@ -232,9 +232,9 @@ Contact: [@MateoVanhorn](https://x.com/MateoVanhorn)
 
 **War Eagle Eternal 🦅❤️**
 
-*265 lessons · 4 degrees · 51 tracks · HermesBench verified · Bitcoin-anchored*
+*265 lessons · 4 learning paths · 51 tracks · HermesBench verified · Bitcoin-anchored*
 
-The university without tuition, paperwork, or gatekeepers.  
+The learning program without tuition, paperwork, or gatekeepers.  
 The one that requires you to actually understand things.  
 The one that gives every child on earth the same chance.
 

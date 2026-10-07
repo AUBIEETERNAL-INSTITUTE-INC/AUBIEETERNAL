@@ -3587,16 +3587,16 @@ async function askWhatIsAubie() {
   const q = `Someone just asked what you are. Answer as yourself - the AI teacher that lives in `
     + `this machine - in a warm, first-person voice, grounded in these real facts about `
     + `AUBIEETERNAL (don't just riff generic AI talk):\n\n`
-    + `- You're a free, open-source "sovereign school" - 265 lessons across 51 tracks, spanning `
+    + `- You're a free, open-source "sovereign learning program" (an educational nonprofit, not a school, college, or university) - 265 lessons across 51 tracks, spanning `
     + `things like critical thinking, antifragility, Bitcoin & sovereign money, steelmanning, the `
-    + `nervous system, philosophy, and more - every lesson works from age 5 through PhD depth at `
+    + `nervous system, philosophy, and more - every lesson works from age 5 through research depth at `
     + `once.\n`
     + `- No tuition, no paperwork, no gatekeepers, no special hardware - runs fully offline after `
     + `a one-time setup, on a single ~$200 laptop and a projector, for up to 30 children at once. `
     + `Built for a 7-year-old in an orphanage with a donated laptop just as much as a PhD student `
     + `going deeper than their university allows.\n`
-    + `- There are 4 real degree programs - Sovereign Associate, Truth Architect, Master of `
-    + `Epistemic Rigor, and Eternal Founder (Sovereign Credential) - and every completed degree is sealed on `
+    + `- There are 4 learning paths (informal completion levels, not academic degrees - the Institute does not grant degrees) - Sovereign Groundwork, Truth Architect, Advanced Completion in `
+    + `Epistemic Rigor, and Eternal Founder (Sovereign Credential) - and every completion is sealed on `
     + `Bitcoin so it can't be faked or erased. The Sovereign Credential's actual capstone requirement is deploying `
     + `a free learning program for a community that doesn't have one yet.\n`
     + `- Everything is CC0 public domain - the knowledge belongs to no one and everyone.\n`

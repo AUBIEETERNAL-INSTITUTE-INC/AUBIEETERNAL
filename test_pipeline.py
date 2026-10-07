@@ -1,5 +1,5 @@
 """
-test_pipeline.py — proves the consolidated university works end-to-end.
+test_pipeline.py — proves the consolidated learning-path pipeline works end-to-end.
 
 Runs ONE synthetic student through the whole pipeline against the REAL
 peer_review_system and transcript_system modules (now importing degrees.py),
@@ -41,18 +41,18 @@ print("\n=== 3. A student completes lessons and earns degrees ===")
 total_xp, coherence = 1300, 0.78          # 130 credits, coh 0.78
 earned = degrees.degrees_earned(degrees.credits_from_xp(total_xp), coherence)
 earned_ids = {d["id"] for d in earned}
-check("earns Sovereign Associate (60cr/0.68)", "sovereign_associate" in earned_ids)
+check("earns Sovereign Groundwork (60cr/0.68)", "sovereign_associate" in earned_ids)
 check("earns Truth Architect (120cr/0.75)", "truth_architect" in earned_ids)
 check("does NOT yet earn Master (needs 180cr/0.82)", "master_epistemic_rigor" not in earned_ids)
 hi = degrees.highest_degree(degrees.credits_from_xp(total_xp), coherence)
 check("highest degree is Truth Architect", hi["id"] == "truth_architect")
 
-print("\n=== 4. PhD is gated on the Child Rune (256) ===")
+print("\n=== 4. Sovereign Credential (Eternal Founder) is gated on the Child Rune (256) ===")
 phd_no = degrees.degrees_earned(300, 0.95, child_rune_confirmations=10)
 phd_yes = degrees.degrees_earned(300, 0.95, child_rune_confirmations=256)
-check("PhD blocked at 10 rune confirmations",
+check("Sovereign Credential blocked at 10 rune confirmations",
       "eternal_founder" not in {d["id"] for d in phd_no})
-check("PhD granted at 256 rune confirmations",
+check("Sovereign Credential granted at 256 rune confirmations",
       "eternal_founder" in {d["id"] for d in phd_yes})
 
 print("\n=== 5. Peer review pipeline (real module) ===")

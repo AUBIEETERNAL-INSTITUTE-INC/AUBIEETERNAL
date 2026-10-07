@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-AUBIEETERNAL is a free, offline-capable "sovereign university" — a single Streamlit application (`app.py`) plus a 24/7 background "swarm" process, Bitcoin-anchored credentialing, and a public CC0 "Epistemic Commons" API. It's designed to run on a $200 laptop, fully offline after first setup, and also runs as a StartOS service / Docker container in production.
+AUBIEETERNAL is a free, offline-capable "sovereign learning program" (an educational nonprofit — not a college or university; it grants no degrees) — a single Streamlit application (`app.py`) plus a 24/7 background "swarm" process, Bitcoin-anchored credentialing, and a public CC0 "Epistemic Commons" API. It's designed to run on a $200 laptop, fully offline after first setup, and also runs as a StartOS service / Docker container in production.
 
 ## Commands
 
@@ -122,7 +122,7 @@ expected behavior.
 - `utils/file_io.py` (and legacy top-level `file_io.py`) — centralized `DATA_DIR`-relative
   paths and JSONL read/write helpers. Route new file I/O through here.
 - `family_hud.py` — `FamilySession` and the family-facing lesson/HUD logic (large file).
-- `degrees.py` — single source of truth for the 7 degree definitions, credit math
+- `degrees.py` — single source of truth for the 7 learning-path (completion level) definitions, credit math
   (`credits_from_xp`), and eligibility rules; `peer_review_system.py` and `transcript_system.py`
   both import from it rather than duplicating requirements (verified by `test_pipeline.py`).
 - `steelman_analyzer.py`, `monte_carlo_simulator.py`, `truth_frequency_analyzer.py`,
@@ -140,8 +140,8 @@ expected behavior.
   (`OLLAMA_BASE_URL`, default `http://localhost:11434`) via an OpenAI-compatible client
   (`get_ai_client()` in `app.py`), not a hosted API — this is what makes the app work fully
   offline.
-- `rune_memory.py`, `legacy_ledger.py` — Bitcoin-anchored memory/credentialing (degrees are
-  gated on Bitcoin "Child Rune" confirmation counts, e.g. the top-tier Eternal Founder degree
+- `rune_memory.py`, `legacy_ledger.py` — Bitcoin-anchored memory/credentialing (completion levels are
+  gated on Bitcoin "Child Rune" confirmation counts, e.g. the top-tier Eternal Founder level
   (renamed from "PhD" to "Sovereign Credential" 2026-09-05 — see below) requires 256
   confirmations — see `test_pipeline.py` section 4).
 - `api_server.py` / `AUBIEETERNAL_extension/api_server.py` — local FastAPI/Flask server (port
@@ -245,6 +245,28 @@ edit those.
 - **`askqwen`** (`~/.local/bin/askqwen` → `tools/askqwen`): ask local Qwen a
   codebase question with current file contents auto-injected. `askqwen -l` lists
   the file set; edit the `FILES` list in the script to change it.
+
+### Terminology rule — no degree/college/university language (2026-10-07)
+
+Florida Ch. 1005, F.S. restricts unlicensed entities from using degree / college /
+university terms. AUBIEETERNAL Institute is an educational nonprofit, not a school,
+college, or university, and grants no degrees. In any user-facing text (README, charters,
+site HTML, app/phone UI strings, lesson titles/badges, Aubie prompts and
+`institute_memory/`), use:
+
+- Degree / Degree Program(s) → Learning Path(s); "degrees earned" → completions
+- Bachelor / Bachelor Equivalent → Foundation Completion (Truth Architect)
+- Associate / Associate's / Associate Degree → Sovereign Groundwork (tier name), Groundwork Completion (badge)
+- Master of X / Master's / Masters → Advanced Completion in X ("Master" as a plain skill level is fine)
+- PhD as our top tier → Sovereign Credential (Eternal Founder); PhD as content depth → "research level"
+- University / College (meaning us) → Institute; "free school" → "free learning program"
+- Diploma / degree certificate → completion record; transcript (ours) → learning record
+- Graduate / graduation (credential sense) → complete / completion
+- Never claim accreditation; the "not accredited / does not grant degrees" disclaimers stay.
+
+Machine keys (`degrees.py` ids, `capstone-*`, `school-university-*`, `phd_extension`,
+`academic_record`, `degree_name`, module/file names) are deliberately unchanged.
+References to real external institutions/people ("a PhD student", "college freshmen") are fine.
 
 ### Recent debugging notes (2026-09-04 / 2026-09-05)
 
