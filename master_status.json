@@ -1,14 +1,14 @@
 {
-  "updated": "2026-10-08T15:50:01.724738-04:00",
+  "updated": "2026-10-08T16:50:53.795491-04:00",
   "version": "4.1",
   "wonder_index": 0.66909,
   "mets": 200000000015.5,
   "inter_rune_coherence": 1.0,
-  "grokipedia_count": 27,
+  "grokipedia_count": 29,
   "rune_confirmations": 0,
   "child_rune_ready": false,
   "hormetic_pulses": 1,
-  "lattice_cycle": 840,
+  "lattice_cycle": 960,
   "session_insights": 0,
   "synthesis": {
     "last_run_date": "None",
@@ -194,7 +194,7 @@
       "pending_path": "/mnt/main/grokipedia_pending.json"
     }
   },
-  "grokipedia_entries": 27,
-  "gpu": "GPU: 39C / soft 78C / hard 85C | power 12.85 W | util 0% | fan 30% | VRAM 765/12288 MiB | peak this process 67C",
+  "grokipedia_entries": 29,
+  "gpu": "GPU: 38C / soft 78C / hard 85C | power 12.55 W | util 0% | fan 30% | VRAM 765/12288 MiB | peak this process 67C",
   "war_eagle": true
 }
