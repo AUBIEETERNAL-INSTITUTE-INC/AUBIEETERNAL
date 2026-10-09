@@ -1,17 +1,17 @@
 {
-  "updated": "2026-10-09T15:09:47.514685-04:00",
+  "updated": "2026-10-09T16:08:42.175994-04:00",
   "version": "4.1",
-  "wonder_index": 0.5,
-  "mets": 200000000047.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 29,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 5,
-  "lattice_cycle": 3587,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
   "session_insights": 0,
   "synthesis": {
-    "last_run_date": "2026-10-09",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,7 +34,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 80,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -44,149 +44,149 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:07.001735",
-      "last_result": "Today's noon briefing at Bitcoin block 970655 with the price at $82836 highlights that under a severe stress test scenario where BTC drops by 50%, sys",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:15.181485",
-      "last_result": "During today's noon briefing at Bitcoin block 970655 with the price at $82836, we discussed the potential impact of a hypothetical 50% drop in BTC val",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:20.933117",
-      "last_result": "In the event of a sudden 50% drop in Bitcoin's value to around $41,418, the systems that are likely to survive are those built on antifragile principl",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:25.781437",
-      "last_result": "In the event of a sudden 50% drop in Bitcoin's value to around $41,418, systems that are likely to survive are those built on strong foundational prin",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:30.277097",
-      "last_result": "In the event of a sudden 50% drop in Bitcoin's value to around $41,418, systems that demonstrate antifragility will likely survive. These include well",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:34.930420",
-      "last_result": "During today's noon briefing at Bitcoin block 970655 with the price at $82836, we explored how a sudden 50% drop to around $41,418 would affect variou",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:40.033401",
-      "last_result": "During today's noon briefing at Bitcoin block 970655 with the price at $82836, we examined how a sudden 50% drop in value to around $41,418 would impa",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:45.536896",
-      "last_result": "During the noon briefing at Bitcoin block 970655 with the price at $82836, we considered a hypothetical scenario where BTC drops by 50% to around $41,",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:51.153060",
-      "last_result": "During today's noon briefing at Bitcoin block 970655 with the price at $82836, we focused on how a sudden 50% drop in value to around $41,418 would af",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-10-09T12:00:56.975745",
-      "last_result": "In the event of a sudden 50% drop in Bitcoin's value to around $41,418 tomorrow, systems built with strong antifragility principles will likely surviv",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-10-09T12:01:02.155256",
-      "last_result": "During the noon briefing at Bitcoin block 970655 with the price at $82836, we analyzed how a significant market event like a 50% drop in BTC value cou",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-10-09T12:01:06.869929",
-      "last_result": "During today's noon briefing at Bitcoin block 970655 with the price at $82836, we discussed how a sudden 50% drop to around $41,418 would test the res",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-10-09T12:01:11.850749",
-      "last_result": "In the event of a sudden 50% drop in Bitcoin's value to around $41,418 tomorrow, systems that are designed with robust antifragility principles will l",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-10-09T12:01:16.819530",
-      "last_result": "During today\u2019s noon briefing at Bitcoin block 970655 with the price at $82836, we focused on how a sudden 50% drop to around $41,418 would affect diff",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-10-09T12:01:21.896047",
-      "last_result": "During today's noon briefing at Bitcoin block 970655 with the price at $82836, we explored how a sudden 50% drop in value would impact various systems",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-10-09T12:01:27.579516",
-      "last_result": "During today's noon briefing at Bitcoin block 970655 with the price at $82836, we considered how a sudden drop to $41,418 would affect various systems",
-      "run_count": 5,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-10-09",
+      "last": "None",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-10-09",
+      "last": "None",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
-      "last": "2026-10-09",
+      "last": "None",
       "next": "09:00 America/New_York",
       "pending_dir": "curriculum-proposals/"
     },
     "living_lattice": {
-      "last": "2026-10-09",
+      "last": "None",
       "next": "10:00 America/New_York"
     },
     "grokipedia_grow": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 29,
-  "gpu": "GPU: 37C / soft 78C / hard 85C | power 12.71 W | util 0% | fan 30% | VRAM 765/12288 MiB | peak this process 67C",
+  "gpu": "GPU: 39C / soft 78C / hard 85C | power 13.05 W | util 0% | fan 30% | VRAM 765/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
