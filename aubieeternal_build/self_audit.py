@@ -78,6 +78,8 @@ SWARM_ALERT_CHECK_IDS = {
     # school_monitor (2026-10-10): weekly, and a partial failure (one source
     # "fetch failed") wrote a normal-looking report for weeks unnoticed.
     "institute:school_monitor_stale", "institute:school_monitor_partial",
+    # phone-photo pull (2026-10-10): the old iCloud job failed silently for weeks.
+    "personal:photo_pull_stale", "personal:photo_pull_failed",
     # anomaly_guard hard-rule checks (2026-09-05) — first-detection email,
     # same as the runaway checks above.
     "swarm:anomaly_shape", "swarm:anomaly_guard_import",
@@ -463,6 +465,34 @@ def check_school_monitor() -> dict | None:
     return None
 
 
+PHOTO_PULL_STATE = Path(os.environ.get(
+    "AUBIE_PHOTO_PULL_STATE",
+    str(Path.home() / "AUBIEETERNAL_MEMORY" / "PHOTOS" / "proton_pull_state.json")))
+PHOTO_PULL_STALE_HOURS = 2 * 24 + 6  # nightly job; flag after two missed nights
+
+
+def check_photo_pull() -> dict | None:
+    """Nightly phone-photo pull (Proton Drive -> rig). Flags missed nights and failed
+    runs (expired login, files that did not verify). Suggests; never edits anything."""
+    try:
+        st = json.loads(PHOTO_PULL_STATE.read_text())
+    except Exception:
+        return None  # not installed on this machine: not an alert
+    last = st.get("last_run")
+    try:
+        age_h = (datetime.now() - datetime.fromisoformat(last)).total_seconds() / 3600
+    except Exception:
+        age_h = None
+    if age_h is None or age_h > PHOTO_PULL_STALE_HOURS:
+        return {"id": "personal:photo_pull_stale", "sev": "low",
+                "msg": f"photo pull last ran {last or 'never'} (nightly). Suggestion: "
+                       "`systemctl --user status aubie-proton-photos.timer` and the proton_pull.log."}
+    if st.get("last_ok") is False:
+        return {"id": "personal:photo_pull_failed", "sev": "med",
+                "msg": f"photo pull {last} failed: {st.get('error') or 'see proton_pull.log'}. "
+                       "Nothing was deleted; unverified files stay in the inbox and retry tomorrow."}
+    return None
+
 def send_alert_email(subject: str, body: str) -> bool:
     """Best-effort alert via the local Proton Bridge (same account
     email_watch.py reads from). Never raises - a broken send shouldn't break
@@ -809,7 +839,8 @@ def collect() -> dict:
                   check_anomaly_shape,
                   check_stale_morning_synthesis, check_stale_email_digest,
                   check_stale_epistemic_commons, check_stale_curriculum_autogen,
-                  check_stale_living_lattice, check_school_monitor):
+                  check_stale_living_lattice, check_school_monitor,
+                  check_photo_pull):
         finding = check()
         if finding:
             findings.append(finding)
