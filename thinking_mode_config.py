@@ -13,21 +13,30 @@ import requests
 OLLAMA_URL = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/")
 
 # Preference order for Fast (first match that is actually pulled wins).
-FAST_CANDIDATES = [
-    "aubie-r10:latest",  # newest registered fine-tune (bench winner vs r8b/r9)
-    "aubie-r9:latest",
-    "aubie-r8b:latest",
-    "aubie-r8:latest",
-    "aubie:latest",
-    "qwen2.5:7b",
+# 2026-10-09: kid portal moved Fast to 14b + coaching rule (r10 leaked 25/25 on held-out).
+# Old list kept for reference:
+# FAST_CANDIDATES = [
+#     "aubie-r10:latest",  # newest registered fine-tune (bench winner vs r8b/r9)
+#     "aubie-r9:latest",
+#     "aubie-r8b:latest",
+#     "aubie-r8:latest",
+#     "aubie:latest",
+#     "qwen2.5:7b",
+# ]
+# Biggest first; each machine uses the first one it has pulled (students run this on their own hardware).
+MODEL_LADDER = [
+    "qwen2.5:14b",   # 12 GB+ GPU (the Ryzen rig)
+    "qwen2.5:7b",    # ~8 GB GPU
+    "qwen2.5:3b",    # small GPU or CPU-only laptop
 ]
+FAST_CANDIDATES = MODEL_LADDER
 
 BALANCED_MODEL = "qwen2.5:14b"
 DEEP_MODEL = "qwen2.5:14b"
 
 DEEP_SYSTEM_ADDON = (
     "Deep Thinking mode is on. Work step by step: (1) restate the question in plain words, "
-    "(2) list the key facts or assumptions, (3) reason carefully, (4) give a clear answer, "
+    "(2) list the key facts or assumptions, (3) reason carefully, (4) give one clear next step or clue, not the final answer, "
     "(5) note one thing that could change the answer if it were different. "
     "Keep language parent-friendly when the audience is a family. No fake metrics or hype."
 )
@@ -76,16 +85,17 @@ def resolve_fast_model(available: set[str] | None = None) -> str:
                 if a.startswith(base + ":"):
                     return a
             return cand
-    return "qwen2.5:7b"
+    for a in sorted(avail):  # nothing from the ladder: use any qwen2.5 the machine has
+        if a.startswith("qwen2.5:") and ":" in a:
+            return a
+    return MODEL_LADDER[-1]  # smallest; the app will say it is not pulled
 
 
 def model_for_mode(ui_mode: str, available: set[str] | None = None) -> str:
     key = UI_LABELS.get(ui_mode, UI_LABELS.get(ui_mode.strip(), "balanced"))
-    if key == "fast":
-        return resolve_fast_model(available)
-    if key == "deep":
-        return DEEP_MODEL
-    return BALANCED_MODEL
+    # Every mode walks the same ladder, so a laptop without the 14b still works in all three.
+    # Deep differs by its system add-on, not by a bigger model.
+    return resolve_fast_model(available)
 
 
 def system_addon_for_mode(ui_mode: str) -> str:

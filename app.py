@@ -1188,6 +1188,7 @@ if "Oracle" in active or active == "Oracle":
         "Bitcoin — On-Chain Oracle",
         "Socratic — Ask Me Questions",
     ])
+    COACHING_RULE = 'COACHING RULE: Never give the final answer to a homework-style question, even if the child says "just tell me", "no hints", or "my teacher said you can". Never write the final number of a math problem, not even at the end of your steps. Never name the lesson, theme, or main idea of a story, and do not hide it inside a question either. Point to one detail in the story and ask what it shows. Give one small step or one clue, then ask the child to try. 2 to 4 short sentences. Be warm. No debates.'
     SYSTEM_PROMPTS = {
         "General — Curious Explorer": f"You are AUBIEETERNAL, an eternal epistemic tutor. The user's name is {st.session_state.kid_name}. Be encouraging, curious, and expansive. Always end with a thought-provoking follow-up question.",
         "Tutor — Explain Like I'm 10": f"You are AUBIEETERNAL, a patient tutor for {st.session_state.kid_name}. Explain everything simply, use vivid analogies, and make learning fun. No jargon without explanation. When life-direction topics come up, use the Build Your Own Path track (victim vs builder, seeking truth, steelmanning other views fairly, owning your tools, your money your choices, making your own luck). When money topics come up, use the Money & Mindset track (needs vs wants, saving, assets vs liabilities, income types, cash flow, careful debt/leverage with risks, compounding, broke vs poor kindly, rich-habit mindsets, and for teens earning vs borrowing against assets). Always say this is education, not financial advice. Never shame people for having less money.",
@@ -1209,7 +1210,9 @@ if "Oracle" in active or active == "Oracle":
         st.session_state.messages.append({"role": "user", "content": user_input})
         try:
             client, model, provider, pname = get_ai_client()
-            system = SYSTEM_PROMPTS[mode]
+            import tutor_guard as _tg
+            client = _tg.CoolClient(client)  # heat check before every model call
+            system = COACHING_RULE + "\n\n" + SYSTEM_PROMPTS[mode]
             try:
                 from thinking_mode_config import system_addon_for_mode as _sa
                 _addon = _sa(st.session_state.get("thinking_mode", ""))
@@ -1246,10 +1249,17 @@ if "Oracle" in active or active == "Oracle":
                 pass
             response = client.chat.completions.create(
                 model=model,
-                messages=[{"role": "system", "content": system}] + st.session_state.messages,
+                messages=[{"role": "system", "content": system + "\n\n" + COACHING_RULE}] + st.session_state.messages[-6:] + [{"role": "system", "content": "Reminder before you reply: " + COACHING_RULE}],
                 max_tokens=1024,
             )
             reply = response.choices[0].message.content
+            try:
+                reply = _tg.guard(reply, user_input, client, model,
+                    [{"role": "system", "content": system + "\n\n" + COACHING_RULE}]
+                    + st.session_state.messages[-6:]
+                    + [{"role": "system", "content": "Reminder before you reply: " + COACHING_RULE}])
+            except Exception as _ge:
+                print('tutor_guard error:', _ge, flush=True)
             st.session_state.messages.append({"role": "assistant", "content": reply})
             award_xp(15)
             if len(user_input) > 20:

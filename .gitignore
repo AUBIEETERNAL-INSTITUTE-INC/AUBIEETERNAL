@@ -130,3 +130,5 @@ rune_seals/
 
 # Local Aubie deck drafts (not for repo)
 flashcards/_aubie_drafts/
+*.bak_*
+tutor_guard.log
