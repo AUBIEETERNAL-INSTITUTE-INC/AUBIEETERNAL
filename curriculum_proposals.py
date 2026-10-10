@@ -60,6 +60,37 @@ LESSON_TEMPLATE = {
 }
 
 
+def _content_path(curriculum_mod):
+    return curriculum_mod.EXTRA_PATH.parent / "curriculum_lesson_content.json"
+
+
+def _save_lesson_content(curriculum_mod, key: str, lesson: dict) -> None:
+    """Approved lessons used to keep only [key, title, age, xp]; the topic, example,
+    activity and check questions were dropped, so Aubie taught them from the title alone.
+    Keep them in a side file the tutor chat reads (see get_lesson_content). Never raises."""
+    try:
+        path = _content_path(curriculum_mod)
+        data = json.loads(path.read_text()) if path.exists() else {}
+        data[key] = {k: lesson.get(k) for k in
+                     ("title", "topic", "steelman", "example", "activity", "check_questions", "age_hint", "xp")
+                     if lesson.get(k) not in (None, "", [])}
+        path.write_text(json.dumps(data, indent=2))
+    except Exception as e:
+        print(f"[curriculum_proposals] saving lesson content failed: {e}")
+
+
+def get_lesson_content(key: str):
+    """Content for an approved proposal lesson, shaped like family_hud.LESSONS entries, or None."""
+    try:
+        import curriculum
+        path = _content_path(curriculum)
+        if path.exists():
+            return json.loads(path.read_text()).get(key)
+    except Exception:
+        pass
+    return None
+
+
 def merge_approved_proposal(proposal: dict) -> bool:
     """Folds an approved lesson/track proposal into curriculum.py's live
     tree via curriculum_extra.json (see curriculum.py's `_load_extra_tracks`)
@@ -120,6 +151,7 @@ def merge_approved_proposal(proposal: dict) -> bool:
                 tracks.append(entry)
             if not any(lvl[0] == key for lvl in entry["levels"]):
                 entry["levels"].append(level)
+            _save_lesson_content(curriculum, key, lesson)
 
         elif ptype == "track":
             track_name = proposal.get("track_name", "New Track")

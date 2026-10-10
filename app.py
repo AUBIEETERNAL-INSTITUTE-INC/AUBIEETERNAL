@@ -1223,8 +1223,14 @@ if "Oracle" in active or active == "Oracle":
             try:
                 from family_hud import LESSONS as _AUBIE_LESSONS
                 _lk = st.session_state.get("cm_active_lesson") or st.session_state.get("active_lesson_key")
-                if _lk and _lk in _AUBIE_LESSONS:
-                    _L = _AUBIE_LESSONS[_lk]
+                _L = _AUBIE_LESSONS.get(_lk) if _lk else None
+                if _L is None and _lk:
+                    try:
+                        from curriculum_proposals import get_lesson_content as _glc
+                        _L = _glc(_lk)  # approved auto/community lessons keep their content here
+                    except Exception:
+                        _L = None
+                if _L:
                     system += (
                         "\n\nActive lesson context (use if relevant; education not advice):\n"
                         f"Title: {_L.get('title')}\n"
@@ -1245,6 +1251,19 @@ if "Oracle" in active or active == "Oracle":
                         "teens: earning vs borrowing against assets. Flash Cards Season 2 or Cash Flow Quest "
                         "for practice. Education — not financial advice. Stay neutral and kind; no partisan framing."
                     )
+            except Exception:
+                pass
+            # Who is learning: pitch the same lesson differently for a 7-year-old, a teen, or a family.
+            try:
+                _wm = st.session_state.get("welcome_mode")
+                _age = int(((st.session_state.get("family_profile") or {}).get("kid") or {}).get("age") or 0)
+                if _wm == "child" and _age:
+                    system += (f"\n\nLearner: a {_age}-year-old child. Use words, examples and step sizes "
+                               f"that fit a {_age}-year-old. If they get it fast, go a little deeper; "
+                               "if they struggle, make the next step smaller.")
+                elif _wm == "family" and _age:
+                    system += (f"\n\nLearners: a family together, including a {_age}-year-old. Pitch the main "
+                               "explanation for the child, then add one short deeper point for the adults.")
             except Exception:
                 pass
             response = client.chat.completions.create(

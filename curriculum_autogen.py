@@ -133,17 +133,59 @@ Reply with ONLY a JSON object, no other text, in this exact shape:
   "title": "Short punchy lesson title",
   "topic": "One sentence describing what this lesson actually teaches",
   "steelman": "A steelman-style discussion prompt or question for this lesson",
-  "example": "One concrete real-world example this lesson would use",
+  "example": "One concrete real-world example that NAMES a real person, place, event, or thing (e.g. 'Marie Curie kept testing pitchblende for years...'), never 'a historical figure' or 'someone'",
+  "activity": "One hands-on activity a learner can do in 10-20 minutes at home with no special equipment",
+  "check_questions": ["Three short questions", "that check understanding", "without giving the answer away"],
   "age_hint": "one of: All ages, 7+, 8+, 9+, 10+, 11+, 12+, 13+, 14+, 15+, 16+",
   "xp": 20,
   "target_track": "the existing track name this belongs to, or a new track name if genuinely novel",
   "rationale": "One sentence on why this specific lesson is worth adding now"
 }}"""
 
-    reply = _call_ollama(prompt)
-    if not reply:
-        return None
-    return _extract_json(reply)
+    feedback = ""
+    for _attempt in range(2):  # one retry with the reason it was rejected
+        reply = _call_ollama(prompt + feedback)
+        if not reply:
+            return None
+        cand = _extract_json(reply)
+        problems = validate_candidate(cand)
+        if not problems:
+            return cand
+        feedback = ("\n\nYour last answer was rejected: " + "; ".join(problems)
+                    + ". Fix those and reply with ONLY the JSON object.")
+        print(f"[curriculum-autogen] draft rejected: {problems}")
+    return None
+
+
+_VAGUE_EXAMPLE = re.compile(
+    r"\b(a|an|one|some)\s+(historical|famous|well-known|real|certain)?\s*"
+    r"(figure|person|someone|individual|scientist|inventor|leader|child|student|family|athlete|artist)\b"
+    r"|\bsomeone\b|\bsomebody\b|\bimagine a\b|\bfor example, a\b",
+    re.I,
+)
+
+
+def _names_something(text: str) -> bool:
+    """True if the text contains a capitalized name that is not just the first word of a sentence."""
+    words = re.findall(r"(?<![.!?]\s)(?<!^)\b[A-Z][a-z]{2,}", text.strip())
+    return len(words) > 0
+
+
+def validate_candidate(c) -> list:
+    """Reasons a draft is not reviewable yet. Empty list = good enough to send to a human."""
+    if not isinstance(c, dict):
+        return ["reply was not a JSON object"]
+    p = []
+    for k in ("key", "title", "topic", "example", "activity"):
+        if not str(c.get(k, "")).strip():
+            p.append(f"missing {k}")
+    ex = str(c.get("example", ""))
+    if ex and (_VAGUE_EXAMPLE.search(ex) or not _names_something(ex)):
+        p.append("example is vague; name a real person, place, event, or thing")
+    cq = c.get("check_questions")
+    if not isinstance(cq, list) or len([q for q in cq if str(q).strip()]) < 2:
+        p.append("need at least 2 check_questions")
+    return p
 
 
 def run_curriculum_autogen(force: bool = False) -> dict:
@@ -166,6 +208,8 @@ def run_curriculum_autogen(force: bool = False) -> dict:
         "topic":         candidate.get("topic", ""),
         "steelman":      candidate.get("steelman", ""),
         "example":       candidate.get("example", ""),
+        "activity":      candidate.get("activity", ""),
+        "check_questions": [str(q) for q in (candidate.get("check_questions") or [])][:5],
         "age_hint":      candidate.get("age_hint", "All ages"),
         "xp":            int(candidate.get("xp", 20) or 20),
         "rune":          f"{candidate.get('target_track', 'community').upper().replace(' ', '•')}•RUNE",
