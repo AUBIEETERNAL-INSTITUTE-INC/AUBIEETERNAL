@@ -41,6 +41,7 @@ OUTPUT_DIR = Path("/srv/institute/competitive_intel")
 STATE_PATH = OUTPUT_DIR / "school_monitor_state.json"
 
 USER_AGENT = "AUBIEETERNAL-school-monitor/1.0 (+https://aubieeternal.org; research use only)"
+BROWSER_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"
 
 # Public curriculum/standards pages to scan. Edit freely — this is meant to
 # grow over time, not be exhaustive on day one. Each entry is scanned
@@ -86,10 +87,17 @@ def _fetch_text(url: str) -> str | None:
     HTML parser dependency (none is in requirements.txt) — regex stripping
     of script/style blocks and tags is good enough for a summarization
     prompt, not meant to be a precise scraper."""
-    try:
-        r = requests.get(url, timeout=20, headers={"User-Agent": USER_AGENT})
-        r.raise_for_status()
-    except Exception:
+    r = None
+    # Some public sites (fldoe.org failed every week) refuse unknown bot
+    # user-agents. Try ours first, then once with a plain browser UA.
+    for ua in (USER_AGENT, BROWSER_UA):
+        try:
+            r = requests.get(url, timeout=25, headers={"User-Agent": ua, "Accept": "text/html"})
+            r.raise_for_status()
+            break
+        except Exception:
+            r = None
+    if r is None:
         return None
 
     html = r.text
@@ -185,15 +193,20 @@ def run_school_monitor(force: bool = False, only: str | None = None) -> dict:
     report_path = OUTPUT_DIR / f"{today}.md"
     report_path.write_text("\n".join(lines))
 
-    if not only:
-        _save_state({"last_run_date": today})
-
     ok_count = sum(1 for r in results if r["ok"])
+    failed = [f"{r['name']} ({r['reason']})" for r in results if not r["ok"]]
+    if not only:
+        # sources_failed is what self_audit's check_school_monitor() reads -
+        # a report with a failed source used to look exactly like success.
+        _save_state({"last_run_date": today, "report_path": str(report_path),
+                     "sources_ok": ok_count, "sources_failed": failed})
+
     return {
         "ok": True,
         "report_path": str(report_path),
         "sources_scanned": len(results),
         "sources_ok": ok_count,
+        "sources_failed": failed,
     }
 
 

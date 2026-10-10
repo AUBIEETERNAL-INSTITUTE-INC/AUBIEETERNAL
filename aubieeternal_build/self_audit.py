@@ -75,6 +75,9 @@ SWARM_ALERT_CHECK_IDS = {
     "swarm:stale_morning_synthesis", "swarm:stale_email_digest",
     "swarm:stale_epistemic_commons", "swarm:stale_curriculum_autogen",
     "swarm:stale_living_lattice",
+    # school_monitor (2026-10-10): weekly, and a partial failure (one source
+    # "fetch failed") wrote a normal-looking report for weeks unnoticed.
+    "institute:school_monitor_stale", "institute:school_monitor_partial",
     # anomaly_guard hard-rule checks (2026-09-05) — first-detection email,
     # same as the runaway checks above.
     "swarm:anomaly_shape", "swarm:anomaly_guard_import",
@@ -427,6 +430,39 @@ def check_stale_living_lattice() -> dict | None:
                          _newest_glob_mtime(LATTICE_SIGNALS_GLOB))
 
 
+SCHOOL_MONITOR_STATE = Path("/srv/institute/competitive_intel/school_monitor_state.json")
+SCHOOL_MONITOR_STALE_HOURS = 8 * 24  # weekly job; flag after a missed week + a day
+
+
+def check_school_monitor() -> dict | None:
+    """Weekly competitive-intel scan. Flags a missed week, and - unlike the
+    file-age checks above - also a run that 'succeeded' with a failed source.
+    Suggests the next step; never edits anything (same rule as the rest of
+    self_audit)."""
+    try:
+        st = json.loads(SCHOOL_MONITOR_STATE.read_text())
+    except Exception:
+        return None  # not installed / never run on this machine: not an alert
+    last = st.get("last_run_date")
+    try:
+        age_h = (datetime.now() - datetime.fromisoformat(last)).total_seconds() / 3600
+    except Exception:
+        age_h = None
+    if age_h is None or age_h > SCHOOL_MONITOR_STALE_HOURS:
+        return {"id": "institute:school_monitor_stale", "sev": "med",
+                "msg": f"school_monitor last ran {last or 'never'} (weekly, Sun 7AM). "
+                       "Suggestion: check crontab and school_monitor.log; run "
+                       "`python3 school_monitor.py --force` to test."}
+    failed = st.get("sources_failed") or []
+    if failed:
+        first = failed[0].split(" (")[0]
+        return {"id": "institute:school_monitor_partial", "sev": "med",
+                "msg": f"school_monitor {last}: {len(failed)} source(s) failed: {'; '.join(failed)}. "
+                       f"Suggestion (needs your OK): test with `python3 school_monitor.py --only \"{first}\"`; "
+                       "if it still fails, point SOURCES at a different page for that site."}
+    return None
+
+
 def send_alert_email(subject: str, body: str) -> bool:
     """Best-effort alert via the local Proton Bridge (same account
     email_watch.py reads from). Never raises - a broken send shouldn't break
@@ -773,7 +809,7 @@ def collect() -> dict:
                   check_anomaly_shape,
                   check_stale_morning_synthesis, check_stale_email_digest,
                   check_stale_epistemic_commons, check_stale_curriculum_autogen,
-                  check_stale_living_lattice):
+                  check_stale_living_lattice, check_school_monitor):
         finding = check()
         if finding:
             findings.append(finding)

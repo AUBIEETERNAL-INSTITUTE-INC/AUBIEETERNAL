@@ -100,6 +100,46 @@ def _extract_json(text: str) -> dict | None:
         return None
 
 
+INTEL_DIR = Path("/srv/institute/competitive_intel")
+
+
+def _outside_structure_notes(max_chars: int = 1200) -> str:
+    """Latest weekly school_monitor report, trimmed to how other programs
+    STRUCTURE learning (pacing, practice, mastery checks). Drops the 'Gap'
+    lines and failed scans. Empty string if there's no report."""
+    try:
+        reports = sorted(INTEL_DIR.glob("20*.md"))
+        if not reports:
+            return ""
+        notes, source = [], ""
+        for line in reports[-1].read_text().splitlines():
+            if line.startswith("## "):
+                source = line[3:].strip()
+            elif line.startswith("- ") and not re.search(r"\bgap\b|lacks|antifragil|sovereign", line, re.I):
+                notes.append(f"- ({source}) {line[2:].strip()}")
+        text = "\n".join(notes)[:max_chars]
+        if not text:
+            return ""
+        return ("\nHow other learning programs organize lessons (borrow FORMAT ideas only - "
+                "pacing, practice, mastery checks; never copy their content, names or wording):\n"
+                f"{text}\n")
+    except Exception:
+        return ""
+
+
+def _founder_ideas() -> str:
+    """Last few #institute ideas from idea_inbox.py, as optional inspiration."""
+    try:
+        from idea_inbox import recent_ideas
+        ideas = [re.sub(r"^\S+ \S+ \[[^\]]*\] ", "", i) for i in recent_ideas("institute", 5)]
+        if not ideas:
+            return ""
+        return ("\nRecent ideas from the founder (use one only if it fits; not required):\n"
+                + "\n".join(f"- {i}" for i in ideas) + "\n")
+    except Exception:
+        return ""
+
+
 def generate_candidate() -> dict | None:
     """Asks Ollama for one new lesson that fills a real gap — either the
     next level in a track that's thinner than the others, or (occasionally)
@@ -118,8 +158,11 @@ def generate_candidate() -> dict | None:
     existing_titles = "; ".join(t for _, t, _ in existing[:60])
     thin_tracks_str = ", ".join(f"{name} ({n} lessons)" for name, n in thinnest) or "none yet"
 
-    prompt = f"""{VALUES_BLURB}
+    outside = _outside_structure_notes()
+    founder = _founder_ideas()
 
+    prompt = f"""{VALUES_BLURB}
+{outside}{founder}
 Existing lesson titles (do NOT repeat or closely duplicate any of these):
 {existing_titles}
 
