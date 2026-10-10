@@ -49,7 +49,9 @@ BROWSER_UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Ge
 SOURCES = [
     {"name": "Khan Academy", "url": "https://www.khanacademy.org/"},
     {"name": "IXL", "url": "https://www.ixl.com/"},
-    {"name": "Florida DOE — B.E.S.T. Standards", "url": "https://www.fldoe.org/academics/standards/subject-areas/"},
+    # fldoe.org returns 403 to any script (checked 2026-10-10); CPALMS is Florida's
+    # official standards site and serves the same B.E.S.T. standards.
+    {"name": "Florida B.E.S.T. Standards (CPALMS)", "url": "https://www.cpalms.org/"},
     {"name": "Outschool", "url": "https://outschool.com/"},
 ]
 
@@ -190,7 +192,9 @@ def run_school_monitor(force: bool = False, only: str | None = None) -> dict:
         lines.append("")
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-    report_path = OUTPUT_DIR / f"{today}.md"
+    # --only is a test of one source: write it beside, not over, the weekly report,
+    # so curriculum_autogen (which reads the newest dated report) never sees a partial one.
+    report_path = OUTPUT_DIR / (f"test-{today}.md" if only else f"{today}.md")
     report_path.write_text("\n".join(lines))
 
     ok_count = sum(1 for r in results if r["ok"])
