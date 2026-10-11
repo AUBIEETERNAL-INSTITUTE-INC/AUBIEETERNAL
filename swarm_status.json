@@ -1,17 +1,17 @@
 {
-  "updated": "2026-10-11T13:45:35.702079-04:00",
+  "updated": "2026-10-11T14:20:08.210390-04:00",
   "version": "4.1",
-  "wonder_index": 0.5,
-  "mets": 200000000071.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 29,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 8,
-  "lattice_cycle": 5377,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
   "session_insights": 0,
   "synthesis": {
-    "last_run_date": "2026-10-11",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,7 +34,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 128,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -44,149 +44,149 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-10-11T12:00:22.448102",
-      "last_result": "In the event that Bitcoin's price were to drop by 50%, it would be a significant stress test for the ecosystem's antifragility. Institutions and indiv",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-10-11T12:00:32.453868",
-      "last_result": "Assuming Bitcoin's price were to drop by 50%, the entities that would likely survive this stress test are those with a strong foundation of antifragil",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-10-11T12:00:37.338919",
-      "last_result": "In the event that Bitcoin's price were to drop by 50%, entities with robust reserve funds and a deep understanding of antifragile principles would lik",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-10-11T12:00:41.814615",
-      "last_result": "A 50% drop in Bitcoin's price would severely test the resilience of the ecosystem. Entities with robust financial reserves and a deep understanding of",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-10-11T12:00:46.123273",
-      "last_result": "A significant drop of 50% in Bitcoin's price to around $41,832 would severely test the resilience of market participants. Entities with robust financi",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-10-11T12:00:50.486528",
-      "last_result": "A 50% price drop to around $41,832 would severely test the resilience of market participants. Entities with robust financial reserves and a deep under",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-10-11T12:00:54.868084",
-      "last_result": "A 50% drop in Bitcoin's price would test the resilience of market participants and entities within the ecosystem. Those with robust financial reserves",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-10-11T12:00:59.298431",
-      "last_result": "Assuming Bitcoin's price were to drop by 50%, entities with significant financial reserves and a deep understanding of antifragile principles would li",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-10-11T12:01:03.179388",
-      "last_result": "A 50% drop in Bitcoin's price to around $41,832 would test the resilience of market participants and entities within the ecosystem. Those with robust ",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-10-11T12:01:07.183650",
-      "last_result": "A 50% drop in Bitcoin's price to around $41,832 would\u8003\u9a8c\u5e02\u573a\u53c2\u4e0e\u8005\u7684\u97e7\u6027\u3002\u62e5\u6709\u96c4\u539a\u8d22\u52a1\u50a8\u5907\u548c\u6df1\u523b\u7406\u89e3\u6297\u98ce\u9669\u7b56\u7565\u7684\u5b9e\u4f53\u66f4\u6709\u53ef\u80fd\u5728\u8fd9\u79cd\u538b\u529b\u6d4b\u8bd5\u4e2d\u5e78\u5b58\u4e0b\u6765\u3002\u8fd9\u4e9b\u5b9e\u4f53\u4e0d\u4ec5\u80fd\u591f\u62b5\u5fa1\u4ef7\u683c\u6ce2\u52a8\u5e26\u6765\u7684\u51b2\u51fb\uff0c\u8fd8\u80fd\u5229\u7528\u8fd9\u4e00\u673a\u4f1a\u52a0\u5f3a\u81ea\u8eab\u7684\u5730\u4f4d\u3002",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-10-11T12:01:11.365271",
-      "last_result": "A 50% drop in Bitcoin's price to approximately $41,832 would stress-test the resilience of market participants and entities within the ecosystem. Thos",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-10-11T12:01:15.937624",
-      "last_result": "A 50% drop in Bitcoin's price to around $41,832 would challenge the resilience of market participants, but entities with substantial financial reserve",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-10-11T12:01:20.602893",
-      "last_result": "A 50% drop in Bitcoin's price to around $41,832 would severely test the resilience of market participants and entities within the ecosystem. Those wit",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-10-11T12:01:25.242521",
-      "last_result": "A significant drop of 50% in Bitcoin's price to around $41,832 would challenge the resilience of market participants, but entities with robust financi",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-10-11T12:01:29.753692",
-      "last_result": "A 50% drop in Bitcoin's price to around $41,832 would test the resilience of market participants and entities within the ecosystem. However, those wit",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-10-11T12:01:34.614182",
-      "last_result": "A 50% drop in Bitcoin's price to around $41,832 would significantly test the resilience of market participants and entities within the ecosystem. Thos",
-      "run_count": 8,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-10-11",
+      "last": "None",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-10-11",
+      "last": "None",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
-      "last": "2026-10-11",
+      "last": "None",
       "next": "09:00 America/New_York",
       "pending_dir": "curriculum-proposals/"
     },
     "living_lattice": {
-      "last": "2026-10-11",
+      "last": "None",
       "next": "10:00 America/New_York"
     },
     "grokipedia_grow": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 29,
-  "gpu": "GPU: 37C / soft 78C / hard 85C | power 12.85 W | util 0% | fan 30% | VRAM 9938/12288 MiB | peak this process 67C",
+  "gpu": "GPU: 39C / soft 78C / hard 85C | power 13.15 W | util 0% | fan 30% | VRAM 9938/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
