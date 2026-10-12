@@ -1,4 +1,10 @@
-<title>AUBIEETERNAL AI Builds</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AUBIEETERNAL Institute · Example builds</title>
+<meta name="description" content="One tower. Every phone is a seat. Example parts lists only. The Institute does not sell hardware." />
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap');
 
@@ -49,9 +55,10 @@ nav{
 .logo em{color:var(--gold);font-style:normal}
 .nav-tag{
   font-family:'IBM Plex Mono',monospace;font-size:10px;
-  letter-spacing:.2em;color:var(--muted);
+  letter-spacing:.2em;color:var(--cyan);text-decoration:none;
   border:1px solid var(--dim);padding:4px 14px;border-radius:100px;
 }
+.nav-tag:hover{border-color:var(--cyan)}
 
 /* ─── HERO ─── */
 .hero{
@@ -256,53 +263,13 @@ footer p{font-size:12px;color:var(--muted)}
 .social a:hover{background:rgba(0,201,255,.08)}
 .social svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
 </style>
-
-<!-- INTEREST MODAL OVERLAY -->
-<div id="modal-overlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(6px)" onclick="closeModal(event)">
-  <div style="background:#0e1c2a;border:1px solid rgba(0,201,255,0.25);border-radius:16px;padding:40px;max-width:420px;width:90%;position:relative">
-    <button onclick="closeModal(true)" style="position:absolute;top:14px;right:16px;background:none;border:none;color:#4e6a82;font-size:20px;cursor:pointer">✕</button>
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.2em;color:#ffaa00;margin-bottom:12px" id="modal-tier-label">TEACHER NODE</div>
-    <h3 style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:8px">Run it yourself</h3>
-    <p style="font-size:13px;color:#4e6a82;margin-bottom:24px">The Institute does not sell hardware or take orders. The free software is on the project page.</p>
-    <input id="modal-email" type="email" placeholder="your@email.com" style="width:100%;padding:12px 16px;background:#060a0e;border:1px solid rgba(0,201,255,0.2);border-radius:8px;color:#cde0ef;font-family:'Inter',sans-serif;font-size:14px;margin-bottom:12px;outline:none">
-    <button onclick="submitInterest()" style="width:100%;padding:13px;background:#00c9ff;color:#000;border:none;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer">Send Me the Guide →</button>
-    <p style="font-size:11px;color:#2a3f52;text-align:center;margin-top:12px">The Institute does not take orders.</p>
-    <div id="modal-thanks" style="display:none;text-align:center;padding:20px 0">
-      <div style="font-size:32px;margin-bottom:10px">✅</div>
-      <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#00e676">Got it! We'll be in touch.</div>
-      <p style="font-size:13px;color:#4e6a82;margin-top:6px">Check your inbox — build guide incoming.</p>
-    </div>
-  </div>
-</div>
-
-<script>
-var _intTier='';
-function showInterest(tier){
-  window.location.href = 'https://aubieeternal-institute-inc.github.io/AUBIEETERNAL/#self-hosted';
-}
-function closeModal(e){
-  if(e===true||e.target===document.getElementById('modal-overlay'))
-    document.getElementById('modal-overlay').style.display='none';
-}
-function submitInterest(){
-  var email=document.getElementById('modal-email').value.trim();
-  if(!email||!email.includes('@')){
-    document.getElementById('modal-email').style.borderColor='#ff6b35';
-    setTimeout(()=>document.getElementById('modal-email').style.borderColor='rgba(0,201,255,0.2)',1200);
-    return;
-  }
-  // In production: replace with your form endpoint (Formspree, EmailJS, etc.)
-  // For now just shows confirmation
-  document.getElementById('modal-thanks').style.display='block';
-  var inputs=document.querySelectorAll('#modal-overlay input,#modal-overlay button:last-of-type,#modal-overlay p:last-of-type');
-  inputs.forEach(function(el){if(el!==document.querySelector('#modal-overlay > div > button'))el.style.display='none'});
-}
-</script>
+</head>
+<body>
 
 <!-- NAV -->
 <nav>
   <div class="logo">AUBIE<em>ETERNAL</em> · INSTITUTE</div>
-  <div class="nav-tag">FREE SOFTWARE</div>
+  <a class="nav-tag" href="https://aubieeternal-institute-inc.github.io/AUBIEETERNAL/#self-hosted">RUN THE FREE SOFTWARE</a>
 </nav>
 
 <section class="hero">
@@ -335,7 +302,7 @@ function submitInterest(){
       <div class="recommended-badge">Any size</div>
       <div class="tier-body">
         <div class="tier-name">Everyday tablet</div>
-        <div class="tier-code">SEAT · STORE BUY</div>
+        <div class="tier-code">SEAT · EXAMPLE</div>
         <div class="price-row"><div class="price">$150</div><div class="price-note">about</div></div>
         <div class="build-label">Any Android tablet already in the house, or a basic one</div>
         <ul class="specs">
@@ -364,7 +331,7 @@ function submitInterest(){
 <div id="fit" style="background:#0b1520;border-top:1px solid rgba(0,201,255,0.12);border-bottom:1px solid rgba(0,201,255,0.12);padding:72px 24px">
   <div style="max-width:720px;margin:0 auto">
     <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;color:#ffaa00;margin-bottom:12px">SEAT FIT</div>
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,5vw,40px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:10px">What should this house buy?</h2>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(26px,5vw,40px);font-weight:800;color:#fff;line-height:1.1;margin-bottom:10px">What does this house already have?</h2>
     <p id="fit-q" style="color:#cde0ef;font-size:18px;margin-bottom:6px"></p>
     <p id="fit-h" style="color:#4e6a82;font-size:14px;margin-bottom:18px"></p>
     <div id="fit-choices" style="display:flex;flex-direction:column;gap:10px"></div>
@@ -497,10 +464,11 @@ function submitInterest(){
 <!-- ─── PC BUILDS SECTION ─── -->
 <div style="max-width:1180px;margin:0 auto;padding:0 32px 40px">
   <div style="display:flex;align-items:baseline;gap:16px;margin-bottom:32px;padding-bottom:16px;border-bottom:1px solid rgba(0,201,255,0.14)">
-    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff">Custom AI PC Builds</h2>
-    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--cyan);border:1px solid rgba(0,201,255,.25);padding:3px 10px;border-radius:3px;letter-spacing:.14em">DESKTOP · WORKSTATION</span>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff">Example AI PC builds</h2>
+    <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--cyan);border:1px solid rgba(0,201,255,.25);padding:3px 10px;border-radius:3px;letter-spacing:.14em">ENTRY · MID · PRO</span>
   </div>
-  <p style="font-size:15px;color:#4e6a82;max-width:640px;margin-bottom:36px;font-weight:300">One tower for the house. Start with the entry build, an 8–12 GB card. Swap only the graphics card later if 14B feels thin. A laptop cannot take that swap. The Pro rig is not the first purchase.</p>
+  <p style="font-size:15px;color:#cde0ef;max-width:680px;margin-bottom:12px;font-weight:500">The Institute does not sell hardware. These are example parts lists only.</p>
+  <p style="font-size:15px;color:#4e6a82;max-width:640px;margin-bottom:36px;font-weight:300">One tower for the house. The entry list is a starting example, with an 8–12 GB card. A later graphics-card swap is possible in a desktop. A laptop cannot take that swap. The Pro list is an example, not a place to start.</p>
 
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px">
 
@@ -557,7 +525,7 @@ function submitInterest(){
           <li><span class="spec-check" style="background:rgba(110,180,255,0.12);color:#6eb4ff">✓</span><b>LLM:</b> Qwen 14B on the 12 GB card</li>
           <li><span class="spec-check chk-n">—</span><b>RAM:</b> Upgrade path to 32GB</li>
         </ul>
-        <button class="tier-cta" style="background:transparent;color:#6eb4ff;border:1px solid rgba(110,180,255,0.3);margin-top:22px;display:block;width:100%;padding:12px;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer" onclick="showInterest('Entry AI PC')">Run it yourself</button>
+        <a class="tier-cta" style="background:transparent;color:#6eb4ff;border:1px solid rgba(110,180,255,0.3)" href="https://aubieeternal-institute-inc.github.io/AUBIEETERNAL/#self-hosted">Run the free software</a>
       </div>
     </div>
 
@@ -612,7 +580,7 @@ function submitInterest(){
           <li><span class="spec-check chk-y">✓</span><b>LLM:</b> qwen2.5:14b GPU-accelerated</li>
           <li><span class="spec-check chk-y">✓</span><b>Case:</b> Tempered glass + RGB</li>
         </ul>
-        <button class="tier-cta cta-green" onclick="showInterest('Mid AI Workstation')">Run it yourself</button>
+        <a class="tier-cta cta-green" href="https://aubieeternal-institute-inc.github.io/AUBIEETERNAL/#self-hosted">Run the free software</a>
       </div>
     </div>
 
@@ -668,7 +636,7 @@ function submitInterest(){
           <li><span class="spec-check chk-o">✓</span><b>LLM:</b> qwen2.5:72B full local</li>
           <li><span class="spec-check chk-o">✓</span><b>PSU:</b> 1000W 80+ Gold</li>
         </ul>
-        <button class="tier-cta cta-orange" onclick="showInterest('Pro AI Rig')">Run it yourself</button>
+        <a class="tier-cta cta-orange" href="https://aubieeternal-institute-inc.github.io/AUBIEETERNAL/#self-hosted">Run the free software</a>
       </div>
     </div>
 
@@ -708,16 +676,18 @@ var EVENTS = [
 </script>
 
 <div style="background:linear-gradient(135deg,#0b1a26,#0d2230);border-top:1px solid rgba(0,201,255,0.15);padding:56px 40px;text-align:center">
-  <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:#ffaa00;margin-bottom:14px">PARTS · NOT A PRIVATE CLASS</div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.22em;color:#ffaa00;margin-bottom:14px">FREE SOFTWARE</div>
   <h2 style="font-family:'Space Grotesk',sans-serif;font-size:clamp(22px,4vw,36px);font-weight:700;color:#fff;margin-bottom:12px">The software is free.</h2>
-  <p style="font-size:15px;color:#4e6a82;max-width:520px;margin:0 auto 20px;font-weight:300">Run it on a computer you already have. The Institute does not sell hardware, lessons, or support plans.</p>
-  <button onclick="showInterest('Run it yourself')" style="padding:14px 36px;background:#00c9ff;color:#000;border:none;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;cursor:pointer">Run it yourself</button>
-  <p style="margin-top:16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#2a3f52">aubieeternal_institute@pm.me · Englewood, FL · aubieeternal-institute.org</p>
+  <p style="font-size:15px;color:#4e6a82;max-width:520px;margin:0 auto 20px;font-weight:300">The Institute does not sell hardware. These are example parts lists only. Run the learning program on a computer you already have.</p>
+  <a href="https://aubieeternal-institute-inc.github.io/AUBIEETERNAL/#self-hosted" style="display:inline-block;padding:14px 36px;background:#00c9ff;color:#000;border-radius:8px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;text-decoration:none">Run the free software</a>
 </div>
 
 <footer>
   <div class="logo">AUBIE<em>ETERNAL</em> · INSTITUTE</div>
-  <p>One tower for the house · Phones and tablets are seats · The Institute does not sell hardware · © 2026 AUBIEETERNAL Institute</p>
+  <p>AUBIEETERNAL INSTITUTE, INC. · Florida Not For Profit Corporation</p>
+  <p>EIN 42-3145820 · <a href="mailto:aubieeternal_institute@pm.me" style="color:#00c9ff">aubieeternal_institute@pm.me</a> · <a href="https://aubieeternal-institute.org" style="color:#00c9ff">aubieeternal-institute.org</a></p>
+  <p>The Institute does not sell hardware. These are example parts lists only.</p>
+  <p>© 2026 AUBIEETERNAL Institute · War Eagle Eternal</p>
   <div class="social" aria-label="Follow and contact us">
     <a href="https://www.facebook.com/profile.php?id=61594661892373" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M24 12a12 12 0 1 0-13.9 11.9v-8.4H7.1V12h3V9.4c0-3 1.8-4.7 4.5-4.7 1.3 0 2.7.2 2.7.2v3h-1.5c-1.5 0-2 .9-2 1.9V12h3.4l-.5 3.5h-2.9v8.4A12 12 0 0 0 24 12z"/></svg>Facebook</a>
     <a href="https://www.instagram.com/aubieeternal_institute_inc/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1.1.4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1.1.4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1.1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1.1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 1.8c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1-.1 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8zm0 8.1a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4zm6.2-8.3a1.1 1.1 0 1 1-2.3 0 1.1 1.1 0 0 1 2.3 0z"/></svg>Instagram</a>
@@ -725,3 +695,5 @@ var EVENTS = [
     <a href="https://wa.me/19312665632" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zM20.5 3.5A11.8 11.8 0 0 0 1.9 17.7L.2 24l6.4-1.7A11.8 11.8 0 0 0 24 12c0-3.2-1.2-6.1-3.5-8.5z"/></svg>WhatsApp</a>
   </div>
 </footer>
+</body>
+</html>
