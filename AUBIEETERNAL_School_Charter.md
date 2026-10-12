@@ -197,7 +197,7 @@ You have not just learned epistemic rigor — you have deployed it for communiti
 
 ### Three-Layer Structure
 - **Family Layer:** Full veto rights. Opt out of any content without penalty.
-- **Operator Layer:** @hodlmateo maintains codebase, approves high-impact changes.
+- **Operator Layer:** AUBIEETERNAL INSTITUTE, INC. maintains the codebase and approves high-impact changes.
 - **Swarm Layer:** Evolution engine proposes lessons; operator approval required; swarm coherence ≥0.85.
 
 ### Amendment Process

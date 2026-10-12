@@ -11317,7 +11317,6 @@ Facebook: https://www.facebook.com/profile.php?id=61594661892373
 Instagram: https://www.instagram.com/aubieeternal_institute_inc/
 Telegram: https://t.me/aubieeternal_institute
 WhatsApp: https://wa.me/19312665632
-Twitter/X: @MateoVanhorn
 Everything is open source — someone will help.
 
 If you need a setup translated into another language:

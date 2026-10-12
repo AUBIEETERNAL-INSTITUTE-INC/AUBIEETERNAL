@@ -185,7 +185,7 @@ This:
 ## Getting Help
 
 - **GitHub:** github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL → Issues tab
-- **Twitter/X:** @MateoVanhorn
+- **Email:** aubieeternal_institute@pm.me
 - **Setup help:** File an issue labeled "community-deployment" — community responds fast
 - **Translation help:** File an issue labeled "translation-needed" with your language
 

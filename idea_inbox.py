@@ -7,8 +7,7 @@ layout (CLAUDE.md): a tag picks the door, and an untagged idea goes to an
 unsorted inbox instead of being guessed into the wrong one.
 
     !idea #institute lesson on how bridges carry weight, with a straw bridge build
-    !idea #business offer local-AI setup as a flat-fee package
-    !idea #personal call Juan about the board meeting
+    !idea #personal call about the board meeting
     !idea the kiosk should say good morning      -> unsorted inbox
     !ideas #institute                              -> last 5 institute ideas
 
@@ -35,7 +34,7 @@ DOORS = {
 }
 TAGS = {
     "#institute": "institute", "#inst": "institute", "#school": "institute", "#curriculum": "institute",
-    "#business": "business", "#biz": "business", "#vanhorn": "business",
+    "#business": "business", "#biz": "business",
     "#personal": "personal", "#me": "personal",
 }
 

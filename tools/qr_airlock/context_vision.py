@@ -51,7 +51,7 @@ _SYSTEM = (
     "surroundings for a non-technical family. You do NOT decide if the code "
     "is safe or unsafe - another system does that. Your only job is to "
     "describe what the code is physically printed on and whether that "
-    "setting is consistent with an everyday, low-risk source (a shop "
+    "setting is consistent with an everyday, low-risk source (a paper "
     "receipt, product packaging, an appliance label, a printed event "
     "ticket, a restaurant table card) or whether it looks like nothing is "
     "visible around it, or like the code was stuck on, taped over, or "

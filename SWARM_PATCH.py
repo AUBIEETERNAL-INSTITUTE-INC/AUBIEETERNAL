@@ -151,7 +151,7 @@ def maybe_publish_commons():
         commons = EpistemicCommons()
         result  = commons.run_daily_publish()
         stats   = commons.get_commons_stats(1)
-        commons_url = f"https://github.com/hodlmateo/AUBIEETERNAL/blob/main/epistemic_commons/daily/{today}.md"
+        commons_url = f"https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/blob/main/epistemic_commons/daily/{today}.md"
         commons_summary = (
             f"**Published:** {result.get('seeds', 0)} seeds · "
             f"{result.get('steelmans', 0)} steelmans  \n"

@@ -507,13 +507,12 @@ Decided against a mini-PC/monitor/camera thin-client build.
 
 ### Curriculum content area: ICS / critical-infrastructure security
 
-- Fits AUBIEETERNAL as a **curriculum/education topic**, not a pivot into security services
-  (mixing for-profit security consulting risks 501(c)(3) mission alignment).
+- Fits AUBIEETERNAL as a **curriculum/education topic**, not paid security services.
 - Ties to current events (CISA water-sector guidance, White House water-infrastructure
   cybersecurity program) and a genuine workforce gap — good language for future
   EducateAI-style workforce-pipeline grants.
 - A separate personal learning track (general, non-water ICS security via CISA free training /
-  GICSP path) is kept **outside** the nonprofit entity.
+  GICSP path) stays outside Institute programs.
 
 ### Budget framing (if ~$10K grant/donation money), in priority order
 

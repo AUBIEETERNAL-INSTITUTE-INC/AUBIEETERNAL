@@ -1,8 +1,8 @@
 name: Build and Push Docker
 
 # Disabled for automatic pushes: GitHub is backup only for this project.
-# Live portal runs via systemd + venv on the rig, not ghcr.io/hodlmateo/aubieeternal.
-# Push to that personal GHCR tag fails from the org repo (permission_denied).
+# Live portal runs via systemd + venv on the rig, not a container registry.
+# A push under a personal account name fails from this org repo (permission_denied).
 # Keep this file for manual re-enable: Actions → Build and Push Docker → Run workflow.
 on:
   workflow_dispatch:
@@ -33,6 +33,6 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/hodlmateo/aubieeternal:v8
+          tags: ghcr.io/aubieeternal-institute-inc/aubieeternal:v8
           cache-from: type=gha
           cache-to: type=gha,mode=max

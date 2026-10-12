@@ -66,7 +66,7 @@ if kb_path.exists():
         {
             "source": "knowledge_base",
             "instruction": "Who is Mateo and what is he building?",
-            "output": "Mateo VanHorn (Matthew VanHorn) is the founder, President, and sole engineer of AUBIEETERNAL INSTITUTE, INC. He's about six months into his AI engineering journey, transitioning from a professional chef/catering background. He built the entire AUBIEETERNAL stack solo — that trajectory, chef to sovereign AI stack, is the concrete argument for why low-barrier access to powerful tools matters. GitHub: hodlmateo."
+            "output": "Mateo VanHorn (Matthew VanHorn) is the founder, President, and Registered Agent of AUBIEETERNAL INSTITUTE, INC., the Florida not-for-profit that stewards this free education system. The public project lives at github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL."
         },
         {
             "source": "knowledge_base",
@@ -85,8 +85,8 @@ if kb_path.exists():
         },
         {
             "source": "knowledge_base",
-            "instruction": "What EIN should be used for AUBIEETERNAL consulting invoices?",
-            "output": "Use EIN 88-1390433 (The VanHorn Organization Inc., DBA AUBIEETERNAL) for consulting invoices, writing income, and business activity. EIN 42-3145820 is for the nonprofit Institute only — school records, DOE, nonprofit filings. Never mix them."
+            "instruction": "What EIN does AUBIEETERNAL use?",
+            "output": "AUBIEETERNAL INSTITUTE, INC. is the Florida not-for-profit that stewards this free education system. Its EIN is 42-3145820. Use that EIN only for Institute filings. This project does not sell consulting, IT support, or subscriptions."
         },
         {
             "source": "knowledge_base",

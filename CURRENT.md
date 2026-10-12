@@ -2,13 +2,11 @@
 
 ## Repos and keys on the rig (2026-09-21)
 
-- `~/AUBIEETERNAL` — Institute repo (public). SSH deploy key, scoped to this repo only.
+- `~/AUBIEETERNAL` — Institute repo (public): `AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL`.
+  SSH deploy key, scoped to this repo only.
   `ssh -T git@github.com` greets as the repo name, not a user — that is expected.
-- `~/vanhorn-repo` — VanHorn Org repo `hodlmateo/aubieeternal` (skills/it-support etc).
-  Separate deploy key `~/.ssh/id_vanhorn`, reached via the `github-vanhorn` host alias
-  in `~/.ssh/config`. Neither key can reach the other repo. Keep it that way.
-- `/srv/vanhorn` — business working data (invoices, jobs, pitches). NOT a git repo and
-  must never become one; the VanHorn remote is public.
+- This repository is AUBIEETERNAL INSTITUTE, INC. only. Do not add invoices, client work,
+  or another organization's files here.
 
 Finetune scripts live in `finetune/` in this repo. The working copy is
 `~/aubieeternal_finetune` (its own local git, no remote). Two copies WILL drift:
@@ -32,7 +30,7 @@ filter_r10.py strips preambles and drops off-task records: 157 → 100 clean.
 NEXT: 35 claims in review_queue.txt need the fact pass.
 
 DO NOT: put vision / follow-up / org-identity records back in the teaching set.
-Org facts belong to the assistant and IT-support models, not Aubie.
+Filing facts stay out of the teaching model.
 
 Updated: 2026-09-21
 
@@ -44,9 +42,8 @@ The 9AM job logged `⚠️  Skipped: already ran today` (`already_ran_today()` i
 
 ## Identity
 
-- Owner: AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL (org, not a one-person repo)
-- Personal GitHub: hodlmateo — never search `user:holdmateo` or `user:MateoVanhorn`
-- Pages: aubieeternal-institute.org
+- Owner: AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL
+- Pages: https://aubieeternal-institute-inc.github.io/AUBIEETERNAL/ and aubieeternal-institute.org
 
 ## Last Grok Build code landing
 

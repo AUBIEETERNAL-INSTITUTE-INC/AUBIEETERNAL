@@ -1,7 +1,7 @@
 # AUBIEETERNAL × HermesBench Integration
 ## 7 reliability recipes for sovereign AI agent stacks
 
-Built by [@hodlmateo](https://github.com/hodlmateo) · Shared for [@compileandpush](https://twitter.com/compileandpush) and the late-night builder community.
+Built by [AUBIEETERNAL INSTITUTE, INC.](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL) · Shared for [@compileandpush](https://twitter.com/compileandpush) and the late-night builder community.
 
 HermesBench: [github.com/verkyyi/hermesbench](https://github.com/verkyyi/hermesbench)  
 AUBIEETERNAL: [github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL](https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL)
@@ -167,4 +167,4 @@ PRs welcome in either direction.
 ---
 
 *War Eagle Eternal 🦅 — Late-night lattice move.*  
-*Built by @hodlmateo · Shared with @compileandpush · CC0 Public Domain*
+*Built by AUBIEETERNAL INSTITUTE, INC. · Shared with @compileandpush · CC0 Public Domain*

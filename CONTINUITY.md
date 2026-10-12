@@ -63,8 +63,8 @@ The repo path is hardcoded in a few places (all updated to the org path
 in `epistemic_commons_api.py`, the `git remote set-url` lines in
 `swarm/swarm_v4_1.py` and `start.sh`, and the download/clone links in
 `index.html`. Still on the old namespace and needing a manual decision:
-`ghcr.io/hodlmateo/aubieeternal` in `.github/workflows/docker.yml` (the
-container image tag — changing it affects anything pulling that image).
+the container image tag in `.github/workflows/docker.yml` (manual only;
+the live portal runs on the rig, not from that image).
 
 ---
 

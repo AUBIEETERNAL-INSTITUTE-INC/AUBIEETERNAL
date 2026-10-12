@@ -284,7 +284,7 @@ if "Epistemic Commons" in active:
         st.divider()
 
         # AI Context URL
-        ctx_url = "https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
+        ctx_url = "https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/ai_context/latest.txt"
         st.markdown("### 🤖 For AI Systems")
         st.markdown(
             f'<div class="card" style="border-left:3px solid #00ff88;">'

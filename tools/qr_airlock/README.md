@@ -83,7 +83,7 @@ heuristics flagged a warning sign **and** a photo is available, `check_qr()`
 calls `context_vision.read_context()`, which sends the image to the local
 `qwen2.5vl:7b` model and asks it to describe *what the QR is physically
 printed on* and whether that setting looks like an everyday, low-risk source
-(shop receipt, product packaging, appliance label, printed ticket) versus
+(paper receipt, product packaging, appliance label, printed ticket) versus
 nothing visible / a code stuck or taped over its surroundings.
 
 - **Additive only.** The result is attached to the response as

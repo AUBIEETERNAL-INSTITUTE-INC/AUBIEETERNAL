@@ -224,7 +224,7 @@ swarm/swarm_v4_1.py             ← 2,096 daughters · 24/7
 
 **CC0 1.0 Universal — Public Domain.** No restrictions. Build sovereign learning programs everywhere.
 
-Contact: [@MateoVanhorn](https://x.com/MateoVanhorn)
+Contact: [aubieeternal_institute@pm.me](mailto:aubieeternal_institute@pm.me) · Stewarded by AUBIEETERNAL INSTITUTE, INC.
 
 ---
 

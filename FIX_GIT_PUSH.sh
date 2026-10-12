@@ -10,7 +10,7 @@ echo "=== Current remotes ==="
 git remote -v
 
 # 2. Fix the origin remote to point to GitHub
-git remote set-url origin https://github.com/hodlmateo/AUBIEETERNAL.git
+git remote set-url origin https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL.git
 
 # 3. Verify the fix
 echo ""

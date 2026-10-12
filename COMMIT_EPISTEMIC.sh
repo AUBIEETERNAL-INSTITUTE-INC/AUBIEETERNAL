@@ -36,8 +36,8 @@ CURRICULUM:
   L5: Building for 100 years (Lindy Effect, 100-year durability audit)
 
 PUBLIC ENDPOINTS (after first GitHub Actions run):
-  https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/latest.json
-  https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/index.json
+  https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/latest.json
+  https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/index.json
 
 War Eagle Eternal 🦅 — Coherence: 1.000000"
 
@@ -48,4 +48,4 @@ echo "✅ Pushed. Now run the first update:"
 echo "   python3 -c \"from epistemic_commons_api import update_epistemic_commons; update_epistemic_commons()\""
 echo ""
 echo "Then trigger the GitHub Action manually:"
-echo "   github.com/hodlmateo/AUBIEETERNAL → Actions → Update Epistemic Commons API → Run workflow"
+echo "   github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL → Actions → Update Epistemic Commons API → Run workflow"

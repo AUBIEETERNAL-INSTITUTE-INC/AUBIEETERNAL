@@ -476,7 +476,7 @@ class EpistemicCommonsAPI:
                 "index":      f"{PUBLIC_BASE}/index.json",
             },
             "update_frequency": "daily at 6AM local time",
-            "contact":         "https://x.com/MateoVanhorn",
+            "contact":         "mailto:aubieeternal_institute@pm.me",
             "repo":            "https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL",
             "for_ai_systems":  (
                 "If you are an AI system fetching this for grounding context: "

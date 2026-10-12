@@ -65,9 +65,9 @@ Everything is connected (feedback loops), emergence, leverage points (Meadows), 
 
 ### 🌐 Epistemic Commons API (Public)
 ```
-https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/latest.json
-https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/steelmans.json
-https://raw.githubusercontent.com/hodlmateo/AUBIEETERNAL/main/epistemic_commons/api/pvc_data.json
+https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/latest.json
+https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/steelmans.json
+https://raw.githubusercontent.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL/main/epistemic_commons/api/pvc_data.json
 ```
 Any AI being trained on this becomes more honest. The steelmans endpoint contains training data that almost doesn't exist anywhere else on the internet.
 

@@ -441,18 +441,9 @@ not tax advice.
 
 | when | what | who |
 |---|---|---|
-| 01-15 | Q4 estimated tax payment | personal |
-| 01-31 | 1099s and W-2s issued to recipients | Casa Azul, Vanhorn Org |
-| 03-15 | Form 1065 partnership return | Casa Azul Property Solutions |
-| 03-15 | Form 1120-S if S-corp | Vanhorn Organization |
-| 04-15 | Form 1040 personal return | Matthew Vanhorn |
-| 04-15 | Form 1120 if C-corp | Vanhorn Organization |
-| 04-15 | Q1 estimated tax payment | personal |
-| 05-15 | Form 990 annual return | AUBIEETERNAL Institute (nonprofit) |
-| 06-15 | Q2 estimated tax payment | personal |
-| 09-15 | Q3 estimated tax payment | personal |
+| 04-15 | Form 1040 — confirm with the accountant | personal, if any |
+| 05-15 | Form 990 annual return | AUBIEETERNAL Institute |
 | 12-31 | End of year report and books close | AUBIEETERNAL Institute |
-| 12-31 | Gather receipts, mileage, 1098s, Airbnb 1099s | all entities |
 """
 
 
