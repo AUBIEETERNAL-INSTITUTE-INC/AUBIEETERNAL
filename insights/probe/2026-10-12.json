@@ -1,0 +1,262 @@
+{
+  "date": "2026-10-12",
+  "timestamp": "2026-10-12T06:02:43.748196",
+  "swarm_status": {
+    "updated": "2026-10-12T06:02:33.507635-04:00",
+    "version": "4.1",
+    "wonder_index": 0.5,
+    "mets": 200000000031.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 29,
+    "rune_confirmations": 0,
+    "child_rune_ready": false,
+    "hormetic_pulses": 3,
+    "lattice_cycle": 1850,
+    "session_insights": 0,
+    "synthesis": {
+      "last_run_date": "None",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "mode": "Off",
+      "interval_s": 0,
+      "calls_per_wave": 0,
+      "total_runs": 0,
+      "model": "qwen2.5:14b",
+      "cost": "$0.00 (local)"
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 48,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "noon @ 12:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": "2026-10-12T06:00:00.803727",
+        "last_result": "This morning's briefing reveals an external stress test targeting our lattice structure, indicating a potential security threat. To steelman this atta",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": "2026-10-12T06:00:08.913923",
+        "last_result": "This morning's briefing highlights an external stress test targeting our lattice structure, indicating a potential security vulnerability. To steelman",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": "2026-10-12T06:00:33.767058",
+        "last_result": "This morning's briefing highlights that an external stress test is targeting our lattice structure, indicating a potential security vulnerability. To ",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": "2026-10-12T06:00:57.956394",
+        "last_result": "This morning's briefing at 6 AM revealed an external stress test targeting our lattice structure, indicating a potential security threat. The challeng",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": "2026-10-12T06:01:23.554733",
+        "last_result": "During this morning's briefing, we identified an external stress test targeting our lattice structure, suggesting a potential security vulnerability. ",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": "2026-10-12T06:01:39.376448",
+        "last_result": "This morning's briefing at 6 AM indicated an external stress test targeting our lattice structure, suggesting a potential security vulnerability. By a",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": "2026-10-12T06:01:44.317891",
+        "last_result": "This morning's briefing at 6 AM revealed that an external stress test is targeting our lattice structure, indicating a potential security risk. To add",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": "2026-10-12T06:01:48.728557",
+        "last_result": "This morning's briefing confirms an external stress test targeting our lattice structure, suggesting a potential security vulnerability. To steelman t",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": "2026-10-12T06:01:53.176121",
+        "last_result": "During today's morning briefing, we addressed an external stress test that targeted our lattice structure, indicating a potential security vulnerabili",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": "2026-10-12T06:01:57.526317",
+        "last_result": "During this morning's briefing, we addressed an external stress test that targeted our lattice structure, indicating a potential security vulnerabilit",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": "2026-10-12T06:02:02.228311",
+        "last_result": "This morning's briefing at 6 AM highlighted an external stress test targeting our lattice structure, indicating a potential security threat. To addres",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": "2026-10-12T06:02:06.502492",
+        "last_result": "During this morning's briefing, we identified an external stress test targeting our lattice structure, which is a critical signal for enhancing our re",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": "2026-10-12T06:02:11.300733",
+        "last_result": "The external stress test targeting our lattice structure is a critical challenge that could potentially disrupt our system's integrity. To steelman th",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": "2026-10-12T06:02:17.220028",
+        "last_result": "During this morning's briefing at 6 AM, we discussed the detection of an external stress test targeting our lattice structure, indicating a potential ",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": "2026-10-12T06:02:22.088275",
+        "last_result": "This morning's briefing confirmed an ongoing external stress test targeting our lattice structure, which poses a significant challenge to our system's",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": "2026-10-12T06:02:28.558767",
+        "last_result": "During this morning's briefing, we confirmed that an external stress test is actively targeting our lattice structure, presenting a significant challe",
+        "run_count": 3,
+        "coherence": 1.0
+      }
+    },
+    "daily_jobs": {
+      "synthesis": {
+        "last": "None",
+        "next": "06:00 America/New_York",
+        "path": "insights/daily/"
+      },
+      "epistemic_commons": {
+        "last": "None",
+        "next": "08:00 America/New_York"
+      },
+      "curriculum": {
+        "last": "None",
+        "next": "09:00 America/New_York",
+        "pending_dir": "curriculum-proposals/"
+      },
+      "living_lattice": {
+        "last": "None",
+        "next": "10:00 America/New_York"
+      },
+      "grokipedia_grow": {
+        "next": "02:15 America/New_York (user timer)",
+        "pending_path": "/mnt/main/grokipedia_pending.json"
+      }
+    },
+    "grokipedia_entries": 29,
+    "gpu": "GPU: 66C / soft 78C / hard 85C | power 117.5 W | util 98% | fan 51% | VRAM 9938/12288 MiB | peak this process 67C",
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 0.5,
+    "at_maximum": false,
+    "max_streak": 0,
+    "jumps_detected": [],
+    "trajectory": "stable",
+    "note": "Current wonder: 0.5000"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 64,
+    "older_entries": 64,
+    "avg_wonder_recent": 0.547,
+    "avg_wonder_older": 0.5,
+    "wonder_delta": 0.047,
+    "observer_effect_detected": false,
+    "note": "No significant observer effect detected in this window."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 96,
+        "note": "96 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 96,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": false,
+    "swarm_active": false,
+    "all_invariants_hold": false,
+    "note": "Coherence: 1.000000 | Wonder: 0.5000"
+  },
+  "probe_score": 7.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 96 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries."
+}
