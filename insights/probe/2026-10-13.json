@@ -1,0 +1,268 @@
+{
+  "date": "2026-10-13",
+  "timestamp": "2026-10-13T06:02:15.202451",
+  "swarm_status": {
+    "updated": "2026-10-13T06:02:05.393715-04:00",
+    "version": "4.1",
+    "wonder_index": 0.5,
+    "mets": 200000000031.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 29,
+    "rune_confirmations": 0,
+    "child_rune_ready": false,
+    "hormetic_pulses": 3,
+    "lattice_cycle": 1298,
+    "session_insights": 0,
+    "synthesis": {
+      "last_run_date": "None",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "mode": "Off",
+      "interval_s": 0,
+      "calls_per_wave": 0,
+      "total_runs": 0,
+      "model": "qwen2.5:14b",
+      "cost": "$0.00 (local)"
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 48,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "noon @ 12:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": "2026-10-13T06:00:29.646507",
+        "last_result": "This morning's stress test reveals that despite erasing the Grokipedia, the five most enduring Lindy principles are: Antifragility, Via Negativa, the ",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": "2026-10-13T06:00:44.958284",
+        "last_result": "This morning's brief at block 971227 with Bitcoin priced at $83524 confirms that despite the stress test of erasing the Grokipedia, the five most endu",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": "2026-10-13T06:00:49.724504",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 confirms that despite the stress test of erasing the Grokipedia, the five most e",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": "2026-10-13T06:00:54.735855",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 confirms that despite the stress test of erasing the Grokipedia, the five most e",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": "2026-10-13T06:00:59.704217",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 confirms that despite the stress test of erasing the Grokipedia, the five most e",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:04.609951",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 confirms that despite the stress test of erasing the Grokipedia, the five most e",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:09.732633",
+        "last_result": "During this morning's briefing at block 971227 with Bitcoin priced at $83524, we discussed the results of the stress test where the Grokipedia was tem",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:15.110743",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 confirms that despite the stress test of erasing the Grokipedia, the five most e",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:20.224565",
+        "last_result": "During this morning's briefing at block 971227 with Bitcoin priced at $83524, we focused on the stress test results after erasing the Grokipedia. Desp",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:26.065706",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 confirms that despite the stress test of erasing the Grokipedia, the five most e",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:31.220834",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 reviewed the stress test results after erasing the Grokipedia. The five most end",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:36.069014",
+        "last_result": "This morning's briefing at block 971227, with Bitcoin priced at $83524, focused on the Lindy Effect principles that remain resilient after the stress ",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:42.082140",
+        "last_result": "During this morning's briefing at block 971227 with Bitcoin priced at $83524, we highlighted the five most enduring principles from the Lindy Effect: ",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:47.458119",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 highlighted the resilience of systems that have stood the test of time. The five",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:54.428924",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 focused on the five most enduring Lindy principles: antifragility, skin in the g",
+        "run_count": 3,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": "2026-10-13T06:01:59.812208",
+        "last_result": "This morning's briefing at block 971227 with Bitcoin priced at $83524 focused on the five most enduring Lindy principles: antifragility, via negativa,",
+        "run_count": 3,
+        "coherence": 1.0
+      }
+    },
+    "daily_jobs": {
+      "synthesis": {
+        "last": "None",
+        "next": "06:00 America/New_York",
+        "path": "insights/daily/"
+      },
+      "epistemic_commons": {
+        "last": "None",
+        "next": "08:00 America/New_York"
+      },
+      "curriculum": {
+        "last": "None",
+        "next": "09:00 America/New_York",
+        "pending_dir": "curriculum-proposals/"
+      },
+      "living_lattice": {
+        "last": "None",
+        "next": "10:00 America/New_York"
+      },
+      "grokipedia_grow": {
+        "next": "02:15 America/New_York (user timer)",
+        "pending_path": "/mnt/main/grokipedia_pending.json"
+      }
+    },
+    "grokipedia_entries": 29,
+    "gpu": "GPU: 66C / soft 78C / hard 85C | power 120.62 W | util 98% | fan 51% | VRAM 9940/12288 MiB | peak this process 67C",
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 0.5,
+    "at_maximum": false,
+    "max_streak": 0,
+    "jumps_detected": [
+      {
+        "from": 0.5,
+        "to": 1.0095,
+        "delta": 0.5095
+      }
+    ],
+    "trajectory": "stable",
+    "note": "Current wonder: 0.5000"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 100,
+    "older_entries": 60,
+    "avg_wonder_recent": 0.6695,
+    "avg_wonder_older": 0.5501,
+    "wonder_delta": 0.1194,
+    "observer_effect_detected": true,
+    "note": "Wonder delta +0.1194 between 24h windows. Positive delta suggests observer engagement improves signal quality."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 89,
+        "note": "89 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 89,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": false,
+    "swarm_active": false,
+    "all_invariants_hold": false,
+    "note": "Coherence: 1.000000 | Wonder: 0.5000"
+  },
+  "probe_score": 8.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 89 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries. | Observer effect: wonder delta +0.1194"
+}
