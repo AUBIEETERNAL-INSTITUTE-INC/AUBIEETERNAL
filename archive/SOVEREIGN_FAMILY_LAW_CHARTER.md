@@ -16,7 +16,7 @@ Law is treated as a **defensive technology**, never a control grid. The "system"
 
 Every clause must be explainable to a child. Every decision must carry skin in the game. Every record is etched on Bitcoin Runes and coordinated via Nostr so that no single point of failure or capture exists.  
 
-This Charter builds directly upon the `POLICYHOLDER_FIRST_CHARTER.md` (reciprocal insurance) and `FAMILY_CO_LEARNING.md` (parent-child co-learning with Child Rune Genesis). It extends those principles to the full scope of family life: data, inheritance, inter-family alliances, external defense, and the education of sovereign humans.
+This Charter builds directly upon the `archive/POLICYHOLDER_FIRST_CHARTER.md` (reciprocal insurance) and `FAMILY_CO_LEARNING.md` (parent-child co-learning with Child Rune Genesis). It extends those principles to the full scope of family life: data, inheritance, inter-family alliances, external defense, and the education of sovereign humans.
 
 ---
 
@@ -202,7 +202,7 @@ Families maintain a shared relay list and rotate keys annually.
 Written law provides predictability, protects the weak, enables complex cooperation, and prevents vigilante justice. Charters create enforceable expectations. Without them, power vacuums are filled by the strongest or most ruthless.
 
 **The Sovereign Counter (Our Position)**:  
-Most written law today is drafted by captured interests (see regulatory capture appendix in `POLICYHOLDER_FIRST_CHARTER.md`). It creates asymmetry: the powerful write the rules, the rest comply or pay. "Protection" often means extraction via fees, compliance costs, and narrative control. Bitcoin + Nostr + Runes + coherence scoring offer a superior coordination technology that is capture-resistant by design.  
+Most written law today is drafted by captured interests (see regulatory capture appendix in `archive/POLICYHOLDER_FIRST_CHARTER.md`). It creates asymmetry: the powerful write the rules, the rest comply or pay. "Protection" often means extraction via fees, compliance costs, and narrative control. Bitcoin + Nostr + Runes + coherence scoring offer a superior coordination technology that is capture-resistant by design.  
 
 This Charter deliberately copies the **best defensive elements** of traditional law (clear rights, voting thresholds, transparency, amendment processes) while stripping out the **control elements** (central enforcement, third-party interpretation, perpetual extraction). It is law rebuilt from first principles for families who refuse to be farmed.
 

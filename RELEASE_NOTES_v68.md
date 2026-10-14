@@ -131,7 +131,7 @@ swarm_contributions.py         ← Family → swarm injection
 sovereign_cashflow_game.py     ← Rich Dad 2026 edition
 sovereign_life_game.py         ← 6-chapter sovereignty game
 POLICYHOLDER_FIRST_CHARTER_v0_2.md
-SOVEREIGN_FAMILY_LAW_CHARTER.md
+archive/SOVEREIGN_FAMILY_LAW_CHARTER.md (archived personal draft)
 README.md                      ← Updated for v68.0
 ```
 

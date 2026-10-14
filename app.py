@@ -6796,7 +6796,7 @@ Policy text: {policy_text}"""
         _charter_paths = [
             _Path("/mnt/main/repo/POLICYHOLDER_FIRST_CHARTER_v0_2.md"),
             _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER_v0_2.md"),
-            _Path("/mnt/main/repo/governance/POLICYHOLDER_FIRST_CHARTER.md"),
+            _Path("/mnt/main/repo/archive/POLICYHOLDER_FIRST_CHARTER.md"),
         ]
         _charter_loaded = False
         for _cp in _charter_paths:
@@ -6850,7 +6850,7 @@ The compensation cap is tied to median Subscriber premium. If talent costs rise,
         st.markdown('<div style="color:#00cfff;font-family:Orbitron,monospace;font-size:0.82rem;margin-bottom:12px;">📜 SOVEREIGN FAMILY RECIPROCAL GOVERNANCE CHARTER v1.0</div>', unsafe_allow_html=True)
 
         _flaw_paths = [
-            _Path("/mnt/main/repo/SOVEREIGN_FAMILY_LAW_CHARTER.md"),
+            _Path("/mnt/main/repo/archive/SOVEREIGN_FAMILY_LAW_CHARTER.md"),
             _Path("/mnt/main/repo/governance/SOVEREIGN_FAMILY_LAW_CHARTER.md"),
         ]
         _flaw_loaded = False

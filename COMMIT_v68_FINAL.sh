@@ -35,7 +35,7 @@ git add \
   sovereign_life_game.py \
   aubie_offline.py \
   POLICYHOLDER_FIRST_CHARTER_v0_2.md \
-  SOVEREIGN_FAMILY_LAW_CHARTER.md \
+  archive/SOVEREIGN_FAMILY_LAW_CHARTER.md \
   PROVENANCE.md \
   RELEASE_NOTES_v68.md \
   2>/dev/null || true

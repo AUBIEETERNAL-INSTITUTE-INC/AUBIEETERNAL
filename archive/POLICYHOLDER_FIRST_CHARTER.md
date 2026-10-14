@@ -15,7 +15,7 @@ A reciprocal insurer is owned by its policyholders (called **Subscribers**). Sur
 This Charter is also a **curriculum document**. Every provision is designed to be teachable to a 13-year-old. If a provision cannot be explained simply, it is written wrong.
 
 **Relationship to the Sovereign Family Law Charter (v1.0):**  
-This insurance charter is the economic foundation layer. The `SOVEREIGN_FAMILY_LAW_CHARTER.md` extends these same principles (non-extraction, skin in the game, transparency, antifragility, Subscriber sovereignty) to the full scope of family life — data, inheritance, Child Rune rights, external defense, and reciprocal governance. Families that ratify both documents create a coherent stack: insurance as the economic shield, family law as the governance constitution.
+This insurance charter is the economic foundation layer. The `archive/SOVEREIGN_FAMILY_LAW_CHARTER.md` extends these same principles (non-extraction, skin in the game, transparency, antifragility, Subscriber sovereignty) to the full scope of family life — data, inheritance, Child Rune rights, external defense, and reciprocal governance. Families that ratify both documents create a coherent stack: insurance as the economic shield, family law as the governance constitution.
 
 ---
 
