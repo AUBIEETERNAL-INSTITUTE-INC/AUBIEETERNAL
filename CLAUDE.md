@@ -290,7 +290,7 @@ fallout, and a repo-wide degree-language cleanup. All commits below are on `main
   weird commit pattern is new.
 - **Degree/PhD language cleanup** (`cc63eb06`) — "PhD"/"degree" → "Sovereign
   Credential" for the top-tier Eternal Founder degree across `degrees.py` (the
-  single source of truth), `AUBIEETERNAL_School_Charter.md`, `README.md`,
+  single source of truth), `AUBIEETERNAL_Program_Charter.md`, `README.md`,
   `family_hud.py`, `phone_ui.py`; `RELEASE_NOTES_v69_UNIVERSITY.md` renamed to
   `RELEASE_NOTES_v69.md`. **A same-day follow-up pass (2026-09-05,
   `a549f0dc` + `df68baa9`) closed out everything flagged here:**

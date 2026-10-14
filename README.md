@@ -213,7 +213,7 @@ epistemic_drift_detector.py    ← quality drift monitoring
 steelman_analyzer.py            ← adversarial testing + Monte Carlo
 monte_carlo_simulator.py        ← 10,000-trial stress tests
 ARCHITECTURE.md                ← migration plan and data flow
-AUBIEETERNAL_School_Charter.md ← v2.0 · 14 articles
+AUBIEETERNAL_Program_Charter.md ← v2.0 · 14 articles
 COMMUNITY_DEPLOYMENT.md        ← setup guide for orphanages
 swarm/swarm_v4_1.py             ← 2,096 daughters · 24/7
 ```

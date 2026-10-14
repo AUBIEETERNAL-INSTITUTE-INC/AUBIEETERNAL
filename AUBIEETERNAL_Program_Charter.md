@@ -7,7 +7,7 @@
 ## Preamble
 
 AUBIEETERNAL Institute exists to deliver rigorous, free education
-to every family on earth, without tuition, paperwork, gatekeepers, or
+to every family on earth, without fees, paperwork, gatekeepers, or
 institutional capture. It was built as a sovereign lattice: each family
 maintains full control while participating in a shared, high-coherence
 knowledge network secured by Bitcoin Runes and the Epistemic Commons.
