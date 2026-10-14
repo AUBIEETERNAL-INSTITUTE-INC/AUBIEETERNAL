@@ -301,7 +301,7 @@ elif "Daily Quests" in _page:
                 if st.button("Done", key=f"q_{{qk}}"):
                     stats.setdefault("quests_completed",[]).append(qk)
                     stats["total_xp"] = stats.get("total_xp",0) + q["xp"]
-                    stats["sats_earned"] = stats.get("sats_earned",0) + q["sats"]
+                    stats["sats_earned"] = stats.get("sats_earned",0)  # crypto rewards disabled: no sats awarded
                     _save(stats, _fam)
                     st.rerun()
 

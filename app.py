@@ -84,6 +84,13 @@ if _env_path.exists():
                 if "key_anthropic" not in _st_tmp.session_state:
                     _st_tmp.session_state["key_anthropic"] = _v
 
+# ── CRYPTO REWARDS SWITCH ──────────────────────────────────────────────────
+# Bitcoin sats rewards and Runes token features are OFF. Children must not be
+# given or earn any crypto or tokens. Lessons ABOUT how Bitcoin works stay.
+# Code is kept intact; flipping this flag is the only switch.
+CRYPTO_REWARDS_ENABLED = False
+CRYPTO_REWARD_TABS = ("₿ Rune-Palace", "⚡ Bitcoin")
+
 # ── LIVE ON-CHAIN RUNES (auto-patched by Daily Driver) ──────────────────────
 LIVE_DATA_UPDATED = "2026-05-05 20:33:25"
 LIVE_BTC_BLOCK = 948073
@@ -1032,8 +1039,7 @@ with st.sidebar:
             "📋 Truth Debt Ledger",
             "📣 Share to X",
             "📡 Nostr Bridge",
-            "₿ Rune-Palace",
-            "⚡ Bitcoin",
+            *(() if not CRYPTO_REWARDS_ENABLED else ("₿ Rune-Palace", "⚡ Bitcoin")),
             "🛡️ Shield Rune",
             # School / games extras (builder-ish)
             "🎓 Institute Registrar",
@@ -1595,7 +1601,7 @@ elif "Swarm" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: RUNE-PALACE
 # ══════════════════════════════════════════════════════════════════════════════
-elif "Rune" in active and "Shield" not in active:
+elif "Rune" in active and "Shield" not in active and CRYPTO_REWARDS_ENABLED:
     st.markdown('<div class="card-title">₿ RUNE-PALACE — Bitcoin Runes & On-Chain Memory</div>', unsafe_allow_html=True)
 
     st.markdown("""
@@ -1876,14 +1882,14 @@ elif "Kid Curriculum" in active:
     today = str(datetime.date.today())
     if st.session_state.last_login != today:
         bonus = random.randint(15, 30)
-        st.session_state.rune_points += bonus
+        if CRYPTO_REWARDS_ENABLED: st.session_state.rune_points += bonus
         st.session_state.last_login = today
-        st.toast(f"☀️ Daily Oracle Bonus +{bonus} shards!", icon="🪙")
+        if CRYPTO_REWARDS_ENABLED: st.toast(f"☀️ Daily Oracle Bonus +{bonus} shards!", icon="🪙")
 
     # Rune shard stats
     c1, c2, c3 = st.columns(3)
     with c1:
-        st.markdown(f'<div class="stat-box"><div class="stat-val">{st.session_state.rune_points}</div><div class="stat-lbl">Rune Shards</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="stat-box"><div class="stat-val">{st.session_state.get("xp", 0) if not CRYPTO_REWARDS_ENABLED else st.session_state.rune_points}</div><div class="stat-lbl">{"XP" if not CRYPTO_REWARDS_ENABLED else "Rune Shards"}</div></div>', unsafe_allow_html=True)
     with c2:
         level_kid = st.session_state.rune_points // 80 + 1
         st.markdown(f'<div class="stat-box"><div class="stat-val">LVL {level_kid}</div><div class="stat-lbl">Kid Level</div></div>', unsafe_allow_html=True)
@@ -1941,7 +1947,7 @@ elif "Kid Curriculum" in active:
                                 completed.append(week["num"])
                                 st.session_state.kid_progress[kid_name]["completed_weeks"] = completed
                                 award_xp(80)
-                                st.session_state.rune_points += 40
+                                if CRYPTO_REWARDS_ENABLED: st.session_state.rune_points += 40
                                 st.session_state.streak += 1
                                 if len(completed) == 1:
                                     st.toast("🏅 Badge: First Flame!", icon="🔥")
@@ -2250,7 +2256,7 @@ Make it warm, specific, and actionable. End with a War Eagle family affirmation.
                 curriculum = resp.choices[0].message.content
                 st.session_state.curriculum_text = curriculum
                 award_xp(80)
-                st.session_state.rune_points += 60
+                if CRYPTO_REWARDS_ENABLED: st.session_state.rune_points += 60
                 st.toast("🧬 Family Lattice Generated! +80 XP", icon="🦅")
                 st.rerun()
             except Exception as e:
@@ -2291,7 +2297,7 @@ Make it warm, specific, and actionable. End with a War Eagle family affirmation.
             if not done:
                 if st.button(f"+{pts} XP ✅", key=f"do_{key}"):
                     st.session_state.completed_challenges.add(key)
-                    st.session_state.rune_points += pts
+                    if CRYPTO_REWARDS_ENABLED: st.session_state.rune_points += pts
                     award_xp(pts)
                     st.success(f"+{pts} XP!")
                     st.rerun()
@@ -3663,25 +3669,26 @@ if "Family Co-Learning" in active:
         pass
 
     rune_confirms = _sw.get("rune_confirmations", 33)
-    child_rune_ready = _sw.get("child_rune_ready", False)
+    child_rune_ready = CRYPTO_REWARDS_ENABLED and _sw.get("child_rune_ready", False)
     grokipedia_n = _sw.get("grokipedia_count", 11)
 
-    # ── Child Rune progress bar ───────────────────────────────────────────────
-    st.divider()
-    rune_pct = min(100, int(rune_confirms / 256 * 100))
-    rune_color = "#f7931a" if not child_rune_ready else "#00ff88"
-    rune_label = "🔴 CHILD RUNE READY FOR INSCRIPTION!" if child_rune_ready else f"⏳ Child Rune: {rune_confirms}/256 confirmations"
-    st.markdown(
-        f'<div class="card" style="border-left:3px solid {rune_color};">'
-        f'<div style="color:{rune_color};font-family:Orbitron,monospace;font-size:0.8rem;">{rune_label}</div>'
-        f'<div class="xp-bar-bg" style="margin-top:8px;"><div style="height:100%;border-radius:20px;background:linear-gradient(90deg,#f7931a,#ff6b35);width:{rune_pct}%;"></div></div>'
-        f'<div style="font-family:Share Tech Mono,monospace;font-size:0.72rem;color:#445577;margin-top:4px;">'
-        f'Every family lesson adds confirmations · Grokipedia: {grokipedia_n}/256'
-        f'</div></div>',
-        unsafe_allow_html=True
-    )
+    if CRYPTO_REWARDS_ENABLED:  # crypto/token rewards off for kids
+        # ── Child Rune progress bar ───────────────────────────────────────────────
+        st.divider()
+        rune_pct = min(100, int(rune_confirms / 256 * 100))
+        rune_color = "#f7931a" if not child_rune_ready else "#00ff88"
+        rune_label = "🔴 CHILD RUNE READY FOR INSCRIPTION!" if child_rune_ready else f"⏳ Child Rune: {rune_confirms}/256 confirmations"
+        st.markdown(
+            f'<div class="card" style="border-left:3px solid {rune_color};">'
+            f'<div style="color:{rune_color};font-family:Orbitron,monospace;font-size:0.8rem;">{rune_label}</div>'
+            f'<div class="xp-bar-bg" style="margin-top:8px;"><div style="height:100%;border-radius:20px;background:linear-gradient(90deg,#f7931a,#ff6b35);width:{rune_pct}%;"></div></div>'
+            f'<div style="font-family:Share Tech Mono,monospace;font-size:0.72rem;color:#445577;margin-top:4px;">'
+            f'Every family lesson adds confirmations · Grokipedia: {grokipedia_n}/256'
+            f'</div></div>',
+            unsafe_allow_html=True
+        )
 
-    st.divider()
+        st.divider()
 
     # ── Family profile setup ──────────────────────────────────────────────────
     fp = st.session_state.family_profile
@@ -3873,12 +3880,13 @@ if "Family Co-Learning" in active:
             st.markdown(f'<div class="xp-bar-bg"><div class="xp-bar-fill" style="width:{coh*100:.0f}%;"></div></div>', unsafe_allow_html=True)
             st.markdown(f'<div class="memory-node"><span style="color:#00ff88;font-size:0.78rem;">🧬 {sess["kid_polyvagal"]}</span></div>', unsafe_allow_html=True)
 
-            # Child Rune mini-bar in kid HUD
-            st.markdown(
-                f'<div class="memory-node" style="border-left:3px solid #f7931a;">'
-                f'<span style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">🔴 CHILD RUNE {rune_confirms}/256</span>'
-                f'<div class="xp-bar-bg" style="margin-top:4px;height:6px;"><div style="height:100%;border-radius:20px;background:#f7931a;width:{rune_pct}%;"></div></div>'
-                f'</div>', unsafe_allow_html=True)
+            if CRYPTO_REWARDS_ENABLED:  # crypto/token rewards off for kids
+                # Child Rune mini-bar in kid HUD
+                st.markdown(
+                    f'<div class="memory-node" style="border-left:3px solid #f7931a;">'
+                    f'<span style="color:#f7931a;font-size:0.72rem;font-family:Orbitron,monospace;">🔴 CHILD RUNE {rune_confirms}/256</span>'
+                    f'<div class="xp-bar-bg" style="margin-top:4px;height:6px;"><div style="height:100%;border-radius:20px;background:#f7931a;width:{rune_pct}%;"></div></div>'
+                    f'</div>', unsafe_allow_html=True)
 
             # Steelman prompt
             st.markdown(
@@ -3923,7 +3931,7 @@ if "Family Co-Learning" in active:
                 sess["kid_polyvagal"] = pv_state
                 if not sess["xp_earned"]:
                     sess["xp_earned"]  = xp
-                    sess["rune_earned"] = rune_got
+                    sess["rune_earned"] = rune_got and CRYPTO_REWARDS_ENABLED
                     award_xp(xp)
                 sess["messages"].append({"from":"swarm","text": feedback})
                 st.rerun()
@@ -3957,7 +3965,7 @@ if "Family Co-Learning" in active:
                             if _badge not in _stats_fl.get("badges", []):
                                 _stats_fl.setdefault("badges", []).append(_badge)
                                 st.toast(f"🏅 Badge earned: {_badge}", icon="🦅")
-                        if lesson.get("rune_fragments"):
+                        if lesson.get("rune_fragments") and CRYPTO_REWARDS_ENABLED:
                             _stats_fl["child_rune_fragments"] = _stats_fl.get("child_rune_fragments", 0) + lesson["rune_fragments"]
                         # Save coherence history
                         _coh_now = sess["kid_coherence"]
@@ -4622,7 +4630,7 @@ if "Daily Quests" in active:
                 st.markdown(
                     f'<div class="card" style="border-left:3px solid {color};">'
                     f'<div style="color:{color};font-size:0.82rem;">{icon} {q["title"]}</div>'
-                    f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">+{q["xp"]} XP · +{q.get("sats", 0)} sats</div>'
+                    f'<div style="color:#445577;font-size:0.72rem;margin-top:4px;">+{q["xp"]} XP</div>'
                     f'</div>', unsafe_allow_html=True)
             with col_q2:
                 st.markdown("<br>", unsafe_allow_html=True)
@@ -4630,7 +4638,7 @@ if "Daily Quests" in active:
                     if st.button(f"✅ Complete", key=f"quest_{q['id']}"):
                         result = _cq(_fid, q["id"])
                         if result.get("xp"):
-                            st.toast(f"+{result['xp']} XP · +{result.get('sats', 0)} sats! 🦅", icon="⚡")
+                            st.toast(f"+{result['xp']} XP! 🦅", icon="⚡")
                             st.rerun()
 
         st.divider()
@@ -4735,7 +4743,7 @@ if "Daily Quests" in active:
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB: BITCOIN ⚡ — Family Bitcoin + Lightning + Runes dashboard
 # ══════════════════════════════════════════════════════════════════════════════
-if "Bitcoin" in active:
+if "Bitcoin" in active and CRYPTO_REWARDS_ENABLED:
     st.markdown('<div class="card-title">⚡ BITCOIN — Lightning · Runes · Sovereign Balance</div>', unsafe_allow_html=True)
 
     try:
@@ -5129,8 +5137,7 @@ if "School" in active:
                 A sovereign co-learning system for parents and kids.<br>
                 <b style="color:#c8d8ff;">48 lessons</b> across 13 topics ·
                 <b style="color:#c8d8ff;">Real-time coherence tracking</b> ·
-                <b style="color:#c8d8ff;">Bitcoin rewards</b> ·
-                <b style="color:#f7931a;">Child Rune Genesis</b>
+                <b style="color:#c8d8ff;">Family co-learning</b>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -5206,7 +5213,7 @@ if "School" in active:
                         f'<div class="card" style="border-left:3px solid #ff9500;">'
                         f'<div style="color:#ff9500;font-family:Orbitron,monospace;font-size:0.78rem;">⭕ TODAY\'S QUEST</div>'
                         f'<div style="color:#c8d8ff;font-size:0.85rem;margin-top:6px;">{q["title"]}</div>'
-                        f'<div style="color:#445577;font-size:0.72rem;">+{q["xp"]} XP · +{q.get("sats", 0)} sats</div>'
+                        f'<div style="color:#445577;font-size:0.72rem;">+{q["xp"]} XP</div>'
                         f'</div>', unsafe_allow_html=True)
                 with _qc2:
                     st.markdown("<br>", unsafe_allow_html=True)
@@ -5266,8 +5273,8 @@ if "Parent Dashboard" in active:
                     (pd2,"Streak",   f"🔥{streak}", "#ff9500"),
                     (pd3,"XP",       xp,      "#00cfff"),
                     (pd4,"Badges",   badges,  "#a020f0"),
-                    (pd5,"Frags",    f"{frags}/256", "#f7931a"),
-                    (pd6,"Sats",     sats,    "#00ff88"),
+                    (pd5,"Lessons",  lessons, "#f7931a"),
+                    (pd6,"Last",     last,    "#00ff88"),
                 ]:
                     col.markdown(f'<div class="stat-box"><div class="stat-val" style="font-size:1rem;color:{vc};">{val}</div><div class="stat-lbl">{label}</div></div>', unsafe_allow_html=True)
 
@@ -5338,20 +5345,21 @@ if "Parent Dashboard" in active:
 
         st.divider()
 
-        # ── Pending Lightning rewards ─────────────────────────────────────────────
-        try:
-            from bitcoin_wallet import OperatorWallet as _OW_pd
-            _op_pd  = _OW_pd()
-            pending = _op_pd.get_all_pending_rewards()
-            if pending:
-                st.markdown(f"### ⚡ {len(pending)} Pending Lightning Rewards")
-                total_sats = sum(r.get("sats",0) for r in pending)
-                st.caption(f"Total pending: {total_sats:,} sats")
-                for r in pending[:5]:
-                    st.markdown(f'<div class="memory-node" style="border-left:3px solid #f7931a;"><span style="color:#f7931a;">{r["family_id"]} · +{r.get("sats", 0)} sats</span><br><span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>', unsafe_allow_html=True)
-                st.divider()
-        except ImportError:
-            pass
+        if CRYPTO_REWARDS_ENABLED:  # crypto/token rewards off for kids
+            # ── Pending Lightning rewards ─────────────────────────────────────────────
+            try:
+                from bitcoin_wallet import OperatorWallet as _OW_pd
+                _op_pd  = _OW_pd()
+                pending = _op_pd.get_all_pending_rewards()
+                if pending:
+                    st.markdown(f"### ⚡ {len(pending)} Pending Lightning Rewards")
+                    total_sats = sum(r.get("sats",0) for r in pending)
+                    st.caption(f"Total pending: {total_sats:,} sats")
+                    for r in pending[:5]:
+                        st.markdown(f'<div class="memory-node" style="border-left:3px solid #f7931a;"><span style="color:#f7931a;">{r["family_id"]} · +{r.get("sats", 0)} sats</span><br><span style="color:#8899bb;font-size:0.78rem;">{r["memo"]}</span></div>', unsafe_allow_html=True)
+                    st.divider()
+            except ImportError:
+                pass
 
         # ── Send global encouragement ──────────────────────────────────────────
         st.markdown("### ❤️ Send Encouragement to All Families")
@@ -5589,7 +5597,7 @@ if "Share to X" in active:
             f"🦅 {_kid_x} just completed a lesson on the AUBIEETERNAL lattice!\n\n"
             f"📖 Level {_lvl_x} · {_xp_x} XP earned\n"
             f"🔥 {_str_x} day streak\n"
-            f"🔴 Child Rune: {_frags_x}/256 fragments\n\n"
+            f"{'' if not CRYPTO_REWARDS_ENABLED else '🔴 Child Rune: ' + str(_frags_x) + '/256 fragments'}\n\n"
             f"Sovereign family learning. Human + Grok + Bitcoin + On-Chain Forever.\n\n"
             f"#AUBIEETERNAL #WarEagle #SovereignFamily #Bitcoin #Grok"
         ),
@@ -5629,6 +5637,9 @@ if "Share to X" in active:
             f"#AUBIEETERNAL #WarEagle #SovereignFamily"
         ),
     }
+    if not CRYPTO_REWARDS_ENABLED:  # no posts that promise sats or runes to kids
+        for _k_x in ("🔴 Rune Progress", "⚡ Bitcoin Earned"):
+            SHARE_TEMPLATES.pop(_k_x, None)
 
     selected_template = st.selectbox("Choose share type", list(SHARE_TEMPLATES.keys()), key="share_template_select")
     base_text = SHARE_TEMPLATES[selected_template]
@@ -9192,7 +9203,7 @@ if "Family Dynasty" in active:
         with _dy_tabs[1]:
             st.markdown("Formal ceremonies for milestone achievements. Sealed permanently.")
             for _rk, _ri in _ROPS.items():
-                with st.expander(f"{_ri['emoji']} {_ri['title']} (+{_ri['rune_grant']} Runes)", expanded=False):
+                with st.expander(f"{_ri['emoji']} {_ri['title']} {'' if not CRYPTO_REWARDS_ENABLED else '(+' + str(_ri['rune_grant']) + ' Runes)'}", expanded=False):
                     st.markdown(f"**Meaning:** {_ri['meaning']}")
                     st.markdown(f"**Ceremony:** *{_ri['ceremony']}*")
                     _rop_member  = st.text_input("Member's name:", key=f"rop_member_{_rk}")
@@ -9208,7 +9219,7 @@ if "Family Dynasty" in active:
                             )
                         st.success(
                             f"✅ {_ri['emoji']} {_ri['title']} — {_rop_member}\n\n"
-                            f"Runes granted: {_ri['rune_grant']}\n\n"
+                            f"{'' if not CRYPTO_REWARDS_ENABLED else 'Runes granted: ' + str(_ri['rune_grant']) + chr(10) + chr(10)}"
                             f"{'🛡️ Bitcoin-anchored — this ceremony is permanent.' if _rite_result.get('sealed') else 'Recorded locally.'}"
                         )
 
@@ -10038,7 +10049,7 @@ if "Sovereign Builder" in active:
                 _rune = _CTYPES.get(_ct_select,{}).get("rune_grant",25)
                 st.success(
                     f"✅ Contribution logged and sealed!\n\n"
-                    f"Impact score: {_c['impact_score']} · Runes earned: {_rune}\n\n"
+                    f"Impact score: {_c['impact_score']}" + ('' if not CRYPTO_REWARDS_ENABLED else f" · Runes earned: {_rune}") + "\n\n"
                     f"{'🛡️ Bitcoin-anchored — this contribution is permanently recorded.' if _c.get('sealed') else 'Recorded locally.'}"
                 )
 

@@ -174,6 +174,9 @@ DEFAULT_STATE = {
 }
 
 # ── Daily quest pool ───────────────────────────────────────────────────────────
+# Bitcoin sats rewards are OFF: quests award XP only.
+CRYPTO_REWARDS_ENABLED = False
+
 QUEST_POOL = [
     {"id": "q_steelman",    "title": "Steelman one idea you disagree with",       "xp": 20, "sats": 21, "category": "truth"},
     {"id": "q_btc",         "title": "Check the Bitcoin block height",             "xp": 10, "sats": 10, "category": "bitcoin"},
@@ -438,6 +441,8 @@ def complete_quest(family_id: str, quest_id: str) -> dict:
         stats["level"]    = max(1, stats["total_xp"] // 100 + 1)
         # Find sats for this quest too
         sats = next((q["sats"] for q in QUEST_POOL if q["id"] == base_id), 0)
+        if not CRYPTO_REWARDS_ENABLED:
+            sats = 0  # no crypto rewards for kids
         stats["sats_earned"] = stats.get("sats_earned", 0) + sats
         save_family_stats(stats, family_id)
         return {"completed": True, "xp": xp, "xp_awarded": xp,

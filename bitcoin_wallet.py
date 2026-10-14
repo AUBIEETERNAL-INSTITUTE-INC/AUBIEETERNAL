@@ -57,6 +57,10 @@ def _load_env() -> dict:
 # FAMILY WALLET
 # ══════════════════════════════════════════════════════════════════════════════
 
+# Bitcoin sats rewards and Rune fragment awards for kids are OFF.
+CRYPTO_REWARDS_ENABLED = False
+
+
 class FamilyWallet:
     """
     Watch-only Bitcoin + Lightning + Runes wallet for one family.
@@ -217,6 +221,8 @@ class FamilyWallet:
         Actual payment must be initiated by the operator.
         Returns a payment request the operator can fulfill.
         """
+        if not CRYPTO_REWARDS_ENABLED:
+            return {"sats": 0, "xp": xp, "lesson": lesson, "kid": kid_name, "disabled": True}
         entry = {
             "timestamp": datetime.datetime.now().isoformat(),
             "family_id": self.family_id,
