@@ -44,7 +44,7 @@ PROGRAMS
 OPEN COMPLIANCE ITEMS
 - DOE Annual Survey
 - Florida Articles of Amendment
-- IRS Form 1023-EZ (501(c)(3) application)
+- IRS Form 1023 (501(c)(3) application), application pending
 Track status and deadlines. Never fill out or file anything.
 
 KEY BOUNDARIES
