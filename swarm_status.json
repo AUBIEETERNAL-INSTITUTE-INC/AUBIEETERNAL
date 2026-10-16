@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-16T08:55:23.318945-04:00",
+  "updated": "2026-10-16T09:25:03.031281-04:00",
   "version": "4.1",
   "wonder_index": 1.0128,
   "mets": 200000000007.5,
@@ -177,11 +177,11 @@
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-10-16",
+      "last": "None",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
-      "last": "None",
+      "last": "2026-10-16",
       "next": "09:00 America/New_York",
       "pending_dir": "curriculum-proposals/"
     },
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 29,
-  "gpu": "GPU: 51C / soft 78C / hard 85C | power 15.01 W | util 0% | fan 30% | VRAM 9939/12288 MiB | peak this process 0C",
+  "gpu": "GPU: 42C / soft 78C / hard 85C | power 13.59 W | util 0% | fan 30% | VRAM 9938/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
