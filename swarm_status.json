@@ -1,17 +1,17 @@
 {
-  "updated": "2026-10-18T19:08:09.614277-04:00",
+  "updated": "2026-10-18T19:45:57.436533-04:00",
   "version": "4.1",
-  "wonder_index": 0.5,
-  "mets": 200000000087.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 30,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 10,
-  "lattice_cycle": 6808,
-  "session_insights": 2,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
+  "session_insights": 0,
   "synthesis": {
-    "last_run_date": "2026-10-18",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,7 +34,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 160,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -44,149 +44,149 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:03.366897",
-      "last_result": "During tonight's evening briefing, we will focus on rebuilding our understanding of Bitcoin\u2019s fundamental principles from the ground up. Despite losin",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:11.656270",
-      "last_result": "During tonight's evening briefing, we will focus on rebuilding our understanding of Bitcoin\u2019s fundamental principles from the ground up, as if we were",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:16.582948",
-      "last_result": "During tonight's evening briefing, we will focus on rebuilding our understanding of Bitcoin\u2019s fundamental principles from the ground up, without relyi",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:20.749953",
-      "last_result": "During tonight's evening briefing, we will focus on rebuilding our understanding of Bitcoin\u2019s fundamental principles from the ground up, as all previo",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:25.101971",
-      "last_result": "During tonight's evening briefing, we will focus on rebuilding our understanding of Bitcoin\u2019s fundamental principles from the ground up, without relyi",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:29.024257",
-      "last_result": "During tonight's evening briefing, we will focus on rebuilding our understanding of Bitcoin\u2019s fundamental principles from the ground up, disregarding ",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:33.000035",
-      "last_result": "During tonight's evening briefing, we will focus on rebuilding our understanding of Bitcoin\u2019s fundamental principles from the ground up, acknowledging",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:36.971380",
-      "last_result": "During tonight's evening briefing, we will address the foundational principles of Bitcoin by starting from first principles, questioning every assumpt",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:41.280847",
-      "last_result": "During tonight's evening briefing, we will start from first principles to rebuild our understanding of Bitcoin\u2019s fundamental strengths and weaknesses,",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:45.815748",
-      "last_result": "During tonight's evening briefing, we will start with a clean slate, questioning everything we know about Bitcoin to rebuild our understanding from fi",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:50.264823",
-      "last_result": "During tonight's evening briefing, we will begin with a clean slate, questioning everything we know about Bitcoin to rebuild our understanding of its ",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:54.049069",
-      "last_result": "During tonight's evening briefing, we will begin with a clean slate, questioning everything we know about Bitcoin to rebuild our understanding of its ",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-10-18T18:00:58.193475",
-      "last_result": "During tonight's evening briefing, we will start with a clean slate, questioning everything we know about Bitcoin to rebuild our understanding from fi",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-10-18T18:01:02.795655",
-      "last_result": "During tonight's evening briefing, we will embark on a foundational journey to rebuild our understanding of Bitcoin by starting from first principles.",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-10-18T18:01:07.361970",
-      "last_result": "During tonight's evening briefing, we will start with a clean slate to question everything we know about Bitcoin, focusing on its fundamental principl",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-10-18T18:01:11.408833",
-      "last_result": "During tonight's evening briefing, we will embark on a journey to rediscover the fundamental principles of Bitcoin by questioning everything we know a",
-      "run_count": 10,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-10-18",
+      "last": "None",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-10-18",
+      "last": "None",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
-      "last": "2026-10-18",
+      "last": "None",
       "next": "09:00 America/New_York",
       "pending_dir": "curriculum-proposals/"
     },
     "living_lattice": {
-      "last": "2026-10-18",
+      "last": "None",
       "next": "10:00 America/New_York"
     },
     "grokipedia_grow": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 30,
-  "gpu": "GPU: 38C / soft 78C / hard 85C | power 12.48 W | util 0% | fan 30% | VRAM 765/12288 MiB | peak this process 67C",
+  "gpu": "GPU: 50C / soft 78C / hard 85C | power 14.76 W | util 0% | fan 30% | VRAM 9938/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
