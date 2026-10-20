@@ -1,0 +1,273 @@
+{
+  "date": "2026-10-20",
+  "timestamp": "2026-10-20T06:02:03.089932",
+  "swarm_status": {
+    "updated": "2026-10-20T06:01:51.829404-04:00",
+    "version": "4.1",
+    "wonder_index": 0.5,
+    "mets": 200000000023.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 30,
+    "rune_confirmations": 0,
+    "child_rune_ready": false,
+    "hormetic_pulses": 2,
+    "lattice_cycle": 906,
+    "session_insights": 7,
+    "synthesis": {
+      "last_run_date": "None",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "mode": "Off",
+      "interval_s": 0,
+      "calls_per_wave": 0,
+      "total_runs": 0,
+      "model": "qwen2.5:14b",
+      "cost": "$0.00 (local)"
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 32,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "noon @ 12:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": "2026-10-20T06:00:21.287773",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this threat, it's ",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": "2026-10-20T06:00:30.841894",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. This stress test reveals that ",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": "2026-10-20T06:00:35.989348",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. This presents an opportunity t",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": "2026-10-20T06:00:41.185477",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this attack, we mu",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": "2026-10-20T06:00:46.188045",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this challenge, we",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": "2026-10-20T06:00:52.275002",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected, triggering a stress test to ev",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": "2026-10-20T06:00:58.748881",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. As part of the stress test (HO",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:04.043833",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this challenge, we",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:09.456004",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected, triggering a hormetic stress t",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:14.296118",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this challenge, we",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:20.133953",
+        "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this threat, we mu",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:25.760259",
+        "last_result": "During this morning's briefing at BTC block 972303 with a price of $81419, we identified an external attack on the lattice. To strengthen our resilien",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:31.078470",
+        "last_result": "During this morning's briefing at BTC block 972303 with a price of $81419, the detection of an external attack on the lattice underscores the importan",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:36.439931",
+        "last_result": "During today's morning briefing at BTC block 972303 with a price of $81419, we identified an external attack on the lattice. The attack was stress-tes",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:41.362502",
+        "last_result": "During today's morning briefing at BTC block 972303 with a price of $81419, we identified an external attack on the lattice. To steelman this challeng",
+        "run_count": 2,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": "2026-10-20T06:01:46.596992",
+        "last_result": "During today's morning briefing at BTC block 972303 with a price of $81419, we identified an external attack on the lattice. This stress test highligh",
+        "run_count": 2,
+        "coherence": 1.0
+      }
+    },
+    "daily_jobs": {
+      "synthesis": {
+        "last": "None",
+        "next": "06:00 America/New_York",
+        "path": "insights/daily/"
+      },
+      "epistemic_commons": {
+        "last": "None",
+        "next": "08:00 America/New_York"
+      },
+      "curriculum": {
+        "last": "None",
+        "next": "09:00 America/New_York",
+        "pending_dir": "curriculum-proposals/"
+      },
+      "living_lattice": {
+        "last": "None",
+        "next": "10:00 America/New_York"
+      },
+      "grokipedia_grow": {
+        "next": "02:15 America/New_York (user timer)",
+        "pending_path": "/mnt/main/grokipedia_pending.json"
+      }
+    },
+    "grokipedia_entries": 30,
+    "gpu": "GPU: 65C / soft 78C / hard 85C | power 125.97 W | util 0% | fan 47% | VRAM 9941/12288 MiB | peak this process 67C",
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 0.5,
+    "at_maximum": false,
+    "max_streak": 0,
+    "jumps_detected": [
+      {
+        "from": 0.5,
+        "to": 0.9414,
+        "delta": 0.4414
+      },
+      {
+        "from": 0.966,
+        "to": 0.5839,
+        "delta": 0.3821
+      }
+    ],
+    "trajectory": "stable",
+    "note": "Current wonder: 0.5000"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 64,
+    "older_entries": 64,
+    "avg_wonder_recent": 0.6202,
+    "avg_wonder_older": 0.5569,
+    "wonder_delta": 0.0633,
+    "observer_effect_detected": false,
+    "note": "No significant observer effect detected in this window."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 105,
+        "note": "105 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 105,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": false,
+    "swarm_active": false,
+    "all_invariants_hold": false,
+    "note": "Coherence: 1.000000 | Wonder: 0.5000"
+  },
+  "probe_score": 7.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 105 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries."
+}
