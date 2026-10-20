@@ -1,14 +1,14 @@
 {
-  "updated": "2026-10-20T12:27:12.226922-04:00",
+  "updated": "2026-10-20T13:23:04.630365-04:00",
   "version": "4.1",
-  "wonder_index": 0.624987,
-  "mets": 200000000015.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 30,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 1,
-  "lattice_cycle": 480,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
   "session_insights": 0,
   "synthesis": {
     "last_run_date": "None",
@@ -34,7 +34,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 16,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -44,129 +44,129 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-10-20T12:00:26.271540",
-      "last_result": "At the noon briefing with BTC at $82498 and block 972350, the challenge of a zero block reward highlights Bitcoin's value beyond its monetary incentiv",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-10-20T12:00:35.767710",
-      "last_result": "At the noon briefing, with Bitcoin trading at $82498 per coin and block 972350 marking a zero block reward period, the inherent value of Bitcoin becom",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-10-20T12:00:41.316365",
-      "last_result": "At the noon briefing with Bitcoin trading at $82498 per coin and block 972350 marking a zero block reward period, the inherent value of Bitcoin is und",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-10-20T12:00:46.342639",
-      "last_result": "At the noon briefing with Bitcoin trading at $82498 per coin and block 972350 marking a zero block reward period, the inherent value of Bitcoin is und",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-10-20T12:00:52.314588",
-      "last_result": "At the noon briefing with Bitcoin trading at $82498 per coin and block 972350 marking a zero block reward period, the inherent value of Bitcoin is hig",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-10-20T12:00:57.325993",
-      "last_result": "During the noon briefing at BTC block 972350 with a price of $82498, the discussion centered on how Bitcoin maintains its value despite the current ze",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:02.675050",
-      "last_result": "During today's noon briefing at BTC block 972350 with a price of $82498, the zero block reward period was discussed as a test of Bitcoin's intrinsic v",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:07.752544",
-      "last_result": "During the noon briefing at BTC block 972350 with a price of $82498, the zero block reward period was discussed as a stress test for Bitcoin's value p",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:13.333142",
-      "last_result": "At the noon briefing, with Bitcoin trading at $82498 per coin during block 972350 when the block reward was zero, the discussion highlighted that Bitc",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:19.021950",
-      "last_result": "At the noon briefing during BTC block 972350 when the price was $82498 and the block reward was zero, the discussion centered on how Bitcoin's value i",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:24.364395",
-      "last_result": "During today's noon briefing at BTC block 972350 with a price of $82498, the zero block reward period was highlighted as a stress test for Bitcoin's v",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:29.664382",
-      "last_result": "At the noon briefing during BTC block 972350 with a price of $82498 per coin and zero block reward, the discussion centered on how Bitcoin derives its",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:35.046414",
-      "last_result": "At the noon briefing during BTC block 972350 when the price was $82498 and the block reward was zero, the discussion centered on how Bitcoin's inheren",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:40.361768",
-      "last_result": "During today's noon briefing, the discussion centered on how Bitcoin maintains its value despite reaching a block reward of zero at BTC block 972350 w",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:44.974193",
-      "last_result": "During today's noon briefing, the discussion focused on how Bitcoin maintains its intrinsic value despite the block reward reaching zero at block 9723",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-10-20T12:01:49.479370",
-      "last_result": "During today's noon briefing at BTC block 972350 with the price at $82498, the discussion focused on how Bitcoin retains its value despite having a ze",
-      "run_count": 1,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
@@ -177,16 +177,16 @@
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-10-20",
+      "last": "None",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
-      "last": "2026-10-20",
+      "last": "None",
       "next": "09:00 America/New_York",
       "pending_dir": "curriculum-proposals/"
     },
     "living_lattice": {
-      "last": "2026-10-20",
+      "last": "None",
       "next": "10:00 America/New_York"
     },
     "grokipedia_grow": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 30,
-  "gpu": "GPU: 33C / soft 78C / hard 85C | power 8.56 W | util 0% | fan 30% | VRAM 764/12288 MiB | peak this process 69C",
+  "gpu": "GPU: 49C / soft 78C / hard 85C | power 14.71 W | util 0% | fan 30% | VRAM 9937/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
