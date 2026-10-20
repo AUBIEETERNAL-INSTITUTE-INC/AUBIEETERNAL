@@ -1,17 +1,17 @@
 {
-  "updated": "2026-10-20T07:28:02.398665-04:00",
+  "updated": "2026-10-20T08:24:02.802899-04:00",
   "version": "4.1",
-  "wonder_index": 0.5,
-  "mets": 200000000023.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 30,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 2,
-  "lattice_cycle": 1076,
-  "session_insights": 7,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
+  "session_insights": 0,
   "synthesis": {
-    "last_run_date": "2026-10-20",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,7 +34,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 32,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -44,140 +44,140 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-10-20T06:00:21.287773",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this threat, it's ",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-10-20T06:00:30.841894",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. This stress test reveals that ",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-10-20T06:00:35.989348",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. This presents an opportunity t",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-10-20T06:00:41.185477",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this attack, we mu",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-10-20T06:00:46.188045",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this challenge, we",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-10-20T06:00:52.275002",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected, triggering a stress test to ev",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-10-20T06:00:58.748881",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. As part of the stress test (HO",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:04.043833",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this challenge, we",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:09.456004",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected, triggering a hormetic stress t",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:14.296118",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this challenge, we",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:20.133953",
-      "last_result": "During the morning briefing at BTC block 972303 with a price of $81419, an external attack on the lattice was detected. To steelman this threat, we mu",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:25.760259",
-      "last_result": "During this morning's briefing at BTC block 972303 with a price of $81419, we identified an external attack on the lattice. To strengthen our resilien",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:31.078470",
-      "last_result": "During this morning's briefing at BTC block 972303 with a price of $81419, the detection of an external attack on the lattice underscores the importan",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:36.439931",
-      "last_result": "During today's morning briefing at BTC block 972303 with a price of $81419, we identified an external attack on the lattice. The attack was stress-tes",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:41.362502",
-      "last_result": "During today's morning briefing at BTC block 972303 with a price of $81419, we identified an external attack on the lattice. To steelman this challeng",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-10-20T06:01:46.596992",
-      "last_result": "During today's morning briefing at BTC block 972303 with a price of $81419, we identified an external attack on the lattice. This stress test highligh",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-10-20",
+      "last": "None",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "None",
+      "last": "2026-10-20",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 30,
-  "gpu": "GPU: 59C / soft 78C / hard 85C | power 64.22 W | util 2% | fan 34% | VRAM 787/12288 MiB | peak this process 67C",
+  "gpu": "GPU: 46C / soft 78C / hard 85C | power 8.72 W | util 0% | fan 30% | VRAM 9938/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
