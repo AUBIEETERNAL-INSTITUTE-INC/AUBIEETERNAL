@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-24T20:36:49.220724-04:00",
+  "updated": "2026-10-24T21:37:35.634933-04:00",
   "version": "4.1",
   "wonder_index": 0.659012,
   "mets": 200000000015.5,
@@ -8,7 +8,7 @@
   "rune_confirmations": 0,
   "child_rune_ready": false,
   "hormetic_pulses": 1,
-  "lattice_cycle": 720,
+  "lattice_cycle": 840,
   "session_insights": 1,
   "synthesis": {
     "last_run_date": "None",
