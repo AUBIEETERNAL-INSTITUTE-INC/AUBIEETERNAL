@@ -10700,6 +10700,100 @@ def detect_polyvagal(text: str, coherence: float) -> dict:
 # FAMILY SESSION — core class
 # ══════════════════════════════════════════════════════════════════════════════
 
+# ── Approved-lesson merge (crash fix 2026-10-23) ─────────────────────────────
+# Lessons approved via curriculum_proposals.py land in curriculum.py's tree
+# (curriculum_extra.json) but their content lives in a side file
+# (curriculum_lesson_content.json) or only in the approved proposal JSONs.
+# Merge those into LESSONS so every LESSONS[key] lookup for a tree key works;
+# keys with no content anywhere get a friendly "coming soon" placeholder.
+_LESSON_DEFAULTS = {"title": "", "topic": "", "example": "", "activity": "",
+                    "check_questions": [], "steelman": "", "age_hint": "All ages",
+                    "xp": 20, "rune": "RUNE", "min_coherence": 0.65}
+
+def _normalize_lesson(d: dict, key: str = "") -> dict:
+    """Fill missing/None fields with safe defaults (never alters existing text)."""
+    for f, dv in _LESSON_DEFAULTS.items():
+        if d.get(f) is None:
+            d[f] = list(dv) if isinstance(dv, list) else dv
+    if not isinstance(d.get("check_questions"), list):
+        d["check_questions"] = []
+    if not d.get("title"):
+        d["title"] = key or "Lesson"
+    return d
+
+def _placeholder_lesson(key: str, title: str = "", age: str = "All ages", xp=20) -> dict:
+    return _normalize_lesson({
+        "title": title or key,
+        "topic": "This lesson is coming soon.",
+        "example": "",
+        "activity": "This lesson is coming soon — pick another lesson for now.",
+        "check_questions": [],
+        "steelman": "This lesson is coming soon.",
+        "age_hint": age or "All ages", "xp": xp if isinstance(xp, int) else 20,
+        "placeholder": True,
+    }, key)
+
+def _approved_proposal_lessons() -> dict:
+    out = {}
+    try:
+        pdir = Path(__file__).resolve().parent / "curriculum-proposals"
+        for fp in sorted(pdir.glob("*.json")):
+            try:
+                prop = json.loads(fp.read_text())
+            except Exception:
+                continue
+            if not isinstance(prop, dict) or prop.get("status") != "approved":
+                continue
+            lessons = prop.get("lessons") or ([prop.get("lesson")] if isinstance(prop.get("lesson"), dict) else [])
+            for l in lessons:
+                if isinstance(l, dict) and l.get("key"):
+                    out.setdefault(l["key"], {k: v for k, v in l.items() if k != "key"})
+    except Exception:
+        pass
+    return out
+
+def _merge_extra_lessons() -> int:
+    """Add side-file / approved-proposal / placeholder entries for every tree key
+    missing from LESSONS. Never raises. Returns number of keys added."""
+    added = 0
+    try:
+        for _k, _v in LESSONS.items():
+            if isinstance(_v, dict):
+                _normalize_lesson(_v, _k)
+        side = {}
+        try:
+            import curriculum as _cur
+            _cp = _cur.EXTRA_PATH.parent / "curriculum_lesson_content.json"
+            if _cp.exists():
+                side = json.loads(_cp.read_text()) or {}
+            tree = [l for t in _cur._merged_tree() for l in t["levels"]]
+        except Exception:
+            tree = []
+        props = _approved_proposal_lessons()
+        for lvl in tree:
+            key = lvl[0]
+            if key in LESSONS:
+                continue
+            title = lvl[1] if len(lvl) > 1 else key
+            age = lvl[2] if len(lvl) > 2 else "All ages"
+            xp = lvl[3] if len(lvl) > 3 else 20
+            src = side.get(key) if isinstance(side.get(key), dict) else None
+            if src is None and isinstance(props.get(key), dict):
+                src = props[key]
+            if src:
+                d = dict(src)
+                d.setdefault("title", title); d.setdefault("age_hint", age); d.setdefault("xp", xp)
+                LESSONS[key] = _normalize_lesson(d, key)
+            else:
+                LESSONS[key] = _placeholder_lesson(key, title, age, xp)
+            added += 1
+    except Exception as e:
+        print(f"[family_hud] lesson merge skipped: {e}")
+    return added
+
+_merge_extra_lessons()
+
+
 class FamilySession:
     """Manages a dual-HUD co-learning session for parent + child."""
 
@@ -10729,7 +10823,9 @@ class FamilySession:
     def start_lesson(self, lesson_key: str) -> dict:
         """Start a lesson. Returns the lesson dict for both HUDs."""
         if lesson_key not in LESSONS:
-            raise ValueError(f"Unknown lesson: {lesson_key}. Valid: {list(LESSONS.keys())}")
+            _merge_extra_lessons()  # pick up lessons approved since import
+        if lesson_key not in LESSONS:
+            LESSONS[lesson_key] = _placeholder_lesson(lesson_key)
         self.lesson_key  = lesson_key
         self.lesson      = LESSONS[lesson_key]
         self.started_at  = datetime.datetime.now().isoformat()

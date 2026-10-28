@@ -176,9 +176,12 @@ Reply with ONLY a JSON object, no other text, in this exact shape:
   "title": "Short punchy lesson title",
   "topic": "One sentence describing what this lesson actually teaches",
   "steelman": "A steelman-style discussion prompt or question for this lesson",
-  "example": "One concrete real-world example that NAMES a real person, place, event, or thing (e.g. 'Marie Curie kept testing pitchblende for years...'), never 'a historical figure' or 'someone'",
+  "steelman_for": "The strongest honest case FOR the lesson's idea, in 1-2 sentences",
+  "steelman_against": "The strongest honest case AGAINST it or its limits, in 1-2 sentences",
+  "example_kind": "real or made-up",
+  "example": "One concrete example. If real: only a WELL-KNOWN fact you are certain of (the kind in the first paragraph of an encyclopedia entry), no quotes, and never credit a person with an idea or strategy they are not famous for. If you are not certain, use made-up instead: start with 'Imagine' and a named fictional learner, e.g. 'Imagine Ana, 12, who...'. Never 'a historical figure' or 'someone'",
   "activity": "One hands-on activity a learner can do in 10-20 minutes at home with no special equipment",
-  "check_questions": ["Three short questions", "that check understanding", "without giving the answer away"],
+  "check_questions": ["Three short questions", "that check understanding", "a learner could honestly answer either way"],
   "age_hint": "one of: All ages, 7+, 8+, 9+, 10+, 11+, 12+, 13+, 14+, 15+, 16+",
   "xp": 20,
   "target_track": "the existing track name this belongs to, or a new track name if genuinely novel",
@@ -186,18 +189,84 @@ Reply with ONLY a JSON object, no other text, in this exact shape:
 }}"""
 
     feedback = ""
-    for _attempt in range(2):  # one retry with the reason it was rejected
+    for _attempt in range(3):  # retries carry the reason the last draft was rejected
         reply = _call_ollama(prompt + feedback)
         if not reply:
             return None
         cand = _extract_json(reply)
         problems = validate_candidate(cand)
+        tried_rewrite = False
+        if not problems and _kind(cand) == "real":
+            sure, why = _fact_check(str(cand.get("example", "")))
+            if not sure:
+                # keep the (otherwise good) lesson; swap only the doubtful example for a made-up one
+                print(f"[curriculum-autogen] real example doubted ({why}); rewriting it as made-up")
+                fixed = _made_up_example(cand)
+                tried_rewrite = True
+                if fixed:
+                    return fixed
+                problems = [f"the real-world example may not be true ({why}); rewrite it as a made-up "
+                            "scenario that starts with 'Imagine' and a named fictional learner, and set "
+                            "example_kind to made-up"]
         if not problems:
             return cand
+        if not tried_rewrite and isinstance(cand, dict) and all(_example_problem(x) for x in problems):
+            print(f"[curriculum-autogen] only the example is wrong ({problems}); rewriting it as made-up")
+            fixed = _made_up_example(cand)
+            if fixed:
+                return fixed
         feedback = ("\n\nYour last answer was rejected: " + "; ".join(problems)
                     + ". Fix those and reply with ONLY the JSON object.")
         print(f"[curriculum-autogen] draft rejected: {problems}")
     return None
+
+
+def _kind(c) -> str:
+    k = str((c or {}).get("example_kind", "")).strip().lower().replace("_", "-").replace(" ", "-")
+    return {"made-up": "made-up", "madeup": "made-up", "fictional": "made-up", "hypothetical": "made-up",
+            "real": "real", "real-world": "real", "true": "real"}.get(k, "")
+
+
+def _fact_check(example: str) -> tuple[bool, str]:
+    """A skeptical second look at a real-world example. The drafting model invents plausible facts
+    (it once credited Warren Buffett with Taleb's barbell strategy), so 'not sure' counts as no."""
+    prompt = ("You are a strict fact-checker for a children's school. Is EVERY claim in this example "
+              "true and widely documented? Pay special attention to who is credited with which idea, "
+              "strategy, quote, number or date. If you are not completely sure, answer false.\n"
+              'Reply with ONLY JSON: {"certain": true or false, "why": "one short reason"}\n\n'
+              f"Example: {example}")
+    try:
+        d = _extract_json(_call_ollama(prompt) or "") or {}
+        return d.get("certain") is True, str(d.get("why", "no reason given"))[:160]
+    except Exception:
+        return False, "fact-check failed to run"
+
+
+def _example_problem(problem: str) -> bool:
+    return bool(re.search(r"example|quote|unnamed|example_kind", problem, re.I))
+
+
+def _made_up_example(cand: dict) -> dict | None:
+    """Rewrite only the example as a named made-up scenario; None if that doesn't pass the checks."""
+    prompt = ("Rewrite this lesson example as a short MADE-UP scenario that teaches the same point. Start with "
+              "'Imagine' and a named fictional learner with an age, e.g. 'Imagine Ana, 12, who ...'. Two or three "
+              "sentences, no real people, no statistics.\n"
+              'Reply with ONLY JSON: {"example": "..."}\n\n'
+              f"Lesson: {cand.get('title', '')} - {cand.get('topic', '')}\nOld example: {cand.get('example', '')}")
+    for _ in range(2):
+        d = _extract_json(_call_ollama(prompt) or "") or {}
+        new = {**cand, "example": str(d.get("example", "")).strip(), "example_kind": "made-up"}
+        if new["example"] and not validate_candidate(new):
+            return new
+    return None
+
+
+_MADE_UP_VAGUE = re.compile(r"\bsomeone\b|\bsomebody\b|\bimagine (a|an|someone|you)\b", re.I)
+_UNNAMED_SOURCE = re.compile(r"\b(a|one|another)\s+(recent\s+|new\s+|large\s+)?(study|survey|report|paper|experiment)\b|"
+                             r"\bresearch(ers)?\s+(shows?|suggests?|found|finds)\b|\bscientists\s+(say|found|have found)\b|"
+                             r"\bstudies\s+(show|suggest|have shown)\b|\baccording to (a|one|some)\b|"
+                             r"\bpublished in the\b", re.I)
+_QUOTE = re.compile(r"[\"“”]|\bsaid\b|\bonce wrote\b|\bfamously (said|wrote)\b", re.I)
 
 
 _VAGUE_EXAMPLE = re.compile(
@@ -222,9 +291,23 @@ def validate_candidate(c) -> list:
     for k in ("key", "title", "topic", "example", "activity"):
         if not str(c.get(k, "")).strip():
             p.append(f"missing {k}")
-    ex = str(c.get("example", ""))
-    if ex and (_VAGUE_EXAMPLE.search(ex) or not _names_something(ex)):
-        p.append("example is vague; name a real person, place, event, or thing")
+    ex = str(c.get("example", "")).strip()
+    kind = _kind(c)
+    if not kind:
+        p.append("example_kind must be 'real' or 'made-up'")
+    elif ex and kind == "made-up":
+        if not re.match(r"imagine\b", ex, re.I) or _MADE_UP_VAGUE.search(ex) or not _names_something(ex):
+            p.append("a made-up example must start with 'Imagine' and a named fictional learner (e.g. 'Imagine Ana, 12, ...')")
+    elif ex:
+        if _VAGUE_EXAMPLE.search(ex) or not _names_something(ex):
+            p.append("example is vague; name a real person, place, event, or thing, or use a made-up 'Imagine <Name>' scenario")
+        if _QUOTE.search(ex):
+            p.append("no quotes from real people in a real-world example (they're easy to get wrong)")
+        if _UNNAMED_SOURCE.search(ex):
+            p.append("example cites an unnamed study or source that nobody can check")
+    for side in ("steelman_for", "steelman_against"):
+        if len(str(c.get(side, "")).split()) < 8:
+            p.append(f"{side} must be a real argument (at least one full sentence)")
     cq = c.get("check_questions")
     if not isinstance(cq, list) or len([q for q in cq if str(q).strip()]) < 2:
         p.append("need at least 2 check_questions")
@@ -250,6 +333,9 @@ def run_curriculum_autogen(force: bool = False) -> dict:
         "title":         candidate["title"],
         "topic":         candidate.get("topic", ""),
         "steelman":      candidate.get("steelman", ""),
+        "steelman_for":  candidate.get("steelman_for", ""),
+        "steelman_against": candidate.get("steelman_against", ""),
+        "example_kind":  _kind(candidate),
         "example":       candidate.get("example", ""),
         "activity":      candidate.get("activity", ""),
         "check_questions": [str(q) for q in (candidate.get("check_questions") or [])][:5],
@@ -270,7 +356,8 @@ def run_curriculum_autogen(force: bool = False) -> dict:
     )
 
     _save_state({"last_run_date": datetime.date.today().isoformat(), "last_proposal_id": proposal["id"]})
-    return {"ok": True, "proposal_id": proposal["id"], "title": lesson["title"], "target_track": target_track}
+    return {"ok": True, "proposal_id": proposal["id"], "title": lesson["title"], "target_track": target_track,
+            "example_kind": lesson["example_kind"], "example": lesson["example"]}
 
 
 def send_curriculum_proposed_email(result: dict) -> bool:
@@ -293,7 +380,11 @@ def send_curriculum_proposed_email(result: dict) -> bool:
         f"proposal_id: {proposal_id}\n"
         "author: Aubie (auto-proposed)\n"
         "status: pending — not live\n"
-        "\n"
+        + (f"example ({result.get('example_kind') or '?'}): {' '.join(str(result.get('example') or '').split())[:300]}\n"
+           + ("  ^ real-world claim: the model checked it once, but check it yourself before approving.\n"
+              if result.get("example_kind") == "real" else "")
+           if result.get("example") else "")
+        + "\n"
         "Review in the portal Review Queue (Submit Curriculum). "
         "Approve is still required. Publish to commons is a separate action.\n"
     )

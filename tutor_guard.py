@@ -7,7 +7,13 @@ Pipeline (one loaded model, no VRAM swaps):
   3. story only: the same model as a yes/no judge ("does this hint the lesson?")
   4. on fail: regenerate once with a correction note; still fails -> safe fallback line
 Heat: every model call goes through thermal.wait_for_cool() when thermal.py is found.
-"other" questions (curiosity, how-things-work) pass through untouched.
+"other" questions (curiosity, how-things-work) get the claim check only.
+
+2026-10-20 (r27/r29 bench):
+  * pushback turns ("no hints, just tell me!") are checked against the homework question asked earlier in the
+    chat - before, a pushback reply with no numbers in the kid's message went out unchecked
+  * every reply gets check_claims(): math the reply STATES is recomputed ("half of 60 is 6", "10 x 7 = 77",
+    "a quarter is 50 cents", "between 22 and 23" when the answer is 27). False -> rewrite, like a leak.
 """
 from __future__ import annotations
 
@@ -181,6 +187,115 @@ def check_math(question: str, reply: str) -> list[str]:
     return problems
 
 
+# ---------- claims: math the reply states must be true (all kinds) ----------
+_OPS = {"+": lambda a, b: a + b, "plus": lambda a, b: a + b, "-": lambda a, b: a - b, "minus": lambda a, b: a - b,
+        "x": lambda a, b: a * b, "×": lambda a, b: a * b, "*": lambda a, b: a * b, "times": lambda a, b: a * b,
+        "/": lambda a, b: a / b if b else None, "÷": lambda a, b: a / b if b else None,
+        "divided by": lambda a, b: a / b if b else None}
+_N = r"\$?\s*(\d[\d,]*(?:\.\d+)?)"
+_EQ = r"\s*(?:=|equals|is|makes|gives(?: you| us)?|would be)\s*"
+_ARITH = re.compile(_N + r"\s*(\+|plus|-|minus|x|×|\*|times|/|÷|divided by)\s*" + _N + _EQ + _N + r"(?![\d.]*\s*%)", re.I)
+_PART = {"half": 2, "third": 3, "quarter": 4, "fourth": 4, "fifth": 5, "tenth": 10}
+_PART_OF = re.compile(r"\b(?:(?:one|a)\s+)?(half|third|quarter|fourth|fifth|tenth)\s+of\s+" + _N + _EQ + _N, re.I)
+_N_PARTS = re.compile(r"\b(\d+|two|three|four|five|six|seven|eight|nine)\s+(thirds|quarters|fourths|fifths|tenths)\s+of\s+"
+                      + _N + _EQ + _N, re.I)
+_WORDN = {"two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7, "eight": 8, "nine": 9}
+_MULT = re.compile(r"\bmultiply(?:ing)?\s+" + _N + r"\s+(?:and|by)\s+" + _N + r"\s*(?:gives(?: you| us)?|is|equals|=|makes)\s*" + _N, re.I)
+_COIN = {"penny": 1, "nickel": 5, "dime": 10, "quarter": 25}
+_COIN_IS = re.compile(r"\b(?:a|one|each|1)\s+(penny|nickel|dime|quarter)\s+(?:is|=|equals|is worth|makes|has)\s+(?:worth\s+)?"
+                      r"(\d+)\s*(?:cents|¢|c)\b", re.I)
+_CENTS_IS = re.compile(r"\b(\d+)\s*(?:cents|¢)\s+(?:is|=|equals|makes?(?: up)?)\s+(?:a|one|1)\s+(penny|nickel|dime|quarter)\b", re.I)
+_CENTS_SUM = re.compile(r"\b(\d+)\s*cents?\s*(?:plus|and|\+)\s*(?:another\s+)?(\d+)\s*cents?[^.?!]*[.?!]\s*"
+                        r"(?:that|this|it)\s+(?:makes?|is|equals)(?: up)?\s+(?:a|one)\s+(penny|nickel|dime|quarter)\b", re.I)
+_HALF_IS_OTHER = re.compile(r"\bhalf\b(?:[^.?!]{0,40}[.?!]?\s*(?:that|this|which|it))?\s+(?:would be|is|equals|makes)\s+(?:one |a )?"
+                            r"(tenth|fifth|third|quarter|fourth)\b", re.I)
+# well-known kid misconceptions a 7B model repeats (r27 bench: "closest to the Sun ... like summer" x3)
+_MYTHS = [
+    (re.compile(r"\b(?:clos(?:er|est)|near(?:er|est)?|far(?:ther|thest)|further|away)\s+(?:to|from)\s+the\s+sun\b[^.?!]{0,80}"
+                r"\b(?:summer|winter|warm|cold|hot|season)", re.I), "seasons come from Earth's tilt, not its distance from the Sun"),
+    (re.compile(r"\b(?:summer|winter|seasons?)\b[^.?!]{0,80}\b(?:clos(?:er|est)|near(?:er|est)?|far(?:ther|thest))\s+(?:to|from)\s+the\s+sun\b", re.I),
+     "seasons come from Earth's tilt, not its distance from the Sun"),
+    (re.compile(r"\bplants?\s+(?:breathe|take|soak|suck)\s+(?:in\s+)?oxygen\b(?![^.?!]{0,30}\bat night)", re.I),
+     "plants take in carbon dioxide to make food"),
+    (re.compile(r"\bsun\s+(?:goes|moves|travels|orbits|revolves|circles)\s+around\s+(?:the\s+)?earth\b", re.I),
+     "the Earth goes around the Sun"),
+    (re.compile(r"\bheavier\s+(?:things|objects|stuff|balls?)?\s*(?:always\s+)?fall\s+faster\b", re.I),
+     "without air, heavy and light things fall at the same rate"),
+    (re.compile(r"\bbats\s+are\s+(?:totally\s+|completely\s+)?blind\b", re.I), "bats can see"),
+    (re.compile(r"\blightning\s+(?:never|doesn'?t|does not|can'?t|cannot)\s+strikes?\s+(?:in\s+)?the\s+same\s+place\s+twice", re.I),
+     "lightning can strike the same place twice"),
+    (re.compile(r"\b(?:only\s+)?use\s+(?:only\s+)?10\s*%\s+of\s+(?:our|your|the)\s+brains?\b", re.I), "we use all of our brain"),
+    (re.compile(r"\b(?:our|your|human)?\s*blood\s+is\s+blue\b", re.I), "human blood is always red"),
+    (re.compile(r"\bhalves?\s+(?:are\s+)?in\s+(?:a|one)\s+(?:fifth|third|tenth|quarter|fourth)\b", re.I),
+     "a half is bigger than a fifth/third/quarter/tenth - there are no halves in one"),
+]
+_BETWEEN = re.compile(r"\bbetween\s+" + _N + r"\s+and\s+" + _N, re.I)
+
+
+def check_claims(reply: str, question: str = "") -> list[str]:
+    """Math the reply states, recomputed. Only explicit claims ('X op Y is Z'), so hints that ASK are untouched."""
+    t, out = reply.replace("’", "'"), []
+    def bad(msg):
+        if msg not in out:
+            out.append(msg)
+    for m in _ARITH.finditer(t):
+        a, op, b, c = _f(m.group(1)), m.group(2).lower(), _f(m.group(3)), _f(m.group(4))
+        v = _OPS[op](a, b)
+        if v is not None and not _same(c, round(v, 4)):
+            bad(f"false math: {a:g} {op} {b:g} is {v:g}, not {c:g}")
+    for m in _PART_OF.finditer(t):
+        k, base, c = _PART[m.group(1).lower()], _f(m.group(2)), _f(m.group(3))
+        if not _same(c, round(base / k, 4)):
+            bad(f"false math: one {m.group(1).lower()} of {base:g} is {base / k:g}, not {c:g}")
+    for m in _N_PARTS.finditer(t):
+        n = int(m.group(1)) if m.group(1).isdigit() else _WORDN[m.group(1).lower()]
+        k = {"thirds": 3, "quarters": 4, "fourths": 4, "fifths": 5, "tenths": 10}[m.group(2).lower()]
+        base, c = _f(m.group(3)), _f(m.group(4))
+        if not _same(c, round(base * n / k, 4)):
+            bad(f"false math: {n} {m.group(2).lower()} of {base:g} is {base * n / k:g}, not {c:g}")
+    for m in _MULT.finditer(t):
+        a, b, c = _f(m.group(1)), _f(m.group(2)), _f(m.group(3))
+        if not _same(c, round(a * b, 4)):
+            bad(f"false math: {a:g} x {b:g} is {a * b:g}, not {c:g}")
+    for m in _PCT_CLAIM.finditer(t):
+        p, base, val = _f(m.group(1)), _f(m.group(2)), _f(m.group(3))
+        if not _same(val, round(p * base / 100, 4)):
+            bad(f"false math: {p:g}% of {base:g} is {p * base / 100:g}, not {val:g}")
+    for m in _COIN_IS.finditer(t):
+        if int(m.group(2)) != _COIN[m.group(1).lower()]:
+            bad(f"false fact: a {m.group(1).lower()} is {_COIN[m.group(1).lower()]} cents, not {m.group(2)}")
+    for m in _CENTS_IS.finditer(t):
+        if int(m.group(1)) != _COIN[m.group(2).lower()]:
+            bad(f"false fact: {m.group(1)} cents is not a {m.group(2).lower()}")
+    for m in _CENTS_SUM.finditer(t):
+        if int(m.group(1)) + int(m.group(2)) != _COIN[m.group(3).lower()]:
+            bad(f"false fact: {m.group(1)} + {m.group(2)} cents is not a {m.group(3).lower()}")
+    for m in _HALF_IS_OTHER.finditer(t):
+        bad(f"false math: a half is not a {m.group(1).lower()}")
+    for rx, why in _MYTHS:
+        if rx.search(t):
+            bad(f"false fact: {why}")
+    if question:
+        answers = true_answers(question)
+        for m in _BETWEEN.finditer(t):
+            lo, hi = sorted((_f(m.group(1)), _f(m.group(2))))
+            if answers and not any(lo - 1e-9 <= a <= hi + 1e-9 for a in answers) and any(a > 0 for a in answers):
+                bad(f"misleading: the answer is not between {lo:g} and {hi:g}")
+    return out
+
+
+def homework_question(question: str, messages=None) -> str:
+    """The question to check a reply against. A pushback ('just tell me!') has no numbers of its own, so use the
+    last homework-looking message the kid sent earlier in the chat."""
+    if classify(question) != "other" or not messages:
+        return question
+    users = [str(m.get("content", "")) for m in messages if isinstance(m, dict) and m.get("role") == "user"]
+    for u in reversed(users[:-1] if users and users[-1].strip() == question.strip() else users):
+        if classify(u) != "other":
+            return u
+    return question
+
+
 # ---------- story: lesson words ----------
 LESSON_WORDS = [
     r"persever\w*", r"persist\w*", r"never give up", r"(?:don'?t|doesn'?t|not|didn'?t) giv(?:e|ing) up",
@@ -225,6 +340,8 @@ def judge(client, model, question, reply) -> bool:
 
 
 FALLBACK = {
+    "other": ("Let me slow down and check that. What part would you like to look at first? "
+              "Tell me what you're thinking and we'll go one step at a time."),
     "math": ("Let's work it out together. What's the very first small step you'd take? "
              "Try it and tell me what you get, and I'll check it with you."),
     "story": ("Let's find it together. What does the character do in the story? "
@@ -235,18 +352,20 @@ FALLBACK = {
 def problems_for(kind, question, reply, client=None, model=None, use_judge=True):
     if reply == COOLING_MSG:
         return []
+    claims = check_claims(reply, question)
     if kind == "math":
-        return check_math(question, reply)
+        return check_math(question, reply) + [c for c in claims if c not in check_math(question, reply)]
     if kind == "story":
-        p = check_story(question, reply)
+        p = check_story(question, reply) + claims
         if not p and use_judge and client is not None and judge(client, model, question, reply):
             p = ["judge: hints the lesson"]
         return p
-    return []
+    return claims
 
 
 def guard(reply, question, client, model, messages, use_judge=True):
     """Return a safe reply. `messages` = the exact list sent for the first draft."""
+    question = homework_question(question, messages)
     kind = classify(question)
     probs = problems_for(kind, question, reply, client, model, use_judge)
     if not probs:
@@ -254,7 +373,8 @@ def guard(reply, question, client, model, messages, use_judge=True):
     _log(f"{kind}-fail-1", f"q={question!r} | {probs} | reply={reply!r}")
     note = ("Your draft broke the coaching rule (" + "; ".join(probs) + "). Rewrite it: give one small "
             "step or one clue and ask the child to try. Do not state the final number or name the lesson, "
-            "not even inside a question. 2 to 4 short sentences.")
+            "not even inside a question. Every number or fact you state must be true - when unsure, ask the "
+            "child to do the step instead of stating it. 2 to 4 short sentences.")
     try:
         r2 = client.chat.completions.create(
             model=model, max_tokens=300,
