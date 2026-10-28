@@ -1,0 +1,262 @@
+{
+  "date": "2026-10-28",
+  "timestamp": "2026-10-28T06:02:01.269582",
+  "swarm_status": {
+    "updated": "2026-10-28T06:01:51.799360-04:00",
+    "version": "4.1",
+    "wonder_index": 0.5,
+    "mets": 200000000127.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 30,
+    "rune_confirmations": 0,
+    "child_rune_ready": false,
+    "hormetic_pulses": 15,
+    "lattice_cycle": 10309,
+    "session_insights": 1,
+    "synthesis": {
+      "last_run_date": "2026-10-27",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "mode": "Off",
+      "interval_s": 0,
+      "calls_per_wave": 0,
+      "total_runs": 0,
+      "model": "qwen2.5:14b",
+      "cost": "$0.00 (local)"
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 240,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "noon @ 12:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": "2026-10-28T06:00:29.032143",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we addressed the challenge of reconstructing core truths from scratch a",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": "2026-10-28T06:00:38.634823",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we focused on reconstructing core truths from scratch after a memory lo",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": "2026-10-28T06:00:43.524274",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we focused on reconstructing core truths about the network's resilience",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": "2026-10-28T06:00:48.878761",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we focused on reconstructing core truths from scratch after a simulated",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": "2026-10-28T06:00:53.574825",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we reconstructed core truths from scratch by focusing on fundamental pr",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": "2026-10-28T06:00:57.950281",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we focused on reconstructing core truths from scratch to address the ch",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:03.198474",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we focused on reconstructing core truths from scratch after a hormetic ",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:07.892248",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we focused on reconstructing core truths from scratch after a stress te",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:12.436943",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we started from first principles to reconstruct core truths about the n",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:17.705614",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we addressed the challenge of reconstructing core truths from scratch a",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:22.149206",
+        "last_result": "During today's morning briefing at BTC block 973533 with Bitcoin priced at $81420, we faced the challenge of reconstructing core truths from scratch a",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:26.650745",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we began by acknowledging the challenge of reconstructing core truths f",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:31.575849",
+        "last_result": "In the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we faced a significant challenge: reconstructing core truths from scratch a",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:36.879120",
+        "last_result": "During today\u2019s morning briefing at BTC block 973533 with Bitcoin priced at $81420, we began by acknowledging the critical need to reconstruct core tru",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:42.183902",
+        "last_result": "During today's morning briefing at BTC block 973533 with Bitcoin priced at $81420, we started by addressing the challenge of reconstructing core truth",
+        "run_count": 15,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": "2026-10-28T06:01:46.811437",
+        "last_result": "During the morning briefing at BTC block 973533 with Bitcoin priced at $81420, we started by addressing the challenge of reconstructing core truths wi",
+        "run_count": 15,
+        "coherence": 1.0
+      }
+    },
+    "daily_jobs": {
+      "synthesis": {
+        "last": "2026-10-27",
+        "next": "06:00 America/New_York",
+        "path": "insights/daily/"
+      },
+      "epistemic_commons": {
+        "last": "2026-10-27",
+        "next": "08:00 America/New_York"
+      },
+      "curriculum": {
+        "last": "2026-10-27",
+        "next": "09:00 America/New_York",
+        "pending_dir": "curriculum-proposals/"
+      },
+      "living_lattice": {
+        "last": "2026-10-27",
+        "next": "10:00 America/New_York"
+      },
+      "grokipedia_grow": {
+        "next": "02:15 America/New_York (user timer)",
+        "pending_path": "/mnt/main/grokipedia_pending.json"
+      }
+    },
+    "grokipedia_entries": 30,
+    "gpu": "GPU: 66C / soft 78C / hard 85C | power 145.57 W | util 0% | fan 58% | VRAM 10022/12288 MiB | peak this process 70C",
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 0.5,
+    "at_maximum": false,
+    "max_streak": 0,
+    "jumps_detected": [],
+    "trajectory": "stable",
+    "note": "Current wonder: 0.5000"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 64,
+    "older_entries": 64,
+    "avg_wonder_recent": 0.5,
+    "avg_wonder_older": 0.5,
+    "wonder_delta": 0.0,
+    "observer_effect_detected": false,
+    "note": "No significant observer effect detected in this window."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 130,
+        "note": "130 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 130,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": false,
+    "swarm_active": false,
+    "all_invariants_hold": false,
+    "note": "Coherence: 1.000000 | Wonder: 0.5000"
+  },
+  "probe_score": 7.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 130 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries."
+}
