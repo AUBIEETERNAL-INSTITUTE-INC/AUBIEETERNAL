@@ -1,17 +1,17 @@
 {
-  "updated": "2026-10-30T05:20:07.829415-04:00",
+  "updated": "2026-10-30T06:21:25.250875-04:00",
   "version": "4.1",
-  "wonder_index": 0.508954,
-  "mets": 200000000183.5,
+  "wonder_index": 0.505996,
+  "mets": 200000000191.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 41,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 22,
-  "lattice_cycle": 15886,
-  "session_insights": 7,
+  "hormetic_pulses": 23,
+  "lattice_cycle": 16002,
+  "session_insights": 10,
   "synthesis": {
-    "last_run_date": "2026-10-29",
+    "last_run_date": "2026-10-30",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,145 +34,145 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 352,
+    "total_runs": 368,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "morning @ 06:00"
+    "next_briefing": "noon @ 12:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-10-29T23:00:13.806093",
-      "last_result": "During tonight's evening briefing at BTC block 973766 with Bitcoin priced at $77197, the Wonder Index dropping to zero indicates a lack of unexpected ",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:00:08.261028",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index at 0.5090, the challenge involves a stress test whe",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-10-29T23:00:23.222857",
-      "last_result": "During tonight's evening briefing at BTC block 973766 with Bitcoin priced at $77197, the Wonder Index dropping to zero suggests a lack of unexpected e",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:00:22.232560",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge is to rebuild cor",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-10-29T23:00:28.526500",
-      "last_result": "During tonight's evening briefing at BTC block 973766 with Bitcoin priced at $77197, the Wonder Index dropping to zero suggests a lack of unexpected e",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:00:38.158750",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge of reconstructing",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-10-29T23:00:33.990961",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a lack of unexpe",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:00:55.187612",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge was to reconstruc",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-10-29T23:00:39.133737",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a period of pred",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:01.033223",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge is to reconstruct",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-10-29T23:00:44.720556",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a lack of unexpe",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:06.197197",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, we must rely on fundamental pri",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-10-29T23:00:50.658998",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a lack of unexpe",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:12.111731",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge is to assess the ",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-10-29T23:00:56.204828",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it is crucial to introduce un",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:17.938094",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge of reconstructing",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-10-29T23:01:01.520888",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a lack of unexpe",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:23.377932",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge is to identify ke",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-10-29T23:01:06.735665",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a lack of unexpe",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:29.481547",
+      "last_result": "During the morning briefing, with Bitcoin priced at $77583 and the Wonder Index at 0.5090, the challenge of reconstructing core truths from scratch hi",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-10-29T23:01:12.376298",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a lack of unexpe",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:34.706394",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge involves reconstr",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-10-29T23:01:18.157799",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it signals a need to rekindle",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:40.113485",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge of reconstructing",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-10-29T23:01:23.965054",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it signals a need for rekindl",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:45.866014",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge of reconstructing",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-10-29T23:01:29.908048",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a critical need ",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:51.729825",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge is to rebuild our",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-10-29T23:01:35.176724",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it indicates a lack of unexpe",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:01:57.433234",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge of reconstructing",
+      "run_count": 23,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-10-29T23:01:41.139479",
-      "last_result": "During tonight's night briefing at BTC block 973766 with Bitcoin priced at $77197 and the Wonder Index dropping to zero, it signals a need for reintro",
-      "run_count": 22,
+      "last_run": "2026-10-30T06:02:03.572716",
+      "last_result": "During the morning briefing at BTC block 973803 with Bitcoin priced at $77583 and the Wonder Index standing at 0.5090, the challenge of reconstructing",
+      "run_count": 23,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-10-29",
+      "last": "2026-10-30",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
