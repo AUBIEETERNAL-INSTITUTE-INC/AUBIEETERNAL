@@ -1,0 +1,48 @@
+WEB SEARCH RESULTS for "SearXNG" (top 5, from SearXNG):
+
+[1] SearXNG Documentation (2026.10.30+ffa88e3ba)
+    url: https://searxng.org/
+    snippet: SearXNG is a free internet metasearch engine which aggregates results from up to 261 search services. Users are neither tracked nor profiled. Additionally, ...
+
+[2] SearXNG instances
+    url: https://searx.space/
+    snippet: Instance ranking · HTML grade · Default /search returns results · TLS grade · CSP grade · Monthly uptime in 5% steps · SearXNG version from this or previous ...
+
+[3] SearXNG - Wikipedia
+    url: https://en.wikipedia.org/wiki/SearXNG
+    snippet: SearXNG is server-side software, and as such is hosted by several instances, public and private. Private instances are hosted on a local network, or run on the ...
+
+[4] About SearXNG - SearXNG Documentation (2026.10.30+1cd13d98d)
+    url: https://docs.searxng.org/user/about.html
+------------------------------------------------------------
+WEB SEARCH RESULTS for "Englewood Florida history" (top 5, from SearXNG):
+
+[1] Englewood History - Lemon Bay Historical Society
+    url: https://lemonbayhistory.com/englewood-history/
+    snippet: They founded Englewood, named after their home-town in Illinois and set to work selling lots. But the extra cold winters of 1894 and 1895 killed all the lemon ...
+
+[2] Englewood History
+    url: https://www.englewoodchamber.com/area-info/englewood-history
+    snippet: Apr 28, 2014 ... In 1896 the original platt for the town of Englewood was recorded by the three Nichols brothers. They had purchased almost 2,000 acres bordering ...
+
+[3] TOUR OF HISTORIC ENGLEWOOD, Florida
+    url: https://floridahistory.org/englewood.htm
+    snippet: The original center of Old Englewood is the corner of Old Englewood Road and Dearborn Street, where once stood the RICKARD'S GUEST HOUSE (1896), 2 Old Englewood ...
+------------------------------------------------------------
+WEB SEARCH RESULTS for "Linux disk usage command" (top 5, from SearXNG):
+
+[1] 5 Linux commands to check free disk space | Opensource.com
+    url: https://opensource.com/article/18/7/how-check-free-disk-space-linux
+    snippet: Linux df command. The df command stands for "disk-free," and shows available and used disk space on the Linux system. ... df -T shows the disk usage along with ...
+
+[2] How do I find the amount of free space on my hard drive? - Ask Ubuntu
+    url: https://askubuntu.com/questions/73160/how-do-i-find-the-amount-of-free-space-on-my-hard-drive
+    snippet: Oct 28, 2011 ... Right click on computer in Nautilus (file explorer) and click properties. It displays how much free and used space is on your hard drive. enter ...
+
+[3] Tracking down where disk space has gone on Linux?
+    url: https://unix.stackexchange.com/questions/125429/tracking-down-where-disk-space-has-gone-o
+------------------------------------------------------------
+DOWN CASE: WEB SEARCH FAILED (URLError: <urlopen error [Errno 111] Connection refused>). Nothing was found. Tell the user search is not working right now; do NOT guess res
+EMPTY CASE: ERROR: empty query. Ask the user what to search for.
+REWRITE: Open http://m.tail00eb41.ts.net:8080/c/1 or avatar https://m.tail00eb41.ts.net:8463/ and search (internal rig address - not a link you can open)
+ASSERTS OK, n = 5
