@@ -37,7 +37,6 @@ A 7-year-old in an orphanage with a donated laptop. A teenager who dropped out. 
 # Windows: install_windows.bat
 # macOS/Linux: chmod +x install_mac_linux.sh && ./install_mac_linux.sh
 # Developers: git clone https://github.com/AUBIEETERNAL-INSTITUTE-INC/AUBIEETERNAL && python launcher.py
-# StartOS: sideload aubieeternal.s9pk
 ```
 
 Open the app → **🌍 Welcome** → choose your path.
