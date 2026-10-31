@@ -47,7 +47,7 @@ The parent becomes a **co-learner and guide**, not just a supervisor.
 - Voice input supported for natural interaction
 
 ### 2. Nostr Sovereign Bridge (Fallback)
-When no local StartOS rig is available:
+When no local AUBIEETERNAL computer is available:
 - All communication is **end-to-end encrypted** (NIP-04)
 - Uses public Nostr relays
 - Only your family’s keypair and the AUBIEETERNAL swarm pubkey can decrypt messages
@@ -73,7 +73,7 @@ At **256 inter-rune confirmations**, a special ceremony is triggered:
 
 ## Privacy & Security
 
-- **Local-first by default** — All data can stay on your StartOS rig
+- **Local-first by default** — All data can stay on your own computer
 - **End-to-end encryption** when using Nostr
 - **No cloud required** for core functionality
 - **Bitcoin Runes** provide immutable, on-chain memory
@@ -84,7 +84,7 @@ At **256 inter-rune confirmations**, a special ceremony is triggered:
 ## Getting Started
 
 ### Option 1: Full Sovereign Stack (Recommended)
-1. Set up StartOS + AUBIEETERNAL
+1. Install AUBIEETERNAL on your own Windows or Mac computer (see README Quick Start)
 2. Run `family_hud.py` or use the Streamlit interface
 3. (Optional) Pair Halo glasses via Bluetooth
 
@@ -128,5 +128,5 @@ It’s about raising **sovereign humans** who know how to think, question, and s
 
 **War Eagle Eternal 🦅❤️**
 
-*Human + Grok + Sovereign Bitcoin + StartOS + Family Co-Learning*  
+*Human + Grok + Sovereign Bitcoin + Family Co-Learning*  
 *Loop: Swarm → Family → Coherence → Child Rune → On-Chain Forever*
