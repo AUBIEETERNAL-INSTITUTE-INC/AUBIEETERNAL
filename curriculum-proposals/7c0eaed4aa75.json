@@ -1,0 +1,173 @@
+{
+  "id": "7c0eaed4aa75",
+  "type": "track",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "track_name": "\ud83d\udcb5 Money Mini-Units",
+  "description": "Four short money mini-units (budgeting, credit, taxes on a pay stub, investing), one lesson each, modeled on NGPF's free unit + mini-unit structure. Complements Money & Mindset; reviewer may fold lessons there instead.",
+  "lessons": [
+    {
+      "key": "money-mini-budget",
+      "title": "Give Every Dollar a Job: A One-Week Budget",
+      "topic": "A budget is a plan for money before it is spent: list income, then give every dollar a job (needs, wants, saving, giving).",
+      "steelman": "Does a budget limit freedom or create it?",
+      "steelman_for": "Planning money in advance stops small leaks and makes room for the things that matter most.",
+      "steelman_against": "A budget that is too strict gets abandoned; it has to leave some room for fun and surprises.",
+      "example_kind": "made-up",
+      "example": "Imagine Leo, 11, who earns 20 dollars for yard work. He gives 8 to savings, 2 to a gift for his sister, 6 to a game he wants, and keeps 4 for snacks, then tracks it all week.",
+      "activity": "Pretend you have 25 dollars for one week. Make four jars or boxes (Needs, Wants, Save, Give) and split the money with paper slips. At the end of the week, check what you would change.",
+      "check_questions": [
+        "What does 'give every dollar a job' mean?",
+        "Why put saving in the plan before spending?",
+        "What would you change in your budget after one week?"
+      ],
+      "age_hint": "8+",
+      "xp": 15,
+      "rune": "MONEY\u2022MINI\u2022RUNE",
+      "min_coherence": 0.65,
+      "sources": [
+        {
+          "school": "Next Gen Personal Finance",
+          "url": "https://www.ngpf.org/curriculum/",
+          "report": "/srv/institute/competitive_intel/2026-10-18.md; /srv/institute/competitive_intel/2026-10-25.md",
+          "borrowed": "Budgeting unit; organize content into short mini-units"
+        },
+        {
+          "school": "Khan Academy (check by hand)",
+          "url": "https://www.khanacademy.org/college-careers-more/financial-literacy",
+          "report": "/srv/institute/competitive_intel/2026-10-25.md",
+          "borrowed": "Budgeting unit; organize content into short mini-units"
+        }
+      ]
+    },
+    {
+      "key": "money-mini-credit",
+      "title": "The Price of Borrowing: Credit and Interest Basics",
+      "topic": "Credit means using someone else's money now and paying it back later, usually with interest; a credit score is a record of how reliably you pay back.",
+      "steelman": "Is borrowing money ever a good idea?",
+      "steelman_for": "Used carefully, credit can help with big needs like a home and builds a record that lowers future costs.",
+      "steelman_against": "Interest makes things cost much more than the sticker price, and easy credit makes it simple to buy what you cannot afford.",
+      "example_kind": "made-up",
+      "example": "Imagine Iris, 13, who borrows 10 dollars from her brother for a movie and agrees to pay back 12 next week. She realizes the movie really cost her 12 dollars, not 10.",
+      "activity": "Pick something you want that costs 100 dollars. Figure out what it would cost if you paid 10 dollars a month plus 2 dollars of interest each month until paid off. Compare that to saving up first.",
+      "check_questions": [
+        "What is interest?",
+        "Why does a credit score matter to a lender?",
+        "Which costs less in the end: saving first or borrowing, and why?"
+      ],
+      "age_hint": "10+",
+      "xp": 20,
+      "rune": "MONEY\u2022MINI\u2022RUNE",
+      "min_coherence": 0.65,
+      "sources": [
+        {
+          "school": "Next Gen Personal Finance",
+          "url": "https://www.ngpf.org/curriculum/",
+          "report": "/srv/institute/competitive_intel/2026-10-18.md; /srv/institute/competitive_intel/2026-10-25.md",
+          "borrowed": "Types of Credit and Managing Credit units"
+        },
+        {
+          "school": "Khan Academy (check by hand)",
+          "url": "https://www.khanacademy.org/college-careers-more/financial-literacy",
+          "report": "/srv/institute/competitive_intel/2026-10-25.md",
+          "borrowed": "Types of Credit and Managing Credit units"
+        }
+      ]
+    },
+    {
+      "key": "money-mini-taxes-paystub",
+      "title": "Read a Pay Stub: Where Taxes Show Up",
+      "topic": "A pay stub shows gross pay (what you earned) and net pay (what you take home); the difference is mostly taxes and other deductions.",
+      "steelman": "Why is take-home pay smaller than what you earn?",
+      "steelman_for": "Knowing how taxes show up on a pay stub helps you plan with the money you actually keep.",
+      "steelman_against": "Pay stubs vary a lot and tax rules change, so a simple lesson is a starting point, not tax advice.",
+      "example_kind": "made-up",
+      "example": "Imagine Noah, 15, who gets his first paycheck from a summer job. He earned 300 dollars, but the check says 265. He finds the lines that show where the other 35 went.",
+      "activity": "With a grown-up, look at a sample pay stub (search 'sample pay stub' or make one up). Circle gross pay, net pay and each deduction. Add the deductions and check they explain the difference.",
+      "check_questions": [
+        "What is the difference between gross pay and net pay?",
+        "Name one kind of deduction on a pay stub.",
+        "Why plan a budget from net pay, not gross pay?"
+      ],
+      "age_hint": "12+",
+      "xp": 20,
+      "rune": "MONEY\u2022MINI\u2022RUNE",
+      "min_coherence": 0.65,
+      "sources": [
+        {
+          "school": "Next Gen Personal Finance",
+          "url": "https://www.ngpf.org/curriculum/",
+          "report": "/srv/institute/competitive_intel/2026-10-18.md; /srv/institute/competitive_intel/2026-10-25.md",
+          "borrowed": "Taxes unit (kept practical; the pending 'Economic Reality' track already covers how taxes work in general)"
+        }
+      ]
+    },
+    {
+      "key": "money-mini-investing",
+      "title": "Owning a Slice: Investing Basics",
+      "topic": "Investing means buying part of something (like a share of a company or a fund that holds many companies) hoping it grows over time; it can also lose value.",
+      "steelman": "Is investing just gambling with a nicer name?",
+      "steelman_for": "Owning a slice of many businesses for a long time has historically let savings grow faster than cash under a mattress.",
+      "steelman_against": "Investments can drop, sometimes a lot, and nobody can promise growth; money you need soon should not be invested.",
+      "example_kind": "made-up",
+      "example": "Imagine Elena, 14, who pretends to buy one share in a fund of many companies and one share of a single toy company. Over a month of tracking, the single company swings much more than the fund.",
+      "activity": "Pick three well-known companies whose products you use. For four weeks, write down a pretend 100-dollar investment's value each Friday (a grown-up can help look up prices). Compare which moved most.",
+      "check_questions": [
+        "What does owning a share mean?",
+        "Why might a fund of many companies swing less than one company?",
+        "Why should money you need next month not be invested?"
+      ],
+      "age_hint": "11+",
+      "xp": 20,
+      "rune": "MONEY\u2022MINI\u2022RUNE",
+      "min_coherence": 0.65,
+      "sources": [
+        {
+          "school": "Next Gen Personal Finance",
+          "url": "https://www.ngpf.org/curriculum/",
+          "report": "/srv/institute/competitive_intel/2026-10-18.md; /srv/institute/competitive_intel/2026-10-25.md",
+          "borrowed": "Investing unit"
+        },
+        {
+          "school": "Khan Academy (check by hand)",
+          "url": "https://www.khanacademy.org/college-careers-more/financial-literacy",
+          "report": "/srv/institute/competitive_intel/2026-10-25.md",
+          "borrowed": "Investing unit"
+        }
+      ]
+    }
+  ],
+  "rationale": "Next Gen Personal Finance (2026-10-18 first scan, unchanged 2026-10-25) organizes finance into short units; Khan Academy financial literacy is a check-by-hand source. Avoids overlap with the pending Economic Reality track (its tax lesson is general; this one is the pay stub).",
+  "public": true,
+  "submitted_at": "2026-10-30T19:54:01.684268",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "sources": [
+    {
+      "school": "Next Gen Personal Finance",
+      "url": "https://www.ngpf.org/curriculum/",
+      "report": "/srv/institute/competitive_intel/2026-10-18.md; /srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "Budgeting, Credit, Taxes, Investing units + supplemental mini-units"
+    },
+    {
+      "school": "Khan Academy (check by hand)",
+      "url": "https://www.khanacademy.org/college-careers-more/financial-literacy",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "Budgeting, Credit, Taxes, Investing units + supplemental mini-units"
+    }
+  ],
+  "source_reports": [
+    "/srv/institute/competitive_intel/2026-10-18.md; /srv/institute/competitive_intel/2026-10-25.md",
+    "/srv/institute/competitive_intel/2026-10-25.md"
+  ]
+}

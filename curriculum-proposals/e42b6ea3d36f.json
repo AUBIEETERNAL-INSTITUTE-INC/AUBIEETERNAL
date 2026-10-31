@@ -1,0 +1,43 @@
+{
+  "id": "e42b6ea3d36f",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder and Curiosity",
+  "lesson": {
+    "key": "embracing-uncertainty-with-wonder",
+    "title": "Embrace Uncertainty with Wonder",
+    "topic": "How cultivating a sense of wonder can help individuals embrace uncertainty and view it as an opportunity for growth.",
+    "steelman": "How can embracing uncertainty through wonder lead to personal development and resilience?",
+    "steelman_for": "Wonder fosters open-mindedness, encouraging exploration and innovation when faced with unknowns.",
+    "steelman_against": "Excessive uncertainty can be overwhelming; it's important to strike a balance between curiosity and practicality.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who loves exploring new recipes in her kitchen. One day, she decides to try a recipe that calls for an ingredient she's never used before. Instead of being scared, she thinks about how this adventure might teach her something new. With curiosity as her guide, she experiments and discovers the joy of cooking with unexpected flavors.",
+    "activity": "Reflect on a recent experience where you encountered uncertainty. Write down how that experience made you feel and what new insights or actions you took as a result of your wonder.",
+    "check_questions": [
+      "How can wonder help you cope with uncertain situations?",
+      "What are some benefits of viewing uncertainty through the lens of wonder?",
+      "Can you think of a time when embracing uncertainty led to personal growth?"
+    ],
+    "age_hint": "All ages",
+    "xp": 20,
+    "rune": "WONDER\u2022AND\u2022CURIOSITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson aligns with AUBIEETERNAL's core values by promoting resilience, open-mindedness, and continuous learning through the power of wonder.",
+  "submitted_at": "2026-10-28T06:00:19.209101",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-28T14:15:06.148385",
+  "rejection_reason": "Duplicate title of approved 18d9b1542a36 (key wonderful-uncertainty). Its better content was merged into that existing lesson instead. - Grok review 2026-10-28"
+}

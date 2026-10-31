@@ -1,0 +1,138 @@
+--- a/it_bot.py
++++ b/it_bot.py
+@@ -606,6 +606,112 @@
+     await channel.send(grok_card(drafts[0], len(drafts)), view=GrokView(drafts[0], owner_ids))
+ 
+ 
++# --- one approvals inbox (PROPOSED 2026-10-30, not applied) ---
++# `approvals` (owner-only, DM-only) shows a count per queue, then ONE item at a time with
++# Approve / Reject / Skip / Stop. Only curriculum proposals and Grokipedia drafts get
++# buttons; r35, dog patches, flashcards get a "how" line; face naming is personal and
++# is never shown on Discord. All actions run ~/AUBIEETERNAL/approvals_inbox.py, which
++# calls the same functions as the portal Review Queue and grokipedia_approve.py.
++APPROVALS_PY = Path(os.environ.get(
++    "AUBIE_APPROVALS_INBOX", str(Path.home() / "AUBIEETERNAL" / "approvals_inbox.py")))
++
++
++async def approvals_cli(*args):
++    proc = await asyncio.create_subprocess_exec(
++        "python3", str(APPROVALS_PY), *args,
++        stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.STDOUT)
++    try:
++        out, _ = await asyncio.wait_for(proc.communicate(), timeout=60)
++    except asyncio.TimeoutError:
++        proc.kill()
++        await proc.communicate()
++        return None, "(approvals tool timed out)"
++    return proc.returncode, (out or b"").decode("utf-8", "replace").strip()
++
++
++async def approvals_items():
++    rc, out = await approvals_cli("--json")
++    if rc != 0:
++        return None, out
++    try:
++        return [i for i in json.loads(out) if i.get("queue") != "faces"], ""
++    except Exception as exc:
++        return None, f"bad approvals output: {exc}"
++
++
++class ApprovalView(discord.ui.View):
++    """One pending item, owner-only, 15 min. Buttons only act on one_tap queues."""
++
++    def __init__(self, item, owner_ids, skipped):
++        super().__init__(timeout=900)
++        self.item, self.owner_ids, self.skipped, self._done = item, owner_ids or set(), skipped, False
++        if not item.get("one_tap"):
++            self.remove_item(self.b_approve)
++            self.remove_item(self.b_reject)
++
++    async def interaction_check(self, interaction):
++        if not self.owner_ids or interaction.user.id not in self.owner_ids:
++            await interaction.response.send_message("Approvals are owner-only.", ephemeral=True)
++            return False
++        return True
++
++    async def act(self, interaction, verb):
++        if self._done:
++            await interaction.response.send_message("Already handled.", ephemeral=True)
++            return
++        self._done = True
++        for child in self.children:
++            child.disabled = True
++        if verb == "stop":
++            await interaction.response.edit_message(content=interaction.message.content + "\n_Stopped. Type `approvals` to continue._", view=self)
++            return
++        if verb == "skip":
++            self.skipped.add(self.item["id"])
++            line = "\n**Skipped.**"
++        else:
++            rc, out = await approvals_cli(verb, self.item["queue"], str(self.item["id"]))
++            line = f"\n**{'Approved' if verb == 'approve' else 'Rejected'}.**" if rc == 0 else f"\n{out[:300] or 'error'}"
++        await interaction.response.edit_message(content=interaction.message.content + line, view=self)
++        await approvals_send_next(interaction.channel, self.owner_ids, self.skipped)
++
++    @discord.ui.button(label="Approve", style=discord.ButtonStyle.green)
++    async def b_approve(self, interaction, button):
++        await self.act(interaction, "approve")
++
++    @discord.ui.button(label="Reject", style=discord.ButtonStyle.red)
++    async def b_reject(self, interaction, button):
++        await self.act(interaction, "reject")
++
++    @discord.ui.button(label="Skip", style=discord.ButtonStyle.grey)
++    async def b_skip(self, interaction, button):
++        await self.act(interaction, "skip")
++
++    @discord.ui.button(label="Stop", style=discord.ButtonStyle.grey)
++    async def b_stop(self, interaction, button):
++        await self.act(interaction, "stop")
++
++
++async def approvals_send_next(channel, owner_ids, skipped=None, summary=False):
++    skipped = set() if skipped is None else skipped
++    items, err = await approvals_items()
++    if items is None:
++        await channel.send(err[:500] or "Approvals tool error.")
++        return
++    if summary:
++        counts = {}
++        for i in items:
++            counts[i["queue"]] = counts.get(i["queue"], 0) + 1
++        await channel.send("Waiting on you: " + (", ".join(f"{q} {n}" for q, n in counts.items()) or "nothing"))
++    todo = [i for i in items if str(i["id"]) not in {str(s) for s in skipped}]
++    if not todo:
++        await channel.send("Nothing else waiting.")
++        return
++    it = todo[0]
++    card = (f"**[{it['queue']}] {it.get('title', '?')}**\n{(it.get('detail') or '')[:300]}\n"
++            f"how: {it.get('how', '')}\n({len(todo)} left)")
++    await channel.send(card[:1900], view=ApprovalView(it, owner_ids, skipped))
++
++
+ # --- !idea -> ~/AUBIEETERNAL/idea_inbox.py (added by apply_idea_hooks.py) ---
+ def idea_reply(text, source):
+     """idea_inbox's reply, or None if text isn't an idea command. Never raises."""
+@@ -715,6 +821,14 @@
+             return
+         rc, out = await _aubie_run(["--memory"], 30)
+         await message.channel.send(f"```\n{out or '(none)'}\n```")
++    elif re.fullmatch(r"(aubie )?approvals?", low):
++        if not ALLOWED or message.author.id not in ALLOWED:
++            await message.channel.send("Approvals are owner-only.")
++            return
++        if not isinstance(message.channel, discord.DMChannel):
++            await message.channel.send("Approvals are only shown in a DM with me.")
++            return
++        await approvals_send_next(message.channel, ALLOWED, summary=True)
+     elif re.fullmatch(r"(aubie )?grok(ipedia)?( list)?", low):
+         if not ALLOWED or message.author.id not in ALLOWED:
+             await message.channel.send("Grokipedia approvals are owner-only.")
+@@ -780,6 +894,7 @@
+             "aubie <question> - read-only answer from live rig facts (local model, ~30-60s)\n"
+             "aubie fix <problem> - proposes ONE action; buttons, or just type yes / no, within 5 min\n"
+             "grok - review Grokipedia drafts one at a time (Add / Reject / Skip buttons)\n"
++            "approvals - (DM) everything waiting on you, one item at a time (Approve / Reject / Skip)\n"
+             "Anything else goes to local Qwen.\n"
+             "restart <name> confirm — webui, assistant, ollama, discord. No confirm, no restart."
+         )

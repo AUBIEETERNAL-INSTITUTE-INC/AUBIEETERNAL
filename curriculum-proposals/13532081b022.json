@@ -1,0 +1,41 @@
+{
+  "id": "13532081b022",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Putting Antifragility into Action",
+  "lesson": {
+    "key": "antifragility-through-exercise",
+    "title": "Antifragile Thinking Through Exercise",
+    "topic": "Understanding how physical exercise can enhance antifragility and resilience in thinking.",
+    "steelman": "How does regular exercise influence cognitive function, and what are specific exercises that promote antifragility?",
+    "steelman_for": "Exercise increases neurogenesis and brain plasticity, making the mind more resilient to stressors and capable of growing stronger through challenges.",
+    "steelman_against": "Overexertion can lead to burnout and decreased cognitive function in the short term. Proper balance is key to experiencing antifragility from exercise.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who loves running through the forest. Each time she pushes her body with a challenging run, it's like her mind is learning to handle tougher puzzles better.",
+    "activity": "Plan a weekly exercise routine that includes a mix of cardiovascular and strength training activities. Keep track of your workouts and how they make you feel both physically and mentally.",
+    "check_questions": [
+      "How does exercise affect your mental clarity?",
+      "What types of exercises do you find most beneficial for stress relief?",
+      "Can you think of any negative impacts from over-exercising?"
+    ],
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "PUTTING\u2022ANTIFRAGILITY\u2022INTO\u2022ACTION\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson provides practical insights on how physical health contributes to cognitive resilience, aligning with AUBIEETERNAL's focus on antifragility.",
+  "submitted_at": "2026-10-29T06:00:14.852124",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

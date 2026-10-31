@@ -16,7 +16,7 @@
   },
   "rationale": "This lesson bridges the gap between philosophical wonder and practical decision-making frameworks like antifragility.",
   "submitted_at": "2026-10-01T06:01:48.430855",
-  "status": "pending",
+  "status": "rejected",
   "review": {
     "steelman_for": "",
     "steelman_against": "",
@@ -28,5 +28,7 @@
     "reviewer_notes": "",
     "status": "pending"
   },
-  "comments": []
+  "comments": [],
+  "rejected_at": "2026-10-11T14:07:42.923748",
+  "rejection_reason": ""
 }

@@ -66,12 +66,16 @@ def parse_sources() -> list[dict]:
 
 def uncovered_topics(limit: int = 50) -> list[dict]:
     covered = covered_titles()
-    pending = {((d.get("title") or "").strip().lower()) for d in load_pending()}
+    drafts = load_pending()
+    pending = {((d.get("title") or "").strip().lower()) for d in drafts}
+    # The model invents its own titles, so title checks miss repeats. A source topic that
+    # already produced a draft (pending, approved or rejected) is done (Grok review 2026-10-28).
+    drafted_hints = {(d.get("topic_hint") or "").strip().lower() for d in drafts} - {""}
     out = []
     for t in parse_sources():
         key = t["title"].lower()
         # also skip if any approved title is a close substring
-        if key in covered or key in pending:
+        if key in covered or key in pending or (t.get("hint") or "").strip().lower() in drafted_hints:
             continue
         if any(key in c or c in key for c in covered if c):
             continue

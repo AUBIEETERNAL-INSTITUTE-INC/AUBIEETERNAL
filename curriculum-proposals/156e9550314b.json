@@ -1,0 +1,41 @@
+{
+  "id": "156e9550314b",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Steelman",
+  "lesson": {
+    "key": "steelman-your-argument",
+    "title": "Steelman Your Argument: Build the Strongest Case",
+    "topic": "Learn to strengthen your arguments by considering opposing viewpoints and refutations.",
+    "steelman": "Imagine Kai, 11, who is debating whether school uniforms should be mandatory. How would you structure a strong case for Kai to present?",
+    "steelman_for": "Building the strongest argument requires understanding both sides thoroughly, leading to more persuasive and informed communication.",
+    "steelman_against": "It can be challenging to objectively consider opposing viewpoints if deeply entrenched in one's own beliefs.",
+    "example_kind": "made-up",
+    "example": "Imagine Kai, 11, who is debating whether school uniforms should be mandatory. He first lists the pros (e.g., reducing distractions, promoting equality) and cons (e.g., limiting personal expression, potential for bullying) of uniforms. Then, he considers counterarguments from those who oppose uniforms and addresses them by suggesting ways to mitigate concerns while still implementing the policy.",
+    "activity": "Write down three points supporting your favorite hobby or activity. Then, imagine someone arguing against these points. Write how you would respond to each argument.",
+    "check_questions": [
+      "What is one potential drawback of school uniforms?",
+      "How might someone argue against mandatory uniforms based on personal expression?",
+      "What could be a solution to address concerns about bullying with uniforms?"
+    ],
+    "age_hint": "10+",
+    "xp": 20,
+    "rune": "STEELMAN\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson helps learners develop critical thinking and argumentation skills by considering opposing viewpoints, which is essential for effective communication and problem-solving.",
+  "submitted_at": "2026-10-31T06:00:23.362956",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

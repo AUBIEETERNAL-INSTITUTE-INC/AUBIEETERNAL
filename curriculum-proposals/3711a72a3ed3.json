@@ -1,0 +1,72 @@
+{
+  "id": "3711a72a3ed3",
+  "type": "lesson",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "target_track": "How We Learn",
+  "lesson": {
+    "key": "screens-are-tools-tech-budget",
+    "title": "Screens Are Tools: My Daily Tech Budget, With a Guide",
+    "topic": "Set a daily cap on screen time for learning (about 1 to 1.5 hours), use screens as tools rather than entertainment, and have an adult guide check in.",
+    "steelman": "Is more technology always better for learning?",
+    "steelman_for": "A clear cap keeps screens as a tool for practice and research, leaving time for hands-on work, people and outdoors.",
+    "steelman_against": "Some learners do great work on screens (coding, design), and a hard cap can feel arbitrary without a reason they agree with.",
+    "example_kind": "made-up",
+    "example": "Imagine Priya, 10, who writes down every time she uses a tablet for a day. She sorts each use into 'tool' or 'fun', then agrees with her guide on 75 minutes of tool time and a timer she sets herself.",
+    "activity": "For one day, keep a screen log (what, why, how long). Sort each item into Tool or Fun. With your guide, set tomorrow's tool-time budget and one rule for when the budget runs out.",
+    "check_questions": [
+      "What is the difference between a screen used as a tool and as entertainment?",
+      "Why might an adult guide help with a screen budget?",
+      "What will you do when your budget runs out?"
+    ],
+    "age_hint": "7+",
+    "xp": 15,
+    "rune": "HOW\u2022WE\u2022LEARN\u2022RUNE",
+    "min_coherence": 0.65,
+    "sources": [
+      {
+        "school": "Acton Academy",
+        "url": "https://www.actonacademy.org/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "technology used sparingly (1-1.5 h/day) as a tool; adults act as guides, not lecturers"
+      },
+      {
+        "school": "Alpha School",
+        "url": "https://alpha.school/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "technology used sparingly (1-1.5 h/day) as a tool; adults act as guides, not lecturers"
+      }
+    ]
+  },
+  "rationale": "Acton Academy's 1-1.5 hour tech limit and Alpha School's guides-not-lecturers model (2026-10-25 scan); the learner helps set the cap, so it is self-management, not just a rule.",
+  "submitted_at": "2026-10-30T19:54:01.684106",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "sources": [
+    {
+      "school": "Acton Academy",
+      "url": "https://www.actonacademy.org/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "technology used sparingly (1-1.5 h/day) as a tool; adults act as guides, not lecturers"
+    },
+    {
+      "school": "Alpha School",
+      "url": "https://alpha.school/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "technology used sparingly (1-1.5 h/day) as a tool; adults act as guides, not lecturers"
+    }
+  ],
+  "source_reports": [
+    "/srv/institute/competitive_intel/2026-10-25.md"
+  ]
+}

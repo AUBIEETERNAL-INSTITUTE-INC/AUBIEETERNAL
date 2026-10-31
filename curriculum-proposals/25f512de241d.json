@@ -16,7 +16,7 @@
   },
   "rationale": "This lesson bridges the gap between philosophical wonder and practical antifragility by showing how curiosity can endure.",
   "submitted_at": "2026-09-29T06:01:52.404957",
-  "status": "pending",
+  "status": "rejected",
   "review": {
     "steelman_for": "",
     "steelman_against": "",
@@ -28,5 +28,7 @@
     "reviewer_notes": "",
     "status": "pending"
   },
-  "comments": []
+  "comments": [],
+  "rejected_at": "2026-10-11T14:07:50.375224",
+  "rejection_reason": ""
 }

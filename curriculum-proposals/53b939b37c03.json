@@ -1,0 +1,43 @@
+{
+  "id": "53b939b37c03",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Steelmanning",
+  "lesson": {
+    "key": "steelmanning-argument-strength",
+    "title": "Building Stronger Arguments",
+    "topic": "How to present the strongest version of an idea before judging its validity.",
+    "steelman": "Imagine you are discussing climate change with a skeptical friend. How would you use steelmanning to strengthen your argument?",
+    "steelman_for": "Strengthening arguments through steelmanning helps in identifying weaknesses early and building more robust positions.",
+    "steelman_against": "It can be challenging to remain objective when trying to find the strongest possible case for an idea, which might lead to bias.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who believes that plastic straws are essential for people with disabilities. How would she use steelmanning to address concerns about their environmental impact?",
+    "activity": "Choose a controversial topic and write two versions of your argument: one strong and one weak. Swap with a friend, and provide feedback on how to strengthen the weak version.",
+    "check_questions": [
+      "What are some ways to identify potential weaknesses in an argument?",
+      "How does steelmanning help improve critical thinking skills?",
+      "Can you give an example of a situation where steelmanning would be particularly useful?"
+    ],
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "STEELMANNING\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson helps learners understand the importance of presenting strong, well-reasoned arguments and how to improve their critical thinking skills.",
+  "submitted_at": "2026-10-12T09:00:36.145949",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-10-16T07:52:51.713520",
+  "merged_to_curriculum": true
+}

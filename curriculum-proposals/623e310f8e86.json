@@ -1,0 +1,43 @@
+{
+  "id": "623e310f8e86",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Mastering Antifragility",
+  "lesson": {
+    "key": "antifragility-in-action",
+    "title": "Putting Antifragility into Action",
+    "topic": "Learn how to apply antifragile principles in daily life to become more resilient and adaptable.",
+    "steelman": "How can individuals use the concept of antifragility to enhance their personal and professional resilience?",
+    "steelman_for": "Antifragility encourages embracing challenges and failures as opportunities for growth, potentially leading to greater strength and adaptability over time.",
+    "steelman_against": "There may be a risk of becoming overly focused on stressors without considering one's own limits or seeking balance between challenge and rest.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who loves gardening. One day, a sudden storm ruins her perfectly arranged flower beds. However, instead of giving up, she decides to plant more diverse flowers and creates a rainwater harvesting system, making her garden not only beautiful but also resilient to future storms.",
+    "activity": "Identify a small challenge or stressor in your daily life. Write down how this situation could potentially make you stronger if approached antifragilly (e.g., seeking new skills or perspectives).",
+    "check_questions": [
+      "How does embracing challenges align with the concept of antifragility?",
+      "Can you think of a time when facing a challenge made you feel more resilient?",
+      "What are some potential drawbacks to always seeking out high levels of stress or chaos?"
+    ],
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "MASTERING\u2022ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson provides practical guidance on applying antifragile principles, enhancing learners' ability to handle real-world challenges and stresses.",
+  "submitted_at": "2026-10-24T06:00:20.422409",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-28T14:15:06.148516",
+  "rejection_reason": "Duplicate title of approved 05392edc2f30 (antifragility-in-practice). Its garden example replaced that lesson's Black Death example. - Grok review 2026-10-28"
+}

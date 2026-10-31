@@ -1,0 +1,43 @@
+{
+  "id": "fce5993368c8",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Mastering Antifragility",
+  "lesson": {
+    "key": "antifragility-in-nature",
+    "title": "Antifragility in Nature",
+    "topic": "Explore how antifragile systems can be observed in natural phenomena and ecosystems.",
+    "steelman": "How does the concept of antifragility apply to natural systems, and what can we learn from them?",
+    "steelman_for": "Natural systems often thrive on stress and adversity, demonstrating antifragility through adaptive resilience.",
+    "steelman_against": "While nature shows some examples of antifragility, it's important to recognize that all natural systems have limits and vulnerabilities.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who notices that her garden flowers bloom even brighter after a rainstorm. She learns that plants thrive from challenges, much like how her favorite books become more exciting with new twists.",
+    "activity": "Observe a local ecosystem over time and note how different elements adapt or change in response to environmental stressors.",
+    "check_questions": [
+      "Can you give an example of how a natural system demonstrates antifragility?",
+      "What are some potential drawbacks of relying on antifragile systems?",
+      "How might understanding antifragility in nature help us design better human systems?"
+    ],
+    "age_hint": "8+",
+    "xp": 20,
+    "rune": "MASTERING\u2022ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson helps learners understand the real-world applications of antifragility, fostering a deeper appreciation for natural resilience.",
+  "submitted_at": "2026-10-22T06:00:31.212483",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-28T14:15:06.148774",
+  "rejection_reason": "Duplicate of pending bc50ccbdbaea (same title/key antifragility-in-nature). - Grok review 2026-10-28"
+}

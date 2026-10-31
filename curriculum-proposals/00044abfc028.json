@@ -1,0 +1,43 @@
+{
+  "id": "00044abfc028",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Steelman",
+  "lesson": {
+    "key": "hormesis-practice-for-mind",
+    "title": "Hormesis for the Mind: Strengthening through Challenge",
+    "topic": "How controlled stress and challenges can enhance mental resilience and learning.",
+    "steelman": "Can hormesis be effectively applied to improve mental performance, or are there potential drawbacks to over-exposure?",
+    "steelman_for": "Hormesis involves exposing the mind to small amounts of stress, which can lead to increased cognitive flexibility and problem-solving skills.",
+    "steelman_against": "Excessive or improperly managed hormesis could result in burnout or decreased performance due to chronic stress.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who began practicing deep-breathing exercises before exams. She noticed she felt less nervous and her grades improved, showing how controlled challenges can boost confidence and learning.",
+    "activity": "Try the 'Stress Challenge': Set a small, manageable task that slightly stretches your current abilities (e.g., learning a new song on the piano). Practice it every day for a week, then assess your improvement and emotional state.",
+    "check_questions": [
+      "How did you feel after completing the stress challenge?",
+      "What specific changes in your performance or mood did you notice?",
+      "Can you think of another area where applying hormesis might be beneficial?"
+    ],
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "STEELMAN\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson enhances learners' understanding of how controlled challenges can strengthen their mental resilience, aligning with AUBIEETERNAL's focus on antifragility and self-reliance.",
+  "submitted_at": "2026-10-26T06:00:29.844204",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-28T14:15:06.148109",
+  "rejection_reason": "Duplicate: core lesson polyvagal-3 is already 'Hormesis for the Mind', plus antifragility-4 (Hormesis), and approved antifragile-thinking-through-exercise / mastering-antifragility-strategies. Example was also wrong (deep breathing is calming, not hormesis) and used exams/grades. - Grok review 2026-10-28"
+}

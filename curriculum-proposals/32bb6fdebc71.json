@@ -1,0 +1,43 @@
+{
+  "id": "32bb6fdebc71",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Mastering Antifragility",
+  "lesson": {
+    "key": "antifragile-thinking-through-exercise",
+    "title": "Antifragile Thinking Through Exercise",
+    "topic": "Understanding how physical exercise can enhance antifragility in both body and mind.",
+    "steelman": "How does regular exercise contribute to one's ability to handle stress and bounce back from adversity?",
+    "steelman_for": "Regular exercise strengthens the body, improves mental resilience, and enhances overall well-being, making individuals more antifragile.",
+    "steelman_against": "Overtraining can lead to injuries and burnout, potentially weakening an individual rather than strengthening them.",
+    "example_kind": "real",
+    "example": "Physical activity releases endorphins, which improve mood and reduce stress. For instance, a study published in the Journal of Psychosomatic Research found that regular exercise decreases feelings of anxiety and depression.",
+    "activity": "Choose an exercise you enjoy, such as jogging, yoga, or weightlifting, and do it for at least 20 minutes. Reflect on how your mood changes during and after the activity.",
+    "check_questions": [
+      "How did you feel before, during, and after the exercise?",
+      "Can you think of a time when physical activity helped you manage stress?",
+      "What is one new thing you learned about how exercise impacts your mental state?"
+    ],
+    "age_hint": "All ages",
+    "xp": 20,
+    "rune": "MASTERING\u2022ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson helps learners understand the connection between physical health and antifragile thinking, providing practical ways to enhance their resilience.",
+  "submitted_at": "2026-10-13T09:00:42.708106",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-10-16T07:53:15.271352",
+  "merged_to_curriculum": true
+}

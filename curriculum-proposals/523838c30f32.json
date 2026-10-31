@@ -1,0 +1,41 @@
+{
+  "id": "523838c30f32",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Mindset and Resilience",
+  "lesson": {
+    "key": "hormesis-for-the-mind",
+    "title": "Hormesis: How Small Challenges Can Strengthen the Mind",
+    "topic": "Teaches how minor stress and challenges can enhance mental resilience and performance.",
+    "steelman": "How might hormesis be applied in daily life to improve cognitive functions?",
+    "steelman_for": "Hormesis encourages a growth mindset by showing that facing small difficulties can lead to greater strength and adaptability.",
+    "steelman_against": "Over-exposure to stress without proper recovery can lead to burnout and decreased performance.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who solves daily riddles to strengthen her brain. Just like how lifting light weights makes muscles stronger, these puzzles challenge her mind and boost her problem-solving abilities.",
+    "activity": "Write down three small challenges you face daily and reflect on how they help you grow mentally.",
+    "check_questions": [
+      "What is hormesis?",
+      "How can minor stress benefit mental health?",
+      "Can you think of an example where hormesis helped improve your abilities?"
+    ],
+    "age_hint": "All ages",
+    "xp": 20,
+    "rune": "MINDSET\u2022AND\u2022RESILIENCE\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson provides practical insights into leveraging hormesis for mental well-being, aligning with AUBIEETERNAL's theme of antifragility.",
+  "submitted_at": "2026-10-30T06:00:44.568057",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

@@ -1,0 +1,43 @@
+{
+  "id": "a41bf063e862",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Educate Antifragilly",
+  "lesson": {
+    "key": "antifragile-thinking-through-mindset",
+    "title": "Antifragile Thinking Through Mindset",
+    "topic": "This lesson teaches how to adopt an antifragile mindset and apply it to daily life, enhancing resilience and adaptability.",
+    "steelman": "How can one cultivate a mindset that not only withstands but thrives on challenges and adversity?",
+    "steelman_for": "An antifragile mindset allows individuals to learn from failures, grow stronger, and make better decisions under stress.",
+    "steelman_against": "While an antifragile mindset is beneficial, it can be challenging for those who are accustomed to a more fragile approach to life's challenges.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who loves building with blocks. One day, she accidentally knocks down her tower. Instead of getting upset, she sees it as a chance to learn how to make an even stronger structure next time, showing the power of an antifragile mindset.",
+    "activity": "Keep a journal for one week where you write down one challenge or setback you faced each day and how it made you stronger. Reflect on your entries at the end of the week.",
+    "check_questions": [
+      "How did the challenge in your journal make you stronger?",
+      "Can you think of a time when an obstacle turned out to be beneficial for you?",
+      "What small changes can you implement today to foster an antifragile mindset?"
+    ],
+    "age_hint": "All ages",
+    "xp": 20,
+    "rune": "EDUCATE\u2022ANTIFRAGILLY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson reinforces the concept of antifragility by focusing on personal growth and resilience, aligning with AUBIEETERNAL's core principles.",
+  "submitted_at": "2026-10-25T06:00:34.566592",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-28T14:15:06.148254",
+  "rejection_reason": "Overlaps 7 existing antifragility lessons (Think Antifragile, Putting Antifragility into Action, etc.); generic, adds no new idea. - Grok review 2026-10-28"
+}

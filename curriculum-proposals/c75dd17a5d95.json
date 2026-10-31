@@ -1,0 +1,48 @@
+{
+  "id": "c75dd17a5d95",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Stoic",
+  "lesson": {
+    "key": "negative-visualization-practice",
+    "title": "Picture the Problem, Plan the Fix (Negative Visualization in Practice)",
+    "topic": "Negative visualization means calmly picturing what could go wrong so you can get ready for it, and so you notice how lucky you are to have what you have now. Ancient Stoic thinkers like Seneca and Marcus Aurelius practiced it. The goal is a plan, not worry: picture the problem, then picture your fix.",
+    "steelman": "Does imagining what could go wrong make us calmer and stronger, or just more worried?",
+    "steelman_for": "Thinking ahead about likely problems lets you prepare a plan, so surprises feel smaller, and it can help you feel grateful for things you usually take for granted.",
+    "steelman_against": "Dwelling on bad outcomes without making a plan can feed worry, especially for people who already worry a lot, so it works best kept short and followed by action.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who is learning a new roller-skating trick. Before she tries, she pictures what could go wrong: she might fall backward, or a wheel might be loose. So she puts on her helmet and pads, checks her wheels, and practices on grass first. When she does fall, she is ready and gets right back up.",
+    "activity": "Family activity: Before a family outing or project, play 'What Could Go Wrong?' for 5 minutes: everyone names one possible problem (rain, a flat tire, a forgotten snack) and one simple fix. Then stop, and finish by naming one thing you're glad to have today. Parent Coach Insight: keep it short and light, and always end with a plan and one thing you're grateful for. If your child is a natural worrier, spend more time on the fixes than on the problems, and skip it if it raises anxiety. Model it yourself: 'If the store is closed, our backup is...'",
+    "check_questions": [
+      "What is negative visualization, in your own words?",
+      "Why is it important to end with a plan, not just the worry?",
+      "How can picturing losing something help you appreciate it?",
+      "Think of something coming up this week. What is one thing that could go wrong, and what is your plan if it does?"
+    ],
+    "age_hint": "9+",
+    "xp": 25,
+    "rune": "STOIC\u2022RUNE",
+    "min_coherence": 0.65,
+    "kid_explanation": "Negative visualization means calmly picturing what could go wrong so you can get ready for it, and so you notice how lucky you are to have what you have now. Ancient Stoic thinkers like Seneca and Marcus Aurelius practiced it. The goal is a plan, not worry: picture the problem, then picture your fix.",
+    "family_activity": "Before a family outing or project, play 'What Could Go Wrong?' for 5 minutes: everyone names one possible problem (rain, a flat tire, a forgotten snack) and one simple fix. Then stop, and finish by naming one thing you're glad to have today.",
+    "parent_insight": "Parent Coach Insight: keep it short and light, and always end with a plan and one thing you're grateful for. If your child is a natural worrier, spend more time on the fixes than on the problems, and skip it if it raises anxiety. Model it yourself: 'If the store is closed, our backup is...'",
+    "reflection_question": "Think of something coming up this week. What is one thing that could go wrong, and what is your plan if it does?"
+  },
+  "rationale": "Hands-on, kid-level practice companion to core lesson stoic-2 (Negative Visualization, 11+), which has no activity or questions.",
+  "submitted_at": "2026-10-27T06:00:17.843462",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.8,
+    "reviewer_notes": "Grok review 2026-10-28: rewrote example/steelman, added Parent Coach Insight, family activity, reflection; retargeted to Stoic track (was 'Antifragility Beyond Bitcoin', which would have matched the Bitcoin track).",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-10-28T14:15:06.145114",
+  "merged_to_curriculum": true
+}

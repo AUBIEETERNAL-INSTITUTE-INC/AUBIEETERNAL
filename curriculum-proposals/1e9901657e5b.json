@@ -1,0 +1,72 @@
+{
+  "id": "1e9901657e5b",
+  "type": "lesson",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "target_track": "How We Learn",
+  "lesson": {
+    "key": "morning-focus-afternoon-workshop",
+    "title": "Morning Focus, Afternoon Workshop: Design Your Learning Day",
+    "topic": "Plan a day with focused academics (math, reading, writing) in the morning and hands-on workshops or projects in the afternoon.",
+    "steelman": "Should hard thinking come first in the day, or should a learner start with what they love?",
+    "steelman_for": "Most people focus best earlier, and saving hands-on work for the afternoon gives energy a place to go when attention dips.",
+    "steelman_against": "Not every learner peaks in the morning, and a rigid split can cut off a project right when curiosity is high.",
+    "example_kind": "made-up",
+    "example": "Imagine Mia, 9, who does math and reading from 9 to 11:30, eats lunch, and then spends the afternoon building a birdhouse and practicing guitar. She notices she finishes math faster when it comes first.",
+    "activity": "Draw tomorrow as a two-column plan: Morning Focus (2-3 academic blocks with short breaks) and Afternoon Workshop (one hands-on project or skill). Try it for one day, then circle what worked.",
+    "check_questions": [
+      "What goes in a Morning Focus block?",
+      "Why might a hands-on workshop work well after lunch?",
+      "What would you change about your plan after trying it once?"
+    ],
+    "age_hint": "All ages",
+    "xp": 20,
+    "rune": "HOW\u2022WE\u2022LEARN\u2022RUNE",
+    "min_coherence": 0.65,
+    "sources": [
+      {
+        "school": "Alpha School",
+        "url": "https://alpha.school/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "morning academics + afternoon life-skills workshops; four-mode day (connect, conquer, collaborate, create)"
+      },
+      {
+        "school": "Prenda microschools",
+        "url": "https://www.prenda.com/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "morning academics + afternoon life-skills workshops; four-mode day (connect, conquer, collaborate, create)"
+      }
+    ]
+  },
+  "rationale": "Alpha School's morning-academics / afternoon-workshop day and Prenda's four-mode day (2026-10-25 scan) give the Institute a simple daily rhythm learners can plan themselves.",
+  "submitted_at": "2026-10-30T19:54:01.683387",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "sources": [
+    {
+      "school": "Alpha School",
+      "url": "https://alpha.school/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "morning academics + afternoon life-skills workshops; four-mode day (connect, conquer, collaborate, create)"
+    },
+    {
+      "school": "Prenda microschools",
+      "url": "https://www.prenda.com/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "morning academics + afternoon life-skills workshops; four-mode day (connect, conquer, collaborate, create)"
+    }
+  ],
+  "source_reports": [
+    "/srv/institute/competitive_intel/2026-10-25.md"
+  ]
+}

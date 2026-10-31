@@ -1,0 +1,43 @@
+{
+  "id": "831c291a1e25",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Antifragility Beyond Bitcoin",
+  "lesson": {
+    "key": "hormesis-for-the-mind-exercise",
+    "title": "Hormesis for the Mind through Exercise",
+    "topic": "Understanding how controlled stress and challenges can strengthen mental resilience and cognitive abilities.",
+    "steelman": "Can controlled stress through exercise enhance one's ability to handle future challenges?",
+    "steelman_for": "Research suggests that low-to-moderate intensity exercise, which induces mild stress on the body, can improve brain function by stimulating neurogenesis and enhancing neural connections.",
+    "steelman_against": "Overexertion or intense physical stress without adequate recovery can lead to burnout, potentially weakening cognitive functions instead of strengthening them.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who loves playing chess during her lunch breaks. Each challenging game is like a mini-exercise for her brain, helping her develop better strategic thinking and resilience against mental fatigue.",
+    "activity": "Engage in a 10-minute brisk walk or gentle yoga session focusing on controlled breathing techniques.",
+    "check_questions": [
+      "What is hormesis?",
+      "How might exercise impact mental resilience?",
+      "Why is it important to balance stress with recovery?"
+    ],
+    "age_hint": "8+",
+    "xp": 20,
+    "rune": "ANTIFRAGILITY\u2022BEYOND\u2022BITCOIN\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson integrates physical health practices with mental antifragility, enhancing the overall curriculum by providing practical, actionable advice for building resilience.",
+  "submitted_at": "2026-10-23T06:00:14.120079",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-28T14:15:06.148646",
+  "rejection_reason": "Duplicate hormesis lesson (see core polyvagal-3 and approved antifragile-thinking-through-exercise); activity didn't match topic. - Grok review 2026-10-28"
+}

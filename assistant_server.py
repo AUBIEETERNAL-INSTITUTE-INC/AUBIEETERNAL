@@ -895,6 +895,58 @@ PERSON_TERMS = {
 
 app = FastAPI(title="AUBIEETERNAL Assistant")
 
+# ── Safety guard for action routes (added 2026-10-29) ────────────────────
+# These routes run code / shell / agents / dog commands. They now need BOTH:
+#   1) a source of 127.0.0.1/::1, this rig's Tailscale IP, or a 100.64.0.0/10
+#      tailnet host (tailscale serve forwards the real client via X-Forwarded-For), and
+#   2) header  X-M-Token: <M_8800_TOKEN from ~/.config/m/secrets.env>.
+# Every other route is unchanged. Rollback: assistant_server.py.bak-20261029-safety
+import ipaddress as _m_ip, hmac as _m_hmac
+from fastapi import Request as _M_Request
+from fastapi.responses import JSONResponse as _M_JSONResponse
+_M_GUARDED = {"/interpret", "/interpret/shell", "/interpret/fix", "/agent/run",
+              "/build-code", "/proxy/dog"}
+_M_SECRETS = Path.home() / ".config" / "m" / "secrets.env"
+_M_TAILNET = _m_ip.ip_network("100.64.0.0/10")
+_M_TS_V6 = _m_ip.ip_network("fd7a:115c:a1e0::/48")
+
+def _m_secret(key: str) -> str:
+    v = os.environ.get(key, "")
+    if v:
+        return v
+    try:
+        for line in _M_SECRETS.read_text().splitlines():
+            if line.startswith(key + "="):
+                return line.split("=", 1)[1].strip()
+    except OSError:
+        pass
+    return ""
+
+def _m_source_ok(host: str) -> bool:
+    try:
+        ip = _m_ip.ip_address(host)
+    except ValueError:
+        return False
+    if getattr(ip, "ipv4_mapped", None):
+        ip = ip.ipv4_mapped
+    return ip.is_loopback or ip in _M_TAILNET or (ip.version == 6 and ip in _M_TS_V6)
+
+@app.middleware("http")
+async def _m_action_route_guard(request: _M_Request, call_next):
+    path = "/" + request.url.path.strip("/").lower()
+    while "//" in path:
+        path = path.replace("//", "/")
+    if path in _M_GUARDED:
+        host = request.client.host if request.client else ""
+        expected = _m_secret("M_8800_TOKEN")
+        given = request.headers.get("x-m-token", "")
+        if not _m_source_ok(host):
+            return _M_JSONResponse({"detail": "forbidden: action routes are tailnet/localhost only"}, status_code=403)
+        if not expected or not given or not _m_hmac.compare_digest(given.encode(), expected.encode()):
+            return _M_JSONResponse({"detail": "forbidden: missing or bad X-M-Token"}, status_code=403)
+    return await call_next(request)
+# ─────────────────────────────────────────────────────────────────────────
+
 # ── AUBIEETERNAL Build Code ───────────────────────────────────────────────
 import sys as _sys
 _sys.path.insert(0, "/home/aubieeternal/AUBIEETERNAL")

@@ -16,7 +16,7 @@
   },
   "rationale": "This lesson bridges the gap between philosophical inquiry and practical resilience, essential for growing a curious yet robust mindset.",
   "submitted_at": "2026-09-30T06:01:48.100489",
-  "status": "pending",
+  "status": "rejected",
   "review": {
     "steelman_for": "",
     "steelman_against": "",
@@ -28,5 +28,7 @@
     "reviewer_notes": "",
     "status": "pending"
   },
-  "comments": []
+  "comments": [],
+  "rejected_at": "2026-10-11T14:07:47.516965",
+  "rejection_reason": ""
 }

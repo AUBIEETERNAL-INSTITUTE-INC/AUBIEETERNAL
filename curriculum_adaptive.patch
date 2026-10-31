@@ -1,0 +1,223 @@
+diff --git a/app.py b/app.py
+index e9a7757..b009213 100644
+--- a/app.py
++++ b/app.py
+@@ -1223,8 +1223,14 @@ if "Oracle" in active or active == "Oracle":
+             try:
+                 from family_hud import LESSONS as _AUBIE_LESSONS
+                 _lk = st.session_state.get("cm_active_lesson") or st.session_state.get("active_lesson_key")
+-                if _lk and _lk in _AUBIE_LESSONS:
+-                    _L = _AUBIE_LESSONS[_lk]
++                _L = _AUBIE_LESSONS.get(_lk) if _lk else None
++                if _L is None and _lk:
++                    try:
++                        from curriculum_proposals import get_lesson_content as _glc
++                        _L = _glc(_lk)  # approved auto/community lessons keep their content here
++                    except Exception:
++                        _L = None
++                if _L:
+                     system += (
+                         "\n\nActive lesson context (use if relevant; education not advice):\n"
+                         f"Title: {_L.get('title')}\n"
+@@ -1247,6 +1253,19 @@ if "Oracle" in active or active == "Oracle":
+                     )
+             except Exception:
+                 pass
++            # Who is learning: pitch the same lesson differently for a 7-year-old, a teen, or a family.
++            try:
++                _wm = st.session_state.get("welcome_mode")
++                _age = int(((st.session_state.get("family_profile") or {}).get("kid") or {}).get("age") or 0)
++                if _wm == "child" and _age:
++                    system += (f"\n\nLearner: a {_age}-year-old child. Use words, examples and step sizes "
++                               f"that fit a {_age}-year-old. If they get it fast, go a little deeper; "
++                               "if they struggle, make the next step smaller.")
++                elif _wm == "family" and _age:
++                    system += (f"\n\nLearners: a family together, including a {_age}-year-old. Pitch the main "
++                               "explanation for the child, then add one short deeper point for the adults.")
++            except Exception:
++                pass
+             response = client.chat.completions.create(
+                 model=model,
+                 messages=[{"role": "system", "content": system + "\n\n" + COACHING_RULE}] + st.session_state.messages[-6:] + [{"role": "system", "content": "Reminder before you reply: " + COACHING_RULE}],
+diff --git a/curriculum_autogen.py b/curriculum_autogen.py
+index 49fc182..9400668 100644
+--- a/curriculum_autogen.py
++++ b/curriculum_autogen.py
+@@ -133,17 +133,59 @@ Reply with ONLY a JSON object, no other text, in this exact shape:
+   "title": "Short punchy lesson title",
+   "topic": "One sentence describing what this lesson actually teaches",
+   "steelman": "A steelman-style discussion prompt or question for this lesson",
+-  "example": "One concrete real-world example this lesson would use",
++  "example": "One concrete real-world example that NAMES a real person, place, event, or thing (e.g. 'Marie Curie kept testing pitchblende for years...'), never 'a historical figure' or 'someone'",
++  "activity": "One hands-on activity a learner can do in 10-20 minutes at home with no special equipment",
++  "check_questions": ["Three short questions", "that check understanding", "without giving the answer away"],
+   "age_hint": "one of: All ages, 7+, 8+, 9+, 10+, 11+, 12+, 13+, 14+, 15+, 16+",
+   "xp": 20,
+   "target_track": "the existing track name this belongs to, or a new track name if genuinely novel",
+   "rationale": "One sentence on why this specific lesson is worth adding now"
+ }}"""
+ 
+-    reply = _call_ollama(prompt)
+-    if not reply:
+-        return None
+-    return _extract_json(reply)
++    feedback = ""
++    for _attempt in range(2):  # one retry with the reason it was rejected
++        reply = _call_ollama(prompt + feedback)
++        if not reply:
++            return None
++        cand = _extract_json(reply)
++        problems = validate_candidate(cand)
++        if not problems:
++            return cand
++        feedback = ("\n\nYour last answer was rejected: " + "; ".join(problems)
++                    + ". Fix those and reply with ONLY the JSON object.")
++        print(f"[curriculum-autogen] draft rejected: {problems}")
++    return None
++
++
++_VAGUE_EXAMPLE = re.compile(
++    r"\b(a|an|one|some)\s+(historical|famous|well-known|real|certain)?\s*"
++    r"(figure|person|someone|individual|scientist|inventor|leader|child|student|family|athlete|artist)\b"
++    r"|\bsomeone\b|\bsomebody\b|\bimagine a\b|\bfor example, a\b",
++    re.I,
++)
++
++
++def _names_something(text: str) -> bool:
++    """True if the text contains a capitalized name that is not just the first word of a sentence."""
++    words = re.findall(r"(?<![.!?]\s)(?<!^)\b[A-Z][a-z]{2,}", text.strip())
++    return len(words) > 0
++
++
++def validate_candidate(c) -> list:
++    """Reasons a draft is not reviewable yet. Empty list = good enough to send to a human."""
++    if not isinstance(c, dict):
++        return ["reply was not a JSON object"]
++    p = []
++    for k in ("key", "title", "topic", "example", "activity"):
++        if not str(c.get(k, "")).strip():
++            p.append(f"missing {k}")
++    ex = str(c.get("example", ""))
++    if ex and (_VAGUE_EXAMPLE.search(ex) or not _names_something(ex)):
++        p.append("example is vague; name a real person, place, event, or thing")
++    cq = c.get("check_questions")
++    if not isinstance(cq, list) or len([q for q in cq if str(q).strip()]) < 2:
++        p.append("need at least 2 check_questions")
++    return p
+ 
+ 
+ def run_curriculum_autogen(force: bool = False) -> dict:
+@@ -166,6 +208,8 @@ def run_curriculum_autogen(force: bool = False) -> dict:
+         "topic":         candidate.get("topic", ""),
+         "steelman":      candidate.get("steelman", ""),
+         "example":       candidate.get("example", ""),
++        "activity":      candidate.get("activity", ""),
++        "check_questions": [str(q) for q in (candidate.get("check_questions") or [])][:5],
+         "age_hint":      candidate.get("age_hint", "All ages"),
+         "xp":            int(candidate.get("xp", 20) or 20),
+         "rune":          f"{candidate.get('target_track', 'community').upper().replace(' ', '•')}•RUNE",
+diff --git a/curriculum_proposals.py b/curriculum_proposals.py
+index 2e7e2d4..cb28a30 100644
+--- a/curriculum_proposals.py
++++ b/curriculum_proposals.py
+@@ -60,6 +60,37 @@ LESSON_TEMPLATE = {
+ }
+ 
+ 
++def _content_path(curriculum_mod):
++    return curriculum_mod.EXTRA_PATH.parent / "curriculum_lesson_content.json"
++
++
++def _save_lesson_content(curriculum_mod, key: str, lesson: dict) -> None:
++    """Approved lessons used to keep only [key, title, age, xp]; the topic, example,
++    activity and check questions were dropped, so Aubie taught them from the title alone.
++    Keep them in a side file the tutor chat reads (see get_lesson_content). Never raises."""
++    try:
++        path = _content_path(curriculum_mod)
++        data = json.loads(path.read_text()) if path.exists() else {}
++        data[key] = {k: lesson.get(k) for k in
++                     ("title", "topic", "steelman", "example", "activity", "check_questions", "age_hint", "xp")
++                     if lesson.get(k) not in (None, "", [])}
++        path.write_text(json.dumps(data, indent=2))
++    except Exception as e:
++        print(f"[curriculum_proposals] saving lesson content failed: {e}")
++
++
++def get_lesson_content(key: str):
++    """Content for an approved proposal lesson, shaped like family_hud.LESSONS entries, or None."""
++    try:
++        import curriculum
++        path = _content_path(curriculum)
++        if path.exists():
++            return json.loads(path.read_text()).get(key)
++    except Exception:
++        pass
++    return None
++
++
+ def merge_approved_proposal(proposal: dict) -> bool:
+     """Folds an approved lesson/track proposal into curriculum.py's live
+     tree via curriculum_extra.json (see curriculum.py's `_load_extra_tracks`)
+@@ -120,6 +151,7 @@ def merge_approved_proposal(proposal: dict) -> bool:
+                 tracks.append(entry)
+             if not any(lvl[0] == key for lvl in entry["levels"]):
+                 entry["levels"].append(level)
++            _save_lesson_content(curriculum, key, lesson)
+ 
+         elif ptype == "track":
+             track_name = proposal.get("track_name", "New Track")
+diff --git a/test_curriculum_autogen.py b/test_curriculum_autogen.py
+new file mode 100644
+index 0000000..d0523f0
+--- /dev/null
++++ b/test_curriculum_autogen.py
+@@ -0,0 +1,48 @@
++"""Standalone check (no Ollama needed): autogen rejects vague lessons and retries; approving keeps lesson content for the tutor chat. Run: python3 test_curriculum_autogen.py"""
++import sys, json, tempfile
++from pathlib import Path
++sys.path.insert(0, '.')
++import curriculum, curriculum_autogen as ca, curriculum_proposals as cp
++fails = 0
++def check(name, ok):
++    global fails; fails += not ok; print(("PASS " if ok else "FAIL ") + name)
++
++today = {"key":"wonder-and-resilience","title":"Wonder and Resilience","topic":"x",
++ "example":"A historical figure who faced significant challenges but maintained a sense of curiosity and awe, leading them to discover new opportunities and solutions.",
++ "activity":"","check_questions":[]}
++good = {"key":"curie-keeps-testing","title":"Curiosity Under Pressure","topic":"How curiosity keeps you going when results are slow.",
++ "example":"Marie Curie processed tonnes of pitchblende in a leaky shed for years before isolating radium.",
++ "activity":"Pick a question about something at home and test it three different ways; write what changed.",
++ "check_questions":["What made the shed work hard?","What would you have tried next?","How did each test change what she knew?"],
++ "age_hint":"10+","xp":20,"target_track":"Wonder","rationale":"r"}
++p = ca.validate_candidate(today); check(f"rejects last night's proposal {p}", bool(p))
++check("accepts a concrete lesson", ca.validate_candidate(good) == [])
++check("rejects 'someone who'", bool(ca.validate_candidate({**good, "example":"Imagine someone who keeps trying."})))
++
++# generator retries once with feedback, then accepts
++calls = []
++replies = [json.dumps(today), json.dumps(good)]
++ca._call_ollama = lambda prompt: (calls.append(prompt), replies.pop(0))[1]
++curriculum.all_titles_and_keys = lambda: [("k","T","🦁 Courage")]
++curriculum.track_names = lambda: [("courage","🦁 Courage")]
++c = ca.generate_candidate()
++check("retry produced the good lesson", c and c["key"] == good["key"])
++check("retry prompt told the model why", len(calls) == 2 and "rejected" in calls[1])
++# two bad replies -> None (nothing submitted)
++replies[:] = [json.dumps(today), json.dumps(today)]
++check("two bad drafts -> nothing submitted", ca.generate_candidate() is None)
++
++# approve keeps content; chat lookup finds it
++tmp = Path(tempfile.mkdtemp())
++curriculum.EXTRA_PATH = tmp / "curriculum_extra.json"
++curriculum.track_names = lambda: [("wonder","💡 Wonder")]
++lesson = {k: good[k] for k in ("key","title","topic","example","activity","check_questions","age_hint","xp")}
++ok = cp.merge_approved_proposal({"type":"lesson","lesson":lesson,"target_track":"Wonder"})
++check("merge ok", ok)
++got = cp.get_lesson_content(good["key"])
++check("content kept: example + activity + 3 check questions",
++      got and got["example"].startswith("Marie Curie") and got["activity"] and len(got["check_questions"]) == 3)
++tree = json.loads(curriculum.EXTRA_PATH.read_text())
++check("curriculum tree still gets [key,title,age,xp]", tree[0]["levels"][0] == [good["key"], good["title"], "10+", 20])
++check("unknown key -> None", cp.get_lesson_content("nope") is None)
++print(f"\n{fails} failures")

@@ -1,0 +1,43 @@
+{
+  "id": "e001922b8f51",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as Practice",
+  "lesson": {
+    "key": "wonder-and-innovation",
+    "title": "Wonder and Innovation",
+    "topic": "How genuine wonder can drive innovation and problem-solving in various domains.",
+    "steelman": "What are the potential drawbacks of relying too heavily on wonder as a driver for innovation?",
+    "steelman_for": "Genuine wonder fosters a mindset open to new possibilities and encourages creative exploration, leading to breakthroughs in technology, art, and science.",
+    "steelman_against": "Excessive wonder without grounded knowledge or practical application can lead to unrealistic expectations and a lack of tangible progress.",
+    "example_kind": "made-up",
+    "example": "Imagine Mia, 14, who discovers a fascination with the physics behind water waves. This wonder leads her to design an innovative surfboard that adapts to changing ocean conditions.",
+    "activity": "Create a list of three problems you are passionate about solving and brainstorm how your sense of wonder could drive creative solutions for each one.",
+    "check_questions": [
+      "How does wonder influence the process of innovation?",
+      "Can you think of an example where wonder led to a significant breakthrough?",
+      "What potential challenges might arise from relying solely on wonder for innovation?"
+    ],
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022PRACTICE\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the concepts of wonder and innovation, encouraging learners to see their curiosity as a powerful tool for creating real-world impact.",
+  "submitted_at": "2026-10-18T06:00:16.846021",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-10-19T19:54:50.089621",
+  "merged_to_curriculum": true
+}

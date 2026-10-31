@@ -1,0 +1,135 @@
+{
+  "id": "82ac61fd2ed9",
+  "type": "track",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "track_name": "\ud83e\udde0 Thinking About Thinking",
+  "description": "Learn to notice how sure you are, what would change your mind, and the common thinking traps everyone falls into \u2014 then try one small move to get unstuck. Limits: Trap names are simplified labels for learning; real thinking is messier. Never used to judge a learner. Links to Decision Theory & Rationality and Self-Evolving Mind for depth.",
+  "lessons": [
+    {
+      "key": "thinking-tools-1",
+      "title": "How Sure Am I?",
+      "topic": "Saying how sure you are (a little, pretty, very) helps you learn faster, because you notice when you were wrong and adjust.",
+      "example": "Mia, 9, guessed it would rain and said 'pretty sure.' It didn't rain, so she laughed and said next time she'd say 'a little sure.'",
+      "example_kind": "made-up",
+      "activity": "Make 5 small guesses today (weather, a score, how long a task takes). Rate each: a little / pretty / very sure. Check later and notice the pattern.",
+      "check_questions": [
+        "What does 'a little sure' mean compared with 'very sure'?",
+        "Why can being wrong while 'a little sure' still be good learning?",
+        "What is one guess you made today, and how sure were you?"
+      ],
+      "steelman": "When is it better to act confident even if you are not very sure?",
+      "age_hint": "All ages",
+      "xp": 15,
+      "rune": "THINKING\u2022TOOLS\u20221",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "thinking-tools-2",
+      "title": "What Would Change My Mind?",
+      "topic": "Good thinkers can name what evidence would make them change their mind. If nothing could, it is worth asking why.",
+      "example": "Sam, 11, was sure his team would win. His sister asked what would change his mind. He said 'if their best player is back' \u2014 and checked the news.",
+      "example_kind": "made-up",
+      "activity": "Pick one belief you hold (a favorite food is healthiest, a game is best). Write one thing that would change your mind, then look for it.",
+      "check_questions": [
+        "Why is it useful to know what would change your mind?",
+        "What would change your mind about one belief you hold?",
+        "What could it mean if nothing would ever change your mind?"
+      ],
+      "steelman": "Is it ever wise to hold a belief firmly even when others disagree?",
+      "age_hint": "8+",
+      "xp": 18,
+      "rune": "THINKING\u2022TOOLS\u20222",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "thinking-tools-3",
+      "title": "Looking Only for Proof I'm Right (confirmation)",
+      "topic": "Confirmation means noticing what agrees with us and skipping what does not. The counter-move: look for one fact that could prove you wrong.",
+      "example": "Ava, 12, thought her new shoes made her run faster and only remembered her fast days. Timing a week of runs showed a mixed picture.",
+      "example_kind": "made-up",
+      "activity": "Choose a belief. Write 2 reasons it might be true and 2 reasons it might be wrong. Which list was harder to write?",
+      "check_questions": [
+        "What is the confirmation trap in your own words?",
+        "What is one counter-move when you notice it?",
+        "Why might the 'wrong' list feel harder to write?"
+      ],
+      "steelman": "When is it reasonable to look mostly for evidence that supports a plan you already chose?",
+      "age_hint": "10+",
+      "xp": 20,
+      "rune": "THINKING\u2022TOOLS\u20223",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "thinking-tools-4",
+      "title": "The Last Thing I Saw (availability)",
+      "topic": "We often judge how common something is by how easily an example comes to mind. Big news stories feel common even when they are rare. The counter-move: ask 'how often does this really happen?'",
+      "example": "After seeing a video about a shark, Noah, 10, did not want to swim. His dad helped him look up how rare shark bites are compared with other risks.",
+      "example_kind": "made-up",
+      "activity": "Pick one scary or exciting thing you saw recently. Guess how often it happens, then find a simple fact to compare.",
+      "check_questions": [
+        "Why can a vivid story change how common something feels?",
+        "What question helps you check?",
+        "Name one thing that feels common but may be rare."
+      ],
+      "steelman": "When is it smart to be extra careful about something rare?",
+      "age_hint": "10+",
+      "xp": 20,
+      "rune": "THINKING\u2022TOOLS\u20224",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "thinking-tools-5",
+      "title": "Already Spent, Still Stuck? (sunk cost)",
+      "topic": "Sunk cost means continuing something only because we already put time or money in. The counter-move: ask 'Would I start this today, knowing what I know now?'",
+      "example": "Lena, 13, kept watching a boring movie because she had already watched an hour. She asked the question and chose to read instead.",
+      "example_kind": "made-up",
+      "activity": "Think of something you keep doing mostly because you already started. Ask the 'start today?' question and write your honest answer.",
+      "check_questions": [
+        "What is sunk cost in your own words?",
+        "What question helps you decide?",
+        "When is finishing something still the right choice?"
+      ],
+      "steelman": "Is finishing what you start an important habit, even when you are not enjoying it?",
+      "age_hint": "11+",
+      "xp": 22,
+      "rune": "THINKING\u2022TOOLS\u20225",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "thinking-tools-6",
+      "title": "My Tiny Decision Check",
+      "topic": "A tiny decision check: What am I choosing? What matters most? What do I know and not know yet? What is the smallest step I can undo? When will I look again?",
+      "example": "Jay, 12, used the check to choose between two clubs and tried one for two weeks first \u2014 a step he could undo.",
+      "example_kind": "made-up",
+      "activity": "Use the 5 questions on a real small choice this week. Write your answers in a few words each.",
+      "check_questions": [
+        "What are the 5 questions of the tiny decision check?",
+        "Why does a step you can undo help?",
+        "When will you look again at your choice?"
+      ],
+      "steelman": "When is it better to decide fast without a checklist?",
+      "age_hint": "10+",
+      "xp": 22,
+      "rune": "THINKING\u2022TOOLS\u20226",
+      "min_coherence": 0.6
+    }
+  ],
+  "rationale": "Everyday entry point for metacognition; matches the live Aubie Tutor thinking tools.",
+  "public": true,
+  "submitted_at": "2026-10-19T20:02:24.103639",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-10-19T20:05:57.246201",
+  "merged_to_curriculum": true
+}

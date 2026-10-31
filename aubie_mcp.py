@@ -34,11 +34,30 @@ import sys
 import httpx
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
-from mcp.types import Tool, TextContent
+from mcp.types import Tool, TextContent, ImageContent
 
 # ── Config ─────────────────────────────────────────────────────
 RIG = "http://localhost:8800"                 # assistant_server on Ryzen
-DOG = "http://100.66.110.65:8420"             # Aubie dog server (Tailscale)
+# 2026-10-29: 8420 was the retired spotmicro_dog app. The live dog page is
+# dog_ui on 8430; MCP only uses its read-only GETs (/api/status, /api/snapshot).
+# NEVER call /api/crouch here (its GET moves the dog).
+DOG = "http://100.66.110.65:8430"             # Aubie dog_ui (Tailscale), read-only use
+SECRETS_FILE = os.path.expanduser("~/.config/m/secrets.env")
+
+
+def m_secret(key: str) -> str:
+    """Read a secret from the env or ~/.config/m/secrets.env (never hard-coded)."""
+    v = os.environ.get(key, "")
+    if v:
+        return v
+    try:
+        with open(SECRETS_FILE) as f:
+            for line in f:
+                if line.startswith(key + "="):
+                    return line.split("=", 1)[1].strip()
+    except OSError:
+        pass
+    return ""
 MEMORY_DIR = "/home/aubieeternal/AUBIEETERNAL_MEMORY"
 CODE_DIR = "/home/aubieeternal/AUBIEETERNAL"
 
@@ -60,9 +79,9 @@ server = Server("aubie-eternal")
 
 
 # ── Helpers ────────────────────────────────────────────────────
-async def post_json(url: str, payload: dict, timeout: int = 60) -> dict:
+async def post_json(url: str, payload: dict, timeout: int = 60, headers: dict = None) -> dict:
     async with httpx.AsyncClient(timeout=timeout) as client:
-        r = await client.post(url, json=payload)
+        r = await client.post(url, json=payload, headers=headers or {})
     try:
         return r.json()
     except Exception:
@@ -156,11 +175,9 @@ async def list_tools() -> list[Tool]:
         Tool(
             name="aubie_command",
             description=(
-                "Send a natural-language command to the Aubie robot dog. "
-                "Examples: 'sit', 'stand', 'walk forward', 'stop', 'shake', 'spin', "
-                "'show happy face', 'show dog face', 'show love face', "
-                "'say <text>', 'follow me', 'come here'. "
-                "The dog must be online (Tailscale 100.66.110.65)."
+                "Aubie robot dog commands. Motion from MCP is currently DISABLED (safety, "
+                "2026-10-29): this returns the dog's live status only and nothing moves. "
+                "Use the dog page http://100.66.110.65:8430/ to move it."
             ),
             inputSchema={
                 "type": "object",
@@ -173,15 +190,15 @@ async def list_tools() -> list[Tool]:
         Tool(
             name="aubie_vision",
             description=(
-                "Capture a snapshot from Aubie's camera and run YOLO object detection on the Ryzen rig. "
-                "Returns a text summary of what the dog currently sees. "
+                "Capture a snapshot from Aubie's camera (GET 8430 /api/snapshot) and return "
+                "the JPEG image so you can describe what the dog currently sees. "
                 "Use this to answer 'what does Aubie see right now?'"
             ),
             inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
             name="aubie_distance",
-            description="Read the Aubie robot dog's ultrasonic distance sensor. Returns distance in cm.",
+            description="Aubie robot dog distance sensors. Currently NOT INSTALLED; reports live sensor presence from GET 8430 /api/status.",
             inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
@@ -319,8 +336,10 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
         if not cmd:
             return ok("No command provided.")
         try:
-            res = await post_json(DOG + "/dog/command", {"command": cmd}, timeout=15)
-            return ok("Sent to Aubie: '" + cmd + "'\n\n" + pretty(res))
+            res = await get_json(DOG + "/api/status", timeout=8)
+            return ok("NOT sent: dog motion from MCP is disabled (safety change 2026-10-29). "
+                      "Nothing moved. Use the dog page http://100.66.110.65:8430/ for '" + cmd + "'.\n\n"
+                      "Live dog status:\n" + pretty(res))
         except Exception as e:
             return ok(
                 "Could not reach Aubie at " + DOG + "\n"
@@ -330,23 +349,27 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
 
     if name == "aubie_vision":
         try:
-            res = await post_json(RIG + "/proxy/vision", {}, timeout=45)
-            # post_json turns non-JSON replies (500 pages, proxy errors) into
-            # {"status": "error", "detail": ...}. Treat that as a failure, not as
-            # "nothing in view", or the model will confidently report an empty room.
-            if not isinstance(res, dict):
-                return ok("Vision failed: unexpected response " + pretty(res)[:500])
-            if "error" in res or res.get("status") == "error":
-                return ok("Vision failed: " + str(res.get("error") or res.get("detail")))
-            summary = res.get("summary") or "(no objects detected)"
-            return ok("Aubie currently sees:\n\n" + summary)
+            async with httpx.AsyncClient(timeout=20) as client:
+                r = await client.get(DOG + "/api/snapshot")
+            ctype = r.headers.get("content-type", "")
+            if r.status_code != 200 or not ctype.startswith("image/"):
+                return ok("Vision failed: GET " + DOG + "/api/snapshot -> HTTP "
+                          + str(r.status_code) + " " + ctype)
+            import base64 as _b64
+            return [TextContent(type="text", text="Aubie camera snapshot (" + str(len(r.content)) + " bytes):"),
+                    ImageContent(type="image", data=_b64.b64encode(r.content).decode(),
+                                 mimeType=ctype.split(";")[0])]
         except Exception as e:
             return ok("Vision error: " + str(e))
 
     if name == "aubie_distance":
         try:
-            res = await get_json(RIG + "/proxy/distance", timeout=10)
-            return ok(pretty(res))
+            res = await get_json(DOG + "/api/status", timeout=8)
+            present = {k: v for k, v in res.items() if k.startswith("dist_")} if isinstance(res, dict) else {}
+            if not any(present.values()):
+                return ok("Distance sensor not installed on Aubie (dog status: " + pretty(present) + ").")
+            return ok("Distance sensor reported present but this tool has no reading endpoint yet: "
+                      + pretty(present))
         except Exception as e:
             return ok("Distance sensor error: " + str(e))
 
@@ -369,6 +392,7 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
                 RIG + "/interpret",
                 {"task": task, "lang": lang, "timeout": 30},
                 timeout=120,
+                headers={"X-M-Token": m_secret("M_8800_TOKEN")},
             )
             code = res.get("code", "")
             output = res.get("output", "")

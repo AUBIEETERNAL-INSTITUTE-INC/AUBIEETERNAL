@@ -1,0 +1,74 @@
+{
+  "id": "2316949953da",
+  "type": "lesson",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "target_track": "How We Learn",
+  "lesson": {
+    "key": "florida-best-progress-map",
+    "title": "My Florida B.E.S.T. Progress Map",
+    "topic": "Track progress against Florida's B.E.S.T. standards for math and English language arts on a simple map the learner colors in.",
+    "steelman": "Should a learning program follow the state's standards, or set its own goals?",
+    "steelman_for": "Mapping to the state standards shows families and others clearly what a learner has covered and makes gaps easy to spot.",
+    "steelman_against": "Standards are a floor, not the whole education; chasing checkboxes can crowd out deep projects and real curiosity.",
+    "example_kind": "made-up",
+    "example": "Imagine Zara, 11, who prints the math standards for her grade, colors the ones she has mastered green and the ones in progress yellow, and picks a yellow one to work on this week.",
+    "activity": "With a grown-up, open the official Florida B.E.S.T. standards list on CPALMS for your grade. Pick three math and three reading/writing standards. Make a chart: green = mastered, yellow = working on it, white = not started.",
+    "check_questions": [
+      "What does a green box on your map mean?",
+      "Why might it help to see standards on one page?",
+      "What is one thing standards cannot measure?"
+    ],
+    "age_hint": "7+",
+    "xp": 20,
+    "rune": "HOW\u2022WE\u2022LEARN\u2022RUNE",
+    "min_coherence": 0.65,
+    "sources": [
+      {
+        "school": "IXL (Florida standards page)",
+        "url": "https://www.ixl.com/standards/florida",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "standards center that tracks student progress toward Florida B.E.S.T. standards"
+      },
+      {
+        "school": "Florida B.E.S.T. Standards (CPALMS)",
+        "url": "https://www.cpalms.org/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "note": "scan could not read this page (JavaScript-only); check the official standards by hand",
+        "borrowed": "standards center that tracks student progress toward Florida B.E.S.T. standards"
+      }
+    ]
+  },
+  "rationale": "IXL's Florida standards tracking (2026-10-25 scan) suggests a simple B.E.S.T. progress map. CPALMS (official) could not be read by the scan, so standard lists must be checked by hand.",
+  "submitted_at": "2026-10-30T19:54:01.683765",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "sources": [
+    {
+      "school": "IXL (Florida standards page)",
+      "url": "https://www.ixl.com/standards/florida",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "standards center that tracks student progress toward Florida B.E.S.T. standards"
+    },
+    {
+      "school": "Florida B.E.S.T. Standards (CPALMS)",
+      "url": "https://www.cpalms.org/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "note": "scan could not read this page (JavaScript-only); check the official standards by hand",
+      "borrowed": "standards center that tracks student progress toward Florida B.E.S.T. standards"
+    }
+  ],
+  "source_reports": [
+    "/srv/institute/competitive_intel/2026-10-25.md"
+  ]
+}

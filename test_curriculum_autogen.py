@@ -4,6 +4,7 @@ from pathlib import Path
 sys.path.insert(0, '.')
 import curriculum, curriculum_autogen as ca, curriculum_proposals as cp
 fails = 0
+ca._recent_proposals = lambda n=30: []   # keep the test independent of the real proposals folder
 def check(name, ok):
     global fails; fails += not ok; print(("PASS " if ok else "FAIL ") + name)
 
@@ -114,4 +115,29 @@ check("content kept: example + activity + 3 check questions",
 tree = json.loads(curriculum.EXTRA_PATH.read_text())
 check("curriculum tree still gets [key,title,age,xp]", tree[0]["levels"][0] == [good["key"], good["title"], "10+", 20])
 check("unknown key -> None", cp.get_lesson_content("nope") is None)
+# 2026-10-30: variety + near-duplicate guard
+import datetime as _dt
+ana = [{"title": t, "topic": "Teaches how minor stress can strengthen the mind.", "track": "Mastering Antifragility",
+        "example": "Imagine Ana, 12, who solves riddles.", "at": "2026-10-2%d" % i}
+       for i, t in enumerate(["Antifragility in Nature", "Hormesis for the Mind", "Putting Antifragility into Action"])]
+f, _ = ca.todays_focus(ana, _dt.date(2026, 11, 1))
+check(f"antifragility dropped from focus after a run of them ({f})", f != "Antifragility")
+check("rotating name skips recently used Ana", ca.todays_name(ana, _dt.date(2026, 11, 1)) != "Ana")
+check("near-duplicate title caught", "near-duplicate" in ca.near_duplicate({"title": "Antifragility in Nature!", "topic": "x"}, [], ana))
+check("near-duplicate topic caught", "near-duplicate" in ca.near_duplicate(
+    {"title": "Small Hard Things", "topic": "Teaches how minor stress can strengthen your mind."}, [], ana))
+check("different lesson passes", ca.near_duplicate({"title": "Give Every Dollar a Job", "topic": "Make a one-week budget."}, ["Needs vs Wants"], ana) == "")
+sw = ca._swap_example_name({**madeup}, "Theo", ana)
+check("recent name Ana swapped for today's name", sw["example"].startswith("Imagine Theo") and "Ana" not in sw["example"])
+ca._recent_proposals = lambda n=30: ana
+calls.clear(); ca._fact_check = lambda ex: (True, "ok")
+dupe = {**good, "title": "Antifragility in Nature", "key": "af-nature-again"}
+replies[:] = [json.dumps(dupe), json.dumps(dupe), json.dumps(dupe)]
+check("three near-duplicates -> nothing submitted, reason kept",
+      ca.generate_candidate() is None and "near-duplicate" in ca.LAST_SKIP_REASON and "rejected" in calls[1])
+calls.clear()
+replies[:] = [json.dumps(dupe), json.dumps(good)]
+c = ca.generate_candidate()
+check("near-duplicate -> retried with feedback -> new lesson", c and c["key"] == good["key"] and "near-duplicate" in calls[1])
+check("prompt carries today's focus and a non-Ana name", "TODAY'S FOCUS" in calls[0] and "(not Ana)" in calls[0])
 print(f"\n{fails} failures")

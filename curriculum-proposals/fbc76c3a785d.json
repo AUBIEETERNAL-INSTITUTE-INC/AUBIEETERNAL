@@ -1,0 +1,43 @@
+{
+  "id": "fbc76c3a785d",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Mastering Antifragility",
+  "lesson": {
+    "key": "antifragility-in-practice",
+    "title": "Antifragile Living: Stress as a Catalyst",
+    "topic": "Understanding how to intentionally apply stress to become more resilient and antifragile in daily life.",
+    "steelman": "How can individuals leverage small, manageable stresses in their lives to build antifragility without overwhelming themselves?",
+    "steelman_for": "Intentionally applying stress can help individuals develop resilience and adaptability, making them stronger over time.",
+    "steelman_against": "Overemphasizing stress might lead to burnout or anxiety if not managed properly.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who decided to learn juggling as an antifragile activity. By intentionally dropping balls and practicing under time pressure, she found her skills improved rapidly, teaching her that embracing small stressors can lead to greater resilience.",
+    "activity": "Challenge yourself with a new physical activity for 10 minutes every day. Keep a journal of how your body responds and note any improvements in strength or endurance over two weeks.",
+    "check_questions": [
+      "How does stress typically affect you?",
+      "Can you identify a situation where intentional stress helped you grow stronger?",
+      "What are some potential risks of too much stress?"
+    ],
+    "age_hint": "13+",
+    "xp": 20,
+    "rune": "MASTERING\u2022ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson helps learners understand the practical application of antifragility, encouraging them to embrace controlled stress as a tool for growth.",
+  "submitted_at": "2026-10-14T06:00:33.649368",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-16T07:53:18.774854",
+  "rejection_reason": ""
+}

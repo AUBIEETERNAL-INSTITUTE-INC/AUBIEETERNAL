@@ -140,6 +140,134 @@ def _founder_ideas() -> str:
         return ""
 
 
+# ── Variety + duplicate guard (2026-10-30) ──────────────────────────────────
+# The daily run kept producing near-copies of the same antifragility/hormesis
+# lesson about the same made-up "Ana, 12". Three fixes:
+#   1. a rotating daily FOCUS (values + school-report formats), with any theme
+#      that dominated the last week dropped from today's pick;
+#   2. a rotating example NAME, skipping names used recently;
+#   3. a near-duplicate check against live lessons AND recent proposals (any
+#      status) - a near-repeat is sent back once with the reason, and after
+#      3 tries the day is skipped instead of submitting a copy.
+FOCUS_ROTATION = [
+    ("Steelmanning", "arguing the strongest version of the other side before judging"),
+    ("Sovereignty and Bitcoin", "self-reliance; owning your own keys, data and decisions"),
+    ("Stoic practice", "what is in your control and what is not; a small daily Stoic habit"),
+    ("Wonder", "real curiosity about how the world works: science, nature, space, how things are made"),
+    ("Nervous system safety", "calming the body before thinking; co-regulation with a trusted adult"),
+    ("Money basics", "budgeting, saving, credit and interest, taxes on a pay stub, investing"),
+    ("Lindy and skin in the game", "trusting what has lasted; advice from people who share the risk"),
+    ("Core math", "one concrete math skill taught hands-on with everyday objects"),
+    ("Core reading and writing", "one concrete reading or writing skill"),
+    ("How we learn", "mastery checks, planning a learning day, project quests, Socratic discussion"),
+    ("Courage", "doing the right thing when it is hard or scary"),
+    ("Antifragility", "systems that gain from stress"),
+]
+_THEME_WORDS = {
+    "Antifragility": r"antifragil|hormesis|resilien|\bstress",
+    "Wonder": r"\bwonder|curiosity",
+    "Stoic practice": r"stoic|negative visuali",
+    "Steelmanning": r"steelman",
+}
+EXAMPLE_NAMES = ["Theo", "Mia", "Jonah", "Zara", "Sam", "Priya", "Leo", "Iris", "Noah", "Elena",
+                 "Kai", "Ruby", "Omar", "Lucia", "Ben", "Nadia", "Felix", "Hana", "Marcus", "Talia"]
+_STOP = set("a an the of for to and in on with your you how through by is are as at from into "
+            "it its be can that this what why when our my".split())
+LAST_SKIP_REASON = ""
+
+
+def _recent_proposals(n: int = 30) -> list:
+    """Newest-first [{title, topic, example, track}] from curriculum-proposals/ (any status). Never raises."""
+    try:
+        from curriculum_proposals import PROPOSALS_DIR
+        rows = []
+        for f in PROPOSALS_DIR.glob("*.json"):
+            try:
+                p = json.loads(f.read_text())
+            except Exception:
+                continue
+            lessons = [p["lesson"]] if isinstance(p.get("lesson"), dict) else (p.get("lessons") or [])
+            for l in lessons:
+                if isinstance(l, dict) and l.get("title"):
+                    rows.append({"title": str(l.get("title", "")), "topic": str(l.get("topic", "")),
+                                 "example": str(l.get("example", "")),
+                                 "track": str(p.get("target_track") or p.get("track_name") or ""),
+                                 "at": str(p.get("submitted_at", ""))})
+        rows.sort(key=lambda r: r["at"], reverse=True)
+        return rows[:n]
+    except Exception:
+        return []
+
+
+def _theme_of(text: str) -> str:
+    for theme, pat in _THEME_WORDS.items():
+        if re.search(pat, text or "", re.I):
+            return theme
+    return ""
+
+
+def todays_focus(recent: list | None = None, day: datetime.date | None = None) -> tuple:
+    """Rotate through FOCUS_ROTATION by date, dropping any theme that showed up in
+    2+ of the last 7 proposals (so a run of antifragility lessons forces a change)."""
+    recent = _recent_proposals() if recent is None else recent
+    day = day or datetime.date.today()
+    counts = {}
+    for r in recent[:7]:
+        t = _theme_of(f"{r['title']} {r['topic']} {r['track']}")
+        if t:
+            counts[t] = counts.get(t, 0) + 1
+    pool = [f for f in FOCUS_ROTATION if counts.get(f[0], 0) < 2] or FOCUS_ROTATION
+    return pool[day.toordinal() % len(pool)]
+
+
+def _example_name(example: str) -> str:
+    m = re.match(r"\s*imagine\s+([A-Z][a-z]+)", example or "", re.I)
+    return m.group(1) if m else ""
+
+
+def todays_name(recent: list | None = None, day: datetime.date | None = None) -> str:
+    recent = _recent_proposals() if recent is None else recent
+    day = day or datetime.date.today()
+    used = {_example_name(r["example"]) for r in recent[:14]}
+    pool = [n for n in EXAMPLE_NAMES if n not in used] or EXAMPLE_NAMES
+    return pool[day.toordinal() % len(pool)]
+
+
+def _words(text: str) -> set:
+    return {w for w in re.findall(r"[a-z]+", (text or "").lower()) if w not in _STOP and len(w) > 2}
+
+
+def near_duplicate(cand: dict, existing_titles: list, recent: list) -> str:
+    """Reason string if cand is a near-repeat of a live lesson or a recent proposal, else ''."""
+    from difflib import SequenceMatcher
+    title = str((cand or {}).get("title", "")).strip()
+    topic = str((cand or {}).get("topic", "")).strip()
+    tw, pw = _words(title), _words(topic)
+    for other in list(existing_titles) + [r["title"] for r in recent]:
+        ow = _words(other)
+        if not other:
+            continue
+        ratio = SequenceMatcher(None, title.lower(), other.lower()).ratio()
+        jacc = len(tw & ow) / len(tw | ow) if (tw | ow) else 0
+        if ratio >= 0.8 or (jacc >= 0.6 and len(tw & ow) >= 2):
+            return f"near-duplicate of existing lesson '{other}'"
+    for r in recent:
+        ow = _words(r["topic"])
+        if pw and ow and len(pw & ow) / len(pw | ow) >= 0.5:
+            return f"near-duplicate topic of recent proposal '{r['title']}'"
+    return ""
+
+
+def _swap_example_name(cand: dict, name: str, recent: list) -> dict:
+    """If a made-up example reuses a recently used name (e.g. 'Ana' again), swap in today's name."""
+    old = _example_name(str(cand.get("example", "")))
+    if not old or _kind(cand) != "made-up" or old == name:
+        return cand
+    if old not in {_example_name(r["example"]) for r in recent[:14]}:
+        return cand
+    return {**cand, "example": re.sub(rf"\b{re.escape(old)}\b", name, str(cand["example"]))}
+
+
 def generate_candidate() -> dict | None:
     """Asks Ollama for one new lesson that fills a real gap — either the
     next level in a track that's thinner than the others, or (occasionally)
@@ -160,9 +288,21 @@ def generate_candidate() -> dict | None:
 
     outside = _outside_structure_notes()
     founder = _founder_ideas()
+    global LAST_SKIP_REASON
+    LAST_SKIP_REASON = ""
+    recent = _recent_proposals()
+    focus, focus_desc = todays_focus(recent)
+    name = todays_name(recent)
+    recent_titles = "; ".join(r["title"] for r in recent[:20]) or "none"
+    focus_block = (f"\nTODAY'S FOCUS: {focus} - {focus_desc}. Make the lesson about this focus. "
+                   + ("" if focus == "Antifragility" else
+                      "Do NOT make it another antifragility / hormesis / 'stress makes you stronger' lesson; "
+                      "recent days already have plenty of those. ")
+                   + f"If you use a made-up example, use the learner name {name} (not Ana).\n"
+                   f"Recently proposed lesson titles (do NOT repeat or closely duplicate these either):\n{recent_titles}\n")
 
     prompt = f"""{VALUES_BLURB}
-{outside}{founder}
+{outside}{founder}{focus_block}
 Existing lesson titles (do NOT repeat or closely duplicate any of these):
 {existing_titles}
 
@@ -179,7 +319,7 @@ Reply with ONLY a JSON object, no other text, in this exact shape:
   "steelman_for": "The strongest honest case FOR the lesson's idea, in 1-2 sentences",
   "steelman_against": "The strongest honest case AGAINST it or its limits, in 1-2 sentences",
   "example_kind": "real or made-up",
-  "example": "One concrete example. If real: only a WELL-KNOWN fact you are certain of (the kind in the first paragraph of an encyclopedia entry), no quotes, and never credit a person with an idea or strategy they are not famous for. If you are not certain, use made-up instead: start with 'Imagine' and a named fictional learner, e.g. 'Imagine Ana, 12, who...'. Never 'a historical figure' or 'someone'",
+  "example": "One concrete example. If real: only a WELL-KNOWN fact you are certain of (the kind in the first paragraph of an encyclopedia entry), no quotes, and never credit a person with an idea or strategy they are not famous for. If you are not certain, use made-up instead: start with 'Imagine' and a named fictional learner, e.g. 'Imagine {name}, 11, who...'. Never 'a historical figure' or 'someone'",
   "activity": "One hands-on activity a learner can do in 10-20 minutes at home with no special equipment",
   "check_questions": ["Three short questions", "that check understanding", "a learner could honestly answer either way"],
   "age_hint": "one of: All ages, 7+, 8+, 9+, 10+, 11+, 12+, 13+, 14+, 15+, 16+",
@@ -194,14 +334,20 @@ Reply with ONLY a JSON object, no other text, in this exact shape:
         if not reply:
             return None
         cand = _extract_json(reply)
+        if isinstance(cand, dict):
+            cand = _swap_example_name(cand, name, recent)
         problems = validate_candidate(cand)
+        dup = near_duplicate(cand, [t for _, t, _ in existing], recent) if not problems else ""
+        if dup:
+            LAST_SKIP_REASON = dup
+            problems = [f"{dup}; propose a clearly different lesson about today's focus ({focus})"]
         tried_rewrite = False
         if not problems and _kind(cand) == "real":
             sure, why = _fact_check(str(cand.get("example", "")))
             if not sure:
                 # keep the (otherwise good) lesson; swap only the doubtful example for a made-up one
                 print(f"[curriculum-autogen] real example doubted ({why}); rewriting it as made-up")
-                fixed = _made_up_example(cand)
+                fixed = _made_up_example(cand, name)
                 tried_rewrite = True
                 if fixed:
                     return fixed
@@ -209,10 +355,11 @@ Reply with ONLY a JSON object, no other text, in this exact shape:
                             "scenario that starts with 'Imagine' and a named fictional learner, and set "
                             "example_kind to made-up"]
         if not problems:
+            LAST_SKIP_REASON = ""
             return cand
         if not tried_rewrite and isinstance(cand, dict) and all(_example_problem(x) for x in problems):
             print(f"[curriculum-autogen] only the example is wrong ({problems}); rewriting it as made-up")
-            fixed = _made_up_example(cand)
+            fixed = _made_up_example(cand, name)
             if fixed:
                 return fixed
         feedback = ("\n\nYour last answer was rejected: " + "; ".join(problems)
@@ -246,10 +393,10 @@ def _example_problem(problem: str) -> bool:
     return bool(re.search(r"example|quote|unnamed|example_kind", problem, re.I))
 
 
-def _made_up_example(cand: dict) -> dict | None:
+def _made_up_example(cand: dict, name: str = "Theo") -> dict | None:
     """Rewrite only the example as a named made-up scenario; None if that doesn't pass the checks."""
     prompt = ("Rewrite this lesson example as a short MADE-UP scenario that teaches the same point. Start with "
-              "'Imagine' and a named fictional learner with an age, e.g. 'Imagine Ana, 12, who ...'. Two or three "
+              "'Imagine' and a named fictional learner with an age, e.g. 'Imagine " + name + ", 11, who ...'. Two or three "
               "sentences, no real people, no statistics.\n"
               'Reply with ONLY JSON: {"example": "..."}\n\n'
               f"Lesson: {cand.get('title', '')} - {cand.get('topic', '')}\nOld example: {cand.get('example', '')}")
@@ -297,7 +444,7 @@ def validate_candidate(c) -> list:
         p.append("example_kind must be 'real' or 'made-up'")
     elif ex and kind == "made-up":
         if not re.match(r"imagine\b", ex, re.I) or _MADE_UP_VAGUE.search(ex) or not _names_something(ex):
-            p.append("a made-up example must start with 'Imagine' and a named fictional learner (e.g. 'Imagine Ana, 12, ...')")
+            p.append("a made-up example must start with 'Imagine' and a named fictional learner (e.g. 'Imagine Theo, 11, ...')")
     elif ex:
         if _VAGUE_EXAMPLE.search(ex) or not _names_something(ex):
             p.append("example is vague; name a real person, place, event, or thing, or use a made-up 'Imagine <Name>' scenario")
@@ -324,6 +471,8 @@ def run_curriculum_autogen(force: bool = False) -> dict:
 
     candidate = generate_candidate()
     if not candidate or not candidate.get("key") or not candidate.get("title"):
+        if LAST_SKIP_REASON:
+            return {"ok": False, "reason": f"skipped: {LAST_SKIP_REASON} (3 tries)"}
         return {"ok": False, "reason": "generation failed or returned unusable JSON"}
 
     from curriculum_proposals import CurriculumReviewer

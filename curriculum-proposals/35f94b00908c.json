@@ -1,0 +1,43 @@
+{
+  "id": "35f94b00908c",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Antifragility Beyond Bitcoin",
+  "lesson": {
+    "key": "exploring-antifragility-in-nature",
+    "title": "Antifragility in Nature",
+    "topic": "Understanding how antifragile systems can be observed in natural phenomena and ecosystems.",
+    "steelman": "How do different organisms exhibit antifragility, and what lessons can we learn from them?",
+    "steelman_for": "Nature provides countless examples of antifragile systems that thrive under stress, such as the way trees grow stronger with wind resistance.",
+    "steelman_against": "Some argue that natural systems are not always perfectly antifragile; they may sometimes break under extreme conditions.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who notices that her garden's flowers bloom more vibrantly after a rainstorm, showing how they benefit from stress.",
+    "activity": "Observe a local ecosystem over a few days and note how different species respond to changing conditions.",
+    "check_questions": [
+      "Can you give an example of an organism that benefits from stress in nature?",
+      "How might understanding antifragility in nature help us design better systems?",
+      "What are some potential drawbacks to seeing human systems as antifragile?"
+    ],
+    "age_hint": "10+",
+    "xp": 20,
+    "rune": "ANTIFRAGILITY\u2022BEYOND\u2022BITCOIN\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson helps learners connect the concept of antifragility to real-world observations, deepening their understanding and appreciation for its practical applications.",
+  "submitted_at": "2026-10-16T06:00:32.697711",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-16T07:52:39.989968",
+  "rejection_reason": ""
+}

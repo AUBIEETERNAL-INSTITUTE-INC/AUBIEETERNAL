@@ -173,9 +173,9 @@ def main() -> int:
     if not topics:
         print("[grow] no uncovered topics left in grokipedia_sources.txt")
         return 0
-    pending = load_pending()
-    # drop already-decided
-    pending = [d for d in pending if d.get("status") == "pending"]
+    all_drafts = load_pending()
+    # dedupe only against undecided drafts, but keep decided ones (and their reasons) in the file
+    pending = [d for d in all_drafts if d.get("status") == "pending"]
     made = 0
     for topic in topics:
         if made >= MAX_DRAFTS:
@@ -188,10 +188,11 @@ def main() -> int:
         print(f"[grow] scored {draft.get('score')} accept={draft.get('accept')} dup={draft.get('duplicate')} — {draft['title']}")
         if draft.get("accept"):
             pending.append(draft)
+            all_drafts.append(draft)
             made += 1
         else:
             print(f"[grow] skipped: {draft.get('score_reason') or draft.get('score_error')}")
-    save_pending(pending)
+    save_pending(all_drafts)
     print(f"[grow] queued {made} new draft(s); pending total={len(pending)}")
     for d in pending[-made or None :]:
         print("---")

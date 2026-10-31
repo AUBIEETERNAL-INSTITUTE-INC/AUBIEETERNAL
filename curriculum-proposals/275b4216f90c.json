@@ -1,0 +1,100 @@
+{
+  "id": "275b4216f90c",
+  "type": "track",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "track_name": "🗽 Capitalism & Liberty",
+  "description": "What capitalism is, how freedom and rule of law shape outcomes, and why keeping what you earn makes financial education actionable. Non-partisan: no party/candidate endorsed or opposed; every lesson steelmans both sides. Learners, not students.",
+  "lessons": [
+    {
+      "key": "liberty-1",
+      "title": "What Capitalism Actually Is",
+      "topic": "Capitalism is a way of organizing an economy where people own things (private property) and trade by choice (voluntary exchange). Prices tell people what is wanted and scarce. Profit says 'people value this, make more'; loss says 'try something else.'",
+      "example": "A lemonade stand charges $1 and sells out by noon. Next day it tries $1.25 and sells a bit less but earns more. On a cold day almost nobody buys: a loss signal to sell hot cocoa instead.",
+      "example_kind": "made-up",
+      "activity": "Run a 2-hour lemonade (or snack) stand. Change one thing (price, sign, location) halfway and record sales. Talk about what the numbers told you.",
+      "check_questions": [
+        "What is voluntary exchange?",
+        "What does a profit or a loss tell a business?",
+        "What is private property?"
+      ],
+      "steelman": "FOR: Voluntary exchange and price signals coordinate millions of people without anyone needing to command them, and reward serving others well. AGAINST: Markets can produce big inequality and harms like pollution that prices miss, so most people support some rules and safety nets.",
+      "age_hint": "9+",
+      "xp": 20,
+      "rune": "LIBERTY•1",
+      "min_coherence": 0.6,
+      "kid_explanation": "Capitalism is a way of organizing an economy where people own things (private property) and trade by choice (voluntary exchange). Prices tell people what is wanted and scarce. Profit says 'people value this, make more'; loss says 'try something else.'",
+      "parent_coach_insight": "Keep it descriptive, not a slogan. Every real country mixes markets with laws and public services; discuss where your family sees each. Profit and loss are feedback signals, like a thermostat. Both buyer and seller usually gain in a voluntary trade, or they would not trade.",
+      "reflection_question": "When I buy something I chose freely, why do both me and the seller feel better off?",
+      "family_activity": "Run a 2-hour lemonade (or snack) stand. Change one thing (price, sign, location) halfway and record sales. Talk about what the numbers told you.",
+      "steelman_for": "Voluntary exchange and price signals coordinate millions of people without anyone needing to command them, and reward serving others well.",
+      "steelman_against": "Markets can produce big inequality and harms like pollution that prices miss, so most people support some rules and safety nets.",
+      "coherence_notes": "Cross-links: Economic Reality (economic-reality-1 assets, -5 pay yourself first, -6 family enterprise) and History of Money & Systems (money-history-1 sound money, -3 central planning, -5 evaluating promises). Also Money & Mindset, Thinking About Thinking (steelman, ask who pays), Start Tiny, and the Bitcoin anchor (self-custodied, rule-based property)."
+    },
+    {
+      "key": "liberty-2",
+      "title": "Freedom, Rule of Law & Outcomes",
+      "topic": "Rule of law means the same fair rules apply to everyone, even leaders. History has natural experiments: Germany and Korea were each split into two parts with similar people and culture. The sides with more economic freedom and rule of law became far richer, while the planned sides had shortages, and in East Germany a wall was built to stop people leaving.",
+      "example": "A famous satellite photo of the Korean peninsula at night shows the South brightly lit and the North almost dark.",
+      "example_kind": "documented",
+      "activity": "Look at the Korea-at-night satellite photo and a map of divided Germany together. List 3 differences between each pair and 3 other possible reasons besides economic system.",
+      "check_questions": [
+        "What is rule of law?",
+        "What happened in East vs West Germany?",
+        "What is one argument for safety nets in a free economy?"
+      ],
+      "steelman": "FOR: Economic freedom plus rule of law lets ordinary people build and keep wealth; history's side-by-side cases show large, lasting gaps in living standards. AGAINST: Free markets can leave some people behind and fail with things like pollution or monopolies; many prosperous countries combine markets with strong safety nets, and outcomes also depend on history and politics.",
+      "age_hint": "12+",
+      "xp": 35,
+      "rune": "LIBERTY•2",
+      "min_coherence": 0.6,
+      "kid_explanation": "Rule of law means the same fair rules apply to everyone, even leaders. History has natural experiments: Germany and Korea were each split into two parts with similar people and culture. The sides with more economic freedom and rule of law became far richer, while the planned sides had shortages, and in East Germany a wall was built to stop people leaving.",
+      "parent_coach_insight": "Documented: about 3.5 million people left East Germany before the Berlin Wall went up in 1961; it fell in 1989. South Korea grew into one of the world's largest economies, while North Korea suffered a severe famine in the 1990s. Tie to money-history-3 (Cuba libreta, Soviet lines). Steelman fairly: these contrasts also involve dictatorship, foreign aid and war, and free economies still debate inequality, market failures and how big safety nets should be. Not about any modern party.",
+      "reflection_question": "Why might fair rules for everyone matter as much as money?",
+      "family_activity": "Look at the Korea-at-night satellite photo and a map of divided Germany together. List 3 differences between each pair and 3 other possible reasons besides economic system.",
+      "steelman_for": "Economic freedom plus rule of law lets ordinary people build and keep wealth; history's side-by-side cases show large, lasting gaps in living standards.",
+      "steelman_against": "Free markets can leave some people behind and fail with things like pollution or monopolies; many prosperous countries combine markets with strong safety nets, and outcomes also depend on history and politics.",
+      "coherence_notes": "Cross-links: Economic Reality (economic-reality-1 assets, -5 pay yourself first, -6 family enterprise) and History of Money & Systems (money-history-1 sound money, -3 central planning, -5 evaluating promises). Also Money & Mindset, Thinking About Thinking (steelman, ask who pays), Start Tiny, and the Bitcoin anchor (self-custodied, rule-based property)."
+    },
+    {
+      "key": "liberty-3",
+      "title": "Keep What You Earn",
+      "topic": "If you plant a garden and know you get to keep the tomatoes, you work hard on it. Property rights mean what you earn and build is yours. That is why learning about money is useful: liberty lets you act on what you learn, by saving, owning assets and building something.",
+      "example": "Two kids each grow a garden. One gets to keep and sell her tomatoes; the other must hand all of his to a pile shared by everyone. The family discusses who would work harder and why.",
+      "example_kind": "made-up",
+      "activity": "Give each learner a small thing to own and care for for a month (plant, savings jar, small project). At the end, talk about how ownership changed their effort.",
+      "check_questions": [
+        "What are property rights?",
+        "Why does keeping what you earn encourage building assets?",
+        "What is self-custody of Bitcoin, and what responsibility comes with it?"
+      ],
+      "steelman": "FOR: Secure property and earnings give people the reason and means to save, invest and escape dependence. AGAINST: Communities also rely on sharing and taxes for roads, courts and help in hard times; some argue very unequal ownership can limit others' freedom.",
+      "age_hint": "10+",
+      "xp": 25,
+      "rune": "LIBERTY•3",
+      "min_coherence": 0.6,
+      "kid_explanation": "If you plant a garden and know you get to keep the tomatoes, you work hard on it. Property rights mean what you earn and build is yours. That is why learning about money is useful: liberty lets you act on what you learn, by saving, owning assets and building something.",
+      "parent_coach_insight": "Connect to economic-reality-1 (assets), -5 (pay yourself first) and -6 (family enterprise): all depend on being allowed to keep and control what you build. Bitcoin held in self-custody is one modern example of property only the holder controls; teach the responsibility too (lost keys mean lost coins). Taxes and shared rules still exist; this is about incentives, not refusing to contribute. Education, not financial advice. Learners practise only with practice coins or a pretend/test wallet (testnet or signet); no real bitcoin or sats for kids.",
+      "reflection_question": "How does knowing I can keep what I build change how hard I work?",
+      "family_activity": "Give each learner a small thing to own and care for for a month (plant, savings jar, small project). At the end, talk about how ownership changed their effort.",
+      "steelman_for": "Secure property and earnings give people the reason and means to save, invest and escape dependence.",
+      "steelman_against": "Communities also rely on sharing and taxes for roads, courts and help in hard times; some argue very unequal ownership can limit others' freedom.",
+      "coherence_notes": "Cross-links: Economic Reality (economic-reality-1 assets, -5 pay yourself first, -6 family enterprise) and History of Money & Systems (money-history-1 sound money, -3 central planning, -5 evaluating promises). Also Money & Mindset, Thinking About Thinking (steelman, ask who pays), Start Tiny, and the Bitcoin anchor (self-custodied, rule-based property)."
+    }
+  ],
+  "rationale": "Supports Economic Reality and History of Money & Systems with the liberty foundation.",
+  "public": true,
+  "submitted_at": "2026-10-23T13:03:05.814982",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": []
+}

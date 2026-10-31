@@ -1,0 +1,72 @@
+{
+  "id": "0c99d8286934",
+  "type": "lesson",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "target_track": "How We Learn",
+  "lesson": {
+    "key": "placement-check-math-reading",
+    "title": "Where Do I Start? A Math and Reading Placement Check",
+    "topic": "A short, friendly placement quiz in math and reading shows where each learner should start, so lessons are not too easy or too hard.",
+    "steelman": "Is it fair to start everyone at their grade level, or should each learner start where their skills actually are?",
+    "steelman_for": "Starting at the right level avoids boredom and frustration, and lets a learner move fast through what they already know.",
+    "steelman_against": "A single quiz on a single day can be wrong (nerves, a bad night's sleep), so a placement should be a starting guess, not a label.",
+    "example_kind": "made-up",
+    "example": "Imagine Jonah, 8, who reads chapter books easily but freezes on subtraction with borrowing. His placement check starts him on harder reading and on two-digit subtraction, and he moves up in a week.",
+    "activity": "With a grown-up, do a 15-minute check: read one short passage aloud and answer three questions, then try ten math problems that get harder. Stop when three in a row feel hard. Write down your starting point for each.",
+    "check_questions": [
+      "Why do a placement check before starting lessons?",
+      "What should happen if the check seems wrong after a week?",
+      "What was your starting point in math and in reading?"
+    ],
+    "age_hint": "6+",
+    "xp": 15,
+    "rune": "HOW\u2022WE\u2022LEARN\u2022RUNE",
+    "min_coherence": 0.65,
+    "sources": [
+      {
+        "school": "Prenda microschools",
+        "url": "https://www.prenda.com/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "adaptive diagnostic tests in math and reading; continuous diagnostics and personalized learning path"
+      },
+      {
+        "school": "IXL",
+        "url": "https://www.ixl.com/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "adaptive diagnostic tests in math and reading; continuous diagnostics and personalized learning path"
+      }
+    ]
+  },
+  "rationale": "Prenda and IXL both start with diagnostics in math and reading (2026-10-25 scan). Reviewer note: keep it parent-led and offline; results stay in the family.",
+  "submitted_at": "2026-10-30T19:54:01.683577",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "sources": [
+    {
+      "school": "Prenda microschools",
+      "url": "https://www.prenda.com/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "adaptive diagnostic tests in math and reading; continuous diagnostics and personalized learning path"
+    },
+    {
+      "school": "IXL",
+      "url": "https://www.ixl.com/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "adaptive diagnostic tests in math and reading; continuous diagnostics and personalized learning path"
+    }
+  ],
+  "source_reports": [
+    "/srv/institute/competitive_intel/2026-10-25.md"
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "id": "bc50ccbdbaea",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Antifragility",
+  "lesson": {
+    "key": "antifragility-in-nature",
+    "title": "Antifragility in Nature",
+    "topic": "Some living things get stronger when life pushes on them, as long as the push is not too big and they get time to recover. That is called antifragility. Your bones and muscles grow stronger when you run, jump and lift. Trees that sway in the wind grow thicker, sturdier trunks. Your body's defense system learns from germs it has met before. And some pine forests even need fire to plant their next trees.",
+    "steelman": "Does nature really get stronger from stress, or do we only notice the survivors?",
+    "steelman_for": "Bones, muscles, trees, fire-adapted forests and the immune system all show the same pattern: a manageable stress followed by recovery leaves them stronger than before.",
+    "steelman_against": "Too much stress destroys things instead of strengthening them, and we may overlook everything that was harmed, so 'stress makes you stronger' is only true for the right dose with time to recover.",
+    "example_kind": "real",
+    "example": "Bones: when you run and jump, your bones carry extra load, and over time they add material and get denser where they are used most (scientists call this Wolff's law). Muscles work the same way: hard use plus rest makes them stronger. Trees: a tree that bends in the wind grows a shorter, thicker trunk than one that is staked or sheltered (this is called thigmomorphogenesis). Fire: lodgepole pines and jack pines have 'serotinous' cones sealed shut with resin; the heat of a wildfire melts the resin, the cones open, and seeds fall onto the freshly cleared, sunny ground. Immune system: after your body fights off a germ, it keeps 'memory' cells that recognize it faster next time; vaccines are designed to teach that lesson using a harmless version or piece of the germ.",
+    "activity": "Family activity: Go on a 20-minute 'stronger-from-stress' walk around your home, yard or a park. Look for a tree that leans or has a thick base from wind, grass that springs back after being stepped on, or a scar where a tree healed. Each person picks one find, takes a photo or sketch, and says whether it got stronger, just survived, or was harmed. Bonus: compare a staked young tree with an older free-standing one. Parent Coach Insight: the key idea is the dose. Nature gets stronger from stress that is not too big, followed by recovery; too much breaks things (a broken bone, a fire so hot it kills even fire-adapted forests). Help your child sort examples into three buckets: fragile (breaks), robust (stays the same), antifragile (gets stronger). Connect it to their own life gently, for example practice plus sleep, and never use it to dismiss real pain or illness.",
+    "check_questions": [
+      "Why do bones get denser when you run and jump?",
+      "How does a wildfire help lodgepole or jack pines plant new trees?",
+      "What is the difference between something that is robust and something that is antifragile?",
+      "When does stress stop helping and start harming?",
+      "What is one thing in your life that got stronger because it was challenged, and what helped it recover?"
+    ],
+    "age_hint": "8+",
+    "xp": 25,
+    "rune": "ANTIFRAGILITY•NATURE•RUNE",
+    "min_coherence": 0.65,
+    "kid_explanation": "Some living things get stronger when life pushes on them, as long as the push is not too big and they get time to recover. That is called antifragility. Your bones and muscles grow stronger when you run, jump and lift. Trees that sway in the wind grow thicker, sturdier trunks. Your body's defense system learns from germs it has met before. And some pine forests even need fire to plant their next trees.",
+    "family_activity": "Go on a 20-minute 'stronger-from-stress' walk around your home, yard or a park. Look for a tree that leans or has a thick base from wind, grass that springs back after being stepped on, or a scar where a tree healed. Each person picks one find, takes a photo or sketch, and says whether it got stronger, just survived, or was harmed. Bonus: compare a staked young tree with an older free-standing one.",
+    "parent_insight": "Parent Coach Insight: the key idea is the dose. Nature gets stronger from stress that is not too big, followed by recovery; too much breaks things (a broken bone, a fire so hot it kills even fire-adapted forests). Help your child sort examples into three buckets: fragile (breaks), robust (stays the same), antifragile (gets stronger). Connect it to their own life gently, for example practice plus sleep, and never use it to dismiss real pain or illness.",
+    "reflection_question": "What is one thing in your life that got stronger because it was challenged, and what helped it recover?"
+  },
+  "rationale": "This lesson provides a practical, relatable introduction to antifragility through everyday examples from nature, enhancing understanding and inspiring real-world application.",
+  "submitted_at": "2026-10-21T06:00:20.815492",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "Grok review 2026-10-28 (round 2): rewritten with real, checked nature examples (Wolff's law, thigmomorphogenesis, serotinous lodgepole/jack pine cones, immune memory/vaccines), Parent Coach Insight, family activity, reflection. Retargeted to the Antifragility track. LEFT PENDING for Mateo's approval.",
+    "status": "pending"
+  },
+  "comments": []
+}

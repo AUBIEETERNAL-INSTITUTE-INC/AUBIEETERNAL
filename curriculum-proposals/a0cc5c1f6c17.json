@@ -1,0 +1,43 @@
+{
+  "id": "a0cc5c1f6c17",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Educate Antifragilly",
+  "lesson": {
+    "key": "mastering-antifragility-strategies",
+    "title": "Mastering Antifragility Strategies",
+    "topic": "Learn practical strategies to enhance antifragility in daily life.",
+    "steelman": "How can one apply the concept of hormesis to improve physical and mental health?",
+    "steelman_for": "Hormesis, or the beneficial effects of mild stress, is a powerful tool for building resilience and strength.",
+    "steelman_against": "Overexposure to hormetic stressors without proper recovery can lead to burnout and diminished performance.",
+    "example_kind": "made-up",
+    "example": "Imagine Alex, 13, who starts incorporating short, high-intensity workouts into their daily routine, followed by a cool-down period. This mimics the hormesis principle in physical training, enhancing Alex's stamina and resilience over time.",
+    "activity": "Design and implement a personal hormesis plan for one week, alternating between mild stress (like a 30-second cool-water face splash, a tough puzzle, or a short hill walk) and recovery periods. Keep a journal of how you feel during and after each session.",
+    "check_questions": [
+      "What is hormesis, and how can it be applied in daily life?",
+      "How did incorporating hormesis into your routine impact your well-being?",
+      "What challenges did you face while implementing this strategy?"
+    ],
+    "age_hint": "13+",
+    "xp": 20,
+    "rune": "EDUCATE•ANTIFRAGILLY•RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson provides practical insights and an activity to help learners apply antifragility concepts directly, enhancing their ability to adapt and thrive in various situations.",
+  "submitted_at": "2026-10-17T06:00:13.272440",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-10-19T19:54:46.547208",
+  "merged_to_curriculum": true
+}

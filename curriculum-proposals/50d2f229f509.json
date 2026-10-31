@@ -1,0 +1,43 @@
+{
+  "id": "50d2f229f509",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Antifragility",
+  "lesson": {
+    "key": "antifragile-thinking-through-exercise",
+    "title": "Think Antifragile: Strength in Stress",
+    "topic": "This lesson teaches how physical exercise can enhance antifragility by making the body stronger through stress.",
+    "steelman": "How can regular exercise improve one's ability to handle stress and bounce back from adversity?",
+    "steelman_for": "Physical fitness builds resilience, which is a core principle of antifragility. Regular workouts challenge the body, leading to stronger overall health and adaptability.",
+    "steelman_against": "While beneficial, overtraining can lead to injuries, showing that not all stress is beneficial; finding the right balance is crucial.",
+    "example_kind": "made-up",
+    "example": "Imagine Ana, 12, who loves to dance. Her teacher explains that practicing ballet not only makes her graceful but also helps her body become stronger and better at handling little bumps and scrapes.",
+    "activity": "Choose a moderate workout like jumping jacks or light running for 10 minutes. Notice how your heart rate increases and your breathing becomes deeper.",
+    "check_questions": [
+      "What physical changes did you notice during the exercise?",
+      "How might regular exercise help improve your ability to handle stress?",
+      "Can overexercising be counterproductive? Why or why not?"
+    ],
+    "age_hint": "8+",
+    "xp": 20,
+    "rune": "ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson connects the physical and mental aspects of antifragility, providing a practical application that is easily accessible to most learners.",
+  "submitted_at": "2026-10-19T06:00:19.707334",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-10-19T19:54:42.873234",
+  "merged_to_curriculum": true
+}

@@ -1,0 +1,34 @@
+{
+  "id": "f080a58e49dd",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as an Antifragile Tool",
+  "lesson": {
+    "key": "wonder-and-antifragile-inquiry",
+    "title": "Wonder and Antifragile Inquiry",
+    "topic": "Explore how wonder fuels curiosity and resilience in the face of uncertainty, promoting antifragility through intellectual exploration.",
+    "steelman": "How can we leverage wonder to strengthen our intellectual systems against skepticism and doubt?",
+    "example": "A scientist uses a sense of wonder to question established theories, leading to innovative research that enhances their field's robustness.",
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022AN\u2022ANTIFRAGILE\u2022TOOL\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the gap between intellectual curiosity and resilience, fostering a mindset where questioning leads to growth.",
+  "submitted_at": "2026-10-09T06:00:11.332444",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-11T14:06:59.637793",
+  "rejection_reason": ""
+}

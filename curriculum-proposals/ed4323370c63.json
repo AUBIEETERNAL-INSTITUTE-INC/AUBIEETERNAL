@@ -1,0 +1,40 @@
+{
+  "id": "ed4323370c63",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Mastering Antifragility",
+  "lesson": {
+    "key": "wonder-and-the-barbell-strategy",
+    "title": "Wonder and the Barbell Strategy",
+    "topic": "Explore how balancing safety and risk-taking through the barbell strategy enhances antifragility, informed by philosophical wonder.",
+    "steelman": "How does integrating a sense of wonder into your approach to the barbell strategy enhance both its effectiveness and your personal growth?",
+    "example": "Warren Buffett uses a barbell strategy in investing by keeping most funds extremely safe while taking large risks with a small portion, driven by curiosity about market anomalies.",
+    "activity": "Create a visual representation of the barbell strategy focusing on one area of life (e.g., finances, health) that reflects your personal risk tolerance and areas for growth.",
+    "check_questions": [
+      "How does the barbell strategy apply to financial investments?",
+      "What role does wonder play in enhancing the effectiveness of the barbell approach?",
+      "Can you think of a real-life scenario where applying philosophical wonder to the barbell strategy could lead to significant benefits?"
+    ],
+    "age_hint": "16+",
+    "xp": 20,
+    "rune": "MASTERING\u2022ANTIFRAGILITY\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges practical antifragile strategies with deep curiosity, fostering a holistic understanding of resilience and personal growth.",
+  "submitted_at": "2026-10-11T06:00:15.637852",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-11T14:06:51.503829",
+  "rejection_reason": ""
+}

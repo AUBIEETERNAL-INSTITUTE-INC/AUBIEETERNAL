@@ -16,7 +16,7 @@
   },
   "rationale": "Teaches students how to apply antifragile principles in everyday decision-making for resilience.",
   "submitted_at": "2026-10-04T06:01:53.738327",
-  "status": "pending",
+  "status": "rejected",
   "review": {
     "steelman_for": "",
     "steelman_against": "",
@@ -28,5 +28,7 @@
     "reviewer_notes": "",
     "status": "pending"
   },
-  "comments": []
+  "comments": [],
+  "rejected_at": "2026-10-11T14:07:34.318518",
+  "rejection_reason": ""
 }

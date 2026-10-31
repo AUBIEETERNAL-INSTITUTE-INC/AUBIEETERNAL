@@ -1,0 +1,285 @@
+{
+  "status": "pending_review",
+  "generated_by": "qwen2.5:14b",
+  "created": "2026-10-07",
+  "note": "NOT merged into decks.json. Review, then copy approved cards into a deck.",
+  "decks": [
+    {
+      "id": "money-smarts-pending",
+      "title": "Money Smarts (pending)",
+      "emoji": "💰",
+      "age_level": "mixed",
+      "ages": "4-14",
+      "group": "money",
+      "description": "Draft batch pending review",
+      "cards": [
+        {
+          "id": "fin-1",
+          "front": "What is an asset?",
+          "back": "Something that puts money in your pocket.",
+          "hint": "💰",
+          "level": "middle"
+        },
+        {
+          "id": "fin-2",
+          "front": "What is a liability?",
+          "back": "Something that takes money out of your pocket.",
+          "hint": "💸",
+          "level": "middle"
+        },
+        {
+          "id": "fin-3",
+          "front": "Why do we need to budget?",
+          "back": "A budget is a plan for your money before you spend it, so you can keep track.",
+          "hint": "📊",
+          "level": "big"
+        },
+        {
+          "id": "fin-4",
+          "front": "What is saving?",
+          "back": "Putting aside some money for later use.",
+          "hint": "💰",
+          "level": "little"
+        },
+        {
+          "id": "fin-5",
+          "front": "What does delayed gratification mean?",
+          "back": "Waiting now to get something better or bigger later.",
+          "hint": "⏰",
+          "level": "middle"
+        },
+        {
+          "id": "fin-6",
+          "front": "What is simple interest?",
+          "back": "Interest calculated on the original amount only. Example: $100 at 5% a year earns $5 in one year.",
+          "hint": "📈",
+          "level": "big"
+        },
+        {
+          "id": "fin-7",
+          "front": "What is compound interest?",
+          "back": "Interest calculated on both principal and accumulated interest.",
+          "hint": "📊",
+          "level": "big"
+        },
+        {
+          "id": "fin-8",
+          "front": "How do you calculate simple interest?",
+          "back": "Principal x Rate x Time.",
+          "hint": "📈",
+          "level": "middle"
+        },
+        {
+          "id": "fin-9",
+          "front": "What is a need?",
+          "back": "Something you must have to live.",
+          "hint": "🏠",
+          "level": "little"
+        },
+        {
+          "id": "fin-10",
+          "front": "What is a want?",
+          "back": "Something you would like but don't need.",
+          "hint": "🛍️",
+          "level": "little"
+        },
+        {
+          "id": "fin-11",
+          "front": "How do you calculate compound interest?",
+          "back": "Principal x (1 + Rate)^Time - Principal.",
+          "hint": "📊",
+          "level": "big"
+        },
+        {
+          "id": "fin-12",
+          "front": "What is cash flow?",
+          "back": "The movement of money in and out of your account.",
+          "hint": "💸",
+          "level": "middle"
+        },
+        {
+          "id": "fin-13",
+          "front": "Why should you save money?",
+          "back": "To have money for emergencies or future goals.",
+          "hint": "💰",
+          "level": "little"
+        },
+        {
+          "id": "fin-14",
+          "front": "What is a bank account?",
+          "back": "A place that keeps your money safe and can pay you interest.",
+          "hint": "🏦",
+          "level": "middle"
+        },
+        {
+          "id": "fin-15",
+          "front": "How do you make a budget?",
+          "back": "List income and expenses, then plan spending.",
+          "hint": "📊",
+          "level": "big"
+        },
+        {
+          "id": "fin-16",
+          "front": "What is the difference between assets and liabilities?",
+          "back": "Assets bring money in, liabilities take it out.",
+          "hint": "💰💸",
+          "level": "middle"
+        },
+        {
+          "id": "fin-17",
+          "front": "How can you increase your savings?",
+          "back": "Reduce expenses or earn more income.",
+          "hint": "📈",
+          "level": "big"
+        },
+        {
+          "id": "fin-18",
+          "front": "What is a piggy bank for?",
+          "back": "To save coins and small amounts of money.",
+          "hint": "💰",
+          "level": "little"
+        },
+        {
+          "id": "fin-19",
+          "front": "How do you decide between a need and a want?",
+          "back": "Ask if it's essential or just nice to have.",
+          "hint": "🏠🛍️",
+          "level": "middle"
+        },
+        {
+          "id": "fin-20",
+          "front": "What is the importance of delayed gratification?",
+          "back": "Helps in saving money for future needs.",
+          "hint": "⏰",
+          "level": "middle"
+        },
+        {
+          "id": "fin-21",
+          "front": "How does compound interest work differently from simple interest?",
+          "back": "Compound earns on both principal and interest, while simple only on principal.",
+          "hint": "📊📈",
+          "level": "big"
+        },
+        {
+          "id": "fin-22",
+          "front": "What is a checking account?",
+          "back": "An account for everyday spending.",
+          "hint": "💸",
+          "level": "middle"
+        },
+        {
+          "id": "fin-23",
+          "front": "How do you create a savings goal?",
+          "back": "Set an amount and timeline, then save regularly.",
+          "hint": "📈",
+          "level": "big"
+        },
+        {
+          "id": "fin-24",
+          "front": "What is the importance of cash flow management?",
+          "back": "Helps ensure you have enough money for expenses.",
+          "hint": "💸",
+          "level": "middle"
+        },
+        {
+          "id": "fin-25",
+          "front": "How can you track your spending?",
+          "back": "Use a notebook or app to record purchases.",
+          "hint": "📊",
+          "level": "big"
+        },
+        {
+          "id": "fin-26",
+          "front": "What is the difference between saving and investing?",
+          "back": "Saving keeps money safe, investing grows it over time.",
+          "hint": "📈",
+          "level": "middle"
+        },
+        {
+          "id": "fin-27",
+          "front": "How does budgeting help you save money?",
+          "back": "By planning spending to avoid overspending.",
+          "hint": "📊",
+          "level": "big"
+        },
+        {
+          "id": "fin-28",
+          "front": "What is the importance of understanding financial concepts early?",
+          "back": "It helps make better decisions as you grow up.",
+          "hint": "🎓",
+          "level": "middle"
+        },
+        {
+          "id": "sci-math-1",
+          "front": "What is 5 + 7?",
+          "back": "12",
+          "hint": "🔢",
+          "level": "little"
+        },
+        {
+          "id": "sci-math-2",
+          "front": "What is the main idea of a story?",
+          "back": "The most important point the whole story is about",
+          "hint": "📖",
+          "level": "middle"
+        },
+        {
+          "id": "sci-math-3",
+          "front": "How many legs does a spider have?",
+          "back": "8",
+          "hint": "🕷️",
+          "level": "little"
+        },
+        {
+          "id": "sci-math-4",
+          "front": "What is the square root of 16?",
+          "back": "4",
+          "hint": "🔢",
+          "level": "middle"
+        },
+        {
+          "id": "sci-math-5",
+          "front": "What is photosynthesis?",
+          "back": "Plants making food from sunlight.",
+          "hint": "🌱",
+          "level": "middle"
+        },
+        {
+          "id": "sci-math-6",
+          "front": "How many days are in February during a leap year?",
+          "back": "29",
+          "hint": "📅",
+          "level": "middle"
+        },
+        {
+          "id": "sci-math-7",
+          "front": "What is the largest organ of the human body?",
+          "back": "Skin",
+          "hint": "🧬",
+          "level": "middle"
+        },
+        {
+          "id": "sci-math-8",
+          "front": "How many sides does a hexagon have?",
+          "back": "6",
+          "hint": "📊",
+          "level": "middle"
+        },
+        {
+          "id": "sci-math-9",
+          "front": "What is water made of?",
+          "back": "2 hydrogen atoms + 1 oxygen atom (H2O)",
+          "hint": "💧",
+          "level": "big"
+        },
+        {
+          "id": "sci-math-10",
+          "front": "How many planets are in our solar system?",
+          "back": "8",
+          "hint": "🌌",
+          "level": "middle"
+        }
+      ]
+    }
+  ]
+}

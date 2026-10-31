@@ -1,0 +1,135 @@
+{
+  "id": "74499be62c25",
+  "type": "track",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "track_name": "\ud83e\udeb4 Start Tiny",
+  "description": "Putting something off is usually about feelings or friction, not being lazy. Learn to shrink the task, make starting easy, and make a tiny plan. Limits: Habits form slowly and differently for each person; no fixed timelines are promised. Not a treatment for attention or mood conditions \u2014 if it feels heavy, talk to a parent or trusted adult.",
+  "lessons": [
+    {
+      "key": "start-tiny-1",
+      "title": "Why We Put Things Off",
+      "topic": "Putting things off is usually about feelings (worried, bored, unsure) or friction (hard to begin), not being lazy. Naming the feeling is the first step.",
+      "example": "Kai, 10, kept skipping his reading. When he said 'the book feels too long,' his mom helped him pick one chapter.",
+      "example_kind": "made-up",
+      "activity": "Think of one thing you are putting off. Finish the sentence: 'I am avoiding it because it feels ___.'",
+      "check_questions": [
+        "What are two common reasons people put things off?",
+        "Why can naming the feeling help?",
+        "What feeling shows up for you most?"
+      ],
+      "steelman": "Is putting something off ever the smart choice?",
+      "age_hint": "All ages",
+      "xp": 15,
+      "rune": "START\u2022TINY\u20221",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "start-tiny-2",
+      "title": "Shrink It to 2 Minutes",
+      "topic": "Big tasks feel heavy. Shrink the first step until it takes about 2 minutes. Starting is often the hardest part.",
+      "example": "Rosa, 9, did not want to clean her room. She chose 'put away just the books' \u2014 and kept going after that.",
+      "example_kind": "made-up",
+      "activity": "Pick one task. Write the 2-minute version and do it now. Celebrate starting, not finishing.",
+      "check_questions": [
+        "Why does a 2-minute start help?",
+        "What is a 2-minute version of a task you are avoiding?",
+        "Is it okay to stop after 2 minutes?"
+      ],
+      "steelman": "Can tiny steps make a big task take longer overall?",
+      "age_hint": "All ages",
+      "xp": 15,
+      "rune": "START\u2022TINY\u20222",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "start-tiny-3",
+      "title": "Make Starting Easy (less friction)",
+      "topic": "Friction is anything that makes starting harder. Removing one small barrier \u2014 getting supplies ready, choosing a spot \u2014 makes starting easier.",
+      "example": "Ben, 11, left his practice sheet on the table the night before, so starting the next day took no searching.",
+      "example_kind": "made-up",
+      "activity": "List what slows you down before a task. Remove one barrier tonight.",
+      "check_questions": [
+        "What is friction?",
+        "What is one barrier you could remove?",
+        "How could you add friction to a habit you want less of?"
+      ],
+      "steelman": "Should everything be made easy, or is some difficulty useful?",
+      "age_hint": "8+",
+      "xp": 18,
+      "rune": "START\u2022TINY\u20223",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "start-tiny-4",
+      "title": "When-Then Plans",
+      "topic": "A when-then plan links a cue to a tiny action: 'When [cue], I will do [tiny step] for 2 minutes.' Plans tied to a cue are easier to remember.",
+      "example": "Leo, 12, wrote: 'When I finish dinner, I will open my book for 2 minutes.'",
+      "example_kind": "made-up",
+      "activity": "Write one when-then plan and try it for 3 days. Notice what happens.",
+      "check_questions": [
+        "What are the two parts of a when-then plan?",
+        "Why does linking to a cue help?",
+        "What is your when-then plan?"
+      ],
+      "steelman": "Can strict plans make people feel worse when they miss a day?",
+      "age_hint": "9+",
+      "xp": 20,
+      "rune": "START\u2022TINY\u20224",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "start-tiny-5",
+      "title": "Future-You and Right-Now-You (present bias)",
+      "topic": "Present bias is the pull of 'I'll feel more like it later.' Right-now-you wants comfort; future-you lives with the result. Make the later reward visible or the first step tiny.",
+      "example": "Maya, 13, asked herself: 'What's one 5-minute piece I could do right now that future-me would thank me for?' She outlined one paragraph.",
+      "example_kind": "made-up",
+      "activity": "Write a short note from future-you to right-now-you about one task. Then do the 5-minute piece.",
+      "check_questions": [
+        "What is present bias?",
+        "What is one way to help future-you?",
+        "What 5-minute piece could you do today?"
+      ],
+      "steelman": "Is it always wrong to choose comfort now?",
+      "age_hint": "10+",
+      "xp": 20,
+      "rune": "START\u2022TINY\u20225",
+      "min_coherence": 0.6
+    },
+    {
+      "key": "start-tiny-6",
+      "title": "Kind Restarts After a Miss",
+      "topic": "Everyone misses a day. A kind restart \u2014 no shame, just the next tiny step \u2014 keeps a habit going. Habits form slowly and differently for each person.",
+      "example": "Zoe, 10, missed her practice two days in a row. Instead of quitting, she said 'restart with 2 minutes today.'",
+      "example_kind": "made-up",
+      "activity": "Plan what you will say to yourself after a missed day. Keep it kind and short.",
+      "check_questions": [
+        "Why is a kind restart better than giving up?",
+        "What will you say after a miss?",
+        "Who could help you restart?"
+      ],
+      "steelman": "When does it make sense to stop a habit instead of restarting?",
+      "age_hint": "All ages",
+      "xp": 15,
+      "rune": "START\u2022TINY\u20226",
+      "min_coherence": 0.6
+    }
+  ],
+  "rationale": "Practical habits/procrastination track; matches the live Aubie Tutor thinking tools.",
+  "public": true,
+  "submitted_at": "2026-10-19T20:02:24.103821",
+  "status": "approved",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.75,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "approved_at": "2026-10-19T20:05:49.679085",
+  "merged_to_curriculum": true
+}

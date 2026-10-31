@@ -1,0 +1,96 @@
+{
+  "id": "e6b84360edcb",
+  "type": "lesson",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "target_track": "How We Learn",
+  "lesson": {
+    "key": "mastery-check-before-moving-on",
+    "title": "Prove It, Then Move On: Mastery Checks",
+    "topic": "Before starting a new skill, a learner shows they really own the current one with a short check, fixes any gap, and only then moves on.",
+    "steelman": "Is it better to finish a book of lessons on schedule, or to stop until each skill is truly solid?",
+    "steelman_for": "Skills stack: a small gap in multiplication becomes a big wall in fractions, so checking before moving on saves time later.",
+    "steelman_against": "Too many checks can make learning feel like constant testing, and some ideas only click after you see what comes next.",
+    "example_kind": "made-up",
+    "example": "Imagine Theo, 10, who wants to start long division. First he answers five mixed multiplication questions alone, gets four right, practices the one fact he missed, and then passes the check on his second try.",
+    "activity": "Pick one skill you are working on. With a grown-up, write five short questions about it, answer them alone, and mark the skill 'mastered' only at 5 out of 5, or 4 out of 5 plus a fixed mistake.",
+    "check_questions": [
+      "What did Theo do with the one question he missed?",
+      "Why might moving on with a gap cause trouble later?",
+      "What score would you need to call a skill mastered, and why?"
+    ],
+    "age_hint": "7+",
+    "xp": 20,
+    "rune": "HOW\u2022WE\u2022LEARN\u2022RUNE",
+    "min_coherence": 0.65,
+    "sources": [
+      {
+        "school": "Alpha School",
+        "url": "https://alpha.school/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "concept-based mastery checks / self-paced mastery / master foundations before advancing"
+      },
+      {
+        "school": "Acton Academy",
+        "url": "https://www.actonacademy.org/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "concept-based mastery checks / self-paced mastery / master foundations before advancing"
+      },
+      {
+        "school": "Synthesis",
+        "url": "https://www.synthesis.com/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "concept-based mastery checks / self-paced mastery / master foundations before advancing"
+      },
+      {
+        "school": "IXL",
+        "url": "https://www.ixl.com/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "concept-based mastery checks / self-paced mastery / master foundations before advancing"
+      }
+    ]
+  },
+  "rationale": "Alpha School, Acton Academy, Synthesis and IXL all gate progress on mastery (2026-10-25 scan). A simple learner-run mastery check fits AUBIEETERNAL's self-paced style.",
+  "submitted_at": "2026-10-30T19:54:01.683100",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "sources": [
+    {
+      "school": "Alpha School",
+      "url": "https://alpha.school/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "concept-based mastery checks / self-paced mastery / master foundations before advancing"
+    },
+    {
+      "school": "Acton Academy",
+      "url": "https://www.actonacademy.org/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "concept-based mastery checks / self-paced mastery / master foundations before advancing"
+    },
+    {
+      "school": "Synthesis",
+      "url": "https://www.synthesis.com/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "concept-based mastery checks / self-paced mastery / master foundations before advancing"
+    },
+    {
+      "school": "IXL",
+      "url": "https://www.ixl.com/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "concept-based mastery checks / self-paced mastery / master foundations before advancing"
+    }
+  ],
+  "source_reports": [
+    "/srv/institute/competitive_intel/2026-10-25.md"
+  ]
+}

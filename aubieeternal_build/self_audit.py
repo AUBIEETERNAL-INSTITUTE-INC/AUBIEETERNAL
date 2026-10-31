@@ -13,7 +13,8 @@ broke all 5 for 11 days while this file reported all-green the whole time,
 because it only ever checked whether the aubie-swarm *process* was alive.
 The stale-output checks look at each job's own on-disk evidence directly,
 independent of the swarm's logs or in-memory state.
-If aubieeternal Build is down, restart it.
+If aubieeternal Build is down, SUGGEST a restart (report-only since 2026-10-29:
+this script never restarts anything; see "suggestions" in latest.json).
 Recurring problems become lessons the next Build/Grok session can see. The
 swarm-behavior checks (4 runaway + 5 stale-output + anomaly_guard's
 hard-rule shape check, added 2026-09-05) bypass that recurrence gate - they
@@ -43,7 +44,9 @@ LOG = DIR / "audit.jsonl"
 LATEST = DIR / "latest.json"
 LESSONS = DIR / "lessons.md"
 GROK_RULE = HOME / ".grok" / "rules" / "self-audit.md"
-MONITOR_LOG = HOME / "scripts" / "aubie_monitor.log"
+MONITOR_LOG = HOME / "scripts" / "aubie_monitor.log"   # stale since 2026-08-25; no longer read
+# Dog check (2026-10-29): read-only GET of the live dog_ui status. NEVER /api/crouch.
+DOG_STATUS_URL = "http://100.66.110.65:8430/api/status"
 SESSIONS = HOME / ".grok" / "sessions"
 
 # Same local Proton Bridge account email_watch.py reads via IMAP (port 1143);
@@ -809,18 +812,19 @@ def collect() -> dict:
         ram_pct = None
 
     dog = "unknown"
-    if MONITOR_LOG.exists():
-        tail = MONITOR_LOG.read_text(errors="ignore").splitlines()[-1:]
-        last = tail[0] if tail else ""
-        if "healthy-no-action" in last:
-            dog = "healthy"
-        elif "repaired-successfully" in last:
-            dog = "repaired"
-            findings.append({"id": "dog:repaired", "sev": "low", "msg": last[-180:]})
-        elif "unhealthy" in last or "repair-failed" in last or "timed out" in last:
-            dog = "unreachable"
-            if os.environ.get("AUBIE_DOG_ENABLED") == "1":
-                findings.append({"id": "dog:down", "sev": "med", "msg": "Aubie dog not reachable (monitor)"})
+    try:
+        req = urllib.request.Request(DOG_STATUS_URL, method="GET")
+        with urllib.request.urlopen(req, timeout=4) as r:
+            st = json.loads(r.read().decode() or "{}")
+        dog = "healthy" if st.get("ok") else "degraded"
+        if not st.get("ok"):
+            findings.append({"id": "dog:degraded", "sev": "low",
+                             "msg": f"dog_ui /api/status not ok: {json.dumps(st)[:160]}"})
+    except Exception as exc:
+        dog = "unreachable"
+        if os.environ.get("AUBIE_DOG_ENABLED") == "1":
+            findings.append({"id": "dog:down", "sev": "med",
+                             "msg": f"Aubie dog not reachable ({DOG_STATUS_URL}: {str(exc)[:80]})"})
 
     ollama = sh("ollama list 2>/dev/null | awk 'NR>1{print $1}' | tr '\\n' ' '")
     if "qwen2.5:14b" not in ollama:
@@ -859,16 +863,19 @@ def collect() -> dict:
     }
 
 
-def repair(report: dict) -> list[str]:
-    actions = []
+def suggest_repairs(report: dict) -> list[str]:
+    """REPORT-ONLY (2026-10-29): never restarts anything. Returns what a human
+    could do, e.g. 'would restart aubie-build.service (systemctl --user restart ...)'."""
+    out = []
     for unit in USER_SERVICES:
         if report["services"].get(unit) != "active":
-            out = sh(f"systemctl --user restart {unit}")
-            time.sleep(1)
-            st = sh(f"systemctl --user is-active {unit}")
-            actions.append(f"restarted {unit} -> {st} {out[:80]}")
-            report["services"][unit] = st
-    return actions
+            out.append(f"would restart {unit} (it is {report['services'].get(unit)}): "
+                       f"systemctl --user restart {unit}")
+    for unit in SYSTEM_SERVICES:
+        if report["services"].get(unit) != "active":
+            out.append(f"would restart {unit} (it is {report['services'].get(unit)}): "
+                       f"sudo systemctl restart {unit}")
+    return out
 
 
 def append_log(report: dict) -> None:
@@ -933,7 +940,12 @@ def write_grok_rule(report: dict) -> None:
             err = (f.get("error") or "").replace("\n", " ")[:180]
             lines.append(f"- `{f.get('tool')}`: {err}")
         lines.append("")
-    lines.append("This rig audits itself every 15 minutes. If something is RED, fix that first.")
+    sug = report.get("suggestions") or []
+    if sug:
+        lines.append("Suggested (NOT done - self-audit is report-only):")
+        lines += [f"- {x}" for x in sug]
+        lines.append("")
+    lines.append("This rig audits itself every 15 minutes (report-only, no auto-restarts). If something is RED, fix that first.")
     if LESSONS.exists():
         tail = LESSONS.read_text(errors="ignore").strip().split("## ")[-1:]
         if tail and tail[0].strip():
@@ -981,20 +993,16 @@ def nightly() -> None:
 
 def run_once() -> int:
     report = collect()
-    report["repairs"] = repair(report)
-    # re-check HTTP after repairs
-    if report["repairs"]:
-        time.sleep(2)
-        follow = collect()
-        report["after_repair"] = {"http": follow["http"], "services": follow["services"]}
-        report["ok"] = follow["ok"]
+    report["repairs"] = []            # report-only: nothing is ever restarted here
+    report["suggestions"] = suggest_repairs(report)
     maybe_send_swarm_alerts(report)
     email_fix_watch_transitions(evaluate_fix_watches(report))
     collect_trend()
     append_log(report)
     promote_lessons(report)
     write_grok_rule(report)
-    print(json.dumps({"ok": report["ok"], "findings": report["findings"], "repairs": report["repairs"]}))
+    print(json.dumps({"ok": report["ok"], "findings": report["findings"],
+                      "suggestions": report["suggestions"]}))
     return 0 if report["ok"] else 1
 
 

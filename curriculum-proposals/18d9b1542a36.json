@@ -6,13 +6,23 @@
   "lesson": {
     "key": "wonderful-uncertainty",
     "title": "Embrace Uncertainty with Wonder",
-    "topic": "Teaching how to approach uncertainty and the unknown with curiosity and openness, fostering a mindset of wonder.",
-    "steelman": "How can embracing uncertainty lead to personal growth and discovery?",
-    "example": "Exploring the concept through examples like Einstein's thought experiments or scientific discoveries made by questioning established truths.",
+    "topic": "Not knowing something can feel scary, but it is also where every discovery starts. Wonder means getting curious about the unknown instead of only worrying about it.",
+    "steelman": "Is it always good to be curious about the unknown, or are there times when caution matters more?",
+    "example": "Imagine Ana, 12, who finds a recipe that uses a spice she has never tried. Instead of skipping it, she smells it, tastes a tiny bit, and asks what it is used for. The dish turns out different from what she expected, and she learns something new about flavors.",
     "age_hint": "12+",
     "xp": 20,
-    "rune": "WONDER\u2022AS\u2022DETECTOR\u2022RUNE",
-    "min_coherence": 0.65
+    "rune": "WONDER•AS•DETECTOR•RUNE",
+    "min_coherence": 0.65,
+    "activity": "Family activity: Each family member shares one thing they're unsure about this week and one curious question they could ask about it. Parent Coach Insight: share one of your own uncertainties first. Showing calm curiosity about not knowing teaches more than any answer.",
+    "check_questions": [
+      "How can wonder help you handle not knowing something?",
+      "When is it smart to be careful instead of just curious?",
+      "What is one question you'd love to find the answer to, even if it takes a long time?"
+    ],
+    "family_activity": "Each family member shares one thing they're unsure about this week and one curious question they could ask about it.",
+    "parent_insight": "Parent Coach Insight: share one of your own uncertainties first. Showing calm curiosity about not knowing teaches more than any answer.",
+    "reflection_question": "What is one question you'd love to find the answer to, even if it takes a long time?",
+    "example_kind": "made-up"
   },
   "rationale": "Encouraging a mindset that views uncertainty not as a barrier but as an opportunity for wonder and discovery.",
   "submitted_at": "2026-09-22T15:13:39.632339",

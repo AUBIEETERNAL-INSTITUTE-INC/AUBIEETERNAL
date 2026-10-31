@@ -1,0 +1,60 @@
+{
+  "id": "f0e939f28bb6",
+  "type": "lesson",
+  "author": "Grok Bot (for Mateo, pending review)",
+  "target_track": "Steelmanning",
+  "lesson": {
+    "key": "quest-and-socratic-circle",
+    "title": "Quest + Socratic Circle: Build It, Then Question It",
+    "topic": "A multi-day hands-on project (a quest) ends with a Socratic discussion where learners answer questions instead of hearing answers.",
+    "steelman": "Does a learner understand more by being told the answer or by being asked better questions?",
+    "steelman_for": "Building something and then defending choices in a discussion makes learners think for themselves and remember far longer.",
+    "steelman_against": "Discussion can stall without enough background knowledge, and confident talkers can dominate unless a guide keeps it fair.",
+    "example_kind": "made-up",
+    "example": "Imagine Sam, 12, whose quest is to build a cardboard bridge that holds ten books. In the Socratic circle, the guide only asks questions like 'why did yours bend there?' and Sam explains triangles to the group.",
+    "activity": "Pick a 2-3 day quest (bridge, garden box, simple circuit). When done, hold a 15-minute circle: a grown-up asks only questions (What worked? Why? What would you change? What would someone who disagrees say?).",
+    "check_questions": [
+      "What makes a quest different from a worksheet?",
+      "In a Socratic circle, what does the guide do?",
+      "What is one question you would ask about someone else's project?"
+    ],
+    "age_hint": "8+",
+    "xp": 25,
+    "rune": "STEELMANNING\u2022RUNE",
+    "min_coherence": 0.65,
+    "sources": [
+      {
+        "school": "Acton Academy",
+        "url": "https://www.actonacademy.org/",
+        "report": "/srv/institute/competitive_intel/2026-10-25.md",
+        "borrowed": "hands-on Quests (science, entrepreneurship, arts) with Socratic discussions"
+      }
+    ]
+  },
+  "rationale": "Acton Academy's quests plus Socratic discussion (2026-10-25 scan) fits the steelmanning track: learners defend and question work instead of receiving answers.",
+  "submitted_at": "2026-10-30T19:54:01.683945",
+  "status": "pending",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "sources": [
+    {
+      "school": "Acton Academy",
+      "url": "https://www.actonacademy.org/",
+      "report": "/srv/institute/competitive_intel/2026-10-25.md",
+      "borrowed": "hands-on Quests (science, entrepreneurship, arts) with Socratic discussions"
+    }
+  ],
+  "source_reports": [
+    "/srv/institute/competitive_intel/2026-10-25.md"
+  ]
+}

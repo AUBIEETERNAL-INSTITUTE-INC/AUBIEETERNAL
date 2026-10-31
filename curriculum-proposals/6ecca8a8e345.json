@@ -16,7 +16,7 @@
   },
   "rationale": "Integrates wonder with antifragility, encouraging learners to view challenges through a lens of curiosity and resilience.",
   "submitted_at": "2026-10-02T06:01:47.772112",
-  "status": "pending",
+  "status": "rejected",
   "review": {
     "steelman_for": "",
     "steelman_against": "",
@@ -28,5 +28,7 @@
     "reviewer_notes": "",
     "status": "pending"
   },
-  "comments": []
+  "comments": [],
+  "rejected_at": "2026-10-11T14:07:39.736818",
+  "rejection_reason": ""
 }

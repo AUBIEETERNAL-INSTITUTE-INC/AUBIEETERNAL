@@ -1,0 +1,43 @@
+{
+  "id": "059a047a285a",
+  "type": "lesson",
+  "author": "Aubie (auto-proposed)",
+  "target_track": "Wonder as Practice",
+  "lesson": {
+    "key": "wonder-and-impact",
+    "title": "Wonder and Impact",
+    "topic": "Exploring how wonder can drive meaningful impact in various domains of life.",
+    "steelman": "How can cultivating a sense of wonder lead to significant real-world achievements?",
+    "steelman_for": "Cultivating wonder fosters curiosity, which drives innovation and discovery. It helps individuals stay open-minded and persistent in the face of challenges.",
+    "steelman_against": "Wonder may sometimes lead to impractical daydreaming if not balanced with practical action and responsibility.",
+    "example_kind": "made-up",
+    "example": "Imagine Leo, 14, who developed a sustainable energy solution inspired by his fascination with natural phenomena like solar power and wind patterns.",
+    "activity": "Create a mind map of how wonder in different subjects (e.g., science, art, history) can lead to impactful innovations or actions.",
+    "check_questions": [
+      "How does wonder contribute to the scientific method?",
+      "Can wonder be a driving force for social change? Explain.",
+      "In what ways might wonder hinder practical progress?"
+    ],
+    "age_hint": "12+",
+    "xp": 20,
+    "rune": "WONDER\u2022AS\u2022PRACTICE\u2022RUNE",
+    "min_coherence": 0.65
+  },
+  "rationale": "This lesson bridges the concept of wonder with tangible impacts, encouraging learners to see how their curiosity can lead to meaningful contributions.",
+  "submitted_at": "2026-10-15T06:00:12.584832",
+  "status": "rejected",
+  "review": {
+    "steelman_for": "",
+    "steelman_against": "",
+    "sim_q1_reality": "",
+    "sim_q2_falsify": "",
+    "sim_q3_lattice": "",
+    "sim_q4_coherence": "",
+    "coherence_score": 0.0,
+    "reviewer_notes": "",
+    "status": "pending"
+  },
+  "comments": [],
+  "rejected_at": "2026-10-16T07:53:03.090915",
+  "rejection_reason": ""
+}
