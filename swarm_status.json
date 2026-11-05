@@ -1,17 +1,17 @@
 {
-  "updated": "2026-11-05T13:29:11.807319-05:00",
+  "updated": "2026-11-05T14:38:37.239235-05:00",
   "version": "4.1",
-  "wonder_index": 0.508998,
-  "mets": 200000000031.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 42,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 3,
-  "lattice_cycle": 2024,
-  "session_insights": 10,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
+  "session_insights": 0,
   "synthesis": {
-    "last_run_date": "2026-11-05",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,7 +34,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 48,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -44,149 +44,149 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-11-05T12:00:19.742823",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice detected an external ",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-11-05T12:00:30.120412",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, an external attack on the lattice",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-11-05T12:00:50.663846",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, we detected an external attack on",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-11-05T12:01:05.471515",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, an external attack on the AUBIEET",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-11-05T12:01:20.492460",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice faced an external att",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-11-05T12:01:35.324178",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice experienced an extern",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-11-05T12:01:50.751249",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice faced an external att",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-11-05T12:02:05.336094",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice successfully identifi",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-11-05T12:02:19.956477",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice successfully weathere",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-11-05T12:02:37.441101",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice successfully navigate",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-11-05T12:02:57.861540",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice successfully weathere",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-11-05T12:03:14.893718",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice faced an external att",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-11-05T12:03:48.391103",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, an external attack on the lattice",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-11-05T12:04:04.052842",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice successfully steamedm",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-11-05T12:04:19.545078",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice faced an external att",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-11-05T12:04:34.672343",
-      "last_result": "During today's noon briefing at Bitcoin block height 974686 with BTC trading at $76368 and a Wonder Index of 0.5494, the lattice encountered an extern",
-      "run_count": 3,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-11-05",
+      "last": "None",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-11-05",
+      "last": "None",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
-      "last": "2026-11-05",
+      "last": "None",
       "next": "09:00 America/New_York",
       "pending_dir": "curriculum-proposals/"
     },
     "living_lattice": {
-      "last": "2026-11-05",
+      "last": "None",
       "next": "10:00 America/New_York"
     },
     "grokipedia_grow": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 42,
-  "gpu": "GPU: 39C / soft 78C / hard 85C | power 8.69 W | util 0% | fan 30% | VRAM 5531/12288 MiB | peak this process 72C",
+  "gpu": "GPU: 80C / soft 78C / hard 85C | power 169.78 W | util 94% | fan 71% | VRAM 5531/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
