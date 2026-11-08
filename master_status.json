@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-08T07:26:49.269272-05:00",
+  "updated": "2026-11-08T08:27:34.139321-05:00",
   "version": "4.1",
   "wonder_index": 0.5,
   "mets": 200000000095.5,
@@ -8,7 +8,7 @@
   "rune_confirmations": 0,
   "child_rune_ready": false,
   "hormetic_pulses": 11,
-  "lattice_cycle": 7626,
+  "lattice_cycle": 7746,
   "session_insights": 18,
   "synthesis": {
     "last_run_date": "2026-11-08",
@@ -177,7 +177,7 @@
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-11-07",
+      "last": "2026-11-08",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 42,
-  "gpu": "GPU: 59C / soft 78C / hard 85C | power 152.27 W | util 22% | fan 30% | VRAM 5531/12288 MiB | peak this process 72C",
+  "gpu": "GPU: 45C / soft 78C / hard 85C | power 8.66 W | util 0% | fan 30% | VRAM 5531/12288 MiB | peak this process 72C",
   "war_eagle": true
 }
