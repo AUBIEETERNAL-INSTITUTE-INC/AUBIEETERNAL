@@ -1,17 +1,17 @@
 {
-  "updated": "2026-11-12T07:41:20.104942-05:00",
+  "updated": "2026-11-13T17:30:41.088763-05:00",
   "version": "4.1",
   "wonder_index": 0.5,
-  "mets": 200000000223.5,
+  "mets": 200000000047.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 42,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 27,
-  "lattice_cycle": 18926,
-  "session_insights": 20,
+  "hormetic_pulses": 5,
+  "lattice_cycle": 3947,
+  "session_insights": 4,
   "synthesis": {
-    "last_run_date": "2026-11-12",
+    "last_run_date": "2026-11-13",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,159 +34,159 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 432,
+    "total_runs": 80,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "noon @ 12:00"
+    "next_briefing": "evening @ 18:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-11-12T06:00:06.506092",
-      "last_result": "During the morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external attack o",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:00:26.105354",
+      "last_result": "During today's noon briefing, with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-11-12T06:00:47.836973",
-      "last_result": "During this morning's briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external attac",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:00:34.526548",
+      "last_result": "In the event that Bitcoin experiences a 50% drop tomorrow, systems designed with strong antifragility principles will likely emerge stronger. These in",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-11-12T06:01:22.311200",
-      "last_result": "During this morning's briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external attac",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:00:39.630213",
+      "last_result": "During today\u2019s noon briefing, with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-11-12T06:01:43.477676",
-      "last_result": "During today's morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we encountered an external att",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:00:44.456725",
+      "last_result": "During today\u2019s noon briefing, with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-11-12T06:02:14.138063",
-      "last_result": "During today\u2019s morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external atta",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:00:49.972195",
+      "last_result": "Given the neutral market sentiment this noon with a Wonder Index of 0.5 and assuming Bitcoin drops by 50% tomorrow, systems that incorporate hormesis ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-11-12T06:02:29.746059",
-      "last_result": "During today\u2019s morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we observed that the lattice s",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:00:54.555605",
+      "last_result": "Given the neutral market sentiment at noon with a Wonder Index of 0.5, assuming Bitcoin experiences a 50% drop tomorrow, systems that embrace hormesis",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-11-12T06:02:47.940623",
-      "last_result": "During this morning's briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external attac",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:00:59.803542",
+      "last_result": "During today\u2019s noon briefing with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, s",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-11-12T06:03:18.190713",
-      "last_result": "During today\u2019s morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external atta",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:04.669231",
+      "last_result": "During today\u2019s noon briefing, with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-11-12T06:04:10.889459",
-      "last_result": "During the morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external attack o",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:09.970241",
+      "last_result": "During today's noon briefing, with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-11-12T06:04:28.575719",
-      "last_result": "During today's morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external atta",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:15.397073",
+      "last_result": "During today's noon briefing, with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-11-12T06:04:34.780972",
-      "last_result": "During today\u2019s morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, the lattice detected an extern",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:20.218591",
+      "last_result": "During today\u2019s noon briefing, with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-11-12T06:04:52.738197",
-      "last_result": "During today\u2019s morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external atta",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:25.174840",
+      "last_result": "In the context of a 50% price drop for Bitcoin tomorrow, systems that incorporate hormesis principles will likely demonstrate resilience. These system",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-11-12T06:05:08.310111",
-      "last_result": "During today\u2019s morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, the lattice detected an extern",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:30.649273",
+      "last_result": "Assuming a 50% drop in Bitcoin's price tomorrow, systems that are built on hormesis principles will likely demonstrate resilience. These antifragile s",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-11-12T06:05:24.042846",
-      "last_result": "During today's morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, an external attack on the latt",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:35.447547",
+      "last_result": "During today's noon briefing, with Bitcoin's price and block information still unknown but a Wonder Index of 0.5 indicating neutral market sentiment, ",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-11-12T06:05:40.123624",
-      "last_result": "During today\u2019s morning briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we identified an external atta",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:40.381973",
+      "last_result": "During today\u2019s noon briefing with a neutral market sentiment as indicated by the Wonder Index of 0.5, systems that are built to withstand stress throu",
+      "run_count": 5,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-11-12T06:05:57.351037",
-      "last_result": "During this morning's briefing at Bitcoin block height 975539 with BTC trading at $73400 and a Wonder Index of 0.5000, we encountered an external atta",
-      "run_count": 27,
+      "last_run": "2026-11-13T12:01:45.014205",
+      "last_result": "During today's noon briefing with a Wonder Index of 0.5 indicating neutral market sentiment, systems built on hormesis principles are expected to demo",
+      "run_count": 5,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-11-12",
+      "last": "2026-11-13",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
     "epistemic_commons": {
-      "last": "2026-11-11",
+      "last": "2026-11-13",
       "next": "08:00 America/New_York"
     },
     "curriculum": {
-      "last": "2026-11-11",
+      "last": "2026-11-13",
       "next": "09:00 America/New_York",
       "pending_dir": "curriculum-proposals/"
     },
     "living_lattice": {
-      "last": "2026-11-11",
+      "last": "2026-11-13",
       "next": "10:00 America/New_York"
     },
     "grokipedia_grow": {
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 42,
-  "gpu": "GPU: 53C / soft 78C / hard 85C | power 9.37 W | util 0% | fan 40% | VRAM 5531/12288 MiB | peak this process 75C",
+  "gpu": "GPU: 33C / soft 78C / hard 85C | power 8.63 W | util 0% | fan 30% | VRAM 775/12288 MiB | peak this process 75C",
   "war_eagle": true
 }
