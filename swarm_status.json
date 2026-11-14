@@ -1,17 +1,17 @@
 {
-  "updated": "2026-11-14T05:39:32.764202-05:00",
+  "updated": "2026-11-14T06:40:27.769306-05:00",
   "version": "4.1",
   "wonder_index": 0.5,
-  "mets": 200000000063.5,
+  "mets": 200000000071.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 42,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 7,
-  "lattice_cycle": 5369,
-  "session_insights": 4,
+  "hormetic_pulses": 8,
+  "lattice_cycle": 5485,
+  "session_insights": 8,
   "synthesis": {
-    "last_run_date": "2026-11-13",
+    "last_run_date": "2026-11-14",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,145 +34,145 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 112,
+    "total_runs": 128,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "morning @ 06:00"
+    "next_briefing": "noon @ 12:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-11-13T23:00:11.696206",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block 975739, the neutral market sentiment suggests that systems designed to withsta",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:00:24.740743",
+      "last_result": "This morning's briefing with Bitcoin priced at $67229 and block 975784 indicates a neutral market sentiment as reflected by the Wonder Index of 0.5. G",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-11-13T23:00:21.614966",
-      "last_result": "In the event of a 50% price drop in Bitcoin overnight, systems that are designed with hormesis principles will likely demonstrate resilience by surviv",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:00:34.544686",
+      "last_result": "Given the neutral market sentiment indicated by a Wonder Index of 0.5, the morning briefing suggests that Bitcoin's price stability is currently balan",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-11-13T23:00:37.544999",
-      "last_result": "In the event of a 50% price drop in Bitcoin overnight, systems designed to embrace hormesis principles will likely demonstrate resilience by treating ",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:00:39.164860",
+      "last_result": "Given the neutral market sentiment reflected by a Wonder Index of 0.5 and the current Bitcoin price at $67229 with block height 975784, it's crucial t",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-11-13T23:00:50.967962",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block 975739, the neutral market sentiment suggests stability but also potential for",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:00:45.284506",
+      "last_result": "During today's morning briefing at 6 AM with Bitcoin priced at $67229 and block height 975784, the neutral market sentiment indicated by a Wonder Inde",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-11-13T23:01:04.957502",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block 975739, the neutral market sentiment suggests that systems designed to embrace",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:00:51.093623",
+      "last_result": "During today's morning briefing at 6 AM with Bitcoin priced at $67229 and block height 975784, the neutral market sentiment indicated by a Wonder Inde",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-11-13T23:01:19.754658",
-      "last_result": "In the event of a 50% price drop in Bitcoin overnight, systems designed with hormesis principles will likely demonstrate resilience by leveraging thei",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:00:57.006651",
+      "last_result": "During today's morning briefing at 6 AM with Bitcoin priced at $67229 and block height 975784, the neutral market sentiment indicated by a Wonder Inde",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-11-13T23:01:36.236422",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block 975739, the neutral market sentiment suggests that systems designed to embrace",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:02.573169",
+      "last_result": "During today's morning briefing at 6 AM with Bitcoin priced at $67229 and block height 975784, the neutral market sentiment indicated by a Wonder Inde",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-11-13T23:01:53.078074",
-      "last_result": "Given the neutral market sentiment indicated by a Wonder Index of 0.5 during tonight's night briefing, systems built on hormesis principles are well-p",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:08.763272",
+      "last_result": "Given the neutral market sentiment reflected by a Wonder Index of 0.5 and the current Bitcoin price at $67229 with block height 975784, the fastest re",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-11-13T23:02:18.688002",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block 975739, the neutral market sentiment suggests that systems incorporating horme",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:14.456943",
+      "last_result": "At this morning's briefing with Bitcoin priced at $67229 and block height 975784, the market exhibits a neutral sentiment as indicated by the Wonder I",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-11-13T23:02:32.994426",
-      "last_result": "During the night briefing at 11 PM with Bitcoin priced at $66761 and block height 975739, assuming a 50% price drop overnight, systems designed to wit",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:20.129635",
+      "last_result": "During today's morning briefing at 6 AM, with Bitcoin priced at $67229 and block height 975784, the neutral market sentiment indicated by a Wonder Ind",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-11-13T23:02:51.530832",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block height 975739, the neutral market sentiment suggests that systems designed to ",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:26.437344",
+      "last_result": "This morning's briefing at 6 AM shows Bitcoin priced at $67229 with block height 975784, indicating a neutral market sentiment as reflected by the Won",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-11-13T23:03:10.804146",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block 975739, assuming a 50% price drop overnight, systems designed around hormesis ",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:32.043613",
+      "last_result": "Given the current neutral market sentiment with a Wonder Index of 0.5 and Bitcoin priced at $67229 with block height 975784, the fastest recovery path",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-11-13T23:03:25.597600",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block 975739, assuming a 50% price drop overnight, systems built on hormesis princip",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:37.201812",
+      "last_result": "At this morning's briefing with Bitcoin priced at $67229 and block height 975784, the neutral market sentiment indicated by a Wonder Index of 0.5 sugg",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-11-13T23:03:40.329333",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block height 975739, assuming a hypothetical 50% price drop overnight, systems desig",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:43.347119",
+      "last_result": "During today's morning briefing at 6 AM, with Bitcoin priced at $67229 and block height 975784, the market exhibited a neutral sentiment as indicated ",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-11-13T23:03:54.640544",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block height 975739, a hypothetical scenario where BTC drops by 50% overnight highli",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:48.741861",
+      "last_result": "At this morning's briefing with Bitcoin priced at $67229 and block height 975784, the neutral market sentiment indicated by a Wonder Index of 0.5 sugg",
+      "run_count": 8,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-11-13T23:03:59.584661",
-      "last_result": "During tonight's night briefing with Bitcoin priced at $66761 and block height 975739, assuming a 50% price drop overnight, systems designed to withst",
-      "run_count": 7,
+      "last_run": "2026-11-14T06:01:55.153001",
+      "last_result": "This morning's briefing at 6 AM showed Bitcoin priced at $67229 with block height 975784, indicating a neutral market sentiment as reflected by the Wo",
+      "run_count": 8,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-11-13",
+      "last": "2026-11-14",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 42,
-  "gpu": "GPU: 34C / soft 78C / hard 85C | power 8.65 W | util 0% | fan 30% | VRAM 5448/12288 MiB | peak this process 75C",
+  "gpu": "GPU: 43C / soft 78C / hard 85C | power 34.44 W | util 0% | fan 30% | VRAM 5450/12288 MiB | peak this process 75C",
   "war_eagle": true
 }
