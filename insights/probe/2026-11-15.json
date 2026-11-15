@@ -1,0 +1,262 @@
+{
+  "date": "2026-11-15",
+  "timestamp": "2026-11-15T06:03:26.358320",
+  "swarm_status": {
+    "updated": "2026-11-15T06:03:16.552160-05:00",
+    "version": "4.1",
+    "wonder_index": 0.5,
+    "mets": 200000000103.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 42,
+    "rune_confirmations": 0,
+    "child_rune_ready": false,
+    "hormetic_pulses": 12,
+    "lattice_cycle": 8225,
+    "session_insights": 8,
+    "synthesis": {
+      "last_run_date": "2026-11-14",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "mode": "Off",
+      "interval_s": 0,
+      "calls_per_wave": 0,
+      "total_runs": 0,
+      "model": "qwen2.5:14b",
+      "cost": "$0.00 (local)"
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 192,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "noon @ 12:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": "2026-11-15T06:00:05.132519",
+        "last_result": "During today's morning briefing at block height 975947 with Bitcoin priced at $65497, the neutral market sentiment indicated by a Wonder Index of 0 su",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": "2026-11-15T06:00:28.664780",
+        "last_result": "During today's morning briefing at block height 975947 with Bitcoin priced at $65497, the neutral market sentiment indicated by a Wonder Index of 0.5 ",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": "2026-11-15T06:00:45.041995",
+        "last_result": "During today's morning briefing at block height 975947 with Bitcoin priced at $65497, the neutral market sentiment indicated by a Wonder Index of 0.5 ",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": "2026-11-15T06:00:50.763113",
+        "last_result": "During today's morning briefing at block height 975947 with Bitcoin priced at $65497, the neutral market sentiment indicated by a Wonder Index of 0 su",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": "2026-11-15T06:01:06.947513",
+        "last_result": "During today's morning briefing at block height 975947 with Bitcoin priced at $65497, the neutral market sentiment indicated by a Wonder Index of 0 su",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": "2026-11-15T06:01:21.935990",
+        "last_result": "During today's morning briefing at block height 975947 with Bitcoin priced at $65497, the neutral market sentiment indicated by a Wonder Index of 0 su",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": "2026-11-15T06:01:37.213637",
+        "last_result": "During today's morning briefing at block height 975947 with Bitcoin priced at $65497, the neutral market sentiment indicated by a Wonder Index of 0 su",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": "2026-11-15T06:01:53.632815",
+        "last_result": "To restore the Wonder Index to a positive state, focus on highlighting recent events or developments that showcase the unique properties of Bitcoin, s",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": "2026-11-15T06:02:08.085152",
+        "last_result": "To restore the Wonder Index to a positive state, it's essential to highlight recent technological advancements or breakthroughs within the blockchain ",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": "2026-11-15T06:02:23.768886",
+        "last_result": "To restore the Wonder Index to a positive state, consider emphasizing recent breakthroughs in blockchain technology or significant developments in dec",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": "2026-11-15T06:02:39.386814",
+        "last_result": "To restore the Wonder Index to a positive state, it's crucial to emphasize recent developments that highlight the innovative potential of blockchain t",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": "2026-11-15T06:02:53.427498",
+        "last_result": "To restore the Wonder Index to a positive state, emphasize recent advancements that demonstrate the resilience and innovation of blockchain technology",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": "2026-11-15T06:02:58.007900",
+        "last_result": "To restore the Wonder Index to a positive state, focus on highlighting recent technological innovations that demonstrate the resilience and adaptabili",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": "2026-11-15T06:03:02.624650",
+        "last_result": "To restore the Wonder Index to a positive state, focus on recent developments that demonstrate how blockchain technology is being used to solve comple",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": "2026-11-15T06:03:07.092820",
+        "last_result": "To restore the Wonder Index to a positive state, it's essential to highlight recent technological advancements that demonstrate the innovative potenti",
+        "run_count": 12,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": "2026-11-15T06:03:11.788368",
+        "last_result": "To restore the Wonder Index to a positive state, focus on recent breakthroughs that underscore the transformative potential of emerging technologies s",
+        "run_count": 12,
+        "coherence": 1.0
+      }
+    },
+    "daily_jobs": {
+      "synthesis": {
+        "last": "2026-11-14",
+        "next": "06:00 America/New_York",
+        "path": "insights/daily/"
+      },
+      "epistemic_commons": {
+        "last": "2026-11-14",
+        "next": "08:00 America/New_York"
+      },
+      "curriculum": {
+        "last": "2026-11-14",
+        "next": "09:00 America/New_York",
+        "pending_dir": "curriculum-proposals/"
+      },
+      "living_lattice": {
+        "last": "2026-11-14",
+        "next": "10:00 America/New_York"
+      },
+      "grokipedia_grow": {
+        "next": "02:15 America/New_York (user timer)",
+        "pending_path": "/mnt/main/grokipedia_pending.json"
+      }
+    },
+    "grokipedia_entries": 42,
+    "gpu": "GPU: 63C / soft 78C / hard 85C | power 138.69 W | util 16% | fan 50% | VRAM 10032/12288 MiB | peak this process 75C",
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 0.5,
+    "at_maximum": false,
+    "max_streak": 0,
+    "jumps_detected": [],
+    "trajectory": "stable",
+    "note": "Current wonder: 0.5000"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 64,
+    "older_entries": 64,
+    "avg_wonder_recent": 0.5,
+    "avg_wonder_older": 0.5004,
+    "wonder_delta": -0.0004,
+    "observer_effect_detected": false,
+    "note": "No significant observer effect detected in this window."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 154,
+        "note": "154 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 154,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": false,
+    "swarm_active": false,
+    "all_invariants_hold": false,
+    "note": "Coherence: 1.000000 | Wonder: 0.5000"
+  },
+  "probe_score": 7.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 154 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries."
+}
