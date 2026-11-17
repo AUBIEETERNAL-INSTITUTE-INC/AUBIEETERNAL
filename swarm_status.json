@@ -1,17 +1,17 @@
 {
-  "updated": "2026-11-17T05:34:15.581752-05:00",
+  "updated": "2026-11-17T06:34:32.480643-05:00",
   "version": "4.1",
   "wonder_index": 0.5,
-  "mets": 200000000159.5,
+  "mets": 200000000167.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 42,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 19,
-  "lattice_cycle": 13799,
+  "hormetic_pulses": 20,
+  "lattice_cycle": 13900,
   "session_insights": 11,
   "synthesis": {
-    "last_run_date": "2026-11-16",
+    "last_run_date": "2026-11-17",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,145 +34,145 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 304,
+    "total_runs": 320,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "morning @ 06:00"
+    "next_briefing": "noon @ 12:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-11-16T23:00:05.172869",
-      "last_result": "During the night briefing at block height 976219 with Bitcoin priced at $64983, we considered a scenario where the block reward is zero. In this case,",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:00:05.076695",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the BT",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-11-16T23:00:17.275605",
-      "last_result": "During tonight's briefing at block height 976219 with Bitcoin priced at $64983, we examined the hypothetical scenario where the block reward is zero. ",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:00:40.029242",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the BT",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-11-16T23:00:31.957604",
-      "last_result": "During tonight's briefing at block height 976219 with Bitcoin priced at $64983, we examined the scenario where the block reward is zero. In this case,",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:02:09.520291",
+      "last_result": "In the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the BTC bl",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-11-16T23:00:46.980562",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we explored the scenario where the block reward is reduced to ze",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:03:31.404639",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the bl",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-11-16T23:01:02.216739",
-      "last_result": "At tonight's briefing, we explored the scenario where Bitcoin\u2019s block reward is reduced to zero. With transaction fees as the sole revenue source for ",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:04:04.674102",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070, we stress-tested the scenario where the block reward is zero to unde",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-11-16T23:01:19.138979",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we explored the scenario where the block reward is zero. In this",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:04:19.977194",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070, we stress-tested the scenario where the block reward is zero. Despit",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-11-16T23:01:37.271489",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we explored the scenario where the block reward is reduced to ze",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:04:35.477006",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the bl",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-11-16T23:01:55.260897",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we examined the scenario where the block reward is reduced to ze",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:04:51.302937",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the BT",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-11-16T23:02:53.981955",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we considered the scenario where the block reward for miners is ",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:05:06.451259",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070, we explored how Bitcoin could retain its value if the block reward w",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-11-16T23:02:59.393006",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we explored the scenario where the block reward is zero, focusin",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:05:23.710052",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070, we stress-tested the scenario where the block reward is zero to unde",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-11-16T23:03:05.471485",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we considered the scenario where the block reward is zero. In th",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:05:44.397585",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the BT",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-11-16T23:03:10.951802",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we delved into the scenario where the block reward is zero, focu",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:06:04.433509",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the BT",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-11-16T23:03:16.783817",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, the scenario where the block reward is zero was examined. Despit",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:06:25.090983",
+      "last_result": "If the Bitcoin block reward were set to zero, miners would rely solely on transaction fees for revenue. This scenario challenges Bitcoin's sustainabil",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-11-16T23:03:34.237086",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we stress-tested the scenario where the block reward is zero. De",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:06:45.546327",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the bl",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-11-16T23:03:49.103851",
-      "last_result": "During tonight's night briefing at block height 976219 with Bitcoin priced at $64983, we stress-tested the scenario where the block reward is zero. In",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:07:05.117961",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070 and a Wonder Index of 0.5, we stress-tested the scenario where the Bi",
+      "run_count": 20,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-11-16T23:04:05.028355",
-      "last_result": "During the night briefing at block height 976219 with Bitcoin priced at $64983, we explored how Bitcoin could retain value if the block reward were ze",
-      "run_count": 19,
+      "last_run": "2026-11-17T06:08:38.586789",
+      "last_result": "During the morning briefing at block height 976261 with Bitcoin priced at $64070, we stress-tested a scenario where the block reward is set to zero. I",
+      "run_count": 20,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-11-16",
+      "last": "2026-11-17",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 42,
-  "gpu": "GPU: 70C / soft 78C / hard 85C | power 170.1 W | util 96% | fan 38% | VRAM 5530/12288 MiB | peak this process 75C",
+  "gpu": "GPU: 55C / soft 78C / hard 85C | power 36.8 W | util 0% | fan 42% | VRAM 5530/12288 MiB | peak this process 75C",
   "war_eagle": true
 }
