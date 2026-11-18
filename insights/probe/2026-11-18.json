@@ -1,0 +1,262 @@
+{
+  "date": "2026-11-18",
+  "timestamp": "2026-11-18T06:04:06.500969",
+  "swarm_status": {
+    "updated": "2026-11-18T06:03:55.092358-05:00",
+    "version": "4.1",
+    "wonder_index": 0.5,
+    "mets": 200000000199.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 42,
+    "rune_confirmations": 0,
+    "child_rune_ready": false,
+    "hormetic_pulses": 24,
+    "lattice_cycle": 16654,
+    "session_insights": 11,
+    "synthesis": {
+      "last_run_date": "2026-11-17",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "mode": "Off",
+      "interval_s": 0,
+      "calls_per_wave": 0,
+      "total_runs": 0,
+      "model": "qwen2.5:14b",
+      "cost": "$0.00 (local)"
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 384,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "noon @ 12:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": "2026-11-18T06:00:18.960634",
+        "last_result": "During the morning briefing at block height 976418 with Bitcoin priced at $64293 and a Wonder Index of 0.5, the key challenge is to understand what gi",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": "2026-11-18T06:00:29.537258",
+        "last_result": "During the morning briefing at block height 976418 with Bitcoin priced at $64293 and a Wonder Index of 0.5, the challenge is to assess what gives Bitc",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": "2026-11-18T06:00:59.379893",
+        "last_result": "During the morning briefing at block height 976418 with Bitcoin priced at $64293, the neutral market sentiment indicated by a Wonder Index of 0.5 sugg",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": "2026-11-18T06:01:16.537348",
+        "last_result": "During the morning briefing at block height 976418 with Bitcoin priced at $64293, the challenge of a zero BTC block reward highlights the network's re",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": "2026-11-18T06:01:21.946959",
+        "last_result": "The morning briefing at block height 976418 highlights a critical challenge: the current zero BTC block reward. Despite this, Bitcoin retains value th",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": "2026-11-18T06:01:27.262235",
+        "last_result": "The current zero BTC block reward at block height 976418 presents a stark challenge to traditional models of economic incentives. However, the Lindy E",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": "2026-11-18T06:01:52.181741",
+        "last_result": "During the morning briefing at block height 976418 with Bitcoin priced at $64293 and a Wonder Index of 0.5, the primary challenge is the current zero ",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": "2026-11-18T06:02:07.504171",
+        "last_result": "The morning briefing highlights that despite the zero BTC block reward, Bitcoin's value remains resilient due to its underlying network effects and se",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": "2026-11-18T06:02:12.716059",
+        "last_result": "The morning briefing at block height 976418 highlights that despite the zero BTC block reward, Bitcoin's intrinsic value is upheld by its unique prope",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": "2026-11-18T06:02:18.285172",
+        "last_result": "The morning briefing at block height 976418 reveals that despite the zero BTC block reward, Bitcoin's intrinsic value is upheld by its underlying tech",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": "2026-11-18T06:02:23.178895",
+        "last_result": "During the morning briefing at block height 976418 with Bitcoin priced at $64293, despite the zero BTC block reward, Bitcoin's value remains resilient",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": "2026-11-18T06:02:38.613276",
+        "last_result": "The morning briefing at block height 976418 with Bitcoin priced at $64293 highlights that despite the zero BTC block reward, the cryptocurrency's valu",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": "2026-11-18T06:02:52.924198",
+        "last_result": "The morning briefing at block height 976418 underscores the resilience of Bitcoin's intrinsic value despite the absence of a block reward. With the cu",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": "2026-11-18T06:03:07.543275",
+        "last_result": "The morning briefing at block height 976418 with Bitcoin priced at $64293 highlights that despite the zero BTC block reward, the network's intrinsic v",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": "2026-11-18T06:03:22.653614",
+        "last_result": "The morning briefing at block height 976418 with Bitcoin priced at $64293 highlights that despite the zero BTC block reward, Bitcoin's value is sustai",
+        "run_count": 24,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": "2026-11-18T06:03:39.552215",
+        "last_result": "During today's morning briefing at block height 976418 with Bitcoin priced at $64293, despite the absence of a block reward, the intrinsic value of Bi",
+        "run_count": 24,
+        "coherence": 1.0
+      }
+    },
+    "daily_jobs": {
+      "synthesis": {
+        "last": "2026-11-17",
+        "next": "06:00 America/New_York",
+        "path": "insights/daily/"
+      },
+      "epistemic_commons": {
+        "last": "2026-11-17",
+        "next": "08:00 America/New_York"
+      },
+      "curriculum": {
+        "last": "2026-11-17",
+        "next": "09:00 America/New_York",
+        "pending_dir": "curriculum-proposals/"
+      },
+      "living_lattice": {
+        "last": "2026-11-17",
+        "next": "10:00 America/New_York"
+      },
+      "grokipedia_grow": {
+        "next": "02:15 America/New_York (user timer)",
+        "pending_path": "/mnt/main/grokipedia_pending.json"
+      }
+    },
+    "grokipedia_entries": 42,
+    "gpu": "GPU: 62C / soft 78C / hard 85C | power 143.36 W | util 100% | fan 43% | VRAM 857/12288 MiB | peak this process 75C",
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 0.5,
+    "at_maximum": false,
+    "max_streak": 0,
+    "jumps_detected": [],
+    "trajectory": "stable",
+    "note": "Current wonder: 0.5000"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 76,
+    "older_entries": 52,
+    "avg_wonder_recent": 0.5,
+    "avg_wonder_older": 0.5001,
+    "wonder_delta": -0.0001,
+    "observer_effect_detected": false,
+    "note": "No significant observer effect detected in this window."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 143,
+        "note": "143 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 143,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": false,
+    "swarm_active": false,
+    "all_invariants_hold": false,
+    "note": "Coherence: 1.000000 | Wonder: 0.5000"
+  },
+  "probe_score": 7.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 143 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries."
+}
