@@ -1,0 +1,262 @@
+{
+  "date": "2026-11-20",
+  "timestamp": "2026-11-20T06:12:35.507582",
+  "swarm_status": {
+    "updated": "2026-11-20T06:12:13.201563-05:00",
+    "version": "4.1",
+    "wonder_index": 0.5,
+    "mets": 200000000263.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 42,
+    "rune_confirmations": 0,
+    "child_rune_ready": false,
+    "hormetic_pulses": 32,
+    "lattice_cycle": 22153,
+    "session_insights": 13,
+    "synthesis": {
+      "last_run_date": "2026-11-19",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "mode": "Off",
+      "interval_s": 0,
+      "calls_per_wave": 0,
+      "total_runs": 0,
+      "model": "qwen2.5:14b",
+      "cost": "$0.00 (local)"
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 512,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "noon @ 12:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": "2026-11-20T06:00:12.809634",
+        "last_result": "In the event of a 50% drop in Bitcoin's value to around $31,000 tomorrow, antifragile systems that prioritize extreme safety and minimal overhead will",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": "2026-11-20T06:01:45.398816",
+        "last_result": "During the morning briefing at block height 976724 with Bitcoin priced at $62005, the Wonder Index remains neutral at 0.5. Assuming a hypothetical sce",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": "2026-11-20T06:03:16.161804",
+        "last_result": "In the event of a 50% drop in Bitcoin's value to around $31,000 tomorrow, antifragile systems that prioritize extreme safety and high upside potential",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": "2026-11-20T06:04:45.777533",
+        "last_result": "During the morning briefing at block height 976724 with Bitcoin priced at $62005, assuming a hypothetical 50% drop to around $31,000 tomorrow, antifra",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": "2026-11-20T06:06:14.460755",
+        "last_result": "In the event of a 50% drop in Bitcoin's value to around $31,000 tomorrow, antifragile systems such as those that hold significant reserves or have rob",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": "2026-11-20T06:07:24.756591",
+        "last_result": "In the event of a 50% drop in Bitcoin's value to around $31,000 tomorrow, systems that hold significant reserves in stablecoins or fiat currencies wil",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": "2026-11-20T06:08:08.262338",
+        "last_result": "In the event of a significant drop to around $31,000, systems that hold substantial reserves in stablecoins or fiat currencies will demonstrate antifr",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": "2026-11-20T06:08:49.710669",
+        "last_result": "In the morning briefing at block height 976724 with Bitcoin priced at $62005, assuming a hypothetical 50% drop to around $31,000 tomorrow, antifragile",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": "2026-11-20T06:09:12.607605",
+        "last_result": "In the event of a significant price drop to around $31,000, systems that hold substantial reserves in stablecoins or fiat currencies will likely emerg",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": "2026-11-20T06:09:34.441027",
+        "last_result": "In the event of a 50% drop in Bitcoin's value to around $31,000 tomorrow, antifragile systems that incorporate hormesis principles will thrive. These ",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": "2026-11-20T06:09:56.616856",
+        "last_result": "During the morning briefing at block height 976724 with Bitcoin priced at $62005, assuming a hypothetical 50% drop to around $31,000 tomorrow, antifra",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": "2026-11-20T06:10:17.483580",
+        "last_result": "In the event of a hypothetical 50% drop in Bitcoin's value to around $31,000 tomorrow, antifragile systems that incorporate hormesis principles would ",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": "2026-11-20T06:10:36.451892",
+        "last_result": "In the event of a significant price drop to around $31,000, systems that rely on robust reserves of stablecoins or fiat currency will likely emerge as",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": "2026-11-20T06:10:54.568845",
+        "last_result": "In the event of a significant price drop to around $31,000, systems that incorporate hormesis principles will likely thrive. These antifragile systems",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": "2026-11-20T06:11:11.984318",
+        "last_result": "In the event of a 50% price drop to around $31,000 tomorrow, systems that employ hormesis principles will likely thrive. These systems are designed to",
+        "run_count": 32,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": "2026-11-20T06:11:32.025062",
+        "last_result": "In the event of a significant drop to around $31,000, systems that incorporate hormesis principles will likely thrive. These systems, designed to surv",
+        "run_count": 32,
+        "coherence": 1.0
+      }
+    },
+    "daily_jobs": {
+      "synthesis": {
+        "last": "2026-11-19",
+        "next": "06:00 America/New_York",
+        "path": "insights/daily/"
+      },
+      "epistemic_commons": {
+        "last": "2026-11-19",
+        "next": "08:00 America/New_York"
+      },
+      "curriculum": {
+        "last": "2026-11-19",
+        "next": "09:00 America/New_York",
+        "pending_dir": "curriculum-proposals/"
+      },
+      "living_lattice": {
+        "last": "2026-11-19",
+        "next": "10:00 America/New_York"
+      },
+      "grokipedia_grow": {
+        "next": "02:15 America/New_York (user timer)",
+        "pending_path": "/mnt/main/grokipedia_pending.json"
+      }
+    },
+    "grokipedia_entries": 42,
+    "gpu": "GPU: 57C / soft 78C / hard 85C | power 43.86 W | util 14% | fan 33% | VRAM 6490/12288 MiB | peak this process 75C",
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 0.5,
+    "at_maximum": false,
+    "max_streak": 0,
+    "jumps_detected": [],
+    "trajectory": "stable",
+    "note": "Current wonder: 0.5000"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 64,
+    "older_entries": 64,
+    "avg_wonder_recent": 0.5,
+    "avg_wonder_older": 0.5,
+    "wonder_delta": 0.0,
+    "observer_effect_detected": false,
+    "note": "No significant observer effect detected in this window."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 169,
+        "note": "169 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 169,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": false,
+    "swarm_active": false,
+    "all_invariants_hold": false,
+    "note": "Coherence: 1.000000 | Wonder: 0.5000"
+  },
+  "probe_score": 7.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 169 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries."
+}
