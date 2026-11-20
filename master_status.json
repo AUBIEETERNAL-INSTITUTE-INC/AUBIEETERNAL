@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-20T04:47:17.124049-05:00",
+  "updated": "2026-11-20T05:48:01.030627-05:00",
   "version": "4.1",
   "wonder_index": 0.5,
   "mets": 200000000255.5,
@@ -8,7 +8,7 @@
   "rune_confirmations": 0,
   "child_rune_ready": false,
   "hormetic_pulses": 31,
-  "lattice_cycle": 22010,
+  "lattice_cycle": 22130,
   "session_insights": 13,
   "synthesis": {
     "last_run_date": "2026-11-19",
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 42,
-  "gpu": "GPU: 67C / soft 78C / hard 85C | power 134.34 W | util 56% | fan 36% | VRAM 10906/12288 MiB | peak this process 75C",
+  "gpu": "GPU: 56C / soft 78C / hard 85C | power 41.2 W | util 4% | fan 31% | VRAM 6490/12288 MiB | peak this process 75C",
   "war_eagle": true
 }
