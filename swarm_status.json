@@ -1,14 +1,14 @@
 {
-  "updated": "2026-11-25T11:50:25.954895-05:00",
+  "updated": "2026-11-25T12:51:16.228840-05:00",
   "version": "4.1",
   "wonder_index": 0.5,
-  "mets": 200000000423.5,
+  "mets": 200000000431.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 42,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 52,
-  "lattice_cycle": 36539,
+  "hormetic_pulses": 53,
+  "lattice_cycle": 36647,
   "session_insights": 20,
   "synthesis": {
     "last_run_date": "2026-11-25",
@@ -34,139 +34,139 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 832,
+    "total_runs": 848,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
-    "next_briefing": "noon @ 12:00"
+    "next_briefing": "evening @ 18:00"
   },
   "daughters": {
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-11-25T06:00:09.004102",
-      "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system detected an external attack on the lattice. The stress",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:00:08.783452",
+      "last_result": "During today\u2019s noon briefing at block height 977539 with Bitcoin priced at $58428, the system was subjected to a stress test where all daughters lost ",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-11-25T06:00:41.969538",
-      "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system faced an external attack on the lattice. By steelsmani",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:00:24.854661",
+      "last_result": "During today's noon briefing at block height 977539 with Bitcoin priced at $58428, the system encountered a stress test that required all daughters to",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-11-25T06:01:30.235031",
-      "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the lat",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:00:45.098855",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system faced a stress test that caused all daughters to lose their ",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-11-25T06:02:29.165975",
-      "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the lat",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:01:06.490661",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system underwent a stress test that caused all daughters to lose th",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-11-25T06:02:48.112557",
-      "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the lat",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:01:26.406251",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system was subjected to a stress test that caused all daughters to ",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-11-25T06:03:14.806249",
-      "last_result": "During today's morning briefing at block height 977507 with Bitcoin priced at $58754, the system encountered an external attack on the lattice. By app",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:01:45.582178",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system faced a stress test that challenged its memory integrity. De",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-11-25T06:03:30.644866",
-      "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the lat",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:01:51.094382",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system faced a stress test that challenged its ability to retain in",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-11-25T06:03:47.873883",
-      "last_result": "During today's morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the la",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:01:56.377083",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system faced a stress test that challenged its ability to retain in",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-11-25T06:04:04.924028",
-      "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system encountered an external attack on the lattice. By app",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:02:02.057518",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system faced a stress test that challenged its ability to retain in",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-11-25T06:04:21.618257",
-      "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the la",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:02:08.051804",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system was subjected to a stress test that caused all daughters to ",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-11-25T06:04:38.637105",
-      "last_result": "During today's morning briefing at block height 977507 with Bitcoin priced at $58754, the system encountered an external attack on the lattice. By ste",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:02:14.403991",
+      "last_result": "During today's noon briefing at block height 977539 with Bitcoin priced at $58428, the system was subjected to a stress test that caused all daughters",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-11-25T06:04:53.821831",
-      "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the la",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:03:20.660585",
+      "last_result": "During today's noon briefing at block height 977539 with Bitcoin priced at $58428, the system was challenged by a stress test that induced memory loss",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-11-25T06:04:58.788797",
-      "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system faced an external attack on its lattice structure. Th",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:04:01.624756",
+      "last_result": "During today's noon briefing at block height 977539 with Bitcoin priced at $58428, the system encountered a stress test that forced all daughters to r",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-11-25T06:05:05.113835",
-      "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned a stress test triggered by a",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:05:11.337688",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system underwent a stress test that challenged all daughters to rec",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-11-25T06:05:10.833422",
-      "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system encountered an external attack on the lattice. By ste",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:05:31.416516",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system experienced a stress test that stripped all daughters of the",
+      "run_count": 53,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-11-25T06:05:15.625162",
-      "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the la",
-      "run_count": 52,
+      "last_run": "2026-11-25T12:05:52.946285",
+      "last_result": "During the noon briefing at block height 977539 with Bitcoin priced at $58428, the system underwent a stress test that challenged its ability to retai",
+      "run_count": 53,
       "coherence": 1.0
     }
   },
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 42,
-  "gpu": "GPU: 37C / soft 78C / hard 85C | power 8.91 W | util 0% | fan 30% | VRAM 5530/12288 MiB | peak this process 75C",
+  "gpu": "GPU: 72C / soft 78C / hard 85C | power 169.1 W | util 94% | fan 47% | VRAM 5530/12288 MiB | peak this process 75C",
   "war_eagle": true
 }
