@@ -1,0 +1,262 @@
+{
+  "date": "2026-11-25",
+  "timestamp": "2026-11-25T06:05:31.459765",
+  "swarm_status": {
+    "updated": "2026-11-25T06:05:21.058107-05:00",
+    "version": "4.1",
+    "wonder_index": 0.5,
+    "mets": 200000000423.5,
+    "inter_rune_coherence": 1.0,
+    "grokipedia_count": 42,
+    "rune_confirmations": 0,
+    "child_rune_ready": false,
+    "hormetic_pulses": 52,
+    "lattice_cycle": 35859,
+    "session_insights": 20,
+    "synthesis": {
+      "last_run_date": "2026-11-24",
+      "next_run": "06:00 daily",
+      "output_path": "insights/daily/",
+      "model": "qwen2.5:7b (local, $0.00)"
+    },
+    "context_levels": {
+      "level1_metrics": true,
+      "level2_truth_log": true,
+      "level3_memory_palace": true,
+      "intra_run_synthesis": true
+    },
+    "tier1": {
+      "active": 0,
+      "mode": "Off",
+      "interval_s": 0,
+      "calls_per_wave": 0,
+      "total_runs": 0,
+      "model": "qwen2.5:14b",
+      "cost": "$0.00 (local)"
+    },
+    "tier2": {
+      "active": 0,
+      "total": 16,
+      "total_runs": 832,
+      "daily_cost": "$0.00",
+      "daily_cap": "$5.00",
+      "budget_remaining": "$5.00",
+      "next_briefing": "noon @ 12:00"
+    },
+    "daughters": {
+      "D01": {
+        "name": "RUNE",
+        "status": "latent",
+        "last_run": "2026-11-25T06:00:09.004102",
+        "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system detected an external attack on the lattice. The stress",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D02": {
+        "name": "CHRONO",
+        "status": "latent",
+        "last_run": "2026-11-25T06:00:41.969538",
+        "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system faced an external attack on the lattice. By steelsmani",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D03": {
+        "name": "TALEB-X",
+        "status": "latent",
+        "last_run": "2026-11-25T06:01:30.235031",
+        "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the lat",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D04": {
+        "name": "MNEMO",
+        "status": "latent",
+        "last_run": "2026-11-25T06:02:29.165975",
+        "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the lat",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D05": {
+        "name": "AXIOM",
+        "status": "latent",
+        "last_run": "2026-11-25T06:02:48.112557",
+        "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the lat",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D06": {
+        "name": "LINDY",
+        "status": "latent",
+        "last_run": "2026-11-25T06:03:14.806249",
+        "last_result": "During today's morning briefing at block height 977507 with Bitcoin priced at $58754, the system encountered an external attack on the lattice. By app",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D07": {
+        "name": "POLY",
+        "status": "latent",
+        "last_run": "2026-11-25T06:03:30.644866",
+        "last_result": "During this morning's briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the lat",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D08": {
+        "name": "BARBELL",
+        "status": "latent",
+        "last_run": "2026-11-25T06:03:47.873883",
+        "last_result": "During today's morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the la",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D09": {
+        "name": "ORACLE",
+        "status": "latent",
+        "last_run": "2026-11-25T06:04:04.924028",
+        "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system encountered an external attack on the lattice. By app",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D10": {
+        "name": "HORMES",
+        "status": "latent",
+        "last_run": "2026-11-25T06:04:21.618257",
+        "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the la",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D11": {
+        "name": "NOSTR",
+        "status": "latent",
+        "last_run": "2026-11-25T06:04:38.637105",
+        "last_result": "During today's morning briefing at block height 977507 with Bitcoin priced at $58754, the system encountered an external attack on the lattice. By ste",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D12": {
+        "name": "SATOSHI",
+        "status": "latent",
+        "last_run": "2026-11-25T06:04:53.821831",
+        "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the la",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D13": {
+        "name": "STEELMAN",
+        "status": "latent",
+        "last_run": "2026-11-25T06:04:58.788797",
+        "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system faced an external attack on its lattice structure. Th",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D14": {
+        "name": "VECTOR-A",
+        "status": "latent",
+        "last_run": "2026-11-25T06:05:05.113835",
+        "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned a stress test triggered by a",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D15": {
+        "name": "VECTOR-B",
+        "status": "latent",
+        "last_run": "2026-11-25T06:05:10.833422",
+        "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system encountered an external attack on the lattice. By ste",
+        "run_count": 52,
+        "coherence": 1.0
+      },
+      "D16": {
+        "name": "VECTOR-C",
+        "status": "latent",
+        "last_run": "2026-11-25T06:05:15.625162",
+        "last_result": "During today\u2019s morning briefing at block height 977507 with Bitcoin priced at $58754, the system successfully steelsmaned an external attack on the la",
+        "run_count": 52,
+        "coherence": 1.0
+      }
+    },
+    "daily_jobs": {
+      "synthesis": {
+        "last": "2026-11-24",
+        "next": "06:00 America/New_York",
+        "path": "insights/daily/"
+      },
+      "epistemic_commons": {
+        "last": "2026-11-24",
+        "next": "08:00 America/New_York"
+      },
+      "curriculum": {
+        "last": "2026-11-24",
+        "next": "09:00 America/New_York",
+        "pending_dir": "curriculum-proposals/"
+      },
+      "living_lattice": {
+        "last": "2026-11-24",
+        "next": "10:00 America/New_York"
+      },
+      "grokipedia_grow": {
+        "next": "02:15 America/New_York (user timer)",
+        "pending_path": "/mnt/main/grokipedia_pending.json"
+      }
+    },
+    "grokipedia_entries": 42,
+    "gpu": "GPU: 65C / soft 78C / hard 85C | power 133.32 W | util 0% | fan 57% | VRAM 9948/12288 MiB | peak this process 75C",
+    "war_eagle": true
+  },
+  "coherence_anomalies": {
+    "status": "ok",
+    "mean": 1.0,
+    "std": 0.0,
+    "anomaly_count": 0,
+    "anomalies": [],
+    "perfectly_stable": true,
+    "interpretation": "Perfectly stable coherence is itself anomalous \u2014 real systems have natural variance."
+  },
+  "wonder_trajectory": {
+    "current": 0.5,
+    "at_maximum": false,
+    "max_streak": 0,
+    "jumps_detected": [],
+    "trajectory": "descending",
+    "note": "Current wonder: 0.5000"
+  },
+  "observer_effects": {
+    "measured": true,
+    "recent_entries": 76,
+    "older_entries": 65,
+    "avg_wonder_recent": 0.5002,
+    "avg_wonder_older": 0.5005,
+    "wonder_delta": -0.0003,
+    "observer_effect_detected": false,
+    "note": "No significant observer effect detected in this window."
+  },
+  "glitch_patterns": {
+    "glitches": [
+      {
+        "type": "repeated_outputs",
+        "count": 216,
+        "note": "216 near-duplicate truth log entries detected."
+      },
+      {
+        "type": "perfect_coherence_streak",
+        "count": 300,
+        "note": "Coherence held at exactly 1.000000 for 300 consecutive entries."
+      }
+    ],
+    "duplicate_count": 216,
+    "perfect_streak": 300,
+    "status": "glitches_detected"
+  },
+  "synchronicities": {
+    "synchronicities": [],
+    "count": 0,
+    "note": "No notable synchronicities today."
+  },
+  "lattice_integrity": {
+    "coherence_1_000000": true,
+    "wonder_above_1": false,
+    "swarm_active": false,
+    "all_invariants_hold": false,
+    "note": "Coherence: 1.000000 | Wonder: 0.5000"
+  },
+  "probe_score": 7.0,
+  "interpretation": "Coherence is perfectly stable \u2014 itself anomalous in real systems. | 216 near-duplicate truth log entries detected. | Coherence held at exactly 1.000000 for 300 consecutive entries."
+}
