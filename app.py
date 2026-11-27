@@ -1,5 +1,12 @@
 import streamlit as st
 
+# Serve Family Co-Learning lesson videos at /app/static/videos/... when present.
+try:
+    import lesson_packs as _lesson_packs_static
+    _lesson_packs_static.prepare_static_videos()
+except Exception:
+    pass
+
 # ── Pydantic AppState integration ─────────────────────────────────────────
 # Replaces scattered st.session_state with typed, validated, persistent state
 try:
@@ -3771,6 +3778,22 @@ if "Family Co-Learning" in active:
         f'</div>', unsafe_allow_html=True
     )
 
+    # Family Co-Learning video (local file, skipped cleanly when not present)
+    _video_path = lesson.get("video_path")
+    _video_ok = False
+    try:
+        from pathlib import Path as _LessonVideoPath
+        if _video_path and _LessonVideoPath(str(_video_path)).is_file():
+            st.video(str(_video_path))
+            _video_ok = True
+    except Exception:
+        _video_ok = False
+    if lesson.get("video_rels") and not _video_ok:
+        st.caption("Lesson video is not on this Institute box yet. The written lesson is still available below.")
+    if lesson.get("body"):
+        with st.expander("Open full Family Co-Learning lesson pack", expanded=False):
+            st.markdown(lesson.get("body"))
+
     # ── Session state init ────────────────────────────────────────────────────
     if "fl_session" not in st.session_state or st.session_state.fl_session.get("lesson_key") != chosen_key:
         st.session_state.fl_session = {
@@ -5531,6 +5554,17 @@ if "Curriculum Map" in active:
         },
     ]
 
+    try:
+        import lesson_packs as _lp_cm1
+        _have_cm1 = {lvl[0] for tr in CURRICULUM_TREE for lvl in tr["levels"]}
+        for _tr in _lp_cm1.tracks_for_tree():
+            _new = [lvl for lvl in _tr["levels"] if lvl[0] not in _have_cm1]
+            if _new:
+                CURRICULUM_TREE.append({"track": _tr["track"], "color": _tr["color"], "levels": _new})
+                _have_cm1.update(lvl[0] for lvl in _new)
+    except Exception:
+        pass
+
     # ── Progress summary ───────────────────────────────────────────────────────
     total_lessons = sum(len(t["levels"]) for t in CURRICULUM_TREE)
     done_count    = len(_done_cm)
@@ -6036,6 +6070,17 @@ if active == "🗺️ Curriculum Map":
             ]
         },
     ]
+
+    try:
+        import lesson_packs as _lp_cm2
+        _have_cm2 = {lvl[0] for tr in CURRICULUM_TRACKS for lvl in tr["levels"]}
+        for _tr in _lp_cm2.tracks_for_map_progress():
+            _new = [lvl for lvl in _tr["levels"] if lvl[0] not in _have_cm2]
+            if _new:
+                CURRICULUM_TRACKS.append({"track": _tr["track"], "color": _tr["color"], "levels": _new})
+                _have_cm2.update(lvl[0] for lvl in _new)
+    except Exception:
+        pass
 
     # ── Total progress ────────────────────────────────────────────────────────
     all_lessons = sum(len(t["levels"]) for t in CURRICULUM_TRACKS)

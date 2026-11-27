@@ -10791,6 +10791,28 @@ def _merge_extra_lessons() -> int:
         print(f"[family_hud] lesson merge skipped: {e}")
     return added
 
+def _load_disk_lesson_packs() -> int:
+    """Merge Family Co-Learning packs living under lessons/ (and local videos).
+    Never raises. Returns number of keys added or updated."""
+    added = 0
+    try:
+        import lesson_packs as _lp
+        for key, d in _lp.lessons_for_hud().items():
+            if key in LESSONS and isinstance(LESSONS.get(key), dict):
+                # Keep authored HUD text; attach written pack + video if missing.
+                cur = LESSONS[key]
+                for field in ("body", "video_path", "video_paths", "video_rels",
+                              "video_http_paths", "source_markdown"):
+                    if d.get(field) and not cur.get(field):
+                        cur[field] = d[field]
+                continue
+            LESSONS[key] = _normalize_lesson(dict(d), key)
+            added += 1
+    except Exception as e:
+        print(f"[family_hud] disk lesson packs skipped: {e}")
+    return added
+
+_load_disk_lesson_packs()
 _merge_extra_lessons()
 
 

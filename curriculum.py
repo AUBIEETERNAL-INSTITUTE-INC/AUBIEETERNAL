@@ -105,6 +105,12 @@ CURRICULUM_TREE = [
     ]},
 ]
 
+try:
+    import lesson_packs as _lesson_packs
+    CURRICULUM_TREE = list(CURRICULUM_TREE) + _lesson_packs.tracks_for_tree()
+except Exception:
+    pass
+
 
 def _load_extra_tracks() -> list:
     """Approved additions live here as plain data: a list of track-shaped

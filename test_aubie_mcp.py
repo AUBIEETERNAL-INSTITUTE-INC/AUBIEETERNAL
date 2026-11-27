@@ -93,16 +93,28 @@ def test_search_contents():
 
 # ── aubie_vision ───────────────────────────────────────────────
 def test_vision_reports_server_error_instead_of_empty_room():
-    real = m.post_json
+    # aubie_vision uses httpx.AsyncClient.get for the camera snapshot, not post_json.
+    class _FakeVisionResp:
+        status_code = 500
+        headers = {"content-type": "text/html"}
+        content = b"<html>500 Internal Server Error</html>"
 
-    async def fake(url, payload, timeout=60):
-        return {"status": "error", "detail": "<html>500 Internal Server Error</html>"}
+    class _FakeAsyncClient:
+        def __init__(self, *a, **k):
+            pass
+        async def __aenter__(self):
+            return self
+        async def __aexit__(self, *a):
+            return False
+        async def get(self, url):
+            return _FakeVisionResp()
 
-    m.post_json = fake
+    real = m.httpx.AsyncClient
+    m.httpx.AsyncClient = _FakeAsyncClient
     try:
         out = call("aubie_vision", {})
     finally:
-        m.post_json = real
+        m.httpx.AsyncClient = real
     assert out.startswith("Vision failed") and "no objects" not in out
 
 
