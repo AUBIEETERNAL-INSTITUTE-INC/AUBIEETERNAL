@@ -1,17 +1,17 @@
 {
-  "updated": "2026-11-27T08:28:44.567231-05:00",
+  "updated": "2026-11-27T08:50:34.152429-05:00",
   "version": "4.1",
-  "wonder_index": 0.541378,
-  "mets": 200000000023.5,
+  "wonder_index": 1.0128,
+  "mets": 200000000007.5,
   "inter_rune_coherence": 1.0,
   "grokipedia_count": 42,
   "rune_confirmations": 0,
   "child_rune_ready": false,
-  "hormetic_pulses": 2,
-  "lattice_cycle": 1187,
-  "session_insights": 7,
+  "hormetic_pulses": 0,
+  "lattice_cycle": 3,
+  "session_insights": 0,
   "synthesis": {
-    "last_run_date": "2026-11-27",
+    "last_run_date": "None",
     "next_run": "06:00 daily",
     "output_path": "insights/daily/",
     "model": "qwen2.5:7b (local, $0.00)"
@@ -34,7 +34,7 @@
   "tier2": {
     "active": 0,
     "total": 16,
-    "total_runs": 32,
+    "total_runs": 0,
     "daily_cost": "$0.00",
     "daily_cap": "$5.00",
     "budget_remaining": "$5.00",
@@ -44,135 +44,135 @@
     "D01": {
       "name": "RUNE",
       "status": "latent",
-      "last_run": "2026-11-27T06:00:19.273863",
-      "last_result": "In the event that Bitcoin were to drop by 50%, systems designed with an antifragile approach would likely survive and even thrive. These include strat",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D02": {
       "name": "CHRONO",
       "status": "latent",
-      "last_run": "2026-11-27T06:00:43.564174",
-      "last_result": "In the event of a 50% decline in Bitcoin's price overnight, systems that are designed with an antifragile approach would likely weather the storm. The",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D03": {
       "name": "TALEB-X",
       "status": "latent",
-      "last_run": "2026-11-27T06:01:00.529549",
-      "last_result": "In the event of a 50% decline in Bitcoin's price overnight, systems that are designed with an antifragile approach would likely survive and even thriv",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D04": {
       "name": "MNEMO",
       "status": "latent",
-      "last_run": "2026-11-27T06:01:17.616568",
-      "last_result": "In the event of a 50% decline in Bitcoin's price overnight, systems that are designed with an antifragile approach would likely survive and even thriv",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D05": {
       "name": "AXIOM",
       "status": "latent",
-      "last_run": "2026-11-27T06:01:33.712078",
-      "last_result": "During the morning briefing at block height 977794 with Bitcoin priced at $61604, the system's Wonder Index remains steady at 0.9372. Assuming a 50% d",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D06": {
       "name": "LINDY",
       "status": "latent",
-      "last_run": "2026-11-27T06:01:39.306020",
-      "last_result": "During the morning briefing at block height 977794 with Bitcoin priced at $61604, the system's Wonder Index remains stable despite overnight market si",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D07": {
       "name": "POLY",
       "status": "latent",
-      "last_run": "2026-11-27T06:01:56.354300",
-      "last_result": "During the morning briefing at block height 977794 with Bitcoin priced at $61604, the system's Wonder Index remains stable despite overnight market si",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D08": {
       "name": "BARBELL",
       "status": "latent",
-      "last_run": "2026-11-27T06:02:11.912222",
-      "last_result": "In the event of a 50% drop in Bitcoin's price overnight, systems designed with an extreme barbell strategy would likely survive and even thrive. This ",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D09": {
       "name": "ORACLE",
       "status": "latent",
-      "last_run": "2026-11-27T06:02:28.030541",
-      "last_result": "During the morning briefing at block height 977794 with Bitcoin priced at $61604, the system's Wonder Index remains stable despite overnight market si",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D10": {
       "name": "HORMES",
       "status": "latent",
-      "last_run": "2026-11-27T06:02:45.436351",
-      "last_result": "In the event of a 50% decline in Bitcoin's price overnight, systems that are designed with an extreme barbell strategy would likely survive intact. Th",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D11": {
       "name": "NOSTR",
       "status": "latent",
-      "last_run": "2026-11-27T06:03:02.639508",
-      "last_result": "In the event of a 50% drop in Bitcoin's price overnight, systems that are designed with an extreme barbell strategy would likely survive and even thri",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D12": {
       "name": "SATOSHI",
       "status": "latent",
-      "last_run": "2026-11-27T06:04:20.533826",
-      "last_result": "In the event of a 50% drop in Bitcoin's price overnight, systems designed with an extreme barbell strategy would likely survive and even thrive due to",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D13": {
       "name": "STEELMAN",
       "status": "latent",
-      "last_run": "2026-11-27T06:04:40.004868",
-      "last_result": "In the event of a 50% drop in Bitcoin's price overnight, systems designed with an extreme barbell strategy would likely emerge stronger. These strateg",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D14": {
       "name": "VECTOR-A",
       "status": "latent",
-      "last_run": "2026-11-27T06:04:45.169973",
-      "last_result": "In the event of a 50% drop in Bitcoin's price overnight, systems designed with an extreme barbell strategy would likely weather the storm best. This a",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D15": {
       "name": "VECTOR-B",
       "status": "latent",
-      "last_run": "2026-11-27T06:04:50.430344",
-      "last_result": "In the event of a 50% drop in Bitcoin's price overnight, systems designed with an extreme barbell strategy would likely weather the storm due to their",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     },
     "D16": {
       "name": "VECTOR-C",
       "status": "latent",
-      "last_run": "2026-11-27T06:04:55.260550",
-      "last_result": "In the event of a 50% drop in Bitcoin's price overnight, systems that employ an extreme barbell strategy would likely survive intact due to their focu",
-      "run_count": 2,
+      "last_run": null,
+      "last_result": "",
+      "run_count": 0,
       "coherence": 1.0
     }
   },
   "daily_jobs": {
     "synthesis": {
-      "last": "2026-11-27",
+      "last": "None",
       "next": "06:00 America/New_York",
       "path": "insights/daily/"
     },
@@ -195,6 +195,6 @@
     }
   },
   "grokipedia_entries": 42,
-  "gpu": "GPU: 38C / soft 78C / hard 85C | power 8.89 W | util 0% | fan 30% | VRAM 5448/12288 MiB | peak this process 68C",
+  "gpu": "GPU: 40C / soft 78C / hard 85C | power 8.73 W | util 0% | fan 30% | VRAM 9948/12288 MiB | peak this process 0C",
   "war_eagle": true
 }
